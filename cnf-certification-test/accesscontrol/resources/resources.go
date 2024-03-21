@@ -1,40 +1,40 @@
 package resources
 
 import (
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
-func HasRequestsAndLimitsSet(cut *provider.Container) bool {
+func HasRequestsAndLimitsSet(cut *provider.Container, logger *log.Logger) bool {
 	passed := true
 	// Parse the limits.
 	if len(cut.Resources.Limits) == 0 {
-		tnf.ClaimFilePrintf("Container has been found missing resource limits: %s", cut.String())
+		logger.Error("Container %q has been found missing resource limits", cut)
 		passed = false
 	} else {
 		if cut.Resources.Limits.Cpu().IsZero() {
-			tnf.ClaimFilePrintf("Container has been found missing CPU limits: %s", cut.String())
+			logger.Error("Container %q has been found missing CPU limits", cut)
 			passed = false
 		}
 
 		if cut.Resources.Limits.Memory().IsZero() {
-			tnf.ClaimFilePrintf("Container has been found missing memory limits: %s", cut.String())
+			logger.Error("Container %q has been found missing memory limits", cut)
 			passed = false
 		}
 	}
 
 	// Parse the requests.
 	if len(cut.Resources.Requests) == 0 {
-		tnf.ClaimFilePrintf("Container has been found missing resource requests: %s", cut.String())
+		logger.Error("Container %q has been found missing resource requests", cut)
 		passed = false
 	} else {
 		if cut.Resources.Requests.Cpu().IsZero() {
-			tnf.ClaimFilePrintf("Container has been found missing CPU requests: %s", cut.String())
+			logger.Error("Container %q has been found missing CPU requests", cut)
 			passed = false
 		}
 
 		if cut.Resources.Requests.Memory().IsZero() {
-			tnf.ClaimFilePrintf("Container has been found missing memory requests: %s", cut.String())
+			logger.Error("Container %q has been found missing memory requests", cut)
 			passed = false
 		}
 	}
@@ -42,20 +42,20 @@ func HasRequestsAndLimitsSet(cut *provider.Container) bool {
 }
 
 // For more info on cpu management policies see https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/.
-func HasExclusiveCPUsAssigned(cut *provider.Container) bool {
+func HasExclusiveCPUsAssigned(cut *provider.Container, logger *log.Logger) bool {
 	cpuLimits := cut.Resources.Limits.Cpu()
 	memLimits := cut.Resources.Limits.Memory()
 
 	// if no cpu or memory limits are specified the container will run in the shared cpu pool
 	if cpuLimits.IsZero() || memLimits.IsZero() {
-		tnf.ClaimFilePrintf("Container has been found missing cpu/memory resource limits: %s", cut.String())
+		logger.Debug("Container %q has been found missing cpu/memory resource limits", cut)
 		return false
 	}
 
 	// if the cpu limits quantity is not an integer the container will run in the shared cpu pool
 	cpuLimitsVal, isInteger := cpuLimits.AsInt64()
 	if !isInteger {
-		tnf.ClaimFilePrintf("Container's cpu resource limit is not an integer: %s", cut.String())
+		logger.Debug("Container %q cpu resource limit is not an integer", cut)
 		return false
 	}
 
@@ -68,6 +68,6 @@ func HasExclusiveCPUsAssigned(cut *provider.Container) bool {
 	}
 
 	// if the cpu limits and request are different, the container will run in the shared cpu pool
-	tnf.ClaimFilePrintf("Container's cpu/memory resources and limits are not equal to each other: %s", cut.String())
+	logger.Debug("Container %q cpu/memory resources and limits are not equal to each other", cut)
 	return false
 }

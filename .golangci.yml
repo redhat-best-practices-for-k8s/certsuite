@@ -45,6 +45,8 @@ linters-settings:
     allow-unused: false # report any unused nolint directives
     require-explanation: false # do not require an explanation for nolint directives
     require-specific: true # require nolint directives to be specific about which linter is being skipped
+  exhaustive:
+    default-signifies-exhaustive: true
 linters:
   # please, do not use `enable-all`: it's deprecated and will be removed soon.
   # inverted configuration with `enable-all` and `disable` is not scalable during updates of golangci-lint
@@ -70,7 +72,6 @@ linters:
     - lll
     - misspell
     - nolintlint
-    - revive
     - rowserrcheck
     - staticcheck
     - stylecheck
@@ -94,6 +95,7 @@ linters:
   # - nestif
   # - noctx
   # - prealloc
+  # - revive
   # - exportloopref
   # - structcheck
   # - testpackage
@@ -121,6 +123,6 @@ issues:
 # golangci.com configuration
 # https://github.com/golangci/golangci/wiki/Configuration
 service:
-  golangci-lint-version: 1.55.x # use the fixed version to not introduce new linters unexpectedly
+  golangci-lint-version: 1.56.x # use the fixed version to not introduce new linters unexpectedly
   prepare:
     - echo "here I can run custom commands, but no preparation needed for this repo"

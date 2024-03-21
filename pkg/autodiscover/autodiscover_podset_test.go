@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
-func TestFindDeploymentByLabel(t *testing.T) {
+func TestFindDeploymentsUnderTest(t *testing.T) {
 	generateDeployment := func(name, namespace, label string) *appsv1.Deployment {
 		return &appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
@@ -99,12 +99,12 @@ func TestFindDeploymentByLabel(t *testing.T) {
 		testRuntimeObjects = append(testRuntimeObjects, generateDeployment(tc.testDeploymentName, tc.testDeploymentNamespace, tc.queryLabel))
 		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
-		deployments := findDeploymentByLabel(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
+		deployments := findDeploymentsByLabels(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
 		assert.Equal(t, tc.expectedResults, deployments)
 	}
 }
 
-func TestFindStatefulSetByLabel(t *testing.T) {
+func TestFindStatefulSetsUnderTest(t *testing.T) {
 	generateStatefulSet := func(name, namespace, label string) *appsv1.StatefulSet {
 		return &appsv1.StatefulSet{
 			ObjectMeta: metav1.ObjectMeta{
@@ -174,7 +174,7 @@ func TestFindStatefulSetByLabel(t *testing.T) {
 		testRuntimeObjects = append(testRuntimeObjects, generateStatefulSet(tc.testStatefulSetName, tc.testStatefulSetNamespace, tc.queryLabel))
 		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
-		statefulSets := findStatefulSetByLabel(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
+		statefulSets := findStatefulSetsByLabels(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
 		assert.Equal(t, tc.expectedResults, statefulSets)
 	}
 }
@@ -215,5 +215,81 @@ func TestFindHpaControllers(t *testing.T) {
 
 		hpas := findHpaControllers(oc.K8sClient, []string{tc.testHpaNamespace})
 		assert.Equal(t, tc.expectedResults, hpas)
+	}
+}
+
+func TestFindDeploymentByNameByNamespace(t *testing.T) {
+	generateDeployment := func(name, namespace string) *appsv1.Deployment {
+		return &appsv1.Deployment{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      name,
+				Namespace: namespace,
+			},
+		}
+	}
+
+	testCases := []struct {
+		testDeploymentName      string
+		testDeploymentNamespace string
+		expectedResults         *appsv1.Deployment
+	}{
+		{
+			testDeploymentName:      "testName",
+			testDeploymentNamespace: "testNamespace",
+			expectedResults: &appsv1.Deployment{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "testName",
+					Namespace: "testNamespace",
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, generateDeployment(tc.testDeploymentName, tc.testDeploymentNamespace))
+		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
+
+		deployment, err := FindDeploymentByNameByNamespace(oc.K8sClient.AppsV1(), tc.testDeploymentNamespace, tc.testDeploymentName)
+		assert.Nil(t, err)
+		assert.Equal(t, tc.expectedResults, deployment)
+	}
+}
+
+func TestFindStatefulSetByNameByNamespace(t *testing.T) {
+	generateStatefulSet := func(name, namespace string) *appsv1.StatefulSet {
+		return &appsv1.StatefulSet{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      name,
+				Namespace: namespace,
+			},
+		}
+	}
+
+	testCases := []struct {
+		testStatefulSetName      string
+		testStatefulSetNamespace string
+		expectedResults          *appsv1.StatefulSet
+	}{
+		{
+			testStatefulSetName:      "testName",
+			testStatefulSetNamespace: "testNamespace",
+			expectedResults: &appsv1.StatefulSet{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "testName",
+					Namespace: "testNamespace",
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, generateStatefulSet(tc.testStatefulSetName, tc.testStatefulSetNamespace))
+		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
+
+		statefulSet, err := FindStatefulsetByNameByNamespace(oc.K8sClient.AppsV1(), tc.testStatefulSetNamespace, tc.testStatefulSetName)
+		assert.Nil(t, err)
+		assert.Equal(t, tc.expectedResults, statefulSet)
 	}
 }

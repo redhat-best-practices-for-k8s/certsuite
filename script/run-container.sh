@@ -31,6 +31,7 @@ TNF_OMIT_ARTIFACTS_ZIP_FILE_DEFAULT=false
 TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER_DEFAULT=false
 ON_DEMAND_DEBUG_PODS_DEFAULT=false
 TNF_ENABLE_DATA_COLLECTION_DEFAULT=false
+TNF_ENABLE_XML_CREATION_DEFAULT=false
 
 get_container_tnf_kubeconfig_path_from_index() {
 	local local_path_index="$1"
@@ -126,6 +127,7 @@ ON_DEMAND_DEBUG_PODS="${ON_DEMAND_DEBUG_PODS:-$ON_DEMAND_DEBUG_PODS_DEFAULT}"
 TNF_OMIT_ARTIFACTS_ZIP_FILE="${TNF_OMIT_ARTIFACTS_ZIP_FILE:-$TNF_OMIT_ARTIFACTS_ZIP_FILE_DEFAULT}"
 TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER="${TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER:-$TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER_DEFAULT}"
 TNF_ENABLE_DATA_COLLECTION="${TNF_ENABLE_DATA_COLLECTION:-$TNF_ENABLE_DATA_COLLECTION_DEFAULT}"
+TNF_ENABLE_XML_CREATION="${TNF_ENABLE_XML_CREATION:-$TNF_ENABLE_XML_CREATION_DEFAULT}"
 display_config_summary
 
 # Construct new $KUBECONFIG env variable containing all paths to kubeconfigs mounted to the container.
@@ -140,23 +142,14 @@ if [[ $LOCAL_DOCKERCFG != NA ]]; then
 	container_tnf_dockercfg_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_dockercfg_volume_bindings[@]}")
 fi
 
-# Safeguard against an empty variable
-if [ -z "$CONTAINER_TNF_DOCKERCFG" ]; then
-	CONTAINER_TNF_DOCKERCFG=NA
-fi
-
-if [ -n "${LOCAL_TNF_CONFIG}" ]; then
-	CONFIG_VOLUME_MOUNT_ARG="-v $LOCAL_TNF_CONFIG:$CONTAINER_TNF_DIR/config:Z"
-fi
-
-if [ -n "${LOCAL_TNF_OFFLINE_DB}" ]; then
-	CONTAINER_TNF_OFFLINE_DB_DIR=/usr/offline-db-ext
-	TNF_OFFLINE_DB_MOUNT_ARG="-v $LOCAL_TNF_OFFLINE_DB:$CONTAINER_TNF_OFFLINE_DB_DIR:Z"
-fi
-
-if [ -n "${DNS_ARG}" ]; then
-	DNS_ARG="--dns $DNS_ARG"
-fi
+# ${variable:-value} uses new value if undefined or null. ${variable:+value}
+# is opposite of the above. See:
+#  https://www.grymoire.com/Unix/Sh.html#uh-36
+ADD_HOST_ARG="${TNF_ENABLE_CRC_TESTING:+--add-host api.crc.testing:host-gateway}"
+CONFIG_VOLUME_MOUNT_ARG="${LOCAL_TNF_CONFIG:+-v $LOCAL_TNF_CONFIG:$CONTAINER_TNF_DIR/config:Z}"
+CONTAINER_TNF_DOCKERCFG="${CONTAINER_TNF_DOCKERCFG:-NA}"
+DNS_ARG="${DNS_ARG:+--dns $DNS_ARG}"
+TNF_OFFLINE_DB_MOUNT_ARG="${LOCAL_TNF_OFFLINE_DB:+-v $LOCAL_TNF_OFFLINE_DB:/usr/offline-db-ext:Z}"
 
 set -x
 # shellcheck disable=SC2068,SC2086 # Double quote array expansions.
@@ -166,6 +159,7 @@ ${TNF_CONTAINER_CLIENT} run --rm $DNS_ARG \
 	${container_tnf_dockercfg_volumes_cmd_args[@]} \
 	$CONFIG_VOLUME_MOUNT_ARG \
 	$TNF_OFFLINE_DB_MOUNT_ARG \
+	$ADD_HOST_ARG \
 	-v $OUTPUT_LOC:$CONTAINER_TNF_DIR/claim:Z \
 	-e KUBECONFIG=$CONTAINER_TNF_KUBECONFIG \
 	-e PFLT_DOCKERCONFIG=$CONTAINER_TNF_DOCKERCFG \
@@ -180,6 +174,7 @@ ${TNF_CONTAINER_CLIENT} run --rm $DNS_ARG \
 	-e TNF_OMIT_ARTIFACTS_ZIP_FILE=$TNF_OMIT_ARTIFACTS_ZIP_FILE \
 	-e TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER=$TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER \
 	-e TNF_ENABLE_DATA_COLLECTION=$TNF_ENABLE_DATA_COLLECTION \
+	-e TNF_ENABLE_XML_CREATION=$TNF_ENABLE_XML_CREATION \
 	-e PATH=/usr/bin:/usr/local/oc/bin \
 	$TNF_IMAGE \
 	$TNF_CMD $OUTPUT_ARG $CONTAINER_TNF_DIR/claim $LABEL_ARG $TNF_LABEL "$@"

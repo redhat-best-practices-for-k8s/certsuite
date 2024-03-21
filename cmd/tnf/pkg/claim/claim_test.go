@@ -3,7 +3,7 @@ package claim
 import (
 	"testing"
 
-	"gotest.tools/v3/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIsClaimFormatVersionSupported(t *testing.T) {
@@ -22,14 +22,14 @@ func TestIsClaimFormatVersionSupported(t *testing.T) {
 		},
 		{
 			claimFormatVersion: "v0.0.0",
-			expectedError:      "claim format version v0.0.0 is not supported. Supported version is v0.1.0",
+			expectedError:      "claim format version v0.0.0 is not supported. Supported version is v0.4.0",
 		},
 		{
 			claimFormatVersion: "v0.0.1",
-			expectedError:      "claim format version v0.0.1 is not supported. Supported version is v0.1.0",
+			expectedError:      "claim format version v0.0.1 is not supported. Supported version is v0.4.0",
 		},
 		{
-			claimFormatVersion: "v0.1.0",
+			claimFormatVersion: "v0.4.0",
 			expectedError:      "",
 		},
 	}

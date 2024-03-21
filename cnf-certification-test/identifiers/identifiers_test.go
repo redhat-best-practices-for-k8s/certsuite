@@ -1,5 +1,5 @@
-// Copyright (C) 2021-2023 Red Hat, Inc.
-// Copyright (C) 2021-2023 Red Hat, Inc.
+// Copyright (C) 2021-2024 Red Hat, Inc.
+// Copyright (C) 2021-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import (
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
-func TestGetGinkgoTestIDAndLabels(t *testing.T) {
+func TestGetTestIDAndLabels(t *testing.T) {
 	testCases := []struct {
 		testIdentifier     claim.Identifier
 		expectedIDOutput   string
@@ -52,7 +52,7 @@ func TestGetGinkgoTestIDAndLabels(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		resultID, resultTags := GetGinkgoTestIDAndLabels(tc.testIdentifier)
+		resultID, resultTags := GetTestIDAndLabels(tc.testIdentifier)
 		assert.Equal(t, tc.expectedIDOutput, resultID)
 		for _, e := range tc.expectedTagsOutput {
 			assert.True(t, stringhelper.StringInSlice(resultTags, e, false))

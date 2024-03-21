@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,10 +21,9 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
-	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
@@ -48,22 +47,23 @@ func (results PingResults) String() string {
 	return fmt.Sprintf("outcome: %s transmitted: %d received: %d errors: %d", testhelper.ResultToString(results.outcome), results.transmitted, results.received, results.errors)
 }
 
-func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, aType netcommons.IFType) (netsUnderTest map[string]netcommons.NetTestContext, claimsLog loghelper.CuratedLogLines) {
+func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, aType netcommons.IFType, logger *log.Logger) (netsUnderTest map[string]netcommons.NetTestContext) {
 	netsUnderTest = make(map[string]netcommons.NetTestContext)
 	for _, put := range pods {
+		logger.Info("Testing Pod %q", put)
 		if put.SkipNetTests {
-			claimsLog.AddLogLine("Skipping %s because it is excluded from all connectivity tests", put)
+			logger.Info("Skipping %q because it is excluded from all connectivity tests", put)
 			continue
 		}
 
 		if aType == netcommons.MULTUS {
 			if put.SkipMultusNetTests {
-				claimsLog.AddLogLine("Skipping pod %s because it is excluded from %s connectivity tests only", put.Name, aType)
+				logger.Info("Skipping pod %q because it is excluded from %q connectivity tests only", put.Name, aType)
 				continue
 			}
-			for netKey, multusIPAddress := range put.MultusIPs {
+			for netKey, multusNetworkInterface := range put.MultusNetworkInterfaces {
 				// The first container is used to get the network namespace
-				ProcessContainerIpsPerNet(put.Containers[0], netKey, multusIPAddress, netsUnderTest, aIPVersion)
+				processContainerIpsPerNet(put.Containers[0], netKey, multusNetworkInterface.IPs, multusNetworkInterface.Interface, netsUnderTest, aIPVersion, logger)
 			}
 			continue
 		}
@@ -71,22 +71,24 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 		const defaultNetKey = "default"
 		defaultIPAddress := put.Status.PodIPs
 		// The first container is used to get the network namespace
-		ProcessContainerIpsPerNet(put.Containers[0], defaultNetKey, netcommons.PodIPsToStringList(defaultIPAddress), netsUnderTest, aIPVersion)
+		processContainerIpsPerNet(put.Containers[0], defaultNetKey, netcommons.PodIPsToStringList(defaultIPAddress), "", netsUnderTest, aIPVersion, logger)
 	}
-	return netsUnderTest, claimsLog
+	return netsUnderTest
 }
 
 // processContainerIpsPerNet takes a container ip addresses for a given network attachment's and uses it as a test target.
 // The first container in the loop is selected as the test initiator. the Oc context of the container is used to initiate the pings
-func ProcessContainerIpsPerNet(containerID *provider.Container,
+func processContainerIpsPerNet(containerID *provider.Container,
 	netKey string,
 	ipAddresses []string,
+	ifName string,
 	netsUnderTest map[string]netcommons.NetTestContext,
-	aIPVersion netcommons.IPVersion) {
+	aIPVersion netcommons.IPVersion,
+	logger *log.Logger) {
 	ipAddressesFiltered := netcommons.FilterIPListByIPVersion(ipAddresses, aIPVersion)
 	if len(ipAddressesFiltered) == 0 {
 		// if no multus addresses found, skip this container
-		logrus.Debugf("Skipping %s, Network %s because no multus IPs are present", containerID, netKey)
+		logger.Debug("Skipping %q, Network %q because no multus IPs are present", containerID, netKey)
 		return
 	}
 	// Create an entry at "key" if it is not present
@@ -98,10 +100,13 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 	// Then modify the copy
 	firstIPIndex := 0
 	if entry.TesterSource.ContainerIdentifier == nil {
-		logrus.Debugf("%s selected to initiate ping tests", containerID)
+		logger.Debug("%q selected to initiate ping tests", containerID)
 		entry.TesterSource.ContainerIdentifier = containerID
 		// if multiple interfaces are present for this network on this container/pod, pick the first one as the tester source ip
 		entry.TesterSource.IP = ipAddressesFiltered[firstIPIndex]
+		if ifName != "" {
+			entry.TesterSource.InterfaceName = ifName
+		}
 		// do no include tester's IP in the list of destination IPs to ping
 		firstIPIndex++
 	}
@@ -110,6 +115,10 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 		ipDestEntry := netcommons.ContainerIP{}
 		ipDestEntry.ContainerIdentifier = containerID
 		ipDestEntry.IP = aIP
+		// if the interface name is not empty, then add it to the destination entry
+		if ifName != "" {
+			ipDestEntry.InterfaceName = ifName
+		}
 		entry.DestTargets = append(entry.DestTargets, ipDestEntry)
 	}
 
@@ -122,13 +131,14 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 func RunNetworkingTests( //nolint:funlen
 	netsUnderTest map[string]netcommons.NetTestContext,
 	count int,
-	aIPVersion netcommons.IPVersion) (report testhelper.FailureReasonOut, claimsLog loghelper.CuratedLogLines, skip bool) {
-	logrus.Debugf("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
+	aIPVersion netcommons.IPVersion,
+	logger *log.Logger) (report testhelper.FailureReasonOut, skip bool) {
+	logger.Debug("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
 	skip = false
 	if len(netsUnderTest) == 0 {
-		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
+		logger.Debug("There are no %q networks to test, skipping test", aIPVersion)
 		skip = true
-		return report, claimsLog, skip
+		return report, skip
 	}
 	// if no network can be tested, then we need to skip the test entirely.
 	// If at least one network can be tested (e.g. > 2 IPs/ interfaces present), then we do not skip the test
@@ -139,27 +149,32 @@ func RunNetworkingTests( //nolint:funlen
 		compliantNets[netName] = 0
 		nonCompliantNets[netName] = 0
 		if len(netUnderTest.DestTargets) == 0 {
-			logrus.Debugf("There are no containers to ping for %s network %s. A minimum of 2 containers is needed to run a ping test (a source and a destination) Skipping test", aIPVersion, netName)
+			logger.Debug("There are no containers to ping for %q network %q. A minimum of 2 containers is needed to run a ping test (a source and a destination) Skipping test", aIPVersion, netName)
 			continue
 		}
 		atLeastOneNetworkTested = true
-		logrus.Debugf("%s Ping tests on network %s. Number of target IPs: %d", aIPVersion, netName, len(netUnderTest.DestTargets))
+		logger.Debug("%q Ping tests on network %q. Number of target IPs: %d", aIPVersion, netName, len(netUnderTest.DestTargets))
 
 		for _, aDestIP := range netUnderTest.DestTargets {
-			logrus.Debugf("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s )",
+			logger.Debug("%q ping test on network %q from ( %q  srcip: %q ) to ( %q dstip: %q )",
 				aIPVersion, netName,
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
 				aDestIP.ContainerIdentifier, aDestIP.IP)
 			result, err := TestPing(netUnderTest.TesterSource.ContainerIdentifier, aDestIP, count)
-			logrus.Debugf("Ping results: %s", result.String())
-			claimsLog.AddLogLine("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s ) result: %s",
+			logger.Debug("Ping results: %q", result)
+			logger.Info("%q ping test on network %q from ( %q  srcip: %q ) to ( %q dstip: %q ) result: %q",
 				aIPVersion, netName,
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
-				aDestIP.ContainerIdentifier, aDestIP.IP, result.String())
+				aDestIP.ContainerIdentifier, aDestIP.IP, result)
 			if err != nil {
-				logrus.Debugf("Ping failed with err:%s", err)
+				logger.Debug("Ping failed, err=%v", err)
 			}
 			if result.outcome != testhelper.SUCCESS {
+				logger.Error("Ping from %q (srcip: %q) to %q (dstip: %q) failed",
+					netUnderTest.TesterSource.ContainerIdentifier,
+					netUnderTest.TesterSource.IP,
+					aDestIP.ContainerIdentifier,
+					aDestIP.IP)
 				nonCompliantNets[netName]++
 				nonCompliantObject := testhelper.NewContainerReportObject(netUnderTest.TesterSource.ContainerIdentifier.Namespace,
 					netUnderTest.TesterSource.ContainerIdentifier.Podname,
@@ -173,6 +188,11 @@ func RunNetworkingTests( //nolint:funlen
 					AddField(testhelper.DestinationIP, aDestIP.IP)
 				report.NonCompliantObjectsOut = append(report.NonCompliantObjectsOut, nonCompliantObject)
 			} else {
+				logger.Info("Ping from %q (srcip: %q) to %q (dstip: %q) succeeded",
+					netUnderTest.TesterSource.ContainerIdentifier,
+					netUnderTest.TesterSource.IP,
+					aDestIP.ContainerIdentifier,
+					aDestIP.IP)
 				compliantNets[netName]++
 				CompliantObject := testhelper.NewContainerReportObject(netUnderTest.TesterSource.ContainerIdentifier.Namespace,
 					netUnderTest.TesterSource.ContainerIdentifier.Podname,
@@ -188,25 +208,32 @@ func RunNetworkingTests( //nolint:funlen
 			}
 		}
 		if nonCompliantNets[netName] != 0 {
+			logger.Error("ICMP tests failed for %d IP source/destination in this network", nonCompliantNets[netName])
 			report.NonCompliantObjectsOut = append(report.NonCompliantObjectsOut, testhelper.NewReportObject(fmt.Sprintf("ICMP tests failed for %d IP source/destination in this network", nonCompliantNets[netName]), testhelper.NetworkType, false).
 				AddField(testhelper.NetworkName, netName))
 		}
 		if compliantNets[netName] != 0 {
-			report.CompliantObjectsOut = append(report.CompliantObjectsOut, testhelper.NewReportObject(fmt.Sprintf("ICMP tests were successful for  all %d IP source/destination in this network", compliantNets[netName]), testhelper.NetworkType, true).
+			logger.Info("ICMP tests were successful for all %d IP source/destination in this network", compliantNets[netName])
+			report.CompliantObjectsOut = append(report.CompliantObjectsOut, testhelper.NewReportObject(fmt.Sprintf("ICMP tests were successful for all %d IP source/destination in this network", compliantNets[netName]), testhelper.NetworkType, true).
 				AddField(testhelper.NetworkName, netName))
 		}
 	}
 	if !atLeastOneNetworkTested {
-		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
+		logger.Debug("There are no %q networks to test, skipping test", aIPVersion)
 		skip = true
 	}
 
-	return report, claimsLog, skip
+	return report, skip
 }
 
 // TestPing Initiates a ping test between a source container and network (1 ip) and a destination container and network (1 ip)
 var TestPing = func(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
-	command := fmt.Sprintf("ping -c %d %s", count, targetContainerIP.IP)
+	// Specify the interface to use for the ping test (if any)
+	interfaceFlag := fmt.Sprintf("-I %s", targetContainerIP.InterfaceName)
+	if targetContainerIP.InterfaceName == "" {
+		interfaceFlag = ""
+	}
+	command := fmt.Sprintf("ping %s -c %d %s", interfaceFlag, count, targetContainerIP.IP)
 	stdout, stderr, err := crclient.ExecCommandContainerNSEnter(command, sourceContainerID)
 	if err != nil || stderr != "" {
 		results.outcome = testhelper.ERROR

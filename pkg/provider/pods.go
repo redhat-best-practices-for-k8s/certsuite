@@ -1,4 +1,4 @@
-// Copyright (C) 2022-2023 Red Hat, Inc.
+// Copyright (C) 2022-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,12 +23,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/dynamic"
 )
 
 const (
@@ -41,25 +42,25 @@ const (
 
 type Pod struct {
 	*corev1.Pod
-	Containers         []*Container
-	MultusIPs          map[string][]string
-	MultusPCIs         []string
-	SkipNetTests       bool
-	SkipMultusNetTests bool
+	Containers              []*Container
+	MultusNetworkInterfaces map[string]CniNetworkInterface
+	MultusPCIs              []string
+	SkipNetTests            bool
+	SkipMultusNetTests      bool
 }
 
 func NewPod(aPod *corev1.Pod) (out Pod) {
 	var err error
 	out.Pod = aPod
-	out.MultusIPs = make(map[string][]string)
-	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
+	out.MultusNetworkInterfaces = make(map[string]CniNetworkInterface)
+	out.MultusNetworkInterfaces, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
-		logrus.Errorf("Could not decode networks-status annotation, error: %v", err)
+		log.Error("Could not get IPs for Pod %q (namespace %q), err: %v", aPod.Name, aPod.Namespace, err)
 	}
 
 	out.MultusPCIs, err = GetPciPerPod(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
-		logrus.Errorf("Could not decode networks-status annotation, error: %v", err)
+		log.Error("Could not get PCIs for Pod %q (namespace %q), err: %v", aPod.Name, aPod.Namespace, err)
 	}
 
 	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
@@ -92,12 +93,12 @@ func (p *Pod) IsCPUIsolationCompliant() bool {
 	isCPUIsolated := true
 
 	if !LoadBalancingDisabled(p) {
-		tnf.Logf(logrus.DebugLevel, "%s has been found to not have annotations set correctly for CPU isolation.", p)
+		log.Debug("Pod %q has been found to not have annotations set correctly for CPU isolation.", p)
 		isCPUIsolated = false
 	}
 
 	if !p.IsRuntimeClassNameSpecified() {
-		tnf.Logf(logrus.DebugLevel, "%s has been found to not have runtimeClassName specified.", p)
+		log.Debug("Pod %q has been found to not have runtimeClassName specified.", p)
 		isCPUIsolated = false
 	}
 
@@ -115,7 +116,7 @@ func (p *Pod) AffinityRequired() bool {
 	if val, ok := p.Labels[AffinityRequiredKey]; ok {
 		result, err := strconv.ParseBool(val)
 		if err != nil {
-			logrus.Warnf("failure to parse bool %v", val)
+			log.Warn("failure to parse bool %v", val)
 			return false
 		}
 		return result
@@ -141,7 +142,6 @@ func (p *Pod) HasHugepages() bool {
 }
 
 func (p *Pod) CheckResourceHugePagesSize(size string) bool {
-	// check if hugepages configuration other than 2Mi is present
 	for _, cut := range p.Containers {
 		// Resources must be specified
 		if len(cut.Resources.Requests) == 0 || len(cut.Resources.Limits) == 0 {
@@ -316,7 +316,7 @@ func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error
 
 	// If type is found, it's a single plugin CNI config.
 	if cniConfig.Type != nil {
-		logrus.Tracef("Single plugin config type found: %+v, type=%s", cniConfig, *cniConfig.Type)
+		log.Debug("Single plugin config type found: %+v, type=%s", cniConfig, *cniConfig.Type)
 		return *cniConfig.Type == typeSriov, nil
 	}
 
@@ -324,7 +324,7 @@ func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error
 		return false, fmt.Errorf("invalid multi-plugins cni config: %s", nadConfig)
 	}
 
-	logrus.Tracef("CNI plugins: %+v", *cniConfig.Plugins)
+	log.Debug("CNI plugins: %+v", *cniConfig.Plugins)
 	for i := range *cniConfig.Plugins {
 		plugin := (*cniConfig.Plugins)[i]
 		if plugin.Type == typeSriov {
@@ -357,7 +357,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 	oc := clientsholder.GetClientsHolder()
 
 	for _, networkName := range cncfNetworkNames {
-		logrus.Tracef("%s: Reviewing network-attachment definition %q", p, networkName)
+		log.Debug("%s: Reviewing network-attachment definition %q", p, networkName)
 		nad, err := oc.CNCFNetworkingClient.NetworkAttachmentDefinitions(p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
 		if err != nil {
 			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
@@ -368,7 +368,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 			return false, fmt.Errorf("failed to know if network-attachment %s is sriov: %v", networkName, err)
 		}
 
-		logrus.Tracef("%s: NAD config: %s", p, nad.Spec.Config)
+		log.Debug("%s: NAD config: %s", p, nad.Spec.Config)
 		if isSRIOV {
 			return true, nil
 		}
@@ -378,10 +378,10 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 }
 
 //nolint:gocritic
-func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding) (bool, string, error) {
+func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding, logger *log.Logger) (bool, string, error) {
 	// This function accepts a list of clusterRoleBindings and checks to see if the pod's service account is
 	// tied to any of them.  If it is, then it returns true, otherwise it returns false.
-	logrus.Infof("Pod: %s/%s is using service account: %s", p.Pod.Namespace, p.Pod.Name, p.Pod.Spec.ServiceAccountName)
+	logger.Info("Pod %q is using service account %q", p, p.Pod.Spec.ServiceAccountName)
 
 	// Loop through the service accounts in the namespace, looking for a match between the pod serviceAccountName and
 	// the service account name.  If there is a match, check to make sure that the SA is not a 'subject' of the cluster
@@ -389,7 +389,7 @@ func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRole
 	for crbIndex := range clusterRoleBindings {
 		for _, subject := range clusterRoleBindings[crbIndex].Subjects {
 			if subject.Kind == rbacv1.ServiceAccountKind && subject.Name == p.Pod.Spec.ServiceAccountName && subject.Namespace == p.Pod.Namespace {
-				tnf.ClaimFilePrintf("Pod %s has service account %s that is tied to cluster role binding %s", p.Pod.Name, p.Pod.Spec.ServiceAccountName, clusterRoleBindings[crbIndex].Name)
+				logger.Error("Pod %q has service account %q that is tied to cluster role binding %q", p.Pod.Name, p.Pod.Spec.ServiceAccountName, clusterRoleBindings[crbIndex].Name)
 				return true, clusterRoleBindings[crbIndex].RoleRef.Name, nil
 			}
 		}
@@ -403,4 +403,68 @@ func (p *Pod) IsRunAsUserID(uid int64) bool {
 		return false
 	}
 	return *p.Pod.Spec.SecurityContext.RunAsUser == uid
+}
+
+// Get the list of top owners of pods
+func (p *Pod) GetTopOwner() (topOwners map[string]TopOwner, err error) {
+	topOwners = make(map[string]TopOwner)
+	err = followOwnerReferences(clientsholder.GetClientsHolder().GroupResources, clientsholder.GetClientsHolder().DynamicClient, topOwners, p.Namespace, p.OwnerReferences)
+	if err != nil {
+		return topOwners, fmt.Errorf("could not get top owners, err=%s", err)
+	}
+	return topOwners, nil
+}
+
+// Structure to describe a top owner of a pod
+type TopOwner struct {
+	Kind      string
+	Name      string
+	Namespace string
+}
+
+// Recursively follow the ownership tree to find the top owners
+func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient dynamic.Interface, topOwners map[string]TopOwner, namespace string, ownerRefs []metav1.OwnerReference) (err error) {
+	for _, ownerRef := range ownerRefs {
+		// Get group resource version
+		gvr := getResourceSchema(resourceList, ownerRef.APIVersion, ownerRef.Kind)
+		// Get the owner resources
+		resource, err := dynamicClient.Resource(gvr).Namespace(namespace).Get(context.Background(), ownerRef.Name, metav1.GetOptions{})
+		if err != nil {
+			return fmt.Errorf("could not get object indicated by owner references")
+		}
+		// Get owner references of the unstructured object
+		ownerReferences := resource.GetOwnerReferences()
+		if err != nil {
+			return fmt.Errorf("error getting owner references. err= %s", err)
+		}
+		// if no owner references, we have reached the top record it
+		if len(ownerReferences) == 0 {
+			topOwners[ownerRef.Name] = TopOwner{Kind: ownerRef.Kind, Name: ownerRef.Name, Namespace: namespace}
+		}
+		// if not continue following other branches
+		err = followOwnerReferences(resourceList, dynamicClient, topOwners, namespace, ownerReferences)
+		if err != nil {
+			return fmt.Errorf("error following owners")
+		}
+	}
+	return nil
+}
+
+// Get the Group Version Resource based on APIVersion and kind
+func getResourceSchema(resourceList []*metav1.APIResourceList, apiVersion, kind string) (gvr schema.GroupVersionResource) {
+	const groupVersionComponentsNumber = 2
+	for _, gr := range resourceList {
+		for i := 0; i < len(gr.APIResources); i++ {
+			if gr.APIResources[i].Kind == kind && gr.GroupVersion == apiVersion {
+				groupSplit := strings.Split(gr.GroupVersion, "/")
+				if len(groupSplit) == groupVersionComponentsNumber {
+					gvr.Group = groupSplit[0]
+					gvr.Version = groupSplit[1]
+					gvr.Resource = gr.APIResources[i].Name
+				}
+				return gvr
+			}
+		}
+	}
+	return gvr
 }

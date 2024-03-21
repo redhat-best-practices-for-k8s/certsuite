@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,9 +23,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	scale "k8s.io/client-go/scale"
@@ -36,9 +36,9 @@ import (
 	retry "k8s.io/client-go/util/retry"
 )
 
-func TestScaleCrd(crScale *provider.CrScale, groupResourceSchema schema.GroupResource, timeout time.Duration) bool {
+func TestScaleCrd(crScale *provider.CrScale, groupResourceSchema schema.GroupResource, timeout time.Duration, logger *log.Logger) bool {
 	if crScale == nil {
-		logrus.Errorf("cc object is nill")
+		logger.Error("CR object is nill")
 		return false
 	}
 	clients := clientsholder.GetClientsHolder()
@@ -49,26 +49,26 @@ func TestScaleCrd(crScale *provider.CrScale, groupResourceSchema schema.GroupRes
 	if replicas <= 1 {
 		// scale up
 		replicas++
-		if !scaleCrHelper(clients.ScalingClient, groupResourceSchema, crScale, replicas, true, timeout) {
-			logrus.Errorf("Can not scale cr %s in namespace %s", name, namespace)
+		if !scaleCrHelper(clients.ScalingClient, groupResourceSchema, crScale, replicas, true, timeout, logger) {
+			logger.Error("Cannot scale CR %q in namespace %q", name, namespace)
 			return false
 		}
 		// scale down
 		replicas--
-		if !scaleCrHelper(clients.ScalingClient, groupResourceSchema, crScale, replicas, false, timeout) {
-			logrus.Errorf("Can not scale cr  %s in namespace %s", name, namespace)
+		if !scaleCrHelper(clients.ScalingClient, groupResourceSchema, crScale, replicas, false, timeout, logger) {
+			logger.Error("Cannot scale CR  %q in namespace %q", name, namespace)
 			return false
 		}
 	} else {
 		// scale down
 		replicas--
-		if !scaleCrHelper(clients.ScalingClient, groupResourceSchema, crScale, replicas, false, timeout) {
-			logrus.Errorf("Can not scale cr %s in namespace %s", name, namespace)
+		if !scaleCrHelper(clients.ScalingClient, groupResourceSchema, crScale, replicas, false, timeout, logger) {
+			logger.Error("Cannot scale CR %q in namespace %q", name, namespace)
 			return false
 		} // scale up
 		replicas++
-		if !scaleCrHelper(clients.ScalingClient, groupResourceSchema, crScale, replicas, true, timeout) {
-			logrus.Errorf("Can not scale cr %s in namespace %s", name, namespace)
+		if !scaleCrHelper(clients.ScalingClient, groupResourceSchema, crScale, replicas, true, timeout, logger) {
+			logger.Error("Cannot scale CR %q in namespace %q", name, namespace)
 			return false
 		}
 	}
@@ -76,11 +76,11 @@ func TestScaleCrd(crScale *provider.CrScale, groupResourceSchema schema.GroupRes
 	return true
 }
 
-func scaleCrHelper(scalesGetter scale.ScalesGetter, rc schema.GroupResource, autoscalerpram *provider.CrScale, replicas int32, up bool, timeout time.Duration) bool {
+func scaleCrHelper(scalesGetter scale.ScalesGetter, rc schema.GroupResource, autoscalerpram *provider.CrScale, replicas int32, up bool, timeout time.Duration, logger *log.Logger) bool {
 	if up {
-		logrus.Trace("scale UP CRS to ", replicas, " replicas ")
+		logger.Debug("Scale UP CRS to %d replicas", replicas)
 	} else {
-		logrus.Trace("scale DOWN CRS to ", replicas, " replicas ")
+		logger.Debug("Scale DOWN CRS to %d replicas", replicas)
 	}
 
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
@@ -94,25 +94,25 @@ func scaleCrHelper(scalesGetter scale.ScalesGetter, rc schema.GroupResource, aut
 		scalingObject.Spec.Replicas = replicas
 		_, err = scalesGetter.Scales(namespace).Update(context.TODO(), rc, scalingObject, metav1.UpdateOptions{})
 		if err != nil {
-			logrus.Error("Can not update DynamicClient ")
+			logger.Error("Cannot update DynamicClient, err=%v", err)
 			return err
 		}
-		if !podsets.WaitForScalingToComplete(namespace, name, timeout, rc) {
-			logrus.Error("can not update cr ", namespace, ":", name)
+		if !podsets.WaitForScalingToComplete(namespace, name, timeout, rc, logger) {
+			logger.Error("Cannot update CR %s:%s", namespace, name)
 			return errors.New("can not update cr")
 		}
 		return nil
 	})
 	if retryErr != nil {
-		logrus.Error("Can not scale DynamicClient ", " error=", retryErr)
+		logger.Error("Can notscale DynamicClient, err=%v", retryErr)
 		return false
 	}
 	return true
 }
 
-func TestScaleHPACrd(cr *provider.CrScale, hpa *scalingv1.HorizontalPodAutoscaler, groupResourceSchema schema.GroupResource, timeout time.Duration) bool {
+func TestScaleHPACrd(cr *provider.CrScale, hpa *scalingv1.HorizontalPodAutoscaler, groupResourceSchema schema.GroupResource, timeout time.Duration, logger *log.Logger) bool {
 	if cr == nil {
-		logrus.Errorf("cc object is nill")
+		logger.Error("CR object is nill")
 		return false
 	}
 	clients := clientsholder.GetClientsHolder()
@@ -131,61 +131,61 @@ func TestScaleHPACrd(cr *provider.CrScale, hpa *scalingv1.HorizontalPodAutoscale
 	if replicas <= 1 {
 		// scale up
 		replicas++
-		logrus.Trace("scale UP HPA ", namespace, ":", hpa.Name, "To min=", replicas, " max=", replicas)
-		pass := scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, replicas, replicas, timeout, groupResourceSchema)
+		logger.Debug("Scale UP HPA %s:%s to min=%d max=%d", namespace, hpa.Name, replicas, replicas)
+		pass := scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, replicas, replicas, timeout, groupResourceSchema, logger)
 		if !pass {
 			return false
 		}
 		// scale down
 		replicas--
-		logrus.Trace("scale DOWN HPA ", namespace, ":", hpa.Name, "To min=", replicas, " max=", replicas)
-		pass = scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, min, max, timeout, groupResourceSchema)
+		logger.Debug("Scale DOWN HPA %s:%s to min=%d max=%d", namespace, hpa.Name, replicas, replicas)
+		pass = scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, min, max, timeout, groupResourceSchema, logger)
 		if !pass {
 			return false
 		}
 	} else {
 		// scale down
 		replicas--
-		logrus.Trace("scale DOWN HPA ", namespace, ":", hpa.Name, "To min=", replicas, " max=", replicas)
-		pass := scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, replicas, replicas, timeout, groupResourceSchema)
+		logger.Debug("Scale DOWN HPA %s:%s to min=%d max=%d", namespace, hpa.Name, replicas, replicas)
+		pass := scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, replicas, replicas, timeout, groupResourceSchema, logger)
 		if !pass {
 			return false
 		}
 		// scale up
 		replicas++
-		logrus.Trace("scale UP HPA ", namespace, ":", hpa.Name, "To min=", replicas, " max=", replicas)
-		pass = scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, replicas, replicas, timeout, groupResourceSchema)
+		logger.Debug("Scale UP HPA %s:%s to min=%d max=%d", namespace, hpa.Name, replicas, replicas)
+		pass = scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, replicas, replicas, timeout, groupResourceSchema, logger)
 		if !pass {
 			return false
 		}
 	}
 	// back the min and the max value of the hpa
-	logrus.Trace("back HPA ", namespace, ":", hpa.Name, "To min=", min, " max=", max)
-	return scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, min, max, timeout, groupResourceSchema)
+	logger.Debug("Back HPA %s:%s to min=%d max=%d", namespace, hpa.Name, min, max)
+	return scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, min, max, timeout, groupResourceSchema, logger)
 }
 
-func scaleHpaCRDHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, crName, namespace string, min, max int32, timeout time.Duration, groupResourceSchema schema.GroupResource) bool {
+func scaleHpaCRDHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, crName, namespace string, min, max int32, timeout time.Duration, groupResourceSchema schema.GroupResource, logger *log.Logger) bool {
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		hpa, err := hpscaler.Get(context.TODO(), hpaName, metav1.GetOptions{})
 		if err != nil {
-			logrus.Error("Can not Update autoscaler to scale ", namespace, ":", crName, " error=", err)
+			logger.Error("Cannot update autoscaler to scale %s:%s, err=%v", namespace, crName, err)
 			return err
 		}
 		hpa.Spec.MinReplicas = &min
 		hpa.Spec.MaxReplicas = max
 		_, err = hpscaler.Update(context.TODO(), hpa, metav1.UpdateOptions{})
 		if err != nil {
-			logrus.Error("Can not Update autoscaler to scale ", namespace, ":", crName, " error=", err)
+			logger.Error("Cannot update autoscaler to scale %s:%s, err=%v", namespace, crName, err)
 			return err
 		}
-		if !podsets.WaitForScalingToComplete(namespace, crName, timeout, groupResourceSchema) {
-			logrus.Error("Can not update cr ", namespace, ":", crName)
+		if !podsets.WaitForScalingToComplete(namespace, crName, timeout, groupResourceSchema, logger) {
+			logger.Error("Cannot update CR %s:%s", namespace, crName)
 			return errors.New("can not update cr")
 		}
 		return nil
 	})
 	if retryErr != nil {
-		logrus.Error("Can not scale hpa ", namespace, ":", hpaName, " error=", retryErr)
+		logger.Error("Cannot scale hpa %s:%s, err=%v", namespace, hpaName, retryErr)
 		return false
 	}
 	return true

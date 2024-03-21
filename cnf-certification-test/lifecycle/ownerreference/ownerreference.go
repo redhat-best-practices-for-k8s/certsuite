@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 package ownerreference
 
 import (
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
 )
@@ -44,13 +44,13 @@ func NewOwnerReference(put *corev1.Pod) *OwnerReference {
 
 // func (o *OwnerReference)  run the tests and store results in
 // o.result
-func (o *OwnerReference) RunTest() {
+func (o *OwnerReference) RunTest(logger *log.Logger) {
 	for _, k := range o.put.OwnerReferences {
-		logrus.Traceln("kind is ", k.Kind)
 		if k.Kind == statefulSet || k.Kind == replicaSet {
+			logger.Info("Pod %q owner reference kind is %q", o.put, k.Kind)
 			o.result = testhelper.SUCCESS
 		} else {
-			logrus.Error("Pod ", o.put.Name, " has owner of type ", k.Kind)
+			logger.Error("Pod %q has owner of type %q (%q or %q expected)", o.put, k.Kind, replicaSet, statefulSet)
 			o.result = testhelper.FAILURE
 			return
 		}

@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,106 +23,111 @@ import (
 	helmclient "github.com/mittwald/go-helm-client"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
-	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
+	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
+	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
 )
 
 const (
-	istioNamespace = "istio-system"
-	istioCR        = "installed-state"
+	istioNamespace      = "istio-system"
+	istioDeploymentName = "istiod"
 )
 
-func isIstioServiceMeshInstalled(allNs []string) bool {
-	// the Istio namespace must be present
+func isIstioServiceMeshInstalled(appClient appv1client.AppsV1Interface, allNs []string) bool {
+	// The Istio namespace must be present
 	if !stringhelper.StringInSlice(allNs, istioNamespace, false) {
+		log.Info("Istio Service Mesh not present (the namespace %q does not exists)", istioNamespace)
 		return false
 	}
 
-	// the Istio CR used for installation must be present
-	oc := clientsholder.GetClientsHolder()
-	gvr := schema.GroupVersionResource{Group: "install.istio.io", Version: "v1alpha1", Resource: "istiooperators"}
-	cr, err := oc.DynamicClient.Resource(gvr).Namespace(istioNamespace).Get(context.TODO(), istioCR, metav1.GetOptions{})
-	if err != nil {
-		logrus.Errorf("failed when checking the Istio CR, err: %v", err)
+	// The Deployment "istiod" must be present in an active service mesh
+	_, err := appClient.Deployments(istioNamespace).Get(context.TODO(), istioDeploymentName, metav1.GetOptions{})
+	if errors.IsNotFound(err) {
+		log.Warn("The Istio Deployment %q is missing (but the Istio namespace exists)", istioDeploymentName)
 		return false
-	}
-	if cr == nil {
-		logrus.Warnf("The Istio installation CR is missing (but the Istio namespace exists)")
+	} else if err != nil {
+		log.Error("Failed getting Deployment %q", istioDeploymentName)
 		return false
 	}
 
-	logrus.Infof("Istio Service Mesh detected")
+	log.Info("Istio Service Mesh detected")
 
 	return true
 }
 
-func findOperatorsByLabel(olmClient clientOlm.Interface, labels []labelObject, namespaces []configuration.Namespace) []*olmv1Alpha.ClusterServiceVersion {
-	csvs := []*olmv1Alpha.ClusterServiceVersion{}
+func findOperatorsMatchingAtLeastOneLabel(olmClient clientOlm.Interface, labels []labelObject, namespace configuration.Namespace) *olmv1Alpha.ClusterServiceVersionList {
+	csvList := &olmv1Alpha.ClusterServiceVersionList{}
+	for _, l := range labels {
+		log.Debug("Searching CSVs in namespace %q with label %q", namespace, l)
+		csv, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(namespace.Name).List(context.TODO(), metav1.ListOptions{
+			LabelSelector: l.LabelKey + "=" + l.LabelValue,
+		})
+		if err != nil {
+			log.Error("Error when listing csvs in namespace %q with label %q, err: %v", namespace, l.LabelKey+"="+l.LabelValue, err)
+			continue
+		}
+		csvList.Items = append(csvList.Items, csv.Items...)
+	}
+	return csvList
+}
+
+func findOperatorsByLabels(olmClient clientOlm.Interface, labels []labelObject, namespaces []configuration.Namespace) (csvs []*olmv1Alpha.ClusterServiceVersion) {
+	csvs = []*olmv1Alpha.ClusterServiceVersion{}
+	var csvList *olmv1Alpha.ClusterServiceVersionList
 	for _, ns := range namespaces {
-		logrus.Debugf("Searching CSVs in namespace %s", ns)
-		for _, aLabelObject := range labels {
-			label := aLabelObject.LabelKey
-			// DEPRECATED special processing for deprecated operator label. Value not needed to match.
-			if aLabelObject.LabelKey != deprecatedHardcodedOperatorLabelName {
-				label += "=" + aLabelObject.LabelValue
-			}
-			logrus.Debugf("Searching CSVs with label %s", label)
-			csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{
-				LabelSelector: label,
-			})
+		if len(labels) > 0 {
+			csvList = findOperatorsMatchingAtLeastOneLabel(olmClient, labels, ns)
+		} else {
+			// If labels are not provided in the namespace under test, they are tested by the CNF suite
+			log.Debug("Searching CSVs in namespace %s without label", ns)
+			var err error
+			csvList, err = olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{})
 			if err != nil {
-				logrus.Errorln("error when listing csvs in ns=", ns, " label=", label)
+				log.Error("Error when listing csvs in namespace %q , err: %v", ns, err)
 				continue
 			}
-
-			for i := range csvList.Items {
-				csvs = append(csvs, &csvList.Items[i])
-			}
+		}
+		for i := range csvList.Items {
+			csvs = append(csvs, &csvList.Items[i])
 		}
 	}
-
-	logrus.Infof("Found %d CSVs:", len(csvs))
 	for i := range csvs {
-		logrus.Infof(" CSV name: %s (ns: %s)", csvs[i].Name, csvs[i].Namespace)
+		log.Info("Found CSV %q (namespace %q)", csvs[i].Name, csvs[i].Namespace)
 	}
-
 	return csvs
 }
+
 func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err error) {
 	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Errorln("Error when listing", "err: ", err)
-		return allNs, fmt.Errorf("error getting all namespaces, err: %s", err)
+		return allNs, fmt.Errorf("error getting all namespaces, err: %v", err)
 	}
 	for index := range nsList.Items {
 		allNs = append(allNs, nsList.Items[index].ObjectMeta.Name)
 	}
 	return allNs, nil
 }
-func getAllOperators(olmClient clientOlm.Interface) []*olmv1Alpha.ClusterServiceVersion {
+func getAllOperators(olmClient clientOlm.Interface) ([]*olmv1Alpha.ClusterServiceVersion, error) {
 	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 
-	logrus.Debugf("Searching CSVs in namespace All")
 	csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Errorln("error when listing csvs in all namespaces")
+		return nil, fmt.Errorf("error when listing CSVs in all namespaces, err: %v", err)
 	}
 	for i := range csvList.Items {
 		csvs = append(csvs, &csvList.Items[i])
 	}
 
-	logrus.Infof("Found %d CSVs:", len(csvs))
 	for i := range csvs {
-		logrus.Infof(" CSV name: %s (ns: %s)", csvs[i].Name, csvs[i].Namespace)
+		log.Info("Found CSV %q (ns %q)", csvs[i].Name, csvs[i].Namespace)
 	}
-	return csvs
+	return csvs, nil
 }
 
 func findSubscriptions(olmClient clientOlm.Interface, namespaces []string) []olmv1Alpha.Subscription {
@@ -132,18 +137,17 @@ func findSubscriptions(olmClient clientOlm.Interface, namespaces []string) []olm
 		if ns == "" {
 			displayNs = "All Namespaces"
 		}
-		logrus.Debugf("Searching subscriptions in namespace %s", displayNs)
+		log.Debug("Searching subscriptions in namespace %q", displayNs)
 		subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			logrus.Errorln("error when listing subscriptions in ns=", ns)
+			log.Error("Error when listing subscriptions in namespace %q", ns)
 			continue
 		}
 		subscriptions = append(subscriptions, subscription.Items...)
 	}
 
-	logrus.Infof("Found %d subscriptions in the target namespaces", len(subscriptions))
 	for i := range subscriptions {
-		logrus.Infof(" Subscriptions name: %s (ns: %s)", subscriptions[i].Name, subscriptions[i].Namespace)
+		log.Info("Found subscription %q (ns %q)", subscriptions[i].Name, subscriptions[i].Namespace)
 	}
 	return subscriptions
 }
@@ -158,7 +162,7 @@ func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*rel
 				RepositoryConfig: "/tmp/.helmrepo",
 				Debug:            true,
 				Linting:          true,
-				DebugLog:         logrus.Printf,
+				DebugLog:         log.Info,
 			},
 			RestConfig: restConfig,
 		}
@@ -177,7 +181,7 @@ func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*rel
 func getAllInstallPlans(olmClient clientOlm.Interface) (out []*olmv1Alpha.InstallPlan) {
 	installPlanList, err := olmClient.OperatorsV1alpha1().InstallPlans("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Errorf("unable get installplans in cluster, err: %s", err)
+		log.Error("Unable get installplans in cluster, err: %v", err)
 		return out
 	}
 	for index := range installPlanList.Items {
@@ -190,7 +194,7 @@ func getAllInstallPlans(olmClient clientOlm.Interface) (out []*olmv1Alpha.Instal
 func getAllCatalogSources(olmClient clientOlm.Interface) (out []*olmv1Alpha.CatalogSource) {
 	catalogSourcesList, err := olmClient.OperatorsV1alpha1().CatalogSources("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Errorf("unable get CatalogSources in cluster, err: %s", err)
+		log.Error("Unable get CatalogSources in cluster, err: %v", err)
 		return out
 	}
 	for index := range catalogSourcesList.Items {

@@ -31,7 +31,6 @@ RELEASE_VERSION?=4.12
 	coverage-html \
 	generate \
 	install-moq \
-	install-tools \
 	lint \
 	update-rhcos-versions \
 	vet
@@ -49,13 +48,13 @@ GIT_COMMIT=$(shell script/create-version-files.sh)
 GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
 CLAIM_FORMAT_VERSION=$(shell script/get-claim-version.sh)
-GOLANGCI_VERSION=v1.55.1
-LINKER_TNF_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitCommit=${GIT_COMMIT}
-LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitRelease=${GIT_RELEASE}
-LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
-LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
+GOLANGCI_VERSION=v1.56.2
+LINKER_TNF_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-test/pkg/versions.GitCommit=${GIT_COMMIT}
+LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitRelease=${GIT_RELEASE}
+LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
+LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
 PARSER_RELEASE=$(shell jq .parserTag version.json)
-BASH_SCRIPTS=$(shell find -name "*.sh" -not -path "./.git/*")
+BASH_SCRIPTS=$(shell find . -name "*.sh" -not -path "./.git/*")
 
 all: build
 
@@ -104,26 +103,17 @@ coverage-qe: build-tnf-tool
 build-catalog-md: build-tnf-tool
 	./tnf generate catalog markdown >CATALOG.md
 
-# build the policy file for the gradetool
-# requires a valid claim.json file
-build-gradetool-policy: 
-	./script/policy-builder-from-claim.sh
-
 # build the CNF test binary
 build-cnf-tests: results-html
-	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
+	PATH=${PATH}:${GOBIN} go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
 
 # build the CNF test binary for local development
 dev:
-	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
+	PATH=${PATH}:${GOBIN} go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
 
 # Builds the CNF test binary with debug flags
 build-cnf-tests-debug: results-html
-	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
-
-# Installs build tools and other required software.
-install-tools:
-	go install "$$(awk '/ginkgo/ {printf "%s/ginkgo@%s", $$1, $$2}' go.mod)"
+	PATH=${PATH}:${GOBIN} go build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 
 install-mac-brew-tools:
 	brew install \
@@ -177,3 +167,6 @@ build-image-tnf:
 
 results-html:
 	script/get-results-html.sh ${PARSER_RELEASE}
+
+check-results:
+	./tnf check results

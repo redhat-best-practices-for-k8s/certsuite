@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
@@ -38,6 +38,10 @@ const (
 	DevNull          = " 2>/dev/null"
 	DockerInspectPID = "chroot /host docker inspect -f '{{.State.Pid}}' "
 )
+
+func (p *Process) String() string {
+	return fmt.Sprintf("cmd: %s, pid: %d, ppid: %d, pidNs: %d", p.Args, p.Pid, p.PPid, p.PidNs)
+}
 
 // Helper function to create the clientsholder.Context of the first container of the debug pod
 // that runs in the give node. This context is usually needed to run shell commands that get
@@ -62,7 +66,7 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 	case "cri-o", "containerd":
 		pidCmd = "chroot /host crictl inspect --output go-template --template '{{.info.pid}}' " + cut.UID + DevNull
 	default:
-		logrus.Debugf("Container runtime %s not supported yet for this test, skipping", cut.Runtime)
+		log.Debug("Container runtime %s not supported yet for this test, skipping", cut.Runtime)
 		return 0, fmt.Errorf("container runtime %s not supported", cut.Runtime)
 	}
 
@@ -90,7 +94,7 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	if err != nil {
 		return "", fmt.Errorf("unable to get container process id due to: %v", err)
 	}
-	logrus.Debugf("Obtained process id for %s is %d", testContainer, pid)
+	log.Debug("Obtained process id for %s is %d", testContainer, pid)
 
 	command := fmt.Sprintf("lsns -p %d -t pid -n", pid)
 	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ocpContext, command)
@@ -162,17 +166,17 @@ func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container)
 		}
 		aPidNs, err := strconv.Atoi(v[1])
 		if err != nil {
-			logrus.Errorf("could not convert string %s to integer, err=%s", v[1], err)
+			log.Error("could not convert string %s to integer, err=%s", v[1], err)
 			continue
 		}
 		aPid, err := strconv.Atoi(v[2])
 		if err != nil {
-			logrus.Errorf("could not convert string %s to integer, err=%s", v[2], err)
+			log.Error("could not convert string %s to integer, err=%s", v[2], err)
 			continue
 		}
 		aPPid, err := strconv.Atoi(v[3])
 		if err != nil {
-			logrus.Errorf("could not convert string %s to integer, err=%s", v[3], err)
+			log.Error("could not convert string %s to integer, err=%s", v[3], err)
 			continue
 		}
 		p = append(p, &Process{PidNs: aPidNs, Pid: aPid, Args: v[4], PPid: aPPid})

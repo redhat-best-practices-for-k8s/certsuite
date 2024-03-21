@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,17 +18,21 @@ package claimhelper
 
 import (
 	j "encoding/json"
+	"encoding/xml"
 	"fmt"
-	"path/filepath"
+	"sort"
+	"strconv"
+	"strings"
 
 	"os"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
-	"github.com/test-network-function/cnf-certification-test/pkg/junit"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
@@ -37,8 +41,239 @@ const (
 	CNFFeatureValidationJunitXMLFileName = "validation_junit.xml"
 	CNFFeatureValidationReportKey        = "cnf-feature-validation"
 	// dateTimeFormatDirective is the directive used to format date/time according to ISO 8601.
-	DateTimeFormatDirective = "2006-01-02T15:04:05+00:00"
+	DateTimeFormatDirective = "2006-01-02 15:04:05 -0700 MST"
+
+	// States for test cases
+	TestStateFailed  = "failed"
+	TestStateSkipped = "skipped"
 )
+
+type SkippedMessage struct {
+	Text     string `xml:",chardata"`
+	Messages string `xml:"message,attr,omitempty"`
+}
+
+type FailureMessage struct {
+	Text    string `xml:",chardata"`
+	Message string `xml:"message,attr,omitempty"`
+	Type    string `xml:"type,attr,omitempty"`
+}
+
+type TestCase struct {
+	Text      string          `xml:",chardata"`
+	Name      string          `xml:"name,attr,omitempty"`
+	Classname string          `xml:"classname,attr,omitempty"`
+	Status    string          `xml:"status,attr,omitempty"`
+	Time      string          `xml:"time,attr,omitempty"`
+	SystemErr string          `xml:"system-err,omitempty"`
+	Skipped   *SkippedMessage `xml:"skipped"`
+	Failure   *FailureMessage `xml:"failure"`
+}
+
+type Testsuite struct {
+	Text       string `xml:",chardata"`
+	Name       string `xml:"name,attr,omitempty"`
+	Package    string `xml:"package,attr,omitempty"`
+	Tests      string `xml:"tests,attr,omitempty"`
+	Disabled   string `xml:"disabled,attr,omitempty"`
+	Skipped    string `xml:"skipped,attr,omitempty"`
+	Errors     string `xml:"errors,attr,omitempty"`
+	Failures   string `xml:"failures,attr,omitempty"`
+	Time       string `xml:"time,attr,omitempty"`
+	Timestamp  string `xml:"timestamp,attr,omitempty"`
+	Properties struct {
+		Text     string `xml:",chardata"`
+		Property []struct {
+			Text  string `xml:",chardata"`
+			Name  string `xml:"name,attr,omitempty"`
+			Value string `xml:"value,attr,omitempty"`
+		} `xml:"property"`
+	} `xml:"properties"`
+	Testcase []TestCase `xml:"testcase"`
+}
+
+type TestSuitesXML struct {
+	XMLName   xml.Name  `xml:"testsuites"`
+	Text      string    `xml:",chardata"`
+	Tests     string    `xml:"tests,attr,omitempty"`
+	Disabled  string    `xml:"disabled,attr,omitempty"`
+	Errors    string    `xml:"errors,attr,omitempty"`
+	Failures  string    `xml:"failures,attr,omitempty"`
+	Time      string    `xml:"time,attr,omitempty"`
+	Testsuite Testsuite `xml:"testsuite"`
+}
+
+type ClaimBuilder struct {
+	claimRoot *claim.Root
+}
+
+func NewClaimBuilder() (*ClaimBuilder, error) {
+	log.Debug("Creating claim file builder.")
+	configurations, err := MarshalConfigurations()
+	if err != nil {
+		return nil, fmt.Errorf("configuration node missing because of: %v", err)
+	}
+
+	claimConfigurations := map[string]interface{}{}
+	UnmarshalConfigurations(configurations, claimConfigurations)
+
+	root := CreateClaimRoot()
+
+	root.Claim.Configurations = claimConfigurations
+	root.Claim.Nodes = GenerateNodes()
+	root.Claim.Versions = &claim.Versions{
+		Tnf:          versions.GitDisplayRelease,
+		TnfGitCommit: versions.GitCommit,
+		OcClient:     diagnostics.GetVersionOcClient(),
+		Ocp:          diagnostics.GetVersionOcp(),
+		K8s:          diagnostics.GetVersionK8s(),
+		ClaimFormat:  versions.ClaimFormatVersion,
+	}
+
+	return &ClaimBuilder{
+		claimRoot: root,
+	}, nil
+}
+
+func (c *ClaimBuilder) Build(outputFile string) {
+	endTime := time.Now()
+
+	c.claimRoot.Claim.Metadata.EndTime = endTime.UTC().Format(DateTimeFormatDirective)
+	c.claimRoot.Claim.Results = checksdb.GetReconciledResults()
+
+	// Marshal the claim and output to file
+	payload := MarshalClaimOutput(c.claimRoot)
+	WriteClaimOutput(outputFile, payload)
+
+	log.Info("Claim file created at %s", outputFile)
+}
+
+//nolint:funlen
+func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuitesXML {
+	const (
+		TestSuiteName = "CNF Certification Test Suite"
+	)
+
+	// Collector all of the Test IDs
+	allTestIDs := []string{}
+	for _, result := range c.Results {
+		typedResult := result.(claim.Result)
+		allTestIDs = append(allTestIDs, typedResult.TestID.Id)
+	}
+
+	// Sort the test IDs
+	sort.Strings(allTestIDs)
+
+	xmlOutput := TestSuitesXML{}
+	// <testsuites>
+	xmlOutput.Tests = strconv.Itoa(len(c.Results))
+
+	// Count all of the failed tests in the suite
+	failedTests := 0
+	for _, result := range c.Results {
+		typedResult := result.(claim.Result)
+		if typedResult.State == TestStateFailed {
+			failedTests++
+		}
+	}
+
+	// Count all of the skipped tests in the suite
+	skippedTests := 0
+	for _, result := range c.Results {
+		typedResult := result.(claim.Result)
+		if typedResult.State == TestStateSkipped {
+			skippedTests++
+		}
+	}
+
+	xmlOutput.Failures = strconv.Itoa(failedTests)
+	xmlOutput.Disabled = strconv.Itoa(skippedTests)
+	xmlOutput.Errors = strconv.Itoa(0)
+	xmlOutput.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 5, 64)
+
+	// <testsuite>
+	xmlOutput.Testsuite.Name = TestSuiteName
+	xmlOutput.Testsuite.Tests = strconv.Itoa(len(c.Results))
+	// Counters for failed and skipped tests
+	xmlOutput.Testsuite.Failures = strconv.Itoa(failedTests)
+	xmlOutput.Testsuite.Skipped = strconv.Itoa(skippedTests)
+	xmlOutput.Testsuite.Errors = strconv.Itoa(0)
+
+	xmlOutput.Testsuite.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 5, 64)
+	xmlOutput.Testsuite.Timestamp = time.Now().UTC().Format(DateTimeFormatDirective)
+
+	// <properties>
+
+	// <testcase>
+	// Loop through all of the sorted test IDs
+	for _, testID := range allTestIDs {
+		// Type the result
+		typedResult := c.Results[testID].(claim.Result)
+
+		testCase := TestCase{}
+		testCase.Name = testID
+		testCase.Classname = TestSuiteName
+		testCase.Status = typedResult.State
+
+		// Clean the time strings to remove the " m=" suffix
+		start, err := time.Parse(DateTimeFormatDirective, strings.Split(typedResult.StartTime, " m=")[0])
+		if err != nil {
+			log.Error("Failed to parse start time: %v", err)
+		}
+		end, err := time.Parse(DateTimeFormatDirective, strings.Split(typedResult.EndTime, " m=")[0])
+		if err != nil {
+			log.Error("Failed to parse end time: %v", err)
+		}
+
+		// Calculate the duration of the test case
+		difference := end.Sub(start)
+		testCase.Time = strconv.FormatFloat(difference.Seconds(), 'f', 10, 64)
+
+		// Populate the skipped message if the test case was skipped
+		if testCase.Status == TestStateSkipped {
+			testCase.Skipped = &SkippedMessage{}
+			testCase.Skipped.Text = typedResult.SkipReason
+		} else {
+			testCase.Skipped = nil
+		}
+
+		// Populate the failure message if the test case failed
+		if testCase.Status == TestStateFailed {
+			testCase.Failure = &FailureMessage{}
+			testCase.Failure.Text = typedResult.CheckDetails
+		} else {
+			testCase.Failure = nil
+		}
+
+		// Append the test case to the test suite
+		xmlOutput.Testsuite.Testcase = append(xmlOutput.Testsuite.Testcase, testCase)
+	}
+
+	return xmlOutput
+}
+
+func (c *ClaimBuilder) ToJUnitXML(outputFile string, startTime, endTime time.Time) {
+	// Create the JUnit XML file from the claim output.
+	xmlOutput := populateXMLFromClaim(*c.claimRoot.Claim, startTime, endTime)
+
+	// Write the JUnit XML file.
+	payload, err := xml.MarshalIndent(xmlOutput, "", "  ")
+	if err != nil {
+		log.Error("Failed to generate the xml: %v", err)
+		os.Exit(1)
+	}
+
+	log.Info("Writing JUnit XML file: %s", outputFile)
+	err = os.WriteFile(outputFile, payload, claimFilePermissions)
+	if err != nil {
+		log.Error("Failed to write the xml file")
+		os.Exit(1)
+	}
+}
+
+func (c *ClaimBuilder) Reset() {
+	c.claimRoot.Claim.Metadata.StartTime = time.Now().UTC().Format(DateTimeFormatDirective)
+}
 
 // MarshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
 // this method fatally fails.
@@ -46,7 +281,7 @@ func MarshalConfigurations() (configurations []byte, err error) {
 	config := provider.GetTestEnvironment()
 	configurations, err = j.Marshal(config)
 	if err != nil {
-		log.Errorf("error converting configurations to JSON: %v", err)
+		log.Error("error converting configurations to JSON: %v", err)
 		return configurations, err
 	}
 	return configurations, nil
@@ -57,7 +292,8 @@ func MarshalConfigurations() (configurations []byte, err error) {
 func UnmarshalConfigurations(configurations []byte, claimConfigurations map[string]interface{}) {
 	err := j.Unmarshal(configurations, &claimConfigurations)
 	if err != nil {
-		log.Fatalf("error unmarshalling configurations: %v", err)
+		log.Error("error unmarshalling configurations: %v", err)
+		os.Exit(1)
 	}
 }
 
@@ -65,7 +301,8 @@ func UnmarshalConfigurations(configurations []byte, claimConfigurations map[stri
 func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 	err := j.Unmarshal(claimFile, &claimRoot)
 	if err != nil {
-		log.Fatalf("error unmarshalling claim file: %v", err)
+		log.Error("error unmarshalling claim file: %v", err)
+		os.Exit(1)
 	}
 }
 
@@ -73,13 +310,13 @@ func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	data, err = os.ReadFile(claimFileName)
 	if err != nil {
-		log.Errorf("ReadFile failed with err: %v", err)
+		log.Error("ReadFile failed with err: %v", err)
 	}
 	path, err := os.Getwd()
 	if err != nil {
-		log.Errorf("Getwd failed with err: %v", err)
+		log.Error("Getwd failed with err: %v", err)
 	}
-	log.Infof("Reading claim file at path: %s", path)
+	log.Info("Reading claim file at path: %s", path)
 	return data, nil
 }
 
@@ -87,7 +324,7 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvironment, err error) {
 	data, err := ReadClaimFile(claimFileName)
 	if err != nil {
-		log.Errorf("ReadClaimFile failed with err: %v", err)
+		log.Error("ReadClaimFile failed with err: %v", err)
 		return env, err
 	}
 	var aRoot claim.Root
@@ -106,7 +343,8 @@ func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvi
 func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 	payload, err := j.MarshalIndent(claimRoot, "", "  ")
 	if err != nil {
-		log.Fatalf("Failed to generate the claim: %v", err)
+		log.Error("Failed to generate the claim: %v", err)
+		os.Exit(1)
 	}
 	return payload
 }
@@ -115,7 +353,8 @@ func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 func WriteClaimOutput(claimOutputFile string, payload []byte) {
 	err := os.WriteFile(claimOutputFile, payload, claimFilePermissions)
 	if err != nil {
-		log.Fatalf("Error writing claim data:\n%s", string(payload))
+		log.Error("Error writing claim data:\n%s", string(payload))
+		os.Exit(1)
 	}
 }
 
@@ -145,28 +384,5 @@ func CreateClaimRoot() *claim.Root {
 				StartTime: startTime.UTC().Format(DateTimeFormatDirective),
 			},
 		},
-	}
-}
-
-// LoadJUnitXMLIntoMap converts junitFilename's XML-formatted JUnit test results into a Go map, and adds the result to
-// the result Map.
-func LoadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key string) {
-	var err error
-	if key == "" {
-		var extension = filepath.Ext(junitFilename)
-		key = junitFilename[0 : len(junitFilename)-len(extension)]
-	}
-	result[key], err = junit.ExportJUnitAsMap(junitFilename)
-	if err != nil {
-		log.Fatalf("error reading JUnit XML file into JSON: %v", err)
-	}
-}
-
-// AppendCNFFeatureValidationReportResults is a helper method to add the results of running the cnf-features-deploy
-// test suite to the claim file.
-func AppendCNFFeatureValidationReportResults(junitPath *string, junitMap map[string]interface{}) {
-	cnfFeaturesDeployJUnitFile := filepath.Join(*junitPath, CNFFeatureValidationJunitXMLFileName)
-	if _, err := os.Stat(cnfFeaturesDeployJUnitFile); err == nil {
-		LoadJUnitXMLIntoMap(junitMap, cnfFeaturesDeployJUnitFile, CNFFeatureValidationReportKey)
 	}
 }

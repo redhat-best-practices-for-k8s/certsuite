@@ -1,4 +1,4 @@
-// Copyright (C) 2021-2023 Red Hat, Inc.
+// Copyright (C) 2021-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -86,8 +86,8 @@ var (
 	TestHyperThreadEnable                             claim.Identifier
 	TestReservedExtendedPartnerPorts                  claim.Identifier
 	TestAffinityRequiredPods                          claim.Identifier
-	TestStartupIdentifier                             claim.Identifier
-	TestShutdownIdentifier                            claim.Identifier
+	TestContainerPostStartIdentifier                  claim.Identifier
+	TestContainerPrestopIdentifier                    claim.Identifier
 	TestDpdkCPUPinningExecProbe                       claim.Identifier
 	TestSysAdminIdentifier                            claim.Identifier
 	TestNetAdminIdentifier                            claim.Identifier
@@ -346,13 +346,13 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagCommon)
 
-	TestStartupIdentifier = AddCatalogEntry(
-		"container-startup",
+	TestContainerPostStartIdentifier = AddCatalogEntry(
+		"container-poststart",
 		common.LifecycleTestKey,
 		`Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.`,                                                                                                                                                                                                                           //nolint:lll
 		`PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.`, //nolint:lll
-		StartupIdentifierRemediation,
-		TestStartupIdentifierDocLink,
+		ContainerPostStartIdentifierRemediation,
+		TestContainerPostStartIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -362,13 +362,13 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagTelco)
 
-	TestShutdownIdentifier = AddCatalogEntry(
-		"container-shutdown",
+	TestContainerPrestopIdentifier = AddCatalogEntry(
+		"container-prestop",
 		common.LifecycleTestKey,
 		`Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.`, //nolint:lll
 		`The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.`, //nolint:lll
-		ShutdownIdentifierRemediation,
-		TestShutdownIdentifierDocLink,
+		ContainerPrestopIdentifierRemediation,
+		TestContainerPrestopIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1606,9 +1606,9 @@ var (
 	TestIDToClaimID = map[string]claim.Identifier{}
 )
 
-// GetGinkgoTestIDAndLabels transform the claim.Identifier into a test Id that can be used to skip
+// GetTestIDAndLabels transform the claim.Identifier into a test Id that can be used to skip
 // specific tests
-func GetGinkgoTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
+func GetTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
 	tags = strings.Split(identifier.Tags, ",")
 	tags = append(tags, identifier.Id, identifier.Suite)
 	TestIDToClaimID[identifier.Id] = identifier

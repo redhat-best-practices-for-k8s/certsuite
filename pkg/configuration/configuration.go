@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -86,10 +86,10 @@ type TestConfiguration struct {
 	ServicesIgnoreList          []string                          `yaml:"servicesignorelist,omitempty" json:"servicesignorelist,omitempty"`
 	DebugDaemonSetNamespace     string                            `yaml:"debugDaemonSetNamespace,omitempty" json:"debugDaemonSetNamespace,omitempty"`
 	// Collector's parameters
-	CollectorAppEndPoint string `yaml:"collectorAppEndPoint,omitempty" json:"collectorAppEndPoint,omitempty"`
 	ExecutedBy           string `yaml:"executedBy,omitempty" json:"executedBy,omitempty"`
 	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`
 	CollectorAppPassword string `yaml:"collectorAppPassword,omitempty" json:"collectorAppPassword,omitempty"`
+	CollectorAppEndpoint string `yaml:"collectorAppEndpoint,omitempty" json:"collectorAppEndpoint,omitempty"`
 }
 
 type TestParameters struct {
@@ -104,4 +104,9 @@ type TestParameters struct {
 	IncludeWebFilesInOutputFolder bool   `split_words:"true" default:"false"`
 	OmitArtifactsZipFile          bool   `split_words:"true" default:"false"`
 	EnableDataCollection          bool   `split_words:"true" envconfig:"ENABLE_DATA_COLLECTION" default:"false"`
+	EnableXMLCreation             bool   `split_words:"true" envconfig:"TNF_ENABLE_XML_CREATION" default:"false"`
+	DaemonsetCPUReq               string `default:"100m" split_words:"true"`
+	DaemonsetCPULim               string `default:"100m" split_words:"true"`
+	DaemonsetMemReq               string `default:"100M" split_words:"true"`
+	DaemonsetMemLim               string `default:"100M" split_words:"true"`
 }

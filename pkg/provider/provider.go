@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@ import (
 	"regexp"
 	"time"
 
-	"errors"
 	"fmt"
 	"strings"
 
@@ -30,8 +29,9 @@ import (
 
 	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
-	"github.com/sirupsen/logrus"
+	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	k8sPrivilegedDs "github.com/test-network-function/privileged-daemonset"
@@ -60,7 +60,7 @@ const (
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
 	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
-	supportImageDef                  = "debug-partner:4.5.6"
+	supportImageDef                  = "debug-partner:5.0.5"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
@@ -117,10 +117,11 @@ type TestEnvironment struct { // rename this with testTarget
 	DaemonsetFailedToSpawn bool
 	ScaleCrUnderTest       []ScaleObject
 	StorageClassList       []storagev1.StorageClass
-	CollectorAppEndPoint   string
 	ExecutedBy             string
 	PartnerName            string
 	CollectorAppPassword   string
+	CollectorAppEndpoint   string
+	SkipPreflight          bool
 }
 
 type MachineConfig struct {
@@ -135,7 +136,7 @@ type MachineConfig struct {
 	} `json:"config"`
 }
 
-type cniNetworkInterface struct {
+type CniNetworkInterface struct {
 	Name       string                 `json:"name"`
 	Interface  string                 `json:"interface"`
 	IPs        []string               `json:"ips"`
@@ -157,6 +158,18 @@ type deviceInfo struct {
 
 type pci struct {
 	PciAddress string `json:"pci-address"`
+}
+type PreflightTest struct {
+	Name        string
+	Description string
+	Remediation string
+	Error       error
+}
+
+type PreflightResultsDB struct {
+	Passed []PreflightTest
+	Failed []PreflightTest
+	Errors []PreflightTest
 }
 
 var (
@@ -189,7 +202,12 @@ func deployDaemonSet(namespace string) error {
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = DaemonSetName
 	matchLabels["test-network-function.com/app"] = DaemonSetName
-	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout)
+	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout,
+		configuration.GetTestParameters().DaemonsetCPUReq,
+		configuration.GetTestParameters().DaemonsetCPULim,
+		configuration.GetTestParameters().DaemonsetMemReq,
+		configuration.GetTestParameters().DaemonsetMemLim,
+	)
 	if err != nil {
 		return fmt.Errorf("could not deploy tnf daemonset, err=%v", err)
 	}
@@ -208,12 +226,14 @@ func buildTestEnvironment() { //nolint:funlen
 	env.variables = *configuration.GetTestParameters()
 	config, err := configuration.LoadConfiguration(env.variables.ConfigurationPath)
 	if err != nil {
-		logrus.Fatalf("Cannot load configuration file: %v", err)
+		log.Error("Cannot load configuration file: %v", err)
+		os.Exit(1)
 	}
+	log.Debug("CNFCERT configuration: %+v", config)
 
 	// Wait for the debug pods to be ready before the autodiscovery starts.
 	if err := deployDaemonSet(config.DebugDaemonSetNamespace); err != nil {
-		logrus.Errorf("The TNF daemonset could not be deployed, err=%v", err)
+		log.Error("The TNF daemonset could not be deployed, err: %v", err)
 		// Because of this failure, we are only able to run a certain amount of tests that do not rely
 		// on the existence of the daemonset debug pods.
 		env.DaemonsetFailedToSpawn = true
@@ -289,26 +309,26 @@ func buildTestEnvironment() { //nolint:funlen
 	env.HorizontalScaler = data.Hpas
 	env.StorageClassList = data.StorageClasses
 
-	env.CollectorAppEndPoint = data.CollectorAppEndPoint
 	env.ExecutedBy = data.ExecutedBy
 	env.PartnerName = data.PartnerName
 	env.CollectorAppPassword = data.CollectorAppPassword
+	env.CollectorAppEndpoint = data.CollectorAppEndpoint
 
 	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators
-	logrus.Infof("Operators found: %d", len(env.Operators))
+	log.Info("Operators found: %d", len(env.Operators))
 	for _, pod := range env.Pods {
 		isCreatedByDeploymentConfig, err := pod.CreatedByDeploymentConfig()
 		if err != nil {
-			logrus.Warnf("Pod %s: failed to get parent resource: %v", pod.String(), err)
+			log.Warn("Pod %q failed to get parent resource: %v", pod, err)
 			continue
 		}
 
 		if isCreatedByDeploymentConfig {
-			logrus.Warnf("Pod %s has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
+			log.Warn("Pod %q has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
 		}
 	}
-	logrus.Infof("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
+	log.Info("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
 }
 
 func updateCrUnderTest(scaleCrUnderTest []autodiscover.ScaleObject) []ScaleObject {
@@ -340,7 +360,7 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 
 		// Warn if readiness probe did not succeeded yet.
 		if !cutStatus.Ready {
-			logrus.Warnf("%s is not ready yet.", &container)
+			log.Warn("Container %q is not ready yet.", &container)
 		}
 
 		// Warn if container state is not running.
@@ -356,7 +376,7 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 				reason = "waiting state reason unknown"
 			}
 
-			logrus.Warnf("%s is not running (reason: %s, restarts %d): some test cases might fail.",
+			log.Warn("Container %q is not running (reason: %s, restarts %d): some test cases might fail.",
 				&container, reason, cutStatus.RestartCount)
 		}
 
@@ -375,7 +395,7 @@ func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelm
 	}
 	for _, helm := range skipHelmChartList {
 		if helmName == helm.Name {
-			logrus.Infof("Helm chart with name %s was skipped", helmName)
+			log.Info("Helm chart with name %s was skipped", helmName)
 			return true
 		}
 	}
@@ -421,7 +441,7 @@ func buildContainerImageSource(urlImage, urlImageID string) (source ContainerIma
 		source.Digest = match[3]
 	}
 
-	logrus.Debugf("parsed image, repo: %s, name:%s, tag: %s, digest: %s",
+	log.Debug("Parsed image, repo: %s, name:%s, tag: %s, digest: %s",
 		source.Registry,
 		source.Repository,
 		source.Tag,
@@ -442,32 +462,32 @@ func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 // GetPodIPsPerNet gets the IPs of a pod.
 // CNI annotation "k8s.v1.cni.cncf.io/networks-status".
 // Returns (ips, error).
-func GetPodIPsPerNet(annotation string) (ips map[string][]string, err error) {
+func GetPodIPsPerNet(annotation string) (ips map[string]CniNetworkInterface, err error) {
 	// This is a map indexed with the network name (network attachment) and
 	// listing all the IPs created in this subnet and belonging to the pod namespace
 	// The list of ips pr net is parsed from the content of the "k8s.v1.cni.cncf.io/networks-status" annotation.
-	ips = make(map[string][]string)
+	ips = make(map[string]CniNetworkInterface)
 
-	var cniInfo []cniNetworkInterface
+	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
-		return nil, errors.New("could not unmarshal network-status annotation")
+		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %v", err)
 	}
 	// If this is the default interface, skip it as it is tested separately
 	// Otherwise add all non default interfaces
 	for _, cniInterface := range cniInfo {
 		if !cniInterface.Default {
-			ips[cniInterface.Name] = cniInterface.IPs
+			ips[cniInterface.Name] = cniInterface
 		}
 	}
 	return ips, nil
 }
 
 func GetPciPerPod(annotation string) (pciAddr []string, err error) {
-	var cniInfo []cniNetworkInterface
+	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
-		return nil, errors.New("could not unmarshal network-status annotation")
+		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %v", err)
 	}
 	for _, cniInterface := range cniInfo {
 		if cniInterface.DeviceInfo.PCI.PciAddress != "" {
@@ -557,20 +577,20 @@ func createNodes(nodes []corev1.Node) map[string]Node {
 		if !IsOCPCluster() {
 			// Avoid getting Mc info for non ocp clusters.
 			wrapperNodes[node.Name] = Node{Data: node}
-			logrus.Warnf("Non-OCP cluster detected. MachineConfig retrieval for node %s skipped.", node.Name)
+			log.Warn("Non-OCP cluster detected. MachineConfig retrieval for node %q skipped.", node.Name)
 			continue
 		}
 
 		// Get Node's machineConfig name
 		mcName, exists := node.Annotations["machineconfiguration.openshift.io/currentConfig"]
 		if !exists {
-			logrus.Errorf("Failed to get machineConfig name for node %s", node.Name)
+			log.Error("Failed to get machineConfig name for node %q", node.Name)
 			continue
 		}
-		logrus.Infof("Node %s - mc name: %s", node.Name, mcName)
+		log.Info("Node %q - mc name %q", node.Name, mcName)
 		mc, err := getMachineConfig(mcName, machineConfigs)
 		if err != nil {
-			logrus.Errorf("Failed to get machineConfig %s, err: %v", mcName, err)
+			log.Error("Failed to get machineConfig %q, err: %v", mcName, err)
 			continue
 		}
 
@@ -590,4 +610,22 @@ func (env *TestEnvironment) GetBaremetalNodes() []Node {
 		}
 	}
 	return baremetalNodes
+}
+
+func GetPreflightResultsDB(results *plibRuntime.Results) PreflightResultsDB {
+	resultsDB := PreflightResultsDB{}
+	for _, res := range results.Passed {
+		test := PreflightTest{Name: res.Name(), Description: res.Metadata().Description, Remediation: res.Help().Suggestion}
+		resultsDB.Passed = append(resultsDB.Passed, test)
+	}
+	for _, res := range results.Failed {
+		test := PreflightTest{Name: res.Name(), Description: res.Metadata().Description, Remediation: res.Help().Suggestion}
+		resultsDB.Failed = append(resultsDB.Failed, test)
+	}
+	for _, res := range results.Errors {
+		test := PreflightTest{Name: res.Name(), Description: res.Metadata().Description, Remediation: res.Help().Suggestion, Error: res.Error()}
+		resultsDB.Errors = append(resultsDB.Errors, test)
+	}
+
+	return resultsDB
 }

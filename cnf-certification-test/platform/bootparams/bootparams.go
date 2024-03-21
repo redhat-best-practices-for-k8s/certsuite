@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,10 +20,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
@@ -32,40 +31,39 @@ const (
 	kernelArgscommand     = "cat /host/proc/cmdline"
 )
 
-func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container) (claimsLog loghelper.CuratedLogLines, err error) {
+func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container, logger *log.Logger) error {
 	debugPod := env.DebugPods[cut.NodeName]
 	if debugPod == nil {
-		err = fmt.Errorf("debug pod for container %s not found on node %s", cut, cut.NodeName)
-		return claimsLog, err
+		return fmt.Errorf("debug pod for container %s not found on node %s", cut, cut.NodeName)
 	}
 	mcKernelArgumentsMap := GetMcKernelArguments(env, cut.NodeName)
 	currentKernelArgsMap, err := getCurrentKernelCmdlineArgs(env, cut.NodeName)
 	if err != nil {
-		return claimsLog, fmt.Errorf("error getting kernel cli arguments from container: %s, err=%s", cut, err)
+		return fmt.Errorf("error getting kernel cli arguments from container: %s, err=%s", cut, err)
 	}
 	grubKernelConfigMap, err := getGrubKernelArgs(env, cut.NodeName)
 	if err != nil {
-		return claimsLog, fmt.Errorf("error getting grub  kernel arguments for node: %s, err=%s", cut.NodeName, err)
+		return fmt.Errorf("error getting grub  kernel arguments for node: %s, err=%s", cut.NodeName, err)
 	}
 	for key, mcVal := range mcKernelArgumentsMap {
 		if currentVal, ok := currentKernelArgsMap[key]; ok {
 			if currentVal != mcVal {
-				claimsLog.AddLogLine("%s KernelCmdLineArg %q does not match MachineConfig value: %q!=%q",
+				logger.Warn("%s KernelCmdLineArg %q does not match MachineConfig value: %q!=%q",
 					cut.NodeName, key, currentVal, mcVal)
 			} else {
-				logrus.Tracef("%s KernelCmdLineArg==mcVal %q: %q==%q", cut.NodeName, key, currentVal, mcVal)
+				logger.Debug("%s KernelCmdLineArg==mcVal %q: %q==%q", cut.NodeName, key, currentVal, mcVal)
 			}
 		}
 		if grubVal, ok := grubKernelConfigMap[key]; ok {
 			if grubVal != mcVal {
-				claimsLog.AddLogLine("%s NodeGrubKernelArgs %q does not match MachineConfig value: %q!=%q",
+				logger.Warn("%s NodeGrubKernelArgs %q does not match MachineConfig value: %q!=%q",
 					cut.NodeName, key, mcVal, grubVal)
 			} else {
-				logrus.Tracef("%s NodeGrubKernelArg==mcVal %q: %q==%q", cut.NodeName, key, grubVal, mcVal)
+				logger.Debug("%s NodeGrubKernelArg==mcVal %q: %q==%q", cut.NodeName, key, grubVal, mcVal)
 			}
 		}
 	}
-	return claimsLog, nil
+	return nil
 }
 
 func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap map[string]string) {

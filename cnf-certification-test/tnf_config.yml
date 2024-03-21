@@ -2,9 +2,9 @@ targetNameSpaces:
   - name: tnf
 podsUnderTestLabels:
   - "test-network-function.com/generic: target"
-# deprecated operator label ("test-network-function.com/operator:"") still configured by default, no need to add it here
 operatorsUnderTestLabels:
-  - "test-network-function.com/operator1:new" 
+  - "test-network-function.com/operator:target"
+  - "test-network-function.com/operator1:new"
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
     scalable: false
@@ -35,7 +35,7 @@ servicesignorelist:
   - "hazelcast-platform-webhook-service"
   - "new-pro-controller-manager-metrics-service"
   - "mysql"
-collectorAppEndPoint: ""
-executedBy: "default-executed-by"
+executedBy: ""
 partnerName: ""
 collectorAppPassword: ""
+collectorAppEndpoint: "http://claims-collector.cnf-certifications.sysdeseng.com"

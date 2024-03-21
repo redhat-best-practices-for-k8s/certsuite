@@ -41,7 +41,11 @@ jobs:
         run: docker system prune -f --volumes
 
       - name: Build the test image
-        run: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
 
       - name: Show pods
         run: oc get pods -A
@@ -59,15 +63,15 @@ jobs:
       - name: Preemptively delete report and config folders
         shell: bash
         run: |
-          sudo rm -rf /tmp/tnf_config/
-          sudo rm -rf /tmp/tnf_report/
+          sudo rm -rf ${{env.TNF_CONFIG_DIR}}
+          sudo rm -rf ${{env.TNF_REPORT_DIR}}
 
       - name: Run the tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}

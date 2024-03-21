@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
-      matrix: 
+      matrix:
         suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
     env:
       SHELL: /bin/bash
@@ -29,18 +29,6 @@ jobs:
       SKIP_PRELOAD_IMAGES: true
 
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          large-packages: true
-          android: true
-          dotnet: true
-          haskell: true
-          docker-images: true
-          swap-storage: true
-        continue-on-error: true
-
       - name: Check out code
         uses: actions/checkout@v4
         with:
@@ -56,7 +44,11 @@ jobs:
           sudo pip3 install j2cli
 
       - name: Build the test image
-        run: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
@@ -65,17 +57,40 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Bootstrap the Kind and OC/Kubectl binaries for the `local-test-infra`
-        run: make bootstrap-cluster
-        working-directory: cnf-certification-test-partner
+      - name: Bootstrap cluster, docker, and python
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local; pip3 install pyyaml
 
-      - name: Create `local-test-infra` OpenShift resources
-        run: make rebuild-cluster
-        working-directory: cnf-certification-test-partner
+      # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
+      # This step needs to be done right after the partner repo's bootstrap scripts, as they
+      # overwrite the docker's daemon.json.
+      - name: Make docker to use /mnt (sdb) for storage
+        run: |
+          df -h
+          lsblk
+          sudo mkdir /mnt/docker-storage
+          sudo jq '.  +={"data-root" : "/mnt/docker-storage"}' < /etc/docker/daemon.json > /tmp/docker-daemon.json
+          sudo cp /tmp/docker-daemon.json /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
+          sudo systemctl restart docker
+          sudo ls -la /mnt/docker-storage
+
+      - name: Run 'make rebuild-cluster'
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make rebuild-cluster
 
       - name: Install partner resources
-        run: make install-for-qe
-        working-directory: cnf-certification-test-partner
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install-for-qe
 
       - name: Show pods
         run: oc get pods -A
@@ -89,13 +104,22 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
+          ref: main
+
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the test image
+        run: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
 
       - name: Run the tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}

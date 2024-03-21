@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,11 @@
 package namespace
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 func TestGetInvalidCRsNum(t *testing.T) {
@@ -44,7 +46,8 @@ func TestGetInvalidCRsNum(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		result, _ := GetInvalidCRsNum(tc.invalidCrs)
+		log.SetupLogger(os.Stdout, "INFO")
+		result := GetInvalidCRsNum(tc.invalidCrs, log.GetLogger())
 		assert.Equal(t, tc.expectedInvalidCRs, result)
 	}
 }

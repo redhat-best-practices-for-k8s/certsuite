@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/tools/remotecommand"
 	"k8s.io/kubectl/pkg/scheme"
@@ -39,7 +39,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 	commandStr := []string{"sh", "-c", command}
 	var buffOut bytes.Buffer
 	var buffErr bytes.Buffer
-	logrus.Trace(fmt.Sprintf("execute command on ns=%s, pod=%s container=%s, cmd: %s", ctx.GetNamespace(), ctx.GetPodName(), ctx.GetContainerName(), strings.Join(commandStr, " ")))
+	log.Debug(fmt.Sprintf("execute command on ns=%s, pod=%s container=%s, cmd: %s", ctx.GetNamespace(), ctx.GetPodName(), ctx.GetContainerName(), strings.Join(commandStr, " ")))
 	req := clientsholder.K8sClient.CoreV1().RESTClient().
 		Post().
 		Namespace(ctx.GetNamespace()).
@@ -57,7 +57,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 
 	exec, err := remotecommand.NewSPDYExecutor(clientsholder.RestConfig, "POST", req.URL())
 	if err != nil {
-		logrus.Error(err)
+		log.Error("%v", err)
 		return stdout, stderr, err
 	}
 	err = exec.StreamWithContext(context.TODO(), remotecommand.StreamOptions{
@@ -66,11 +66,11 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 	})
 	stdout, stderr = buffOut.String(), buffErr.String()
 	if err != nil {
-		logrus.Error(err)
-		logrus.Error(req.URL())
-		logrus.Error("command: ", command)
-		logrus.Error("stderr: ", stderr)
-		logrus.Error("stdout: ", stdout)
+		log.Error("%v", err)
+		log.Error("%v", req.URL())
+		log.Error("command: %s", command)
+		log.Error("stderr: %s", stderr)
+		log.Error("stdout: %s", stdout)
 		return stdout, stderr, err
 	}
 	return stdout, stderr, err

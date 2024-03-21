@@ -1,14 +1,13 @@
 {
   "claim": {
     "results": {
-      "access-control-sys-admin-capability-check": [
-        {
+      "access-control-sys-admin-capability-check": {
           "CapturedTestOutput": "Non compliant SYS_ADMIN capability detected in container container: test pod: test-887998557-8gwwm ns: tnf. All container caps: \u0026Capabilities{Add:[SYS_ADMIN NET_ADMIN],Drop:[],}\nNon compliant SYS_ADMIN capability detected in container container: test pod: test-887998557-pr2w5 ns: tnf. All container caps: \u0026Capabilities{Add:[SYS_ADMIN NET_ADMIN],Drop:[],}\n{\"CompliantObjectsOut\":null,\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-887998557-8gwwm\",\"test\",\"SYS_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-887998557-pr2w5\",\"test\",\"SYS_ADMIN\"]}]}\n",
           "duration": 282454,
           "endTime": "2023-07-18 03:37:42.095508375 -0500 CDT m=+23.133713410",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:352",
-          "failureReason": "pod xxx ns yyy container zzz uses SYS_ADMIN",
+          "checkDetails": "pod xxx ns yyy container zzz uses SYS_ADMIN",
           "startTime": "2023-07-18 03:37:42.095225914 -0500 CDT m=+23.133430956",
           "state": "failed",
           "testID": {
@@ -28,16 +27,14 @@
             "NonTelco": "Optional",
             "Telco": "Mandatory"
           }
-        }
-      ],
-      "access-control-sys-nice-realtime-capability": [
-        {
+        },
+      "access-control-sys-nice-realtime-capability": {
           "CapturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is not running on a realtime kernel enabled node\",\"tnf\",\"jack-6f88b5bfb4-q5cw6\",\"jack\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is not running on a realtime kernel enabled node\",\"tnf\",\"jack-6f88b5bfb4-szs8g\",\"jack\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is not running on a realtime kernel enabled node\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is not running on a realtime kernel enabled node\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is not running on a realtime kernel enabled node\",\"tnf\",\"test-887998557-8gwwm\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is not running on a realtime kernel enabled node\",\"tnf\",\"test-887998557-pr2w5\",\"test\"]}],\"NonCompliantObjectsOut\":null}\n",
           "duration": 245335,
           "endTime": "2023-07-18 03:37:44.324268378 -0500 CDT m=+25.362473413",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "checkDetails": "",
           "startTime": "2023-07-18 03:37:44.324023044 -0500 CDT m=+25.362228078",
           "state": "passed",
           "testID": {
@@ -57,16 +54,14 @@
             "NonTelco": "Optional",
             "Telco": "Mandatory"
           }
-        }
-      ],
-      "platform-alteration-sysctl-config": [
-        {
+        },
+      "platform-alteration-sysctl-config": {
           "CapturedTestOutput": "",
           "duration": 0,
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "checkDetails": "",
           "startTime": "2023-07-18 03:37:46.483797163 -0500 CDT m=+27.522002219",
           "state": "skipped",
           "testID": {
@@ -86,16 +81,14 @@
             "NonTelco": "Optional",
             "Telco": "Mandatory"
           }
-        }
-      ],
-      "platform-alteration-tainted-node-kernel": [
-        {
+        },
+      "platform-alteration-tainted-node-kernel": {
           "CapturedTestOutput": "",
           "duration": 0,
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "checkDetails": "",
           "startTime": "2023-07-18 03:37:46.483566421 -0500 CDT m=+27.521771494",
           "state": "skipped",
           "testID": {
@@ -116,7 +109,6 @@
             "Telco": "Mandatory"
           }
         }
-      ]
     },
     "versions": {
       "claimFormat": "v0.0.1",

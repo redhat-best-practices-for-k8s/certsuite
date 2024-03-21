@@ -9239,8 +9239,7 @@
       "testsExtraInfo": ""
     },
     "results": {
-      "access-control-bpf-capability-check": [
-        {
+      "access-control-bpf-capability-check": {
           "capturedTestOutput": "Non compliant [BPF container: xdp-c pod: xdp ns: tnf \u0026Capabilities{Add:[BPF PERFMON NET_ADMIN],Drop:[],}] capability detected in container %!s(MISSING). All container caps: %!s(MISSING)\n{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"BPF\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Telco",
@@ -9258,7 +9257,7 @@
           "endTime": "2023-09-04 09:18:50.568408558 -0500 CDT m=+20.103332734",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"BPF\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"BPF\"]}]}",
           "startTime": "2023-09-04 09:18:50.568235709 -0500 CDT m=+20.103159884",
           "state": "failed",
           "testID": {
@@ -9266,10 +9265,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-cluster-role-bindings": [
-        {
+        },
+      "access-control-cluster-role-bindings": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using a cluster role binding\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using a cluster role binding\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using a cluster role binding\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using a cluster role binding\",\"tnf\",\"test-765d6b8dcf-s768n\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using a cluster role binding\",\"tnf\",\"xdp\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-security-rbac",
@@ -9287,7 +9284,7 @@
           "endTime": "2023-09-04 09:18:50.664570781 -0500 CDT m=+20.199494961",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.664213742 -0500 CDT m=+20.199137917",
           "state": "passed",
           "testID": {
@@ -9295,10 +9292,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-container-host-port": [
-        {
+        },
+      "access-control-container-host-port": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Host port is not configured\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Host port is not configured\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Host port is not configured\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Host port is not configured\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-accessing-resource-on-host",
@@ -9316,7 +9311,7 @@
           "endTime": "2023-09-04 09:18:50.568708574 -0500 CDT m=+20.103632750",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568649176 -0500 CDT m=+20.103573351",
           "state": "passed",
           "testID": {
@@ -9324,10 +9319,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-crd-roles": [
-        {
+        },
+      "access-control-crd-roles": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-custom-role-to-access-application-crds",
@@ -9345,7 +9338,7 @@
           "endTime": "2023-09-04 09:19:06.658058151 -0500 CDT m=+36.192982330",
           "failureLineContent": "\t\tginkgo.Skip(\"No role contains rules that apply to at least one CRD under test\")",
           "failureLocation": "/home/greyerof/github/tnf/cnf-certification-test/accesscontrol/suite.go:933",
-          "failureReason": "No role contains rules that apply to at least one CRD under test",
+          "skipReason": "No role contains rules that apply to at least one CRD under test",
           "startTime": "2023-09-04 09:19:06.657809085 -0500 CDT m=+36.192733259",
           "state": "skipped",
           "testID": {
@@ -9353,10 +9346,8 @@
             "suite": "access-control",
             "tags": "extended"
           }
-        }
-      ],
-      "access-control-ipc-lock-capability-check": [
-        {
+        },
+      "access-control-ipc-lock-capability-check": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"xdp\",\"xdp-c\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipc_lock",
@@ -9374,7 +9365,7 @@
           "endTime": "2023-09-04 09:18:50.568185748 -0500 CDT m=+20.103109922",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568145348 -0500 CDT m=+20.103069521",
           "state": "passed",
           "testID": {
@@ -9382,10 +9373,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-namespace": [
-        {
+        },
+      "access-control-namespace": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Namespace\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\"],\"ObjectFieldsValues\":[\"Namespace has valid prefix\",\"tnf\"]},{\"ObjectType\":\"Namespace\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\"],\"ObjectFieldsValues\":[\"Namespace has valid prefix\",\"tnf\"]},{\"ObjectType\":\"Namespace\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\"],\"ObjectFieldsValues\":[\"Namespace has valid prefix\",\"tnf\"]},{\"ObjectType\":\"Namespace\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\"],\"ObjectFieldsValues\":[\"Namespace has valid prefix\",\"tnf\"]},{\"ObjectType\":\"Namespace\",\"ObjectFieldsKeys\":[\"Reason For Compliance\"],\"ObjectFieldsValues\":[\"CRs are in the configured namespaces\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-requirements-cnf-reqs",
@@ -9403,7 +9392,7 @@
           "endTime": "2023-09-04 09:18:50.662756079 -0500 CDT m=+20.197680257",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.569049294 -0500 CDT m=+20.103973468",
           "state": "passed",
           "testID": {
@@ -9411,10 +9400,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-namespace-resource-quota": [
-        {
+        },
+      "access-control-namespace-resource-quota": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is running in a namespace that has a ResourceQuota applied\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is running in a namespace that has a ResourceQuota applied\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is running in a namespace that has a ResourceQuota applied\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is running in a namespace that has a ResourceQuota applied\",\"tnf\",\"test-765d6b8dcf-s768n\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is running in a namespace that has a ResourceQuota applied\",\"tnf\",\"xdp\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-memory-allocation",
@@ -9432,7 +9419,7 @@
           "endTime": "2023-09-04 09:18:58.81676038 -0500 CDT m=+28.351684554",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:58.816684513 -0500 CDT m=+28.351608686",
           "state": "passed",
           "testID": {
@@ -9440,10 +9427,8 @@
             "suite": "access-control",
             "tags": "extended"
           }
-        }
-      ],
-      "access-control-net-admin-capability-check": [
-        {
+        },
+      "access-control-net-admin-capability-check": {
           "capturedTestOutput": "Non compliant [NET_ADMIN container: test pod: test-765d6b8dcf-gbvsd ns: tnf \u0026Capabilities{Add:[NET_ADMIN],Drop:[],}] capability detected in container %!s(MISSING). All container caps: %!s(MISSING)\nNon compliant [NET_ADMIN container: test pod: test-765d6b8dcf-s768n ns: tnf \u0026Capabilities{Add:[NET_ADMIN],Drop:[],}] capability detected in container %!s(MISSING). All container caps: %!s(MISSING)\nNon compliant [NET_ADMIN container: xdp-c pod: xdp ns: tnf \u0026Capabilities{Add:[BPF PERFMON NET_ADMIN],Drop:[],}] capability detected in container %!s(MISSING). All container caps: %!s(MISSING)\n{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"NET_ADMIN\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-net_admin",
@@ -9461,7 +9446,7 @@
           "endTime": "2023-09-04 09:18:50.56793244 -0500 CDT m=+20.102856615",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"NET_ADMIN\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"NET_ADMIN\"]}]}",
           "startTime": "2023-09-04 09:18:50.567699604 -0500 CDT m=+20.102623779",
           "state": "failed",
           "testID": {
@@ -9469,10 +9454,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-net-raw-capability-check": [
-        {
+        },
+      "access-control-net-raw-capability-check": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"xdp\",\"xdp-c\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-user-plane-cnfs",
@@ -9490,7 +9473,7 @@
           "endTime": "2023-09-04 09:18:50.568101953 -0500 CDT m=+20.103026127",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568040854 -0500 CDT m=+20.102965029",
           "state": "passed",
           "testID": {
@@ -9498,10 +9481,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-no-1337-uid": [
-        {
+        },
+      "access-control-no-1337-uid": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using securityContext RunAsUser 1337\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using securityContext RunAsUser 1337\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using securityContext RunAsUser 1337\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using securityContext RunAsUser 1337\",\"tnf\",\"test-765d6b8dcf-s768n\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not using securityContext RunAsUser 1337\",\"tnf\",\"xdp\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Extended",
@@ -9519,7 +9500,7 @@
           "endTime": "2023-09-04 09:19:06.657094654 -0500 CDT m=+36.192018829",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.656923511 -0500 CDT m=+36.191847686",
           "state": "passed",
           "testID": {
@@ -9527,10 +9508,8 @@
             "suite": "access-control",
             "tags": "extended"
           }
-        }
-      ],
-      "access-control-one-process-per-container": [
-        {
+        },
+      "access-control-one-process-per-container": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has only one process running\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has only one process running\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has only one process running\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has only one process running\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has only one process running\",\"tnf\",\"xdp\",\"xdp-c\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-one-process-per-container",
@@ -9548,7 +9527,7 @@
           "endTime": "2023-09-04 09:18:58.815593303 -0500 CDT m=+28.350517478",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.965240803 -0500 CDT m=+20.500164978",
           "state": "passed",
           "testID": {
@@ -9556,10 +9535,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-pod-automount-service-account-token": [
-        {
+        },
+      "access-control-pod-automount-service-account-token": {
           "capturedTestOutput": "Pod [xdp] has been found with default service account name.\n",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods",
@@ -9577,7 +9554,7 @@
           "endTime": "2023-09-04 09:18:50.964966148 -0500 CDT m=+20.499890322",
           "failureLineContent": "\t\t\tginkgo.Fail(\"Pod has been found with default service account name.\")",
           "failureLocation": "/home/greyerof/github/tnf/cnf-certification-test/accesscontrol/suite.go:612",
-          "failureReason": "Pod has been found with default service account name.",
+          "skipReason": "Pod has been found with default service account name.",
           "startTime": "2023-09-04 09:18:50.664656954 -0500 CDT m=+20.199581133",
           "state": "failed",
           "testID": {
@@ -9585,10 +9562,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-pod-host-ipc": [
-        {
+        },
+      "access-control-pod-host-ipc": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostIpc is not set to true\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostIpc is not set to true\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostIpc is not set to true\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostIpc is not set to true\",\"tnf\",\"test-765d6b8dcf-s768n\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostIpc is not set to true\",\"tnf\",\"xdp\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
@@ -9606,7 +9581,7 @@
           "endTime": "2023-09-04 09:18:50.568931796 -0500 CDT m=+20.103855970",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.56890122 -0500 CDT m=+20.103825396",
           "state": "passed",
           "testID": {
@@ -9614,10 +9589,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-pod-host-network": [
-        {
+        },
+      "access-control-pod-host-network": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Host network is not set to true\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Host network is not set to true\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Host network is not set to true\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Host network is not set to true\",\"tnf\",\"test-765d6b8dcf-s768n\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Host network is not set to true\",\"tnf\",\"xdp\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-the-host-network-namespace",
@@ -9635,7 +9608,7 @@
           "endTime": "2023-09-04 09:18:50.568785325 -0500 CDT m=+20.103709500",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568748674 -0500 CDT m=+20.103672849",
           "state": "passed",
           "testID": {
@@ -9643,10 +9616,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-pod-host-path": [
-        {
+        },
+      "access-control-pod-host-path": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Hostpath path is not set\",\"tnf\",\"xdp\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
@@ -9664,7 +9635,7 @@
           "endTime": "2023-09-04 09:18:50.56886078 -0500 CDT m=+20.103784955",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568829568 -0500 CDT m=+20.103753743",
           "state": "passed",
           "testID": {
@@ -9672,10 +9643,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-pod-host-pid": [
-        {
+        },
+      "access-control-pod-host-pid": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostPid is not set to true\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostPid is not set to true\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostPid is not set to true\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostPid is not set to true\",\"tnf\",\"test-765d6b8dcf-s768n\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"HostPid is not set to true\",\"tnf\",\"xdp\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
@@ -9693,7 +9662,7 @@
           "endTime": "2023-09-04 09:18:50.569008556 -0500 CDT m=+20.103932731",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568968765 -0500 CDT m=+20.103892940",
           "state": "passed",
           "testID": {
@@ -9701,10 +9670,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-pod-role-bindings": [
-        {
+        },
+      "access-control-pod-role-bindings": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"The serviceAccountName is either empty or default\",\"tnf\",\"xdp\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-security-rbac",
@@ -9722,7 +9689,7 @@
           "endTime": "2023-09-04 09:18:50.664046132 -0500 CDT m=+20.198970306",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"The serviceAccountName is either empty or default\",\"tnf\",\"xdp\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"The serviceAccountName is either empty or default\",\"tnf\",\"xdp\"]}]}",
           "startTime": "2023-09-04 09:18:50.663593132 -0500 CDT m=+20.198517317",
           "state": "failed",
           "testID": {
@@ -9730,10 +9697,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-pod-service-account": [
-        {
+        },
+      "access-control-pod-service-account": {
           "capturedTestOutput": "Pod [xdp tnf] (ns: %!s(MISSING)) does not have a valid service account name.\n{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod does not have a valid service account name\",\"tnf\",\"xdp\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-scc-permissions-for-an-application",
@@ -9751,7 +9716,7 @@
           "endTime": "2023-09-04 09:18:50.663337898 -0500 CDT m=+20.198262075",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod does not have a valid service account name\",\"tnf\",\"xdp\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod does not have a valid service account name\",\"tnf\",\"xdp\"]}]}",
           "startTime": "2023-09-04 09:18:50.662893374 -0500 CDT m=+20.197817550",
           "state": "failed",
           "testID": {
@@ -9759,10 +9724,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-projected-volume-service-account-token": [
-        {
+        },
+      "access-control-projected-volume-service-account-token": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ProjectedVolume\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Projected Volume Name\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\"],\"ObjectFieldsValues\":[\"the projected volume Service account token field is not nil\",\"tnf\",\"xdp\",\"kube-api-access-t8lpx\",\"\\u0026ServiceAccountTokenProjection{Audience:,ExpirationSeconds:*3607,Path:token,}\",\"nil\",\"nil\",\"nil\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods",
@@ -9780,7 +9743,7 @@
           "endTime": "2023-09-04 09:19:06.65744981 -0500 CDT m=+36.192374005",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ProjectedVolume\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Projected Volume Name\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\"],\"ObjectFieldsValues\":[\"the projected volume Service account token field is not nil\",\"tnf\",\"xdp\",\"kube-api-access-t8lpx\",\"\\u0026ServiceAccountTokenProjection{Audience:,ExpirationSeconds:*3607,Path:token,}\",\"nil\",\"nil\",\"nil\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ProjectedVolume\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Projected Volume Name\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\"],\"ObjectFieldsValues\":[\"the projected volume Service account token field is not nil\",\"tnf\",\"xdp\",\"kube-api-access-t8lpx\",\"\\u0026ServiceAccountTokenProjection{Audience:,ExpirationSeconds:*3607,Path:token,}\",\"nil\",\"nil\",\"nil\"]}]}",
           "startTime": "2023-09-04 09:19:06.657151337 -0500 CDT m=+36.192075511",
           "state": "failed",
           "testID": {
@@ -9788,10 +9751,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-requests-and-limits": [
-        {
+        },
+      "access-control-requests-and-limits": {
           "capturedTestOutput": "Container has been found missing resource limits: [container: xdp-c pod: xdp ns: tnf]\nContainer has been found missing resource requests: [container: xdp-c pod: xdp ns: tnf]\n{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is missing resource requests or limits\",\"tnf\",\"xdp\",\"xdp-c\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-requests/limits",
@@ -9809,7 +9770,7 @@
           "endTime": "2023-09-04 09:19:06.656636052 -0500 CDT m=+36.191560227",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is missing resource requests or limits\",\"tnf\",\"xdp\",\"xdp-c\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is missing resource requests or limits\",\"tnf\",\"xdp\",\"xdp-c\"]}]}",
           "startTime": "2023-09-04 09:19:06.656333774 -0500 CDT m=+36.191257949",
           "state": "failed",
           "testID": {
@@ -9817,10 +9778,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-security-context": [
-        {
+        },
+      "access-control-security-context": {
           "capturedTestOutput": "containerSCC [container: test pod: test-0 ns: tnf {false false false false false true false true false true true true CategoryID1(limited access granted automatically) true true}] is %!v(MISSING)\nTesting if pod belongs to category [CategoryID1(limited access granted automatically)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [true] - OK\nRunAsNonRoot = [true false] but expected  %!s(MISSING) - NOK\nFsGroupPresent  = [true] - OK\nDropCapabilities list - OK\n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory  list is as expected [CategoryID1(limited access granted automatically)] - OK\nTesting if pod belongs to category [CategoryID1NoUID0(automatically granted, basic rights with mesh networks)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [true] - OK\nRunAsNonRoot = [true] - OK\nFsGroupPresent  = [true] - OK\nDropCapabilities list - OK\n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory  list is as expected [CategoryID1(limited access granted automatically)] - OK\nTesting if pod belongs to category1NoUID0 \n%!(EXTRA []interface {}=[])containerSCC [container: test pod: test-1 ns: tnf {false false false false false true false true false true true true CategoryID1(limited access granted automatically) true true}] is %!v(MISSING)\nTesting if pod belongs to category [CategoryID1(limited access granted automatically)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [true] - OK\nRunAsNonRoot = [true false] but expected  %!s(MISSING) - NOK\nFsGroupPresent  = [true] - OK\nDropCapabilities list - OK\n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory  list is as expected [CategoryID1(limited access granted automatically)] - OK\nTesting if pod belongs to category [CategoryID1NoUID0(automatically granted, basic rights with mesh networks)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [true] - OK\nRunAsNonRoot = [true] - OK\nFsGroupPresent  = [true] - OK\nDropCapabilities list - OK\n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory  list is as expected [CategoryID1(limited access granted automatically)] - OK\nTesting if pod belongs to category1NoUID0 \n%!(EXTRA []interface {}=[])containerSCC [container: test pod: test-765d6b8dcf-gbvsd ns: tnf {false false false false false false false false false false false true CategoryID2(advanced networking (vlan tag, dscp, priority)) false true}] is %!v(MISSING)\nTesting if pod belongs to category [CategoryID1(limited access granted automatically)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory = [CategoryID2(advanced networking (vlan tag, dscp, priority)) CategoryID1(limited access granted automatically)] but expected  %!s(MISSING) - NOK\nTesting if pod belongs to category [CategoryID1NoUID0(automatically granted, basic rights with mesh networks)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory = [CategoryID2(advanced networking (vlan tag, dscp, priority)) CategoryID1(limited access granted automatically)] but expected  %!s(MISSING) - NOK\nTesting if pod belongs to category [CategoryID2(advanced networking (vlan tag, dscp, priority))]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory  list is as expected [CategoryID2(advanced networking (vlan tag, dscp, priority))] - OK\nTesting if pod belongs to category [CategoryID3(SRIOV and DPDK)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory = [CategoryID2(advanced networking (vlan tag, dscp, priority)) CategoryID3(SRIOV and DPDK)] but expected  %!s(MISSING) - NOK\ncontainerSCC [container: test pod: test-765d6b8dcf-s768n ns: tnf {false false false false false false false false false false false true CategoryID2(advanced networking (vlan tag, dscp, priority)) false true}] is %!v(MISSING)\nTesting if pod belongs to category [CategoryID1(limited access granted automatically)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory = [CategoryID2(advanced networking (vlan tag, dscp, priority)) CategoryID1(limited access granted automatically)] but expected  %!s(MISSING) - NOK\nTesting if pod belongs to category [CategoryID1NoUID0(automatically granted, basic rights with mesh networks)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory = [CategoryID2(advanced networking (vlan tag, dscp, priority)) CategoryID1(limited access granted automatically)] but expected  %!s(MISSING) - NOK\nTesting if pod belongs to category [CategoryID2(advanced networking (vlan tag, dscp, priority))]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory  list is as expected [CategoryID2(advanced networking (vlan tag, dscp, priority))] - OK\nTesting if pod belongs to category [CategoryID3(SRIOV and DPDK)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  is not nil - OK\n%!(EXTRA []interface {}=[])CapabilitiesCategory = [CategoryID2(advanced networking (vlan tag, dscp, priority)) CategoryID3(SRIOV and DPDK)] but expected  %!s(MISSING) - NOK\ncontainerSCC [container: xdp-c pod: xdp ns: tnf {false false false false false false false false false false false false CategoryID4(anything not matching lower category) false true}] is %!v(MISSING)\nTesting if pod belongs to category [CategoryID1(limited access granted automatically)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  = [false true] but expected  %!s(MISSING) expected to be non nil - NOK\nCapabilitiesCategory = [CategoryID4(anything not matching lower category) CategoryID1(limited access granted automatically)] but expected  %!s(MISSING) - NOK\nTesting if pod belongs to category [CategoryID1NoUID0(automatically granted, basic rights with mesh networks)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  = [false true] but expected  %!s(MISSING) expected to be non nil - NOK\nCapabilitiesCategory = [CategoryID4(anything not matching lower category) CategoryID1(limited access granted automatically)] but expected  %!s(MISSING) - NOK\nTesting if pod belongs to category [CategoryID2(advanced networking (vlan tag, dscp, priority))]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  = [false true] but expected  %!s(MISSING) expected to be non nil - NOK\nCapabilitiesCategory = [CategoryID4(anything not matching lower category) CategoryID2(advanced networking (vlan tag, dscp, priority))] but expected  %!s(MISSING) - NOK\nTesting if pod belongs to category [CategoryID3(SRIOV and DPDK)]\nAllVolumeAllowed = [true] - OK\nRunAsUserPresent = [false true] but expected  %!s(MISSING) - NOK\nRunAsNonRoot = [false] - OK\nFsGroupPresent  = [false true] but expected  %!s(MISSING) - NOK\nRequiredDropCapabilitiesPresent = [false true] but expected  %!s(MISSING) - NOK\nits didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value \n%!(EXTRA []interface {}=[])HostDirVolumePluginPresent = [false] - OK\nHostIPC = [false] - OK\nHostNetwork = [false] - OK\nHostPID = [false] - OK\nHostPorts = [false] - OK\nHostNetwork = [false] - OK\nPrivilegedContainer = [false] - OK\nReadOnlyRootFilesystem = [false] - OK\nSeLinuxContextPresent  = [false true] but expected  %!s(MISSING) expected to be non nil - NOK\nCapabilitiesCategory = [CategoryID4(anything not matching lower category) CategoryID3(SRIOV and DPDK)] but expected  %!s(MISSING) - NOK\n{\"CompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-0\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-1\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"Cnf\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Category\"],\"ObjectFieldsValues\":[\"Overall CNF category\",\"CategoryID4(anything not matching lower category)\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"xdp\",\"xdp-c\",\"CategoryID4(anything not matching lower category)\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
@@ -9838,7 +9797,7 @@
           "endTime": "2023-09-04 09:18:50.567381737 -0500 CDT m=+20.102305911",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-0\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-1\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"Cnf\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Category\"],\"ObjectFieldsValues\":[\"Overall CNF category\",\"CategoryID4(anything not matching lower category)\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"xdp\",\"xdp-c\",\"CategoryID4(anything not matching lower category)\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-0\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-1\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"Cnf\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Category\"],\"ObjectFieldsValues\":[\"Overall CNF category\",\"CategoryID4(anything not matching lower category)\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"xdp\",\"xdp-c\",\"CategoryID4(anything not matching lower category)\"]}]}",
           "startTime": "2023-09-04 09:18:50.566310584 -0500 CDT m=+20.101234759",
           "state": "failed",
           "testID": {
@@ -9846,10 +9805,8 @@
             "suite": "access-control",
             "tags": "extended"
           }
-        }
-      ],
-      "access-control-security-context-non-root-user-check": [
-        {
+        },
+      "access-control-security-context-non-root-user-check": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Root User not detected (RunAsUser uid=0)\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Root User not detected (RunAsUser uid=0)\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Root User not detected (RunAsUser uid=0)\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Root User not detected (RunAsUser uid=0)\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Root User not detected (RunAsUser uid=0)\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Root User not detected (RunAsUser uid=0)\",\"tnf\",\"test-765d6b8dcf-s768n\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Root User not detected (RunAsUser uid=0)\",\"tnf\",\"xdp\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
@@ -9867,7 +9824,7 @@
           "endTime": "2023-09-04 09:18:50.568537035 -0500 CDT m=+20.103461209",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568498757 -0500 CDT m=+20.103422932",
           "state": "passed",
           "testID": {
@@ -9875,10 +9832,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-security-context-privilege-escalation": [
-        {
+        },
+      "access-control-security-context-privilege-escalation": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"AllowPrivilegeEscalation is set to false\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"AllowPrivilegeEscalation is set to false\",\"tnf\",\"test-1\",\"test\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
@@ -9896,7 +9851,7 @@
           "endTime": "2023-09-04 09:18:50.56861147 -0500 CDT m=+20.103535645",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568585037 -0500 CDT m=+20.103509212",
           "state": "passed",
           "testID": {
@@ -9904,10 +9859,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-service-type": [
-        {
+        },
+      "access-control-service-type": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":null,\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-the-host-network-namespace",
@@ -9925,7 +9878,7 @@
           "endTime": "2023-09-04 09:19:06.657747422 -0500 CDT m=+36.192671612",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.657683301 -0500 CDT m=+36.192607514",
           "state": "passed",
           "testID": {
@@ -9933,10 +9886,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-ssh-daemons": [
-        {
+        },
+      "access-control-ssh-daemons": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not running an SSH daemon\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not running an SSH daemon\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not running an SSH daemon\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not running an SSH daemon\",\"tnf\",\"test-765d6b8dcf-s768n\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod is not running an SSH daemon\",\"tnf\",\"xdp\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-interaction/configuration",
@@ -9954,7 +9905,7 @@
           "endTime": "2023-09-04 09:19:06.656166437 -0500 CDT m=+36.191090610",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:58.816813038 -0500 CDT m=+28.351737211",
           "state": "passed",
           "testID": {
@@ -9962,10 +9913,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-sys-admin-capability-check": [
-        {
+        },
+      "access-control-sys-admin-capability-check": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"xdp\",\"xdp-c\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-sys_admin",
@@ -9983,7 +9932,7 @@
           "endTime": "2023-09-04 09:18:50.567648143 -0500 CDT m=+20.102572317",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.567539188 -0500 CDT m=+20.102463363",
           "state": "passed",
           "testID": {
@@ -9991,10 +9940,8 @@
             "suite": "access-control",
             "tags": "common"
           }
-        }
-      ],
-      "access-control-sys-nice-realtime-capability": [
-        {
+        },
+      "access-control-sys-nice-realtime-capability": {
           "capturedTestOutput": "[container: test pod: test-0 ns: tnf] has been found running on a realtime kernel enabled node without SYS_NICE capability.\n[container: test pod: test-1 ns: tnf] has been found running on a realtime kernel enabled node without SYS_NICE capability.\n[container: test pod: test-765d6b8dcf-gbvsd ns: tnf] has been found running on a realtime kernel enabled node without SYS_NICE capability.\n[container: test pod: test-765d6b8dcf-s768n ns: tnf] has been found running on a realtime kernel enabled node without SYS_NICE capability.\n[container: xdp-c pod: xdp ns: tnf] has been found running on a realtime kernel enabled node without SYS_NICE capability.\n{\"CompliantObjectsOut\":null,\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"xdp\",\"xdp-c\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-sys_nice",
@@ -10012,7 +9959,7 @@
           "endTime": "2023-09-04 09:18:58.816106528 -0500 CDT m=+28.351030702",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":null,\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"xdp\",\"xdp-c\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":null,\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"xdp\",\"xdp-c\"]}]}",
           "startTime": "2023-09-04 09:18:58.815763413 -0500 CDT m=+28.350687587",
           "state": "failed",
           "testID": {
@@ -10020,10 +9967,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "access-control-sys-ptrace-capability": [
-        {
+        },
+      "access-control-sys-ptrace-capability": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-sys_ptrace",
@@ -10041,7 +9986,7 @@
           "endTime": "2023-09-04 09:18:58.816543639 -0500 CDT m=+28.351467813",
           "failureLineContent": "\t\t\tskip(fmt.Sprintf(\"Test skipped because there are no %s to test, please check under test labels\", reflect.TypeOf(o)))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:321",
-          "failureReason": "Test skipped because there are no []*provider.Pod to test, please check under test labels",
+          "skipReason": "Test skipped because there are no []*provider.Pod to test, please check under test labels",
           "startTime": "2023-09-04 09:18:58.816304856 -0500 CDT m=+28.351229031",
           "state": "skipped",
           "testID": {
@@ -10049,10 +9994,8 @@
             "suite": "access-control",
             "tags": "telco"
           }
-        }
-      ],
-      "affiliated-certification-container-is-certified": [
-        {
+        },
+      "affiliated-certification-container-is-certified": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview",
@@ -10070,7 +10013,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658351027 -0500 CDT m=+36.193275232",
           "state": "skipped",
           "testID": {
@@ -10078,10 +10021,8 @@
             "suite": "affiliated-certification",
             "tags": "common"
           }
-        }
-      ],
-      "affiliated-certification-container-is-certified-digest": [
-        {
+        },
+      "affiliated-certification-container-is-certified-digest": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview",
@@ -10099,7 +10040,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658473669 -0500 CDT m=+36.193397844",
           "state": "skipped",
           "testID": {
@@ -10107,10 +10048,8 @@
             "suite": "affiliated-certification",
             "tags": "common"
           }
-        }
-      ],
-      "affiliated-certification-helm-version": [
-        {
+        },
+      "affiliated-certification-helm-version": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-helm",
@@ -10128,7 +10067,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658299035 -0500 CDT m=+36.193223210",
           "state": "skipped",
           "testID": {
@@ -10136,10 +10075,8 @@
             "suite": "affiliated-certification",
             "tags": "common"
           }
-        }
-      ],
-      "affiliated-certification-helmchart-is-certified": [
-        {
+        },
+      "affiliated-certification-helmchart-is-certified": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview",
@@ -10157,7 +10094,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658444851 -0500 CDT m=+36.193369056",
           "state": "skipped",
           "testID": {
@@ -10165,10 +10102,8 @@
             "suite": "affiliated-certification",
             "tags": "common"
           }
-        }
-      ],
-      "affiliated-certification-operator-is-certified": [
-        {
+        },
+      "affiliated-certification-operator-is-certified": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
@@ -10186,7 +10121,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658400499 -0500 CDT m=+36.193324704",
           "state": "skipped",
           "testID": {
@@ -10194,10 +10129,8 @@
             "suite": "affiliated-certification",
             "tags": "common"
           }
-        }
-      ],
-      "lifecycle-affinity-required-pods": [
-        {
+        },
+      "lifecycle-affinity-required-pods": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10215,7 +10148,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.56619026 -0500 CDT m=+20.101114435",
           "state": "skipped",
           "testID": {
@@ -10223,10 +10156,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-container-shutdown": [
-        {
+        },
+      "lifecycle-container-shutdown": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices",
@@ -10244,7 +10175,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565894087 -0500 CDT m=+20.100818277",
           "state": "skipped",
           "testID": {
@@ -10252,10 +10183,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-container-startup": [
-        {
+        },
+      "lifecycle-container-startup": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices",
@@ -10273,7 +10202,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565931799 -0500 CDT m=+20.100855973",
           "state": "skipped",
           "testID": {
@@ -10281,10 +10210,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-cpu-isolation": [
-        {
+        },
+      "lifecycle-cpu-isolation": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cpu-isolation",
@@ -10302,7 +10229,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566169662 -0500 CDT m=+20.101093852",
           "state": "skipped",
           "testID": {
@@ -10310,10 +10237,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-crd-scaling": [
-        {
+        },
+      "lifecycle-crd-scaling": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10331,7 +10256,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565912421 -0500 CDT m=+20.100836595",
           "state": "skipped",
           "testID": {
@@ -10339,10 +10264,8 @@
             "suite": "lifecycle",
             "tags": "common"
           }
-        }
-      ],
-      "lifecycle-deployment-scaling": [
-        {
+        },
+      "lifecycle-deployment-scaling": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10360,7 +10283,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566110476 -0500 CDT m=+20.101034651",
           "state": "skipped",
           "testID": {
@@ -10368,10 +10291,8 @@
             "suite": "lifecycle",
             "tags": "common"
           }
-        }
-      ],
-      "lifecycle-image-pull-policy": [
-        {
+        },
+      "lifecycle-image-pull-policy": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-use-imagepullpolicy-if-not-present",
@@ -10389,7 +10310,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565946717 -0500 CDT m=+20.100870891",
           "state": "skipped",
           "testID": {
@@ -10397,10 +10318,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-liveness-probe": [
-        {
+        },
+      "lifecycle-liveness-probe": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10418,7 +10337,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565994768 -0500 CDT m=+20.100918958",
           "state": "skipped",
           "testID": {
@@ -10426,10 +10345,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-persistent-volume-reclaim-policy": [
-        {
+        },
+      "lifecycle-persistent-volume-reclaim-policy": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-csi",
@@ -10447,7 +10364,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566148821 -0500 CDT m=+20.101072996",
           "state": "skipped",
           "testID": {
@@ -10455,10 +10372,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-pod-high-availability": [
-        {
+        },
+      "lifecycle-pod-high-availability": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10476,7 +10391,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566045362 -0500 CDT m=+20.100969551",
           "state": "skipped",
           "testID": {
@@ -10484,10 +10399,8 @@
             "suite": "lifecycle",
             "tags": "common"
           }
-        }
-      ],
-      "lifecycle-pod-owner-type": [
-        {
+        },
+      "lifecycle-pod-owner-type": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-no-naked-pods",
@@ -10505,7 +10418,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566025512 -0500 CDT m=+20.100949687",
           "state": "skipped",
           "testID": {
@@ -10513,10 +10426,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-pod-recreation": [
-        {
+        },
+      "lifecycle-pod-recreation": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-upgrade-expectations",
@@ -10534,7 +10445,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566092278 -0500 CDT m=+20.101016453",
           "state": "skipped",
           "testID": {
@@ -10542,10 +10453,8 @@
             "suite": "lifecycle",
             "tags": "common"
           }
-        }
-      ],
-      "lifecycle-pod-scheduling": [
-        {
+        },
+      "lifecycle-pod-scheduling": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10563,7 +10472,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566073238 -0500 CDT m=+20.100997412",
           "state": "skipped",
           "testID": {
@@ -10571,10 +10480,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-pod-toleration-bypass": [
-        {
+        },
+      "lifecycle-pod-toleration-bypass": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-taints-and-tolerations",
@@ -10592,7 +10499,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566224664 -0500 CDT m=+20.101148839",
           "state": "skipped",
           "testID": {
@@ -10600,10 +10507,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-readiness-probe": [
-        {
+        },
+      "lifecycle-readiness-probe": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10621,7 +10526,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565977061 -0500 CDT m=+20.100901237",
           "state": "skipped",
           "testID": {
@@ -10629,10 +10534,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-startup-probe": [
-        {
+        },
+      "lifecycle-startup-probe": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-exit-status",
@@ -10650,7 +10553,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566011546 -0500 CDT m=+20.100935721",
           "state": "skipped",
           "testID": {
@@ -10658,10 +10561,8 @@
             "suite": "lifecycle",
             "tags": "telco"
           }
-        }
-      ],
-      "lifecycle-statefulset-scaling": [
-        {
+        },
+      "lifecycle-statefulset-scaling": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10679,7 +10580,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566129433 -0500 CDT m=+20.101053606",
           "state": "skipped",
           "testID": {
@@ -10687,10 +10588,8 @@
             "suite": "lifecycle",
             "tags": "common"
           }
-        }
-      ],
-      "lifecycle-storage-required-pods": [
-        {
+        },
+      "lifecycle-storage-required-pods": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-local-storage",
@@ -10708,7 +10607,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566243675 -0500 CDT m=+20.101167865",
           "state": "skipped",
           "testID": {
@@ -10716,10 +10615,8 @@
             "suite": "lifecycle",
             "tags": "common"
           }
-        }
-      ],
-      "manageability-container-port-name-format": [
-        {
+        },
+      "manageability-container-port-name-format": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-requirements-cnf-reqs",
@@ -10737,7 +10634,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658615636 -0500 CDT m=+36.193539811",
           "state": "skipped",
           "testID": {
@@ -10745,10 +10642,8 @@
             "suite": "manageability",
             "tags": "extended"
           }
-        }
-      ],
-      "manageability-containers-image-tag": [
-        {
+        },
+      "manageability-containers-image-tag": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-image-tagging",
@@ -10766,7 +10661,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658596375 -0500 CDT m=+36.193520551",
           "state": "skipped",
           "testID": {
@@ -10774,10 +10669,8 @@
             "suite": "manageability",
             "tags": "extended"
           }
-        }
-      ],
-      "networking-dpdk-cpu-pinning-exec-probe": [
-        {
+        },
+      "networking-dpdk-cpu-pinning-exec-probe": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cpu-manager-pinning",
@@ -10795,7 +10688,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.56585899 -0500 CDT m=+20.100783165",
           "state": "skipped",
           "testID": {
@@ -10803,10 +10696,8 @@
             "suite": "networking",
             "tags": "telco"
           }
-        }
-      ],
-      "networking-dual-stack-service": [
-        {
+        },
+      "networking-dual-stack-service": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-\u0026-ipv6",
@@ -10824,7 +10715,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565804542 -0500 CDT m=+20.100728718",
           "state": "skipped",
           "testID": {
@@ -10832,10 +10723,8 @@
             "suite": "networking",
             "tags": "extended"
           }
-        }
-      ],
-      "networking-icmpv4-connectivity": [
-        {
+        },
+      "networking-icmpv4-connectivity": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-\u0026-ipv6",
@@ -10853,7 +10742,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.5656687 -0500 CDT m=+20.100592905",
           "state": "skipped",
           "testID": {
@@ -10861,10 +10750,8 @@
             "suite": "networking",
             "tags": "common"
           }
-        }
-      ],
-      "networking-icmpv4-connectivity-multus": [
-        {
+        },
+      "networking-icmpv4-connectivity-multus": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10882,7 +10769,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565694716 -0500 CDT m=+20.100618891",
           "state": "skipped",
           "testID": {
@@ -10890,10 +10777,8 @@
             "suite": "networking",
             "tags": "telco"
           }
-        }
-      ],
-      "networking-icmpv6-connectivity": [
-        {
+        },
+      "networking-icmpv6-connectivity": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-\u0026-ipv6",
@@ -10911,7 +10796,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565721905 -0500 CDT m=+20.100646081",
           "state": "skipped",
           "testID": {
@@ -10919,10 +10804,8 @@
             "suite": "networking",
             "tags": "common"
           }
-        }
-      ],
-      "networking-icmpv6-connectivity-multus": [
-        {
+        },
+      "networking-icmpv6-connectivity-multus": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -10940,7 +10823,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565742206 -0500 CDT m=+20.100666381",
           "state": "skipped",
           "testID": {
@@ -10948,10 +10831,8 @@
             "suite": "networking",
             "tags": "telco"
           }
-        }
-      ],
-      "networking-network-policy-deny-all": [
-        {
+        },
+      "networking-network-policy-deny-all": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-vrfs-aka-routing-instances",
@@ -10969,7 +10850,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565825618 -0500 CDT m=+20.100749791",
           "state": "skipped",
           "testID": {
@@ -10977,10 +10858,8 @@
             "suite": "networking",
             "tags": "common"
           }
-        }
-      ],
-      "networking-ocp-reserved-ports-usage": [
-        {
+        },
+      "networking-ocp-reserved-ports-usage": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ports-reserved-by-openshift",
@@ -10998,7 +10877,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565786079 -0500 CDT m=+20.100710254",
           "state": "skipped",
           "testID": {
@@ -11006,10 +10885,8 @@
             "suite": "networking",
             "tags": "common"
           }
-        }
-      ],
-      "networking-reserved-partner-ports": [
-        {
+        },
+      "networking-reserved-partner-ports": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Extended",
@@ -11027,7 +10904,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565843941 -0500 CDT m=+20.100768115",
           "state": "skipped",
           "testID": {
@@ -11035,10 +10912,8 @@
             "suite": "networking",
             "tags": "extended"
           }
-        }
-      ],
-      "networking-restart-on-reboot-sriov-pod": [
-        {
+        },
+      "networking-restart-on-reboot-sriov-pod": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Far Edge",
@@ -11056,7 +10931,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565876872 -0500 CDT m=+20.100801048",
           "state": "skipped",
           "testID": {
@@ -11064,10 +10939,8 @@
             "suite": "networking",
             "tags": "faredge"
           }
-        }
-      ],
-      "networking-undeclared-container-ports-usage": [
-        {
+        },
+      "networking-undeclared-container-ports-usage": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-requirements-cnf-reqs",
@@ -11085,7 +10958,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565766442 -0500 CDT m=+20.100690615",
           "state": "skipped",
           "testID": {
@@ -11093,10 +10966,8 @@
             "suite": "networking",
             "tags": "extended"
           }
-        }
-      ],
-      "observability-container-logging": [
-        {
+        },
+      "observability-container-logging": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-logging",
@@ -11114,7 +10985,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565224144 -0500 CDT m=+20.100148319",
           "state": "skipped",
           "testID": {
@@ -11122,10 +10993,8 @@
             "suite": "observability",
             "tags": "telco"
           }
-        }
-      ],
-      "observability-crd-status": [
-        {
+        },
+      "observability-crd-status": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
@@ -11143,7 +11012,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565256113 -0500 CDT m=+20.100180288",
           "state": "skipped",
           "testID": {
@@ -11151,10 +11020,8 @@
             "suite": "observability",
             "tags": "common"
           }
-        }
-      ],
-      "observability-pod-disruption-budget": [
-        {
+        },
+      "observability-pod-disruption-budget": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-upgrade-expectations",
@@ -11172,7 +11039,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565303849 -0500 CDT m=+20.100228023",
           "state": "skipped",
           "testID": {
@@ -11180,10 +11047,8 @@
             "suite": "observability",
             "tags": "common"
           }
-        }
-      ],
-      "observability-termination-policy": [
-        {
+        },
+      "observability-termination-policy": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-exit-status",
@@ -11201,7 +11066,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565277313 -0500 CDT m=+20.100201488",
           "state": "skipped",
           "testID": {
@@ -11209,10 +11074,8 @@
             "suite": "observability",
             "tags": "telco"
           }
-        }
-      ],
-      "operator-install-source": [
-        {
+        },
+      "operator-install-source": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
@@ -11230,7 +11093,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658551609 -0500 CDT m=+36.193475785",
           "state": "skipped",
           "testID": {
@@ -11238,10 +11101,8 @@
             "suite": "operator",
             "tags": "common"
           }
-        }
-      ],
-      "operator-install-status-no-privileges": [
-        {
+        },
+      "operator-install-status-no-privileges": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
@@ -11259,7 +11120,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658523468 -0500 CDT m=+36.193447644",
           "state": "skipped",
           "testID": {
@@ -11267,10 +11128,8 @@
             "suite": "operator",
             "tags": "common"
           }
-        }
-      ],
-      "operator-install-status-succeeded": [
-        {
+        },
+      "operator-install-status-succeeded": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
@@ -11288,7 +11147,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.65849962 -0500 CDT m=+36.193423795",
           "state": "skipped",
           "testID": {
@@ -11296,10 +11155,8 @@
             "suite": "operator",
             "tags": "common"
           }
-        }
-      ],
-      "performance-exclusive-cpu-pool": [
-        {
+        },
+      "performance-exclusive-cpu-pool": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Far Edge",
@@ -11317,7 +11174,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.5649692 -0500 CDT m=+20.099893375",
           "state": "skipped",
           "testID": {
@@ -11325,10 +11182,8 @@
             "suite": "performance",
             "tags": "faredge"
           }
-        }
-      ],
-      "performance-exclusive-cpu-pool-rt-scheduling-policy": [
-        {
+        },
+      "performance-exclusive-cpu-pool-rt-scheduling-policy": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Far Edge",
@@ -11346,7 +11201,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565142204 -0500 CDT m=+20.100066402",
           "state": "skipped",
           "testID": {
@@ -11354,10 +11209,8 @@
             "suite": "performance",
             "tags": "faredge"
           }
-        }
-      ],
-      "performance-isolated-cpu-pool-rt-scheduling-policy": [
-        {
+        },
+      "performance-isolated-cpu-pool-rt-scheduling-policy": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Far Edge",
@@ -11375,7 +11228,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565202191 -0500 CDT m=+20.100126368",
           "state": "skipped",
           "testID": {
@@ -11383,10 +11236,8 @@
             "suite": "performance",
             "tags": "faredge"
           }
-        }
-      ],
-      "performance-max-resources-exec-probes": [
-        {
+        },
+      "performance-max-resources-exec-probes": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Far Edge",
@@ -11404,7 +11255,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565170556 -0500 CDT m=+20.100094732",
           "state": "skipped",
           "testID": {
@@ -11412,10 +11263,8 @@
             "suite": "performance",
             "tags": "faredge"
           }
-        }
-      ],
-      "performance-rt-apps-no-exec-probes": [
-        {
+        },
+      "performance-rt-apps-no-exec-probes": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Far Edge",
@@ -11433,7 +11282,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565044986 -0500 CDT m=+20.099969160",
           "state": "skipped",
           "testID": {
@@ -11441,10 +11290,8 @@
             "suite": "performance",
             "tags": "faredge"
           }
-        }
-      ],
-      "performance-shared-cpu-pool-non-rt-scheduling-policy": [
-        {
+        },
+      "performance-shared-cpu-pool-non-rt-scheduling-policy": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Far Edge",
@@ -11462,7 +11309,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.56508862 -0500 CDT m=+20.100012795",
           "state": "skipped",
           "testID": {
@@ -11470,10 +11317,8 @@
             "suite": "performance",
             "tags": "faredge"
           }
-        }
-      ],
-      "platform-alteration-base-image": [
-        {
+        },
+      "platform-alteration-base-image": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-image-standards",
@@ -11491,7 +11336,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565365098 -0500 CDT m=+20.100289274",
           "state": "skipped",
           "testID": {
@@ -11499,10 +11344,8 @@
             "suite": "platform-alteration",
             "tags": "common"
           }
-        }
-      ],
-      "platform-alteration-boot-params": [
-        {
+        },
+      "platform-alteration-boot-params": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-host-os",
@@ -11520,7 +11363,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565494647 -0500 CDT m=+20.100418822",
           "state": "skipped",
           "testID": {
@@ -11528,10 +11371,8 @@
             "suite": "platform-alteration",
             "tags": "common"
           }
-        }
-      ],
-      "platform-alteration-hugepages-1g-only": [
-        {
+        },
+      "platform-alteration-hugepages-1g-only": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Far Edge",
@@ -11549,7 +11390,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565634975 -0500 CDT m=+20.100559178",
           "state": "skipped",
           "testID": {
@@ -11557,10 +11398,8 @@
             "suite": "platform-alteration",
             "tags": "faredge"
           }
-        }
-      ],
-      "platform-alteration-hugepages-2m-only": [
-        {
+        },
+      "platform-alteration-hugepages-2m-only": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-huge-pages",
@@ -11578,7 +11417,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565610579 -0500 CDT m=+20.100534753",
           "state": "skipped",
           "testID": {
@@ -11586,10 +11425,8 @@
             "suite": "platform-alteration",
             "tags": "extended"
           }
-        }
-      ],
-      "platform-alteration-hugepages-config": [
-        {
+        },
+      "platform-alteration-hugepages-config": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-huge-pages",
@@ -11607,7 +11444,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565475723 -0500 CDT m=+20.100399897",
           "state": "skipped",
           "testID": {
@@ -11615,10 +11452,8 @@
             "suite": "platform-alteration",
             "tags": "common"
           }
-        }
-      ],
-      "platform-alteration-hyperthread-enable": [
-        {
+        },
+      "platform-alteration-hyperthread-enable": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Extended",
@@ -11636,7 +11471,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565325812 -0500 CDT m=+20.100249986",
           "state": "skipped",
           "testID": {
@@ -11644,10 +11479,8 @@
             "suite": "platform-alteration",
             "tags": "extended"
           }
-        }
-      ],
-      "platform-alteration-is-selinux-enforcing": [
-        {
+        },
+      "platform-alteration-is-selinux-enforcing": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-security",
@@ -11665,7 +11498,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565457298 -0500 CDT m=+20.100381472",
           "state": "skipped",
           "testID": {
@@ -11673,10 +11506,8 @@
             "suite": "platform-alteration",
             "tags": "common"
           }
-        }
-      ],
-      "platform-alteration-isredhat-release": [
-        {
+        },
+      "platform-alteration-isredhat-release": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-base-images",
@@ -11694,7 +11525,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565416803 -0500 CDT m=+20.100340978",
           "state": "skipped",
           "testID": {
@@ -11702,10 +11533,8 @@
             "suite": "platform-alteration",
             "tags": "common"
           }
-        }
-      ],
-      "platform-alteration-ocp-lifecycle": [
-        {
+        },
+      "platform-alteration-ocp-lifecycle": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-k8s",
@@ -11723,7 +11552,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565570329 -0500 CDT m=+20.100494505",
           "state": "skipped",
           "testID": {
@@ -11731,10 +11560,8 @@
             "suite": "platform-alteration",
             "tags": "common"
           }
-        }
-      ],
-      "platform-alteration-ocp-node-os-lifecycle": [
-        {
+        },
+      "platform-alteration-ocp-node-os-lifecycle": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-host-os",
@@ -11752,7 +11579,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565588426 -0500 CDT m=+20.100512601",
           "state": "skipped",
           "testID": {
@@ -11760,10 +11587,8 @@
             "suite": "platform-alteration",
             "tags": "common"
           }
-        }
-      ],
-      "platform-alteration-service-mesh-usage": [
-        {
+        },
+      "platform-alteration-service-mesh-usage": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "No Doc Link - Extended",
@@ -11781,7 +11606,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565553571 -0500 CDT m=+20.100477761",
           "state": "skipped",
           "testID": {
@@ -11789,10 +11614,8 @@
             "suite": "platform-alteration",
             "tags": "extended"
           }
-        }
-      ],
-      "platform-alteration-sysctl-config": [
-        {
+        },
+      "platform-alteration-sysctl-config": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
@@ -11810,7 +11633,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565534689 -0500 CDT m=+20.100458864",
           "state": "skipped",
           "testID": {
@@ -11818,10 +11641,8 @@
             "suite": "platform-alteration",
             "tags": "common"
           }
-        }
-      ],
-      "platform-alteration-tainted-node-kernel": [
-        {
+        },
+      "platform-alteration-tainted-node-kernel": {
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
@@ -11839,7 +11660,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565396496 -0500 CDT m=+20.100320669",
           "state": "skipped",
           "testID": {
@@ -11848,7 +11669,6 @@
             "tags": "common"
           }
         }
-      ]
     },
     "versions": {
       "claimFormat": "v0.1.0",

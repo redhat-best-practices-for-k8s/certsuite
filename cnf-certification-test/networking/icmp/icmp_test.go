@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,10 +20,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
-	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
@@ -297,14 +298,18 @@ func TestProcessContainerIpsPerNet(t *testing.T) {
 			},
 		},
 	}
+	var logArchive strings.Builder
+	log.SetupLogger(&logArchive, "INFO")
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ProcessContainerIpsPerNet(
+			processContainerIpsPerNet(
 				tt.args.containerID,
 				tt.args.netKey,
 				tt.args.ipAddresses,
+				"",
 				tt.args.netsUnderTest,
 				tt.args.aIPVersion,
+				log.GetLogger(),
 			)
 			if !reflect.DeepEqual(tt.args.netsUnderTest, tt.args.wantNetsUnderTest) {
 				t.Errorf(
@@ -327,7 +332,6 @@ func TestBuildNetTestContext(t *testing.T) {
 		name              string
 		args              args
 		wantNetsUnderTest map[string]netcommons.NetTestContext
-		wantClaimsLogStr  []string
 	}{
 		{
 			name: "ipv4ok",
@@ -393,10 +397,6 @@ func TestBuildNetTestContext(t *testing.T) {
 					DestTargets: nil,
 				},
 			},
-
-			wantClaimsLogStr: []string{
-				"Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests\n",
-			},
 		},
 		{
 			name: "ipv4ok multus",
@@ -408,7 +408,8 @@ func TestBuildNetTestContext(t *testing.T) {
 			wantNetsUnderTest: map[string]netcommons.NetTestContext{
 				"tnf/mynet-ipv4-0": {
 					TesterSource: netcommons.ContainerIP{
-						IP: "192.168.0.3",
+						IP:            "192.168.0.3",
+						InterfaceName: "net1",
 						ContainerIdentifier: &provider.Container{
 							Container: &corev1.Container{
 								Name: "test1",
@@ -422,7 +423,8 @@ func TestBuildNetTestContext(t *testing.T) {
 					},
 					DestTargets: []netcommons.ContainerIP{
 						{
-							IP: "192.168.0.4",
+							IP:            "192.168.0.4",
+							InterfaceName: "net1",
 							ContainerIdentifier: &provider.Container{
 								Container: &corev1.Container{
 									Name: "test2",
@@ -439,7 +441,8 @@ func TestBuildNetTestContext(t *testing.T) {
 				"tnf/mynet-ipv4-1": {
 					TesterContainerNodeName: "",
 					TesterSource: netcommons.ContainerIP{
-						IP: "192.168.1.3",
+						IP:            "192.168.1.3",
+						InterfaceName: "net2",
 						ContainerIdentifier: &provider.Container{
 							Container: &corev1.Container{
 								Name: "test1",
@@ -453,7 +456,8 @@ func TestBuildNetTestContext(t *testing.T) {
 					},
 					DestTargets: []netcommons.ContainerIP{
 						{
-							IP: "192.168.1.4",
+							IP:            "192.168.1.4",
+							InterfaceName: "net2",
 							ContainerIdentifier: &provider.Container{
 								Container: &corev1.Container{
 									Name: "test2",
@@ -478,7 +482,8 @@ func TestBuildNetTestContext(t *testing.T) {
 			wantNetsUnderTest: map[string]netcommons.NetTestContext{
 				"tnf/mynet-ipv4-0": {
 					TesterSource: netcommons.ContainerIP{
-						IP: "192.168.0.3",
+						IP:            "192.168.0.3",
+						InterfaceName: "net1",
 						ContainerIdentifier: &provider.Container{
 							Container: &corev1.Container{
 								Name: "test1",
@@ -495,7 +500,8 @@ func TestBuildNetTestContext(t *testing.T) {
 				"tnf/mynet-ipv4-1": {
 					TesterContainerNodeName: "",
 					TesterSource: netcommons.ContainerIP{
-						IP: "192.168.1.3",
+						IP:            "192.168.1.3",
+						InterfaceName: "net2",
 						ContainerIdentifier: &provider.Container{
 							Container: &corev1.Container{
 								Name: "test1",
@@ -510,29 +516,26 @@ func TestBuildNetTestContext(t *testing.T) {
 					DestTargets: nil,
 				},
 			},
-
-			wantClaimsLogStr: []string{
-				"Skipping pod pod2 because it is excluded from Multus connectivity tests only\n",
-			},
 		},
 	}
+	var logArchive strings.Builder
+	log.SetupLogger(&logArchive, "INFO")
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			for idx := range tt.args.pods {
-				tt.args.pods[idx].MultusIPs = make(map[string][]string)
+				tt.args.pods[idx].MultusNetworkInterfaces = make(map[string]provider.CniNetworkInterface)
 				var err error
-				tt.args.pods[idx].MultusIPs, err = provider.GetPodIPsPerNet(
-					tt.args.pods[idx].GetAnnotations()[provider.CniNetworksStatusKey],
-				)
+				tt.args.pods[idx].MultusNetworkInterfaces, err = provider.GetPodIPsPerNet(tt.args.pods[idx].GetAnnotations()[provider.CniNetworksStatusKey])
 				if err != nil {
 					fmt.Printf("Could not decode networks-status annotation")
 				}
 			}
 
-			gotNetsUnderTest, gotClaimsLog := BuildNetTestContext(
+			gotNetsUnderTest := BuildNetTestContext(
 				tt.args.pods,
 				tt.args.aIPVersion,
 				tt.args.aType,
+				log.GetLogger(),
 			)
 
 			out, _ := json.MarshalIndent(gotNetsUnderTest, "", "")
@@ -542,19 +545,6 @@ func TestBuildNetTestContext(t *testing.T) {
 					"BuildNetTestContext() gotNetsUnderTest = %v, want %v",
 					gotNetsUnderTest,
 					tt.wantNetsUnderTest,
-				)
-			}
-
-			testClaimsLog := loghelper.CuratedLogLines{}
-			if len(tt.wantClaimsLogStr) > 0 {
-				testClaimsLog.Init(tt.wantClaimsLogStr...)
-			}
-
-			if !reflect.DeepEqual(gotClaimsLog, testClaimsLog) {
-				t.Errorf(
-					"BuildNetTestContext() gotClaimsLog = %v, want %v",
-					gotClaimsLog,
-					testClaimsLog,
 				)
 			}
 		})
@@ -582,8 +572,17 @@ var (
 				},
 			},
 		},
-		MultusIPs: map[string][]string{
-			"": {},
+		MultusNetworkInterfaces: map[string]provider.CniNetworkInterface{
+			"tnf/mynet-ipv4-0": {
+				Interface: "net1",
+				Name:      "mynet-ipv4-0",
+				IPs:       []string{"192.168.0.3"},
+			},
+			"tnf/mynet-ipv4-1": {
+				Interface: "net2",
+				Name:      "mynet-ipv4-1",
+				IPs:       []string{"192.168.1.3"},
+			},
 		},
 		SkipNetTests:       false,
 		SkipMultusNetTests: false,
@@ -620,8 +619,17 @@ var (
 				},
 			},
 		},
-		MultusIPs: map[string][]string{
-			"": {},
+		MultusNetworkInterfaces: map[string]provider.CniNetworkInterface{
+			"tnf/mynet-ipv4-0": {
+				Interface: "net1",
+				Name:      "mynet-ipv4-0",
+				IPs:       []string{"192.168.0.4"},
+			},
+			"tnf/mynet-ipv4-1": {
+				Interface: "net2",
+				Name:      "mynet-ipv4-1",
+				IPs:       []string{"192.168.1.4"},
+			},
 		},
 		SkipNetTests:       false,
 		SkipMultusNetTests: false,
@@ -658,7 +666,7 @@ var (
 				},
 			},
 		},
-		MultusIPs: map[string][]string{
+		MultusNetworkInterfaces: map[string]provider.CniNetworkInterface{
 			"": {},
 		},
 		SkipNetTests:       true,
@@ -696,7 +704,7 @@ var (
 				},
 			},
 		},
-		MultusIPs: map[string][]string{
+		MultusNetworkInterfaces: map[string]provider.CniNetworkInterface{
 			"": {},
 		},
 		SkipNetTests:       false,
@@ -723,11 +731,10 @@ func TestRunNetworkingTests(t *testing.T) {
 		aIPVersion    netcommons.IPVersion
 	}
 	tests := []struct {
-		name             string
-		args             args
-		wantReport       testhelper.FailureReasonOut
-		wantClaimsLogStr []string
-		testPingSuccess  bool
+		name            string
+		args            args
+		wantReport      testhelper.FailureReasonOut
+		testPingSuccess bool
 	}{
 		{name: "ok",
 			args: args{netsUnderTest: map[string]netcommons.NetTestContext{"default": {
@@ -795,15 +802,12 @@ func TestRunNetworkingTests(t *testing.T) {
 						ObjectType:       "Network",
 						ObjectFieldsKeys: []string{testhelper.ReasonForCompliance, testhelper.NetworkName},
 						ObjectFieldsValues: []string{
-							"ICMP tests were successful for  all 1 IP source/destination in this network",
+							"ICMP tests were successful for all 1 IP source/destination in this network",
 							"default",
 						},
 					},
 				},
 				NonCompliantObjectsOut: []*testhelper.ReportObject{},
-			},
-			wantClaimsLogStr: []string{
-				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0\n",
 			},
 			testPingSuccess: true,
 		},
@@ -950,13 +954,12 @@ func TestRunNetworkingTests(t *testing.T) {
 					},
 				},
 			},
-			wantClaimsLogStr: []string{
-				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n", //nolint:lll
-				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n",
-			},
 			testPingSuccess: false,
 		},
 	}
+
+	var logArchive strings.Builder
+	log.SetupLogger(&logArchive, "INFO")
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if tt.testPingSuccess {
@@ -964,23 +967,17 @@ func TestRunNetworkingTests(t *testing.T) {
 			} else {
 				TestPing = TestPingFailure
 			}
-			gotReport, gotClaimsLog, _ := RunNetworkingTests(
+			gotReport, _ := RunNetworkingTests(
 				tt.args.netsUnderTest,
 				tt.args.count,
 				tt.args.aIPVersion,
+				log.GetLogger(),
 			)
 			if !gotReport.Equal(tt.wantReport) {
 				t.Errorf(
-					"RunNetworkingTests() gotReport = %s, want %s",
+					"RunNetworkingTests() gotReport = %q, want %q",
 					testhelper.FailureReasonOutTestString(gotReport),
 					testhelper.FailureReasonOutTestString(tt.wantReport),
-				)
-			}
-			if !reflect.DeepEqual(gotClaimsLog.GetLogLines(), tt.wantClaimsLogStr) {
-				t.Errorf(
-					"RunNetworkingTests() gotReport = %+v, want %+v",
-					gotClaimsLog,
-					tt.wantClaimsLogStr,
 				)
 			}
 		})

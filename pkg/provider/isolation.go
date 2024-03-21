@@ -17,7 +17,7 @@
 package provider
 
 import (
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 func AreResourcesIdentical(p *Pod) bool {
@@ -25,7 +25,7 @@ func AreResourcesIdentical(p *Pod) bool {
 	for _, cut := range p.Containers {
 		// At least limits must be specified (requests default to limits if not specified)
 		if len(cut.Resources.Limits) == 0 {
-			logrus.Debugf("%s has been found with undefined limits.", cut.String())
+			log.Debug("%s has been found with undefined limits.", cut.String())
 			return false
 		}
 
@@ -37,12 +37,12 @@ func AreResourcesIdentical(p *Pod) bool {
 
 		// Check for mismatches
 		if !cpuRequests.Equal(*cpuLimits) {
-			logrus.Debugf("%s has CPU requests %f and limits %f that do not match.", cut.String(), cpuRequests.AsApproximateFloat64(), cpuLimits.AsApproximateFloat64())
+			log.Debug("%s has CPU requests %f and limits %f that do not match.", cut.String(), cpuRequests.AsApproximateFloat64(), cpuLimits.AsApproximateFloat64())
 			return false
 		}
 
 		if !memoryRequests.Equal(*memoryLimits) {
-			logrus.Debugf("%s has memory requests %f and limits %f that do not match.", cut.String(), memoryRequests.AsApproximateFloat64(), memoryLimits.AsApproximateFloat64())
+			log.Debug("%s has memory requests %f and limits %f that do not match.", cut.String(), memoryRequests.AsApproximateFloat64(), memoryLimits.AsApproximateFloat64())
 			return false
 		}
 	}
@@ -62,16 +62,16 @@ func AreCPUResourcesWholeUnits(p *Pod) bool {
 		cpuLimitsMillis := cut.Resources.Limits.Cpu().MilliValue()
 
 		if cpuRequestsMillis == 0 || cpuLimitsMillis == 0 {
-			logrus.Debugf("%s has been found with undefined requests or limits.", cut.String())
+			log.Debug("%s has been found with undefined requests or limits.", cut.String())
 			return false
 		}
 
 		if !isInteger(cpuRequestsMillis) {
-			logrus.Debugf("%s has CPU requests %d (milli) that has to be a whole unit.", cut.String(), cpuRequestsMillis)
+			log.Debug("%s has CPU requests %d (milli) that has to be a whole unit.", cut.String(), cpuRequestsMillis)
 			return false
 		}
 		if !isInteger(cpuLimitsMillis) {
-			logrus.Debugf("%s has CPU limits %d (milli) that has to be a whole unit.", cut.String(), cpuLimitsMillis)
+			log.Debug("%s has CPU limits %d (milli) that has to be a whole unit.", cut.String(), cpuLimitsMillis)
 			return false
 		}
 	}
@@ -91,20 +91,20 @@ func LoadBalancingDisabled(p *Pod) bool {
 		if v == disableVar {
 			cpuLoadBalancingDisabled = true
 		} else {
-			logrus.Debugf("Annotation cpu-load-balancing.crio.io has an invalid value for CPU isolation.  Must be 'disable'.")
+			log.Debug("Annotation cpu-load-balancing.crio.io has an invalid value for CPU isolation.  Must be 'disable'.")
 		}
 	} else {
-		logrus.Debugf("Annotation cpu-load-balancing.crio.io is missing.")
+		log.Debug("Annotation cpu-load-balancing.crio.io is missing.")
 	}
 
 	if v, ok := p.ObjectMeta.Annotations["irq-load-balancing.crio.io"]; ok {
 		if v == disableVar {
 			irqLoadBalancingDisabled = true
 		} else {
-			logrus.Debugf("Annotation irq-load-balancing.crio.io has an invalid value for CPU isolation.  Must be 'disable'.")
+			log.Debug("Annotation irq-load-balancing.crio.io has an invalid value for CPU isolation.  Must be 'disable'.")
 		}
 	} else {
-		logrus.Debugf("Annotation irq-load-balancing.crio.io is missing.")
+		log.Debug("Annotation irq-load-balancing.crio.io is missing.")
 	}
 
 	// Both conditions have to be set to 'disable'

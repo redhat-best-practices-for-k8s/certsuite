@@ -1,4 +1,4 @@
-// Copyright (C) 2023 Red Hat, Inc.
+// Copyright (C) 2023-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,44 +19,41 @@ package autodiscover
 import (
 	"context"
 
-	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	rbacv1typed "k8s.io/client-go/kubernetes/typed/rbac/v1"
 )
 
 // getRoleBindings returns all of the rolebindings in the cluster
-func getRoleBindings() ([]rbacv1.RoleBinding, error) {
+func getRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.RoleBinding, error) {
 	// Get all of the rolebindings from all namespaces
-	clientsHolder := clientsholder.GetClientsHolder()
-	roleList, roleErr := clientsHolder.K8sClient.RbacV1().RoleBindings("").List(context.TODO(), metav1.ListOptions{})
+	roleList, roleErr := client.RoleBindings("").List(context.TODO(), metav1.ListOptions{})
 	if roleErr != nil {
-		logrus.Errorf("executing rolebinding command failed with error: %v", roleErr)
+		log.Error("Executing rolebinding command failed with error: %v", roleErr)
 		return nil, roleErr
 	}
 	return roleList.Items, nil
 }
 
 // getClusterRoleBindings returns all of the clusterrolebindings in the cluster
-func getClusterRoleBindings() ([]rbacv1.ClusterRoleBinding, error) {
+func getClusterRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.ClusterRoleBinding, error) {
 	// Get all of the clusterrolebindings from the cluster
 	// These are not namespaced so we want all of them
-	clientsHolder := clientsholder.GetClientsHolder()
-	crbList, crbErr := clientsHolder.K8sClient.RbacV1().ClusterRoleBindings().List(context.TODO(), metav1.ListOptions{})
+	crbList, crbErr := client.ClusterRoleBindings().List(context.TODO(), metav1.ListOptions{})
 	if crbErr != nil {
-		logrus.Errorf("executing clusterrolebinding command failed with error: %v", crbErr)
+		log.Error("Executing clusterrolebinding command failed with error: %v", crbErr)
 		return nil, crbErr
 	}
 	return crbList.Items, nil
 }
 
 // getRoles returns all of the roles in the cluster
-func getRoles() ([]rbacv1.Role, error) {
+func getRoles(client rbacv1typed.RbacV1Interface) ([]rbacv1.Role, error) {
 	// Get all of the roles from all namespaces
-	clientsHolder := clientsholder.GetClientsHolder()
-	roleList, roleErr := clientsHolder.K8sClient.RbacV1().Roles("").List(context.TODO(), metav1.ListOptions{})
+	roleList, roleErr := client.Roles("").List(context.TODO(), metav1.ListOptions{})
 	if roleErr != nil {
-		logrus.Errorf("executing roles command failed with error: %v", roleErr)
+		log.Error("Executing roles command failed with error: %v", roleErr)
 		return nil, roleErr
 	}
 	return roleList.Items, nil

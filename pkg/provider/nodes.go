@@ -147,3 +147,12 @@ func (node *Node) IsHyperThreadNode(env *TestEnvironment) (bool, error) {
 	}
 	return num > 1, nil
 }
+
+func (node *Node) HasWorkloadDeployed(podsUnderTest []*Pod) bool {
+	for _, pod := range podsUnderTest {
+		if pod.Spec.NodeName == node.Data.Name {
+			return true
+		}
+	}
+	return false
+}

@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,11 +18,10 @@ package common
 
 // Constants shared by multiple test suite packages
 const (
-	defaultTimeoutSeconds = 10
-	AccessControlTestKey  = "access-control"
-	LifecycleTestKey      = "lifecycle"
-	ManageabilityTestKey  = "manageability"
-	// ChaosTesting              = "chaostesting"
+	defaultTimeoutSeconds     = 10
+	AccessControlTestKey      = "access-control"
+	LifecycleTestKey          = "lifecycle"
+	ManageabilityTestKey      = "manageability"
 	AffiliatedCertTestKey     = "affiliated-certification"
 	NetworkingTestKey         = "networking"
 	ObservabilityTestKey      = "observability"

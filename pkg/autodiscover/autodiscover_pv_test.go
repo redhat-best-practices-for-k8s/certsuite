@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Red Hat, Inc.
+// Copyright (C) 2022-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	corev1 "k8s.io/api/core/v1"
+	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
@@ -95,5 +96,42 @@ func TestGetPersistentVolumeClaims(t *testing.T) {
 		PersistentVolumesClaims, err := getPersistentVolumeClaims(oc.K8sClient.CoreV1())
 		assert.Nil(t, err)
 		assert.Equal(t, tc.expectedRQs[0].Name, PersistentVolumesClaims[0].Name)
+	}
+}
+
+func TestGetAllStorageClasses(t *testing.T) {
+	generateStorageClasses := func(name string) *storagev1.StorageClass {
+		return &storagev1.StorageClass{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: name,
+			},
+			Provisioner: name,
+		}
+	}
+
+	testCases := []struct {
+		scName      string
+		expectedRQs []storagev1.StorageClass
+	}{
+		{
+			scName: "test1",
+			expectedRQs: []storagev1.StorageClass{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name: "test1",
+					},
+					Provisioner: "test1",
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, generateStorageClasses(tc.scName))
+		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
+		StorageClasses, err := getAllStorageClasses(oc.K8sClient.StorageV1())
+		assert.Nil(t, err)
+		assert.Equal(t, tc.expectedRQs[0].Name, StorageClasses[0].Name)
 	}
 }

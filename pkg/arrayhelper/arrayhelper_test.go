@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@ package arrayhelper
 
 import (
 	"reflect"
+	"sort"
 	"strings"
 	"testing"
 
@@ -83,5 +84,32 @@ func TestArgListToMap(t *testing.T) {
 
 	for _, tc := range testCases {
 		assert.True(t, reflect.DeepEqual(tc.expectedMap, ArgListToMap(tc.argList)))
+	}
+}
+
+func TestUnique(t *testing.T) {
+	testCases := []struct {
+		testSlice     []string
+		expectedSlice []string
+	}{
+		{
+			testSlice:     []string{"one", "two", "three"},
+			expectedSlice: []string{"one", "two", "three"},
+		},
+		{
+			testSlice:     []string{"one", "two", "three", "three"},
+			expectedSlice: []string{"one", "two", "three"},
+		},
+		{
+			testSlice:     []string{},
+			expectedSlice: []string{},
+		},
+	}
+
+	for _, tc := range testCases {
+		sort.Strings(tc.expectedSlice)
+		results := Unique(tc.testSlice)
+		sort.Strings(results)
+		assert.True(t, reflect.DeepEqual(tc.expectedSlice, results))
 	}
 }

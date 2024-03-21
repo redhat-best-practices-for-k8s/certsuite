@@ -1,4 +1,4 @@
-// Copyright (C) 2022-2023 Red Hat, Inc.
+// Copyright (C) 2022-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,13 +21,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
-	"os"
+	defaultLog "log"
 	"strings"
 
 	"github.com/go-logr/logr"
 	"github.com/go-logr/stdr"
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
@@ -65,7 +64,7 @@ type Container struct {
 	Runtime                  string
 	UID                      string
 	ContainerImageIdentifier ContainerImageIdentifier
-	PreflightResults         plibRuntime.Results
+	PreflightResults         PreflightResultsDB
 }
 
 func NewContainer() *Container {
@@ -81,19 +80,19 @@ func (c *Container) GetUID() (string, error) {
 		uid = split[len(split)-1]
 	}
 	if uid == "" {
-		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Name))
+		log.Debug(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Name))
 		return "", errors.New("cannot determine container UID")
 	}
-	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Name, uid))
+	log.Debug(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Name, uid))
 	return uid, nil
 }
 
-func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRuntime.Results, env *TestEnvironment) error {
-	logrus.Infof("Running preflight container test against image: %s with name: %s", c.Image, c.Name)
+func (c *Container) SetPreflightResults(preflightImageCache map[string]PreflightResultsDB, env *TestEnvironment) error {
+	log.Info("Running Preflight container test for container %q with image %q", c, c.Image)
 
 	// Short circuit if the image already exists in the cache
 	if _, exists := preflightImageCache[c.Image]; exists {
-		logrus.Infof("Container image: %s exists in the cache. Skipping this run.", c.Image)
+		log.Info("Container image %q exists in the cache. Skipping this run.", c.Image)
 		c.PreflightResults = preflightImageCache[c.Image]
 		return nil
 	}
@@ -101,7 +100,7 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 	opts := []plibContainer.Option{}
 	opts = append(opts, plibContainer.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
 	if env.IsPreflightInsecureAllowed() {
-		logrus.Info("Insecure connections are being allowed to preflight")
+		log.Info("Insecure connections are being allowed to Preflight")
 		opts = append(opts, plibContainer.WithInsecureConnection())
 	}
 
@@ -114,25 +113,35 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 
 	// Add logger output to the context
 	logbytes := bytes.NewBuffer([]byte{})
-	checklogger := log.Default()
+	checklogger := defaultLog.Default()
 	checklogger.SetOutput(logbytes)
 	logger := stdr.New(checklogger)
 	ctx = logr.NewContext(ctx, logger)
 
 	check := plibContainer.NewCheck(c.Image, opts...)
+
 	results, runtimeErr := check.Run(ctx)
-	logrus.StandardLogger().Out = os.Stderr
 	if runtimeErr != nil {
-		logrus.Error(runtimeErr)
-		return runtimeErr
+		_, checks, err := check.List(ctx)
+		if err != nil {
+			return fmt.Errorf("could not get preflight container test list")
+		}
+
+		results.TestedImage = c.Image
+		for _, c := range checks {
+			results.PassedOverall = false
+			result := plibRuntime.Result{Check: c, ElapsedTime: 0}
+			results.Errors = append(results.Errors, *result.WithError(runtimeErr))
+		}
 	}
 
-	// Take all of the preflight logs and stick them into logrus.
-	logrus.Info(logbytes.String())
+	// Take all of the Preflight logs and stick them into our log.
+	log.Info(logbytes.String())
 
-	// Store the result into the cache and store the Results into the container's PreflightResults var.
-	preflightImageCache[c.Image] = results
-	c.PreflightResults = preflightImageCache[c.Image]
+	// Store the Preflight test results into the container's PreflightResults var and into the cache.
+	resultsDB := GetPreflightResultsDB(&results)
+	c.PreflightResults = resultsDB
+	preflightImageCache[c.Image] = resultsDB
 	return nil
 }
 

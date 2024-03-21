@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,9 +20,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -31,7 +30,7 @@ import (
 
 // TestCrsNamespaces finds the list of the input CRDs (crds parameter) instances (CRs) and verify that they are only in namespaces provided as input.
 // The list of CRs not belonging to the namespaces passed as input is returned as invalid
-func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespaces []string) (invalidCrs map[string]map[string][]string, err error) {
+func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespaces []string, logger *log.Logger) (invalidCrs map[string]map[string][]string, err error) {
 	// Initialize the top level map
 	invalidCrs = make(map[string]map[string][]string)
 	for _, crd := range crds {
@@ -41,7 +40,7 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 		}
 		for namespace, crNames := range crNamespaces {
 			if !stringhelper.StringInSlice(configNamespaces, namespace, false) {
-				logrus.Debugf("CRD: %s (kind:%s/ plural:%s) has CRs %v deployed in namespace (%s) not in configured namespaces %v",
+				logger.Error("CRD: %q (kind:%q/ plural:%q) has CRs %v deployed in namespace %q not in configured namespaces %v",
 					crd.Name, crd.Spec.Names.Kind, crd.Spec.Names.Plural, crNames, namespace, configNamespaces)
 				// Initialize this map dimension before use
 				if invalidCrs[crd.Name] == nil {
@@ -64,10 +63,10 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 			Version:  version.Name,
 			Resource: aCrd.Spec.Names.Plural,
 		}
-		logrus.Debugf("Looking for CRs from CRD: %s api version:%s group:%s plural:%s", aCrd.Name, version.Name, aCrd.Spec.Group, aCrd.Spec.Names.Plural)
+		log.Debug("Looking for CRs from CRD: %s api version:%s group:%s plural:%s", aCrd.Name, version.Name, aCrd.Spec.Group, aCrd.Spec.Names.Plural)
 		crs, err := oc.DynamicClient.Resource(gvr).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			logrus.Errorf("error getting %s: %v\n", aCrd.Name, err)
+			log.Error("error getting %s: %v\n", aCrd.Name, err)
 			return crdNamespaces, err
 		}
 		crdNamespaces = make(map[string][]string)
@@ -92,14 +91,15 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 }
 
 // GetInvalidCRDsNum returns the number of invalid CRs in the map
-func GetInvalidCRsNum(invalidCrs map[string]map[string][]string) (invalidCrsNum int, claimsLog loghelper.CuratedLogLines) {
+func GetInvalidCRsNum(invalidCrs map[string]map[string][]string, logger *log.Logger) int {
+	var invalidCrsNum int
 	for crdName, namespaces := range invalidCrs {
 		for namespace, crNames := range namespaces {
 			for _, crName := range crNames {
-				claimsLog.AddLogLine("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
+				logger.Error("crName=%q namespace=%q is invalid (crd=%q)", crName, namespace, crdName)
 				invalidCrsNum++
 			}
 		}
 	}
-	return invalidCrsNum, claimsLog
+	return invalidCrsNum
 }

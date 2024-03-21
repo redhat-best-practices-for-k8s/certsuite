@@ -38,7 +38,7 @@ In order to get the required information, the test suite does not `ssh` into nod
 **Required arguments**
 
 * `-t` to provide the path of the local directory that contains tnf config files
-* `-o` to provide the path of the local directory where test results (claim.json), the execution logs (tnf-execution.log), and the results artifacts file (results.tar.gz) will be available from after the container exits.
+* `-o` to provide the path of the local directory where test results (claim.json), the execution logs (cnf-certsuite.log), and the results artifacts file (results.tar.gz) will be available from after the container exits.
 
 !!! warning
 
@@ -112,8 +112,8 @@ Two env vars allow to control the web artifacts and the the new tar.gz file gene
 ### Build locally
 
 ```shell
-podman build -t cnf-certification-test:v4.5.6 \
-  --build-arg TNF_VERSION=v4.5.6 \
+podman build -t cnf-certification-test:v5.0.5 \
+  --build-arg TNF_VERSION=v5.0.5 \
 ```
 
 * `TNF_VERSION` value is set to a branch, a tag, or a hash of a commit that will be installed into the image
@@ -125,8 +125,8 @@ The unofficial source could be a fork of the TNF repository.
 Use the `TNF_SRC_URL` build argument to override the URL to a source repository.
 
 ```shell
-podman build -t cnf-certification-test:v4.5.6 \
-  --build-arg TNF_VERSION=v4.5.6 \
+podman build -t cnf-certification-test:v5.0.5 \
+  --build-arg TNF_VERSION=v5.0.5 \
   --build-arg TNF_SRC_URL=https://github.com/test-network-function/cnf-certification-test .
 ```
 
@@ -135,7 +135,7 @@ podman build -t cnf-certification-test:v4.5.6 \
 Specify the custom TNF image using the `-i` parameter.
 
 ```shell
-./run-tnf-container.sh -i cnf-certification-test:v4.5.6
+./run-tnf-container.sh -i cnf-certification-test:v5.0.5
 -t ~/tnf/config -o ~/tnf/output -l "networking,access-control"
 ```
 

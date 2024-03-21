@@ -22,6 +22,14 @@ Please contact us in case the documentation is broken.
 
 * The catalog of all the available test cases can be found [here](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md).
 
+## Demo
+
+<!-- markdownlint-disable MD033 -->
+<object type="image/svg+xml" data="docs/assets/images/demo-cnfcert.svg">
+<img src="docs/assets/images/demo-cnfcert.svg">
+</object>
+<!-- markdownlint-enable MD033 -->
+
 ## Target Audience
 
 * Partner
@@ -31,17 +39,12 @@ Please contact us in case the documentation is broken.
 
 * OCP or Kubernetes Cluster
 * Docker or Podman (if running the container-based version)
-* `make install-tools` (if running the compiled binary version)
 
 ## Pre-requisites for Topics Covered
 
 * Knowledge on Kubernetes
 * OpenShift Container Platform
 * Kubernetes Operator
-
-## Language
-
-Golang
 
 ## Linters for the Codebase
 

@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import (
 	"os"
 
 	"github.com/kelseyhightower/envconfig"
-	log "github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"gopkg.in/yaml.v3"
 )
 
@@ -39,7 +39,7 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 		return configuration, nil
 	}
 
-	log.Info("Loading config from file: ", filePath)
+	log.Info("Loading config from file: %s", filePath)
 	contents, err := os.ReadFile(filePath)
 	if err != nil {
 		return configuration, err
@@ -52,10 +52,10 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 
 	// Set default namespace for the debug daemonset pods, in case it was not set.
 	if configuration.DebugDaemonSetNamespace == "" {
-		log.Warnf("No namespace configured for the debug DaemonSet. Defaulting to namespace %s", defaultDebugDaemonSetNamespace)
+		log.Warn("No namespace configured for the debug DaemonSet. Defaulting to namespace %q", defaultDebugDaemonSetNamespace)
 		configuration.DebugDaemonSetNamespace = defaultDebugDaemonSetNamespace
 	} else {
-		log.Infof("Namespace for debug DaemonSet: %s", configuration.DebugDaemonSetNamespace)
+		log.Info("Namespace for debug DaemonSet: %s", configuration.DebugDaemonSetNamespace)
 	}
 
 	confLoaded = true
@@ -63,12 +63,11 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 }
 
 func LoadEnvironmentVariables() error {
-	log.Info("Saving environment variables & parameters.")
 	err := envconfig.Process("tnf", &parameters)
 	if err != nil {
 		return fmt.Errorf("could not process the environment variables values, error: %v", err)
 	}
-	log.Infof("Environment: %+v", parameters)
+
 	return nil
 }
 

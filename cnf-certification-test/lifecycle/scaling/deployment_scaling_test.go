@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,12 +19,14 @@ package scaling
 import (
 	"context"
 	"errors"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	v1app "k8s.io/api/apps/v1"
 	v1autoscaling "k8s.io/api/autoscaling/v1"
@@ -66,7 +68,7 @@ func TestScaleDeploymentFunc(t *testing.T) {
 	defer func() {
 		podsets.WaitForDeploymentSetReady = origFunc
 	}()
-	podsets.WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) bool {
+	podsets.WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration, logger *log.Logger) bool {
 		return true
 	}
 
@@ -79,7 +81,9 @@ func TestScaleDeploymentFunc(t *testing.T) {
 		c := clientsholder.GetTestClientsHolder(runtimeObjects)
 
 		// Run the function
-		TestScaleDeployment(tempDP, 10*time.Second)
+		var logArchive strings.Builder
+		log.SetupLogger(&logArchive, "INFO")
+		TestScaleDeployment(tempDP, 10*time.Second, log.GetLogger())
 
 		// Get the deployment from the fake API
 		dp, err := c.K8sClient.AppsV1().Deployments("namespace1").Get(context.TODO(), tc.deploymentName, metav1.GetOptions{})
@@ -129,7 +133,7 @@ func TestScaleHpaDeploymentFunc(t *testing.T) {
 	defer func() {
 		podsets.WaitForDeploymentSetReady = origFunc
 	}()
-	podsets.WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) bool {
+	podsets.WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration, logger *log.Logger) bool {
 		return true
 	}
 
@@ -173,7 +177,9 @@ func TestScaleHpaDeploymentFunc(t *testing.T) {
 		}
 
 		// Run the function
-		TestScaleHpaDeployment(dp, hpatest, 10*time.Second)
+		var logArchive strings.Builder
+		log.SetupLogger(&logArchive, "INFO")
+		TestScaleHpaDeployment(dp, hpatest, 10*time.Second, log.GetLogger())
 
 		// Get the deployment from the fake API
 		hpa, err := c.AutoscalingV1().HorizontalPodAutoscalers("namespace1").Get(context.TODO(), "hpaName", metav1.GetOptions{})
@@ -240,7 +246,9 @@ func TestScaleHpaDeploymentHelper(t *testing.T) {
 			return true, runtimeObjs[0], tc.updateResult
 		})
 
-		result := scaleHpaDeploymentHelper(client.AutoscalingV1().HorizontalPodAutoscalers("ns1"), "hpaName", "dp1", "ns1", 1, 3, 10*time.Second)
+		var logArchive strings.Builder
+		log.SetupLogger(&logArchive, "INFO")
+		result := scaleHpaDeploymentHelper(client.AutoscalingV1().HorizontalPodAutoscalers("ns1"), "hpaName", "dp1", "ns1", 1, 3, 10*time.Second, log.GetLogger())
 		assert.Equal(t, tc.expectedOutput, result)
 	}
 }
@@ -308,7 +316,9 @@ func TestScaleDeploymentHelper(t *testing.T) {
 			return true, runtimeObjs[0], tc.updateResult
 		})
 
-		result := scaleDeploymentHelper(client.AppsV1(), dep, 1, 10*time.Second, true)
+		var logArchive strings.Builder
+		log.SetupLogger(&logArchive, "INFO")
+		result := scaleDeploymentHelper(client.AppsV1(), dep, 1, 10*time.Second, true, log.GetLogger())
 		assert.Equal(t, tc.expectedOutput, result)
 	}
 }

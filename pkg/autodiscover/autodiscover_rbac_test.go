@@ -1,4 +1,4 @@
-// Copyright (C) 2023 Red Hat, Inc.
+// Copyright (C) 2023-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -73,15 +73,22 @@ func buildTestObjects() []runtime.Object {
 }
 
 func TestGetClusterRoleBinding(t *testing.T) {
-	_ = clientsholder.GetTestClientsHolder(buildTestObjects())
-	gatheredCRBs, err := getClusterRoleBindings()
+	client := clientsholder.GetTestClientsHolder(buildTestObjects())
+	gatheredCRBs, err := getClusterRoleBindings(client.K8sClient.RbacV1())
 	assert.Nil(t, err)
 	assert.Equal(t, "testCRB", gatheredCRBs[0].Name)
 }
 
 func TestGetRoleBinding(t *testing.T) {
-	_ = clientsholder.GetTestClientsHolder(buildTestObjects())
-	gatheredRBs, err := getRoleBindings()
+	client := clientsholder.GetTestClientsHolder(buildTestObjects())
+	gatheredRBs, err := getRoleBindings(client.K8sClient.RbacV1())
 	assert.Nil(t, err)
 	assert.Equal(t, "testRB", gatheredRBs[0].Name)
+}
+
+func TestGetRoles(t *testing.T) {
+	client := clientsholder.GetTestClientsHolder(buildTestObjects())
+	gatheredRoles, err := getRoles(client.K8sClient.RbacV1())
+	assert.Nil(t, err)
+	assert.Equal(t, "testRole", gatheredRoles[0].Name)
 }

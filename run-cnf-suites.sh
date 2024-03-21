@@ -2,7 +2,7 @@
 
 # [debug] uncomment line below to print out the statements as they are being
 # executed.
-set -x
+# set -x
 
 # defaults
 export OUTPUT_LOC="$PWD/cnf-certification-test"
@@ -26,7 +26,7 @@ usage_error() {
 	exit 1
 }
 
-TIMEOUT=24h0m0s
+TIMEOUT=${TIMEOUT:-24h0m0s}
 LABEL=''
 LIST=false
 SERVER_RUN=false
@@ -77,42 +77,37 @@ fi
 # List the specs (filtering by suite).
 if [ "$LIST" = true ]; then
 	cd "$BASEDIR"/cnf-certification-test || exit 1
-	./cnf-certification-test.test \
-		--ginkgo.dry-run \
-		--ginkgo.timeout=$TIMEOUT \
-		--ginkgo.v \
-		--ginkgo.label-filter="$LABEL"
+	./cnf-certification-test \
+		--list \
+		--label-filter="$LABEL"
 	cd ..
 	exit 0
 fi
 
 # Specify Junit report file name.
-GINKGO_ARGS="\
---ginkgo.timeout=$TIMEOUT \
--junit $OUTPUT_LOC \
--claimloc $OUTPUT_LOC \
---ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml \
--ginkgo.v \
--test.v\
+EXTRA_ARGS="\
+--timeout=$TIMEOUT \
+--output-dir $OUTPUT_LOC \
 "
 
 if [ "$SERVER_RUN" = "true" ]; then
-	GINKGO_ARGS="$GINKGO_ARGS -serverMode"
+	EXTRA_ARGS="$EXTRA_ARGS -serverMode"
 fi
 
+# echo "Label: $LABEL"
 if [[ $LABEL == "all" ]]; then
 	LABEL='common,extended,faredge,telco'
 fi
 
-echo "Running with label filter '$LABEL'"
-echo "Report will be output to '$OUTPUT_LOC'"
-echo "ginkgo arguments '${GINKGO_ARGS}'"
+# echo "Running with label filter '$LABEL'"
+# echo "Report will be output to '$OUTPUT_LOC'"
+# echo "Extra arguments '${EXTRA_ARGS}'"
 LABEL_STRING=''
 
 if [ -z "$LABEL" ] && { [ -z "$SERVER_RUN" ] || [ "$SERVER_RUN" == "false" ]; }; then
 	echo "No test label (-l) was set, so only diagnostic functions will run."
 else
-	LABEL_STRING="-ginkgo.label-filter=${LABEL}"
+	LABEL_STRING="--label-filter=${LABEL}"
 fi
 
 cd "$BASEDIR"/cnf-certification-test || exit 1
@@ -126,9 +121,7 @@ set -o pipefail
 # Do not double quote.
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
-./cnf-certification-test.test \
-	"${LABEL_STRING}" \
-	${GINKGO_ARGS} |& tee $OUTPUT_LOC/tnf-execution.log
+./cnf-certification-test "${LABEL_STRING}" ${EXTRA_ARGS}
 
 # preserving the exit status
 RESULT=$?

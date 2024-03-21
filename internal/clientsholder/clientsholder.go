@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,12 +19,13 @@ package clientsholder
 import (
 	"errors"
 	"fmt"
+	"os"
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 
 	apiextv1c "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
@@ -42,7 +43,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	policyv1 "k8s.io/api/policy/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
+	storagev1 "k8s.io/api/storage/v1"
 	apiextv1fake "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/fake"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
 	networkingv1 "k8s.io/client-go/kubernetes/typed/networking/v1"
 	"k8s.io/client-go/rest"
@@ -63,6 +66,7 @@ type ClientsHolder struct {
 	MachineCfg           ocpMachine.Interface
 	KubeConfig           []byte
 	ready                bool
+	GroupResources       []*metav1.APIResourceList
 }
 
 var clientsHolder = ClientsHolder{}
@@ -119,6 +123,8 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *scalingv1.HorizontalPodAutoscaler:
 			k8sClientObjects = append(k8sClientObjects, v)
+		case *storagev1.StorageClass:
+			k8sClientObjects = append(k8sClientObjects, v)
 
 		// K8s Extension Client Objects
 		case *apiextv1c.CustomResourceDefinition:
@@ -146,15 +152,36 @@ func ClearTestClientsHolder() {
 
 // GetClientsHolder returns the singleton ClientsHolder object.
 func GetClientsHolder(filenames ...string) *ClientsHolder {
+	const exitUsage = 2
 	if clientsHolder.ready {
 		return &clientsHolder
 	}
-
+	if len(filenames) == 0 {
+		errMsg := "Please provide a valid Kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config"
+		log.Error(errMsg)
+		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
+		os.Exit(exitUsage)
+	}
 	clientsHolder, err := newClientsHolder(filenames...)
 	if err != nil {
-		logrus.Panic("Failed to create k8s clients holder: ", err)
+		errMsg := fmt.Sprintf("Failed to create k8s clients holder, err: %v", err)
+		log.Error(errMsg)
+		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
+		os.Exit(1)
 	}
 	return clientsHolder
+}
+
+func GetNewClientsHolder(kubeconfigFile string) *ClientsHolder {
+	_, err := newClientsHolder(kubeconfigFile)
+	if err != nil {
+		errMsg := fmt.Sprintf("Failed to create k8s clients holder, err: %v", err)
+		log.Error(errMsg)
+		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
+		os.Exit(1)
+	}
+
+	return &clientsHolder
 }
 
 func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) {
@@ -195,7 +222,7 @@ func GetClientConfigFromRestConfig(restConfig *rest.Config) *clientcmdapi.Config
 func getClusterRestConfig(filenames ...string) (*rest.Config, error) {
 	restConfig, err := rest.InClusterConfig()
 	if err == nil {
-		logrus.Infof("CNF Cert Suite is running inside a cluster.")
+		log.Info("CNF Cert Suite is running inside a cluster.")
 
 		// Convert restConfig to clientcmdapi.Config so we can get the kubeconfig "file" bytes
 		// needed by preflight's operator checks.
@@ -209,7 +236,7 @@ func getClusterRestConfig(filenames ...string) (*rest.Config, error) {
 		return restConfig, nil
 	}
 
-	logrus.Infof("Running outside a cluster. Parsing kubeconfig file/s %+v", filenames)
+	log.Info("Running outside a cluster. Parsing kubeconfig file/s %+v", filenames)
 	if len(filenames) == 0 {
 		return nil, errors.New("no kubeconfig files set")
 	}
@@ -247,7 +274,7 @@ func getClusterRestConfig(filenames ...string) (*rest.Config, error) {
 
 // GetClientsHolder instantiate an ocp client
 func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen // this is a special function with lots of assignments
-	logrus.Infof("Creating k8s go-clients holder.")
+	log.Info("Creating k8s go-clients holder.")
 
 	var err error
 	clientsHolder.RestConfig, err = getClusterRestConfig(filenames...)
@@ -292,6 +319,12 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate discoveryClient: %s", err)
 	}
+
+	clientsHolder.GroupResources, err = discoveryClient.ServerPreferredResources()
+	if err != nil {
+		return nil, fmt.Errorf("cannot get list of resources in cluster: %s", err)
+	}
+
 	resolver := scale.NewDiscoveryScaleKindResolver(discoveryClient)
 	gr, err := restmapper.GetAPIGroupResources(clientsHolder.K8sClient.Discovery())
 	if err != nil {

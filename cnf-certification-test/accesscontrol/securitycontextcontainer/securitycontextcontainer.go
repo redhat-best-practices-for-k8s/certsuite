@@ -8,9 +8,9 @@ import (
 	"reflect"
 	"sort"
 
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -289,7 +289,6 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 	for j := 0; j < len(containers); j++ {
 		cut := &provider.Container{Podname: podName, Namespace: nameSpace, Container: &containers[j]}
 		percontainerSCC := GetContainerSCC(cut, containerSCC)
-		tnf.ClaimFilePrintf("containerSCC %s is %+v", cut, percontainerSCC)
 		// after building the containerSCC need to check to which category it is
 		categoryinfo = PodListCategory{
 			Containername: cut.Name,
@@ -297,10 +296,8 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 			NameSpace:     nameSpace,
 		}
 		if compareCategory(&Category1, &percontainerSCC, CategoryID1) {
-			tnf.ClaimFilePrintf("Testing if pod belongs to category1 ")
 			categoryinfo.Category = CategoryID1
 		} else if compareCategory(&Category1NoUID0, &percontainerSCC, CategoryID1NoUID0) {
-			tnf.ClaimFilePrintf("Testing if pod belongs to category1NoUID0 ")
 			categoryinfo.Category = CategoryID1NoUID0
 		} else if compareCategory(&Category2, &percontainerSCC, CategoryID2) {
 			categoryinfo.Category = CategoryID2
@@ -359,15 +356,15 @@ func CheckPod(pod *provider.Pod) []PodListCategory {
 //nolint:funlen
 func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) bool {
 	result := true
-	tnf.ClaimFilePrintf("Testing if pod belongs to category %s", &id)
+	log.Debug("Testing if pod belongs to category %s", &id)
 	// AllVolumeAllowed reports whether the volumes in the container are compliant to the SCC (same volume list for all SCCs).
 	// True means that all volumes declared in the pod are allowed in the SCC.
 	// False means that at least one volume is disallowed
 	if refCategory.AllVolumeAllowed == containerSCC.AllVolumeAllowed {
-		tnf.ClaimFilePrintf("AllVolumeAllowed = %s - OK", containerSCC.AllVolumeAllowed)
+		log.Debug("AllVolumeAllowed = %s - OK", containerSCC.AllVolumeAllowed)
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("AllVolumeAllowed = %s but expected >=<=%s -  NOK", containerSCC.AllVolumeAllowed, refCategory.AllVolumeAllowed)
+		log.Debug("AllVolumeAllowed = %s but expected >=<=%s -  NOK", containerSCC.AllVolumeAllowed, refCategory.AllVolumeAllowed)
 	}
 	// RunAsUserPresent reports whether the RunAsUser Field is set to something other than nil as requested by All SCC categories.
 	// True means that the RunAsUser Field is set.
@@ -379,17 +376,17 @@ func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) boo
 	// uidRangeMin: 1000
 	// uidRangeMax: 2000
 	if refCategory.RunAsUserPresent == containerSCC.RunAsUserPresent {
-		tnf.ClaimFilePrintf("RunAsUserPresent = %s - OK", containerSCC.RunAsUserPresent)
+		log.Debug("RunAsUserPresent = %s - OK", containerSCC.RunAsUserPresent)
 	} else {
-		tnf.ClaimFilePrintf("RunAsUserPresent = %s but expected  %s - NOK", containerSCC.RunAsUserPresent, refCategory.RunAsUserPresent)
+		log.Debug("RunAsUserPresent = %s but expected  %s - NOK", containerSCC.RunAsUserPresent, refCategory.RunAsUserPresent)
 		result = false
 	}
 	// RunAsNonRoot is true if the RunAsNonRoot field is set to true, false otherwise.
 	// if setting a range including the roor UID 0 ( for instance 0-2000), then this option can disallow it.
 	if refCategory.RunAsNonRoot >= containerSCC.RunAsNonRoot {
-		tnf.ClaimFilePrintf("RunAsNonRoot = %s - OK", containerSCC.RunAsNonRoot)
+		log.Debug("RunAsNonRoot = %s - OK", containerSCC.RunAsNonRoot)
 	} else {
-		tnf.ClaimFilePrintf("RunAsNonRoot = %s but expected  %s - NOK", containerSCC.RunAsNonRoot, refCategory.RunAsNonRoot)
+		log.Debug("RunAsNonRoot = %s but expected  %s - NOK", containerSCC.RunAsNonRoot, refCategory.RunAsNonRoot)
 		result = false
 	}
 	// FsGroupPresent reports whether the FsGroup Field is set to something other than nil as requested by All SCC categories.
@@ -403,92 +400,92 @@ func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) boo
 	// - min: 1000900000
 	// max: 1000900010
 	if refCategory.FsGroupPresent == containerSCC.FsGroupPresent {
-		tnf.ClaimFilePrintf("FsGroupPresent  = %s - OK", containerSCC.FsGroupPresent)
+		log.Debug("FsGroupPresent  = %s - OK", containerSCC.FsGroupPresent)
 	} else {
-		tnf.ClaimFilePrintf("FsGroupPresent  = %s but expected  %s - NOK", containerSCC.FsGroupPresent, refCategory.FsGroupPresent)
+		log.Debug("FsGroupPresent  = %s but expected  %s - NOK", containerSCC.FsGroupPresent, refCategory.FsGroupPresent)
 		result = false
 	}
 	// RequiredDropCapabilitiesPresent is true if the drop DropCapabilities field has at least the set of required drop capabilities ( same required set for all categories ).
 	// False means that some required DropCapabilities are missing.
 	if refCategory.RequiredDropCapabilitiesPresent == containerSCC.RequiredDropCapabilitiesPresent {
-		tnf.ClaimFilePrintf("DropCapabilities list - OK")
+		log.Debug("DropCapabilities list - OK")
 	} else {
-		tnf.ClaimFilePrintf("RequiredDropCapabilitiesPresent = %s but expected  %s - NOK", containerSCC.RequiredDropCapabilitiesPresent, refCategory.RequiredDropCapabilitiesPresent)
-		tnf.ClaimFilePrintf("its didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value ")
+		log.Debug("RequiredDropCapabilitiesPresent = %s but expected  %s - NOK", containerSCC.RequiredDropCapabilitiesPresent, refCategory.RequiredDropCapabilitiesPresent)
+		log.Debug("its didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value ")
 		result = false
 	}
 	// HostDirVolumePluginPresent is true if a hostpath volume is configured, false otherwise.
 	// It is a deprecated field and is derived from the volume list currently configured in the container.
 	// see https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html#use-the-hostpath-volume-plugin
 	if refCategory.HostDirVolumePluginPresent == containerSCC.HostDirVolumePluginPresent {
-		tnf.ClaimFilePrintf("HostDirVolumePluginPresent = %s - OK", containerSCC.HostDirVolumePluginPresent)
+		log.Debug("HostDirVolumePluginPresent = %s - OK", containerSCC.HostDirVolumePluginPresent)
 	} else {
-		tnf.ClaimFilePrintf("HostDirVolumePluginPresent = %s but expected  %s - NOK", containerSCC.HostDirVolumePluginPresent, refCategory.HostDirVolumePluginPresent)
+		log.Debug("HostDirVolumePluginPresent = %s but expected  %s - NOK", containerSCC.HostDirVolumePluginPresent, refCategory.HostDirVolumePluginPresent)
 		result = false
 	}
 	// HostIPC is true if the HostIPC field is set to true, false otherwise.
 	if refCategory.HostIPC >= containerSCC.HostIPC {
-		tnf.ClaimFilePrintf("HostIPC = %s - OK", containerSCC.HostIPC)
+		log.Debug("HostIPC = %s - OK", containerSCC.HostIPC)
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("HostIPC = %s but expected <= %s - NOK", containerSCC.HostIPC, refCategory.HostIPC)
+		log.Debug("HostIPC = %s but expected <= %s - NOK", containerSCC.HostIPC, refCategory.HostIPC)
 	}
 	// HostNetwork is true if the HostNetwork field is set to true, false otherwise.
 	if refCategory.HostNetwork >= containerSCC.HostNetwork {
-		tnf.ClaimFilePrintf("HostNetwork = %s - OK", containerSCC.HostNetwork)
+		log.Debug("HostNetwork = %s - OK", containerSCC.HostNetwork)
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("HostNetwork = %s but expected <= %s - NOK", containerSCC.HostNetwork, refCategory.HostNetwork)
+		log.Debug("HostNetwork = %s but expected <= %s - NOK", containerSCC.HostNetwork, refCategory.HostNetwork)
 	}
 	// HostPID is true if the HostPID field is set to true, false otherwise.
 	if refCategory.HostPID >= containerSCC.HostPID {
-		tnf.ClaimFilePrintf("HostPID = %s - OK", containerSCC.HostPID)
+		log.Debug("HostPID = %s - OK", containerSCC.HostPID)
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("HostPID = %s but expected <= %s - NOK", containerSCC.HostPID, refCategory.HostPID)
+		log.Debug("HostPID = %s but expected <= %s - NOK", containerSCC.HostPID, refCategory.HostPID)
 	}
 	// HostPorts is true if the HostPorts field is set to true, false otherwise.
 	if refCategory.HostPorts >= containerSCC.HostPorts {
-		tnf.ClaimFilePrintf("HostPorts = %s - OK", containerSCC.HostPorts)
+		log.Debug("HostPorts = %s - OK", containerSCC.HostPorts)
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("HostPorts = %s but expected <= %s - NOK", containerSCC.HostPorts, refCategory.HostPorts)
+		log.Debug("HostPorts = %s but expected <= %s - NOK", containerSCC.HostPorts, refCategory.HostPorts)
 	}
 	// PrivilegeEscalation is true if the PrivilegeEscalation field is set to true, false otherwise.
 	if refCategory.PrivilegeEscalation >= containerSCC.PrivilegeEscalation {
-		tnf.ClaimFilePrintf("HostNetwork = %s - OK", containerSCC.HostNetwork)
+		log.Debug("HostNetwork = %s - OK", containerSCC.HostNetwork)
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("PrivilegeEscalation = %s but expected <= %s - NOK", containerSCC.PrivilegeEscalation, refCategory.PrivilegeEscalation)
+		log.Debug("PrivilegeEscalation = %s but expected <= %s - NOK", containerSCC.PrivilegeEscalation, refCategory.PrivilegeEscalation)
 	}
 	// PrivilegedContainer is true if the PrivilegedContainer field is set to true, false otherwise.
 	if refCategory.PrivilegedContainer >= containerSCC.PrivilegedContainer {
-		tnf.ClaimFilePrintf("PrivilegedContainer = %s - OK", containerSCC.PrivilegedContainer)
+		log.Debug("PrivilegedContainer = %s - OK", containerSCC.PrivilegedContainer)
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("PrivilegedContainer = %s but expected <= %s - NOK", containerSCC.PrivilegedContainer, refCategory.PrivilegedContainer)
+		log.Debug("PrivilegedContainer = %s but expected <= %s - NOK", containerSCC.PrivilegedContainer, refCategory.PrivilegedContainer)
 	}
 	// ReadOnlyRootFilesystem is true if the ReadOnlyRootFilesystem field is set to true, false otherwise.
 	if refCategory.ReadOnlyRootFilesystem >= containerSCC.ReadOnlyRootFilesystem {
-		tnf.ClaimFilePrintf("ReadOnlyRootFilesystem = %s - OK", containerSCC.ReadOnlyRootFilesystem)
+		log.Debug("ReadOnlyRootFilesystem = %s - OK", containerSCC.ReadOnlyRootFilesystem)
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("ReadOnlyRootFilesystem = %s but expected <= %s - NOK", containerSCC.ReadOnlyRootFilesystem, refCategory.ReadOnlyRootFilesystem)
+		log.Debug("ReadOnlyRootFilesystem = %s but expected <= %s - NOK", containerSCC.ReadOnlyRootFilesystem, refCategory.ReadOnlyRootFilesystem)
 	}
 	// SeLinuxContextPresent is true if the SeLinuxContext field is present and set to a value (e.g. not nil), false otherwise.
 	// An SELinuxContext strategy of MustRunAs with no level set. Admission looks for the openshift.io/sa.scc.mcs annotation to populate the level.
 	if refCategory.SeLinuxContextPresent == containerSCC.SeLinuxContextPresent {
-		tnf.ClaimFilePrintf("SeLinuxContextPresent  is not nil - OK")
+		log.Debug("SeLinuxContextPresent  is not nil - OK")
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("SeLinuxContextPresent  = %s but expected  %s expected to be non nil - NOK", containerSCC.SeLinuxContextPresent, refCategory.SeLinuxContextPresent)
+		log.Debug("SeLinuxContextPresent  = %s but expected  %s expected to be non nil - NOK", containerSCC.SeLinuxContextPresent, refCategory.SeLinuxContextPresent)
 	}
 	// CapabilitiesCategory indicates the lowest SCC category to which the list of capabilities.add in the container can be mapped to.
 	if refCategory.CapabilitiesCategory != containerSCC.CapabilitiesCategory {
 		result = false
-		tnf.ClaimFilePrintf("CapabilitiesCategory = %s but expected  %s - NOK", containerSCC.CapabilitiesCategory, refCategory.CapabilitiesCategory)
+		log.Debug("CapabilitiesCategory = %s but expected  %s - NOK", containerSCC.CapabilitiesCategory, refCategory.CapabilitiesCategory)
 	} else {
-		tnf.ClaimFilePrintf("CapabilitiesCategory  list is as expected %s - OK", containerSCC.CapabilitiesCategory)
+		log.Debug("CapabilitiesCategory  list is as expected %s - OK", containerSCC.CapabilitiesCategory)
 	}
 	return result
 }
