@@ -44,6 +44,7 @@ var (
 	}
 )
 
+// LoadChecks loads all the checks.
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.ManageabilityTestKey)
 
@@ -65,6 +66,8 @@ func LoadChecks() {
 		}))
 }
 
+// testContainersImageTag is a function that checks if each container is missing image tag(s).
+// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
 func testContainersImageTag(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -85,11 +88,16 @@ func testContainersImageTag(check *checksdb.Check, env *provider.TestEnvironment
 // and the optional <suffix> can be chosen by the application. Allowed protocol names: grpc, grpc-web, http, http2, tcp, udp.
 var allowedProtocolNames = map[string]bool{"grpc": true, "http": true, "http2": true, "tcp": true, "udp": true}
 
+// containerPortNameFormatCheck is a function that checks if the format of a container port name is valid.
+// Return:
+//   - bool: true if the format of a container port name is valid, otherwise return false.
 func containerPortNameFormatCheck(portName string) bool {
 	res := strings.Split(portName, "-")
 	return allowedProtocolNames[res[0]]
 }
 
+// testContainerPortNameFormat is a function that checks if each container declares ports that do not follow the partner naming conventions.
+// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
 func testContainerPortNameFormat(check *checksdb.Check, env *provider.TestEnvironment) {
 	for _, newProtocol := range env.ValidProtocolNames {
 		allowedProtocolNames[newProtocol] = true
