@@ -26,6 +26,10 @@ import (
 	corev1typed "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
+// AutomountServiceAccountSetOnSA checks if the AutomountServiceAccountToken field is set on a ServiceAccount.
+// Returns:
+//   - A boolean pointer indicating whether the AutomountServiceAccountToken field is set.
+//   - An error if any occurred during the operation.
 func AutomountServiceAccountSetOnSA(client corev1typed.CoreV1Interface, serviceAccountName, podNamespace string) (*bool, error) {
 	sa, err := client.ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, metav1.GetOptions{})
 	if err != nil {
@@ -35,6 +39,12 @@ func AutomountServiceAccountSetOnSA(client corev1typed.CoreV1Interface, serviceA
 	return sa.AutomountServiceAccountToken, nil
 }
 
+// EvaluateAutomountTokens evaluates whether the automountServiceAccountToken is correctly configured for the given Pod.
+// Checks if the token is explicitly set in the Pod's spec or if it is inherited from the associated ServiceAccount.
+// Returns:
+//   - bool: Indicates whether the Pod passed all checks. if yes- return true, otherwise return false.
+//   - string: Error message if the Pod is misconfigured, otherwise an empty string.
+//
 //nolint:gocritic
 func EvaluateAutomountTokens(client corev1typed.CoreV1Interface, put *corev1.Pod) (bool, string) {
 	// The token can be specified in the pod directly

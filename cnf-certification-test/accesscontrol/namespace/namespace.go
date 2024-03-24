@@ -29,7 +29,9 @@ import (
 )
 
 // TestCrsNamespaces finds the list of the input CRDs (crds parameter) instances (CRs) and verify that they are only in namespaces provided as input.
-// The list of CRs not belonging to the namespaces passed as input is returned as invalid
+// Returns :
+//   - map[string]map[string][]string : The list of CRs not belonging to the namespaces passed as input is returned as invalid.
+//   - error : if exist error.
 func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespaces []string, logger *log.Logger) (invalidCrs map[string]map[string][]string, err error) {
 	// Initialize the top level map
 	invalidCrs = make(map[string]map[string][]string)
@@ -54,7 +56,9 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 }
 
 // getCrsPerNamespaces gets the list of CRs instantiated in the cluster per namespace.
-// Returns a map indexed by namespace and data is a list of CR names
+// Returns :
+//   - map[string][]string : a map indexed by namespace and data is a list of CR names.
+//   - error : if exist error.
 func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces map[string][]string, err error) {
 	oc := clientsholder.GetClientsHolder()
 	for _, version := range aCrd.Spec.Versions {
@@ -90,7 +94,9 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 	return crdNamespaces, nil
 }
 
-// GetInvalidCRDsNum returns the number of invalid CRs in the map
+// GetInvalidCRDsNum returns the number of invalid CRs in the map.
+// Return:
+//   - int : number of invalid CRs in the map.
 func GetInvalidCRsNum(invalidCrs map[string]map[string][]string, logger *log.Logger) int {
 	var invalidCrsNum int
 	for crdName, namespaces := range invalidCrs {

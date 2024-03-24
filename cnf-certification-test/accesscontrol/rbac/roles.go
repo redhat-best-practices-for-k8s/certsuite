@@ -36,6 +36,9 @@ type CrdResource struct {
 	ShortNames                      []string
 }
 
+// GetCrdResources converts a list of apiextv1.CustomResourceDefinition structs into a list of list of CrdResource structs.
+// Returns:
+//   - []CrdResource : a slice of CrdResource objects.
 func GetCrdResources(crds []*apiextv1.CustomResourceDefinition) (resourceList []CrdResource) {
 	for _, crd := range crds {
 		var aResource CrdResource
@@ -48,6 +51,9 @@ func GetCrdResources(crds []*apiextv1.CustomResourceDefinition) (resourceList []
 	return resourceList
 }
 
+// GetAllRules retrieves a list all of rules defined by the role passed in input.
+// Returns:
+//   - []RoleRule : a slice of RoleRule objects.
 func GetAllRules(aRole *rbacv1.Role) (ruleList []RoleRule) {
 	for _, aRule := range aRole.Rules {
 		for _, aGroup := range aRule.APIGroups {
@@ -65,7 +71,9 @@ func GetAllRules(aRole *rbacv1.Role) (ruleList []RoleRule) {
 	return ruleList
 }
 
-// Checks the resource name in the role against plural name
+// isResourceInRoleRule Checks if a CRD resource is matched by a rule by comparing its group and plural name.
+// Returns:
+//   - bool : if a CrdResource matches a RoleRule based on their properties return true , otherwise return false.
 func isResourceInRoleRule(crd CrdResource, roleRule RoleRule) bool {
 	// remove subresources to keep only resource (plural) name
 	ruleResourcePluralName := strings.Split(roleRule.Resource.Name, "/")[0]
@@ -73,6 +81,10 @@ func isResourceInRoleRule(crd CrdResource, roleRule RoleRule) bool {
 	return crd.Group == roleRule.Resource.Group && crd.PluralName == ruleResourcePluralName
 }
 
+// FilterRulesNonMatchingResources filters RoleRules based on whether they match any CrdResource in the resourceList.
+// Returns :
+//   - Matching: a slice of RoleRule that contains all rules where a CrdResource matches a RoleRule based on their properties.
+//   - NonMatching: a slice of RoleRule that contains all rules not matching the CRD resource.
 func FilterRulesNonMatchingResources(ruleList []RoleRule, resourceList []CrdResource) (matching, nonMatching []RoleRule) {
 	for _, aRule := range ruleList {
 		for _, aResource := range resourceList {
@@ -85,6 +97,9 @@ func FilterRulesNonMatchingResources(ruleList []RoleRule, resourceList []CrdReso
 	return matching, nonMatching
 }
 
+// SliceDifference checks if there is a difference between s1 and s2 RoleRule slices.
+// Returns :
+//   - []RoleRule : the elements that are exist in s1 but not in s2.
 func SliceDifference(s1, s2 []RoleRule) (diff []RoleRule) {
 	var temp []RoleRule
 	if len(s2) > len(s1) {

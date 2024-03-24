@@ -5,6 +5,9 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
+// HasRequestsAndLimitsSet checks if a container has both resource limits and resource requests set.
+// Returns :
+//   - bool : true if both resource limits and resource requests are set for the container, otherwise return false.
 func HasRequestsAndLimitsSet(cut *provider.Container, logger *log.Logger) bool {
 	passed := true
 	// Parse the limits.
@@ -42,6 +45,9 @@ func HasRequestsAndLimitsSet(cut *provider.Container, logger *log.Logger) bool {
 }
 
 // For more info on cpu management policies see https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/.
+// HasExclusiveCPUsAssigned checks if a container has exclusive CPU's assigned.
+// Returns:
+//   - bool : true if a container has exclusive CPU's assigned, otherwise return false.
 func HasExclusiveCPUsAssigned(cut *provider.Container, logger *log.Logger) bool {
 	cpuLimits := cut.Resources.Limits.Cpu()
 	memLimits := cut.Resources.Limits.Memory()
