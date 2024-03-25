@@ -1,4 +1,5 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.3-1610 AS build
+# hadolint ignore=DL3029
+FROM --platform=linux/amd64 registry.access.redhat.com/ubi9/ubi:9.3-1610 AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
@@ -89,12 +90,13 @@ RUN \
 	&& rm -rf /usr/lib/golang/src
 
 # Using latest is prone to errors.
-# hadolint ignore=DL3007
-FROM quay.io/testnetworkfunction/oct:latest AS db
+# hadolint ignore=DL3007,DL3029
+FROM --platform=linux/amd64 quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.3-1612
+# hadolint ignore=DL3029
+FROM --platform=linux/amd64 registry.access.redhat.com/ubi9/ubi-minimal:9.3-1612
 
 ENV \
 	TNF_DIR=/usr/tnf \
