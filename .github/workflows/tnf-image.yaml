@@ -115,9 +115,15 @@ jobs:
         with:
           ref: ${{ env.TNF_VERSION }}
 
-      - name: Build the `cnf-certification-test` image
+      - name: Build the `cnf-certification-test` images (both amd64 and arm64)
         run: |
           make build-image-tnf
+        env:
+          TNF_VERSION: ${{ env.TNF_VERSION }}
+
+      - name: Create docker manifest for the `cnf-certification-test` image
+        run: |
+          make create-manifest-tnf
         env:
           TNF_VERSION: ${{ env.TNF_VERSION }}
 
@@ -131,8 +137,8 @@ jobs:
           username: ${{ secrets.QUAY_ROBOT_USERNAME }}
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
-      - name: Push the newly built image to Quay.io
-        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
+      - name: Push the newly built image manifest to Quay.io
+        run: docker manifest push ${REGISTRY}/${TNF_IMAGE_NAME}
 
       - name: If failed to create the image, send alert msg to dev team.
         if: ${{ failure() }}

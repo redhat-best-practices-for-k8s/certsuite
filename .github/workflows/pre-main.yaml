@@ -483,9 +483,31 @@ jobs:
           username: ${{ secrets.QUAY_ROBOT_USERNAME }}
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
-      - name: (if on main and upstream) Push the newly built image to Quay.io
+      - name: Build the `cnf-certification-test` images for multi-platform (x86)
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: make build-image-local-x86
+        env:
+          IMAGE_TAG: ${TNF_IMAGE_TAG}
+
+      - name: Build the `cnf-certification-test` images for multi-platform (arm64)
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: make build-image-local-arm
+        env:
+          IMAGE_TAG: ${TNF_IMAGE_TAG}
+
+      - name: Create and push the manifest list for the `cnf-certification-test` image
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        run: |
+          make create-manifest-local
+          docker manifest push ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG}
 
   check-all-dependencies-are-merged:
     name: Check all the PR dependencies are merged
