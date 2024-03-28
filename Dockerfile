@@ -19,17 +19,28 @@ RUN \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
 	&& rm -rf /var/cache/yum
 
+# Set environment specific variables
+ENV \
+	OPERATOR_SDK_X86_FILENAME=operator-sdk_linux_amd64 \
+	OPERATOR_SDK_ARM_FILENAME=operator-sdk_linux_arm64
+
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.22.1.linux-amd64.tar.gz \
 	GOPATH=/root/go
-ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
+ENV GO_BIN_URL_x86_64=${GO_DL_URL}/go1.22.1.linux-amd64.tar.gz
+ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.22.1.linux-arm64.tar.gz
+
+# Determine the CPU architecture and download the appropriate Go binary
 RUN \
 	if [ "$(uname -m)" = x86_64 ]; then \
 		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_x86_64} --quiet \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf ${TEMP_DIR}/${GO_BIN_TAR}; \
+		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.22.1.linux-amd64.tar.gz; \
+	elif [ "$(uname -m)" = aarch64 ]; then \
+		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_aarch64} --quiet \
+		&& rm -rf /usr/local/go \
+		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.22.1.linux-arm64.tar.gz; \
 	else \
 		echo "CPU architecture is not supported." && exit 1; \
 	fi
@@ -40,16 +51,28 @@ ENV \
 	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.34.1 \
 	OSDK_BIN=/usr/local/osdk/bin
 
-# Either use Wget or Curl but not both.
+RUN \
+	mkdir -p ${OSDK_BIN}
+
 # hadolint ignore=DL4001
 RUN \
-	mkdir -p ${OSDK_BIN} \
-	&& curl \
-		--location \
-		--remote-name \
-		${OPERATOR_SDK_DL_URL}/operator-sdk_linux_amd64 \
-	&& mv operator-sdk_linux_amd64 ${OSDK_BIN}/operator-sdk \
-	&& chmod +x ${OSDK_BIN}/operator-sdk
+	if [ "$(uname -m)" = x86_64 ]; then \
+		curl \
+			--location \
+			--remote-name \
+			${OPERATOR_SDK_DL_URL}/${OPERATOR_SDK_X86_FILENAME} \
+			&& mv ${OPERATOR_SDK_X86_FILENAME} ${OSDK_BIN}/operator-sdk \
+			&& chmod +x ${OSDK_BIN}/operator-sdk; \
+	elif [ "$(uname -m)" = aarch64 ]; then \
+		curl \
+			--location \
+			--remote-name \
+			${OPERATOR_SDK_DL_URL}/${OPERATOR_SDK_ARM_FILENAME} \
+			&& mv ${OPERATOR_SDK_ARM_FILENAME} ${OSDK_BIN}/operator-sdk \
+			&& chmod +x ${OSDK_BIN}/operator-sdk; \
+	else \
+		echo "CPU architecture is not supported." && exit 1; \
+	fi
 
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
