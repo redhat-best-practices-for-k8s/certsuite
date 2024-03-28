@@ -152,51 +152,18 @@ get-db:
 delete-db:
 	rm -rf ${REPO_DIR}/offline-db
 
-# Runs against whatever architecture the host is
 build-image-local:
 	docker build --pull --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-f Dockerfile .
 
-build-image-local-x86:
-	docker build --pull --no-cache --platform linux/amd64 \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
+build-image-tnf:
+	docker build --pull --no-cache \
+		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
 		-f Dockerfile .
-
-build-image-local-arm:
-	docker build --pull --no-cache --platform linux/arm64 \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64 \
-		-f Dockerfile .
-
-create-manifest-local:
-	docker manifest create ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64
-
-# Multi-platform build for releases
-build-image-tnf: build-image-tnf-x86 build-image-tnf-arm
-
-build-image-tnf-x86:
-	docker build --pull --no-cache --platform linux/amd64 \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION}-linux-amd64 \
-		-f Dockerfile .
-
-build-image-tnf-arm:
-	docker build --pull --no-cache --platform linux/arm64 \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION}-linux-arm64 \
-		-f Dockerfile .
-
-create-manifest-tnf:
-	docker manifest create ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64
 
 results-html:
 	script/get-results-html.sh ${PARSER_RELEASE}
