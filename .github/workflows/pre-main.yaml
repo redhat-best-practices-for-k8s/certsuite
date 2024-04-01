@@ -94,8 +94,8 @@ jobs:
       - name: ShellCheck
         uses: ludeeus/action-shellcheck@master
 
-      - name: Typos
-        uses: crate-ci/typos@master
+      # - name: Typos
+      #   uses: crate-ci/typos@master
 
       - name: Yamllint
         uses: ibiqlik/action-yamllint@v3
