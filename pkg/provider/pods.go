@@ -25,6 +25,9 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -403,6 +406,24 @@ func (p *Pod) IsRunAsUserID(uid int64) bool {
 		return false
 	}
 	return *p.Pod.Spec.SecurityContext.RunAsUser == uid
+}
+
+func (p *Pod) IsRunAsNonRoot() bool {
+	if p.Pod.Spec.SecurityContext != nil || *p.Pod.Spec.SecurityContext.RunAsNonRoot == true {
+		return true
+	}
+	return false
+}
+
+func (p *Pod) IsReadOnlyRootFilesystem(check *checksdb.Check, nonCompliantObjects []*testhelper.ReportObject ) []*testhelper.ReportObject {
+	for _, cut := range p.Spec.Containers {
+		check.LogInfo("Testing Container %q", cut.Name)
+		if *(cut.SecurityContext.ReadOnlyRootFilesystem) == false {
+			check.LogError("Pod %q container %q is not read only root file system.", p.Name, cut.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(p.Namespace, p.Name, "Pod has been found not read only root file system", false))
+		}
+	}
+	return nonCompliantObjects
 }
 
 // Get the list of top owners of pods

@@ -121,6 +121,7 @@ var (
 	TestOperatorIsCertifiedIdentifier                 claim.Identifier
 	TestHelmIsCertifiedIdentifier                     claim.Identifier
 	TestOperatorIsInstalledViaOLMIdentifier           claim.Identifier
+	TestOperatorSecurityRequiremnents                 claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
@@ -883,6 +884,22 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		HelmIsCertifiedRemediation,
 		AffiliatedCert,
 		TestHelmIsCertifiedIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorSecurityRequiremnents = AddCatalogEntry(
+		"security-requirements",
+		common.OperatorTestKey,
+		`Tests whether a CNF Operator checks the recommended security requirements of the container operators.`,
+		OperatorSecurityRequiremnents,
+		NoExceptions,
+		TestOperatorSecurityRequiremnentsDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,

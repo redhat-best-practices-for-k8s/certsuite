@@ -20,8 +20,10 @@ import (
 	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common/rbac"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -63,6 +65,12 @@ func LoadChecks() {
 			testOperatorOlmSubscription(c, &env)
 			return nil
 		}))
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorSecurityRequiremnents)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorSecurityRequiremnents(c, &env)
+			return nil
+		}))	
 }
 
 func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider.TestEnvironment) {
@@ -145,4 +153,40 @@ func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnviro
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testOperatorSecurityRequiremnents(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+	for i := range env.Operators {
+		operator := env.Operators[i]
+		check.LogInfo("Testing Operator %q", operator)
+		for _, put := range env.Pods {
+			check.LogInfo("Testing Pod %q", put)
+			if put.IsRunAsUserID(0) {
+				check.LogError("Pod %q UserID is 0", put.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found with UserID is 0", false))
+			}
+
+			if !put.IsRunAsNonRoot() {
+				check.LogError("Pod %q is run as root", put.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found is run as root", false))
+			}
+			
+			nonCompliantObjects = put.IsReadOnlyRootFilesystem(check, nonCompliantObjects) 
+
+			// Evaluate the pod's automount service tokens and any attached service accounts
+			client := clientsholder.GetClientsHolder()
+			podPassed, newMsg := rbac.EvaluateAutomountTokens(client.K8sClient.CoreV1(), put.Pod)
+			if !podPassed {
+				check.LogError(newMsg)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, newMsg, false))
+			} else {
+				check.LogInfo("Pod %q does not have automount service tokens set to true", put)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have automount service tokens set to true", true))
+			}
+		}
+	
+		check.SetResult(compliantObjects, nonCompliantObjects)
+	}
 }
