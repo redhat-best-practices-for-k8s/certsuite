@@ -17,8 +17,6 @@
 package operator
 
 import (
-	"strings"
-
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
@@ -50,10 +48,10 @@ func LoadChecks() {
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorNoPrivileges)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorNoSCCAccess)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
-			testOperatorInstallationWithoutPrivileges(c, &env)
+			testOperatorInstallationAccessToSCC(c, &env)
 			return nil
 		}))
 
@@ -84,48 +82,61 @@ func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testOperatorInstallationWithoutPrivileges(check *checksdb.Check, env *provider.TestEnvironment) {
+func testOperatorInstallationAccessToSCC(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.Operators {
 		operator := env.Operators[i]
 		csv := operator.Csv
+		check.LogDebug("Checking operator %s", operator)
 		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
-			check.LogInfo("No clusterPermissions found in %s", operator)
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has no privileges on cluster resources", true))
+			check.LogInfo("No clusterPermissions found in %s's CSV", operator)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "No RBAC rules for Security Context Constraints found in CSV", true))
 			continue
 		}
 
-		if operator.IsClusterWide {
-			check.LogInfo("Operator %s has clusterPermissions (%d) but it is cluster-wide type.", operator, len(clusterPermissions))
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has clusterPermissions config in the CSV, but it was installed as cluster-wide", true))
-			continue
-		}
-
-		// Fails in case any cluster permission has a rule with any resource name.
+		// Fails in case any cluster permission has a rule that refers to securitycontextconstraints.
 		badRuleFound := false
 		for permissionIndex := range clusterPermissions {
 			permission := &clusterPermissions[permissionIndex]
 			for ruleIndex := range permission.Rules {
-				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
-					check.LogInfo("%s: cluster permission (service account %s) has %d resource names (rule index %d).",
-						operator, permission.ServiceAccountName, n, ruleIndex)
+				rule := &permission.Rules[ruleIndex]
+
+				// Check whether the rule is for the security api group.
+				securityGroupFound := false
+				for _, group := range rule.APIGroups {
+					if group == "*" || group == "security.openshift.io" {
+						securityGroupFound = true
+						break
+					}
+				}
+
+				if !securityGroupFound {
+					continue
+				}
+
+				// Now check whether it grants some access to securitycontextconstraint resources.
+				securityResourceFound := false
+				for _, resource := range rule.Resources {
+					if resource == "*" || resource == "securitycontextconstraints" {
+						securityResourceFound = true
+					}
+				}
+
+				if securityResourceFound {
+					check.LogInfo("Operator %s has a rule (index %d) for service account %s to access cluster SCCs",
+						operator, ruleIndex, permission.ServiceAccountName)
 					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
 					badRuleFound = true
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has privileges on cluster resources ", false).
-						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", strings.Join(permission.Rules[ruleIndex].ResourceNames, "")))
-				} else {
-					compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has no privileges on cluster resources", true).
-						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", "n/a"))
 				}
 			}
 		}
 
 		if badRuleFound {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has privileges on cluster resources ", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "One or more RBAC rules for Security Context Constraints found in CSV", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has no privileges on cluster resources", true))
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "No RBAC rules for Security Context Constraints found in CSV", true))
 		}
 	}
 

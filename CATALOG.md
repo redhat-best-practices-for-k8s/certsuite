@@ -1143,7 +1143,7 @@ Tags|common,operator
 Property|Description
 ---|---
 Unique ID|operator-install-status-no-privileges
-Description|The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present with no resourceNames under its rules.
+Description|Checks whether the operator needs access to Security Context Constraints. Test passes if clusterPermissions is not present in the CSV manifest or is present with no RBAC rules related to SCCs.
 Suggested Remediation|Ensure all the CNF operators have no privileges on cluster resources.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
 Exception Process|No exceptions
