@@ -79,7 +79,7 @@ const (
 
 	OperatorIsInstalledViaOLMRemediation = `Ensure that your Operator is installed via OLM.`
 
-	OperatorHasSemanticVersioningRemediation = `Ensure that the installed Operator has semantic versioning.`
+	OperatorHasSemanticVersioningRemediation = `Ensure that the installed Operator has a valid semantic versioning.`
 
 	PodNodeSelectorAndAffinityBestPracticesRemediation = `In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which CNFs require specialized hardware specific to a particular class of Node.`
 

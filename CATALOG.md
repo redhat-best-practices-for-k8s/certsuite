@@ -7,7 +7,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 105
+### Total test cases: 106
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |manageability|2|
 |networking|11|
 |observability|4|
-|operator|3|
+|operator|4|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 58
+### Non-Telco specific tests only: 59
 
 |Mandatory|Optional|
 |---|---|
-|38|20|
+|39|20|
 
 ### Telco specific tests only: 27
 
@@ -1161,6 +1161,22 @@ Property|Description
 Unique ID|operator-install-status-succeeded
 Description|Ensures that the target CNF operators report "Succeeded" as their installation status.
 Suggested Remediation|Ensure all the CNF operators have been successfully installed by OLM.
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### operator-installed-operator-semantic-versioning
+
+Property|Description
+---|---
+Unique ID|operator-installed-operator-semantic-versioning
+Description|Tests whether an application Operator has a valid semantic versioning.
+Suggested Remediation|Ensure that the installed Operator has a valid semantic versioning.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator

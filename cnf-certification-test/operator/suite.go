@@ -84,9 +84,9 @@ func testOperatorSemanticVersioning(check *checksdb.Check, env *provider.TestEnv
 		check.LogInfo("Testing Operator %q for version %s", operator, operatorVersion)
 
 		if provider.IsValidSemanticVersion(operatorVersion) {
-			check.LogInfo("Operator %q has semantic version %s", operator, operatorVersion)
+			check.LogInfo("Operator %q has a valid semantic version %s", operator, operatorVersion)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
-				"Operator has semantic version ", true).AddField(testhelper.Version, operatorVersion))
+				"Operator has a valid semantic version ", true).AddField(testhelper.Version, operatorVersion))
 		} else {
 			check.LogError("Operator %q has an invalid semantic version %s", operator, operatorVersion)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,

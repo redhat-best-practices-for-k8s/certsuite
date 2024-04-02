@@ -912,7 +912,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestOperatorHasSemanticVersioningIdentifier = AddCatalogEntry(
 		"installed-operator-semantic-versioning",
 		common.OperatorTestKey,
-		`Tests whether an application Operator has semantic versioning.`,
+		`Tests whether an application Operator has a valid semantic versioning.`,
 		OperatorHasSemanticVersioningRemediation,
 		NoExceptions,
 		TestOperatorHasSemanticVersioningIdentifierDocLink,
