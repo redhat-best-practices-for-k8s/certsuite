@@ -112,11 +112,6 @@ jobs:
         with:
           ref: ${{ env.TNF_VERSION }}
 
-      - name: Build the `cnf-certification-test` image for x86
-        run: make build-image-tnf-x86
-        env:
-          TNF_VERSION: ${{ env.TNF_VERSION }}
-      
       - name: Login to Quay.io
         uses: docker/login-action@v3
         with:
@@ -124,9 +119,14 @@ jobs:
           username: ${{ secrets.QUAY_ROBOT_USERNAME }}
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
-      - name: Push the `cnf-certification-test` image for x86
+      - name: Build the `cnf-certification-test` image for x86
+        run: |
+          docker build --pull --no-cache --platform linux/amd64 -t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 -t ${REGISTRY}/${TNF_IMAGE_NAME}:${{ env.TNF_VERSION }}-linux-amd64 -f Dockerfile .
+
+      - name: Push the `cnf-certification-test` images (latest and release) for x86
         run: |
           docker push ${REGISTRY}/${TNF_IMAGE_NAME}:${{ env.TNF_VERSION }}-linux-amd64
+          docker push ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64
 
       - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
@@ -210,11 +210,6 @@ jobs:
         with:
           ref: ${{ env.TNF_VERSION }}
 
-      - name: Build the `cnf-certification-test` image for ARM
-        run: make build-image-tnf-arm
-        env:
-          TNF_VERSION: ${{ env.TNF_VERSION }}
-      
       - name: Login to Quay.io
         uses: docker/login-action@v3
         with:
@@ -222,9 +217,14 @@ jobs:
           username: ${{ secrets.QUAY_ROBOT_USERNAME }}
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
+      - name: Build the `cnf-certification-test` image for ARM
+        run: |
+          docker build --pull --no-cache --platform linux/arm64 -t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64 -t ${REGISTRY}/${TNF_IMAGE_NAME}:${{ env.TNF_VERSION }}-linux-arm64 -f Dockerfile .
+
       - name: Push the `cnf-certification-test` image for ARM
         run: |
           docker push ${REGISTRY}/${TNF_IMAGE_NAME}:${{ env.TNF_VERSION }}-linux-arm64
+          docker push ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64
 
       - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
@@ -313,14 +313,6 @@ jobs:
         with:
           ref: ${{ env.TNF_VERSION }}
 
-      # Build the manifest for the `cnf-certification-test` image.
-      # At this point, both x86 and ARM images should be built and pushed to Quay.io.
-      - name: Create docker manifest for the `cnf-certification-test` image
-        run: |
-          make create-manifest-tnf
-        env:
-          TNF_VERSION: ${{ env.TNF_VERSION }}
-
       # Push the new TNF image to Quay.io.
       - name: Authenticate against Quay.io
         uses: docker/login-action@v3
@@ -331,10 +323,17 @@ jobs:
           username: ${{ secrets.QUAY_ROBOT_USERNAME }}
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
+      # Build the manifest for the `cnf-certification-test` image.
+      # At this point, both x86 and ARM images should be built and pushed to Quay.io.
+      - name: Create docker manifest for the `cnf-certification-test` image
+        run: |
+          docker manifest create ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64
+          docker manifest create ${REGISTRY}/${TNF_IMAGE_NAME}:${{ env.TNF_VERSION }} ${REGISTRY}/${TNF_IMAGE_NAME}:${{ env.TNF_VERSION }}-linux-amd64 ${REGISTRY}/${TNF_IMAGE_NAME}:${{ env.TNF_VERSION }}-linux-arm64
+
       - name: Push the newly built image manifest to Quay.io
         run: |
           docker manifest push ${REGISTRY}/${TNF_IMAGE_NAME}:${{ env.TNF_VERSION }}
-          docker manifest push ${REGISTRY}/${TNF_IMAGE_NAME}:$${{ env.IMAGE_TAG }}
+          docker manifest push ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}
 
       - name: If failed to create the image, send alert msg to dev team.
         if: ${{ failure() }}
