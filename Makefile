@@ -176,29 +176,6 @@ create-manifest-local:
 		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
 		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64
 
-build-image-tnf-x86:
-	docker build --pull --no-cache --platform linux/amd64 \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION}-linux-amd64 \
-		-f Dockerfile .
-
-build-image-tnf-arm:
-	docker build --pull --no-cache --platform linux/arm64 \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION}-linux-arm64 \
-		-f Dockerfile .
-
-create-manifest-tnf:
-	docker manifest create ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64; \
-	
-	docker manifest create ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION}-linux-amd64 \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION}-linux-arm64
-
 results-html:
 	script/get-results-html.sh ${PARSER_RELEASE}
 
