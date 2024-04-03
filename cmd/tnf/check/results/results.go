@@ -102,6 +102,11 @@ func getTestResultsDB(logFileName string) (map[string]string, error) {
 	re := regexp.MustCompile(`.*\[(.*?)\]\s+Recording result\s+"(.*?)"`)
 
 	scanner := bufio.NewScanner(file)
+	// Fix for bufio.Scanner: token too long
+	const kBytes64 = 64 * 1024
+	const kBytes1024 = 1024 * 1024
+	buf := make([]byte, 0, kBytes64)
+	scanner.Buffer(buf, kBytes1024)
 	for scanner.Scan() {
 		line := scanner.Text()
 		match := re.FindStringSubmatch(line)

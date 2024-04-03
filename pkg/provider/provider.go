@@ -99,6 +99,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Config    configuration.TestConfiguration
 	variables configuration.TestParameters
 	Crds      []*apiextv1.CustomResourceDefinition `json:"testCrds"`
+	AllCrds   []*apiextv1.CustomResourceDefinition
 
 	HorizontalScaler       []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Services               []*corev1.Service                    `json:"testServices"`
@@ -248,6 +249,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.AllCatalogSources = data.AllCatalogSources
 	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
+	env.AllCrds = data.AllCrds
 	env.Namespaces = data.Namespaces
 	env.Nodes = createNodes(data.Nodes.Items)
 	env.IstioServiceMeshFound = data.IstioServiceMeshFound

@@ -1,64 +1,65 @@
 testCases:
   pass:
-    - access-control-namespace
-    - lifecycle-image-pull-policy
-    - lifecycle-deployment-scaling
-    - operator-install-source
-    - networking-undeclared-container-ports-usage
-    - access-control-sys-admin-capability-check
-    - access-control-security-context-privilege-escalation
-    - operator-install-status-no-privileges
-    - networking-dual-stack-service
-    - performance-max-resources-exec-probes
-    - access-control-one-process-per-container
-    - networking-icmpv4-connectivity
-    - access-control-ssh-daemons
-    - lifecycle-pod-toleration-bypass
-    - access-control-pod-host-path
-    - observability-crd-status
-    - access-control-pod-role-bindings
-    - lifecycle-pod-owner-type
-    - access-control-pod-host-pid
-    - access-control-namespace-resource-quota
-    - access-control-requests-and-limits
-    - observability-pod-disruption-budget
-    - networking-ocp-reserved-ports-usage
-    - access-control-security-context-non-root-user-check
-    - access-control-cluster-role-bindings
-    - lifecycle-container-poststart
-    - networking-icmpv4-connectivity-multus
-    - lifecycle-container-prestop
-    - platform-alteration-tainted-node-kernel
-    - platform-alteration-isredhat-release
-    - access-control-sys-nice-realtime-capability
-    - networking-network-policy-deny-all
-    - networking-reserved-partner-ports
-    - performance-exclusive-cpu-pool
-    - access-control-no-1337-uid
-    - access-control-service-type
-    - observability-container-logging
-    - observability-termination-policy
-    - manageability-containers-image-tag
-    - networking-icmpv6-connectivity-multus
-    - access-control-container-host-port
-    - lifecycle-liveness-probe
-    - access-control-ipc-lock-capability-check
-    - access-control-pod-host-network
-    - operator-install-status-succeeded
-    - operator-installed-operator-semantic-versioning
     - access-control-bpf-capability-check
-    - access-control-net-raw-capability-check
-    - access-control-pod-host-ipc
-    - access-control-pod-automount-service-account-token
-    - manageability-container-port-name-format
-    - affiliated-certification-operator-is-certified
-    - lifecycle-startup-probe
+    - access-control-cluster-role-bindings
+    - access-control-container-host-port
+    - access-control-ipc-lock-capability-check
+    - access-control-namespace
+    - access-control-namespace-resource-quota
     - access-control-net-admin-capability-check
+    - access-control-net-raw-capability-check
+    - access-control-no-1337-uid
+    - access-control-one-process-per-container
+    - access-control-pod-automount-service-account-token
+    - access-control-pod-host-ipc
+    - access-control-pod-host-network
+    - access-control-pod-host-path
+    - access-control-pod-host-pid
+    - access-control-pod-role-bindings
     - access-control-pod-service-account
+    - access-control-requests-and-limits
+    - access-control-security-context-non-root-user-check
+    - access-control-security-context-privilege-escalation
+    - access-control-service-type
+    - access-control-ssh-daemons
+    - access-control-sys-admin-capability-check
+    - access-control-sys-nice-realtime-capability
+    - affiliated-certification-operator-is-certified
+    - lifecycle-container-poststart
+    - lifecycle-container-prestop
+    - lifecycle-deployment-scaling
+    - lifecycle-image-pull-policy
+    - lifecycle-liveness-probe
+    - lifecycle-pod-high-availability
+    - lifecycle-pod-owner-type
     - lifecycle-pod-recreation
     - lifecycle-pod-scheduling
+    - lifecycle-pod-toleration-bypass
     - lifecycle-readiness-probe
-    - lifecycle-pod-high-availability
+    - lifecycle-startup-probe
+    - manageability-container-port-name-format
+    - manageability-containers-image-tag
+    - networking-dual-stack-service
+    - networking-icmpv4-connectivity
+    - networking-icmpv4-connectivity-multus
+    - networking-icmpv6-connectivity-multus
+    - networking-network-policy-deny-all
+    - networking-ocp-reserved-ports-usage
+    - networking-reserved-partner-ports
+    - networking-undeclared-container-ports-usage
+    - observability-container-logging
+    - observability-crd-status
+    - observability-pod-disruption-budget
+    - observability-termination-policy
+    - operator-crd-openapi-schema
+    - operator-install-source
+    - operator-install-status-no-privileges
+    - operator-install-status-succeeded
+    - operator-semantic-versioning
+    - performance-exclusive-cpu-pool
+    - performance-max-resources-exec-probes
+    - platform-alteration-isredhat-release
+    - platform-alteration-tainted-node-kernel
   fail:
     - affiliated-certification-container-is-certified-digest # test container image is not certified
     - access-control-security-context # test pod does not meet the security requirements
