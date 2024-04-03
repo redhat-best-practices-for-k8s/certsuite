@@ -169,9 +169,13 @@ const (
 	PortNumber   = "Port Number"
 	PortProtocol = "Port Protocol"
 
-	//
+	// OLM
 	SubscriptionName = "Subscription Name"
 	OperatorPhase    = "Operator Phase"
+	OperatorName     = "Operator Name"
+
+	// Lists
+	OperatorList = "Operator List"
 )
 
 // When adding new object types, please update the following:

@@ -7,7 +7,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 106
+### Total test cases: 107
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |manageability|2|
 |networking|11|
 |observability|4|
-|operator|4|
+|operator|5|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 59
+### Non-Telco specific tests only: 60
 
 |Mandatory|Optional|
 |---|---|
-|39|20|
+|40|20|
 
 ### Telco specific tests only: 27
 
@@ -1177,6 +1177,22 @@ Property|Description
 Unique ID|operator-installed-operator-semantic-versioning
 Description|Tests whether an application Operator has a valid semantic versioning.
 Suggested Remediation|Ensure that the installed Operator has a valid semantic versioning.
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### operator-single-crd-owner
+
+Property|Description
+---|---
+Unique ID|operator-single-crd-owner
+Description|Tests whether a CRD is owned by a single Operator.
+Suggested Remediation|Ensure that a CRD is owned by only one Operator
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator

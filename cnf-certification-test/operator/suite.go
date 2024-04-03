@@ -70,6 +70,13 @@ func LoadChecks() {
 			testOperatorSemanticVersioning(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorSingleCrdOwnerIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorSingleCrdOwner(c, &env)
+			return nil
+		}))
 }
 
 // This function checks for semantic versioning of all installed operators
@@ -173,6 +180,37 @@ func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnviro
 			check.LogInfo("OLM subscription %q found for Operator %q", operator.SubscriptionName, operator)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "install-status-no-privilege (subscription found)", true).
 				AddField(testhelper.SubscriptionName, operator.SubscriptionName))
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testOperatorSingleCrdOwner(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	// Map each CRD to a list of operators that own it
+	crdOwners := map[string][]string{}
+	for i := range env.Operators {
+		operator := env.Operators[i]
+		for _, ownedCrd := range operator.Csv.Spec.CustomResourceDefinitions.Owned {
+			crdOwners[ownedCrd.Name] = append(crdOwners[ownedCrd.Name], operator.Name)
+		}
+	}
+
+	// Flag those that are owned by more than one operator
+	for crd, opList := range crdOwners {
+		if len(opList) > 1 {
+			check.LogError("CRD %q is owned by more than one operator (owners: %v)", crd, opList)
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewCrdReportObject(crd, "", "CRD is owned by more than one operator", false).
+					AddField(testhelper.OperatorList, strings.Join(opList, ", ")))
+		} else {
+			check.LogDebug("CRD %q is owned by a single operator (%v)", crd, opList[0])
+			compliantObjects = append(compliantObjects,
+				testhelper.NewCrdReportObject(crd, "", "CRD is owned by a single operator", true).
+					AddField(testhelper.OperatorName, opList[0]))
 		}
 	}
 
