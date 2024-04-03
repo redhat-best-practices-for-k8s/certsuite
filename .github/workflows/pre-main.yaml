@@ -461,8 +461,9 @@ jobs:
   # Only run this job if the previous jobs are successful that build the ARM and x86 images.
   create-manifest-multiarch:
     name: Create manifest list for multi-arch image
+    needs: [unit-tests, smoke-tests-container]
     runs-on: ubuntu-22.04
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
     steps:
       - name: Check out code
         uses: actions/checkout@v4
