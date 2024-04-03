@@ -4,6 +4,7 @@ testCases:
     - lifecycle-image-pull-policy
     - lifecycle-deployment-scaling
     - operator-install-source
+    - operator-single-crd-owner
     - networking-undeclared-container-ports-usage
     - access-control-sys-admin-capability-check
     - access-control-security-context-privilege-escalation

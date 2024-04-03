@@ -194,8 +194,9 @@ func testOperatorSingleCrdOwner(check *checksdb.Check, env *provider.TestEnviron
 	crdOwners := map[string][]string{}
 	for i := range env.Operators {
 		operator := env.Operators[i]
-		for _, ownedCrd := range operator.Csv.Spec.CustomResourceDefinitions.Owned {
-			crdOwners[ownedCrd.Name] = append(crdOwners[ownedCrd.Name], operator.Name)
+		ownedCrds := operator.Csv.Spec.CustomResourceDefinitions.Owned
+		for j := range ownedCrds {
+			crdOwners[ownedCrds[j].Name] = append(crdOwners[ownedCrds[j].Name], operator.Name)
 		}
 	}
 
