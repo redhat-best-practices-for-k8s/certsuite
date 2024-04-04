@@ -122,6 +122,7 @@ var (
 	TestHelmIsCertifiedIdentifier                     claim.Identifier
 	TestOperatorIsInstalledViaOLMIdentifier           claim.Identifier
 	TestOperatorHasSemanticVersioningIdentifier       claim.Identifier
+	TestOperatorCrdVersioningIdentifier               claim.Identifier
 	TestOperatorCrdSchemaIdentifier                   claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
@@ -917,6 +918,22 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorHasSemanticVersioningRemediation,
 		NoExceptions,
 		TestOperatorHasSemanticVersioningIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorCrdVersioningIdentifier = AddCatalogEntry(
+		"crd-versioning",
+		common.OperatorTestKey,
+		`Tests whether the Operator CRD has a valid versioning.`,
+		OperatorCrdVersioningRemediation,
+		NoExceptions,
+		TestOperatorCrdVersioningIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,

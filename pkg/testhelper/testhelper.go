@@ -131,6 +131,7 @@ const (
 	ImageName                       = "Image Name"
 	Version                         = "Version"
 	OpenAPIV3Schema                 = "OpenAPIV3Schema"
+	CrdVersion                      = "Operator CRD Version"
 	OCPVersion                      = "OCP Version"
 	OCPChannel                      = "OCP Channel"
 	NodeSelector                    = "Node Selector"
