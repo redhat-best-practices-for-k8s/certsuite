@@ -137,8 +137,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${REGISTRY}/${TNF_IMAGE_NAME}:${{ env.TNF_VERSION }}
-            ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}
+            ${{ env.REGISTRY }}/${{env.TNF_IMAGE_NAME}}:${{ env.TNF_VERSION }}
+            ${{ env.REGISTRY }}/${{env.TNF_IMAGE_NAME}}:${{ env.IMAGE_TAG }}
 
       - name: If failed to create the image, send alert msg to dev team.
         if: ${{ failure() }}
