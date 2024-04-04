@@ -11,21 +11,21 @@ import (
 	"time"
 )
 
+// Custom log levels
+const CustomLevelFatal = slog.Level(12)
+
+var CustomLevelNames = map[slog.Leveler]string{
+	CustomLevelFatal: "FATAL",
+}
+
 type CustomHandler struct {
-	opts  Options
+	opts  slog.HandlerOptions
 	attrs []slog.Attr
 	mu    *sync.Mutex
 	out   io.Writer
 }
 
-type Options struct {
-	// Level reports the minimum level to log.
-	// Levels with lower levels are discarded.
-	// If nil, the Handler uses [slog.LevelInfo].
-	Level slog.Leveler
-}
-
-func NewCustomHandler(out io.Writer, opts *Options) *CustomHandler {
+func NewCustomHandler(out io.Writer, opts *slog.HandlerOptions) *CustomHandler {
 	h := &CustomHandler{out: out, mu: &sync.Mutex{}}
 	if opts != nil {
 		h.opts = *opts
@@ -33,6 +33,7 @@ func NewCustomHandler(out io.Writer, opts *Options) *CustomHandler {
 	if h.opts.Level == nil {
 		h.opts.Level = slog.LevelInfo
 	}
+
 	return h
 }
 
@@ -47,7 +48,13 @@ func (h *CustomHandler) Enabled(_ context.Context, level slog.Level) bool {
 func (h *CustomHandler) Handle(_ context.Context, r slog.Record) error {
 	var buf []byte
 	// Level
-	buf = h.appendAttr(buf, slog.Any(slog.LevelKey, r.Level))
+	var levelAttr slog.Attr
+	if h.opts.ReplaceAttr != nil {
+		levelAttr = h.opts.ReplaceAttr(nil, slog.Any(slog.LevelKey, r.Level))
+	} else {
+		levelAttr = slog.Any(slog.LevelKey, r.Level)
+	}
+	buf = h.appendAttr(buf, levelAttr)
 	// Time
 	if !r.Time.IsZero() {
 		buf = h.appendAttr(buf, slog.Time(slog.TimeKey, r.Time))
