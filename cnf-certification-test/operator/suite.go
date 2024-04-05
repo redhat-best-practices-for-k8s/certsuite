@@ -17,6 +17,8 @@
 package operator
 
 import (
+	"strings"
+
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
@@ -61,6 +63,81 @@ func LoadChecks() {
 			testOperatorOlmSubscription(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorHasSemanticVersioningIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorSemanticVersioning(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCrdSchemaIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorCrdsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorCrdOpenAPISpec(c, &env)
+			return nil
+		}))
+}
+
+// This function checks if the operator CRD is defined with OpenAPI 3 specification
+func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testOperatorSemanticVersioning")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, crd := range env.AllCrds {
+		isCrdDefinedWithOpenAPI3Schema := false
+
+		for _, version := range crd.Spec.Versions {
+			crdSchema := version.Schema.String()
+			check.LogDebug("CRD schema is %q", crdSchema)
+
+			containsOpenAPIV3SchemaSubstr := strings.Contains(strings.ToLower(crdSchema),
+				strings.ToLower(testhelper.OpenAPIV3Schema))
+
+			if containsOpenAPIV3SchemaSubstr {
+				isCrdDefinedWithOpenAPI3Schema = true
+				break
+			}
+		}
+
+		if isCrdDefinedWithOpenAPI3Schema {
+			check.LogInfo("Operator CRD %s is defined with OpenAPIV3 schema ", crd.Name)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD is defined with OpenAPIV3 schema ", true).AddField(testhelper.OpenAPIV3Schema, crd.Name))
+		} else {
+			check.LogInfo("Operator CRD %s is not defined with OpenAPIV3 schema ", crd.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD is not defined with OpenAPIV3 schema ", false).AddField(testhelper.OpenAPIV3Schema, crd.Name))
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+// This function checks for semantic versioning of all installed operators
+func testOperatorSemanticVersioning(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testOperatorSemanticVersioning")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	allOperators := env.AllOperators
+	for _, operator := range allOperators {
+		operatorVersion := operator.Version
+		check.LogInfo("Testing Operator %q for version %s", operator, operatorVersion)
+
+		if provider.IsValidSemanticVersion(operatorVersion) {
+			check.LogInfo("Operator %q has a valid semantic version %s", operator, operatorVersion)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"Operator has a valid semantic version ", true).AddField(testhelper.Version, operatorVersion))
+		} else {
+			check.LogError("Operator %q has an invalid semantic version %s", operator, operatorVersion)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"Operator has an invalid semantic version ", false).AddField(testhelper.Version, operatorVersion))
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider.TestEnvironment) {

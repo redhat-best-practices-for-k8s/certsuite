@@ -2,6 +2,7 @@ package checksdb
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -98,6 +99,12 @@ func (check *Check) LogWarn(msg string, args ...any) {
 
 func (check *Check) LogError(msg string, args ...any) {
 	log.Logf(check.logger, log.LevelError, msg, args...)
+}
+
+func (check *Check) LogFatal(msg string, args ...any) {
+	log.Logf(check.logger, log.LevelFatal, msg, args...)
+	fmt.Fprintf(os.Stderr, "\nFATAL: "+msg+"\n", args...)
+	os.Exit(1)
 }
 
 func (check *Check) GetLogs() string {

@@ -163,7 +163,9 @@ const (
 	CategoryID4String       = "CategoryID4(anything not matching lower category)"
 )
 
-// print the strings
+// String converts the category to a string.
+// Returns:
+//   - string: The string representation of the Category.
 func (category CategoryID) String() string {
 	switch category {
 	case CategoryID1:
@@ -182,6 +184,10 @@ func (category CategoryID) String() string {
 	return CategoryID4String
 }
 
+// GetContainerSCC is update the containerSCC according capability of container(cut)
+// Returns:
+//   - ContainerSCC: struct that updated according continer(cut)
+//
 //nolint:gocritic
 func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) ContainerSCC {
 	containerSCC.HostPorts = NOK
@@ -217,6 +223,7 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 	return containerSCC
 }
 
+// updateCapabilitiesFromContainer update the per container capabilities with the capabilities defined at the container level.
 func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *ContainerSCC) {
 	containerSCC.RequiredDropCapabilitiesPresent = NOK
 	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
@@ -249,6 +256,10 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 	}
 }
 
+// AllVolumeAllowed checks if all volumes in the provided slice are allowed based on certain criteria.
+// Returns :
+//   - r1 : whether all volumes are allowed (OK/NOK)
+//   - r2 : whether any volume with HostPath is found (OK/NOK)
 func AllVolumeAllowed(volumes []corev1.Volume) (r1, r2 OkNok) {
 	countVolume := 0
 	var value OkNok
@@ -282,6 +293,11 @@ func AllVolumeAllowed(volumes []corev1.Volume) (r1, r2 OkNok) {
 	return NOK, value
 }
 
+// checkContainerCategory categorizes each container based on Security context.
+// builds a list of PodListCategory structs , each representing a container along with its category information.
+// Returns:
+//   - []PodListCategory: a slice of PodListCategory structs representing categorized containers.
+//
 //nolint:gocritic
 func checkContainerCategory(containers []corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) []PodListCategory {
 	var ContainerList []PodListCategory
@@ -312,6 +328,9 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 	return ContainerList
 }
 
+// checkContainCategory checks whether all elements in the addCapability exist in referenceCategoryAddCapabilities
+// Returns:
+//   - bool: true if all elements in the addCapability exist in referenceCategoryAddCapabilities, otherwise return false
 func checkContainCategory(addCapability []corev1.Capability, referenceCategoryAddCapabilities []string) bool {
 	for _, ncc := range addCapability {
 		if !stringhelper.StringInSlice(referenceCategoryAddCapabilities, string(ncc), true) {
@@ -321,6 +340,11 @@ func checkContainCategory(addCapability []corev1.Capability, referenceCategoryAd
 	return true
 }
 
+// CheckPod updates the containerSCC objects with security context variable defined at the Pod Level. Then it updates the containerSCC object with security context values overloaded at the container level.
+// It then categorizes each container based on specific conditions and constructs a list of PodListCategory structs,
+// each representing a container along with its category information.
+// Returns:
+//   - []PodListCategory: a slice of PodListCategory structs representing categorized containers for the pod.
 func CheckPod(pod *provider.Pod) []PodListCategory {
 	var containerSCC ContainerSCC
 	containerSCC.HostIPC = NOK
@@ -353,6 +377,10 @@ func CheckPod(pod *provider.Pod) []PodListCategory {
 	return checkContainerCategory(pod.Spec.Containers, containerSCC, pod.Name, pod.Namespace)
 }
 
+// compareCategory compare between the fields in refCategory and containerSCC
+// Returns:
+//   - bool : true if containerSCC matches the reference category, otherwise return false.
+//
 //nolint:funlen
 func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) bool {
 	result := true

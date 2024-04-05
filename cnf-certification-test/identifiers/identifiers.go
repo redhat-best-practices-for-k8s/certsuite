@@ -121,6 +121,8 @@ var (
 	TestOperatorIsCertifiedIdentifier                 claim.Identifier
 	TestHelmIsCertifiedIdentifier                     claim.Identifier
 	TestOperatorIsInstalledViaOLMIdentifier           claim.Identifier
+	TestOperatorHasSemanticVersioningIdentifier       claim.Identifier
+	TestOperatorCrdSchemaIdentifier                   claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
@@ -899,6 +901,38 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorIsInstalledViaOLMRemediation,
 		NoExceptions,
 		TestOperatorIsInstalledViaOLMIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorHasSemanticVersioningIdentifier = AddCatalogEntry(
+		"semantic-versioning",
+		common.OperatorTestKey,
+		`Tests whether an application Operator has a valid semantic versioning.`,
+		OperatorHasSemanticVersioningRemediation,
+		NoExceptions,
+		TestOperatorHasSemanticVersioningIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorCrdSchemaIdentifier = AddCatalogEntry(
+		"crd-openapi-schema",
+		common.OperatorTestKey,
+		`Tests whether an application Operator CRD is defined with OpenAPI spec.`,
+		OperatorCrdSchemaIdentifierRemediation,
+		NoExceptions,
+		TestOperatorCrdSchemaIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,

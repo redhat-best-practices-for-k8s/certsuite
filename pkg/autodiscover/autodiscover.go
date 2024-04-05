@@ -65,6 +65,7 @@ type DiscoveredTestData struct {
 	AllNamespaces          []string
 	AbnormalEvents         []corev1.Event
 	Csvs                   []*olmv1Alpha.ClusterServiceVersion
+	AllCrds                []*apiextv1.CustomResourceDefinition
 	AllCsvs                []*olmv1Alpha.ClusterServiceVersion
 	AllInstallPlans        []*olmv1Alpha.InstallPlan
 	AllCatalogSources      []*olmv1Alpha.CatalogSource
@@ -174,7 +175,14 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 		log.Error("Cannot get network policies, err: %v", err)
 		os.Exit(1)
 	}
-	data.Crds = FindTestCrdNames(config.CrdFilters)
+
+	// Get cluster crds
+	data.AllCrds = GetClusterCrdNames()
+	if data.AllCrds == nil {
+		os.Exit(1)
+	}
+	data.Crds = FindTestCrdNames(data.AllCrds, config.CrdFilters)
+
 	data.ScaleCrUnderTest = GetScaleCrUnderTest(data.Namespaces, data.Crds)
 	data.Csvs = findOperatorsByLabels(oc.OlmClient, operatorsUnderTestLabelsObjects, config.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)

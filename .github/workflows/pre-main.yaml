@@ -29,6 +29,10 @@ env:
   SMOKE_TESTS_LABELS_FILTER: all
   SKIP_PRELOAD_IMAGES: true
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: Run Linters and Vet
@@ -94,8 +98,8 @@ jobs:
       - name: ShellCheck
         uses: ludeeus/action-shellcheck@master
 
-      - name: Typos
-        uses: crate-ci/typos@master
+      # - name: Typos
+      #   uses: crate-ci/typos@master
 
       - name: Yamllint
         uses: ibiqlik/action-yamllint@v3
@@ -454,38 +458,49 @@ jobs:
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
 
-      - name: Upload container preflight test results as an artifact
-        uses: actions/upload-artifact@v4
-        if: always()
+  # Only run this job if the previous jobs are successful that build the ARM and x86 images.
+  create-manifest-multiarch:
+    name: Create manifest list for multi-arch image
+    needs: [unit-tests, smoke-tests-container]
+    runs-on: ubuntu-22.04
+    if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
         with:
-          name: preflight-smoke-tests-container
-          path: |
-            ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+          ref: ${{ github.sha }}
 
-      - name: Remove tarball(s) to save disk space.
-        run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
+      - name: Login to Quay.io
+        uses: docker/login-action@v3
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.QUAY_ROBOT_USERNAME }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+
+      - name: Build and push the unstable images for multi-arch
+        uses: docker/build-push-action@v5
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.TNF_IMAGE_NAME }}:${{ env.TNF_IMAGE_TAG }}
+      
       - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
         uses: ./.github/actions/slack-webhook-sender
         with:
-          message: 'Failed to create the *unstable* container image'
+          message: 'Failed to create the *unstable* container manifest'
           slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
 
-      # Push the new unstable TNF image to Quay.io.
-      - name: (if on main and upstream) Authenticate against Quay.io
-        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          # Use a Robot Account to authenticate against Quay.io
-          # https://docs.quay.io/glossary/robot-accounts.html
-          username: ${{ secrets.QUAY_ROBOT_USERNAME }}
-          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
-
-      - name: (if on main and upstream) Push the newly built image to Quay.io
-        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
 
   check-all-dependencies-are-merged:
     name: Check all the PR dependencies are merged

@@ -42,10 +42,23 @@ func TestFindTestCrdNames(t *testing.T) {
 	}
 
 	testCases := []struct {
+		clusterCRDs        []*apiextv1.CustomResourceDefinition
 		spoofCRDFilters    []configuration.CrdFilter
 		expectedTargetCRDs []*apiextv1.CustomResourceDefinition
 	}{
 		{ // Test Case #1 - testsuffix happy path
+			clusterCRDs: []*apiextv1.CustomResourceDefinition{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name: "testCRD_testsuffix",
+					},
+				},
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name: "testCRD_nosuffix",
+					},
+				},
+			},
 			spoofCRDFilters: []configuration.CrdFilter{
 				{
 					NameSuffix: "testsuffix",
@@ -60,14 +73,58 @@ func TestFindTestCrdNames(t *testing.T) {
 			},
 		},
 		{ // Test Case #2 - empty filters so cannot find CRD
+			clusterCRDs:        []*apiextv1.CustomResourceDefinition{},
 			spoofCRDFilters:    []configuration.CrdFilter{},
-			expectedTargetCRDs: nil,
+			expectedTargetCRDs: []*apiextv1.CustomResourceDefinition{},
 		},
 	}
 
 	for _, tc := range testCases {
 		_ = clientsholder.GetTestClientsHolder(generateObjects())
 		// Run the function and assert the results
-		assert.Equal(t, tc.expectedTargetCRDs, FindTestCrdNames(tc.spoofCRDFilters))
+		assert.Equal(t, tc.expectedTargetCRDs, FindTestCrdNames(tc.clusterCRDs, tc.spoofCRDFilters))
+	}
+}
+
+func TestGetClusterCrdNames(t *testing.T) {
+	// Function to generate some runtime objects for the k8s mock client
+	generateObjects := func() []runtime.Object {
+		testCRD := apiextv1.CustomResourceDefinition{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: "testCRD",
+			},
+		}
+
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, &testCRD)
+		return testRuntimeObjects
+	}
+
+	noObjects := func() []runtime.Object { return []runtime.Object{} }
+
+	testCases := []struct {
+		generated          func() []runtime.Object
+		expectedTargetCRDs []*apiextv1.CustomResourceDefinition
+	}{
+		{ // Test Case #1 - happy path
+			generated: generateObjects,
+			expectedTargetCRDs: []*apiextv1.CustomResourceDefinition{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name: "testCRD",
+					},
+				},
+			},
+		},
+		{ // Test Case #2 - no CRD found
+			generated:          noObjects,
+			expectedTargetCRDs: nil,
+		},
+	}
+
+	for _, tc := range testCases {
+		_ = clientsholder.GetTestClientsHolder(tc.generated())
+		// Run the function and assert the results
+		assert.Equal(t, tc.expectedTargetCRDs, GetClusterCrdNames())
 	}
 }
