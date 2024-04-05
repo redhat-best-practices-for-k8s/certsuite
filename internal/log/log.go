@@ -22,6 +22,7 @@ const (
 	LevelInfo  = "info"
 	LevelWarn  = "warn"
 	LevelError = "error"
+	LevelFatal = "fatal"
 )
 
 type Logger struct {
@@ -42,8 +43,21 @@ func SetupLogger(logWriter io.Writer, level string) {
 		globalLogLevel = logLevel
 	}
 
-	opts := Options{
+	opts := slog.HandlerOptions{
 		Level: globalLogLevel,
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			if a.Key == slog.LevelKey {
+				level := a.Value.Any().(slog.Level)
+				levelLabel, exists := CustomLevelNames[level]
+				if !exists {
+					levelLabel = level.String()
+				}
+
+				a.Value = slog.StringValue(levelLabel)
+			}
+
+			return a
+		},
 	}
 
 	globalLogger = &Logger{
@@ -60,8 +74,21 @@ func GetLogger() *Logger {
 }
 
 func GetMultiLogger(writers ...io.Writer) *Logger {
-	opts := Options{
+	opts := slog.HandlerOptions{
 		Level: globalLogLevel,
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			if a.Key == slog.LevelKey {
+				level := a.Value.Any().(slog.Level)
+				levelLabel, exists := CustomLevelNames[level]
+				if !exists {
+					levelLabel = level.String()
+				}
+
+				a.Value = slog.StringValue(levelLabel)
+			}
+
+			return a
+		},
 	}
 
 	handlers := []slog.Handler{globalLogger.l.Handler()}
@@ -89,18 +116,33 @@ func Error(msg string, args ...any) {
 	Logf(globalLogger, LevelError, msg, args...)
 }
 
+func Fatal(msg string, args ...any) {
+	Logf(globalLogger, LevelFatal, msg, args...)
+	fmt.Fprintf(os.Stderr, "\nFATAL: "+msg+"\n", args...) //nolint: goconst
+	os.Exit(1)
+}
+
 // Log methods for a logger instance
 func (logger *Logger) Debug(msg string, args ...any) {
 	Logf(logger, LevelDebug, msg, args...)
 }
+
 func (logger *Logger) Info(msg string, args ...any) {
 	Logf(logger, LevelInfo, msg, args...)
 }
+
 func (logger *Logger) Warn(msg string, args ...any) {
 	Logf(logger, LevelWarn, msg, args...)
 }
+
 func (logger *Logger) Error(msg string, args ...any) {
 	Logf(logger, LevelError, msg, args...)
+}
+
+func (logger *Logger) Fatal(msg string, args ...any) {
+	Logf(logger, LevelFatal, msg, args...)
+	fmt.Fprintf(os.Stderr, "\nFATAL: "+msg+"\n", args...)
+	os.Exit(1)
 }
 
 func (logger *Logger) With(args ...any) *Logger {
@@ -119,6 +161,8 @@ func parseLevel(level string) (slog.Level, error) {
 		return slog.LevelWarn, nil
 	case "error":
 		return slog.LevelError, nil
+	case "fatal":
+		return CustomLevelFatal, nil
 	}
 
 	return 0, fmt.Errorf("not a valid slog Level: %q", level)
