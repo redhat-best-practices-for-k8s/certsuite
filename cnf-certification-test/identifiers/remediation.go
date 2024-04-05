@@ -81,6 +81,8 @@ const (
 
 	OperatorHasSemanticVersioningRemediation = `Ensure that the installed Operator has a valid semantic versioning.`
 
+	OperatorCrdSchemaIdentifierRemediation = `Ensure that the installed Operator's CRD is defined with OpenAPI spec.`
+
 	OperatorSingleCrdOwnerRemediation = `Ensure that a CRD is owned by only one Operator`
 
 	PodNodeSelectorAndAffinityBestPracticesRemediation = `In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which CNFs require specialized hardware specific to a particular class of Node.`

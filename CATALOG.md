@@ -1122,6 +1122,22 @@ Tags|telco,observability
 
 ### operator
 
+#### operator-crd-openapi-schema
+
+Property|Description
+---|---
+Unique ID|operator-crd-openapi-schema
+Description|Tests whether an application Operator CRD is defined with OpenAPI spec.
+Suggested Remediation|Ensure that the installed Operator's CRD is defined with OpenAPI spec.
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
 #### operator-install-source
 
 Property|Description
@@ -1170,11 +1186,11 @@ Tags|common,operator
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
 
-#### operator-installed-operator-semantic-versioning
+#### operator-semantic-versioning
 
 Property|Description
 ---|---
-Unique ID|operator-installed-operator-semantic-versioning
+Unique ID|operator-semantic-versioning
 Description|Tests whether an application Operator has a valid semantic versioning.
 Suggested Remediation|Ensure that the installed Operator has a valid semantic versioning.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements

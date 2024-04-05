@@ -130,6 +130,7 @@ const (
 	Repository                      = "Repository"
 	ImageName                       = "Image Name"
 	Version                         = "Version"
+	OpenAPIV3Schema                 = "OpenAPIV3Schema"
 	OCPVersion                      = "OCP Version"
 	OCPChannel                      = "OCP Channel"
 	NodeSelector                    = "Node Selector"
@@ -640,6 +641,15 @@ func GetNoOperatorsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Operators) == 0 {
 			return true, "no operators found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoOperatorCrdsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.AllCrds) == 0 {
+			return true, "no operator crds found"
 		}
 		return false, ""
 	}

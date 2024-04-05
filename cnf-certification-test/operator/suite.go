@@ -71,12 +71,55 @@ func LoadChecks() {
 			return nil
 		}))
 
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCrdSchemaIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorCrdsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorCrdOpenAPISpec(c, &env)
+			return nil
+		}))
+
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorSingleCrdOwnerIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorSingleCrdOwner(c, &env)
 			return nil
 		}))
+}
+
+// This function checks if the operator CRD is defined with OpenAPI 3 specification
+func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testOperatorSemanticVersioning")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, crd := range env.AllCrds {
+		isCrdDefinedWithOpenAPI3Schema := false
+
+		for _, version := range crd.Spec.Versions {
+			crdSchema := version.Schema.String()
+			check.LogDebug("CRD schema is %q", crdSchema)
+
+			containsOpenAPIV3SchemaSubstr := strings.Contains(strings.ToLower(crdSchema),
+				strings.ToLower(testhelper.OpenAPIV3Schema))
+
+			if containsOpenAPIV3SchemaSubstr {
+				isCrdDefinedWithOpenAPI3Schema = true
+				break
+			}
+		}
+
+		if isCrdDefinedWithOpenAPI3Schema {
+			check.LogInfo("Operator CRD %s is defined with OpenAPIV3 schema ", crd.Name)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD is defined with OpenAPIV3 schema ", true).AddField(testhelper.OpenAPIV3Schema, crd.Name))
+		} else {
+			check.LogInfo("Operator CRD %s is not defined with OpenAPIV3 schema ", crd.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD is not defined with OpenAPIV3 schema ", false).AddField(testhelper.OpenAPIV3Schema, crd.Name))
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // This function checks for semantic versioning of all installed operators
