@@ -92,7 +92,8 @@ func testOperatorInstallationAccessToSCC(check *checksdb.Check, env *provider.Te
 		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
 			check.LogInfo("No clusterPermissions found in %s's CSV", operator)
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "No RBAC rules for Security Context Constraints found in CSV", true))
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"No RBAC rules for Security Context Constraints found in CSV (no clusterPermissions found)", true))
 			continue
 		}
 
@@ -117,18 +118,14 @@ func testOperatorInstallationAccessToSCC(check *checksdb.Check, env *provider.Te
 				}
 
 				// Now check whether it grants some access to securitycontextconstraint resources.
-				securityResourceFound := false
 				for _, resource := range rule.Resources {
 					if resource == "*" || resource == "securitycontextconstraints" {
-						securityResourceFound = true
+						check.LogInfo("Operator %s has a rule (index %d) for service account %s to access cluster SCCs",
+							operator, ruleIndex, permission.ServiceAccountName)
+						// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
+						badRuleFound = true
+						break
 					}
-				}
-
-				if securityResourceFound {
-					check.LogInfo("Operator %s has a rule (index %d) for service account %s to access cluster SCCs",
-						operator, ruleIndex, permission.ServiceAccountName)
-					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
-					badRuleFound = true
 				}
 			}
 		}
