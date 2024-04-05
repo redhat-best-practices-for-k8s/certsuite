@@ -7,7 +7,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 107
+### Total test cases: 108
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |manageability|2|
 |networking|11|
 |observability|4|
-|operator|5|
+|operator|6|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 60
+### Non-Telco specific tests only: 61
 
 |Mandatory|Optional|
 |---|---|
-|40|20|
+|41|20|
 
 ### Telco specific tests only: 27
 
@@ -1128,7 +1128,23 @@ Property|Description
 ---|---
 Unique ID|operator-crd-openapi-schema
 Description|Tests whether an application Operator CRD is defined with OpenAPI spec.
-Suggested Remediation|Ensure that the installed Operator's CRD is defined with OpenAPI spec.
+Suggested Remediation|Ensure that the Operator CRD is defined with OpenAPI spec.
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### operator-crd-versioning
+
+Property|Description
+---|---
+Unique ID|operator-crd-versioning
+Description|Tests whether the Operator CRD has a valid versioning.
+Suggested Remediation|Ensure that the Operator CRD has a valid version.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator
@@ -1192,7 +1208,7 @@ Property|Description
 ---|---
 Unique ID|operator-semantic-versioning
 Description|Tests whether an application Operator has a valid semantic versioning.
-Suggested Remediation|Ensure that the installed Operator has a valid semantic versioning.
+Suggested Remediation|Ensure that the Operator has a valid semantic versioning.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator

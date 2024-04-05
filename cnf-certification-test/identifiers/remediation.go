@@ -79,9 +79,11 @@ const (
 
 	OperatorIsInstalledViaOLMRemediation = `Ensure that your Operator is installed via OLM.`
 
-	OperatorHasSemanticVersioningRemediation = `Ensure that the installed Operator has a valid semantic versioning.`
+	OperatorHasSemanticVersioningRemediation = `Ensure that the Operator has a valid semantic versioning.`
 
-	OperatorCrdSchemaIdentifierRemediation = `Ensure that the installed Operator's CRD is defined with OpenAPI spec.`
+	OperatorCrdSchemaIdentifierRemediation = `Ensure that the Operator CRD is defined with OpenAPI spec.`
+
+	OperatorCrdVersioningRemediation = `Ensure that the Operator CRD has a valid version.`
 
 	OperatorSingleCrdOwnerRemediation = `Ensure that a CRD is owned by only one Operator`
 

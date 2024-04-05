@@ -108,6 +108,7 @@ const (
 	TestOperatorIsInstalledViaOLMIdentifierDocLink      = DocOperatorRequirement
 	TestOperatorHasSemanticVersioningIdentifierDocLink  = DocOperatorRequirement
 	TestOperatorCrdSchemaIdentifierDocLink              = DocOperatorRequirement
+	TestOperatorCrdVersioningIdentifierDocLink          = DocOperatorRequirement
 	TestOperatorSingleCrdOwnerIdentifierDocLink         = DocOperatorRequirement
 
 	// Observability Test Suite

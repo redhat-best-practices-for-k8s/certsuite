@@ -22,6 +22,8 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
+
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/version"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -71,6 +73,13 @@ func LoadChecks() {
 			return nil
 		}))
 
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCrdVersioningIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorCrdsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorCrdVersioning(c, &env)
+			return nil
+		}))
+
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCrdSchemaIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoOperatorCrdsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
@@ -86,9 +95,43 @@ func LoadChecks() {
 		}))
 }
 
+// This function check if the Operator CRD version follows K8s versioning
+func testOperatorCrdVersioning(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testOperatorCrdVersioning")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, crd := range env.AllCrds {
+		doesUseK8sVersioning := true
+		nonCompliantVersion := ""
+
+		for _, crdVersion := range crd.Spec.Versions {
+			versionName := crdVersion.Name
+			check.LogDebug("Checking for Operator CRD %s with version %s", crd.Name, versionName)
+
+			if !version.IsValidK8sVersion(versionName) {
+				doesUseK8sVersioning = false
+				nonCompliantVersion = versionName
+				break
+			}
+		}
+
+		if doesUseK8sVersioning {
+			check.LogInfo("Operator CRD %s has valid K8s versioning ", crd.Name)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD has valid K8s versioning ", true).AddField(testhelper.CrdVersion, crd.Name))
+		} else {
+			check.LogError("Operator CRD %s has invalid K8s versioning %s ", crd.Name, nonCompliantVersion)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD has invalid K8s versioning ", false).AddField(testhelper.CrdVersion, crd.Name))
+		}
+	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
 // This function checks if the operator CRD is defined with OpenAPI 3 specification
 func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("Starting testOperatorSemanticVersioning")
+	check.LogInfo("Starting testOperatorCrdOpenAPISpec")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -133,7 +176,7 @@ func testOperatorSemanticVersioning(check *checksdb.Check, env *provider.TestEnv
 		operatorVersion := operator.Version
 		check.LogInfo("Testing Operator %q for version %s", operator, operatorVersion)
 
-		if provider.IsValidSemanticVersion(operatorVersion) {
+		if version.IsValidSemanticVersion(operatorVersion) {
 			check.LogInfo("Operator %q has a valid semantic version %s", operator, operatorVersion)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
 				"Operator has a valid semantic version ", true).AddField(testhelper.Version, operatorVersion))

@@ -206,6 +206,7 @@ require (
 )
 
 require (
+	github.com/Masterminds/semver v1.5.0
 	github.com/fatih/color v1.16.0
 	github.com/go-logr/logr v1.4.1
 	github.com/go-logr/stdr v1.2.2
