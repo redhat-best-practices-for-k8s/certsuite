@@ -1202,6 +1202,22 @@ Tags|common,operator
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
 
+#### operator-single-crd-owner
+
+Property|Description
+---|---
+Unique ID|operator-single-crd-owner
+Description|Tests whether a CRD is owned by a single Operator.
+Suggested Remediation|Ensure that a CRD is owned by only one Operator
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
 ### performance
 
 #### performance-exclusive-cpu-pool

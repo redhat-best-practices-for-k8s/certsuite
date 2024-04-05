@@ -123,6 +123,7 @@ var (
 	TestOperatorIsInstalledViaOLMIdentifier           claim.Identifier
 	TestOperatorHasSemanticVersioningIdentifier       claim.Identifier
 	TestOperatorCrdSchemaIdentifier                   claim.Identifier
+	TestOperatorSingleCrdOwnerIdentifier              claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
@@ -933,6 +934,22 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorCrdSchemaIdentifierRemediation,
 		NoExceptions,
 		TestOperatorCrdSchemaIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorSingleCrdOwnerIdentifier = AddCatalogEntry(
+		"single-crd-owner",
+		common.OperatorTestKey,
+		`Tests whether a CRD is owned by a single Operator.`,
+		OperatorSingleCrdOwnerRemediation,
+		NoExceptions,
+		TestOperatorSingleCrdOwnerIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,

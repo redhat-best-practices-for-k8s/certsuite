@@ -56,39 +56,40 @@ testCases:
     - operator-install-status-no-privileges
     - operator-install-status-succeeded
     - operator-semantic-versioning
+    - operator-single-crd-owner
     - performance-exclusive-cpu-pool
     - performance-max-resources-exec-probes
     - platform-alteration-isredhat-release
     - platform-alteration-tainted-node-kernel
   fail:
-    - affiliated-certification-container-is-certified-digest # test container image is not certified
     - access-control-security-context # test pod does not meet the security requirements
+    - affiliated-certification-container-is-certified-digest # test container image is not certified
   skip:
-    - lifecycle-statefulset-scaling
-    - platform-alteration-ocp-node-os-lifecycle
-    - platform-alteration-hyperthread-enable
-    - lifecycle-affinity-required-pods
-    - networking-dpdk-cpu-pinning-exec-probe
-    - performance-shared-cpu-pool-non-rt-scheduling-policy
-    - affiliated-certification-helmchart-is-certified
-    - performance-rt-apps-no-exec-probes
+    - access-control-crd-roles
     - access-control-sys-ptrace-capability
-    - networking-restart-on-reboot-sriov-pod
     - affiliated-certification-helm-version
-    - performance-isolated-cpu-pool-rt-scheduling-policy
+    - affiliated-certification-helmchart-is-certified
+    - lifecycle-affinity-required-pods
     - lifecycle-cpu-isolation
-    - performance-exclusive-cpu-pool-rt-scheduling-policy
-    - platform-alteration-base-image
     - lifecycle-crd-scaling
     - lifecycle-persistent-volume-reclaim-policy
-    - access-control-crd-roles
-    - platform-alteration-is-selinux-enforcing
+    - lifecycle-statefulset-scaling
     - lifecycle-storage-provisioner
-    - platform-alteration-sysctl-config
+    - networking-dpdk-cpu-pinning-exec-probe
+    - networking-icmpv6-connectivity
+    - networking-restart-on-reboot-sriov-pod
+    - performance-exclusive-cpu-pool-rt-scheduling-policy
+    - performance-isolated-cpu-pool-rt-scheduling-policy
+    - performance-rt-apps-no-exec-probes
+    - performance-shared-cpu-pool-non-rt-scheduling-policy
+    - platform-alteration-base-image
     - platform-alteration-boot-params
-    - platform-alteration-ocp-lifecycle
-    - platform-alteration-hugepages-2m-only
     - platform-alteration-hugepages-config
     - platform-alteration-hugepages-1g-only
-    - networking-icmpv6-connectivity
+    - platform-alteration-hugepages-2m-only
+    - platform-alteration-hyperthread-enable
+    - platform-alteration-is-selinux-enforcing
+    - platform-alteration-ocp-lifecycle
+    - platform-alteration-ocp-node-os-lifecycle
     - platform-alteration-service-mesh-usage
+    - platform-alteration-sysctl-config
