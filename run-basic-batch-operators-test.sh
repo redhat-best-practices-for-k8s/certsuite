@@ -254,7 +254,7 @@ forceDeleteNamespaceIfPresent() {
 	if ! oc get namespace "$aNamespace"; then
 		return 0
 	fi
-	echoColor "$RED" "Namespace cannot be deleted normaly, force deleting"
+	echoColor "$RED" "Namespace cannot be deleted normally, force deleting"
 	# Otherwise force delete namespace
 	withRetry 5 10 oc get namespace "$aNamespace" -ojson | sed '/"kubernetes"/d' >temp.yaml
 	# Kill previous oc proxy command in the background
@@ -375,7 +375,7 @@ OPERATOR_PAGE='<!DOCTYPE html>
 echo "$OPERATOR_PAGE" >>"$REPORT_FOLDER"/"$INDEX_FILE"
 
 # Wait for the cluster to be reachable
-echoColor "$BLUE" "Wait for cluster to be reacheable"
+echoColor "$BLUE" "Wait for cluster to be reachable"
 waitClusterOk
 
 echoColor "$BLUE" "Starting to install and test operators"
@@ -388,7 +388,7 @@ while IFS=, read -r packageName catalog; do
 	echoColor "$GREY" "********* package= $packageName catalog= $catalog **********"
 
 	# Wait for the cluster to be reachable
-	echoColor "$BLUE" "Wait for cluster to be reacheable"
+	echoColor "$BLUE" "Wait for cluster to be reachable"
 	waitClusterOk
 
 	# Variable to hold return status
