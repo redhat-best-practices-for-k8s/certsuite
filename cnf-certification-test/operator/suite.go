@@ -20,8 +20,10 @@ import (
 	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common/rbac"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
@@ -39,6 +41,7 @@ var (
 	}
 )
 
+//nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.OperatorTestKey)
 
@@ -91,6 +94,33 @@ func LoadChecks() {
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorSingleCrdOwner(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorRunAsUserID)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorPodsRunAsUserID(c, &env)
+			return nil
+		}))
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorRunAsNonRoot)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorPodsRunAsNonRoot(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorAutomountTokens)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorPodsAutomountTokens(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorReadOnlyFilesystem)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorContainersReadOnlyFilesystem(c, &env)
 			return nil
 		}))
 }
@@ -316,4 +346,105 @@ func testOperatorSingleCrdOwner(check *checksdb.Check, env *provider.TestEnviron
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testOperatorPodsRunAsUserID(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for csv, pods := range env.CSVToPodListMap {
+		CsvResult := SplitCsv(csv)
+		check.LogInfo("Name of csv: %q in namespaces: %q", CsvResult.NameCsv, CsvResult.Namespace)
+		for _, pod := range pods {
+			check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
+			if pod.IsRunAsUserID(0) {
+				check.LogError("Non-compliant Pod %q in namespace %q: UserID is 0", pod.Name, pod.Namespace)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod has been found with UserID set to 0", false))
+			} else {
+				check.LogInfo("Compliant Pod %q in namespace %q: UserID is not 0", pod.Name, pod.Namespace)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod has been found with UserID not set to 0", true))
+			}
+		}
+	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testOperatorPodsRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for csv, pods := range env.CSVToPodListMap {
+		CsvResult := SplitCsv(csv)
+		check.LogInfo("Name of csv: %q in namespaces: %q", CsvResult.NameCsv, CsvResult.Namespace)
+		for _, pod := range pods {
+			check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
+			// We are looking through both the containers and the pods separately to make compliant and non-compliant objects.
+			for _, c := range pod.Containers {
+				if c.IsContainerRunAsNonRoot() {
+					check.LogInfo("Container %q in Pod %q is running as non-root", c.Name, pod.Name)
+					compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(c.Namespace, c.Name, "Container is running as non-root", true))
+				} else {
+					check.LogError("Container %q in Pod %q is running as root", c.Name, pod.Name)
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Container is running as root", false))
+				}
+			}
+
+			if pod.IsRunAsNonRoot() {
+				check.LogInfo("Pod %q is running as non-root", pod.Name)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod is running as non-root", true))
+			} else {
+				check.LogError("Pod %q is running as root", pod.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod is running as root", false))
+			}
+		}
+	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testOperatorPodsAutomountTokens(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for csv, pods := range env.CSVToPodListMap {
+		CsvResult := SplitCsv(csv)
+		check.LogInfo("Name of csv: %q in namespaces: %q", CsvResult.NameCsv, CsvResult.Namespace)
+		for _, pod := range pods {
+			check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
+			// Evaluate the pod's automount service tokens and any attached service accounts
+			client := clientsholder.GetClientsHolder()
+			podPassed, newMsg := rbac.EvaluateAutomountTokens(client.K8sClient.CoreV1(), pod.Pod)
+			if !podPassed {
+				check.LogInfo("Pod %q in namespace %q has automount service account token set to false", pod.Name, pod.Namespace)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod has automount service account token set to false", true))
+			} else {
+				check.LogError("Pod %q in namespace %q: %s", pod.Name, pod.Namespace, newMsg)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, newMsg, false))
+			}
+		}
+	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testOperatorContainersReadOnlyFilesystem(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for csv, pods := range env.CSVToPodListMap {
+		CsvResult := SplitCsv(csv)
+		check.LogInfo("Name of csv: %q in namespaces: %q", CsvResult.NameCsv, CsvResult.Namespace)
+		for _, pod := range pods {
+			check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
+			for _, cut := range pod.Containers {
+				check.LogInfo("Testing Container %q in Pod %q", cut.Name, pod.Name)
+				if cut.IsReadOnlyRootFilesystem(check.GetLogger()) {
+					check.LogInfo("Container %q in Pod %q has a read-only root filesystem.", cut.Name, pod.Name)
+					compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Container has a read-only root filesystem", true))
+				} else {
+					check.LogError("Container %q in Pod %q does not have a read-only root filesystem.", cut.Name, pod.Name)
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Container does not have a read-only root filesystem", false))
+				}
+			}
+		}
+		check.SetResult(compliantObjects, nonCompliantObjects)
+	}
 }
