@@ -2,7 +2,6 @@ package autodiscover
 
 import (
 	"context"
-	"os"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
@@ -48,8 +47,7 @@ func GetScaleCrUnderTest(namespaces []string, crds []*apiextv1.CustomResourceDef
 			for _, ns := range namespaces {
 				crs, err := dynamicClient.Resource(gvr).Namespace(ns).List(context.TODO(), metav1.ListOptions{})
 				if err != nil {
-					log.Error("Error getting CRs of CRD %q in namespace %q, err: %v", crd.Name, ns, err)
-					os.Exit(1)
+					log.Fatal("Error getting CRs of CRD %q in namespace %q, err: %v", crd.Name, ns, err)
 				}
 
 				if len(crs.Items) > 0 {
@@ -77,8 +75,7 @@ func getCrScaleObjects(crs []unstructured.Unstructured, crd *apiextv1.CustomReso
 		namespace := cr.GetNamespace()
 		crScale, err := clients.ScalingClient.Scales(namespace).Get(context.TODO(), groupResourceSchema, name, metav1.GetOptions{})
 		if err != nil {
-			log.Error("Error while getting the scale of CR=%s (CRD=%s) in namespace %s: %v", name, crd.Name, namespace, err)
-			os.Exit(1)
+			log.Fatal("Error while getting the scale of CR=%s (CRD=%s) in namespace %s: %v", name, crd.Name, namespace, err)
 		}
 
 		scaleObjects = append(scaleObjects, ScaleObject{Scale: crScale, GroupResourceSchema: groupResourceSchema})

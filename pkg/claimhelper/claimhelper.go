@@ -259,15 +259,13 @@ func (c *ClaimBuilder) ToJUnitXML(outputFile string, startTime, endTime time.Tim
 	// Write the JUnit XML file.
 	payload, err := xml.MarshalIndent(xmlOutput, "", "  ")
 	if err != nil {
-		log.Error("Failed to generate the xml: %v", err)
-		os.Exit(1)
+		log.Fatal("Failed to generate the xml: %v", err)
 	}
 
 	log.Info("Writing JUnit XML file: %s", outputFile)
 	err = os.WriteFile(outputFile, payload, claimFilePermissions)
 	if err != nil {
-		log.Error("Failed to write the xml file")
-		os.Exit(1)
+		log.Fatal("Failed to write the xml file")
 	}
 }
 
@@ -292,8 +290,7 @@ func MarshalConfigurations() (configurations []byte, err error) {
 func UnmarshalConfigurations(configurations []byte, claimConfigurations map[string]interface{}) {
 	err := j.Unmarshal(configurations, &claimConfigurations)
 	if err != nil {
-		log.Error("error unmarshalling configurations: %v", err)
-		os.Exit(1)
+		log.Fatal("error unmarshalling configurations: %v", err)
 	}
 }
 
@@ -301,8 +298,7 @@ func UnmarshalConfigurations(configurations []byte, claimConfigurations map[stri
 func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 	err := j.Unmarshal(claimFile, &claimRoot)
 	if err != nil {
-		log.Error("error unmarshalling claim file: %v", err)
-		os.Exit(1)
+		log.Fatal("error unmarshalling claim file: %v", err)
 	}
 }
 
@@ -343,8 +339,7 @@ func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvi
 func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 	payload, err := j.MarshalIndent(claimRoot, "", "  ")
 	if err != nil {
-		log.Error("Failed to generate the claim: %v", err)
-		os.Exit(1)
+		log.Fatal("Failed to generate the claim: %v", err)
 	}
 	return payload
 }
@@ -353,8 +348,7 @@ func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 func WriteClaimOutput(claimOutputFile string, payload []byte) {
 	err := os.WriteFile(claimOutputFile, payload, claimFilePermissions)
 	if err != nil {
-		log.Error("Error writing claim data:\n%s", string(payload))
-		os.Exit(1)
+		log.Fatal("Error writing claim data:\n%s", string(payload))
 	}
 }
 

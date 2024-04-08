@@ -17,7 +17,6 @@
 package lifecycle
 
 import (
-	"os"
 	"time"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
@@ -666,8 +665,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 
 		err = podrecreation.CordonHelper(nodeName, podrecreation.Uncordon)
 		if err != nil {
-			check.LogError("Error uncordoning the node: %s", nodeName)
-			os.Exit(1) //nolint: gocritic
+			check.LogFatal("Error uncordoning the node: %s", nodeName)
 		}
 	}
 

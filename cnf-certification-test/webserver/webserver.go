@@ -264,8 +264,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 
 	tnfConfig, err := os.ReadFile("tnf_config.yml")
 	if err != nil {
-		log.Error("Error reading YAML file: %v", err)
-		os.Exit(1) //nolint:gocritic
+		log.Fatal("Error reading YAML file: %v", err) //nolint:gocritic // exitAfterDefer
 	}
 
 	newData := updateTnf(tnfConfig, &data)
@@ -273,8 +272,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	// Write the modified YAML data back to the file
 	err = os.WriteFile("tnf_config.yml", newData, os.ModePerm)
 	if err != nil {
-		log.Error("Error writing YAML file: %v", err)
-		os.Exit(1)
+		log.Fatal("Error writing YAML file: %v", err)
 	}
 	_ = clientsholder.GetNewClientsHolder(kubeconfigTempFile.Name())
 
@@ -324,8 +322,7 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 
 	err := yaml.Unmarshal(tnfConfig, &config)
 	if err != nil {
-		log.Error("Error unmarshalling YAML: %v", err)
-		os.Exit(1)
+		log.Fatal("Error unmarshalling YAML: %v", err)
 	}
 
 	// Modify the configuration
@@ -406,8 +403,7 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	// Serialize the modified config back to YAML format
 	newData, err := yaml.Marshal(&config)
 	if err != nil {
-		log.Error("Error marshaling YAML: %v", err)
-		os.Exit(1)
+		log.Fatal("Error marshaling YAML: %v", err)
 	}
 	return newData
 }

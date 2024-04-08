@@ -18,7 +18,6 @@ package preflight
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
@@ -98,8 +97,7 @@ func testPreflightOperators(checksGroup *checksdb.ChecksGroup, env *provider.Tes
 		// in-general you are only going to have an operator installed once in a cluster.
 		err := op.SetPreflightResults(env)
 		if err != nil {
-			log.Error("Failed running Preflight on operator %q,  err: %v", op.Name, err)
-			os.Exit(1)
+			log.Fatal("Failed running Preflight on operator %q,  err: %v", op.Name, err)
 		}
 	}
 
@@ -121,8 +119,7 @@ func testPreflightContainers(checksGroup *checksdb.ChecksGroup, env *provider.Te
 	for _, cut := range env.Containers {
 		err := cut.SetPreflightResults(preflightImageCache, env)
 		if err != nil {
-			log.Error("Failed running Preflight on image %q, err: %v", cut.Image, err)
-			os.Exit(1)
+			log.Fatal("Failed running Preflight on image %q, err: %v", cut.Image, err)
 		}
 	}
 

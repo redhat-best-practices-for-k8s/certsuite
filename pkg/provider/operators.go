@@ -118,8 +118,7 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 
 	e := os.RemoveAll("artifacts/")
 	if e != nil {
-		log.Error("%v", e)
-		os.Exit(1)
+		log.Fatal("%v", e)
 	}
 
 	log.Info("Storing operator Preflight results into object for %q", bundleImage)

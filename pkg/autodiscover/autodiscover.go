@@ -19,7 +19,6 @@ package autodiscover
 import (
 	"context"
 	"errors"
-	"os"
 	"regexp"
 	"time"
 
@@ -132,8 +131,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	var err error
 	data.StorageClasses, err = getAllStorageClasses(oc.K8sClient.StorageV1())
 	if err != nil {
-		log.Error("Failed to retrieve storageClasses - err: %v", err)
-		os.Exit(1)
+		log.Fatal("Failed to retrieve storageClasses - err: %v", err)
 	}
 
 	podsUnderTestLabelsObjects := createLabels(config.PodsUnderTestLabels)
@@ -144,8 +142,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 
 	data.AllNamespaces, err = getAllNamespaces(oc.K8sClient.CoreV1())
 	if err != nil {
-		log.Error("Cannot get namespaces, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get namespaces, err: %v", err)
 	}
 	data.AllSubscriptions = findSubscriptions(oc.OlmClient, []string{""})
 	data.AllCsvs, err = getAllOperators(oc.OlmClient)
@@ -162,24 +159,21 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.DebugPods, _ = findPodsByLabels(oc.K8sClient.CoreV1(), debugLabels, debugNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
-		log.Error("Cannot get resource quotas, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get resource quotas, err: %v", err)
 	}
 	data.PodDisruptionBudgets, err = getPodDisruptionBudgets(oc.K8sClient.PolicyV1(), data.Namespaces)
 	if err != nil {
-		log.Error("Cannot get pod disruption budgets, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get pod disruption budgets, err: %v", err)
 	}
 	data.NetworkPolicies, err = getNetworkPolicies(oc.K8sNetworkingClient)
 	if err != nil {
-		log.Error("Cannot get network policies, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get network policies, err: %v", err)
 	}
 
 	// Get cluster crds
-	data.AllCrds = GetClusterCrdNames()
-	if data.AllCrds == nil {
-		os.Exit(1)
+	data.AllCrds, err = getClusterCrdNames()
+	if err != nil {
+		log.Fatal("Cannot get cluster CRD anmes, err: %v", err)
 	}
 	data.Crds = FindTestCrdNames(data.AllCrds, config.CrdFilters)
 
@@ -190,15 +184,13 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 
 	openshiftVersion, err := getOpenshiftVersion(oc.OcpClient)
 	if err != nil {
-		log.Error("Failed to get the OpenShift version, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Failed to get the OpenShift version, err: %v", err)
 	}
 
 	data.OpenshiftVersion = openshiftVersion
 	k8sVersion, err := oc.K8sClient.Discovery().ServerVersion()
 	if err != nil {
-		log.Error("Cannot get the K8s version, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get the K8s version, err: %v", err)
 	}
 	data.ValidProtocolNames = config.ValidProtocolNames
 	data.ServicesIgnoreList = config.ServicesIgnoreList
@@ -216,44 +208,37 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	// Find ClusterRoleBindings
 	clusterRoleBindings, err := getClusterRoleBindings(oc.K8sClient.RbacV1())
 	if err != nil {
-		log.Error("Cannot get cluster role bindings, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get cluster role bindings, err: %v", err)
 	}
 	data.ClusterRoleBindings = clusterRoleBindings
 	// Find RoleBindings
 	roleBindings, err := getRoleBindings(oc.K8sClient.RbacV1())
 	if err != nil {
-		log.Error("Cannot get role bindings, error: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get role bindings, error: %v", err)
 	}
 	data.RoleBindings = roleBindings
 	// find roles
 	roles, err := getRoles(oc.K8sClient.RbacV1())
 	if err != nil {
-		log.Error("Cannot get roles, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get roles, err: %v", err)
 	}
 	data.Roles = roles
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Error("Cannot get list of nodes, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get list of nodes, err: %v", err)
 	}
 	data.PersistentVolumes, err = getPersistentVolumes(oc.K8sClient.CoreV1())
 	if err != nil {
-		log.Error("Cannot get list of persistent volumes, error: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get list of persistent volumes, error: %v", err)
 	}
 	data.PersistentVolumeClaims, err = getPersistentVolumeClaims(oc.K8sClient.CoreV1())
 	if err != nil {
-		log.Error("Cannot get list of persistent volume claims, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get list of persistent volume claims, err: %v", err)
 	}
 	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces, data.ServicesIgnoreList)
 	if err != nil {
-		log.Error("Cannot get list of services, err: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot get list of services, err: %v", err)
 	}
 
 	data.ExecutedBy = config.ExecutedBy
