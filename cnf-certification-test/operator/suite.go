@@ -70,7 +70,7 @@ func LoadChecks() {
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorSecurityRequiremnents(c, &env)
 			return nil
-		}))	
+		}))
 }
 
 func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider.TestEnvironment) {
@@ -166,27 +166,42 @@ func testOperatorSecurityRequiremnents(check *checksdb.Check, env *provider.Test
 			if put.IsRunAsUserID(0) {
 				check.LogError("Pod %q UserID is 0", put.Name)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found with UserID is 0", false))
+			} else {
+				check.LogInfo("Pod %q UserID is not 0", put.Name)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found with UserID is not 0", true))
 			}
 
-			if !put.IsRunAsNonRoot() {
+			if put.IsRunAsNonRoot() {
+				check.LogInfo("Pod %q is run as not root", put.Name)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found is run as not root", true))
+			} else {
 				check.LogError("Pod %q is run as root", put.Name)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found is run as root", false))
 			}
-			
-			nonCompliantObjects = put.IsReadOnlyRootFilesystem(check, nonCompliantObjects) 
+
+			for _, cut := range put.Containers {
+				check.LogInfo("Testing Container %q", cut.Name)
+				if cut.IsReadOnlyRootFilesystem(check.GetLoggger()) {
+					check.LogInfo("Pod %q container %q is read only root file system.", put.Name, cut.Name)
+					compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found read only root file system", true))
+				} else {
+					check.LogError("Pod %q container %q is read not only root file system.", put.Name, cut.Name)
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found read not only root file system", false))
+				}
+			}
 
 			// Evaluate the pod's automount service tokens and any attached service accounts
 			client := clientsholder.GetClientsHolder()
 			podPassed, newMsg := rbac.EvaluateAutomountTokens(client.K8sClient.CoreV1(), put.Pod)
 			if !podPassed {
+				check.LogInfo("Pod %q have automount service tokens set to false", put)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod %q have automount service tokens set to false", true))
+			} else {
 				check.LogError(newMsg)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, newMsg, false))
-			} else {
-				check.LogInfo("Pod %q does not have automount service tokens set to true", put)
-				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have automount service tokens set to true", true))
 			}
 		}
-	
+
 		check.SetResult(compliantObjects, nonCompliantObjects)
 	}
 }

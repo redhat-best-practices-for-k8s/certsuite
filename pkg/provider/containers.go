@@ -185,3 +185,8 @@ func (c *Container) HasExecProbes() bool {
 func (c *Container) IsTagEmpty() bool {
 	return c.ContainerImageIdentifier.Tag == ""
 }
+
+func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool {
+	logger.Info("Testing Container %q", c.Name)
+	return *(c.SecurityContext.ReadOnlyRootFilesystem)
+}
