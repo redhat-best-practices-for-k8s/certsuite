@@ -125,6 +125,8 @@ func TestGetClusterCrdNames(t *testing.T) {
 	for _, tc := range testCases {
 		_ = clientsholder.GetTestClientsHolder(tc.generated())
 		// Run the function and assert the results
-		assert.Equal(t, tc.expectedTargetCRDs, GetClusterCrdNames())
+		crdNames, err := getClusterCrdNames()
+		assert.Nil(t, err)
+		assert.Equal(t, tc.expectedTargetCRDs, crdNames)
 	}
 }

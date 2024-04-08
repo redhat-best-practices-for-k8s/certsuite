@@ -227,8 +227,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.variables = *configuration.GetTestParameters()
 	config, err := configuration.LoadConfiguration(env.variables.ConfigurationPath)
 	if err != nil {
-		log.Error("Cannot load configuration file: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot load configuration file: %v", err)
 	}
 	log.Debug("CNFCERT configuration: %+v", config)
 

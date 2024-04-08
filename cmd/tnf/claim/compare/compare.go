@@ -112,8 +112,7 @@ func NewCommand() *cobra.Command {
 func claimCompare(_ *cobra.Command, _ []string) error {
 	err := claimCompareFilesfunc(Claim1FilePathFlag, Claim2FilePathFlag)
 	if err != nil {
-		log.Error("Error comparing claim files: %v", err)
-		os.Exit(1)
+		log.Fatal("Error comparing claim files: %v", err)
 	}
 	return nil
 }

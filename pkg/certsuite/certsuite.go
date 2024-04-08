@@ -83,8 +83,7 @@ func processFlags() {
 	if *flags.ListFlag {
 		checksIDs, err := checksdb.FilterCheckIDs()
 		if err != nil {
-			log.Error("Could not list test cases, err: %v", err)
-			os.Exit(1)
+			log.Fatal("Could not list test cases, err: %v", err)
 		} else {
 			cli.PrintChecksList(checksIDs)
 			os.Exit(0)
@@ -119,8 +118,7 @@ func Run(labelsFilter, outputFolder string) error {
 
 	claimBuilder, err := claimhelper.NewClaimBuilder()
 	if err != nil {
-		log.Error("Failed to get claim builder: %v", err)
-		os.Exit(1)
+		log.Fatal("Failed to get claim builder: %v", err)
 	}
 
 	claimOutputFile := filepath.Join(outputFolder, results.ClaimFileName)
@@ -178,8 +176,7 @@ func Run(labelsFilter, outputFolder string) error {
 	if !configuration.GetTestParameters().OmitArtifactsZipFile {
 		err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
 		if err != nil {
-			log.Error("Failed to compress results artifacts: %v", err)
-			os.Exit(1)
+			log.Fatal("Failed to compress results artifacts: %v", err)
 		}
 	}
 
@@ -188,8 +185,7 @@ func Run(labelsFilter, outputFolder string) error {
 		for _, file := range webFilePaths {
 			err := os.Remove(file)
 			if err != nil {
-				log.Error("Failed to remove web file %s: %v", file, err)
-				os.Exit(1)
+				log.Fatal("Failed to remove web file %s: %v", file, err)
 			}
 		}
 	}

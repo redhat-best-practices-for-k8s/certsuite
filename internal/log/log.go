@@ -179,8 +179,7 @@ func Logf(logger *Logger, level, format string, args ...any) {
 
 	logLevel, err := parseLevel(level)
 	if err != nil {
-		logger.Error("Error when parsing log level, err: %v", err)
-		os.Exit(1)
+		logger.Fatal("Error when parsing log level, err: %v", err)
 	}
 
 	if !logger.l.Enabled(context.Background(), logLevel) {

@@ -19,7 +19,6 @@ package clientsholder
 import (
 	"errors"
 	"fmt"
-	"os"
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
@@ -152,22 +151,15 @@ func ClearTestClientsHolder() {
 
 // GetClientsHolder returns the singleton ClientsHolder object.
 func GetClientsHolder(filenames ...string) *ClientsHolder {
-	const exitUsage = 2
 	if clientsHolder.ready {
 		return &clientsHolder
 	}
 	if len(filenames) == 0 {
-		errMsg := "Please provide a valid Kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config"
-		log.Error(errMsg)
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
-		os.Exit(exitUsage)
+		log.Fatal("Please provide a valid Kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config")
 	}
 	clientsHolder, err := newClientsHolder(filenames...)
 	if err != nil {
-		errMsg := fmt.Sprintf("Failed to create k8s clients holder, err: %v", err)
-		log.Error(errMsg)
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
-		os.Exit(1)
+		log.Fatal("Failed to create k8s clients holder, err: %v", err)
 	}
 	return clientsHolder
 }
@@ -175,10 +167,7 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 func GetNewClientsHolder(kubeconfigFile string) *ClientsHolder {
 	_, err := newClientsHolder(kubeconfigFile)
 	if err != nil {
-		errMsg := fmt.Sprintf("Failed to create k8s clients holder, err: %v", err)
-		log.Error(errMsg)
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
-		os.Exit(1)
+		log.Fatal("Failed to create k8s clients holder, err: %v", err)
 	}
 
 	return &clientsHolder
