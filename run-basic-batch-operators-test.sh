@@ -30,11 +30,12 @@ OPERATORS_UNDER_TEST=""
 # OUTPUTS
 
 # Colors
-RED="\e[31m"
-GREEN="\e[32m"
-BLUE="\e[36m"
-GREY="\e[90m"
-ENDCOLOR="\e[0m"
+readonly \
+	RED="\033[31m" \
+	GREEN="\033[32m" \
+	BLUE="\033[36m" \
+	GREY="\033[90m" \
+	ENDCOLOR="\033[0m"
 
 # Check if DEBUG mode
 if [ -n "${DEBUG_RUN+any}" ]; then
@@ -64,10 +65,12 @@ LOG_FILE_PATH="$REPORT_FOLDER"/"$LOG_FILENAME"
 
 echoColor() {
 	local color=$1
-	local message=$2
-
-	echo -e "${color}$message${ENDCOLOR}"
-	echo "$message" >>"$LOG_FILE_PATH"
+	local format=$2
+	shift 2
+	# shellcheck disable=SC2059
+	printf "$color$format$ENDCOLOR\n" "$@"
+	# shellcheck disable=SC2059
+	printf "$format" "$@" >>"$LOG_FILE_PATH"
 }
 
 # VARIABLES
@@ -149,22 +152,18 @@ withRetry() {
 		fi
 		# If the command failed, increment the retry counter
 		retries=$((retries + 1))
+		# shellcheck disable=SC2031
 		{
-			# shellcheck disable=SC2031
 			echo "command: $*"
-			# shellcheck disable=SC2031
 			echo "stderr: $stderr"
-			# shellcheck disable=SC2031
 			echo "stdout: $stdout"
-			# shellcheck disable=SC2031
 			echo "status: $status"
 		} >>"$LOG_FILE_PATH"
-		echoColor "$GREY" "Waiting for a few seconds before the next attempt..."
-		echo "Retry $retries/$maxRetries: Waiting for a few seconds before the next attempt..." >>"$LOG_FILE_PATH"
+
+		echoColor "$GREY" "Retry $retries/$maxRetries: Waiting for a few seconds before the next attempt..."
 		sleep "$timeout"
 	done
 	echoColor "$GREY" "Maximum retries reached."
-	echo "Maximum retries reached. Exiting with failure." >>"$LOG_FILE_PATH"
 	return 1
 }
 
@@ -466,11 +465,10 @@ while IFS=, read -r packageName catalog; do
 
 	# run tnf-container
 	echoColor "$BLUE" "run CNF suite"
-	TNF_LOG_LEVEL=trace ./run-tnf-container.sh -k "$KUBECONFIG" -t "$reportDir" -o "$reportDir" -c "$DOCKER_CONFIG" -l all >>"$LOG_FILE_PATH" 2>&1 || status=$?
-	if [ "$status" != 0 ]; then
+	TNF_LOG_LEVEL=trace ./run-tnf-container.sh -k "$KUBECONFIG" -t "$reportDir" -o "$reportDir" -c "$DOCKER_CONFIG" -l all >>"$LOG_FILE_PATH" 2>&1 || {
 		reportFailure "$status" "$ns" "$packageName" "CNF suite exited with errors"
 		continue
-	fi
+	}
 
 	echoColor "$BLUE" "unlabel operator"
 	# Unlabel the operator
@@ -540,4 +538,4 @@ done <"$OPERATOR_LIST_PATH"
 
 # closing html file
 echo '</body></html>' >>"$REPORT_FOLDER"/"$INDEX_FILE"
-echoColor "$GREEN" "DONE"
+echoColor "$GREEN" DONE
