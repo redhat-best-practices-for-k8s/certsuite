@@ -23,11 +23,11 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/version"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 )
 
 var (
@@ -109,7 +109,7 @@ func testOperatorCrdVersioning(check *checksdb.Check, env *provider.TestEnvironm
 			versionName := crdVersion.Name
 			check.LogDebug("Checking for Operator CRD %s with version %s", crd.Name, versionName)
 
-			if !version.IsValidK8sVersion(versionName) {
+			if !versions.IsValidK8sVersion(versionName) {
 				doesUseK8sVersioning = false
 				nonCompliantVersion = versionName
 				break
@@ -176,7 +176,7 @@ func testOperatorSemanticVersioning(check *checksdb.Check, env *provider.TestEnv
 		operatorVersion := operator.Version
 		check.LogInfo("Testing Operator %q for version %s", operator, operatorVersion)
 
-		if version.IsValidSemanticVersion(operatorVersion) {
+		if versions.IsValidSemanticVersion(operatorVersion) {
 			check.LogInfo("Operator %q has a valid semantic version %s", operator, operatorVersion)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
 				"Operator has a valid semantic version ", true).AddField(testhelper.Version, operatorVersion))
