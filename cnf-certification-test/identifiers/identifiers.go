@@ -117,7 +117,7 @@ var (
 	TestNamespaceBestPracticesIdentifier              claim.Identifier
 	TestNonTaintedNodeKernelsIdentifier               claim.Identifier
 	TestOperatorInstallStatusSucceededIdentifier      claim.Identifier
-	TestOperatorNoPrivileges                          claim.Identifier
+	TestOperatorNoSCCAccess                           claim.Identifier
 	TestOperatorIsCertifiedIdentifier                 claim.Identifier
 	TestHelmIsCertifiedIdentifier                     claim.Identifier
 	TestOperatorIsInstalledViaOLMIdentifier           claim.Identifier
@@ -848,10 +848,10 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		},
 		TagCommon)
 
-	TestOperatorNoPrivileges = AddCatalogEntry(
+	TestOperatorNoSCCAccess = AddCatalogEntry(
 		"install-status-no-privileges",
 		common.OperatorTestKey,
-		`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present with no resourceNames under its rules.`,
+		`Checks whether the operator needs access to Security Context Constraints. Test passes if clusterPermissions is not present in the CSV manifest or is present with no RBAC rules related to SCCs.`,
 		OperatorNoPrivilegesRemediation,
 		NoExceptions,
 		TestOperatorNoPrivilegesDocLink,
