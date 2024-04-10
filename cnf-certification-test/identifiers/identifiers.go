@@ -919,7 +919,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorHasSemanticVersioningRemediation,
 		NoExceptions,
 		TestOperatorHasSemanticVersioningIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -935,7 +935,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorCrdVersioningRemediation,
 		NoExceptions,
 		TestOperatorCrdVersioningIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -951,7 +951,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorCrdSchemaIdentifierRemediation,
 		NoExceptions,
 		TestOperatorCrdSchemaIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -967,7 +967,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorSingleCrdOwnerRemediation,
 		NoExceptions,
 		TestOperatorSingleCrdOwnerIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
