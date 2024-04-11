@@ -63,7 +63,7 @@ LOG_FILENAME="output_$TIMESTAMP.log"
 # Operator list path in the report
 LOG_FILE_PATH="$REPORT_FOLDER"/"$LOG_FILENAME"
 
-echoColor() {
+echo_color() {
 	local color=$1
 	local format=$2
 	shift 2
@@ -76,7 +76,7 @@ echoColor() {
 # VARIABLES
 
 # Variable to add header only on the first run
-addHeaders=-a
+add_headers=-a
 
 # Create report directory
 mkdir "$REPORT_FOLDER"
@@ -87,26 +87,26 @@ cleanup() {
 	oc delete validatingwebhookconfigurations controller.devfile.io || true
 
 	# Leftovers specific to certain operators
-	oc delete ValidatingWebhookConfiguration sriov-operator-webhook-config || true
-	oc delete MutatingWebhookConfiguration sriov-operator-webhook-config || true
+	oc delete Validating_webhook_configuration sriov-operator-webhook-config || true
+	oc delete Mutating_webhook_configuration sriov-operator-webhook-config || true
 }
 
-waitDeleteNamespace() {
-	local namespaceDeleting=$1
+wait_delete_namespace() {
+	local namespace_deleting=$1
 	# Wait for the namespace to be removed
-	if [ "$namespaceDeleting" != "openshift-operators" ]; then
+	if [ "$namespace_deleting" != "openshift-operators" ]; then
 
-		echoColor "$BLUE" "non openshift-operators namespace = $namespaceDeleting, deleting "
-		withRetry 2 0 oc wait namespace "$namespaceDeleting" --for=delete --timeout=60s || true
+		echo_color "$BLUE" "non openshift-operators namespace = $namespace_deleting, deleting "
+		with_retry 2 0 oc wait namespace "$namespace_deleting" --for=delete --timeout=60s || true
 
-		forceDeleteNamespaceIfPresent "$namespaceDeleting" >>"$LOG_FILE_PATH" 2>&1 || true
+		force_delete_namespace_if_present "$namespace_deleting" >>"$LOG_FILE_PATH" 2>&1 || true
 	fi
 }
 
 # Executes command with retry
-withRetry() {
+with_retry() {
 	local \
-		maxRetries=$1 \
+		max_retries=$1 \
 		timeout=$2 \
 		retries=0 \
 		status=0 \
@@ -114,7 +114,7 @@ withRetry() {
 		stdout=''
 	shift 2
 
-	until [ "$retries" -ge "$maxRetries" ]; do
+	until [ "$retries" -ge "$max_retries" ]; do
 		# Execute oc command saving stdout, stderr and exit status
 		# see: https://stackoverflow.com/questions/11027679/capture-stdout-and-stderr-into-different-variables/41069638#41069638
 		unset stdout stderr status
@@ -160,21 +160,21 @@ withRetry() {
 			echo "status: $status"
 		} >>"$LOG_FILE_PATH"
 
-		echoColor "$GREY" "Retry $retries/$maxRetries: Waiting for a few seconds before the next attempt..."
+		echo_color "$GREY" "Retry $retries/$max_retries: Waiting for a few seconds before the next attempt..."
 		sleep "$timeout"
 	done
-	echoColor "$GREY" "Maximum retries reached."
+	echo_color "$GREY" "Maximum retries reached."
 	return 1
 }
 
-waitClusterOk() {
+wait_cluster_ok() {
 	local \
-		startTime \
+		start_time \
 		status \
-		timeoutSeconds=600
+		timeout_seconds=600
 
-	startTime=$(date +%s 2>&1) || {
-		echo "date failed with error $?: $startTime" >>"$LOG_FILE_PATH"
+	start_time=$(date +%s 2>&1) || {
+		echo "date failed with error $?: $start_time" >>"$LOG_FILE_PATH"
 		return 0
 	}
 	while true; do
@@ -182,80 +182,80 @@ waitClusterOk() {
 		oc get nodes &>/dev/null &&
 			return 0 ||
 			echo "get nodes failed with error $?." >>"$LOG_FILE_PATH"
-		currentTime=$(date +%s)
-		elapsedTime=$((currentTime - startTime))
+		current_time=$(date +%s)
+		elapsed_time=$((current_time - start_time))
 		# If elapsed time is greater than the timeout report failure
-		if [ "$elapsedTime" -ge "$timeoutSeconds" ]; then
-			echoColor "$BLUE" "Timeout reached $timeoutSeconds seconds waiting for cluster to be reachable."
+		if [ "$elapsed_time" -ge "$timeout_seconds" ]; then
+			echo_color "$BLUE" "Timeout reached $timeout_seconds seconds waiting for cluster to be reachable."
 			return 1
 		fi
 
 		# Otherwise wait a bit
-		echoColor "$BLUE" "Waiting for cluster to be reachable..."
+		echo_color "$BLUE" "Waiting for cluster to be reachable..."
 		sleep 5
 	done
 }
 
-waitForCsvToAppearAndLabel() {
-	local csvNamespace=$1
-	local timeoutSeconds=100
-	local startTime=0
-	local currentTime=0
-	local elapsedTime=0
+wait_for_csv_to_appear_and_label() {
+	local csv_namespace=$1
+	local timeout_seconds=100
+	local start_time=0
+	local current_time=0
+	local elapsed_time=0
 	local command=""
 	local status=0
 
-	startTime=$(date +%s)
+	start_time=$(date +%s)
 	while true; do
-		csvs=$(oc get csv -n "$csvNamespace" 2>>"$LOG_FILE_PATH") || true
+		csvs=$(oc get csv -n "$csv_namespace" 2>>"$LOG_FILE_PATH") || true
 		if [ "$csvs" != "" ]; then
 			# If any CSV is present, break
 			break
 		else
-			currentTime=$(date +%s)
-			elapsedTime=$((currentTime - startTime))
+			current_time=$(date +%s)
+			elapsed_time=$((current_time - start_time))
 			# If elapsed time is greater than the timeout report failure
-			if [ "$elapsedTime" -ge "$timeoutSeconds" ]; then
-				echoColor "$BLUE" "Timeout reached $timeoutSeconds seconds waiting for CSV."
+			if [ "$elapsed_time" -ge "$timeout_seconds" ]; then
+				echo_color "$BLUE" "Timeout reached $timeout_seconds seconds waiting for CSV."
 				return 1
 			fi
 
 			# Otherwise wait a bit
-			echoColor "$BLUE" "Waiting for csv to be created in namespace $csvNamespace ..."
+			echo_color "$BLUE" "Waiting for csv to be created in namespace $csv_namespace ..."
 			sleep 5
 		fi
 	done
 
 	# Label CSV with "test-network-function.com/operator=target"
-	command=$(withRetry 5 10 oc get csv -n "$csvNamespace" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | grep -v openshift-operator-lifecycle-manager | sed '/^ *$/d' | awk '{print "  withRetry 5 10 oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator=target "}')
+	command=$(with_retry 5 10 oc get csv -n "$csv_namespace" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | grep -v openshift-operator-lifecycle-manager | sed '/^ *$/d' | awk '{print "  with_retry 5 10 oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator=target "}')
 	eval "$command"
 
 	# Wait for the CSV to be succeeded
-	echoColor "$BLUE" "Wait for CSV to be succeeded"
-	withRetry 30 0 oc wait csv -l test-network-function.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=5s || status="$?"
+	echo_color "$BLUE" "Wait for CSV to be succeeded"
+	with_retry 30 0 oc wait csv -l test-network-function.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=5s || status="$?"
 	return $status
 }
 
-forceDeleteNamespaceIfPresent() {
-	local aNamespace=$1
+force_delete_namespace_if_present() {
+	local a_namespace=$1
 	local pid=0
 
 	# Do not delete the redhat-operators namespace
-	if [ "$aNamespace" = "openshift-operators" ]; then
+	if [ "$a_namespace" = "openshift-operators" ]; then
 		return 0
 	fi
 
 	# Delete namespace
-	oc delete namespace "$aNamespace" --wait=false || true
-	withRetry 2 0 oc wait namespace "$aNamespace" --for=delete --timeout=5s || true
+	oc delete namespace "$a_namespace" --wait=false || true
+	with_retry 2 0 oc wait namespace "$a_namespace" --for=delete --timeout=5s || true
 
 	# If a namespace with this name does not exist, all is good, exit
-	if ! oc get namespace "$aNamespace"; then
+	if ! oc get namespace "$a_namespace"; then
 		return 0
 	fi
-	echoColor "$RED" "Namespace cannot be deleted normally, force deleting"
+	echo_color "$RED" "Namespace cannot be deleted normally, force deleting"
 	# Otherwise force delete namespace
-	withRetry 5 10 oc get namespace "$aNamespace" -ojson | sed '/"kubernetes"/d' >temp.yaml
+	with_retry 5 10 oc get namespace "$a_namespace" -ojson | sed '/"kubernetes"/d' >temp.yaml
 	# Kill previous oc proxy command in the background
 	killall "oc"
 	# Start a new proxy
@@ -263,38 +263,38 @@ forceDeleteNamespaceIfPresent() {
 	pid=$!
 	echo "PID: $pid"
 	sleep 5
-	curl -H "Content-Type: application/yaml" -X PUT --data-binary @temp.yaml http://127.0.0.1:8001/api/v1/namespaces/"$aNamespace"/finalize >>"$LOG_FILE_PATH"
+	curl -H "Content-Type: application/yaml" -X PUT --data-binary @temp.yaml http://127.0.0.1:8001/api/v1/namespaces/"$a_namespace"/finalize >>"$LOG_FILE_PATH"
 	kill -9 "$pid"
-	withRetry 2 0 oc wait namespace "$aNamespace" --for=delete --timeout=60s
+	with_retry 2 0 oc wait namespace "$a_namespace" --for=delete --timeout=60s
 }
 
-reportFailure() {
+report_failure() {
 	local status=$1
 	local ns=$2
-	local packageName=$3
+	local package_name=$3
 	local message=$4
 
-	withRetry 3 5 oc operator uninstall -X "$packageName" -n "$ns" || true
+	with_retry 3 5 oc operator uninstall -X "$package_name" -n "$ns" || true
 	# Add per operator links
 	{
 		# Add error message
-		echo "Results for: <b>$packageName</b>, "'<span style="color: red;">'"$message"'</span>'
+		echo "Results for: <b>$package_name</b>, "'<span style="color: red;">'"$message"'</span>'
 
 		# Add tnf_config link
 		echo ", tnf_config: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/tnf_config.yml">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
 
 		# New line
 		echo "<br>"
 	} >>"$REPORT_FOLDER"/"$INDEX_FILE"
 
-	waitDeleteNamespace "$ns"
+	wait_delete_namespace "$ns"
 }
 
-getSuggestedNamespace() {
-	local packageName=$1
+get_suggested_namespace() {
+	local package_name=$1
 
-	oc get packagemanifests -n openshift-marketplace "$packageName" -ojson | jq -r '.status.channels[].currentCSVDesc.annotations."operatorframework.io/suggested-namespace"' 2>/dev/null | grep -v "null" | sed 's/\n//g' | head -1 || true
+	oc get packagemanifests -n openshift-marketplace "$package_name" -ojson | jq -r '.status.channels[].currentCSVDesc.annotations."operatorframework.io/suggested-namespace"' 2>/dev/null | grep -v "null" | sed 's/\n//g' | head -1 || true
 }
 
 # Main
@@ -303,7 +303,7 @@ getSuggestedNamespace() {
 if [ "$#" -eq 1 ]; then
 	OPERATOR_CATALOG=$1
 	# Get all the packages present in the cluster catalog
-	withRetry 5 10 oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.catalogSource}{"\n"}{end}' | grep "$OPERATOR_CATALOG" | head -n -1 | sort >"$OPERATOR_LIST_PATH"
+	with_retry 5 10 oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.catalogSource}{"\n"}{end}' | grep "$OPERATOR_CATALOG" | head -n -1 | sort >"$OPERATOR_LIST_PATH"
 
 elif [ "$#" -eq 2 ]; then
 	OPERATOR_CATALOG=$1
@@ -320,13 +320,13 @@ fi
 
 # Check for docker config file
 if [ ! -e "$DOCKER_CONFIG" ]; then
-	echoColor "$RED" "Docker config is missing at $DOCKER_CONFIG"
+	echo_color "$RED" "Docker config is missing at $DOCKER_CONFIG"
 	exit 1
 fi
 
 # Check KUBECONFIG
 if [[ ! -v "KUBECONFIG" ]]; then
-	echoColor "$RED" "The environment variable KUBECONFIG is not set."
+	echo_color "$RED" "The environment variable KUBECONFIG is not set."
 	exit 1
 fi
 
@@ -374,83 +374,83 @@ OPERATOR_PAGE='<!DOCTYPE html>
 echo "$OPERATOR_PAGE" >>"$REPORT_FOLDER"/"$INDEX_FILE"
 
 # Wait for the cluster to be reachable
-echoColor "$BLUE" "Wait for cluster to be reachable"
-waitClusterOk
+echo_color "$BLUE" "Wait for cluster to be reachable"
+wait_cluster_ok
 
-echoColor "$BLUE" "Starting to install and test operators"
+echo_color "$BLUE" "Starting to install and test operators"
 # For each operator in a provided catalog, this script will install the operator and run the CNF test suite.
-while IFS=, read -r packageName catalog; do
-	if [ "$packageName" = "" ]; then
+while IFS=, read -r package_name catalog; do
+	if [ "$package_name" = "" ]; then
 		continue
 	fi
 
-	echoColor "$GREY" "********* package= $packageName catalog= $catalog **********"
+	echo_color "$GREY" "********* package= $package_name catalog= $catalog **********"
 
 	# Wait for the cluster to be reachable
-	echoColor "$BLUE" "Wait for cluster to be reachable"
-	waitClusterOk
+	echo_color "$BLUE" "Wait for cluster to be reachable"
+	wait_cluster_ok
 
 	# Variable to hold return status
 	status=0
 
-	ns=$(getSuggestedNamespace "$packageName")
+	ns=$(get_suggested_namespace "$package_name")
 	if [ "$ns" = "" ] || [ "$ns" = "openshift-operators" ]; then
-		echoColor "$BLUE" "no suggested namespace for $packageName, using: test-operator"
+		echo_color "$BLUE" "no suggested namespace for $package_name, using: test-operator"
 		ns="test-operator"
 	else
-		echoColor "$BLUE" "using suggested namespace for $packageName: $ns "
+		echo_color "$BLUE" "using suggested namespace for $package_name: $ns "
 	fi
-	echoColor "$GREY" "namespace= $ns"
+	echo_color "$GREY" "namespace= $ns"
 
-	echoColor "$BLUE" "Cluster cleanup"
+	echo_color "$BLUE" "Cluster cleanup"
 	cleanup >>"$LOG_FILE_PATH" 2>&1 || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Warning, cluster cleanup failed"
+		echo_color "$RED" "Warning, cluster cleanup failed"
 	fi
 
 	# If a namespace is present, it is probably stuck deleting from previous runs. Force delete it.
-	echoColor "$BLUE" "Remove namespace if present"
-	forceDeleteNamespaceIfPresent "$ns" >>"$LOG_FILE_PATH" 2>&1 || status="$?"
+	echo_color "$BLUE" "Remove namespace if present"
+	force_delete_namespace_if_present "$ns" >>"$LOG_FILE_PATH" 2>&1 || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Error, force deleting namespace failed"
+		echo_color "$RED" "Error, force deleting namespace failed"
 	fi
 
 	oc create namespace "$ns" || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Error, creating namespace $ns failed"
+		echo_color "$RED" "Error, creating namespace $ns failed"
 	fi
 
 	# Install the operator in a custom namespace
-	echoColor "$BLUE" "install operator"
-	oc operator install --create-operator-group "$packageName" -n "$ns" || status=$?
+	echo_color "$BLUE" "install operator"
+	oc operator install --create-operator-group "$package_name" -n "$ns" || status=$?
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Operator installation failed but will still waiting for CSV"
+		echo_color "$RED" "Operator installation failed but will still waiting for CSV"
 	fi
 
 	# Setting report directory
-	reportDir="$REPORT_FOLDER"/"$packageName"
+	report_dir="$REPORT_FOLDER"/"$package_name"
 
 	# Store the results of CNF test in a new directory
-	mkdir -p "$reportDir" || status="$?"
+	mkdir -p "$report_dir" || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Error, creating report dir failed"
+		echo_color "$RED" "Error, creating report dir failed"
 	fi
 
-	configYaml="$reportDir"/tnf_config.yml
+	config_yaml="$report_dir"/tnf_config.yml
 
-	# Change the targetNameSpace in tnf_config file
-	sed "s/\$ns/$ns/" "$CONFIG_YAML_TEMPLATE" >"$configYaml"
+	# Change the target_name_space in tnf_config file
+	sed "s/\$ns/$ns/" "$CONFIG_YAML_TEMPLATE" >"$config_yaml"
 
 	# Wait for the CSV to appear
-	echoColor "$BLUE" "Wait for CSV to appear and label resources unde test"
-	waitForCsvToAppearAndLabel "$ns" || status="$?"
+	echo_color "$BLUE" "Wait for CSV to appear and label resources unde test"
+	wait_for_csv_to_appear_and_label "$ns" || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Operator failed to install, continue"
-		reportFailure "$status" "$ns" "$packageName" "Operator installation failed, skipping test"
+		echo_color "$RED" "Operator failed to install, continue"
+		report_failure "$status" "$ns" "$package_name" "Operator installation failed, skipping test"
 		continue
 	fi
 
-	echoColor "$BLUE" "operator $packageName installed"
+	echo_color "$BLUE" "operator $package_name installed"
 
 	# Label deployments, statefulsets and pods with "test-network-function.com/generic=target"
 	{
@@ -459,83 +459,83 @@ while IFS=, read -r packageName catalog; do
 		oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
 	} >>"$LOG_FILE_PATH" 2>&1
 
-	echoColor "$BLUE" "Wait to ensure all pods are running"
+	echo_color "$BLUE" "Wait to ensure all pods are running"
 	# Extra wait to ensure that all pods are running
 	sleep 30
 
 	# run tnf-container
-	echoColor "$BLUE" "run CNF suite"
-	TNF_LOG_LEVEL=trace ./run-tnf-container.sh -k "$KUBECONFIG" -t "$reportDir" -o "$reportDir" -c "$DOCKER_CONFIG" -l all >>"$LOG_FILE_PATH" 2>&1 || {
-		reportFailure "$status" "$ns" "$packageName" "CNF suite exited with errors"
+	echo_color "$BLUE" "run CNF suite"
+	TNF_LOG_LEVEL=trace ./run-tnf-container.sh -k "$KUBECONFIG" -t "$report_dir" -o "$report_dir" -c "$DOCKER_CONFIG" -l all >>"$LOG_FILE_PATH" 2>&1 || {
+		report_failure "$status" "$ns" "$package_name" "CNF suite exited with errors"
 		continue
 	}
 
-	echoColor "$BLUE" "unlabel operator"
+	echo_color "$BLUE" "unlabel operator"
 	# Unlabel the operator
 	oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator- "}' | bash || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Error, failed to unlabel the operator"
+		echo_color "$RED" "Error, failed to unlabel the operator"
 	fi
 
 	# remove the operator
-	echoColor "$BLUE" "Remove operator"
-	oc operator uninstall -X "$packageName" -n "$ns" || status="$?"
+	echo_color "$BLUE" "Remove operator"
+	oc operator uninstall -X "$package_name" -n "$ns" || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Operator failed to un-install, continue"
+		echo_color "$RED" "Operator failed to un-install, continue"
 	fi
 
 	# Delete the namespace
 	oc delete namespace "$ns" --wait=false || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Error, failed to delete namespace: $ns"
+		echo_color "$RED" "Error, failed to delete namespace: $ns"
 	fi
 
-	echoColor "$BLUE" "Wait for cleanup to finish"
-	waitDeleteNamespace "$ns" || status="$?"
+	echo_color "$BLUE" "Wait for cleanup to finish"
+	wait_delete_namespace "$ns" || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Error, fail to wait for the namespace to be deleted"
+		echo_color "$RED" "Error, fail to wait for the namespace to be deleted"
 	fi
 
 	# Check parsing claim file
-	echoColor "$BLUE" "Parse claim file"
+	echo_color "$BLUE" "Parse claim file"
 
 	# merge claim.json from each operator to a single csv file
-	echoColor "$BLUE" "add claim.json from this operator to the csv file"
-	./tnf claim show csv -c "$reportDir"/claim.json -n "$packageName" -t "$CNF_TYPE" "$addHeaders" >>"$REPORT_FOLDER"/results.csv || status="$?"
+	echo_color "$BLUE" "add claim.json from this operator to the csv file"
+	./tnf claim show csv -c "$report_dir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$add_headers" >>"$REPORT_FOLDER"/results.csv || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "failed to parse claim file"
+		echo_color "$RED" "failed to parse claim file"
 	fi
 
 	# extract parser
-	echoColor "$BLUE" "extract parser from report"
-	withRetry 2 10 tar -xvf "$reportDir"/*.tar.gz -C "$reportDir" results.html || status="$?"
+	echo_color "$BLUE" "extract parser from report"
+	with_retry 2 10 tar -xvf "$report_dir"/*.tar.gz -C "$report_dir" results.html || status="$?"
 	if [ "$status" != 0 ]; then
-		echoColor "$RED" "Failed get result.html from report"
+		echo_color "$RED" "Failed get result.html from report"
 	fi
 
 	# Add per operator links
 	{
 		# Add parser link
-		echo "Results for: <b>$packageName</b>,  parsed details:"
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/results.html?claimfile=/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/claim.json">'"link"'</a>'
+		echo "Results for: <b>$package_name</b>,  parsed details:"
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/results.html?claimfile=/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/claim.json">'"link"'</a>'
 
 		# Add log link
 		echo ", log: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/tnf-execution.log">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf-execution.log">'"link"'</a>'
 
 		# Add tnf_config link
 		echo ", tnf_config: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/tnf_config.yml">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
 
 		# new line
 		echo "<br>"
 	} >>"$REPORT_FOLDER"/"$INDEX_FILE"
 
 	# Only print headers once
-	addHeaders=""
+	add_headers=""
 
 done <"$OPERATOR_LIST_PATH"
 
 # closing html file
 echo '</body></html>' >>"$REPORT_FOLDER"/"$INDEX_FILE"
-echoColor "$GREEN" DONE
+echo_color "$GREEN" DONE
