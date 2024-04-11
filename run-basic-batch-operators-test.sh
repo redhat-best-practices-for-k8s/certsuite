@@ -521,7 +521,7 @@ while IFS=, read -r package_name catalog; do
 
 		# Add log link
 		echo ", log: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf-execution.log">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/cnf-certsuite.log">'"link"'</a>'
 
 		# Add tnf_config link
 		echo ", tnf_config: "
