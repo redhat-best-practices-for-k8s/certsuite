@@ -3,6 +3,7 @@ testCases:
     - access-control-bpf-capability-check
     - access-control-cluster-role-bindings
     - access-control-container-host-port
+    - access-control-crd-roles
     - access-control-ipc-lock-capability-check
     - access-control-namespace
     - access-control-namespace-resource-quota
@@ -66,7 +67,6 @@ testCases:
     - access-control-security-context # test pod does not meet the security requirements
     - affiliated-certification-container-is-certified-digest # test container image is not certified
   skip:
-    - access-control-crd-roles
     - access-control-sys-ptrace-capability
     - affiliated-certification-helm-version
     - affiliated-certification-helmchart-is-certified
