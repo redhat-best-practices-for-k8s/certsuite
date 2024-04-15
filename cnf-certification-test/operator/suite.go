@@ -140,7 +140,6 @@ func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnviron
 
 		for _, version := range crd.Spec.Versions {
 			crdSchema := version.Schema.String()
-			check.LogDebug("CRD schema is %q", crdSchema)
 
 			containsOpenAPIV3SchemaSubstr := strings.Contains(strings.ToLower(crdSchema),
 				strings.ToLower(testhelper.OpenAPIV3Schema))
