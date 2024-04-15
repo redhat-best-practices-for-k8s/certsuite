@@ -1,4 +1,4 @@
-name: QE OCP 4.13 Testing
+name: QE OCP 4.15 Intrusive Testing
 
 on:
   # pull_request:
@@ -11,12 +11,13 @@ env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
 jobs:
-  qe-ocp-413-testing:
+  qe-ocp-413-intrusive-testing:
     runs-on: qe-ocp
     strategy:
       fail-fast: false
       matrix: 
-        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+        # Add more suites if more intrusive tests are added to the QE repo
+        suite: [lifecycle]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/labuser/.kube/config'
@@ -70,7 +71,7 @@ jobs:
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
@@ -81,5 +82,5 @@ jobs:
           GITHUB_REPO: https://github.com/test-network-function/cnf-certification-test
         run: |
           curl -X POST --data "{
-              \"text\": \"🚨⚠️  Failed to run non-intrusive OCP 4.13 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+              \"text\": \"🚨⚠️  Failed to run intrusive OCP 4.15 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
           }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'
