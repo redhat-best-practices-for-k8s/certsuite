@@ -4,9 +4,9 @@ on:
   # pull_request:
   #   branches: [ main ]
   workflow_dispatch:
-  # Schedule a daily cron at midnight UTC
+  # Schedule a daily cron at 5 UTC
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 5 * * *'
 env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
