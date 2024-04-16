@@ -11,7 +11,7 @@ env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
 jobs:
-  qe-ocp-413-intrusive-testing:
+  qe-ocp-415-intrusive-testing:
     runs-on: qe-ocp
     strategy:
       fail-fast: false
