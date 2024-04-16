@@ -31,6 +31,7 @@ testCases:
     - lifecycle-deployment-scaling
     - lifecycle-image-pull-policy
     - lifecycle-liveness-probe
+    - lifecycle-persistent-volume-reclaim-policy
     - lifecycle-pod-high-availability
     - lifecycle-pod-owner-type
     - lifecycle-pod-recreation
@@ -73,7 +74,6 @@ testCases:
     - lifecycle-affinity-required-pods
     - lifecycle-cpu-isolation
     - lifecycle-crd-scaling
-    - lifecycle-persistent-volume-reclaim-policy
     - lifecycle-statefulset-scaling
     - lifecycle-storage-provisioner
     - networking-dpdk-cpu-pinning-exec-probe
