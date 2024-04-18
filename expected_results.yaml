@@ -26,6 +26,7 @@ testCases:
     - access-control-sys-admin-capability-check
     - access-control-sys-nice-realtime-capability
     - affiliated-certification-operator-is-certified
+    - lifecycle-affinity-required-pods
     - lifecycle-container-poststart
     - lifecycle-container-prestop
     - lifecycle-deployment-scaling
@@ -71,7 +72,6 @@ testCases:
     - access-control-sys-ptrace-capability
     - affiliated-certification-helm-version
     - affiliated-certification-helmchart-is-certified
-    - lifecycle-affinity-required-pods
     - lifecycle-cpu-isolation
     - lifecycle-crd-scaling
     - lifecycle-statefulset-scaling
