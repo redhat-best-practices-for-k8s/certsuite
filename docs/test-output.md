@@ -3,7 +3,7 @@
 
 ## Claim File
 
-The test suite generates an output file, named **claim** file. This file is considered as the proof of CNFs test run, evaluated by Red Hat when **certified** status is considered.
+The test suite generates an output file, named **claim** file. This file is considered as the proof of the workload's test run, evaluated by Red Hat when **certified** status is considered.
 
 This file describes the following
 
@@ -15,7 +15,7 @@ This file describes the following
 
 When submitting results back to Red Hat for certification, please include the above mentioned claim file, the JUnit file, and any available console logs.
 
-**How to add a CNF platform test result to the existing claim file?**
+**How to add a workload platform test result to the existing claim file?**
 
 ```go
 go run cmd/tools/cmd/main.go claim-add --claimfile=claim.json
@@ -77,11 +77,11 @@ A standalone HTML page is available to decode the results.
 For more details, see:
 https://github.com/test-network-function/parser
 
-## Compare claim files from two different CNF Certification Suite runs
+## Compare claim files from two different Test Suite runs
 
 Partners can use the `tnf claim compare` tool in order to compare two claim files. The differences are shown in a table per section.
 This tool can be helpful when the result of some test cases is different between two (consecutive) runs, as it shows
-configuration differences in both the CNF Cert Suite config and the cluster nodes that could be the root cause for
+configuration differences in both the Test Suite config and the cluster nodes that could be the root cause for
 some of the test cases results discrepancy.
 
 All the compared sections, except the test cases results are compared blindly, traversing the whole json tree and
@@ -165,7 +165,7 @@ make build-tnf-tool
 
 #### Different test cases results
 
-Let's assume we have two claim files, claim1.json and claim2.json, obtained from two CNF Certification Suite runs in the same cluster.
+Let's assume we have two claim files, claim1.json and claim2.json, obtained from two Test Suite runs in the same cluster.
 
 During the second run, there was a test case that failed. Let's simulate it modifying manually the second run's claim file to switch one test case's state from "passed" to "failed".
 
@@ -182,7 +182,7 @@ The versions section comparison appears at the very beginning of the `tnf claim 
 <object type="image/svg+xml" data="../assets/images/claim-compare-versions.svg" width="100%" height=auto></object>
 <!-- markdownlint-disable MD033 -->
 
-Now, let's simulate that the cluster was a bit different when the second CNF Certification Suite run was performed. First, let's make a manual change in claim2.json to emulate a different CNI version in the first node.
+Now, let's simulate that the cluster was a bit different when the second Test Suite run was performed. First, let's make a manual change in claim2.json to emulate a different CNI version in the first node.
 
 <!-- markdownlint-disable MD033 -->
 <object type="image/svg+xml" data="../assets/images/claim-compare-cni.svg" width="100%" height=auto></object>
