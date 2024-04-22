@@ -59,6 +59,10 @@ jobs:
         run: ./scripts/delete-namespaces.sh
         working-directory: cnfcert-tests-verification
 
+      - name: Preemptively delete contents of openshift-marketplace namespace
+        run: ./scripts/clean-marketplace.sh
+        working-directory: cnfcert-tests-verification
+
       - name: Preemptively delete report and config folders
         shell: bash
         run: |
