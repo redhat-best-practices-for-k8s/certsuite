@@ -206,8 +206,8 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 	// Iterating the map by test and suite names
 	outString = "## Test Case list\n\n" +
 		"Test Cases are the specifications used to perform a meaningful test. " +
-		"Test cases may run once, or several times against several targets. CNF Certification includes " +
-		"a number of normative and informative tests to ensure CNFs follow best practices. " +
+		"Test cases may run once, or several times against several targets. The Red Hat Best Practices Test Suite for Kubernetes includes " +
+		"a number of normative and informative tests to ensure that workloads follow best practices. " +
 		"Here is the list of available Test Cases:\n"
 
 	summary.testPerScenario = make(map[string]map[string]int)
@@ -322,12 +322,12 @@ func generateJS(_ *cobra.Command, _ []string) error {
 
 func outputIntro() (out string) {
 	return "<!-- markdownlint-disable line-length no-bare-urls -->\n" +
-		"# cnf-certification-test catalog\n\n" +
-		"The catalog for cnf-certification-test contains a list of test cases " +
-		"aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, " +
+		"# Red Hat Best Practices Test Suite for Kubernetes catalog\n\n" +
+		"The catalog for the Red Hat Best Practices Test Suite for Kubernetes contains a list of test cases " +
+		"aiming at testing best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, " +
 		"`lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`" +
-		"\n\nDepending on the CNF type, not all tests are required to pass to satisfy best practice requirements. The scenario section" +
-		" indicates which tests are mandatory or optional depending on the scenario. The following CNF types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.\n\n"
+		"\n\nDepending on the workload type, not all tests are required to pass to satisfy best practice requirements. The scenario section" +
+		" indicates which tests are mandatory or optional depending on the scenario. The following workload types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.\n\n"
 }
 
 // runGenerateMarkdownCmd generates a markdown test catalog.

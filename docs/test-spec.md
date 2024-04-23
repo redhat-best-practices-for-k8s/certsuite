@@ -3,22 +3,22 @@
 
 ## Available Test Specs
 
-There are two categories for CNF tests.
+There are two categories for workload tests.
 
 - **General**
 
-These tests are designed to test any commodity CNF running on OpenShift, and include specifications such as
+These tests are designed to test any commodity workload running on OpenShift, and include specifications such as
 `Default` network connectivity.
 
-- **CNF-Specific**
+- **Workload-Specific**
 
-These tests are designed to test some unique aspects of the CNF under test are behaving correctly. This could
+These tests are designed to test some unique aspects of the workload under test are behaving correctly. This could
 include specifications such as issuing a `GET` request to a web server, or passing traffic through an IPSEC tunnel.
 
 ### General tests
 
 These tests belong to multiple suites that can be run in any combination as is
-appropriate for the CNFs under test.
+appropriate for the workload under test.
 
 !!! info
 
@@ -31,13 +31,13 @@ Suite|Test Spec Description|Minimum OpenShift Version
 `lifecycle`| The lifecycle test suite verifies the pods deployment, creation, shutdown and  survivability. |4.6.0
 `networking`|The networking test suite contains tests that check connectivity and networking config related best practices.|4.6.0
 `operator`|The operator test suite is designed to test basic Kubernetes Operator functionality.|4.6.0
-`platform-alteration`| verifies that key platform configuration is not modified by the CNF under test|4.6.0
-`observability`|  the observability test suite contains tests that check CNF logging is following best practices and that CRDs have status fields|4.6.0
+`platform-alteration`| verifies that key platform configuration is not modified by the workload under test|4.6.0
+`observability`|  the observability test suite contains tests that check workload logging is following best practices and that CRDs have status fields|4.6.0
 
 !!! info
 
     Please refer [CATALOG.md](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md) for more details.
 
-### CNF-specific tests
+### Workload-specific tests
 
 TODO

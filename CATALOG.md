@@ -1,13 +1,13 @@
 <!-- markdownlint-disable line-length no-bare-urls -->
-# cnf-certification-test catalog
+# Red Hat Best Practices Test Suite for Kubernetes catalog
 
-The catalog for cnf-certification-test contains a list of test cases aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`
+The catalog for the Red Hat Best Practices Test Suite for Kubernetes contains a list of test cases aiming at testing best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`
 
-Depending on the CNF type, not all tests are required to pass to satisfy best practice requirements. The scenario section indicates which tests are mandatory or optional depending on the scenario. The following CNF types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.
+Depending on the workload type, not all tests are required to pass to satisfy best practice requirements. The scenario section indicates which tests are mandatory or optional depending on the scenario. The following workload types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.
 
 ## Test cases summary
 
-### Total test cases: 108
+### Total test cases: 109
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |manageability|2|
 |networking|11|
 |observability|4|
-|operator|6|
+|operator|7|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 61
+### Non-Telco specific tests only: 62
 
 |Mandatory|Optional|
 |---|---|
-|41|20|
+|42|20|
 
 ### Telco specific tests only: 27
 
@@ -50,7 +50,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test Case list
 
-Test Cases are the specifications used to perform a meaningful test. Test cases may run once, or several times against several targets. CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices. Here is the list of available Test Cases:
+Test Cases are the specifications used to perform a meaningful test. Test cases may run once, or several times against several targets. The Red Hat Best Practices Test Suite for Kubernetes includes a number of normative and informative tests to ensure that workloads follow best practices. Here is the list of available Test Cases:
 
 ### access-control
 

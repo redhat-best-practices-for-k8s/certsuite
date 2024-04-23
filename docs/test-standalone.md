@@ -47,11 +47,11 @@ In order to build the test executable, first make sure you have satisfied the [d
 make build-cnf-tests
 ```
 
-*Gotcha:* The `make build*` commands run unit tests where appropriate. They do NOT test the CNF.
+*Gotcha:* The `make build*` commands run unit tests where appropriate. They do NOT test the workload.
 
-### 3. Test a CNF
+### 3. Test a workload
 
-A CNF is tested by specifying which suites to run using the `run-cnf-suites.sh` helper
+A workload is tested by specifying which suites to run using the `run-cnf-suites.sh` helper
 script.
 
 Run any combination of the suites keywords listed at in the [General tests](test-spec.md#general-tests) section, e.g.
@@ -120,7 +120,7 @@ To run the tests in an offline environment, skip the tests using the `l` option.
 
 Alternatively, if an offline DB for containers, helm charts and operators is available, there is no need to skip those tests if the environment variable `TNF_OFFLINE_DB` is set to the DB location. This DB can be generated using the [OCT tool](https://github.com/test-network-function/oct).
 
-Note: Only partner certified images are stored in the offline database. If Redhat images are checked against the offline database, they will show up as not certified. The online database includes both Partner and Redhat images.
+Note: Only partner certified images are stored in the offline database. If Red Hat images are checked against the offline database, they will show up as not certified. The online database includes both Partner and Redhat images.
 
 #### Output tar.gz file with results and web viewer files
 
@@ -133,6 +133,6 @@ Two env vars allow to control the web artifacts and the the new tar.gz file gene
 * TNF_OMIT_ARTIFACTS_ZIP_FILE=true/false : Defaulted to false in the launch scripts. If set to true, the tar.gz generation will be skipped.
 * TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER=true/false : Defaulted to false in the launch scripts. If set to true, the web viewer/parser files will also be copied to the output (claim) folder.
 
-### Build + Test a CNF
+### Build + Test a workload
 
 Refer [Developers' Guide](developers.md)
