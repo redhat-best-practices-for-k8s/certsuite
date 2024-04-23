@@ -20,7 +20,7 @@
     
     
       
-        <title>Test Output - CNF Certification Test</title>
+        <title>Test Output - Red Hat Best Practices Test Suite for Kubernetes</title>
       
     
     
@@ -86,7 +86,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="CNF Certification Test" class="md-header__button md-logo" aria-label="CNF Certification Test" data-md-component="logo">
+    <a href=".." title="Red Hat Best Practices Test Suite for Kubernetes" class="md-header__button md-logo" aria-label="Red Hat Best Practices Test Suite for Kubernetes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -100,7 +100,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            CNF Certification Test
+            Red Hat Best Practices Test Suite for Kubernetes
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -380,13 +380,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="CNF Certification Test" class="md-nav__button md-logo" aria-label="CNF Certification Test" data-md-component="logo">
+    <a href=".." title="Red Hat Best Practices Test Suite for Kubernetes" class="md-nav__button md-logo" aria-label="Red Hat Best Practices Test Suite for Kubernetes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
-    CNF Certification Test
+    Red Hat Best Practices Test Suite for Kubernetes
   </label>
   
     <div class="md-nav__source">
@@ -722,13 +722,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#compare-claim-files-from-two-different-cnf-certification-suite-runs" class="md-nav__link">
+  <a href="#compare-claim-files-from-two-different-test-suite-runs" class="md-nav__link">
     <span class="md-ellipsis">
-      Compare claim files from two different CNF Certification Suite runs
+      Compare claim files from two different Test Suite runs
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Compare claim files from two different CNF Certification Suite runs">
+    <nav class="md-nav" aria-label="Compare claim files from two different Test Suite runs">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -889,11 +889,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../cnf-developers/" class="md-nav__link">
+      <a href="../workload-developers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    CNF Developers
+    Workload Developers
   </span>
   
 
@@ -1045,13 +1045,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#compare-claim-files-from-two-different-cnf-certification-suite-runs" class="md-nav__link">
+  <a href="#compare-claim-files-from-two-different-test-suite-runs" class="md-nav__link">
     <span class="md-ellipsis">
-      Compare claim files from two different CNF Certification Suite runs
+      Compare claim files from two different Test Suite runs
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Compare claim files from two different CNF Certification Suite runs">
+    <nav class="md-nav" aria-label="Compare claim files from two different Test Suite runs">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1131,7 +1131,7 @@
 <!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
 <h1 id="test-output">Test Output<a class="headerlink" href="#test-output" title="Permanent link">&para;</a></h1>
 <h2 id="claim-file">Claim File<a class="headerlink" href="#claim-file" title="Permanent link">&para;</a></h2>
-<p>The test suite generates an output file, named <strong>claim</strong> file. This file is considered as the proof of <abbr title="Cloud-Native Network Functions">CNFs</abbr> test run, evaluated by Red Hat when <strong>certified</strong> status is considered.</p>
+<p>The test suite generates an output file, named <strong>claim</strong> file. This file is considered as the proof of the workload&rsquo;s test run, evaluated by Red Hat when <strong>certified</strong> status is considered.</p>
 <p>This file describes the following</p>
 <ul>
 <li>The system(s) under test</li>
@@ -1140,7 +1140,7 @@
 </ul>
 <p><strong>Files that need to be submitted for certification</strong></p>
 <p>When submitting results back to Red Hat for certification, please include the above mentioned claim file, the JUnit file, and any available console logs.</p>
-<p><strong>How to add a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> platform test result to the existing claim file?</strong></p>
+<p><strong>How to add a workload platform test result to the existing claim file?</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">go</span><span class="w"> </span><span class="nx">run</span><span class="w"> </span><span class="nx">cmd</span><span class="o">/</span><span class="nx">tools</span><span class="o">/</span><span class="nx">cmd</span><span class="o">/</span><span class="nx">main</span><span class="p">.</span><span class="k">go</span><span class="w"> </span><span class="nx">claim</span><span class="o">-</span><span class="nx">add</span><span class="w"> </span><span class="o">--</span><span class="nx">claimfile</span><span class="p">=</span><span class="nx">claim</span><span class="p">.</span><span class="nx">json</span>
 <span class="o">--</span><span class="nx">reportdir</span><span class="p">=</span><span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="err">$</span><span class="nx">USER</span><span class="o">/</span><span class="nx">reports</span>
 </code></pre></div>
@@ -1186,10 +1186,10 @@
 <p>A standalone HTML page is available to decode the results.
 For more details, see:
 <a href="https://github.com/test-network-function/parser">https://github.com/test-network-function/parser</a></p>
-<h2 id="compare-claim-files-from-two-different-cnf-certification-suite-runs">Compare claim files from two different <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification Suite runs<a class="headerlink" href="#compare-claim-files-from-two-different-cnf-certification-suite-runs" title="Permanent link">&para;</a></h2>
+<h2 id="compare-claim-files-from-two-different-test-suite-runs">Compare claim files from two different Test Suite runs<a class="headerlink" href="#compare-claim-files-from-two-different-test-suite-runs" title="Permanent link">&para;</a></h2>
 <p>Partners can use the <code>tnf claim compare</code> tool in order to compare two claim files. The differences are shown in a table per section.
 This tool can be helpful when the result of some test cases is different between two (consecutive) runs, as it shows
-configuration differences in both the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite config and the cluster nodes that could be the root cause for
+configuration differences in both the Test Suite config and the cluster nodes that could be the root cause for
 some of the test cases results discrepancy.</p>
 <p>All the compared sections, except the test cases results are compared blindly, traversing the whole json tree and
 sub-trees to get a list of all the fields and their values. Three tables are shown:</p>
@@ -1255,7 +1255,7 @@ Also, the plugin has another &ldquo;newFakeFlag&rdquo; config flag in claim 2 th
 <!-- markdownlint-disable MD033 -->
 
 <h4 id="different-test-cases-results">Different test cases results<a class="headerlink" href="#different-test-cases-results" title="Permanent link">&para;</a></h4>
-<p>Let&rsquo;s assume we have two claim files, claim1.json and claim2.json, obtained from two <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification Suite runs in the same cluster.</p>
+<p>Let&rsquo;s assume we have two claim files, claim1.json and claim2.json, obtained from two Test Suite runs in the same cluster.</p>
 <p>During the second run, there was a test case that failed. Let&rsquo;s simulate it modifying manually the second run&rsquo;s claim file to switch one test case&rsquo;s state from &ldquo;passed&rdquo; to &ldquo;failed&rdquo;.</p>
 <!-- markdownlint-disable MD033 -->
 <object type="image/svg+xml" data="../assets/images/claim-compare-results.svg" width="100%" height=auto></object>
@@ -1268,7 +1268,7 @@ The versions section comparison appears at the very beginning of the <code>tnf c
 <object type="image/svg+xml" data="../assets/images/claim-compare-versions.svg" width="100%" height=auto></object>
 <!-- markdownlint-disable MD033 -->
 
-<p>Now, let&rsquo;s simulate that the cluster was a bit different when the second <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification Suite run was performed. First, let&rsquo;s make a manual change in claim2.json to emulate a different CNI version in the first node.</p>
+<p>Now, let&rsquo;s simulate that the cluster was a bit different when the second Test Suite run was performed. First, let&rsquo;s make a manual change in claim2.json to emulate a different CNI version in the first node.</p>
 <!-- markdownlint-disable MD033 -->
 <object type="image/svg+xml" data="../assets/images/claim-compare-cni.svg" width="100%" height=auto></object>
 <!-- markdownlint-disable MD033 -->

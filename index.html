@@ -18,7 +18,7 @@
     
     
       
-        <title>CNF Certification Test</title>
+        <title>Red Hat Best Practices Test Suite for Kubernetes</title>
       
     
     
@@ -84,7 +84,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="CNF Certification Test" class="md-header__button md-logo" aria-label="CNF Certification Test" data-md-component="logo">
+    <a href="." title="Red Hat Best Practices Test Suite for Kubernetes" class="md-header__button md-logo" aria-label="Red Hat Best Practices Test Suite for Kubernetes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -98,7 +98,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            CNF Certification Test
+            Red Hat Best Practices Test Suite for Kubernetes
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -378,13 +378,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="CNF Certification Test" class="md-nav__button md-logo" aria-label="CNF Certification Test" data-md-component="logo">
+    <a href="." title="Red Hat Best Practices Test Suite for Kubernetes" class="md-nav__button md-logo" aria-label="Red Hat Best Practices Test Suite for Kubernetes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
-    CNF Certification Test
+    Red Hat Best Practices Test Suite for Kubernetes
   </label>
   
     <div class="md-nav__source">
@@ -794,11 +794,11 @@
   
   
     <li class="md-nav__item">
-      <a href="cnf-developers/" class="md-nav__link">
+      <a href="workload-developers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    CNF Developers
+    Workload Developers
   </span>
   
 
@@ -942,20 +942,20 @@
 
 <!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
-<p>This repository provides a set of Cloud-Native Network Functions (<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>) test cases and the framework to add more test cases.</p>
+<p>This repository provides a set of test cases to verify the conformance of a workload with the Red Hat Best Practices for Kubernetes.</p>
 <div class="admonition tip">
-<p class="admonition-title"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr></p>
+<p class="admonition-title">Workload</p>
 <p>The app (containers/pods/operators) we want to certify according Telco partner/Red Hat&rsquo;s best practices.</p>
 </div>
 <div class="admonition tip">
-<p class="admonition-title"><abbr title="Test Network Function">TNF</abbr>/Certification Test Suite</p>
-<p>The tool we use to certify a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>.</p>
+<p class="admonition-title">Red Hat Best Practices Test Suite for Kubernetes</p>
+<p>The tool we use to certify a workload.</p>
 </div>
-<p>The purpose of the tests and the framework is to test the interaction of <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> with OpenShift Container Platform (<abbr title="OpenShift Container Platform">OCP</abbr>).  </p>
+<p>The purpose of the tests and the framework is to test the interaction of the workload with OpenShift Container Platform (<abbr title="OpenShift Container Platform">OCP</abbr>).  </p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>This test suite is provided for the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Developers to test their <abbr title="Cloud-Native Network Functions">CNFs</abbr> readiness for certification.
-Please see &ldquo;<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Developers&rdquo; for more information.</p>
+<p>This test suite is provided for the workload developers to test their workload&rsquo;s readiness for certification.
+Please see the <a href="developers/">Developers&rsquo; Guide</a> for more information.</p>
 </div>
 <p><strong>Features</strong></p>
 <ul>
@@ -971,13 +971,13 @@ Please see &ldquo;<abbr title="Cloud-Native Network Function or Containerised Ne
 <p>There are 3 building blocks in the above framework.</p>
 <ul>
 <li>
-<p>the <code>CNF</code> represents the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> to be certified. The certification suite identifies the resources (containers/pods/operators etc) belonging to the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> via labels or static data entries in the config file</p>
+<p>the <code>CNF</code> represents the workload to be certified. The Test Suite identifies the resources (containers/pods/operators etc) belonging to the workload via labels or static data entries in the Config File</p>
 </li>
 <li>
-<p>the <code>Certification container/exec</code> is the certification test suite running on the platform or in a container. The executable verifies the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> under test configuration and its interactions with openshift</p>
+<p>the <code>Certification container/exec</code> is the Test Suite running on the platform or in a container. The executable verifies the workload under test configuration and its interactions with OpenShift</p>
 </li>
 <li>
-<p>the <code>Debug</code> pods are part of a Kubernetes daemonset responsible to run various <strong>privileged commands</strong> on kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the <a href="https://github.com/test-network-function/privileged-daemonset">privileged-daemonset</a> repository.</p>
+<p>the <code>Debug</code> pods are part of a Kubernetes daemonset responsible to run various <strong>privileged commands</strong> on Kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the <a href="https://github.com/test-network-function/privileged-daemonset">privileged-daemonset</a> repository.</p>
 </li>
 </ul>
 <!-- markdownlint-disable first-line-heading -->

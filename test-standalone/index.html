@@ -20,7 +20,7 @@
     
     
       
-        <title>Standalone test executable - CNF Certification Test</title>
+        <title>Standalone test executable - Red Hat Best Practices Test Suite for Kubernetes</title>
       
     
     
@@ -86,7 +86,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="CNF Certification Test" class="md-header__button md-logo" aria-label="CNF Certification Test" data-md-component="logo">
+    <a href=".." title="Red Hat Best Practices Test Suite for Kubernetes" class="md-header__button md-logo" aria-label="Red Hat Best Practices Test Suite for Kubernetes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -100,7 +100,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            CNF Certification Test
+            Red Hat Best Practices Test Suite for Kubernetes
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -380,13 +380,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="CNF Certification Test" class="md-nav__button md-logo" aria-label="CNF Certification Test" data-md-component="logo">
+    <a href=".." title="Red Hat Best Practices Test Suite for Kubernetes" class="md-nav__button md-logo" aria-label="Red Hat Best Practices Test Suite for Kubernetes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
-    CNF Certification Test
+    Red Hat Best Practices Test Suite for Kubernetes
   </label>
   
     <div class="md-nav__source">
@@ -662,13 +662,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#3-test-a-cnf" class="md-nav__link">
+  <a href="#3-test-a-workload" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Test a CNF
+      3. Test a workload
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Test a CNF">
+    <nav class="md-nav" aria-label="3. Test a workload">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -728,9 +728,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#build-test-a-cnf" class="md-nav__link">
+  <a href="#build-test-a-workload" class="md-nav__link">
     <span class="md-ellipsis">
-      Build + Test a CNF
+      Build + Test a workload
     </span>
   </a>
   
@@ -891,11 +891,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../cnf-developers/" class="md-nav__link">
+      <a href="../workload-developers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    CNF Developers
+    Workload Developers
   </span>
   
 
@@ -1030,13 +1030,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#3-test-a-cnf" class="md-nav__link">
+  <a href="#3-test-a-workload" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Test a CNF
+      3. Test a workload
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Test a CNF">
+    <nav class="md-nav" aria-label="3. Test a workload">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1096,9 +1096,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#build-test-a-cnf" class="md-nav__link">
+  <a href="#build-test-a-workload" class="md-nav__link">
     <span class="md-ellipsis">
-      Build + Test a CNF
+      Build + Test a workload
     </span>
   </a>
   
@@ -1183,9 +1183,9 @@ need to be installed in your environment prior to runtime.</p>
 <p>In order to build the test executable, first make sure you have satisfied the <a href="#dependencies">dependencies</a>.</p>
 <div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-cnf-tests
 </code></pre></div>
-<p><em>Gotcha:</em> The <code>make build*</code> commands run unit tests where appropriate. They do NOT test the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>.</p>
-<h3 id="3-test-a-cnf">3. Test a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr><a class="headerlink" href="#3-test-a-cnf" title="Permanent link">&para;</a></h3>
-<p>A <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> is tested by specifying which suites to run using the <code>run-cnf-suites.sh</code> helper
+<p><em>Gotcha:</em> The <code>make build*</code> commands run unit tests where appropriate. They do NOT test the workload.</p>
+<h3 id="3-test-a-workload">3. Test a workload<a class="headerlink" href="#3-test-a-workload" title="Permanent link">&para;</a></h3>
+<p>A workload is tested by specifying which suites to run using the <code>run-cnf-suites.sh</code> helper
 script.</p>
 <p>Run any combination of the suites keywords listed at in the <a href="../test-spec/#general-tests">General tests</a> section, e.g.</p>
 <div class="highlight"><pre><span></span><code>./run-cnf-suites.sh<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;lifecycle&quot;</span>
@@ -1228,7 +1228,7 @@ To run the tests in an offline environment, skip the tests using the <code>l</co
 <div class="highlight"><pre><span></span><code>./run-cnf-suites.sh<span class="w"> </span>-l<span class="w"> </span><span class="s1">&#39;!online&#39;</span>
 </code></pre></div>
 <p>Alternatively, if an offline DB for containers, helm charts and operators is available, there is no need to skip those tests if the environment variable <code>TNF_OFFLINE_DB</code> is set to the DB location. This DB can be generated using the <a href="https://github.com/test-network-function/oct">OCT tool</a>.</p>
-<p>Note: Only partner certified images are stored in the offline database. If Redhat images are checked against the offline database, they will show up as not certified. The online database includes both Partner and Redhat images.</p>
+<p>Note: Only partner certified images are stored in the offline database. If Red Hat images are checked against the offline database, they will show up as not certified. The online database includes both Partner and Redhat images.</p>
 <h4 id="output-targz-file-with-results-and-web-viewer-files">Output tar.gz file with results and web viewer files<a class="headerlink" href="#output-targz-file-with-results-and-web-viewer-files" title="Permanent link">&para;</a></h4>
 <p>After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them.</p>
 <p>By default, only the <code>claim.js</code>, the <code>cnf-certification-tests_junit.xml</code> file and this new tar.gz file are created after the test suite has finished, as this is probably all that normal partners/users will need.</p>
@@ -1237,7 +1237,7 @@ To run the tests in an offline environment, skip the tests using the <code>l</co
 <li>TNF_OMIT_ARTIFACTS_ZIP_FILE=true/false : Defaulted to false in the launch scripts. If set to true, the tar.gz generation will be skipped.</li>
 <li>TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER=true/false : Defaulted to false in the launch scripts. If set to true, the web viewer/parser files will also be copied to the output (claim) folder.</li>
 </ul>
-<h3 id="build-test-a-cnf">Build + Test a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr><a class="headerlink" href="#build-test-a-cnf" title="Permanent link">&para;</a></h3>
+<h3 id="build-test-a-workload">Build + Test a workload<a class="headerlink" href="#build-test-a-workload" title="Permanent link">&para;</a></h3>
 <p>Refer <a href="../developers/">Developers&rsquo; Guide</a></p>
 <!-- markdownlint-disable first-line-heading -->
 
