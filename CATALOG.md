@@ -315,7 +315,7 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-pod-role-bindings
-Description|Ensures that a worload does not utilize RoleBinding(s) in a non-workload Namespace.
+Description|Ensures that a workload does not utilize RoleBinding(s) in a non-workload Namespace.
 Suggested Remediation|Ensure the workload is not configured to use RoleBinding(s) in a non-workload Namespace. Scope of role must <= scope of creator of role.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-security-rbac
 Exception Process|No exceptions
@@ -735,7 +735,7 @@ Tags|telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-pod-recreation
-Description|Tests that a workload is configured to support High Availability. First, this test cordons and drains a Node that hosts the worload Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.
+Description|Tests that a workload is configured to support High Availability. First, this test cordons and drains a Node that hosts the workload Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.
 Suggested Remediation|Ensure that the workloads Pods utilize a configuration that supports High Availability. Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-upgrade-expectations
 Exception Process|No exceptions - workloads should be able to be restarted/recreated.

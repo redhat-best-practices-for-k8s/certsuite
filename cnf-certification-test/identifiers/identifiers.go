@@ -819,7 +819,9 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestNonTaintedNodeKernelsIdentifier = AddCatalogEntry(
 		"tainted-node-kernel",
 		common.PlatformAlterationTestKey,
-		`Ensures that the Node(s) hosting workloads do not utilize tainted kernels. This test case is especially important to support Highly Available workloads, since when a workload is re-instantiated on a backup Node, that Node's kernel may not have the same hacks.'`,
+		`Ensures that the Node(s) hosting workloads do not utilize tainted kernels. This test case is especially
+important to support Highly Available workloads, since when a workload is re-instantiated on a backup Node,
+that Node's kernel may not have the same hacks.'`,
 		NonTaintedNodeKernelsRemediation,
 		`If taint is necessary, document details of the taint and why it's needed by workload or environment.`,
 		TestNonTaintedNodeKernelsIdentifierDocLink,
@@ -1091,7 +1093,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestPodRecreationIdentifier = AddCatalogEntry(
 		"pod-recreation",
 		common.LifecycleTestKey,
-		`Tests that a workload is configured to support High Availability. First, this test cordons and drains a Node that hosts the worload Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.`, //nolint:lll
+		`Tests that a workload is configured to support High Availability. First, this test cordons and drains a Node that hosts the workload Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.`, //nolint:lll
 		PodRecreationRemediation,
 		`No exceptions - workloads should be able to be restarted/recreated.`,
 		TestPodRecreationIdentifierDocLink,
@@ -1107,7 +1109,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestPodRoleBindingsBestPracticesIdentifier = AddCatalogEntry(
 		"pod-role-bindings",
 		common.AccessControlTestKey,
-		`Ensures that a worload does not utilize RoleBinding(s) in a non-workload Namespace.`,
+		`Ensures that a workload does not utilize RoleBinding(s) in a non-workload Namespace.`,
 		PodRoleBindingsBestPracticesRemediation,
 		NoExceptions,
 		TestPodRoleBindingsBestPracticesIdentifierDocLink,
