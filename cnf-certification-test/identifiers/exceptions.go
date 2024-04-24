@@ -48,5 +48,5 @@ const (
 	NoExceptions = `No exceptions`
 
 	// affiliated certification exception process
-	AffiliatedCert = NoDocumentedProcess + ` The partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.` //nolint:lll
+	AffiliatedCert = NoDocumentedProcess + " " + `A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.` //nolint:lll
 )

@@ -496,7 +496,7 @@ Unique ID|affiliated-certification-container-is-certified-digest
 Description|Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).
 Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
 Best Practice Reference|https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview
-Exception Process|There is no documented exception process for this. The partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.
+Exception Process|There is no documented exception process for this. A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.
 Tags|common,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -528,7 +528,7 @@ Unique ID|affiliated-certification-helmchart-is-certified
 Description|Tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.
 Suggested Remediation|Ensure that the helm charts under test passed the Red Hat's helm Certification Program (e.g. listed in https://charts.openshift.io/index.yaml).
 Best Practice Reference|https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview
-Exception Process|There is no documented exception process for this. The partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.
+Exception Process|There is no documented exception process for this. A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.
 Tags|common,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -544,7 +544,7 @@ Unique ID|affiliated-certification-operator-is-certified
 Description|Tests whether the workload Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).
 Suggested Remediation|Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP).
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
-Exception Process|There is no documented exception process for this. The partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.
+Exception Process|There is no documented exception process for this. A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.
 Tags|common,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
