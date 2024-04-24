@@ -26,16 +26,16 @@ const (
 
 	SecConNonRootUserRemediation = `Change the pod and containers "runAsUser" uid to something other than root(0)`
 
-	SecConRemediation = `Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`
+	SecConRemediation = `Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`
 
 	UnalteredBaseImageRemediation = `Ensure that Container applications do not modify the Container Base Image. In particular, ensure that the following directories are not modified: 1) /var/lib/rpm 2) /var/lib/dpkg 3) /bin 4) /sbin 5) /lib 6) /lib64 7) /usr/bin 8) /usr/sbin 9) /usr/lib 10) /usr/lib64 Ensure that all required binaries are built directly into the container image, and are not installed post startup.`
 
 	OCPLifecycleRemediation = `Please update your cluster to a version that is generally available.`
 
-	DeploymentScalingRemediation = `Ensure CNF deployments/replica sets can scale in/out successfully.`
-	CrdScalingRemediation        = `Ensure CNF crd/replica sets can scale in/out successfully.`
+	DeploymentScalingRemediation = `Ensure the workload's deployments/replica sets can scale in/out successfully.`
+	CrdScalingRemediation        = `Ensure the workload's CRDs can scale in/out successfully.`
 
-	StatefulSetScalingRemediation = `Ensure CNF statefulsets/replica sets can scale in/out successfully.`
+	StatefulSetScalingRemediation = `Ensure the workload's statefulsets/replica sets can scale in/out successfully.`
 
 	SecConCapabilitiesRemediation = `Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC`
 
@@ -43,35 +43,35 @@ const (
 
 	SecConPrivilegeRemediation = `Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).`
 
-	ContainerHostPortRemediation = `Remove hostPort configuration from the container. CNF should avoid accessing host resources - containers should not configure HostPort.`
+	ContainerHostPortRemediation = `Remove hostPort configuration from the container. Workloads should avoid accessing host resources - containers should not configure HostPort.`
 
-	PodHostNetworkRemediation = `Set the spec.HostNetwork parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostNetwork should be false.`
+	PodHostNetworkRemediation = `Set the spec.HostNetwork parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostNetwork should be false.`
 
-	PodHostPathRemediation = `Set the spec.HostPath parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPath should be false.`
+	PodHostPathRemediation = `Set the spec.HostPath parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostPath should be false.`
 
-	PodHostIPCRemediation = `Set the spec.HostIpc parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostIpc should be false.`
+	PodHostIPCRemediation = `Set the spec.HostIpc parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostIpc should be false.`
 
-	PodHostPIDRemediation = `Set the spec.HostPid parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPid should be false.`
+	PodHostPIDRemediation = `Set the spec.HostPid parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostPid should be false.`
 
-	HugepagesNotManuallyManipulatedRemediation = `HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your CNF on a Node that is part of the corresponding MachineConfigSet. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet.`
+	HugepagesNotManuallyManipulatedRemediation = `HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your workload on a Node that is part of the corresponding MachineConfigSet. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet.`
 
-	ICMPv4ConnectivityRemediation = `Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`
+	ICMPv4ConnectivityRemediation = `Ensure that the workload is able to communicate via the Default OpenShift network. In some rare cases, workloads may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`
 
-	ICMPv6ConnectivityRemediation = `Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if IPv6 is not supported.`
+	ICMPv6ConnectivityRemediation = `Ensure that the workload is able to communicate via the Default OpenShift network. In some rare cases, workloads may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if IPv6 is not supported.`
 
-	ICMPv4ConnectivityMultusRemediation = `Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if MULTUS is not supported.`
+	ICMPv4ConnectivityMultusRemediation = `Ensure that the workload is able to communicate via the Multus network(s). In some rare cases, workloads may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if MULTUS is not supported.`
 
-	ICMPv6ConnectivityMultusRemediation = `Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trivial, only its presence.`
+	ICMPv6ConnectivityMultusRemediation = `Ensure that the workload is able to communicate via the Multus network(s). In some rare cases, workloads may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trivial, only its presence.`
 
-	TestServiceDualStackRemediation = `Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer.`
+	TestServiceDualStackRemediation = `Configure every workload service with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer.`
 
-	NamespaceBestPracticesRemediation = `Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally, the namespaces should not start with "default, openshift-, istio- or aspenmesh-".`
+	NamespaceBestPracticesRemediation = `Ensure that your workload utilizes namespaces declared in the yaml config file. Additionally, the namespaces should not start with "default, openshift-, istio- or aspenmesh-".`
 
-	NonTaintedNodeKernelsRemediation = `Test failure indicates that the underlying Node's kernel is tainted. Ensure that you have not altered underlying Node(s) kernels in order to run the CNF.`
+	NonTaintedNodeKernelsRemediation = `Test failure indicates that the underlying Node's kernel is tainted. Ensure that you have not altered underlying Node(s) kernels in order to run the workload.`
 
-	OperatorInstallStatusSucceededRemediation = `Ensure all the CNF operators have been successfully installed by OLM.`
+	OperatorInstallStatusSucceededRemediation = `Ensure all the workload's operators have been successfully installed by OLM.`
 
-	OperatorNoPrivilegesRemediation = `Ensure all the CNF operators have no privileges on cluster resources.`
+	OperatorNoPrivilegesRemediation = `Ensure all the workload's operators have no privileges on cluster resources.`
 
 	OperatorIsCertifiedRemediation = `Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP).`
 
@@ -87,35 +87,35 @@ const (
 
 	OperatorSingleCrdOwnerRemediation = `Ensure that a CRD is owned by only one Operator`
 
-	PodNodeSelectorAndAffinityBestPracticesRemediation = `In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which CNFs require specialized hardware specific to a particular class of Node.`
+	PodNodeSelectorAndAffinityBestPracticesRemediation = `In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which workloads require specialized hardware specific to a particular class of Node.`
 
 	PodHighAvailabilityBestPracticesRemediation = `In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 .`
 
-	PodClusterRoleBindingsBestPracticesRemediation = `In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by CNF (often reserved for cluster admin only).`
+	PodClusterRoleBindingsBestPracticesRemediation = `In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by the workload (often reserved for cluster admin only).`
 
-	PodDeploymentBestPracticesRemediation = `Deploy the CNF using ReplicaSet/StatefulSet.`
+	PodDeploymentBestPracticesRemediation = `Deploy the workload using ReplicaSet/StatefulSet.`
 
 	ImagePullPolicyRemediation = `Ensure that the containers under test are using IfNotPresent as Image Pull Policy.`
 
-	PodRoleBindingsBestPracticesRemediation = `Ensure the CNF is not configured to use RoleBinding(s) in a non-CNF Namespace. Scope of role must <= scope of creator of role.`
+	PodRoleBindingsBestPracticesRemediation = `Ensure the workload is not configured to use RoleBinding(s) in a non-workload Namespace. Scope of role must <= scope of creator of role.`
 
-	PodServiceAccountBestPracticesRemediation = `Ensure that the each CNF Pod is configured to use a valid Service Account`
+	PodServiceAccountBestPracticesRemediation = `Ensure that the each workload Pod is configured to use a valid Service Account`
 
-	ServicesDoNotUseNodeportsRemediation = `Ensure Services are not configured to use NodePort(s).CNF should avoid accessing host resources - tests that each CNF Service does not utilize NodePort(s).`
+	ServicesDoNotUseNodeportsRemediation = `Ensure Services are not configured to use NodePort(s). Workloads should avoid accessing host resources - tests that each workload Service does not utilize NodePort(s).`
 
 	UnalteredStartupBootParamsRemediation = `Ensure that boot parameters are set directly through the MachineConfigOperator, or indirectly through the PerformanceAddonOperator. Boot parameters should not be changed directly through the Node, as OpenShift should manage the changes for you.`
 
-	PodRecreationRemediation = `Ensure that CNF Pod(s) utilize a configuration that supports High Availability. Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.`
+	PodRecreationRemediation = `Ensure that the workloads Pods utilize a configuration that supports High Availability. Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.`
 
 	SysctlConfigsRemediation = `You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes`
 
-	ServiceMeshRemediation = `Ensure all the CNF pods are using service mesh if the cluster provides it.`
+	ServiceMeshRemediation = `Ensure all the workload pods are using service mesh if the cluster provides it.`
 
-	ScalingRemediation = `Ensure CNF deployments/replica sets can scale in/out successfully.`
+	ScalingRemediation = `Ensure the workload's deployments/replica sets can scale in/out successfully.`
 
 	IsSELinuxEnforcingRemediation = `Configure selinux and enable enforcing mode.`
 
-	UndeclaredContainerPortsRemediation = `Ensure the CNF apps do not listen on undeclared containers' ports.`
+	UndeclaredContainerPortsRemediation = `Ensure the workload's apps do not listen on undeclared containers' ports.`
 
 	CrdsStatusSubresourceRemediation = `Ensure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).`
 
@@ -135,11 +135,11 @@ const (
 
 	SYSNiceRealtimeCapabilityRemediation = `If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.`
 
-	OCPReservedPortsUsageRemediation = `Ensure that CNF apps do not listen on ports that are reserved by OpenShift. The following ports are reserved by OpenShift and must NOT be used by any application: 22623, 22624.`
+	OCPReservedPortsUsageRemediation = `Ensure that workload's apps do not listen on ports that are reserved by OpenShift. The following ports are reserved by OpenShift and must NOT be used by any application: 22623, 22624.`
 
 	RequestsAndLimitsRemediation = `Add requests and limits to your container spec. See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits`
 
-	NamespaceResourceQuotaRemediation = `Apply a ResourceQuota to the namespace your CNF is running in. The CNF namespace should have resource quota defined.`
+	NamespaceResourceQuotaRemediation = `Apply a ResourceQuota to the namespace your workload is running in. The workload's namespace should have resource quota defined.`
 
 	PodDisruptionBudgetRemediation = `Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica`
 
@@ -158,7 +158,7 @@ const (
 
 	UID1337Remediation = `Use another process UID that is not 1337.`
 
-	LimitedUseOfExecProbesRemediation = `Reduce the number of exec probes in the cluster for this CNF to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.`
+	LimitedUseOfExecProbesRemediation = `Reduce the number of exec probes in the cluster for this workload to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.`
 
 	ReservedPartnerPortsRemediation = `Ensure ports are not being used that are reserved by our partner`
 
@@ -166,7 +166,7 @@ const (
 
 	ContainerPortNameFormatRemediation = `Ensure that the container's ports name follow our partner naming conventions`
 
-	DpdkCPUPinningExecProbeRemediation = "If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually."
+	DpdkCPUPinningExecProbeRemediation = "If the workload is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually."
 
 	CheckStorageProvisionerRemediation = `Use a non-local storage (e.g. no kubernetes.io/no-provisioner and no topolvm.io provisioners) in multinode clusters. Local storage are recommended for single node clusters only, but a single local provisioner should be installed.`
 
