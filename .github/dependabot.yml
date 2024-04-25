@@ -13,3 +13,8 @@ updates:
     directory: /
     schedule:
       interval: daily
+
+  - package-ecosystem: docker
+    directory: /.github/actions/documentation
+    schedule:
+      interval: daily

@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.3-1610 AS build
+FROM registry.access.redhat.com/ubi9/ubi:9.3-1610@sha256:66233eebd72bb5baa25190d4f55e1dc3fff3a9b77186c1f91a0abdb274452072 AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
@@ -113,11 +113,11 @@ RUN \
 
 # Using latest is prone to errors.
 # hadolint ignore=DL3007
-FROM quay.io/testnetworkfunction/oct:latest AS db
+FROM quay.io/testnetworkfunction/oct:latest@sha256:3ee1cdc94d7ad4820324bf7cff359b5d4da3512c5648ebec6db1e626a700560f AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.3-1612
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.3-1612@sha256:bc552efb4966aaa44b02532be3168ac1ff18e2af299d0fe89502a1d9fabafbc5
 
 ENV \
 	TNF_DIR=/usr/tnf \
