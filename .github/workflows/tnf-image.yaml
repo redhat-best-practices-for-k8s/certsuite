@@ -13,6 +13,10 @@ name: 'Publish the `cnf-certification-test` image (latest release only)'
   schedule:
     - cron: '0 5 * * *'
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 defaults:
   run:
     shell: bash

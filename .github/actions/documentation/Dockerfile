@@ -2,7 +2,8 @@ FROM registry.access.redhat.com/ubi9/python-39:1-161@sha256:28cdbc26c69705037009
 
 # Pin versions in pip.
 # hadolint ignore=DL3013
-RUN pip install --no-cache-dir mkdocs mkdocs-material markdown-include
+COPY frozen-requirements frozen-requirements.txt
+RUN pip install --no-cache-dir --require-hashes -r frozen-requirements.txt
 
 COPY entrypoint.sh /entrypoint.sh
 

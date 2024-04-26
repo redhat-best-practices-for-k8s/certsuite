@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
@@ -55,7 +59,7 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install pyyaml
+        run: pip3 install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
         env:
           SHELL: /bin/bash
 
@@ -132,7 +136,7 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install pyyaml
+        run: pip3 install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
         env:
           SHELL: /bin/bash
 
@@ -191,7 +195,7 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install pyyaml
+        run: pip3 install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
         env:
           SHELL: /bin/bash
 

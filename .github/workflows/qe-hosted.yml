@@ -7,6 +7,10 @@ on:
   # Schedule a daily cron at midnight UTC
   schedule:
     - cron: '0 0 * * *'
+
+permissions:
+  contents: read
+
 env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
@@ -76,7 +80,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip
-          sudo pip3 install j2cli
+          sudo pip3 install --require-hashes -r ${GITHUB_WORKSPACE}/.github/workflows/frozen-requirements-qe-hosted.txt
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
@@ -90,7 +94,7 @@ jobs:
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local; pip3 install pyyaml
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local; pip3 install --require-hashes -r ${GITHUB_WORKSPACE}/.github/workflows/frozen-requirements-qe-hosted.txt
 
       # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
       # This step needs to be done right after the partner repo's bootstrap scripts, as they

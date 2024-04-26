@@ -113,7 +113,7 @@ RUN \
 
 # Using latest is prone to errors.
 # hadolint ignore=DL3007
-FROM quay.io/testnetworkfunction/oct:latest@sha256:3ee1cdc94d7ad4820324bf7cff359b5d4da3512c5648ebec6db1e626a700560f AS db
+FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root

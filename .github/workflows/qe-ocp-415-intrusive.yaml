@@ -7,6 +7,10 @@ on:
   # Schedule a daily cron at 5 UTC
   schedule:
     - cron: '0 5 * * *'
+
+permissions:
+  contents: read
+
 env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
