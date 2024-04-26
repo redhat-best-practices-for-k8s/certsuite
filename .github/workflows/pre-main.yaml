@@ -73,7 +73,7 @@ jobs:
         uses: mfinelli/setup-shfmt@v3
 
       - name: Golangci-lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v5
         with:
           version: v1.56
           args: --timeout 10m0s
