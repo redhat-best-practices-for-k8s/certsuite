@@ -7,6 +7,9 @@ name: Preflight
   #   branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   preflight-unstable:
     runs-on: ubuntu-22.04
@@ -15,10 +18,10 @@ jobs:
       IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test:unstable
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
         with:
           go-version: 1.22.2
 
@@ -26,7 +29,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Clone the preflight repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           repository: redhat-openshift-ecosystem/openshift-preflight
           path: openshift-preflight

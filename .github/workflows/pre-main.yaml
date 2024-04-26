@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
@@ -42,7 +46,7 @@ jobs:
 
     steps:
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
         with:
           go-version: 1.22.2
 
@@ -50,17 +54,17 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install pyyaml
+        run: pip3 install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
         env:
           SHELL: /bin/bash
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -70,10 +74,10 @@ jobs:
           chmod +x $CM_BIN
 
       - name: Install Shfmt
-        uses: mfinelli/setup-shfmt@v3
+        uses: mfinelli/setup-shfmt@031e887e39d899d773a7e9b6dd6472c2c23ff50d # v3.0.1
 
       - name: Golangci-lint
-        uses: golangci/golangci-lint-action@v5
+        uses: golangci/golangci-lint-action@82d40c283aeb1f2b6595839195e95c2d6a49081b # v5.0.0
         with:
           version: v1.56
           args: --timeout 10m0s
@@ -82,7 +86,7 @@ jobs:
         run: checkmake --config=.checkmake Makefile
 
       - name: Hadolint
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf # v3.1.0
         with:
           dockerfile: Dockerfile
           recursive: true
@@ -91,18 +95,18 @@ jobs:
         run: shfmt -d *.sh script
 
       - name: Markdownlint
-        uses: nosborn/github-action-markdown-cli@v3.3.0
+        uses: nosborn/github-action-markdown-cli@9b5e871c11cc0649c5ac2526af22e23525fa344d # v3.3.0
         with:
           files: .
 
       - name: ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        uses: ludeeus/action-shellcheck@cd81f4475ab741e097ec0fe73b692f3e49d66b8c # master
 
       # - name: Typos
       #   uses: crate-ci/typos@master
 
       - name: Yamllint
-        uses: ibiqlik/action-yamllint@v3
+        uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c # v3.1.1
         with:
           config_file: .yamllint.yml
 
@@ -119,7 +123,7 @@ jobs:
 
     steps:
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
         with:
           go-version: 1.22.2
 
@@ -127,17 +131,17 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install pyyaml
+        run: pip3 install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
         env:
           SHELL: /bin/bash
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -178,7 +182,7 @@ jobs:
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
         with:
           go-version: 1.22.2
 
@@ -186,17 +190,17 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install pyyaml
+        run: pip3 install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
         env:
           SHELL: /bin/bash
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -222,13 +226,13 @@ jobs:
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
       - name: Bootstrap cluster, docker, and python
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
@@ -249,14 +253,14 @@ jobs:
           sudo ls -la /mnt/docker-storage
 
       - name: Run 'make rebuild-cluster'
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make rebuild-cluster
 
       - name: Run 'make install'
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
@@ -267,7 +271,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: always()
         with:
           name: smoke-tests
@@ -287,7 +291,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
 
       - name: Upload preflight smoke test results as an artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: always()
         with:
           name: preflight-smoke-tests
@@ -314,13 +318,13 @@ jobs:
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
       - name: Bootstrap cluster, docker, and python
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
@@ -341,14 +345,14 @@ jobs:
           sudo ls -la /mnt/docker-storage
 
       - name: Run 'make rebuild-cluster'
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make rebuild-cluster
 
       - name: Run 'make install'
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
@@ -356,23 +360,23 @@ jobs:
 
       # needed by depends-on-action
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
         with:
           go-version: 1.22.2
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           ref: ${{ github.sha }}
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the `cnf-certification-test` image
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
@@ -382,7 +386,7 @@ jobs:
 
       # Prepare collector to be used when running smoke tests
       - name: Check out `Collector`
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           repository: test-network-function/collector
           path: collector
@@ -439,7 +443,7 @@ jobs:
           collector_password: ${COLLECTOR_CIPASSWORD}
 
       - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: always()
         with:
           name: smoke-tests-container
@@ -466,17 +470,17 @@ jobs:
     if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           ref: ${{ github.sha }}
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
 
       - name: Login to Quay.io
-        uses: docker/login-action@v3
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
         with:
           registry: ${{ env.REGISTRY }}
@@ -484,7 +488,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: Build and push the unstable images for multi-arch
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5.3.0
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
         with:
           context: .
@@ -508,10 +512,10 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: Check all dependent Pull Requests are merged
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           check-unmerged-pr: true

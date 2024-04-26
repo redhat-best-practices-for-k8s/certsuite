@@ -7,6 +7,10 @@ on:
   # Schedule a daily cron at midnight UTC
   schedule:
     - cron: '0 0 * * *'
+
+permissions:
+  contents: read
+
 env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
@@ -18,12 +22,12 @@ jobs:
       FORCE_DOWNLOAD_UNSTABLE: true
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           ref: ${{ github.sha }}
 
       - name: Clone the QE repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
@@ -52,7 +56,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           ref: ${{ github.sha }}
 
@@ -63,7 +67,7 @@ jobs:
         run: oc get pods -A
 
       - name: Clone the QE repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
@@ -83,7 +87,7 @@ jobs:
           sudo rm -rf ${{env.TNF_REPORT_DIR}}
 
       - name: Run the tests
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 60
           max_attempts: 3
