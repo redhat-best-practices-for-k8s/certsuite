@@ -60,6 +60,5 @@ Please contact us in case the documentation is broken.
 
 ## License
 
-CNF Certification Test is copyright [Red Hat, Inc.](https://www.redhat.com) and available
-under an
-[Apache 2 license](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE).
+Red Hat Best Practices Test Suite for Kubernetes is copyright
+[Red Hat, Inc.](https://www.redhat.com) and available under an [Apache 2 license](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE).
