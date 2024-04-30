@@ -8,6 +8,8 @@
 [![openshift](https://img.shields.io/badge/openshift---?color=gray&logo=redhatopenshift&logoColor=red&style=flat)](https://www.redhat.com/en/technologies/cloud-computing/openshift)
 [![license](https://img.shields.io/github/license/test-network-function/cnf-certification-test?color=blue&labelColor=gray&logo=apache&logoColor=lightgray&style=flat)](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/test-network-function/cnf-certification-test/badge)](https://scorecard.dev/viewer/?uri=github.com/test-network-function/cnf-certification-test)
+[![QE OCP 4.14 Testing](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-414.yaml/badge.svg)](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-414.yaml)
+[![QE OCP 4.15 Testing](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-415.yaml/badge.svg)](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-415.yaml)
 
 ## Objective
 
