@@ -36,7 +36,7 @@ import (
 	"k8s.io/client-go/scale"
 
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
-	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
+	ocpMachine "github.com/openshift/client-go/machineconfiguration/clientset/versioned"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
