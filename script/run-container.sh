@@ -33,7 +33,7 @@ ON_DEMAND_DEBUG_PODS_DEFAULT=false
 TNF_ENABLE_DATA_COLLECTION_DEFAULT=false
 TNF_ENABLE_XML_CREATION_DEFAULT=false
 TIMEOUT_ARG=--timeout=${TIMEOUT:-24h0m0s}
-OUTPUT_LOC_ARG=--output-dir=$CONTAINER_TNF_DIR
+OUTPUT_LOC_ARG=--output-dir=$CONTAINER_TNF_DIR/claim
 
 if [[ $TNF_LABEL == "all" ]]; then
 	TNF_LABEL='common,extended,faredge,telco'
