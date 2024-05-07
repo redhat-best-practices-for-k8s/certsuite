@@ -594,7 +594,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"security-context",
 		common.AccessControlTestKey,
 		`Checks the security context matches one of the 4 categories`,
-		`Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 of the Extended Best Practices guide (private repo)`, //nolint:lll
+		`Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 [here](#security-context-categories)`, //nolint:lll
 		`no exception needed for optional/extended test`,
 		TestSecContextIdentifierDocLink,
 		true,
