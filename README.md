@@ -1,4 +1,4 @@
-# Red Hat Best Practices Test Suite for Kubernetes
+# Red Hat Best Practices Test Suite for Kubernete
 
 ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg)
 [![QE OCP 4.14 Testing](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-414.yaml/badge.svg)](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-414.yaml)
