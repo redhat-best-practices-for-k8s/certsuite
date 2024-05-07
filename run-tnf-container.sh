@@ -25,8 +25,8 @@ export TNF_IMAGE_NAME=cnf-certification-test
 export TNF_IMAGE_TAG=latest
 export TNF_OFFICIAL_ORG=quay.io/testnetworkfunction/
 export TNF_OFFICIAL_IMAGE="${TNF_OFFICIAL_ORG}${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG}"
-export TNF_BIN_DIR="cnf-certification-test"
-export TNF_CMD="cnf-certification-test"
+export TNF_BIN_DIR=cnf-certification-test
+export TNF_CMD=cnf-certification-test
 export OUTPUT_ARG="-o"
 export CONTAINER_NETWORK_MODE='host'
 
