@@ -91,10 +91,7 @@ RUN \
 	# copy the tnf command binary
 	&& cp tnf ${TNF_BIN_DIR} \
 	# copy the rhcos_version_map
-	&& mkdir -p ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files \
-	&& cp \
-		cnf-certification-test/platform/operatingsystem/files/rhcos_version_map \
-		${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
+	&& cp cnf-certification-test/rhcos_version_map ${TNF_BIN_DIR}
 
 # Switch contexts back to the root TNF directory
 WORKDIR ${TNF_DIR}

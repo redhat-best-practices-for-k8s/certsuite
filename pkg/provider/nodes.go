@@ -19,7 +19,6 @@ package provider
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -74,25 +73,18 @@ func (node *Node) IsRTKernel() bool {
 	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.KernelVersion), "rt")
 }
 
-func (node *Node) GetRHCOSVersion() (string, error) {
+func (node *Node) GetRHCOSVersion(rhcosVersionMapFile string) (string, error) {
 	// Check if the node is running CoreOS or not
 	if !node.IsRHCOS() {
 		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
 	}
-
-	path, err := os.Getwd()
-	if err != nil {
-		return "", err
-	}
-
-	filePath := fmt.Sprintf(rhcosRelativePath, path)
 
 	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
 	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhcosName)
 	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
 
 	// Get the short version string from the long version string
-	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0], filePath)
+	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0], rhcosVersionMapFile)
 	if err != nil {
 		return "", err
 	}

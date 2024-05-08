@@ -66,9 +66,8 @@ const (
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
 // Master's role label "master" is deprecated since k8s 1.20.
 var (
-	WorkerLabels      = []string{"node-role.kubernetes.io/worker"}
-	MasterLabels      = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
-	rhcosRelativePath = "%s/platform/operatingsystem/files/rhcos_version_map"
+	WorkerLabels = []string{"node-role.kubernetes.io/worker"}
+	MasterLabels = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
 )
 
 type TestEnvironment struct { // rename this with testTarget
