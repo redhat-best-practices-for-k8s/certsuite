@@ -66,7 +66,7 @@ func InitFlags() {
 	ListFlag = flag.Bool(listFlagName, listFlagDefaultValue, listFlagUsage)
 	ServerModeFlag = flag.Bool(serverModeFlagName, serverModeFlagDefaultValue, serverModeFlagUsage)
 	RhcosVersionMapFileFlag = flag.String(RhcosVersionMapFileFlagKey, "rhcos_version_map",
-		"a file containing a map of long/short versions of RHCOS")
+		"a file containing a map of OpenShift to RHCOS versions")
 
 	flag.Parse()
 	if *LabelsFlag == "" {
