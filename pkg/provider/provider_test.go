@@ -679,7 +679,7 @@ func TestGetRHCOSVersion(t *testing.T) {
 			},
 		}
 
-		result, err := node.GetRHCOSVersion("../../cnf-certification-test/platform/operatingsystem/testdata/versionMapTest.txt")
+		result, err := node.GetRHCOSVersion()
 		assert.Equal(t, tc.expectedErr, err)
 		assert.Equal(t, tc.expectedOutput, result)
 	}
