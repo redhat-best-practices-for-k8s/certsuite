@@ -32,6 +32,13 @@ TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER_DEFAULT=false
 ON_DEMAND_DEBUG_PODS_DEFAULT=false
 TNF_ENABLE_DATA_COLLECTION_DEFAULT=false
 TNF_ENABLE_XML_CREATION_DEFAULT=false
+TIMEOUT_ARG=--timeout=${TIMEOUT:-24h0m0s}
+OUTPUT_LOC_ARG=--output-dir="$CONTAINER_TNF_DIR"/claim
+
+if [[ $TNF_LABEL == "all" ]]; then
+	TNF_LABEL='common,extended,faredge,telco'
+fi
+TNF_LABEL_ARG="--label-filter=${TNF_LABEL}"
 
 get_container_tnf_kubeconfig_path_from_index() {
 	local local_path_index="$1"
@@ -177,4 +184,4 @@ ${TNF_CONTAINER_CLIENT} run --rm $DNS_ARG \
 	-e TNF_ENABLE_XML_CREATION=$TNF_ENABLE_XML_CREATION \
 	-e PATH=/usr/bin:/usr/local/oc/bin \
 	$TNF_IMAGE \
-	$TNF_CMD $OUTPUT_ARG $CONTAINER_TNF_DIR/claim $LABEL_ARG $TNF_LABEL "$@"
+	$TNF_BIN_DIR/$TNF_CMD $TIMEOUT_ARG $OUTPUT_LOC_ARG "$TNF_LABEL_ARG" "$@"
