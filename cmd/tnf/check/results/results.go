@@ -152,9 +152,9 @@ func getExpectedTestResults(templateFileName string) (map[string]string, error) 
 
 func printTestResultsMismatch(mismatchedTestCases []string, actualResults, expectedResults map[string]string) {
 	fmt.Printf("\n")
-	fmt.Println(strings.Repeat("-", 96)) //nolint:gomnd // table line
+	fmt.Println(strings.Repeat("-", 96)) //nolint:mnd // table line
 	fmt.Printf("| %-58s %-19s %s |\n", "TEST_CASE", "EXPECTED_RESULT", "ACTUAL_RESULT")
-	fmt.Println(strings.Repeat("-", 96)) //nolint:gomnd // table line
+	fmt.Println(strings.Repeat("-", 96)) //nolint:mnd // table line
 	for _, testCase := range mismatchedTestCases {
 		expectedResult, exist := expectedResults[testCase]
 		if !exist {
@@ -165,7 +165,7 @@ func printTestResultsMismatch(mismatchedTestCases []string, actualResults, expec
 			actualResult = resultMiss
 		}
 		fmt.Printf("| %-54s %19s %17s |\n", testCase, expectedResult, actualResult)
-		fmt.Println(strings.Repeat("-", 96)) //nolint:gomnd // table line
+		fmt.Println(strings.Repeat("-", 96)) //nolint:mnd // table line
 	}
 }
 

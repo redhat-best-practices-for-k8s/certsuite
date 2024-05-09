@@ -33,6 +33,8 @@ type webServerContextKey string
 
 const (
 	logTimeout = 1000
+
+	readTimeoutSeconds = 10
 )
 
 var (
@@ -194,8 +196,8 @@ func installReqHandlers() {
 func StartServer(outputFolder string) {
 	ctx := context.Background()
 	server := &http.Server{
-		Addr:        ":8084",          // Server address
-		ReadTimeout: 10 * time.Second, // Maximum duration for reading the entire request
+		Addr:        ":8084",                          // Server address
+		ReadTimeout: readTimeoutSeconds * time.Second, // Maximum duration for reading the entire request
 		BaseContext: func(l net.Listener) context.Context {
 			ctx = context.WithValue(ctx, outputFolderCtxKey, outputFolder)
 			return ctx

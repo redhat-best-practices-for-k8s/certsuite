@@ -46,6 +46,9 @@ const (
 	CheckResultTagRunning = Cyan + "RUNNING" + Reset
 	CheckResultTagAborted = Red + "ABORTED" + Reset
 	CheckResultTagError   = Red + "ERROR" + Reset
+
+	tickerPeriodSeconds = 10
+	lineLength          = 5
 )
 
 var CliCheckLogSniffer = &cliCheckLogSniffer{}
@@ -74,7 +77,7 @@ func updateRunningCheckLine(checkName string, stopChan <-chan bool) {
 	tickerPeriod := 1 * time.Second
 	if !isTTY() {
 		// Increase it to avoid flooding the text output.
-		tickerPeriod = 10 * time.Second
+		tickerPeriod = tickerPeriodSeconds * time.Second
 	}
 
 	timer := time.NewTicker(tickerPeriod)
@@ -119,7 +122,7 @@ func printRunningCheckLine(checkName string, startTime time.Time, logLine string
 	}
 
 	// Add check's last log line only if the program is running in a tty/ptty.
-	maxAvailableWidth := getTerminalWidth() - len(line) - 5
+	maxAvailableWidth := getTerminalWidth() - len(line) - lineLength
 	if logLine != "" && maxAvailableWidth > minColsNeededForLogLine {
 		// Append a cropped log line only if it makes sense due to the available space on the right.
 		line += "   " + cropLogLine(logLine, maxAvailableWidth)

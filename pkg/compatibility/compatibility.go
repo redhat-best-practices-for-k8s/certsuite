@@ -223,7 +223,7 @@ func IsRHELCompatible(machineVersion, ocpVersion string) bool {
 
 	lifecycleInfo := GetLifeCycleDates()
 	if entry, ok := lifecycleInfo[ocpVersion]; ok {
-		if len(entry.RHELVersionsAccepted) >= 2 { //nolint:gomnd
+		if len(entry.RHELVersionsAccepted) >= 2 { //nolint:mnd
 			// Need to be a specific major.minor version
 			for _, v := range entry.RHELVersionsAccepted {
 				if v == machineVersion {
