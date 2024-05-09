@@ -89,9 +89,7 @@ RUN \
 	&& cp --parents $(find . -name '*.json*') ${TNF_DIR} \
 	&& cp cnf-certification-test/cnf-certification-test ${TNF_BIN_DIR} \
 	# copy the tnf command binary
-	&& cp tnf ${TNF_BIN_DIR} \
-	# copy the rhcos_version_map
-	&& cp cnf-certification-test/rhcos_version_map ${TNF_BIN_DIR}
+	&& cp tnf ${TNF_BIN_DIR}
 
 # Switch contexts back to the root TNF directory
 WORKDIR ${TNF_DIR}

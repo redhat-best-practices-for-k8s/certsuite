@@ -44,18 +44,15 @@ const (
 	serverModeFlagDefaultValue = false
 
 	serverModeFlagUsage = "--serverMode or -serverMode runs in web server mode."
-
-	RhcosVersionMapFileFlagKey = "rhcos-version-map"
 )
 
 var (
 	OutputDir *string
 	// labelsFlag holds the labels expression to filter the checks to run.
-	LabelsFlag              *string
-	TimeoutFlag             *string
-	ListFlag                *bool
-	ServerModeFlag          *bool
-	RhcosVersionMapFileFlag *string
+	LabelsFlag     *string
+	TimeoutFlag    *string
+	ListFlag       *bool
+	ServerModeFlag *bool
 )
 
 func InitFlags() {
@@ -65,8 +62,6 @@ func InitFlags() {
 	TimeoutFlag = flag.String(timeoutFlagName, TimeoutFlagDefaultvalue.String(), timeoutFlagUsage)
 	ListFlag = flag.Bool(listFlagName, listFlagDefaultValue, listFlagUsage)
 	ServerModeFlag = flag.Bool(serverModeFlagName, serverModeFlagDefaultValue, serverModeFlagUsage)
-	RhcosVersionMapFileFlag = flag.String(RhcosVersionMapFileFlagKey, "rhcos_version_map",
-		"a file containing a map of OpenShift to RHCOS versions")
 
 	flag.Parse()
 	if *LabelsFlag == "" {

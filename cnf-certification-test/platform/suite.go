@@ -31,7 +31,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
-	"github.com/test-network-function/cnf-certification-test/pkg/flags"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 
@@ -601,7 +600,7 @@ func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvi
 			//nolint:gocritic
 			if node.IsRHCOS() {
 				// Get the short version from the node
-				shortVersion, err := node.GetRHCOSVersion(*flags.RhcosVersionMapFileFlag)
+				shortVersion, err := node.GetRHCOSVersion()
 				if err != nil {
 					check.LogError("Node %q failed to gather RHCOS version, err: %v", nodeName, err)
 					failedWorkerNodes = append(failedWorkerNodes, nodeName)

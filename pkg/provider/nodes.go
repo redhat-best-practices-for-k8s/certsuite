@@ -73,7 +73,7 @@ func (node *Node) IsRTKernel() bool {
 	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.KernelVersion), "rt")
 }
 
-func (node *Node) GetRHCOSVersion(rhcosVersionMapFile string) (string, error) {
+func (node *Node) GetRHCOSVersion() (string, error) {
 	// Check if the node is running CoreOS or not
 	if !node.IsRHCOS() {
 		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
@@ -97,7 +97,7 @@ func (node *Node) GetRHCOSVersion(rhcosVersionMapFile string) (string, error) {
 	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
 
 	// Get the short version string from the long version string
-	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0], rhcosVersionMapFile)
+	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0])
 	if err != nil {
 		return "", err
 	}
