@@ -6,7 +6,7 @@ set -e
 CHANNELS=(4.16 4.15 4.14 4.13 4.12 4.11 4.10 4.9 4.8 4.7 4.6 4.5 4.4 4.3 4.2 4.1)
 CHANNEL_TYPES=(stable candidate)
 
-rm -f ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map &>/dev/null
+rm -f ./cnf-certification-test/rhcos_version_map &>/dev/null
 
 for i in "${CHANNELS[@]}"; do
 	for j in "${CHANNEL_TYPES[@]}"; do
@@ -20,7 +20,7 @@ for i in "${CHANNELS[@]}"; do
 			)"; then
 				if [[ -n ${RHCOSVERSION} ]]; then
 					echo "$VERSION / $RHCOSVERSION" |
-						tee -a ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
+						tee -a ./cnf-certification-test/rhcos_version_map
 				fi
 			else
 				printf 'Continue with an error.\n'
@@ -29,6 +29,6 @@ for i in "${CHANNELS[@]}"; do
 	done
 done
 
-sort -u -o ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
+sort -u -o ./cnf-certification-test/rhcos_version_map ./cnf-certification-test/rhcos_version_map
 
 echo OpenShift to RHCOS version mapping is in rhcos_version_map

@@ -88,7 +88,7 @@ func TestGetShortVersionFromLong(t *testing.T) {
 
 	for _, tc := range testCases {
 		path, _ := os.Getwd()
-		filename := fmt.Sprintf("%s/files/rhcos_version_map", path)
+		filename := fmt.Sprintf("%s/../../rhcos_version_map", path)
 
 		result, err := GetShortVersionFromLong(tc.testLongVersion, filename)
 		if tc.expectedErr != nil {
