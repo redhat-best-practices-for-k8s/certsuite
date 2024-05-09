@@ -18,7 +18,6 @@ package operatingsystem
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -61,7 +60,7 @@ func TestGetRHCOSMappedVersionsFromFile(t *testing.T) {
 		if tc.expectedErr != nil {
 			assert.Error(t, err)
 		} else {
-			result, err := GetRHCOSMappedVersionsFromFile(file)
+			result, err := GetRHCOSMappedVersions(string(file))
 			assert.Nil(t, err)
 			assert.True(t, reflect.DeepEqual(tc.expectedOutput, result))
 		}
@@ -87,10 +86,7 @@ func TestGetShortVersionFromLong(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		path, _ := os.Getwd()
-		filename := fmt.Sprintf("%s/../../rhcos_version_map", path)
-
-		result, err := GetShortVersionFromLong(tc.testLongVersion, filename)
+		result, err := GetShortVersionFromLong(tc.testLongVersion)
 		if tc.expectedErr != nil {
 			assert.Error(t, err)
 		} else {

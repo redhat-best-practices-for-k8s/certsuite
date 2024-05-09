@@ -17,7 +17,7 @@
 package operatingsystem
 
 import (
-	"os"
+	_ "embed"
 	"strings"
 )
 
@@ -25,7 +25,10 @@ const (
 	NotFoundStr = "version-not-found"
 )
 
-func GetRHCOSMappedVersionsFromFile(data []byte) (map[string]string, error) {
+//go:embed files/rhcos_version_map
+var rhcosVersionMap string
+
+func GetRHCOSMappedVersions(rhcosVersionMap string) (map[string]string, error) {
 	capturedInfo := make(map[string]string)
 
 	// Example: Translate `Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)` into a RHCOS version number
@@ -36,7 +39,7 @@ func GetRHCOSMappedVersionsFromFile(data []byte) (map[string]string, error) {
 	// 4.9.25 / 49.84.202203112054-0
 	// 4.10.14 / 410.84.202205031645-0
 
-	versions := strings.Split(string(data), "\n")
+	versions := strings.Split(rhcosVersionMap, "\n")
 	for _, v := range versions {
 		// Skip any empty lines
 		if strings.TrimSpace(v) == "" {
@@ -51,12 +54,8 @@ func GetRHCOSMappedVersionsFromFile(data []byte) (map[string]string, error) {
 	return capturedInfo, nil
 }
 
-func GetShortVersionFromLong(longVersion, filename string) (string, error) {
-	file, err := os.ReadFile(filename)
-	if err != nil {
-		return "", err
-	}
-	capturedVersions, err := GetRHCOSMappedVersionsFromFile(file)
+func GetShortVersionFromLong(longVersion string) (string, error) {
+	capturedVersions, err := GetRHCOSMappedVersions(rhcosVersionMap)
 	if err != nil {
 		return "", err
 	}
