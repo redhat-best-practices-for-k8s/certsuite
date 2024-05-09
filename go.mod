@@ -1,6 +1,6 @@
 module github.com/test-network-function/cnf-certification-test
 
-go 1.22.2
+go 1.22.3
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
@@ -58,7 +58,6 @@ require (
 	github.com/docker/docker-credential-helpers v0.8.0 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
-	github.com/docker/go-units v0.5.0 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.12.0 // indirect
 	github.com/evanphx/json-patch v5.7.0+incompatible // indirect
