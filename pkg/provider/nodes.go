@@ -79,19 +79,6 @@ func (node *Node) GetRHCOSVersion() (string, error) {
 		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
 	}
 
-	// path, err := os.Getwd()
-	// if err != nil {
-	// 	return "", err
-	// }
-	//TODO: remove this workaround once the rhcos_version_map file can be provided instead of searched for.
-	// var filePath string
-	// tokens := strings.Split(path, "/")
-	// if tokens[len(tokens)-1] == "cnf-certification-test" {
-	// 	filePath = fmt.Sprintf(rhcosRelativePath, path)
-	// } else {
-	// 	filePath = fmt.Sprintf(rhcosRelativePath, path+"/cnf-certification-test")
-	// }
-
 	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
 	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhcosName)
 	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
