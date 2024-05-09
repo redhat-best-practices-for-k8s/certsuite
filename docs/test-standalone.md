@@ -28,7 +28,7 @@ need to be installed in your environment prior to runtime.
 Dependency|Minimum Version
 ---|---
 [GoLang](https://golang.org/dl/)|1.22
-[golangci-lint](https://golangci-lint.run/usage/install/)|1.56.2
+[golangci-lint](https://golangci-lint.run/usage/install/)|1.58.1
 [jq](https://stedolan.github.io/jq/)|1.6
 [OpenShift Client](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/)|4.12
 

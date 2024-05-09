@@ -52,6 +52,10 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 )
 
+const (
+	DefaultTimeout = 10 * time.Second
+)
+
 type ClientsHolder struct {
 	RestConfig           *rest.Config
 	DynamicClient        dynamic.Interface
@@ -270,8 +274,6 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("failed to get rest.Config: %v", err)
 	}
-
-	DefaultTimeout := 10 * time.Second
 	clientsHolder.RestConfig.Timeout = DefaultTimeout
 
 	clientsHolder.DynamicClient, err = dynamic.NewForConfig(clientsHolder.RestConfig)

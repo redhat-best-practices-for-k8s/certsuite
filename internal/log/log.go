@@ -118,7 +118,7 @@ func Error(msg string, args ...any) {
 
 func Fatal(msg string, args ...any) {
 	Logf(globalLogger, LevelFatal, msg, args...)
-	fmt.Fprintf(os.Stderr, "\nFATAL: "+msg+"\n", args...) //nolint: goconst
+	fmt.Fprintf(os.Stderr, "\nFATAL: "+msg+"\n", args...)
 	os.Exit(1)
 }
 
@@ -187,7 +187,7 @@ func Logf(logger *Logger, level, format string, args ...any) {
 	}
 	var pcs [1]uintptr
 	// skip [Callers, Log, LogWrapper]
-	runtime.Callers(3, pcs[:]) //nolint:gomnd
+	runtime.Callers(3, pcs[:]) //nolint:mnd
 	r := slog.NewRecord(time.Now(), logLevel, fmt.Sprintf(format, args...), pcs[0])
 	_ = logger.l.Handler().Handle(context.Background(), r)
 }

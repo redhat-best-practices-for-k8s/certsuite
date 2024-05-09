@@ -119,15 +119,13 @@ func TestScaleHPACrd(cr *provider.CrScale, hpa *scalingv1.HorizontalPodAutoscale
 	namespace := cr.GetNamespace()
 
 	hpscaler := clients.K8sClient.AutoscalingV1().HorizontalPodAutoscalers(namespace)
-	var min int32
+	min := int32(1)
 	if hpa.Spec.MinReplicas != nil {
 		min = *hpa.Spec.MinReplicas
-	} else {
-		min = 1
 	}
 	replicas := cr.Spec.Replicas
 	name := cr.GetName()
-	max := hpa.Spec.MaxReplicas
+
 	if replicas <= 1 {
 		// scale up
 		replicas++
@@ -139,7 +137,7 @@ func TestScaleHPACrd(cr *provider.CrScale, hpa *scalingv1.HorizontalPodAutoscale
 		// scale down
 		replicas--
 		logger.Debug("Scale DOWN HPA %s:%s to min=%d max=%d", namespace, hpa.Name, replicas, replicas)
-		pass = scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, min, max, timeout, groupResourceSchema, logger)
+		pass = scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, min, hpa.Spec.MaxReplicas, timeout, groupResourceSchema, logger)
 		if !pass {
 			return false
 		}
@@ -160,8 +158,8 @@ func TestScaleHPACrd(cr *provider.CrScale, hpa *scalingv1.HorizontalPodAutoscale
 		}
 	}
 	// back the min and the max value of the hpa
-	logger.Debug("Back HPA %s:%s to min=%d max=%d", namespace, hpa.Name, min, max)
-	return scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, min, max, timeout, groupResourceSchema, logger)
+	logger.Debug("Back HPA %s:%s to min=%d max=%d", namespace, hpa.Name, min, hpa.Spec.MaxReplicas)
+	return scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, min, hpa.Spec.MaxReplicas, timeout, groupResourceSchema, logger)
 }
 
 func scaleHpaCRDHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, crName, namespace string, min, max int32, timeout time.Duration, groupResourceSchema schema.GroupResource, logger *log.Logger) bool {

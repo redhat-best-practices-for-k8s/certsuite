@@ -10,6 +10,10 @@ import (
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
+const (
+	multiplier = 100.0
+)
+
 type TestCoverageSummaryReport struct {
 	CoverageByTestSuite     map[string]TestSuiteQeCoverage
 	TotalCoveragePercentage float32
@@ -98,14 +102,14 @@ func GetQeCoverage(catalog map[claim.Identifier]claim.TestCaseDescription) TestC
 		}
 
 		// Update this test suite's coverage percentage
-		tsQeCoverage.Coverage = 100.0 * (float32(tsQeCoverage.TestCasesWithQe) / float32(tsQeCoverage.TestCases))
+		tsQeCoverage.Coverage = multiplier * (float32(tsQeCoverage.TestCasesWithQe) / float32(tsQeCoverage.TestCases))
 
 		qeCoverageByTestSuite[tsName] = tsQeCoverage
 	}
 
 	totalCoverage := float32(0)
 	if totalTcs > 0 {
-		totalCoverage = 100.0 * (float32(totalTcsWithQe) / float32(totalTcs))
+		totalCoverage = multiplier * (float32(totalTcsWithQe) / float32(totalTcs))
 	}
 
 	return TestCoverageSummaryReport{
