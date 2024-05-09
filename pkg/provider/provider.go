@@ -27,7 +27,7 @@ import (
 
 	"encoding/json"
 
-	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
+	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -66,9 +66,8 @@ const (
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
 // Master's role label "master" is deprecated since k8s 1.20.
 var (
-	WorkerLabels      = []string{"node-role.kubernetes.io/worker"}
-	MasterLabels      = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
-	rhcosRelativePath = "%s/platform/operatingsystem/files/rhcos_version_map"
+	WorkerLabels = []string{"node-role.kubernetes.io/worker"}
+	MasterLabels = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
 )
 
 type TestEnvironment struct { // rename this with testTarget

@@ -679,12 +679,9 @@ func TestGetRHCOSVersion(t *testing.T) {
 			},
 		}
 
-		origValue := rhcosRelativePath
-		rhcosRelativePath = "%s/../../cnf-certification-test/platform/operatingsystem/files/rhcos_version_map" // for testing only
-		result, err := node.GetRHCOSVersion()
+		result, err := node.GetRHCOSVersion("../../cnf-certification-test/platform/operatingsystem/testdata/versionMapTest.txt")
 		assert.Equal(t, tc.expectedErr, err)
 		assert.Equal(t, tc.expectedOutput, result)
-		rhcosRelativePath = origValue
 	}
 }
 

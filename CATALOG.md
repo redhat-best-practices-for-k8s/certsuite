@@ -1,4 +1,4 @@
-<!-- markdownlint-disable line-length no-bare-urls -->
+<!-- markdownlint-disable line-length no-bare-urls blanks-around-lists ul-indent blanks-around-headings no-trailing-spaces -->
 # Red Hat Best Practices Test Suite for Kubernetes catalog
 
 The catalog for the Red Hat Best Practices Test Suite for Kubernetes contains a list of test cases aiming at testing best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`
@@ -364,7 +364,7 @@ Property|Description
 ---|---
 Unique ID|access-control-security-context
 Description|Checks the security context matches one of the 4 categories
-Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 of the Extended Best Practices guide (private repo)
+Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 [here](#security-context-categories)
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-security
 Exception Process|no exception needed for optional/extended test
 Tags|extended,access-control
@@ -1815,3 +1815,38 @@ Tags|common,preflight
 |Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
+
+## Security Context Categories
+### 1st Category
+Default SCC for all users if namespace does not use service mesh.
+
+Workloads under this category should: 
+ - Use default CNI (OVN) network interface
+ - Not request NET_ADMIN or NET_RAW for advanced networking functions
+
+### 2nd Category
+For workloads which utilize Service Mesh sidecars for mTLS or load balancing. These workloads must utilize an alternative SCC “restricted-no-uid0” to workaround a service mesh UID limitation. Workloads under this category should not run as root (UID0).
+
+### 3rd Category
+For workloads with advanced networking functions/requirements (e.g. CAP_NET_RAW, CAP_NET_ADMIN, may run as root).
+
+For example:
+  - Manipulate the low-level protocol flags, such as the 802.1p priority, VLAN tag, DSCP value, etc.
+  - Manipulate the interface IP addresses or the routing table or the firewall rules on-the-fly.
+  - Process Ethernet packets
+Workloads under this category may
+  - Use Macvlan interface to sending and receiving Ethernet packets
+  - Request CAP_NET_RAW for creating raw sockets
+  - Request CAP_NET_ADMIN for
+    - Modify the interface IP address on-the-fly
+    - Manipulating the routing table on-the-fly
+    - Manipulating firewall rules on-the-fly
+    - Setting packet DSCP value
+
+### 4th Category
+For workloads handling user plane traffic or latency-sensitive payloads at line rate, such as load balancing, routing, deep packet inspection etc. Workloads under this category may also need to process the packets at a lower level.
+
+These workloads shall 
+  - Use SR-IOV interfaces 
+  - Fully or partially bypassing kernel networking stack with userspace networking technologies,such as DPDK, F-stack, VPP, OpenFastPath, etc. A userspace networking stack not only improvesthe performance but also reduces the need for CAP_NET_ADMIN and CAP_NET_RAW.
+CAP_IPC_LOCK is mandatory for allocating hugepage memory, hence shall be granted to DPDK applications. If the workload is latency-sensitive and needs a real-time kernel, CAP_SYS_NICE would be required.
