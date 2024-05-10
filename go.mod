@@ -12,14 +12,14 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require k8s.io/client-go v0.29.4
+require k8s.io/client-go v0.30.0
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/mittwald/go-helm-client v0.12.9
 	github.com/openshift/api v0.0.0-20240429104249-ac9356ba1784
 	github.com/openshift/client-go v0.0.0-20240422164335-6c851f4919dd
-	github.com/operator-framework/api v0.23.0
+	github.com/operator-framework/api v0.24.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.14.4
@@ -61,7 +61,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.12.0 // indirect
 	github.com/evanphx/json-patch v5.7.0+incompatible // indirect
-	github.com/evanphx/json-patch/v5 v5.8.0 // indirect
+	github.com/evanphx/json-patch/v5 v5.9.0 // indirect
 	github.com/exponent-io/jsonpath v0.0.0-20210407135951-1de76d718b3f // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
@@ -77,7 +77,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/btree v1.1.2 // indirect
-	github.com/google/cel-go v0.17.7 // indirect
+	github.com/google/cel-go v0.17.8 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-containerregistry v0.19.1 // indirect
@@ -182,9 +182,9 @@ require (
 	gopkg.in/evanphx/json-patch.v5 v5.7.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	k8s.io/apiserver v0.29.4 // indirect
+	k8s.io/apiserver v0.30.0 // indirect
 	k8s.io/cli-runtime v0.29.4 // indirect
-	k8s.io/component-base v0.29.4 // indirect
+	k8s.io/component-base v0.30.0 // indirect
 	k8s.io/kube-openapi v0.0.0-20240430033511-f0e62f92d13f // indirect
 	k8s.io/utils v0.0.0-20240423183400-0849a56e8f22 // indirect
 	modernc.org/libc v1.37.6 // indirect
@@ -193,7 +193,7 @@ require (
 	modernc.org/sqlite v1.28.0 // indirect
 	oras.land/oras-go v1.2.5-0.20240123054708-2afb6872ee1a // indirect
 	sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.29.0 // indirect
-	sigs.k8s.io/controller-runtime v0.17.3 // indirect
+	sigs.k8s.io/controller-runtime v0.18.0 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/kustomize/api v0.16.0 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.16.0 // indirect
@@ -203,7 +203,7 @@ require (
 
 require (
 	github.com/hashicorp/go-version v1.6.0
-	k8s.io/apiextensions-apiserver v0.29.4
+	k8s.io/apiextensions-apiserver v0.30.0
 )
 
 require (
