@@ -785,7 +785,7 @@ func TestBuildImageWithVersion(t *testing.T) {
 		{
 			repoVar:         "",
 			supportImageVar: "",
-			expectedOutput:  "quay.io/testnetworkfunction/debug-partner:5.0.8",
+			expectedOutput:  "quay.io/testnetworkfunction/debug-partner:5.0.9",
 		},
 	}
 
