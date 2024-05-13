@@ -27,6 +27,8 @@ import (
 
 func main() {
 	certsuite.Startup()
+	defer certsuite.Shutdown()
+
 	if *flags.ServerModeFlag {
 		log.Info("Running CNF Certification Suite in web server mode")
 		webserver.StartServer(*flags.OutputDir)
@@ -37,5 +39,4 @@ func main() {
 			log.Fatal("Failed to run CNF Certification Suite: %v", err)
 		}
 	}
-	certsuite.Shutdown()
 }
