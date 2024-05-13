@@ -32,7 +32,30 @@ type Logger struct {
 var (
 	globalLogger   *Logger
 	globalLogLevel slog.Level
+	globalLogFile  *os.File
 )
+
+func CreateGlobalLogFile(outputDir, logLevel string) error {
+	logFilePath := outputDir + "/" + LogFileName
+	err := os.Remove(logFilePath)
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("could not delete old log file, err: %v", err)
+	}
+
+	logFile, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE, LogFilePermissions)
+	if err != nil {
+		return fmt.Errorf("could not open a new log file, err: %v", err)
+	}
+
+	SetupLogger(logFile, logLevel)
+	globalLogFile = logFile
+
+	return nil
+}
+
+func CloseGlobalLogFile() error {
+	return globalLogFile.Close()
+}
 
 func SetupLogger(logWriter io.Writer, level string) {
 	logLevel, err := parseLevel(level)
