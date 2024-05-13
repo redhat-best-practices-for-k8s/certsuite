@@ -36,7 +36,7 @@ func main() {
 		log.Info("Running CNF Certification Suite in stand-alone mode")
 		err := certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
 		if err != nil {
-			log.Fatal("Failed to run CNF Certification Suite: %v", err)
+			log.Fatal("Failed to run CNF Certification Suite: %v", err) //nolint:gocritic //exitAfterDefer
 		}
 	}
 }
