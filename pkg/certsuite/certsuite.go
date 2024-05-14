@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
@@ -26,6 +27,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/flags"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 )
 
 var timeout time.Duration
@@ -99,8 +101,50 @@ func processFlags() {
 	}
 }
 
+func Startup() {
+	flags.InitFlags()
+
+	err := configuration.LoadEnvironmentVariables()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v", err)
+		os.Exit(1)
+	}
+
+	logLevel := configuration.GetTestParameters().LogLevel
+	err = log.CreateGlobalLogFile(*flags.OutputDir, logLevel)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v", err)
+		os.Exit(1)
+	}
+
+	log.Info("TNF Version: %v", versions.GitVersion())
+	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
+	log.Info("Labels filter: %v", *flags.LabelsFlag)
+	log.Info("Log level: %s", strings.ToUpper(logLevel))
+
+	log.Debug("Test environment variables: %#v", *configuration.GetTestParameters())
+
+	cli.PrintBanner()
+
+	fmt.Printf("CNFCERT version: %s\n", versions.GitVersion())
+	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
+	fmt.Printf("Checks filter: %s\n", *flags.LabelsFlag)
+	fmt.Printf("Output folder: %s\n", *flags.OutputDir)
+	fmt.Printf("Log file: %s (level=%s)\n", log.LogFileName, logLevel)
+	fmt.Printf("\n")
+}
+
+func Shutdown() {
+	err := log.CloseGlobalLogFile()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not close the log file, err: %v", err)
+		os.Exit(1)
+	}
+}
+
 //nolint:funlen
 func Run(labelsFilter, outputFolder string) error {
+	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 	LoadChecksDB(*flags.LabelsFlag)
 

@@ -17,95 +17,26 @@
 package main
 
 import (
-	_ "embed"
-	"fmt"
-	"os"
-
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
 	"github.com/test-network-function/cnf-certification-test/pkg/flags"
-	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 
-	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
-
-const (
-	CnfCertificationTestSuiteName = "CNF Certification Test Suite"
-	defaultCliArgValue            = ""
-	junitFlagKey                  = "junit"
-	TNFReportKey                  = "cnf-certification-test"
-	extraInfoKey                  = "testsExtraInfo"
-)
-
-func init() {
-	flags.InitFlags()
-}
-
-func createLogFile(outputDir string) (*os.File, error) {
-	logFilePath := outputDir + "/" + log.LogFileName
-	err := os.Remove(logFilePath)
-	if err != nil && !os.IsNotExist(err) {
-		return nil, fmt.Errorf("could not delete old log file, err: %v", err)
-	}
-
-	logFile, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE, log.LogFilePermissions)
-	if err != nil {
-		return nil, fmt.Errorf("could not open a new log file, err: %v", err)
-	}
-
-	return logFile, nil
-}
-
-func setupLogger(logFile *os.File) {
-	logLevel := configuration.GetTestParameters().LogLevel
-	log.SetupLogger(logFile, logLevel)
-	log.Info("Log file: %s (level=%s)", log.LogFileName, logLevel)
-}
 
 func main() {
-	err := configuration.LoadEnvironmentVariables()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v", err)
-		os.Exit(1)
-	}
+	certsuite.Startup()
+	defer certsuite.Shutdown()
 
-	logFile, err := createLogFile(*flags.OutputDir)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v", err)
-		os.Exit(1)
-	}
-	defer logFile.Close()
-
-	setupLogger(logFile)
-
-	log.Info("TNF Version         : %v", versions.GitVersion())
-	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
-	log.Info("Labels filter       : %v", *flags.LabelsFlag)
-
-	log.Debug("Test environment variables: %#v", *configuration.GetTestParameters())
-
-	cli.PrintBanner()
-
-	fmt.Printf("CNFCERT version: %s\n", versions.GitVersion())
-	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
-	fmt.Printf("Checks filter: %s\n", *flags.LabelsFlag)
-	fmt.Printf("Output folder: %s\n", *flags.OutputDir)
-	fmt.Printf("Log file: %s\n", log.LogFileName)
-	fmt.Printf("\n")
-
-	// Set clientsholder singleton with the filenames from the env vars.
-	log.Info("Output folder for the claim file: %s", *flags.OutputDir)
 	if *flags.ServerModeFlag {
 		log.Info("Running CNF Certification Suite in web server mode")
 		webserver.StartServer(*flags.OutputDir)
 	} else {
 		log.Info("Running CNF Certification Suite in stand-alone mode")
-		err = certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
+		err := certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
 		if err != nil {
-			log.Fatal("Failed to run CNF Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
+			log.Fatal("Failed to run CNF Certification Suite: %v", err) //nolint:gocritic //exitAfterDefer
 		}
 	}
 }
