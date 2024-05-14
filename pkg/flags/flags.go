@@ -53,6 +53,8 @@ var (
 	TimeoutFlag    *string
 	ListFlag       *bool
 	ServerModeFlag *bool
+
+	ConfigurationFile string
 )
 
 func InitFlags() {

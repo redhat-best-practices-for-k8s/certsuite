@@ -34,6 +34,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/flags"
 	k8sPrivilegedDs "github.com/test-network-function/privileged-daemonset"
 	"helm.sh/helm/v3/pkg/release"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -224,6 +225,9 @@ func buildTestEnvironment() { //nolint:funlen
 	env = TestEnvironment{}
 
 	env.variables = *configuration.GetTestParameters()
+	if flags.ConfigurationFile != "" {
+		env.variables.ConfigurationPath = flags.ConfigurationFile
+	}
 	config, err := configuration.LoadConfiguration(env.variables.ConfigurationPath)
 	if err != nil {
 		log.Fatal("Cannot load configuration file: %v", err)

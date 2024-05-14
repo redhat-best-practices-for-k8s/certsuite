@@ -9,6 +9,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/check"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/generate"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/run"
 )
 
 var (
@@ -22,6 +23,7 @@ func main() {
 	rootCmd.AddCommand(claim.NewCommand())
 	rootCmd.AddCommand(generate.NewCommand())
 	rootCmd.AddCommand(check.NewCommand())
+	rootCmd.AddCommand(run.NewCommand())
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Error("%v", err)
