@@ -148,12 +148,12 @@ func Run(labelsFilter, outputFolder string) error {
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 	LoadChecksDB(*flags.LabelsFlag)
 
-	processFlags()
-
 	// Create an evaluator to filter test cases with labels
 	if err := checksdb.InitLabelsExprEvaluator(labelsFilter); err != nil {
 		return fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
 	}
+
+	processFlags()
 
 	fmt.Println("Running discovery of CNF target resources...")
 	fmt.Print("\n")
