@@ -301,6 +301,76 @@ jobs:
       - name: Remove tarball(s) to save disk space
         run: rm -f cnf-certification-test/*.tar.gz
 
+
+  smoke-tests-container-arm64:
+    name: Run Container Smoke Tests (ARM64)
+    runs-on: macos-14
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/Users/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/Users/runner/.docker/config'
+
+    steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /Users/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Install required Homebrew packages
+        run: |
+          brew install jq kind docker
+
+      - name: setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
+      # Create a Kind cluster for testing.
+      - name: Check out `cnf-certification-test-partner`
+        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
+        with:
+          repository: test-network-function/cnf-certification-test-partner
+          path: cnf-certification-test-partner
+
+      - name: Run 'make rebuild-cluster'
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make rebuild-cluster
+
+      - name: Run 'make install'
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make install
+
+      # needed by depends-on-action
+      - name: Set up Go 1.22
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+        with:
+          go-version: 1.22.3
+
+      # Perform smoke tests using a TNF container.
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the `cnf-certification-test` image
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: make build-image-local
+        env:
+          IMAGE_TAG: ${TNF_IMAGE_TAG}
+
   smoke-tests-container:
     name: Run Container Smoke Tests
     runs-on: ubuntu-22.04
