@@ -68,4 +68,4 @@ export TNF_PARTNER_REPO=registry.dfwt5g.lab:5000/testnetworkfunction
 ```
 
 Note that you can also specify the debug pod image to use with `SUPPORT_IMAGE`
-environment variable, default to `debug-partner:5.0.9`.
+environment variable, default to `debug-partner:5.1.0`.
