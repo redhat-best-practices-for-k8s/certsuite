@@ -22,7 +22,7 @@ require (
 	github.com/operator-framework/api v0.24.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
-	helm.sh/helm/v3 v3.14.4
+	helm.sh/helm/v3 v3.15.0
 	k8s.io/api v0.30.1
 	k8s.io/apimachinery v0.30.1
 	k8s.io/klog/v2 v2.120.1 // indirect
@@ -183,7 +183,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	k8s.io/apiserver v0.30.1 // indirect
-	k8s.io/cli-runtime v0.29.4 // indirect
+	k8s.io/cli-runtime v0.30.0 // indirect
 	k8s.io/component-base v0.30.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240430033511-f0e62f92d13f // indirect
 	k8s.io/utils v0.0.0-20240423183400-0849a56e8f22 // indirect
@@ -220,7 +220,7 @@ require (
 	github.com/test-network-function/privileged-daemonset v1.0.22
 	golang.org/x/term v0.20.0
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/kubectl v0.29.4
+	k8s.io/kubectl v0.30.0
 )
 
 replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240507164801-7abf1ac0cc2c
