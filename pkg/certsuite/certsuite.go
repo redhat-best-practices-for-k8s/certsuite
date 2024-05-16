@@ -101,8 +101,10 @@ func processFlags() {
 	}
 }
 
-func Startup() {
-	flags.InitFlags()
+func Startup(initFlags bool) {
+	if initFlags {
+		flags.InitFlags()
+	}
 
 	err := configuration.LoadEnvironmentVariables()
 	if err != nil {
