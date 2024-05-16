@@ -7,12 +7,12 @@ By default a file named _tnf_config.yml_ will be used. Here's an [example](https
 
 ## Config Generator
 
-The Config File can be created using the Config Generator, which is part of the TNF tool shipped with the Test Suite. The purpose of this particular tool is to help users configuring the Test Suite providing a logical structure of the available options as well as the information required to make use of them. The result is a Config File in YAML format that will be parsed to adapt the verification process to a specific workload.
+The Config File can be created using the Config Generator, which is part of the _certsuite_ tool shipped with the Test Suite. The purpose of this particular tool is to help users configuring the Test Suite providing a logical structure of the available options as well as the information required to make use of them. The result is a Config File in YAML format that will be parsed to adapt the verification process to a specific workload.
 
-To compile the TNF tool:
+To compile the _certsuite_ tool:
 
 ```shell
-make build-tnf-tool
+make build-certsuite-tool
 ```
 
 To launch the Config Generator:

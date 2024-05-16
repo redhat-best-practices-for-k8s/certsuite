@@ -2,8 +2,8 @@ package claim
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/show"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/show"
 )
 
 var (

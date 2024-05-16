@@ -282,7 +282,7 @@ jobs:
         run: rm -f cnf-certification-test/*.tar.gz
 
       - name: Build the TNF tool
-        run: make build-tnf-tool
+        run: make build-certsuite-tool
 
       - name: Check the smoke test results against the expected results template
         run: make check-results
@@ -454,10 +454,10 @@ jobs:
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
       - name: Build the TNF tool
-        run: make build-tnf-tool
+        run: make build-certsuite-tool
 
       - name: Check the smoke test results against the expected results template
-        run: ./tnf check results --log-file="${TNF_OUTPUT_DIR}"/cnf-certsuite.log
+        run: ./certsuite check results --log-file="${TNF_OUTPUT_DIR}"/cnf-certsuite.log
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"

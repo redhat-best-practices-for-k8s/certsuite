@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/pkg/claim"
 )
 
 type TcResultsSummary struct {
