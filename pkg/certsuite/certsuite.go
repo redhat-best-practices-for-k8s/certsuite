@@ -101,13 +101,8 @@ func processFlags() {
 	}
 }
 
-func isTnfSubcommand() bool {
-	cmd := strings.Split(os.Args[0], "/")
-	return cmd[len(cmd)-1] == "tnf"
-}
-
-func Startup() {
-	if !isTnfSubcommand() {
+func Startup(initFlags bool) {
+	if initFlags {
 		flags.InitFlags()
 	}
 

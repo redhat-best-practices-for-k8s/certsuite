@@ -48,7 +48,7 @@ func initFlags(cmd *cobra.Command) {
 func runTestSuite(cmd *cobra.Command, _ []string) error {
 	initFlags(cmd)
 
-	certsuite.Startup()
+	certsuite.Startup(false)
 	defer certsuite.Shutdown()
 
 	err := certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
