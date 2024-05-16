@@ -1817,6 +1817,9 @@ Tags|common,preflight
 |Telco|Optional|
 
 ## Security Context Categories
+
+Security context categories referred here are applicable to the [access control test case](#access-control-security-context).
+
 ### 1st Category
 Default SCC for all users if namespace does not use service mesh.
 
