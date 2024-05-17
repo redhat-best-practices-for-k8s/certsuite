@@ -59,7 +59,10 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          python3 -m pip install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
         env:
           SHELL: /bin/bash
 
@@ -117,7 +120,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-24.04]
     env:
       SHELL: /bin/bash
 
@@ -136,7 +139,10 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          python3 -m pip install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
         env:
           SHELL: /bin/bash
 
@@ -168,7 +174,7 @@ jobs:
 
   smoke-tests-local:
     name: Run Local Smoke Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -195,7 +201,10 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          python3 -m pip install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
         env:
           SHELL: /bin/bash
 
@@ -231,12 +240,18 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Bootstrap cluster, docker, and python
+      - name: Check if /etc/docker/daemon.json exists and if not, create it.
+        run: |
+          if [ ! -f /etc/docker/daemon.json ]; then
+            echo '{}' | sudo tee /etc/docker/daemon.json
+          fi
+
+      - name: Bootstrap cluster and docker
         uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make bootstrap-cluster && make bootstrap-docker-ubuntu-local && make bootstrap-python-ubuntu-local && pip3 install pyyaml
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make bootstrap-cluster && make bootstrap-docker-ubuntu-local
 
       # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
       # This step needs to be done right after the partner repo's bootstrap scripts, as they
@@ -264,7 +279,7 @@ jobs:
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make install
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; python3 -m venv .venv; source .venv/bin/activate; pip install --upgrade pip; pip install jinjanator; cp .venv/bin/jinjanate .venv/bin/j2; make install
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
@@ -303,7 +318,7 @@ jobs:
 
   smoke-tests-container:
     name: Run Container Smoke Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -323,12 +338,18 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Bootstrap cluster, docker, and python
+      - name: Check if /etc/docker/daemon.json exists and if not, create it.
+        run: |
+          if [ ! -f /etc/docker/daemon.json ]; then
+            echo '{}' | sudo tee /etc/docker/daemon.json
+          fi
+
+      - name: Bootstrap cluster and docker
         uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make bootstrap-cluster && make bootstrap-docker-ubuntu-local && make bootstrap-python-ubuntu-local && pip3 install pyyaml
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make bootstrap-cluster && make bootstrap-docker-ubuntu-local
 
       # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
       # This step needs to be done right after the partner repo's bootstrap scripts, as they
@@ -356,7 +377,7 @@ jobs:
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make install
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; python3 -m venv .venv; source .venv/bin/activate; pip install --upgrade pip; pip install jinjanator; cp .venv/bin/jinjanate .venv/bin/j2; make install
 
       # needed by depends-on-action
       - name: Set up Go 1.22
@@ -466,7 +487,7 @@ jobs:
   create-manifest-multiarch:
     name: Create manifest list for multi-arch image
     needs: [unit-tests, smoke-tests-container]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
     steps:
       - name: Check out code
