@@ -214,7 +214,7 @@ require (
 	github.com/gorilla/websocket v1.5.1
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.0
 	github.com/manifoldco/promptui v0.9.0
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240507164801-7abf1ac0cc2c
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240513204820-83ee11a72169
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/test-network-function/oct v0.0.10
 	github.com/test-network-function/privileged-daemonset v1.0.22
@@ -223,4 +223,4 @@ require (
 	k8s.io/kubectl v0.30.1
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240507164801-7abf1ac0cc2c
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240513204820-83ee11a72169
