@@ -337,6 +337,8 @@ func outputIntro() (out string) {
 func outputSccCategories() (sccCategories string) {
 	sccCategories = "\n## Security Context Categories\n"
 
+	intro := "\nSecurity context categories referred here are applicable to the [access control test case](#access-control-security-context).\n\n"
+
 	firstCat := "### 1st Category\n" +
 		"Default SCC for all users if namespace does not use service mesh.\n\n" +
 		"Workloads under this category should: \n" +
@@ -372,7 +374,7 @@ func outputSccCategories() (sccCategories string) {
 		"the performance but also reduces the need for CAP_NET_ADMIN and CAP_NET_RAW.\n" +
 		"CAP_IPC_LOCK is mandatory for allocating hugepage memory, hence shall be granted to DPDK applications. If the workload is latency-sensitive and needs a real-time kernel, CAP_SYS_NICE would be required.\n"
 
-	return sccCategories + firstCat + secondCat + thirdCat + fourthCat
+	return sccCategories + intro + firstCat + secondCat + thirdCat + fourthCat
 }
 
 // runGenerateMarkdownCmd generates a markdown test catalog.
