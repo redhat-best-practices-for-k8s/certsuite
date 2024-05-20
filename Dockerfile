@@ -77,7 +77,7 @@ RUN \
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
-RUN make build-cnf-tests build-tnf-tool
+RUN make build-cnf-tests build-certsuite-tool
 
 # Extract what's needed to run at a separate location
 # Quote this to prevent word splitting.
@@ -89,7 +89,7 @@ RUN \
 	&& cp --parents $(find . -name '*.json*') ${TNF_DIR} \
 	&& cp cnf-certification-test/cnf-certification-test ${TNF_BIN_DIR} \
 	# copy the tnf command binary
-	&& cp tnf ${TNF_BIN_DIR}
+	&& cp certsuite ${TNF_BIN_DIR}
 
 # Switch contexts back to the root TNF directory
 WORKDIR ${TNF_DIR}

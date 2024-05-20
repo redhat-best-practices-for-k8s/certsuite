@@ -2,8 +2,8 @@ package show
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/show/csv"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/show/failures"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/show/csv"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/show/failures"
 )
 
 var (

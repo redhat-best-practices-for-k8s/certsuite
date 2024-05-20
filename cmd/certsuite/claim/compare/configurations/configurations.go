@@ -3,8 +3,8 @@ package configurations
 import (
 	"fmt"
 
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/diff"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/diff"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/pkg/claim"
 )
 
 type AbnormalEventsCount struct {

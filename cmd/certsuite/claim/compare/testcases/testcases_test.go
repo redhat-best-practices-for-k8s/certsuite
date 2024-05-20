@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/pkg/claim"
 )
 
 func TestGetTestCasesResultsMap(t *testing.T) {

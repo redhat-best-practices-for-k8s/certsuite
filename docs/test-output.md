@@ -147,12 +147,12 @@ CNIs: Only in CLAIM 2
 * claim.nodes.nodesHwInfo
 * claim.nodes.nodeSummary
 
-### How to build the tnf tool
+### How to build the certsuite tool
 
-The `tnf` tool is located in the repo's `cmd/tnf` folder. In order to compile it, just run:
+The _certsuite_ tool is located in the repo's `cmd/tnf` folder. In order to compile it, just run:
 
 ```console
-make build-tnf-tool
+make build-certsuite-tool
 ```
 
 ### Examples

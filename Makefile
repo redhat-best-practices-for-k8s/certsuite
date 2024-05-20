@@ -64,8 +64,8 @@ build:
 		build-cnf-tests \
 		test
 
-build-tnf-tool:
-	go build -o tnf -v cmd/tnf/main.go
+build-certsuite-tool:
+	go build -o certsuite -v cmd/certsuite/main.go
 
 # Cleans up auto-generated and report files
 clean:
@@ -73,7 +73,7 @@ clean:
 		cnf-certification-test/claimjson.js cnf-certification-test/cnf-certification-test.test \
 		cnf-certification-test/cnf-certification-tests_junit.xml \
 		cnf-certification-test/results.html jsontest-cli latest-release-tag.txt \
-		release-tag.txt test-out.json tnf
+		release-tag.txt test-out.json certsuite
 
 # Runs configured linters
 lint:
@@ -96,12 +96,12 @@ coverage-html: test
 	cat cover.out.tmp | grep -v _moq.go >cover.out
 	go tool cover -html cover.out
 
-coverage-qe: build-tnf-tool
-	./tnf generate qe-coverage-report
+coverage-qe: build-certsuite-tool
+	./certsuite generate qe-coverage-report
 
 # Generates the test catalog in Markdown
-build-catalog-md: build-tnf-tool
-	./tnf generate catalog markdown >CATALOG.md
+build-catalog-md: build-certsuite-tool
+	./certsuite generate catalog markdown >CATALOG.md
 
 # build the CNF test binary
 build-cnf-tests: results-html
@@ -180,4 +180,4 @@ results-html:
 	script/get-results-html.sh ${PARSER_RELEASE}
 
 check-results:
-	./tnf check results
+	./certsuite check results

@@ -6,11 +6,11 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/configurations"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/nodes"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/testcases"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/versions"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/configurations"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/nodes"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/testcases"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/versions"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 

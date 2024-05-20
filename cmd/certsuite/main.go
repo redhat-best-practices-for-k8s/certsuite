@@ -6,16 +6,16 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/check"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/generate"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/run"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/check"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/generate"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/run"
 )
 
 var (
 	rootCmd = &cobra.Command{
-		Use:   "tnf",
-		Short: "A CLI program with tools related to the CNF Certification Suite.",
+		Use:   "certsuite",
+		Short: "A CLI tool for the Red Hat Best Practices Test Suite for Kubernetes.",
 	}
 )
 
