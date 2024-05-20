@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/fs"
 	"net"
 	"net/http"
 	"os"
@@ -272,7 +273,8 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	newData := updateTnf(tnfConfig, &data)
 
 	// Write the modified YAML data back to the file
-	err = os.WriteFile("tnf_config.yml", newData, os.ModePerm)
+	var filePerm fs.FileMode = 0o644 // owner can read/write, group and others can only read
+	err = os.WriteFile("tnf_config.yml", newData, filePerm)
 	if err != nil {
 		log.Fatal("Error writing YAML file: %v", err)
 	}
