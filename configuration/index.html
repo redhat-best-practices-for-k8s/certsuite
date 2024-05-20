@@ -1390,9 +1390,9 @@
 <p>The Red Hat Best Practices Test Suite for Kubernetes uses a YAML configuration file to certify a specific workload. This file specifies the workload&rsquo;s resources to be certified, as well as any exceptions or other general configuration options.</p>
 <p>By default a file named <em>tnf_config.yml</em> will be used. Here&rsquo;s an <a href="https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml">example</a> of the Config File. For a description of each config option see the section <a href="#config-file-options">Config File options</a>.</p>
 <h2 id="config-generator">Config Generator<a class="headerlink" href="#config-generator" title="Permanent link">&para;</a></h2>
-<p>The Config File can be created using the Config Generator, which is part of the <abbr title="Test Network Function">TNF tool</abbr> shipped with the Test Suite. The purpose of this particular tool is to help users configuring the Test Suite providing a logical structure of the available options as well as the information required to make use of them. The result is a Config File in YAML format that will be parsed to adapt the verification process to a specific workload.</p>
-<p>To compile the <abbr title="Test Network Function">TNF tool</abbr>:</p>
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-tnf-tool
+<p>The Config File can be created using the Config Generator, which is part of the <em>certsuite</em> tool shipped with the Test Suite. The purpose of this particular tool is to help users configuring the Test Suite providing a logical structure of the available options as well as the information required to make use of them. The result is a Config File in YAML format that will be parsed to adapt the verification process to a specific workload.</p>
+<p>To compile the <em>certsuite</em> tool:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-certsuite-tool
 </code></pre></div>
 <p>To launch the Config Generator:</p>
 <div class="highlight"><pre><span></span><code>./tnf<span class="w"> </span>generate<span class="w"> </span>config
