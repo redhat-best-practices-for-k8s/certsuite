@@ -316,6 +316,12 @@ jobs:
       - name: Remove tarball(s) to save disk space
         run: rm -f cnf-certification-test/*.tar.gz
 
+      - name: 'Test: Run test suites with certsuite command'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER} --output-dir=certsuite-out"
+
+      - name: 'Check the smoke test results (run with the certsuite cmd) against the expected results template'
+        run: ./certsuite check results --log-file=certsuite-out/cnf-certsuite.log
+
   smoke-tests-container:
     name: Run Container Smoke Tests
     runs-on: ubuntu-24.04

@@ -108,14 +108,14 @@ func Startup(initFlags bool) {
 
 	err := configuration.LoadEnvironmentVariables()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v\n", err)
 		os.Exit(1)
 	}
 
 	logLevel := configuration.GetTestParameters().LogLevel
 	err = log.CreateGlobalLogFile(*flags.OutputDir, logLevel)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -139,7 +139,7 @@ func Startup(initFlags bool) {
 func Shutdown() {
 	err := log.CloseGlobalLogFile()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not close the log file, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not close the log file, err: %v\n", err)
 		os.Exit(1)
 	}
 }

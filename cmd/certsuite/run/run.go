@@ -1,6 +1,9 @@
 package run
 
 import (
+	"fmt"
+	"io/fs"
+	"os"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -30,7 +33,7 @@ func NewCommand() *cobra.Command {
 	return runCmd
 }
 
-func initFlags(cmd *cobra.Command) {
+func initFlags(cmd *cobra.Command) error {
 	outputDir, _ := cmd.Flags().GetString("output-dir")
 	labelFilter, _ := cmd.Flags().GetString("label-filter")
 	timeout, _ := cmd.Flags().GetString("timeout")
@@ -38,20 +41,36 @@ func initFlags(cmd *cobra.Command) {
 	serverMode, _ := cmd.Flags().GetBool("server-mode")
 	configFile, _ := cmd.Flags().GetString("config-file")
 
+	// Check if the output directory exists and, if not, create it
+	if _, err := os.Stat(outputDir); os.IsNotExist(err) {
+		var dirPerm fs.FileMode = 0o755        // default permissions for a directory
+		err := os.MkdirAll(outputDir, dirPerm) //nolint:govet // err shadowing intended
+		if err != nil {
+			return fmt.Errorf("could not create directory %q, err: %v", outputDir, err)
+		}
+	} else if err != nil {
+		return fmt.Errorf("could not check directory %q, err: %v", outputDir, err)
+	}
+
 	flags.OutputDir = &outputDir
 	flags.LabelsFlag = &labelFilter
 	flags.TimeoutFlag = &timeout
 	flags.ListFlag = &list
 	flags.ServerModeFlag = &serverMode
 	flags.ConfigurationFile = configFile
+
+	return nil
 }
 func runTestSuite(cmd *cobra.Command, _ []string) error {
-	initFlags(cmd)
+	err := initFlags(cmd)
+	if err != nil {
+		log.Fatal("Failed to initialize flags: %v", err)
+	}
 
 	certsuite.Startup(false)
 	defer certsuite.Shutdown()
 
-	err := certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
+	err = certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
 	if err != nil {
 		log.Fatal("Failed to run CNF Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
 	}
