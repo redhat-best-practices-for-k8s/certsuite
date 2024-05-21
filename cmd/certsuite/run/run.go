@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/flags"
 )
 
@@ -30,7 +31,9 @@ func NewCommand() *cobra.Command {
 	return runCmd
 }
 
-func initFlags(cmd *cobra.Command) {
+func initFlags(arg interface{}) {
+	cmd := arg.(*cobra.Command)
+
 	outputDir, _ := cmd.Flags().GetString("output-dir")
 	labelFilter, _ := cmd.Flags().GetString("label-filter")
 	timeout, _ := cmd.Flags().GetString("timeout")
@@ -44,11 +47,13 @@ func initFlags(cmd *cobra.Command) {
 	flags.ListFlag = &list
 	flags.ServerModeFlag = &serverMode
 	flags.ConfigurationFile = configFile
+
+	// Override env vars
+	testParams := configuration.GetTestParameters()
+	testParams.ConfigurationPath = configFile
 }
 func runTestSuite(cmd *cobra.Command, _ []string) error {
-	initFlags(cmd)
-
-	certsuite.Startup(false)
+	certsuite.Startup(initFlags, cmd)
 	defer certsuite.Shutdown()
 
 	err := certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)

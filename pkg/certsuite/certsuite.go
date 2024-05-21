@@ -101,16 +101,14 @@ func processFlags() {
 	}
 }
 
-func Startup(initFlags bool) {
-	if initFlags {
-		flags.InitFlags()
-	}
-
+func Startup(initFlags func(interface{}), arg interface{}) {
 	err := configuration.LoadEnvironmentVariables()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v", err)
 		os.Exit(1)
 	}
+
+	initFlags(arg)
 
 	logLevel := configuration.GetTestParameters().LogLevel
 	err = log.CreateGlobalLogFile(*flags.OutputDir, logLevel)

@@ -26,7 +26,7 @@ import (
 )
 
 func main() {
-	certsuite.Startup(true)
+	certsuite.Startup(flags.InitFlags, nil)
 	defer certsuite.Shutdown()
 
 	if *flags.ServerModeFlag {

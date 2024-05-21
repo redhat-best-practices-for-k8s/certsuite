@@ -57,7 +57,7 @@ var (
 	ConfigurationFile string
 )
 
-func InitFlags() {
+func InitFlags(arg interface{}) {
 	OutputDir = flag.String(outputDirFlagKey, defaultOutputDir,
 		"the directory where the output artifacts will be placed")
 	LabelsFlag = flag.String(labelsFlagName, labelsFlagDefaultValue, labelsFlagUsage)
