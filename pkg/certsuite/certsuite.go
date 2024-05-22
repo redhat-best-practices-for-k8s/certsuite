@@ -2,6 +2,7 @@ package certsuite
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -75,7 +76,24 @@ func getK8sClientsConfigFileNames() []string {
 	return fileNames
 }
 
-func processFlags() {
+func processFlags() error {
+	// Check if the output directory exists and, if not, create it
+	outputDir := *flags.OutputDir
+	if _, err := os.Stat(outputDir); os.IsNotExist(err) {
+		var dirPerm fs.FileMode = 0o755        // default permissions for a directory
+		err := os.MkdirAll(outputDir, dirPerm) //nolint:govet // err shadowing intended
+		if err != nil {
+			return fmt.Errorf("could not create directory %q, err: %v", outputDir, err)
+		}
+	} else if err != nil {
+		return fmt.Errorf("could not check directory %q, err: %v", outputDir, err)
+	}
+
+	// Create an evaluator to filter test cases with labels
+	if err := checksdb.InitLabelsExprEvaluator(*flags.LabelsFlag); err != nil {
+		return fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
+	}
+
 	// Diagnostic functions will run when no labels are provided.
 	if *flags.LabelsFlag == flags.NoLabelsExpr {
 		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched")
@@ -85,7 +103,7 @@ func processFlags() {
 	if *flags.ListFlag {
 		checksIDs, err := checksdb.FilterCheckIDs()
 		if err != nil {
-			log.Fatal("Could not list test cases, err: %v", err)
+			return fmt.Errorf("could not list test cases, err: %v", err)
 		} else {
 			cli.PrintChecksList(checksIDs)
 			os.Exit(0)
@@ -99,21 +117,33 @@ func processFlags() {
 	} else {
 		timeout = t
 	}
+
+	return nil
 }
 
-func Startup(initFlags func(interface{}), arg interface{}) {
+func Startup(initFlags func(interface{}) error, arg interface{}) {
 	err := configuration.LoadEnvironmentVariables()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v\n", err)
 		os.Exit(1)
 	}
 
-	initFlags(arg)
+	err = initFlags(arg)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not initialize the flags: %v", err)
+		os.Exit(1)
+	}
+
+	err = processFlags()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error while processing flags: %v", err)
+		os.Exit(1)
+	}
 
 	logLevel := configuration.GetTestParameters().LogLevel
 	err = log.CreateGlobalLogFile(*flags.OutputDir, logLevel)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -137,7 +167,7 @@ func Startup(initFlags func(interface{}), arg interface{}) {
 func Shutdown() {
 	err := log.CloseGlobalLogFile()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not close the log file, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not close the log file, err: %v\n", err)
 		os.Exit(1)
 	}
 }
@@ -147,13 +177,6 @@ func Run(labelsFilter, outputFolder string) error {
 	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 	LoadChecksDB(*flags.LabelsFlag)
-
-	// Create an evaluator to filter test cases with labels
-	if err := checksdb.InitLabelsExprEvaluator(labelsFilter); err != nil {
-		return fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
-	}
-
-	processFlags()
 
 	fmt.Println("Running discovery of CNF target resources...")
 	fmt.Print("\n")
