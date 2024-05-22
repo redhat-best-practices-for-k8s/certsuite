@@ -452,16 +452,17 @@ while IFS=, read -r package_name catalog; do
 
 	echo_color "$BLUE" "operator $package_name installed"
 
+	echo_color "$BLUE" "Wait to ensure all pods are running"
+	# Extra wait to ensure that all pods are running
+	sleep 30
+
+	echo_color "$BLUE" "Label deployments, statefulsets, pods"
 	# Label deployments, statefulsets and pods with "test-network-function.com/generic=target"
 	{
 		oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
 		oc get statefulset -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
 		oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
 	} >>"$LOG_FILE_PATH" 2>&1
-
-	echo_color "$BLUE" "Wait to ensure all pods are running"
-	# Extra wait to ensure that all pods are running
-	sleep 30
 
 	# run tnf-container
 	echo_color "$BLUE" "run CNF suite"
