@@ -121,18 +121,14 @@ func processFlags() error {
 	return nil
 }
 
-func Startup(initFlags func(interface{}) error, arg interface{}) {
+func Startup(initFlags func(interface{}), arg interface{}) {
 	err := configuration.LoadEnvironmentVariables()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v\n", err)
 		os.Exit(1)
 	}
 
-	err = initFlags(arg)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not initialize the flags: %v", err)
-		os.Exit(1)
-	}
+	initFlags(arg)
 
 	err = processFlags()
 	if err != nil {

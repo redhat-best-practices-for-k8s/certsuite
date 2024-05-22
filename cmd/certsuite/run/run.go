@@ -31,7 +31,7 @@ func NewCommand() *cobra.Command {
 	return runCmd
 }
 
-func initFlags(arg interface{}) error {
+func initFlags(arg interface{}) {
 	cmd := arg.(*cobra.Command)
 
 	outputDir, _ := cmd.Flags().GetString("output-dir")
@@ -51,8 +51,6 @@ func initFlags(arg interface{}) error {
 	// Override env vars
 	testParams := configuration.GetTestParameters()
 	testParams.ConfigurationPath = configFile
-
-	return nil
 }
 func runTestSuite(cmd *cobra.Command, _ []string) error {
 	certsuite.Startup(initFlags, cmd)

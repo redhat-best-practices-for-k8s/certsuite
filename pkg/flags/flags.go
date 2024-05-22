@@ -57,7 +57,7 @@ var (
 	ConfigurationFile string
 )
 
-func InitFlags(_ interface{}) error {
+func InitFlags(_ interface{}) {
 	OutputDir = flag.String(outputDirFlagKey, defaultOutputDir,
 		"the directory where the output artifacts will be placed")
 	LabelsFlag = flag.String(labelsFlagName, labelsFlagDefaultValue, labelsFlagUsage)
@@ -69,6 +69,4 @@ func InitFlags(_ interface{}) error {
 	if *LabelsFlag == "" {
 		*LabelsFlag = NoLabelsExpr
 	}
-
-	return nil
 }
