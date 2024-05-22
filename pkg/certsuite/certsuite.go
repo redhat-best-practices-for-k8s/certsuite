@@ -128,7 +128,7 @@ func Startup(initFlags bool) {
 
 	cli.PrintBanner()
 
-	fmt.Printf("CNFCERT version: %s\n", versions.GitVersion())
+	fmt.Printf("CERTSUITE version: %s\n", versions.GitVersion())
 	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
 	fmt.Printf("Checks filter: %s\n", *flags.LabelsFlag)
 	fmt.Printf("Output folder: %s\n", *flags.OutputDir)

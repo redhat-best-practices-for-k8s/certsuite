@@ -215,7 +215,7 @@ func StartServer(outputFolder string) {
 	}
 }
 
-// Define an HTTP handler that triggers CNFCERT tests
+// Define an HTTP handler that triggers CERTSUITE tests
 //
 //nolint:funlen
 func runHandler(w http.ResponseWriter, r *http.Request) {
