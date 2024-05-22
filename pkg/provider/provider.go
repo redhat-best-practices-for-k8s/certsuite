@@ -228,7 +228,7 @@ func buildTestEnvironment() { //nolint:funlen
 	if err != nil {
 		log.Fatal("Cannot load configuration file: %v", err)
 	}
-	log.Debug("CNFCERT configuration: %+v", config)
+	log.Debug("CERTSUITE configuration: %+v", config)
 
 	// Wait for the debug pods to be ready before the autodiscovery starts.
 	if err := deployDaemonSet(config.DebugDaemonSetNamespace); err != nil {
