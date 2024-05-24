@@ -19,7 +19,7 @@ require (
 	github.com/mittwald/go-helm-client v0.12.9
 	github.com/openshift/api v0.0.0-20240429104249-ac9356ba1784
 	github.com/openshift/client-go v0.0.0-20240422164335-6c851f4919dd
-	github.com/operator-framework/api v0.24.0
+	github.com/operator-framework/api v0.25.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.15.1
@@ -193,7 +193,7 @@ require (
 	modernc.org/sqlite v1.28.0 // indirect
 	oras.land/oras-go v1.2.5-0.20240123054708-2afb6872ee1a // indirect
 	sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.29.0 // indirect
-	sigs.k8s.io/controller-runtime v0.18.0 // indirect
+	sigs.k8s.io/controller-runtime v0.18.2 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/kustomize/api v0.16.0 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.16.0 // indirect
