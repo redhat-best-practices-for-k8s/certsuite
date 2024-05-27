@@ -25,8 +25,18 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().String("label-filter", "none", "Label expression to filter test cases  (e.g. --label-filter 'access-control && !access-control-sys-admin-capability')")
 	runCmd.PersistentFlags().String("timeout", timeoutFlagDefaultvalue.String(), "Time allowed for the test suite execution to complete (e.g. --timeout 30m  or -timeout 1h30m)")
 	runCmd.PersistentFlags().String("config-file", "cnf-certification-test/tnf_config.yml", "Name of the workload configuration file")
+	runCmd.PersistentFlags().String("kubeconfig", "", "The target cluster's Kubeconfig file")
 	runCmd.PersistentFlags().Bool("list", false, "Shows all the available checks/tests. Can be filtered with --label-filter.")
 	runCmd.PersistentFlags().Bool("server-mode", false, "Run the certsuite in web server mode.")
+	runCmd.PersistentFlags().Bool("omit-artifacts-zip-file", false, "Prevents the creation of a zip file with the result artifacts")
+	runCmd.PersistentFlags().String("log-level", "debug", "Sets the log level")
+	runCmd.PersistentFlags().String("offline-db", "", "Set the location of an offline DB to check the certification status of for container images, operators and helm charts")
+	runCmd.PersistentFlags().String("preflight-dockerconfig", "", "Set the dockerconfig file to be used by the Preflight test suite")
+	runCmd.PersistentFlags().Bool("non-intrusive", false, "Run only the test that do not disrupt the test environment")
+	runCmd.PersistentFlags().Bool("allow-preflight-insecure", false, "Allow insecure connections in the Preflight test suite")
+	runCmd.PersistentFlags().Bool("include-web-files", false, "Save web files in the configured output folder")
+	runCmd.PersistentFlags().Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
+	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
 
 	return runCmd
 }
@@ -40,6 +50,16 @@ func initFlags(arg interface{}) {
 	list, _ := cmd.Flags().GetBool("list")
 	serverMode, _ := cmd.Flags().GetBool("server-mode")
 	configFile, _ := cmd.Flags().GetString("config-file")
+	kubeconfigFile, _ := cmd.Flags().GetString("kubeconfig")
+	omitZipFile, _ := cmd.Flags().GetBool("omit-artifacts-zip-file")
+	logLevel, _ := cmd.Flags().GetString("log-level")
+	offlineDB, _ := cmd.Flags().GetString("offline-db")
+	pfltDockerconfig, _ := cmd.Flags().GetString("preflight-dockerconfig")
+	nonIntrusive, _ := cmd.Flags().GetBool("non-intrusive")
+	allowPfltInsecure, _ := cmd.Flags().GetBool("allow-preflight-insecure")
+	includeWebFiles, _ := cmd.Flags().GetBool("include-web-files")
+	dataCollection, _ := cmd.Flags().GetBool("enable-data-collection")
+	createXMLJUnitFile, _ := cmd.Flags().GetBool("create-xml-junit-file")
 
 	flags.OutputDir = &outputDir
 	flags.LabelsFlag = &labelFilter
@@ -51,6 +71,16 @@ func initFlags(arg interface{}) {
 	// Override env vars
 	testParams := configuration.GetTestParameters()
 	testParams.ConfigurationPath = configFile
+	testParams.Kubeconfig = kubeconfigFile
+	testParams.OmitArtifactsZipFile = omitZipFile
+	testParams.LogLevel = logLevel
+	testParams.OfflineDB = offlineDB
+	testParams.PfltDockerconfig = pfltDockerconfig
+	testParams.NonIntrusiveOnly = nonIntrusive
+	testParams.AllowPreflightInsecure = allowPfltInsecure
+	testParams.IncludeWebFilesInOutputFolder = includeWebFiles
+	testParams.EnableDataCollection = dataCollection
+	testParams.EnableXMLCreation = createXMLJUnitFile
 }
 func runTestSuite(cmd *cobra.Command, _ []string) error {
 	certsuite.Startup(initFlags, cmd)
