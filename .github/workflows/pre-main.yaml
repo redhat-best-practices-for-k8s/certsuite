@@ -318,10 +318,13 @@ jobs:
         run: rm -f cnf-certification-test/*.tar.gz
 
       - name: 'Test: Run test suites with certsuite command'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir="certsuite-out"
+        run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir="certsuite-out" --log-level=${TNF_SMOKE_TESTS_LOG_LEVEL}
 
       - name: 'Check the smoke test results (run with the certsuite cmd) against the expected results template'
         run: ./certsuite check results --log-file="certsuite-out/cnf-certsuite.log"
+
+      - name: 'Test: Run preflight specific test suite with the certsuite command'
+        run: ./certsuite run --label-filter="preflight" --log-level=${TNF_SMOKE_TESTS_LOG_LEVEL}
 
   smoke-tests-container:
     name: Run Container Smoke Tests
@@ -508,6 +511,22 @@ jobs:
 
       - name: Check the smoke test results (run with the certsuite cmd) against the expected results template
         run: ./certsuite check results --log-file="${TNF_CERTSUITE_CMD_OUTPUT_DIR}"/cnf-certsuite.log
+
+      - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container with the certsuite command'
+        run: |
+          cp /home/runner/.kube/config $TNF_CONFIG_DIR/kubeconfig
+          cp /home/runner/.docker/config $TNF_CONFIG_DIR/dockerconfig
+          docker run --rm --network host \
+          -v $TNF_CONFIG_DIR:/usr/tnf/config:Z \
+          -v $TNF_CERTSUITE_CMD_OUTPUT_DIR:/usr/tnf/output:Z \
+          ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
+          ./cnf-certification-test/certsuite run \
+          --output-dir=/usr/tnf/output \
+          --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
+          --offline-db=/usr/offline-db \
+          --config-file=/usr/tnf/config/tnf_config.yml \
+          --kubeconfig=/usr/tnf/config/kubeconfig \
+          --label-filter="preflight"
 
 
 
