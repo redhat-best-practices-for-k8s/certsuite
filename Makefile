@@ -63,7 +63,7 @@ build:
 		test
 
 build-certsuite-tool:
-	PATH=${PATH}:${GOBIN} go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
+	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
 
 # Cleans up auto-generated and report files
 clean:
@@ -103,15 +103,15 @@ build-catalog-md: build-certsuite-tool
 
 # build the CNF test binary
 build-cnf-tests: results-html
-	PATH=${PATH}:${GOBIN} go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
+	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
 
 # build the CNF test binary for local development
 dev:
-	PATH=${PATH}:${GOBIN} go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
+	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
 
 # Builds the CNF test binary with debug flags
 build-cnf-tests-debug: results-html
-	PATH=${PATH}:${GOBIN} go build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
+	PATH="${PATH}:${GOBIN}" go build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 
 install-mac-brew-tools:
 	brew install \

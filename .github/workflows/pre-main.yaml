@@ -498,16 +498,16 @@ jobs:
           cp /home/runner/.kube/config $TNF_CONFIG_DIR/kubeconfig
           cp /home/runner/.docker/config $TNF_CONFIG_DIR/dockerconfig
           docker run --rm --network host \
-          -v $TNF_CONFIG_DIR:/usr/tnf/config:Z \
-          -v $TNF_CERTSUITE_CMD_OUTPUT_DIR:/usr/tnf/output:Z \
-          ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
-          ./cnf-certification-test/certsuite run \
-          --output-dir=/usr/tnf/output \
-          --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
-          --offline-db=/usr/offline-db \
-          --config-file=/usr/tnf/config/tnf_config.yml \
-          --kubeconfig=/usr/tnf/config/kubeconfig \
-          --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
+            -v $TNF_CONFIG_DIR:/usr/tnf/config:Z \
+            -v $TNF_CERTSUITE_CMD_OUTPUT_DIR:/usr/tnf/output:Z \
+            ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
+            ./cnf-certification-test/certsuite run \
+            --output-dir=/usr/tnf/output \
+            --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
+            --offline-db=/usr/offline-db \
+            --config-file=/usr/tnf/config/tnf_config.yml \
+            --kubeconfig=/usr/tnf/config/kubeconfig \
+            --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Check the smoke test results (run with the certsuite cmd) against the expected results template
         run: ./certsuite check results --log-file="${TNF_CERTSUITE_CMD_OUTPUT_DIR}"/cnf-certsuite.log
@@ -517,16 +517,16 @@ jobs:
           cp /home/runner/.kube/config $TNF_CONFIG_DIR/kubeconfig
           cp /home/runner/.docker/config $TNF_CONFIG_DIR/dockerconfig
           docker run --rm --network host \
-          -v $TNF_CONFIG_DIR:/usr/tnf/config:Z \
-          -v $TNF_CERTSUITE_CMD_OUTPUT_DIR:/usr/tnf/output:Z \
-          ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
-          ./cnf-certification-test/certsuite run \
-          --output-dir=/usr/tnf/output \
-          --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
-          --offline-db=/usr/offline-db \
-          --config-file=/usr/tnf/config/tnf_config.yml \
-          --kubeconfig=/usr/tnf/config/kubeconfig \
-          --label-filter="preflight"
+            -v $TNF_CONFIG_DIR:/usr/tnf/config:Z \
+            -v $TNF_CERTSUITE_CMD_OUTPUT_DIR:/usr/tnf/output:Z \
+            ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
+            ./cnf-certification-test/certsuite run \
+            --output-dir=/usr/tnf/output \
+            --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
+            --offline-db=/usr/offline-db \
+            --config-file=/usr/tnf/config/tnf_config.yml \
+            --kubeconfig=/usr/tnf/config/kubeconfig \
+            --label-filter="preflight"
 
 
 
