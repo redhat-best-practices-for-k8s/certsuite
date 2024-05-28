@@ -395,7 +395,7 @@ func TestIsWorkerNode(t *testing.T) {
 	}
 }
 
-func TestIsMasterNode(t *testing.T) {
+func TestIsControlPlaneNode(t *testing.T) {
 	testCases := []struct {
 		node           *corev1.Node
 		expectedResult bool
@@ -490,7 +490,7 @@ func TestIsMasterNode(t *testing.T) {
 
 	for _, tc := range testCases {
 		node := Node{Data: tc.node}
-		assert.Equal(t, tc.expectedResult, node.IsMasterNode())
+		assert.Equal(t, tc.expectedResult, node.IsControlPlaneNode())
 	}
 }
 
