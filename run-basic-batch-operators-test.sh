@@ -1,5 +1,5 @@
 #!/bin/bash
-set -o errexit -o nounset -o pipefail
+set -o nounset -o pipefail
 
 # Test run timestamp
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S_%Z")
@@ -15,14 +15,20 @@ INDEX_FILE=index2.html
 # tnf_config.yaml template file path
 CONFIG_YAML_TEMPLATE="$(pwd)"/tnf_config.yml.template
 
+# CatalogSource.yaml template file path
+CATALOG_SOURCE_TEMPLATE="$(pwd)"/CatalogSource.yaml.template
+
 # Docker config used to pull operator images
 DOCKER_CONFIG=config.json
 
 # Location of telco/non-telco classification file
-CNF_TYPE=cmd/tnf/claim/show/csv/cnf-type.json
+CNF_TYPE=cmd/certsuite/claim/show/csv/cnf-type.json
 
-# Operator catalog from user
-OPERATOR_CATALOG=""
+# Operator catalog name
+OPERATOR_CATALOG_NAME="operator-catalog"
+
+# Operator catalog namespace
+OPERATOR_CATALOG_NAMESPACE="openshift-marketplace"
 
 # Operator from user
 OPERATORS_UNDER_TEST=""
@@ -196,6 +202,36 @@ wait_cluster_ok() {
 	done
 }
 
+wait_package_ok() {
+	local \
+		package_name=$1 \
+		start_time \
+		timeout_seconds=600
+
+	start_time=$(date +%s 2>&1) || {
+		echo "date failed with error $?: $start_time" >>"$LOG_FILE_PATH"
+		return 0
+	}
+
+	while true; do
+		(oc get packagemanifests | grep "$package_name") &>/dev/null &&
+			return 0 ||
+			echo "get packagemanifest $package_name failed with error $?." >>"$LOG_FILE_PATH"
+
+		current_time=$(date +%s)
+		elapsed_time=$((current_time - start_time))
+		# If elapsed time is greater than the timeout report failure
+		if [ "$elapsed_time" -ge "$timeout_seconds" ]; then
+			echo_color "$BLUE" "Timeout reached $timeout_seconds seconds waiting for packagemanifest $package_name to be reachable."
+			return 1
+		fi
+
+		# Otherwise wait a bit
+		echo_color "$BLUE" "Waiting for package $package_name to be reachable..."
+		sleep 5
+	done
+}
+
 wait_for_csv_to_appear_and_label() {
 	local csv_namespace=$1
 	local timeout_seconds=100
@@ -297,24 +333,88 @@ get_suggested_namespace() {
 	oc get packagemanifests -n openshift-marketplace "$package_name" -ojson | jq -r '.status.channels[].currentCSVDesc.annotations."operatorframework.io/suggested-namespace"' 2>/dev/null | grep -v "null" | sed 's/\n//g' | head -1 || true
 }
 
+create_catalog() {
+	catalog_source_yaml=catalogSource.yml
+	sed "s|\$CATALOG_INDEX|$CATALOG_INDEX|" "$CATALOG_SOURCE_TEMPLATE" >"$catalog_source_yaml"
+
+	oc apply -f $catalog_source_yaml
+	wait_pods_ok
+}
+
+wait_pods_ok() {
+	local \
+		start_time \
+		timeout_seconds=100
+	start_time=$(date +%s 2>&1) || {
+		echo "date failed with error $?: $start_time" >>"$LOG_FILE_PATH"
+		return 0
+	}
+
+	while true; do
+		pods=$(oc get pods --no-headers -n openshift-marketplace -o custom-columns=":metadata.name,:status.phase" | grep ^"$OPERATOR_CATALOG_NAME"-)
+		all_pods_running=true
+
+		# Iterate over all necessary pods and check their phases.
+		while IFS= read -r pod; do
+			pod_status=$(echo "$pod" | awk '{print $2}')
+			if [[ $pod_status != "Running" ]]; then
+				all_pods_running=false
+			fi
+		done <<<"$pods"
+
+		if [ "$all_pods_running" = true ]; then
+			break
+		fi
+
+		current_time=$(date +%s)
+		elapsed_time=$((current_time - start_time))
+		# If elapsed time is greater than the timeout report failure
+		if [ "$elapsed_time" -ge "$timeout_seconds" ]; then
+			echo_color "$BLUE" "Timeout reached $timeout_seconds seconds waiting for packagemanifest $package_name to be reachable."
+			return 1
+		fi
+
+		echo_color "$BLUE" "Waiting for necessary pods to be created and reach running state..."
+		sleep 5
+	done
+}
+
 # Main
+
+# Writing CatalogSource template
+cat <<EOF >"$CATALOG_SOURCE_TEMPLATE"
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: $OPERATOR_CATALOG_NAME
+  namespace: $OPERATOR_CATALOG_NAMESPACE
+spec:
+  sourceType: grpc
+  image: \$CATALOG_INDEX
+  displayName: Operator Catalog
+  publisher: Redhat
+EOF
 
 # Check if the number of parameters is correct
 if [ "$#" -eq 1 ]; then
-	OPERATOR_CATALOG=$1
+	CATALOG_INDEX=$1
+	echo_color "$BLUE" "Creating Catalog Source"
+	create_catalog
 	# Get all the packages present in the cluster catalog
-	with_retry 5 10 oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.catalogSource}{"\n"}{end}' | grep "$OPERATOR_CATALOG" | head -n -1 | sort >"$OPERATOR_LIST_PATH"
+	with_retry 5 10 oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.catalogSource}{"\n"}{end}' | grep "$OPERATOR_CATALOG_NAME" | head -n -1 | sort >"$OPERATOR_LIST_PATH"
 
 elif [ "$#" -eq 2 ]; then
-	OPERATOR_CATALOG=$1
+	CATALOG_INDEX=$1
+	echo_color "$BLUE" "Creating Catalog Source"
+	create_catalog
 	OPERATORS_UNDER_TEST=$2
-	echo "$OPERATORS_UNDER_TEST " | sed 's/ /,'"$OPERATOR_CATALOG"'\n/g' >"$OPERATOR_LIST_PATH"
+	echo "$OPERATORS_UNDER_TEST " | sed 's| |,'"$CATALOG_INDEX"'\n|g' >"$OPERATOR_LIST_PATH"
 else
 	echo 'Wrong parameter count.
-  Usage: ./run-basic-batch-operators-test.sh <catalog> ["<operator-name 1> <operator-name 2> ... <operator-name N>]
+  Usage: ./run-basic-batch-operators-test.sh <catalog-index> ["<operator-name 1> <operator-name 2> ... <operator-name N>"]
   Examples:
-  ./run-basic-batch-operators-test.sh redhat-operators
-  ./run-basic-batch-operators-test.sh redhat-operators "file-integrity-operator kiali-ossm"'
+  ./run-basic-batch-operators-test.sh registry.redhat.io/redhat-operators
+  ./run-basic-batch-operators-test.sh registry.redhat.io/redhat-operators "file-integrity-operator kiali-ossm"'
 	exit 1
 fi
 
@@ -350,7 +450,7 @@ OPERATOR_PAGE='<!DOCTYPE html>
 # Add per test run links
 {
 	# Add per operator details link
-	echo "Time: <b>$TIMESTAMP</b>, catalog: <b>$OPERATOR_CATALOG</b>"
+	echo "Time: <b>$TIMESTAMP</b>, Catalog index: <b>$CATALOG_INDEX</b>"
 
 	#Add detailed results
 	echo ", detailed results: "'<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$INDEX_FILE"'">'"link"'</a>'
@@ -379,16 +479,20 @@ wait_cluster_ok
 
 echo_color "$BLUE" "Starting to install and test operators"
 # For each operator in a provided catalog, this script will install the operator and run the CNF test suite.
-while IFS=, read -r package_name catalog; do
+while IFS=, read -r package_name catalog_index; do
 	if [ "$package_name" = "" ]; then
 		continue
 	fi
 
-	echo_color "$GREY" "********* package= $package_name catalog= $catalog **********"
+	echo_color "$GREY" "********* package= $package_name catalog index= $catalog_index **********"
 
 	# Wait for the cluster to be reachable
 	echo_color "$BLUE" "Wait for cluster to be reachable"
 	wait_cluster_ok
+
+	# Wait for package to be reachable
+	echo_color "$BLUE" "Wait for package $package_name to be reachable"
+	wait_package_ok "$package_name"
 
 	# Variable to hold return status
 	status=0
@@ -403,27 +507,23 @@ while IFS=, read -r package_name catalog; do
 	echo_color "$GREY" "namespace= $ns"
 
 	echo_color "$BLUE" "Cluster cleanup"
-	cleanup >>"$LOG_FILE_PATH" 2>&1 || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! cleanup >>"$LOG_FILE_PATH" 2>&1; then
 		echo_color "$RED" "Warning, cluster cleanup failed"
 	fi
 
 	# If a namespace is present, it is probably stuck deleting from previous runs. Force delete it.
 	echo_color "$BLUE" "Remove namespace if present"
-	force_delete_namespace_if_present "$ns" >>"$LOG_FILE_PATH" 2>&1 || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! force_delete_namespace_if_present "$ns" >>"$LOG_FILE_PATH" 2>&1; then
 		echo_color "$RED" "Error, force deleting namespace failed"
 	fi
 
-	oc create namespace "$ns" || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! oc create namespace "$ns"; then
 		echo_color "$RED" "Error, creating namespace $ns failed"
 	fi
 
 	# Install the operator in a custom namespace
 	echo_color "$BLUE" "install operator"
-	oc operator install --create-operator-group "$package_name" -n "$ns" || status=$?
-	if [ "$status" != 0 ]; then
+	if ! oc operator install --create-operator-group "$package_name" -n "$ns"; then
 		echo_color "$RED" "Operator installation failed but will still waiting for CSV"
 	fi
 
@@ -431,8 +531,7 @@ while IFS=, read -r package_name catalog; do
 	report_dir="$REPORT_FOLDER"/"$package_name"
 
 	# Store the results of CNF test in a new directory
-	mkdir -p "$report_dir" || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! mkdir -p "$report_dir"; then
 		echo_color "$RED" "Error, creating report dir failed"
 	fi
 
@@ -443,8 +542,7 @@ while IFS=, read -r package_name catalog; do
 
 	# Wait for the CSV to appear
 	echo_color "$BLUE" "Wait for CSV to appear and label resources unde test"
-	wait_for_csv_to_appear_and_label "$ns" || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! wait_for_csv_to_appear_and_label "$ns"; then
 		echo_color "$RED" "Operator failed to install, continue"
 		report_failure "$status" "$ns" "$package_name" "Operator installation failed, skipping test"
 		continue
@@ -473,28 +571,30 @@ while IFS=, read -r package_name catalog; do
 
 	echo_color "$BLUE" "unlabel operator"
 	# Unlabel the operator
-	oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator- "}' | bash || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator- "}' | bash; then
 		echo_color "$RED" "Error, failed to unlabel the operator"
 	fi
 
 	# remove the operator
 	echo_color "$BLUE" "Remove operator"
-	oc operator uninstall -X "$package_name" -n "$ns" || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! oc operator uninstall -X "$package_name" -n "$ns"; then
 		echo_color "$RED" "Operator failed to un-install, continue"
 	fi
 
 	# Delete the namespace
-	oc delete namespace "$ns" --wait=false || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! oc delete namespace "$ns" --wait=false; then
 		echo_color "$RED" "Error, failed to delete namespace: $ns"
 	fi
 
 	echo_color "$BLUE" "Wait for cleanup to finish"
-	wait_delete_namespace "$ns" || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! wait_delete_namespace "$ns"; then
 		echo_color "$RED" "Error, fail to wait for the namespace to be deleted"
+	fi
+
+	# Delete the catalog
+	echo_color "$BLUE" "Remove Catalog"
+	if ! oc delete catalogsources -n "$OPERATOR_CATALOG_NAMESPACE" "$OPERATOR_CATALOG_NAME"; then
+		echo_color "$RED" "Error, failed to delete catalog: $OPERATOR_CATALOG_NAME"
 	fi
 
 	# Check parsing claim file
@@ -502,15 +602,13 @@ while IFS=, read -r package_name catalog; do
 
 	# merge claim.json from each operator to a single csv file
 	echo_color "$BLUE" "add claim.json from this operator to the csv file"
-	./tnf claim show csv -c "$report_dir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$add_headers" >>"$REPORT_FOLDER"/results.csv || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! ./tnf claim show csv -c "$report_dir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$add_headers" >>"$REPORT_FOLDER"/results.csv; then
 		echo_color "$RED" "failed to parse claim file"
 	fi
 
 	# extract parser
 	echo_color "$BLUE" "extract parser from report"
-	with_retry 2 10 tar -xvf "$report_dir"/*.tar.gz -C "$report_dir" results.html || status="$?"
-	if [ "$status" != 0 ]; then
+	if ! with_retry 2 10 tar -xvf "$report_dir"/*.tar.gz -C "$report_dir" results.html; then
 		echo_color "$RED" "Failed get result.html from report"
 	fi
 
