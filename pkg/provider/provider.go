@@ -18,7 +18,6 @@ package provider
 
 import (
 	"context"
-	"os"
 	"regexp"
 	"time"
 
@@ -59,8 +58,6 @@ const (
 	rhcosName                        = "Red Hat Enterprise Linux CoreOS"
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
-	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
-	supportImageDef                  = "debug-partner:5.1.0"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
@@ -177,24 +174,10 @@ var (
 	loaded = false
 )
 
-// Build image with version based on environment variables if provided, else use a default value
-func buildImageWithVersion() string {
-	tnfPartnerRepo := os.Getenv("TNF_PARTNER_REPO")
-	if tnfPartnerRepo == "" {
-		tnfPartnerRepo = tnfPartnerRepoDef
-	}
-	supportImage := os.Getenv("SUPPORT_IMAGE")
-	if supportImage == "" {
-		supportImage = supportImageDef
-	}
-
-	return tnfPartnerRepo + "/" + supportImage
-}
-
 func deployDaemonSet(namespace string) error {
 	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
-	dsImage := buildImageWithVersion()
 
+	dsImage := env.variables.TnfPartnerRepo + "/" + env.variables.SupportImage
 	if k8sPrivilegedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
 		return nil
 	}
