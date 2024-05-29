@@ -11,7 +11,7 @@ jobs:
   do-not-merge:
     if: ${{ contains(github.event.*.labels.*.name, 'do not merge') }}
     name: Prevent Merging
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Check for label
         run: |
@@ -21,7 +21,7 @@ jobs:
   build:
     if: github.event.pull_request.merged == true
     name: Run Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
 
       - name: Set up Go 1.22
@@ -39,7 +39,7 @@ jobs:
 
   close_job:
     if: github.event.pull_request.merged == false
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - run: |
           echo PR #${{ github.event.number }} has been closed without being merged
