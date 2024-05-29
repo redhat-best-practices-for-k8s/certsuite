@@ -41,7 +41,7 @@ concurrency:
 jobs:
   lint:
     name: Run Linters and Vet
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
 
@@ -121,7 +121,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-24.04]
+        os: [ubuntu-22.04]
     env:
       SHELL: /bin/bash
 
@@ -175,7 +175,7 @@ jobs:
 
   smoke-tests-local:
     name: Run Local Smoke Tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -328,7 +328,7 @@ jobs:
 
   smoke-tests-container:
     name: Run Container Smoke Tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -534,7 +534,7 @@ jobs:
   create-manifest-multiarch:
     name: Create manifest list for multi-arch image
     needs: [unit-tests, smoke-tests-container]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
     steps:
       - name: Check out code
@@ -576,7 +576,7 @@ jobs:
 
   check-all-dependencies-are-merged:
     name: Check all the PR dependencies are merged
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
 
       - name: Checkout code
