@@ -47,7 +47,7 @@ func (node *Node) IsWorkerNode() bool {
 	return false
 }
 
-func (node *Node) IsMasterNode() bool {
+func (node *Node) IsControlPlaneNode() bool {
 	for nodeLabel := range node.Data.Labels {
 		if stringhelper.StringInSlice(MasterLabels, nodeLabel, true) {
 			return true

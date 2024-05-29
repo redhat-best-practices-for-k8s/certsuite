@@ -513,7 +513,7 @@ func (env *TestEnvironment) GetWorkerCount() int {
 func (env *TestEnvironment) GetMasterCount() int {
 	masterCount := 0
 	for _, e := range env.Nodes {
-		if e.IsMasterNode() {
+		if e.IsControlPlaneNode() {
 			masterCount++
 		}
 	}
