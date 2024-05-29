@@ -37,6 +37,8 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().Bool("include-web-files", false, "Save web files in the configured output folder")
 	runCmd.PersistentFlags().Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
 	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
+	runCmd.PersistentFlags().String("tnf-image-repository", "quay.io/testnetworkfunction", "The repository where TNF images are stored")
+	runCmd.PersistentFlags().String("tnf-debug-image", "debug-partner:5.1.0", "Name of the TNF debug image")
 
 	return runCmd
 }
@@ -60,6 +62,8 @@ func initFlags(arg interface{}) {
 	includeWebFiles, _ := cmd.Flags().GetBool("include-web-files")
 	dataCollection, _ := cmd.Flags().GetBool("enable-data-collection")
 	createXMLJUnitFile, _ := cmd.Flags().GetBool("create-xml-junit-file")
+	tnfImageRepo, _ := cmd.Flags().GetString("tnf-image-repository")
+	tnfDebugImage, _ := cmd.Flags().GetString("tnf-debug-image")
 
 	flags.OutputDir = &outputDir
 	flags.LabelsFlag = &labelFilter
@@ -81,6 +85,8 @@ func initFlags(arg interface{}) {
 	testParams.IncludeWebFilesInOutputFolder = includeWebFiles
 	testParams.EnableDataCollection = dataCollection
 	testParams.EnableXMLCreation = createXMLJUnitFile
+	testParams.TnfPartnerRepo = tnfImageRepo
+	testParams.SupportImage = tnfDebugImage
 }
 func runTestSuite(cmd *cobra.Command, _ []string) error {
 	certsuite.Startup(initFlags, cmd)
