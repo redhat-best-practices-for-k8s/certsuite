@@ -1,0 +1,12 @@
+name: install-yaml-dep
+description: 'Install a yaml dependency.'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install yaml dependency
+      shell: bash
+      run: |
+        python3 -m venv .venv
+        source .venv/bin/activate
+        python3 -m pip install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt

@@ -60,12 +60,7 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
-          python3 -m pip install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
-        env:
-          SHELL: /bin/bash
+        uses: ./.github/actions/install-yaml-dep
 
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
@@ -140,12 +135,7 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
-          python3 -m pip install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
-        env:
-          SHELL: /bin/bash
+        uses: ./.github/actions/install-yaml-dep
 
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
@@ -202,12 +192,7 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
-          python3 -m pip install --require-hashes -r .github/workflows/frozen-requirements-pre-main.txt
-        env:
-          SHELL: /bin/bash
+        uses: ./.github/actions/install-yaml-dep
 
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
