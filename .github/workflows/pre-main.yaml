@@ -321,7 +321,7 @@ jobs:
         run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir="certsuite-out" --log-level=${TNF_SMOKE_TESTS_LOG_LEVEL}
 
       - name: 'Check the smoke test results (run with the certsuite cmd) against the expected results template'
-        run: ./certsuite check results --log-file="certsuite-out/cnf-certsuite.log"
+        run: ./certsuite check results --log-file="certsuite-out/certsuite.log"
 
       - name: 'Test: Run preflight specific test suite with the certsuite command'
         run: ./certsuite run --label-filter="preflight" --log-level=${TNF_SMOKE_TESTS_LOG_LEVEL}
@@ -488,7 +488,7 @@ jobs:
         run: make build-certsuite-tool
 
       - name: Check the smoke test results against the expected results template
-        run: ./certsuite check results --log-file="${TNF_OUTPUT_DIR}"/cnf-certsuite.log
+        run: ./certsuite check results --log-file="${TNF_OUTPUT_DIR}"/certsuite.log
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
@@ -510,7 +510,7 @@ jobs:
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Check the smoke test results (run with the certsuite cmd) against the expected results template
-        run: ./certsuite check results --log-file="${TNF_CERTSUITE_CMD_OUTPUT_DIR}"/cnf-certsuite.log
+        run: ./certsuite check results --log-file="${TNF_CERTSUITE_CMD_OUTPUT_DIR}"/certsuite.log
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container with the certsuite command'
         run: |
