@@ -38,7 +38,7 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
 	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
 	runCmd.PersistentFlags().String("tnf-image-repository", "quay.io/testnetworkfunction", "The repository where TNF images are stored")
-	runCmd.PersistentFlags().String("tnf-debug-image", "debug-partner:5.1.0", "Name of the TNF debug image")
+	runCmd.PersistentFlags().String("tnf-debug-image", "debug-partner:5.1.1", "Name of the TNF debug image")
 
 	return runCmd
 }

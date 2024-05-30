@@ -110,5 +110,5 @@ type TestParameters struct {
 	DaemonsetMemReq               string `default:"100M" split_words:"true"`
 	DaemonsetMemLim               string `default:"100M" split_words:"true"`
 	TnfPartnerRepo                string `split_words:"true" default:"quay.io/testnetworkfunction"`
-	SupportImage                  string `split_words:"true" default:"debug-partner:5.1.0"`
+	SupportImage                  string `split_words:"true" default:"debug-partner:5.1.1"`
 }
