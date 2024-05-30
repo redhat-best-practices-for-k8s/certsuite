@@ -25,6 +25,8 @@ Please contact us in case the documentation is broken.
 
 * The catalog of all the available test cases can be found [here](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md).
 
+TEST
+
 ## Demo
 
 <!-- markdownlint-disable MD033 -->
