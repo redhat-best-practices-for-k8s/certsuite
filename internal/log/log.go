@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	LogFileName        = "cnf-certsuite.log"
+	LogFileName        = "certsuite.log"
 	LogFilePermissions = 0o644
 )
 
