@@ -247,7 +247,7 @@
         "clus0-0": {
           "metadata": {
             "annotations": {
-              "k8s.ovn.org/host-addresses": "[\"10.1.24.3\"]",
+              "k8s.ovn.org/host-cidrs": "[\"10.1.24.3\"]",
               "k8s.ovn.org/l3-gateway-config": "{\"default\":{\"mode\":\"shared\",\"interface-id\":\"br-ex_clus0-0\",\"mac-address\":\"48:df:37:bc:f1:64\",\"ip-addresses\":[\"10.1.24.3/24\"],\"ip-address\":\"10.1.24.3/24\",\"next-hops\":[\"10.1.24.254\"],\"next-hop\":\"10.1.24.254\",\"node-port-enable\":\"true\",\"vlan-id\":\"0\"}}",
               "k8s.ovn.org/node-chassis-id": "80e76bb1-749f-48a6-80c7-e2c70ae9846f",
               "k8s.ovn.org/node-gateway-router-lrp-ifaddr": "{\"ipv4\":\"100.64.0.4/16\"}",
@@ -337,7 +337,7 @@
                 "fieldsV1": {
                   "f:metadata": {
                     "f:annotations": {
-                      "f:k8s.ovn.org/host-addresses": {},
+                      "f:k8s.ovn.org/host-cidrs": {},
                       "f:k8s.ovn.org/l3-gateway-config": {},
                       "f:k8s.ovn.org/node-chassis-id": {},
                       "f:k8s.ovn.org/node-mgmt-port-mac-address": {},
@@ -850,7 +850,7 @@
         "clus0-1": {
           "metadata": {
             "annotations": {
-              "k8s.ovn.org/host-addresses": "[\"10.1.24.4\"]",
+              "k8s.ovn.org/host-cidrs": "[\"10.1.24.4\"]",
               "k8s.ovn.org/l3-gateway-config": "{\"default\":{\"mode\":\"shared\",\"interface-id\":\"br-ex_clus0-1\",\"mac-address\":\"48:df:37:bc:f4:40\",\"ip-addresses\":[\"10.1.24.4/24\"],\"ip-address\":\"10.1.24.4/24\",\"next-hops\":[\"10.1.24.254\"],\"next-hop\":\"10.1.24.254\",\"node-port-enable\":\"true\",\"vlan-id\":\"0\"}}",
               "k8s.ovn.org/node-chassis-id": "32f119a7-287b-40e0-84fd-18283d00b6e7",
               "k8s.ovn.org/node-gateway-router-lrp-ifaddr": "{\"ipv4\":\"100.64.0.2/16\"}",
@@ -951,7 +951,7 @@
                 "fieldsV1": {
                   "f:metadata": {
                     "f:annotations": {
-                      "f:k8s.ovn.org/host-addresses": {},
+                      "f:k8s.ovn.org/host-cidrs": {},
                       "f:k8s.ovn.org/l3-gateway-config": {},
                       "f:k8s.ovn.org/node-chassis-id": {},
                       "f:k8s.ovn.org/node-gateway-router-lrp-ifaddr": {},
@@ -1454,7 +1454,7 @@
         "clus0-2": {
           "metadata": {
             "annotations": {
-              "k8s.ovn.org/host-addresses": "[\"10.1.24.5\",\"10.1.24.10\",\"10.1.24.11\"]",
+              "k8s.ovn.org/host-cidrs": "[\"10.1.24.5\",\"10.1.24.10\",\"10.1.24.11\"]",
               "k8s.ovn.org/l3-gateway-config": "{\"default\":{\"mode\":\"shared\",\"interface-id\":\"br-ex_clus0-2\",\"mac-address\":\"48:df:37:bc:f0:e0\",\"ip-addresses\":[\"10.1.24.5/24\"],\"ip-address\":\"10.1.24.5/24\",\"next-hops\":[\"10.1.24.254\"],\"next-hop\":\"10.1.24.254\",\"node-port-enable\":\"true\",\"vlan-id\":\"0\"}}",
               "k8s.ovn.org/node-chassis-id": "0f8397ce-0baf-497c-89ed-e22cc932d095",
               "k8s.ovn.org/node-gateway-router-lrp-ifaddr": "{\"ipv4\":\"100.64.0.3/16\"}",
@@ -1558,7 +1558,7 @@
                 "fieldsV1": {
                   "f:metadata": {
                     "f:annotations": {
-                      "f:k8s.ovn.org/host-addresses": {},
+                      "f:k8s.ovn.org/host-cidrs": {},
                       "f:k8s.ovn.org/l3-gateway-config": {},
                       "f:k8s.ovn.org/node-chassis-id": {},
                       "f:k8s.ovn.org/node-mgmt-port-mac-address": {},
