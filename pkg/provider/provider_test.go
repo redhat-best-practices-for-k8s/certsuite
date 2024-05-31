@@ -1138,3 +1138,59 @@ func Test_getPodContainers(t *testing.T) {
 		})
 	}
 }
+
+func TestSetNeedsRefresh(t *testing.T) {
+	loaded = true
+	env := &TestEnvironment{}
+	env.SetNeedsRefresh()
+	assert.False(t, loaded)
+}
+
+func TestIsIntrusive(t *testing.T) {
+	env := &TestEnvironment{}
+	env.variables.NonIntrusiveOnly = true
+	assert.False(t, env.IsIntrusive())
+
+	env.variables.NonIntrusiveOnly = false
+	assert.True(t, env.IsIntrusive())
+}
+
+func TestIsPreflightInsecureAllowed(t *testing.T) {
+	env := &TestEnvironment{}
+	env.variables.AllowPreflightInsecure = true
+	assert.True(t, env.IsPreflightInsecureAllowed())
+
+	env.variables.AllowPreflightInsecure = false
+	assert.False(t, env.IsPreflightInsecureAllowed())
+}
+
+func TestGetDockerConfigFile(t *testing.T) {
+	env := &TestEnvironment{}
+	env.variables.PfltDockerconfig = "/tmp/config.json"
+	assert.Equal(t, "/tmp/config.json", env.GetDockerConfigFile())
+}
+
+func TestGetOfflineDBPath(t *testing.T) {
+	env := &TestEnvironment{}
+	env.variables.OfflineDB = "/tmp/offline.db"
+	assert.Equal(t, "/tmp/offline.db", env.GetOfflineDBPath())
+}
+
+func TestIsSNO(t *testing.T) {
+	env := &TestEnvironment{}
+	env.Nodes = map[string]Node{
+		"node1": {
+			Data: &corev1.Node{},
+		},
+	}
+	assert.True(t, env.IsSNO())
+
+	env.Nodes = map[string]Node{}
+	assert.False(t, env.IsSNO())
+}
+
+func TestIsOCPCluster(t *testing.T) {
+	env := &TestEnvironment{}
+	env.OpenshiftVersion = "4.8.0"
+	assert.True(t, IsOCPCluster())
+}

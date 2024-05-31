@@ -19,8 +19,10 @@ package services
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestGetServiceIPVersion(t *testing.T) {
@@ -93,4 +95,46 @@ func createService(ips []string, aFp corev1.IPFamilyPolicyType) (aService *corev
 	aService.Spec.ClusterIPs = ips
 	aService.Spec.IPFamilyPolicy = &aFp
 	return aService
+}
+
+func TestToStringSlice(t *testing.T) {
+	testCases := []struct {
+		testSvcs []*corev1.Service
+		expected string
+	}{
+		{
+			testSvcs: []*corev1.Service{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-service-1",
+						Namespace: "tnf",
+					},
+					Spec: corev1.ServiceSpec{
+						ClusterIP:  "192.168.1.1",
+						ClusterIPs: []string{"192.168.1.1"},
+					},
+				},
+			},
+			expected: "Service ns: tnf, name: test-service-1 ClusterIP:192.168.1.1 ClusterIPs: [192.168.1.1]\n",
+		},
+		{
+			testSvcs: []*corev1.Service{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-service-1",
+						Namespace: "tnf",
+					},
+					Spec: corev1.ServiceSpec{
+						ClusterIP:  "192.168.1.2",
+						ClusterIPs: []string{"192.168.1.2"},
+					},
+				},
+			},
+			expected: "Service ns: tnf, name: test-service-1 ClusterIP:192.168.1.2 ClusterIPs: [192.168.1.2]\n",
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expected, ToStringSlice(tc.testSvcs))
+	}
 }
