@@ -20,6 +20,7 @@ import (
 	"context"
 	"errors"
 	"regexp"
+	"strings"
 	"time"
 
 	configv1 "github.com/openshift/api/config/v1"
@@ -56,6 +57,7 @@ type DiscoveredTestData struct {
 	Pods                   []corev1.Pod
 	AllPods                []corev1.Pod
 	DebugPods              []corev1.Pod
+	AllOperatorPods        []corev1.Pod
 	ResourceQuotaItems     []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
 	NetworkPolicies        []networkingv1.NetworkPolicy
@@ -182,6 +184,14 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
 
+	// Get all operator pods
+	var allOperatorPods []corev1.Pod
+	for _, csv := range data.Csvs {
+		pods := getOperatorCsvPods(csv)
+		allOperatorPods = append(allOperatorPods, pods...)
+	}
+	data.AllOperatorPods = allOperatorPods
+
 	openshiftVersion, err := getOpenshiftVersion(oc.OcpClient)
 	if err != nil {
 		log.Fatal("Failed to get the OpenShift version, err: %v", err)
@@ -279,4 +289,44 @@ func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, 
 	}
 
 	return "", errors.New("could not get openshift version from clusterOperator")
+}
+
+// Get the list of pods mananged by the operator - retrieve from the CSV and then check the operator group to find the target namespaces to retrieve the managed pods
+func getOperatorCsvPods(csv *olmv1Alpha.ClusterServiceVersion) []corev1.Pod {
+	annotations := csv.Annotations
+
+	targetNamespaces := annotations["olm.targetNamespaces"]          // This is a comma-separated string, example : a,b,c where a, b and c are target namespaces
+	operatorTargetNamespaces := strings.Split(targetNamespaces, ",") // For cluster installed operator olm.targetNamespaces: "", so handle differently
+
+	var podList []corev1.Pod
+
+	for _, targetNamespace := range operatorTargetNamespaces {
+		pods, err := getAllPodsInNamespaceManagedByOlmOperator(strings.TrimSpace(targetNamespace))
+		if err != nil {
+			continue
+		}
+		podList = append(podList, pods...)
+	}
+
+	return podList
+}
+
+func getAllPodsInNamespaceManagedByOlmOperator(targetNamespace string) (managedPods []corev1.Pod, err error) {
+	client := clientsholder.GetClientsHolder()
+
+	podsList, err := client.K8sClient.CoreV1().Pods(targetNamespace).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	for index := range podsList.Items {
+		labels := podsList.Items[index].Labels
+
+		if _, ok := labels["olm.managed"]; !ok { // Ignore non-OLM pods in the namespace
+			continue
+		}
+
+		managedPods = append(managedPods, podsList.Items[index])
+	}
+	return managedPods, nil
 }

@@ -72,9 +72,10 @@ type TestEnvironment struct { // rename this with testTarget
 	AbnormalEvents []*Event
 
 	// Pod Groupings
-	Pods      []*Pod                 `json:"testPods"`
-	DebugPods map[string]*corev1.Pod // map from nodename to debugPod
-	AllPods   []*Pod                 `json:"AllPods"`
+	Pods            []*Pod                 `json:"testPods"`
+	DebugPods       map[string]*corev1.Pod // map from nodename to debugPod
+	AllPods         []*Pod                 `json:"AllPods"`
+	AllOperatorPods []*Pod                 `json:"AllOperatorPods"`
 
 	// Deployment Groupings
 	Deployments []*Deployment `json:"testDeployments"`
@@ -255,6 +256,12 @@ func buildTestEnvironment() { //nolint:funlen
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName
 		env.DebugPods[nodeName] = &data.DebugPods[i]
+	}
+
+	pods = data.AllOperatorPods
+	for i := 0; i < len(pods); i++ {
+		aNewPod := NewPod(&pods[i])
+		env.AllOperatorPods = append(env.AllOperatorPods, &aNewPod)
 	}
 
 	env.OCPStatus = data.OCPStatus
