@@ -190,3 +190,14 @@ func TestIsValidK8sVersioning(t *testing.T) {
 		assert.Equal(t, tc.expectedResult, IsValidK8sVersion(tc.testVersion))
 	}
 }
+
+func TestGitVersion(t *testing.T) {
+	GitCommit = "123456"
+	GitRelease = "v1.0.0"
+	GitPreviousRelease = "v0.9.0"
+	ClaimFormatVersion = "1.0.0"
+	assert.Equal(t, "v1.0.0 (123456)", GitVersion())
+
+	GitRelease = ""
+	assert.Equal(t, "Unreleased build post v0.9.0 (123456)", GitVersion())
+}
