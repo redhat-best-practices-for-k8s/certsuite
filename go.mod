@@ -1,6 +1,6 @@
 module github.com/test-network-function/cnf-certification-test
 
-go 1.22.3
+go 1.22.4
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
