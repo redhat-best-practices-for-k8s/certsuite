@@ -21,6 +21,7 @@ env:
   CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
   SMOKE_TESTS_LOG_LEVEL: debug
   SMOKE_TESTS_LABELS_FILTER: all
+  SKIP_PRELOAD_IMAGES: true
   TERM: xterm-color
   CM_BIN: /usr/local/bin/checkmake
   CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
