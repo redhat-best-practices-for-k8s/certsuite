@@ -218,7 +218,7 @@ jobs:
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
-        run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir="certsuite-out" --log-level=${SMOKE_TESTS_LOG_LEVEL}
+        run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir=certsuite-out --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
@@ -235,7 +235,7 @@ jobs:
         run: ./certsuite check results --log-file="certsuite-out/certsuite.log"
 
       - name: 'Test: Run preflight specific test suite'
-        run: ./certsuite run --label-filter="preflight" --log-level=${SMOKE_TESTS_LOG_LEVEL}
+        run: ./certsuite run --label-filter=preflight --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload preflight smoke test results as an artifact
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
