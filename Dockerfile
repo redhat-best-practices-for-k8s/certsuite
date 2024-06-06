@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.4-947.1716476138@sha256:d7158916ab85c7463d33f89d45d26c70d064aaa28debe219fa088b8110194663 AS build
+FROM registry.access.redhat.com/ubi9/ubi:9.4-947.1717074712@sha256:d31d3e5e92c0c47277c5011c0326b285ab7ae627eff036133be1dccc4208004d AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
