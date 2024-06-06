@@ -13,26 +13,18 @@ permissions:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
-  TNF_IMAGE_TAG: unstable
+  CERTSUITE_IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  CERTSUITE_IMAGE_TAG: unstable
   OCT_IMAGE_NAME: testnetworkfunction/oct
   OCT_IMAGE_TAG: latest
-  TNF_CONTAINER_CLIENT: docker
-  TNF_NON_INTRUSIVE_ONLY: false
-  TNF_ALLOW_PREFLIGHT_INSECURE: false
-  TNF_DISABLE_CONFIG_AUTODISCOVER: false
-  TNF_CONFIG_DIR: /tmp/tnf/config
-  TNF_OUTPUT_DIR: /tmp/tnf/output
-  TNF_CERTSUITE_CMD_OUTPUT_DIR: /tmp/tnf/certsuite-out
-  TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
-  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
-  TNF_SMOKE_TESTS_LOG_LEVEL: debug
-  ON_DEMAND_DEBUG_PODS: false
+  CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
+  CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
+  SMOKE_TESTS_LOG_LEVEL: debug
+  SMOKE_TESTS_LABELS_FILTER: all
+  SKIP_PRELOAD_IMAGES: true
   TERM: xterm-color
   CM_BIN: /usr/local/bin/checkmake
   CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
-  SMOKE_TESTS_LABELS_FILTER: all
-  SKIP_PRELOAD_IMAGES: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -210,8 +202,8 @@ jobs:
             ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
           docker system prune --volumes -f
 
-      - name: Build CNF test suite binary
-        run: make build-cnf-tests
+      - name: Build the Certsuite tool
+        run: make build-certsuite-tool
 
       - name: Remove go mod cache to save disk space.
         run: |
@@ -226,7 +218,7 @@ jobs:
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "${SMOKE_TESTS_LABELS_FILTER}"
+        run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir=certsuite-out --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
@@ -234,19 +226,16 @@ jobs:
         with:
           name: smoke-tests
           path: |
-            cnf-certification-test/*.tar.gz
+            certsuite-out/*.tar.gz
 
       - name: Remove tarball(s) to save disk space.
-        run: rm -f cnf-certification-test/*.tar.gz
-
-      - name: Build the TNF tool
-        run: make build-certsuite-tool
+        run: rm -f certsuite-out/*.tar.gz
 
       - name: Check the smoke test results against the expected results template
-        run: make check-results
+        run: ./certsuite check results --log-file="certsuite-out/certsuite.log"
 
       - name: 'Test: Run preflight specific test suite'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
+        run: ./certsuite run --label-filter=preflight --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload preflight smoke test results as an artifact
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
@@ -254,19 +243,10 @@ jobs:
         with:
           name: preflight-smoke-tests
           path: |
-            cnf-certification-test/*.tar.gz
+            certsuite-out/*.tar.gz
 
       - name: Remove tarball(s) to save disk space
-        run: rm -f cnf-certification-test/*.tar.gz
-
-      - name: 'Test: Run test suites with certsuite command'
-        run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir="certsuite-out" --log-level=${TNF_SMOKE_TESTS_LOG_LEVEL}
-
-      - name: 'Check the smoke test results (run with the certsuite cmd) against the expected results template'
-        run: ./certsuite check results --log-file="certsuite-out/certsuite.log"
-
-      - name: 'Test: Run preflight specific test suite with the certsuite command'
-        run: ./certsuite run --label-filter="preflight" --log-level=${TNF_SMOKE_TESTS_LOG_LEVEL}
+        run: rm -f certsuite-out/*.tar.gz
 
   smoke-tests-container:
     name: Run Container Smoke Tests
@@ -289,7 +269,7 @@ jobs:
         with:
           go-version: 1.22.4
 
-      # Perform smoke tests using a TNF container.
+      # Perform smoke tests using a Certsuite container.
       - name: Check out code into the Go module directory
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
@@ -312,7 +292,7 @@ jobs:
           max_attempts: 3
           command: make build-image-local
         env:
-          IMAGE_TAG: ${TNF_IMAGE_TAG}
+          IMAGE_TAG: ${CERTSUITE_IMAGE_TAG}
 
       # Prepare collector to be used when running smoke tests
       - name: Check out `Collector`
@@ -330,10 +310,12 @@ jobs:
           docker rmi $(docker images -f "dangling=true" -q) || true
           df -h
 
-      - name: Create required TNF config files and directories
+      - name: Create required Certsuite config files and directories
         run: |
-          mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR $TNF_CERTSUITE_CMD_OUTPUT_DIR
-          cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
+          mkdir -p $CERTSUITE_CONFIG_DIR $CERTSUITE_OUTPUT_DIR
+          cp /home/runner/.kube/config $CERTSUITE_CONFIG_DIR/kubeconfig
+          cp /home/runner/.docker/config $CERTSUITE_CONFIG_DIR/dockerconfig
+          cp cnf-certification-test/*.yml $CERTSUITE_CONFIG_DIR
         shell: bash
 
       - name: Get Collector's CI credentials
@@ -351,19 +333,43 @@ jobs:
       - name: Ensure COLLECTOR_CIUSER and COLLECTOR_CIPASSWORD are set
         run: '[[ -n "$COLLECTOR_CIUSER" ]] && [[ -n "$COLLECTOR_CIPASSWORD" ]]'
 
-      - name: Modify TNF config with CI collector credentials
+      - name: Modify Certsuite config with CI collector credentials
         run: |
           sed -i\
             -e '/executedBy/s/""/"CI"/g' \
             -e '/partnerName/s/""/"${{ env.COLLECTOR_CIUSER }}"/g' \
             -e '/collectorAppPassword/s/""/"${{ env.COLLECTOR_CIPASSWORD }}"/g' \
-            $TNF_CONFIG_DIR/tnf_config.yml
+            $CERTSUITE_CONFIG_DIR/tnf_config.yml
 
       - name: 'Test: Run without any TS, just get diagnostic information'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
+        run: |
+          docker run --rm --network host \
+            -v $CERTSUITE_CONFIG_DIR:/usr/tnf/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/tnf/output:Z \
+            ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
+            ./cnf-certification-test/certsuite run \
+            --output-dir=/usr/tnf/output \
+            --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
+            --offline-db=/usr/offline-db \
+            --log-level=${SMOKE_TESTS_LOG_LEVEL} \
+            --config-file=/usr/tnf/config/tnf_config.yml \
+            --kubeconfig=/usr/tnf/config/kubeconfig \
 
-      - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_LABELS_FILTER}"
+      - name: 'Test: Run Smoke Tests in a Certsuite container with the certsuite command'
+        run: |
+          docker run --rm --network host \
+            -v $CERTSUITE_CONFIG_DIR:/usr/tnf/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/tnf/output:Z \
+            ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
+            ./cnf-certification-test/certsuite run \
+            --output-dir=/usr/tnf/output \
+            --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
+            --offline-db=/usr/offline-db \
+            --enable-data-collection=true \
+            --log-level=${SMOKE_TESTS_LOG_LEVEL} \
+            --config-file=/usr/tnf/config/tnf_config.yml \
+            --kubeconfig=/usr/tnf/config/kubeconfig \
+            --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Run sanity check on collector
         uses: ./collector/.github/actions/run-sanity-check
@@ -378,56 +384,31 @@ jobs:
         with:
           name: smoke-tests-container
           path: |
-            ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+            ${CERTSUITE_OUTPUT_DIR}/*.tar.gz
 
       - name: Remove tarball(s) to save disk space.
-        run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+        run: rm -f ${CERTSUITE_OUTPUT_DIR}/*.tar.gz
 
-      - name: Build the TNF tool
+      - name: Build the Certsuite tool
         run: make build-certsuite-tool
 
       - name: Check the smoke test results against the expected results template
-        run: ./certsuite check results --log-file="${TNF_OUTPUT_DIR}"/certsuite.log
+        run: ./certsuite check results --log-file="${CERTSUITE_OUTPUT_DIR}"/certsuite.log
 
-      - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
-
-      - name: 'Test: Run Smoke Tests in a TNF container with the certsuite command'
+      - name: 'Test: Run Preflight Specific Smoke Tests in a Certsuite container with the certsuite command'
         run: |
-          cp /home/runner/.kube/config $TNF_CONFIG_DIR/kubeconfig
-          cp /home/runner/.docker/config $TNF_CONFIG_DIR/dockerconfig
           docker run --rm --network host \
-            -v $TNF_CONFIG_DIR:/usr/tnf/config:Z \
-            -v $TNF_CERTSUITE_CMD_OUTPUT_DIR:/usr/tnf/output:Z \
-            ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
+            -v $CERTSUITE_CONFIG_DIR:/usr/tnf/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/tnf/output:Z \
+            ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
             ./cnf-certification-test/certsuite run \
             --output-dir=/usr/tnf/output \
             --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
             --offline-db=/usr/offline-db \
-            --config-file=/usr/tnf/config/tnf_config.yml \
-            --kubeconfig=/usr/tnf/config/kubeconfig \
-            --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
-
-      - name: Check the smoke test results (run with the certsuite cmd) against the expected results template
-        run: ./certsuite check results --log-file="${TNF_CERTSUITE_CMD_OUTPUT_DIR}"/certsuite.log
-
-      - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container with the certsuite command'
-        run: |
-          cp /home/runner/.kube/config $TNF_CONFIG_DIR/kubeconfig
-          cp /home/runner/.docker/config $TNF_CONFIG_DIR/dockerconfig
-          docker run --rm --network host \
-            -v $TNF_CONFIG_DIR:/usr/tnf/config:Z \
-            -v $TNF_CERTSUITE_CMD_OUTPUT_DIR:/usr/tnf/output:Z \
-            ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
-            ./cnf-certification-test/certsuite run \
-            --output-dir=/usr/tnf/output \
-            --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
-            --offline-db=/usr/offline-db \
+            --log-level=${SMOKE_TESTS_LOG_LEVEL} \
             --config-file=/usr/tnf/config/tnf_config.yml \
             --kubeconfig=/usr/tnf/config/kubeconfig \
             --label-filter="preflight"
-
-
 
   # Only run this job if the previous jobs are successful that build the ARM and x86 images.
   create-manifest-multiarch:
@@ -463,7 +444,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.TNF_IMAGE_NAME }}:${{ env.TNF_IMAGE_TAG }}
+            ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME }}:${{ env.CERTSUITE_IMAGE_TAG }}
       
       - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
