@@ -9,8 +9,10 @@
       
       
       
-        <link rel="prev" href="../workload-developers/">
+        <link rel="prev" href="../test-spec/">
       
+      
+        <link rel="next" href="../test-output/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -18,7 +20,7 @@
     
     
       
-        <title>Helpful Links - Red Hat Best Practices Test Suite for Kubernetes</title>
+        <title>Implementation - Red Hat Best Practices Test Suite for Kubernetes</title>
       
     
     
@@ -70,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#helpful-links" class="md-skip">
+        <a href="#test-case-implementation" class="md-skip">
           Skip to content
         </a>
       
@@ -104,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Helpful Links
+              Implementation
             
           </span>
         </div>
@@ -266,10 +268,12 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../test-spec/" class="md-tabs__link">
           
   
@@ -340,13 +344,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../reference/" class="md-tabs__link">
           
   
     
@@ -618,8 +620,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -630,19 +634,22 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -653,7 +660,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Available Test Specs
@@ -685,10 +692,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../test-spec-implementation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Implementation
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -697,6 +724,44 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-deployment-scaling-and-lifecycle-statefulset-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      lifecycle-deployment-scaling and lifecycle-statefulset-scaling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-crd-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      lifecycle-crd-scaling
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -848,10 +913,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -860,22 +923,19 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -886,7 +946,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Reference
@@ -897,19 +957,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -918,7 +969,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -951,6 +1001,32 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-deployment-scaling-and-lifecycle-statefulset-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      lifecycle-deployment-scaling and lifecycle-statefulset-scaling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-crd-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      lifecycle-crd-scaling
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -967,12 +1043,28 @@
   
 
 
-<h1 id="helpful-links">Helpful Links<a class="headerlink" href="#helpful-links" title="Permanent link">&para;</a></h1>
+<!-- markdownlint-disable line-length no-bare-urls -->
+<h1 id="test-case-implementation">Test Case Implementation<a class="headerlink" href="#test-case-implementation" title="Permanent link">&para;</a></h1>
+<p>This section explains the implementation of some test cases so that users can have a better idea on what the is code actually doing and, in some cases, which configuration fields are relevant to them.</p>
+<h2 id="lifecycle-deployment-scaling-and-lifecycle-statefulset-scaling"><a href="https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-deployment-scaling">lifecycle-deployment-scaling</a> and <a href="https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-statefulset-scaling">lifecycle-statefulset-scaling</a><a class="headerlink" href="#lifecycle-deployment-scaling-and-lifecycle-statefulset-scaling" title="Permanent link">&para;</a></h2>
+<p>For each discovered deployment in the <a href="https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml#L1">target namespaces</a>, the test case will try to modify its replica count to check whether pod&rsquo;s can be correctly removed and re-deployed in the cluster.</p>
+<!-- markdownlint-disable MD033 -->
+<p><img src="../assets/images/tests-flow-charts/lifecycle-deployment-scaling.png"></img></p>
+<!-- markdownlint-disable MD033 -->
+
+<p>As depicted in the image, the way to modify the number of replicas varies depending on whether the deployment/statefulset&rsquo;s replica count is managed by an HPA, a CR or it&rsquo;s just a standalone resource.</p>
 <ul>
-<li><a href="https://github.com/test-network-function/cnf-certification-test/blob/main/CONTRIBUTING.md">Contribution Guidelines</a></li>
-<li><a href="https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md">CATALOG</a></li>
-<li><a href="https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf">Best Practices Document v1.3</a></li>
+<li>If the deployment/statefulset is an standalone resource, the test case just decreases the <code>.spec.replicas</code> field by one, waits for that pod to be removed and then it restores the original number increasing the field by one again. The test case passes as soon as the new pod is up and running again.</li>
+<li>If there&rsquo;s an <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">Horizontal Pod Autoscaler</a> (HPA) managing the resource, the test case decreases and increases the HPA&rsquo;s MaxReplicas field accordingly.</li>
+<li>If <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/owners-dependents/#owner-references-in-object-specifications">the owner</a> of the resource is a CR, the test makes sure that CR&rsquo;s <abbr title="Custom Resource Definition">CRD</abbr> matches any of the suffixes in the tnf_config.yaml&rsquo;s <a href="https://github.com/test-network-function/cnf-certification-test/blob/d2b718753f438ec8f33ed8bca5ac60ecf71ef599/cnf-certification-test/tnf_config.yml#L8">targetCrdFilters</a> field. If there&rsquo;s a match, the test case is skipped as it&rsquo;s there&rsquo;s another test case called lifecycle-crd-scaling that will test it. Otherwise it will flagged as failed.</li>
 </ul>
+<h2 id="lifecycle-crd-scaling"><a href="https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-crd-scaling">lifecycle-crd-scaling</a><a class="headerlink" href="#lifecycle-crd-scaling" title="Permanent link">&para;</a></h2>
+<p>During the program&rsquo;s startup, an autodiscovery phase is performed where all the CRDs and their existing CRs in the <a href="https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml#L1">target namespaces</a> are stored to be tested later. Only CRs whose <abbr title="Custom Resource Definition">CRD</abbr>&rsquo;s suffix matches at least one of the <a href="https://github.com/test-network-function/cnf-certification-test/blob/d2b718753f438ec8f33ed8bca5ac60ecf71ef599/cnf-certification-test/tnf_config.yml#L8">targetCrdFilters</a> and has an <a href="https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource">scale subresource</a> will be selected as test targets.</p>
+<p>For every CR under test, a similar approach to the scaling of deployments and statefulsets is done.</p>
+<!-- markdownlint-disable MD033 -->
+<p><img src="../assets/images/tests-flow-charts/lifecycle-crd-scaling.png"></img></p>
+<!-- markdownlint-disable MD033 -->
+
 <!-- markdownlint-disable first-line-heading -->
 
 
