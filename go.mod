@@ -211,7 +211,7 @@ require (
 	github.com/fatih/color v1.17.0
 	github.com/go-logr/logr v1.4.2
 	github.com/go-logr/stdr v1.2.2
-	github.com/gorilla/websocket v1.5.1
+	github.com/gorilla/websocket v1.5.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240520135716-354d10d9af8b
