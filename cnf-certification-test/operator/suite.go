@@ -101,7 +101,7 @@ func testOperatorCrdVersioning(check *checksdb.Check, env *provider.TestEnvironm
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
-	for _, crd := range env.AllCrds {
+	for _, crd := range env.Crds {
 		doesUseK8sVersioning := true
 		nonCompliantVersion := ""
 
@@ -135,7 +135,7 @@ func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnviron
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
-	for _, crd := range env.AllCrds {
+	for _, crd := range env.Crds {
 		isCrdDefinedWithOpenAPI3Schema := false
 
 		for _, version := range crd.Spec.Versions {
@@ -164,14 +164,13 @@ func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnviron
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// This function checks for semantic versioning of all installed operators
+// This function checks for semantic versioning of the installed operators
 func testOperatorSemanticVersioning(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.LogInfo("Starting testOperatorSemanticVersioning")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
-	allOperators := env.AllOperators
-	for _, operator := range allOperators {
+	for _, operator := range env.Operators {
 		operatorVersion := operator.Version
 		check.LogInfo("Testing Operator %q for version %s", operator, operatorVersion)
 
