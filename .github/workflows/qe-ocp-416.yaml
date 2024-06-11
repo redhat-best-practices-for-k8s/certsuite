@@ -16,7 +16,7 @@ env:
 
 jobs:
   pull-unstable-image:
-    runs-on: qe-ocp
+    runs-on: qe-ocp-416
     env:
       SHELL: /bin/bash
       FORCE_DOWNLOAD_UNSTABLE: true

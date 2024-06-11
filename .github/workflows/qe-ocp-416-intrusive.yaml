@@ -37,7 +37,7 @@ jobs:
         working-directory: cnfcert-tests-verification
 
   qe-ocp-416-intrusive-testing:
-    runs-on: qe-ocp
+    runs-on: qe-ocp-416
     needs: pull-unstable-image
     if: needs.pull-unstable-image.result == 'success'
     strategy:
