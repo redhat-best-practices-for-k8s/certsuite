@@ -64,6 +64,12 @@ jobs:
       SKIP_PRELOAD_IMAGES: true
 
     steps:
+      - uses: actions/checkout@v3
+      - name: Setup tmate session
+        uses: uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
       - name: Check out code
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
