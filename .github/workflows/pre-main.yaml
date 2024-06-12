@@ -164,6 +164,12 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
+      - uses: actions/checkout@v3
+      - name: Setup tmate session
+        uses: uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
       - name: Write temporary docker file
         run: |
           mkdir -p /home/runner/.docker
