@@ -17,8 +17,8 @@ require k8s.io/client-go v0.30.1
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/mittwald/go-helm-client v0.12.9
-	github.com/openshift/api v0.0.0-20240429104249-ac9356ba1784
-	github.com/openshift/client-go v0.0.0-20240422164335-6c851f4919dd
+	github.com/openshift/api v0.0.0-20240510053056-88a8afea030c
+	github.com/openshift/client-go v0.0.0-20240510131258-f646d5f29250
 	github.com/operator-framework/api v0.25.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
@@ -52,7 +52,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/distribution/reference v0.5.0 // indirect
-	github.com/docker/cli v26.1.0+incompatible // indirect
+	github.com/docker/cli v26.1.2+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker v25.0.5+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.0 // indirect
@@ -214,7 +214,7 @@ require (
 	github.com/gorilla/websocket v1.5.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.0
 	github.com/manifoldco/promptui v0.9.0
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240520135716-354d10d9af8b
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240605154909-3bdeab0e72f3
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/test-network-function/oct v0.0.12
 	github.com/test-network-function/privileged-daemonset v1.0.25
@@ -223,4 +223,4 @@ require (
 	k8s.io/kubectl v0.30.1
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240520135716-354d10d9af8b
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240605154909-3bdeab0e72f3
