@@ -31,7 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/podhelper"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -189,7 +189,10 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	// Get all operator pods
 	var allOperatorPods []corev1.Pod
 	for _, csv := range data.Csvs {
-		pods := getOperatorCsvPods(csv)
+		pods, podError := getOperatorCsvPods(csv)
+		if podError != nil {
+			log.Fatal("Cannot get pods from CSV %s, err: %v", csv.Name, podError)
+		}
 		allOperatorPods = append(allOperatorPods, pods...)
 	}
 	data.AllOperatorPods = allOperatorPods
@@ -294,28 +297,38 @@ func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, 
 }
 
 // Get the list of pods mananged by the operator - retrieve from the CSV and then check the operator group to find the target namespaces to retrieve the managed pods
-func getOperatorCsvPods(csv *olmv1Alpha.ClusterServiceVersion) []corev1.Pod {
+func getOperatorCsvPods(csv *olmv1Alpha.ClusterServiceVersion) ([]corev1.Pod, error) {
 	annotations := csv.Annotations
 
 	targetNamespaces := annotations["olm.targetNamespaces"]          // This is a comma-separated string, example : a,b,c where a, b and c are target namespaces
-	operatorTargetNamespaces := strings.Split(targetNamespaces, ",") // For cluster installed operator olm.targetNamespaces: "", so handle differently
+	operatorTargetNamespaces := strings.Split(targetNamespaces, ",") // For cluster installed operator olm.targetNamespaces: ""
+
+	client := clientsholder.GetClientsHolder()
+
+	// When the operator is cluster installed operator
+	if len(operatorTargetNamespaces) == 0 {
+		// Get all namespaces
+		allNamespaces, err := getAllNamespaces(client.K8sClient.CoreV1())
+		if err != nil {
+			return nil, err
+		}
+		operatorTargetNamespaces = allNamespaces
+	}
 
 	var podList []corev1.Pod
 
 	for _, targetNamespace := range operatorTargetNamespaces {
-		pods, err := getCsvPodsFromTargetNamespace(csv, strings.TrimSpace(targetNamespace))
+		pods, err := getCsvPodsFromTargetNamespace(csv, strings.TrimSpace(targetNamespace), client)
 		if err != nil {
 			continue
 		}
 		podList = append(podList, pods...)
 	}
 
-	return podList
+	return podList, nil
 }
 
-func getCsvPodsFromTargetNamespace(csv *olmv1Alpha.ClusterServiceVersion, targetNamespace string) (managedPods []corev1.Pod, err error) {
-	client := clientsholder.GetClientsHolder()
-
+func getCsvPodsFromTargetNamespace(csv *olmv1Alpha.ClusterServiceVersion, targetNamespace string, client *clientsholder.ClientsHolder) (managedPods []corev1.Pod, err error) {
 	// Get all pods from the target namespace
 	podsList, err := client.K8sClient.CoreV1().Pods(targetNamespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -330,10 +343,10 @@ func getCsvPodsFromTargetNamespace(csv *olmv1Alpha.ClusterServiceVersion, target
 		}
 
 		// Get the top owners of the pod
-		pod := provider.Pod{Pod: &podsList.Items[index]}
-		topOwners, err := pod.GetTopOwner()
+		pod := podsList.Items[index]
+		topOwners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
 		if err != nil {
-			return nil, fmt.Errorf("Could not get top owners of Pod %q, err=%v", pod, err)
+			return nil, fmt.Errorf("could not get top owners of Pod %s (in namespace %s), err=%v", pod.Name, pod.Namespace, err)
 		}
 
 		// check if owner matches with the csv
