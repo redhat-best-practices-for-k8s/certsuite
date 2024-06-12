@@ -19,6 +19,7 @@ package autodiscover
 import (
 	"context"
 	"errors"
+	"fmt"
 	"regexp"
 	"strings"
 	"time"
@@ -30,6 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -301,7 +303,7 @@ func getOperatorCsvPods(csv *olmv1Alpha.ClusterServiceVersion) []corev1.Pod {
 	var podList []corev1.Pod
 
 	for _, targetNamespace := range operatorTargetNamespaces {
-		pods, err := getAllPodsInNamespaceManagedByOlmOperator(strings.TrimSpace(targetNamespace))
+		pods, err := getCsvPodsFromTargetNamespace(csv, strings.TrimSpace(targetNamespace))
 		if err != nil {
 			continue
 		}
@@ -311,9 +313,10 @@ func getOperatorCsvPods(csv *olmv1Alpha.ClusterServiceVersion) []corev1.Pod {
 	return podList
 }
 
-func getAllPodsInNamespaceManagedByOlmOperator(targetNamespace string) (managedPods []corev1.Pod, err error) {
+func getCsvPodsFromTargetNamespace(csv *olmv1Alpha.ClusterServiceVersion, targetNamespace string) (managedPods []corev1.Pod, err error) {
 	client := clientsholder.GetClientsHolder()
 
+	// Get all pods from the target namespace
 	podsList, err := client.K8sClient.CoreV1().Pods(targetNamespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
@@ -326,7 +329,20 @@ func getAllPodsInNamespaceManagedByOlmOperator(targetNamespace string) (managedP
 			continue
 		}
 
-		managedPods = append(managedPods, podsList.Items[index])
+		// Get the top owners of the pod
+		pod := provider.Pod{Pod: &podsList.Items[index]}
+		topOwners, err := pod.GetTopOwner()
+		if err != nil {
+			return nil, fmt.Errorf("Could not get top owners of Pod %q, err=%v", pod, err)
+		}
+
+		// check if owner matches with the csv
+		for _, owner := range topOwners {
+			if owner.Kind == csv.Kind && owner.Namespace == csv.Namespace && owner.Name == csv.Name {
+				managedPods = append(managedPods, podsList.Items[index])
+				break
+			}
+		}
 	}
 	return managedPods, nil
 }
