@@ -649,7 +649,7 @@ func GetNoOperatorsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 
 func GetNoOperatorCrdsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
-		if len(env.AllCrds) == 0 {
+		if len(env.Crds) == 0 {
 			return true, "no operator crds found"
 		}
 		return false, ""
