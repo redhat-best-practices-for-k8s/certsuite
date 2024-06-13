@@ -12,7 +12,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require k8s.io/client-go v0.30.1
+require k8s.io/client-go v0.30.2
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -23,8 +23,8 @@ require (
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.15.2
-	k8s.io/api v0.30.1
-	k8s.io/apimachinery v0.30.1
+	k8s.io/api v0.30.2
+	k8s.io/apimachinery v0.30.2
 	k8s.io/klog/v2 v2.120.1 // indirect
 )
 
@@ -182,9 +182,9 @@ require (
 	gopkg.in/evanphx/json-patch.v5 v5.7.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	k8s.io/apiserver v0.30.1 // indirect
+	k8s.io/apiserver v0.30.2 // indirect
 	k8s.io/cli-runtime v0.30.1 // indirect
-	k8s.io/component-base v0.30.1 // indirect
+	k8s.io/component-base v0.30.2 // indirect
 	k8s.io/kube-openapi v0.0.0-20240430033511-f0e62f92d13f // indirect
 	k8s.io/utils v0.0.0-20240423183400-0849a56e8f22 // indirect
 	modernc.org/libc v1.37.6 // indirect
@@ -203,7 +203,7 @@ require (
 
 require (
 	github.com/hashicorp/go-version v1.7.0
-	k8s.io/apiextensions-apiserver v0.30.1
+	k8s.io/apiextensions-apiserver v0.30.2
 )
 
 require (
