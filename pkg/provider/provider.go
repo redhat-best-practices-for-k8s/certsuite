@@ -75,7 +75,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Pods            []*Pod                 `json:"testPods"`
 	DebugPods       map[string]*corev1.Pod // map from nodename to debugPod
 	AllPods         []*Pod                 `json:"AllPods"`
-	AllOperatorPods []*Pod                 `json:"AllOperatorPods"`
+	AllOperatorPods map[string][]*Pod      `json:"AllOperatorPods"`
 
 	// Deployment Groupings
 	Deployments []*Deployment `json:"testDeployments"`
@@ -258,10 +258,14 @@ func buildTestEnvironment() { //nolint:funlen
 		env.DebugPods[nodeName] = &data.DebugPods[i]
 	}
 
-	pods = data.AllOperatorPods
-	for i := 0; i < len(pods); i++ {
-		aNewPod := NewPod(&pods[i])
-		env.AllOperatorPods = append(env.AllOperatorPods, &aNewPod)
+	env.AllOperatorPods = make(map[string][]*Pod)
+	for k, podList := range data.AllOperatorPods {
+		var pods []*Pod
+		for i := 0; i < len(podList); i++ {
+			aNewPod := NewPod(podList[i])
+			pods = append(pods, &aNewPod)
+		}
+		env.AllOperatorPods[k] = pods
 	}
 
 	env.OCPStatus = data.OCPStatus

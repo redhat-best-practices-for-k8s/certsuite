@@ -8,7 +8,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1app "k8s.io/api/apps/v1"
+	appsv1 "k8s.io/api/apps/v1"
 
 	k8sDynamicFake "k8s.io/client-go/dynamic/fake"
 	k8stesting "k8s.io/client-go/testing"
@@ -29,7 +29,7 @@ func Test_followOwnerReferences(t *testing.T) {
 			OwnerReferences: []metav1.OwnerReference{},
 		},
 	}
-	dep1 := &v1app.Deployment{
+	dep1 := &appsv1.Deployment{
 		TypeMeta: metav1.TypeMeta{Kind: "Deployment", APIVersion: "apps/v1"},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            "dep1",
@@ -37,7 +37,7 @@ func Test_followOwnerReferences(t *testing.T) {
 			OwnerReferences: []metav1.OwnerReference{{APIVersion: "operators.coreos.com/v1alpha1", Kind: "ClusterServiceVersion", Name: "csv1"}},
 		},
 	}
-	rep1 := &v1app.ReplicaSet{
+	rep1 := &appsv1.ReplicaSet{
 		TypeMeta: metav1.TypeMeta{Kind: "ReplicaSet", APIVersion: "apps/v1"},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:            "rep1",
