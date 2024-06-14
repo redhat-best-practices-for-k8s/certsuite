@@ -18,7 +18,7 @@ make build-certsuite-tool
 To launch the Config Generator:
 
 ```shell
-./tnf generate config
+./certsuite generate config
 ```
 
 Here's an example of how to use the tool:
