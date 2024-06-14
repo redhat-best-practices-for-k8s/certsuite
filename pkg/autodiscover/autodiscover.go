@@ -59,7 +59,7 @@ type DiscoveredTestData struct {
 	Pods                   []corev1.Pod
 	AllPods                []corev1.Pod
 	DebugPods              []corev1.Pod
-	AllOperatorPods        map[string][]*corev1.Pod
+	CSVToPodListMap        map[string][]*corev1.Pod
 	ResourceQuotaItems     []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
 	NetworkPolicies        []networkingv1.NetworkPolicy
@@ -187,7 +187,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
 
 	// Get all operator pods
-	data.AllOperatorPods, err = getOperatorCsvPods(data.Csvs)
+	data.CSVToPodListMap, err = getOperatorCsvPods(data.Csvs)
 	if err != nil {
 		log.Fatal("Failed to get the operator pods, err: %v", err)
 	}
@@ -312,7 +312,7 @@ func getOperatorCsvPods(csvList []*olmv1Alpha.ClusterServiceVersion) (map[string
 			podList = append(podList, pods...)
 		}
 
-		csvToPodsMapping[fmt.Sprintf("%s, namespace=%s", csv.Name, csv.Namespace)] = podList
+		csvToPodsMapping[fmt.Sprintf(podNameWithNamespaceFormatStr, csv.Name, csv.Namespace)] = podList
 	}
 	return csvToPodsMapping, nil
 }
@@ -326,12 +326,6 @@ func getCsvPodsFromTargetNamespace(csv *olmv1Alpha.ClusterServiceVersion, target
 	}
 
 	for index := range podsList.Items {
-		labels := podsList.Items[index].Labels
-
-		if _, ok := labels["olm.managed"]; !ok { // Ignore non-OLM pods in the namespace
-			continue
-		}
-
 		// Get the top owners of the pod
 		pod := podsList.Items[index]
 		topOwners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
