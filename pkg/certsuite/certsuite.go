@@ -174,7 +174,6 @@ func Shutdown() {
 
 //nolint:funlen
 func Run(labelsFilter, outputFolder string) error {
-
 	fmt.Println("Running discovery of CNF target resources...")
 	fmt.Print("\n")
 
