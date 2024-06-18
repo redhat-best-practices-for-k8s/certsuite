@@ -26,7 +26,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 
-	v1app "k8s.io/api/apps/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	v1autoscaling "k8s.io/api/autoscaling/v1"
 	v1 "k8s.io/client-go/kubernetes/typed/apps/v1"
 
@@ -36,7 +36,7 @@ import (
 	hps "k8s.io/client-go/kubernetes/typed/autoscaling/v1"
 )
 
-func TestScaleStatefulSet(statefulset *v1app.StatefulSet, timeout time.Duration, logger *log.Logger) bool {
+func TestScaleStatefulSet(statefulset *appsv1.StatefulSet, timeout time.Duration, logger *log.Logger) bool {
 	clients := clientsholder.GetClientsHolder()
 	name, namespace := statefulset.Name, statefulset.Namespace
 	ssClients := clients.K8sClient.AppsV1().StatefulSets(namespace)
@@ -79,7 +79,7 @@ func TestScaleStatefulSet(statefulset *v1app.StatefulSet, timeout time.Duration,
 	return true
 }
 
-func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.StatefulSetInterface, statefulset *v1app.StatefulSet, replicas int32, timeout time.Duration, logger *log.Logger) bool {
+func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.StatefulSetInterface, statefulset *appsv1.StatefulSet, replicas int32, timeout time.Duration, logger *log.Logger) bool {
 	name := statefulset.Name
 	namespace := statefulset.Namespace
 
@@ -110,7 +110,7 @@ func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.St
 	return true
 }
 
-func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration, logger *log.Logger) bool {
+func TestScaleHpaStatefulSet(statefulset *appsv1.StatefulSet, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration, logger *log.Logger) bool {
 	clients := clientsholder.GetClientsHolder()
 	hpaName := hpa.Name
 	name, namespace := statefulset.Name, statefulset.Namespace
