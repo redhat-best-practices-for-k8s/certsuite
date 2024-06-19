@@ -312,7 +312,7 @@ func getOperatorCsvPods(csvList []*olmv1Alpha.ClusterServiceVersion) (map[string
 			podList = append(podList, pods...)
 		}
 
-		csvToPodsMapping[fmt.Sprintf(podNameWithNamespaceFormatStr, csv.Name, csv.Namespace)] = podList
+		csvToPodsMapping[fmt.Sprintf(csvNameWithNamespaceFormatStr, csv.Name, csv.Namespace)] = podList
 	}
 	return csvToPodsMapping, nil
 }
