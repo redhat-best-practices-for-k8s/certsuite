@@ -18,5 +18,5 @@ package autodiscover
 const (
 	debugHelperPodsLabelName      = "test-network-function.com/app"
 	debugHelperPodsLabelValue     = "tnf-debug"
-	podNameWithNamespaceFormatStr = "%s, ns=%s"
+	csvNameWithNamespaceFormatStr = "%s, ns=%s"
 )
