@@ -65,6 +65,7 @@ build:
 
 build-certsuite-tool: results-html
 	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
+	git restore cnf-certification-test/results/html/results.html
 
 # Cleans up auto-generated and report files
 clean:
