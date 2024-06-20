@@ -91,7 +91,7 @@ jobs:
           files: .
 
       - name: ShellCheck
-        uses: ludeeus/action-shellcheck@cd81f4475ab741e097ec0fe73b692f3e49d66b8c # master
+        uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # master
 
       # - name: Typos
       #   uses: crate-ci/typos@master
