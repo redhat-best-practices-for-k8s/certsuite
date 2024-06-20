@@ -239,10 +239,13 @@ wait_package_ok() {
 wait_all_packages_ok() {
 	local \
 		start_time \
+		prev_count \
+		curr_count \
+		elapsed_time \
 		timeout_seconds=600
 
-	prev_count=$(get_packeges)
-	start_time=$(date +%s 2>&1) || {
+	prev_count="$(get_packeges)"
+	start_time="$(date +%s 2>&1)" || {
 		echo "date failed with error $?: $start_time" >>"$LOG_FILE_PATH"
 		return 0
 	}
@@ -251,13 +254,13 @@ wait_all_packages_ok() {
 	while true; do
 		curr_count=$(get_packeges)
 		if [ "${curr_count}" -ne "${prev_count}" ] || [ "${curr_count}" -eq 0 ]; then
-			prev_count=${curr_count}
+			prev_count="${curr_count}"
 		else
 			return 0
 		fi
 
-		curr_time=$(date +%s)
-		elapsed_time=$((curr_time - start_time))
+		curr_time="$(date +%s)"
+		elapsed_time="$((curr_time - start_time))"
 		# If elapsed time is greater than the timeout report failure
 		if [ "$elapsed_time" -ge "$timeout_seconds" ]; then
 			echo_color "$RED" "Timeout reached $timeout_seconds seconds waiting for packagemanifests to be reachable."
@@ -271,7 +274,10 @@ wait_all_packages_ok() {
 }
 
 get_packeges() {
-	oc get packagemanifest -n ${OPERATOR_CATALOG_NAMESPACE} -o json | jq -r '.items[] | select(.status.catalogSource == "'${OPERATOR_CATALOG_NAME}'") | .metadata.name' | wc -w
+	oc get packagemanifest \
+		-n ${OPERATOR_CATALOG_NAMESPACE} -o json \
+		| jq -r '.items[] | select(.status.catalogSource == "'${OPERATOR_CATALOG_NAME}'") | .metadata.name' \
+		| wc -w
 }
 
 wait_for_csv_to_appear_and_label() {
