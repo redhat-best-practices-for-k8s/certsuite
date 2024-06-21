@@ -83,7 +83,7 @@ jobs:
           recursive: true
 
       - name: Shfmt
-        run: shfmt -d *.sh script
+        run: shfmt -d script
 
       - name: Markdownlint
         uses: nosborn/github-action-markdown-cli@9b5e871c11cc0649c5ac2526af22e23525fa344d # v3.3.0
