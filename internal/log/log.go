@@ -114,7 +114,11 @@ func GetMultiLogger(writers ...io.Writer) *Logger {
 		},
 	}
 
-	handlers := []slog.Handler{globalLogger.l.Handler()}
+	var handlers []slog.Handler
+	if globalLogger != nil {
+		handlers = []slog.Handler{globalLogger.l.Handler()}
+	}
+
 	for _, writer := range writers {
 		handlers = append(handlers, NewCustomHandler(writer, &opts))
 	}
