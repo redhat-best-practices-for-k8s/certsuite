@@ -102,15 +102,15 @@ To reduce the number of shared volumes with the test container in the example be
 
 ```shell
 docker run --rm --network host 
-  -v <path-to-local-dir>/config:/usr/tnf/config:Z 
-  -v <path-to-local-dir>/results:/usr/tnf/results:Z 
+  -v <path-to-local-dir>/config:/usr/certsuite/config:Z
+  -v <path-to-local-dir>/results:/usr/certsuite/results:Z
   
   quay.io/testnetworkfunction/cnf-certification-test:latest
   
-  ./cnf-certification-test/certsuite run 
-  --kubeconfig=/usr/tnf/config/kubeconfig
-  --preflight-dockerconfig=/usr/tnf/config/dockerconfig
-  --config-file=/usr/tnf/config/tnf_config.yml
-  --output-dir=/usr/tnf/results
+  certsuite run
+  --kubeconfig=/usr/certsuite/config/kubeconfig
+  --preflight-dockerconfig=/usr/certsuite/config/dockerconfig
+  --config-file=/usr/certsuite/config/tnf_config.yml
+  --output-dir=/usr/certsuite/results
   --label-filter=all
 ```
