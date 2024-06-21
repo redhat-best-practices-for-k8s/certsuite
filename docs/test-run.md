@@ -78,11 +78,13 @@ The only prerequisite for running the Test Suite in container mode is having Doc
 
 ### Pull the test image
 
-The test image is available at this repository [repository](https://quay.io/repository/testnetworkfunction/cnf-certification-test) and can be pulled using:
+The test image is available at this [repository](https://quay.io/repository/testnetworkfunction/cnf-certification-test) and can be pulled using:
 
 ```shell
-docker pull quay.io/testnetworkfunction/cnf-certification-test
+docker pull quay.io/testnetworkfunction/cnf-certification-test:<image-tag>
 ```
+
+The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository or any existing version number such as `v5.1.0`.
 
 ### Launch the Test Suite
 
