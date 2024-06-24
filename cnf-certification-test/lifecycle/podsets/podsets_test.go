@@ -23,14 +23,14 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1app "k8s.io/api/apps/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestIsDeploymentReady(t *testing.T) {
 	type dpStatus struct {
-		condition   v1app.DeploymentConditionType
+		condition   appsv1.DeploymentConditionType
 		replicas    int32
 		ready       int32
 		available   int32
@@ -38,18 +38,18 @@ func TestIsDeploymentReady(t *testing.T) {
 		updated     int32
 	}
 	m := map[dpStatus]bool{
-		{v1app.DeploymentReplicaFailure, 10, 9, 10, 0, 0}: false,
-		{v1app.DeploymentAvailable, 10, 9, 9, 0, 10}:      false,
-		{v1app.DeploymentAvailable, 10, 10, 10, 1, 10}:    false,
-		{v1app.DeploymentAvailable, 10, 1, 10, 0, 10}:     false,
-		{v1app.DeploymentAvailable, 10, 10, 10, 0, 9}:     false,
-		{v1app.DeploymentAvailable, 10, 10, 10, 0, 10}:    true,
+		{appsv1.DeploymentReplicaFailure, 10, 9, 10, 0, 0}: false,
+		{appsv1.DeploymentAvailable, 10, 9, 9, 0, 10}:      false,
+		{appsv1.DeploymentAvailable, 10, 10, 10, 1, 10}:    false,
+		{appsv1.DeploymentAvailable, 10, 1, 10, 0, 10}:     false,
+		{appsv1.DeploymentAvailable, 10, 10, 10, 0, 9}:     false,
+		{appsv1.DeploymentAvailable, 10, 10, 10, 0, 10}:    true,
 	}
 	for key, v := range m {
 		dp := provider.Deployment{
-			Deployment: &v1app.Deployment{
-				Status: v1app.DeploymentStatus{
-					Conditions: []v1app.DeploymentCondition{
+			Deployment: &appsv1.Deployment{
+				Status: appsv1.DeploymentStatus{
+					Conditions: []appsv1.DeploymentCondition{
 						{
 							Type: key.condition,
 						},
@@ -59,7 +59,7 @@ func TestIsDeploymentReady(t *testing.T) {
 					UnavailableReplicas: key.unavailable,
 					UpdatedReplicas:     key.updated,
 				},
-				Spec: v1app.DeploymentSpec{
+				Spec: appsv1.DeploymentSpec{
 					Replicas: &key.replicas,
 				},
 			},
@@ -87,11 +87,11 @@ func TestIsStatefulSetReady(t *testing.T) {
 	}
 	for k, v := range m {
 		ss := provider.StatefulSet{
-			StatefulSet: &v1app.StatefulSet{
-				Spec: v1app.StatefulSetSpec{
+			StatefulSet: &appsv1.StatefulSet{
+				Spec: appsv1.StatefulSetSpec{
 					Replicas: &k.replicas,
 				},
-				Status: v1app.StatefulSetStatus{
+				Status: appsv1.StatefulSetStatus{
 					ReadyReplicas:     k.ready,
 					AvailableReplicas: k.available,
 					UpdatedReplicas:   k.updated,

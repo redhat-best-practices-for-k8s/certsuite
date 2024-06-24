@@ -1,14 +1,13 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.4-947.1717074712@sha256:d31d3e5e92c0c47277c5011c0326b285ab7ae627eff036133be1dccc4208004d AS build
-ENV TNF_DIR=/usr/tnf
+FROM registry.access.redhat.com/ubi9/ubi:9.4-1123@sha256:d98fdae16212df566150ac975cab860cd8d2cb1b322ed9966d09a13e219112e9 AS build
+ENV CERTSUITE_DIR=/usr/certsuite
 ENV \
-	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
-	TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test \
+	CERTSUITE_SRC_DIR=${CERTSUITE_DIR}/src \
 	TEMP_DIR=/tmp
 
 # Install dependencies
 # hadolint ignore=DL3041
 RUN \
-	mkdir ${TNF_DIR} \
+	mkdir ${CERTSUITE_DIR} \
 	&& dnf update --assumeyes --disableplugin=subscription-manager \
 	&& dnf install --assumeyes --disableplugin=subscription-manager \
 		gcc \
@@ -48,7 +47,7 @@ ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
 # Download operator-sdk binary
 ENV \
-	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.34.2 \
+	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.35.0 \
 	OSDK_BIN=/usr/local/osdk/bin
 
 RUN \
@@ -75,30 +74,21 @@ RUN \
 	fi
 
 # Copy all of the files into the source directory and then switch contexts
-COPY . ${TNF_SRC_DIR}
-WORKDIR ${TNF_SRC_DIR}
-RUN make build-cnf-tests build-certsuite-tool
+COPY . ${CERTSUITE_SRC_DIR}
+WORKDIR ${CERTSUITE_SRC_DIR}
 
-# Extract what's needed to run at a separate location
-# Quote this to prevent word splitting.
-# hadolint ignore=SC2046
-RUN \
-	mkdir ${TNF_BIN_DIR} \
-	&& cp run-cnf-suites.sh ${TNF_DIR} \
-	# copy all JSON files to allow tests to run
-	&& cp --parents $(find . -name '*.json*') ${TNF_DIR} \
-	&& cp cnf-certification-test/cnf-certification-test ${TNF_BIN_DIR} \
-	# copy the tnf command binary
-	&& cp certsuite ${TNF_BIN_DIR}
+# Build the certsuite binary
+RUN make build-certsuite-tool \
+	&& cp certsuite ${CERTSUITE_DIR}
 
-# Switch contexts back to the root TNF directory
-WORKDIR ${TNF_DIR}
+# Switch contexts back to the root CERTSUITE directory
+WORKDIR ${CERTSUITE_DIR}
 
 # Remove most of the build artefacts
 RUN \
 	dnf remove --assumeyes --disableplugin=subscription-manager gcc git wget \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
-	&& rm -rf ${TNF_SRC_DIR} \
+	&& rm -rf ${CERTSUITE_SRC_DIR} \
 	&& rm -rf ${TEMP_DIR} \
 	&& rm -rf /root/.cache \
 	&& rm -rf /root/go/pkg \
@@ -112,31 +102,27 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4-949.1717074713@sha256:0d6b09f233745d2fcf892cebcf1c18bbfed497f116bc8357e9db4b724d76c5a9
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4-1134@sha256:a7d837b00520a32502ada85ae339e33510cdfdbc8d2ddf460cc838e12ec5fa5a
 
 ENV \
-	TNF_DIR=/usr/tnf \
+	CERTSUITE_DIR=/usr/certsuite \
 	OSDK_BIN=/usr/local/osdk/bin
 
-# Copy all of the necessary files over from the TNF_DIR
-COPY --from=build ${TNF_DIR} ${TNF_DIR}
+# Install the certsuite binary
+COPY --from=build ${CERTSUITE_DIR} ${CERTSUITE_DIR}
+RUN cp ${CERTSUITE_DIR}/certsuite /usr/local/bin
 
 # Add operatorsdk binary to image
 COPY --from=build ${OSDK_BIN} ${OSDK_BIN}
 
 # Update the CNF containers, helm charts and operators DB
 ENV \
-	TNF_OFFLINE_DB=/usr/offline-db \
+	CERTSUITE_OFFLINE_DB=/usr/offline-db \
 	OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
-COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
+COPY --from=db ${OCT_DB_PATH} ${CERTSUITE_OFFLINE_DB}
 
-ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
 
-ENV \
-	TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
-	KUBECONFIG=/usr/tnf/kubeconfig/config \
-	PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json \
-	PATH="${OSDK_BIN}:${TNF_BIN_DIR}:${PATH}"
-WORKDIR ${TNF_DIR}
+ENV PATH="${OSDK_BIN}:${PATH}"
+WORKDIR ${CERTSUITE_DIR}
 ENV SHELL=/bin/bash
-CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]
+CMD ["certsuite", "-h"]

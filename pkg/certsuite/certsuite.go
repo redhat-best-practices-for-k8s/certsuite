@@ -99,17 +99,6 @@ func processFlags() error {
 		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched")
 	}
 
-	// If the list flag is passed, print the checks filtered with --labels and leave
-	if *flags.ListFlag {
-		checksIDs, err := checksdb.FilterCheckIDs()
-		if err != nil {
-			return fmt.Errorf("could not list test cases, err: %v", err)
-		} else {
-			cli.PrintChecksList(checksIDs)
-			os.Exit(0)
-		}
-	}
-
 	t, err := time.ParseDuration(*flags.TimeoutFlag)
 	if err != nil {
 		log.Error("Failed to parse timeout flag %q, err: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
@@ -143,6 +132,21 @@ func Startup(initFlags func(interface{}), arg interface{}) {
 		os.Exit(1)
 	}
 
+	// Set clientsholder singleton with the filenames from the env vars.
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+	LoadChecksDB(*flags.LabelsFlag)
+
+	// If the list flag is passed, print the checks filtered with --labels and leave
+	if *flags.ListFlag {
+		checksIDs, err := checksdb.FilterCheckIDs()
+		if err != nil {
+			log.Fatal("Could not list test cases, err: %v", err)
+		} else {
+			cli.PrintChecksList(checksIDs)
+			os.Exit(0)
+		}
+	}
+
 	log.Info("TNF Version: %v", versions.GitVersion())
 	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
 	log.Info("Labels filter: %v", *flags.LabelsFlag)
@@ -170,10 +174,6 @@ func Shutdown() {
 
 //nolint:funlen
 func Run(labelsFilter, outputFolder string) error {
-	// Set clientsholder singleton with the filenames from the env vars.
-	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-	LoadChecksDB(*flags.LabelsFlag)
-
 	fmt.Println("Running discovery of CNF target resources...")
 	fmt.Print("\n")
 

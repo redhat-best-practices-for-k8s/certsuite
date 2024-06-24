@@ -51,8 +51,9 @@ LINKER_TNF_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-t
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitRelease=${GIT_RELEASE}
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
-PARSER_RELEASE=$(shell jq .parserTag version.json)
 BASH_SCRIPTS=$(shell find . -name "*.sh" -not -path "./.git/*")
+PARSER_RELEASE=$(shell jq -r .parserTag version.json)
+RESULTS_HTML_URL=https://raw.githubusercontent.com/test-network-function/parser/${PARSER_RELEASE}/html/results.html
 
 all: build
 
@@ -62,8 +63,9 @@ build:
 		build-cnf-tests \
 		test
 
-build-certsuite-tool:
+build-certsuite-tool: results-html
 	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
+	git restore cnf-certification-test/results/html/results.html
 
 # Cleans up auto-generated and report files
 clean:
@@ -78,7 +80,7 @@ lint:
 	checkmake --config=.checkmake Makefile
 	golangci-lint run --timeout 10m0s
 	hadolint Dockerfile
-	shfmt -d *.sh script
+	shfmt -d script
 	typos
 	markdownlint '**/*.md'
 	yamllint --no-warnings .
@@ -175,7 +177,7 @@ create-manifest-local:
 		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64
 
 results-html:
-	script/get-results-html.sh ${PARSER_RELEASE}
+	curl -s -O --output-dir cnf-certification-test/results/html ${RESULTS_HTML_URL}
 
 check-results:
 	./certsuite check results

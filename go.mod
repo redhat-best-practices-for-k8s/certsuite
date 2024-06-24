@@ -5,26 +5,26 @@ go 1.22.4
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
 	github.com/test-network-function/test-network-function-claim v1.0.39
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require k8s.io/client-go v0.30.1
+require k8s.io/client-go v0.30.2
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/mittwald/go-helm-client v0.12.9
-	github.com/openshift/api v0.0.0-20240429104249-ac9356ba1784
-	github.com/openshift/client-go v0.0.0-20240422164335-6c851f4919dd
-	github.com/operator-framework/api v0.25.0
+	github.com/openshift/api v0.0.0-20240510053056-88a8afea030c
+	github.com/openshift/client-go v0.0.0-20240510131258-f646d5f29250
+	github.com/operator-framework/api v0.26.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.15.2
-	k8s.io/api v0.30.1
-	k8s.io/apimachinery v0.30.1
+	k8s.io/api v0.30.2
+	k8s.io/apimachinery v0.30.2
 	k8s.io/klog/v2 v2.120.1 // indirect
 )
 
@@ -52,7 +52,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/distribution/reference v0.5.0 // indirect
-	github.com/docker/cli v26.1.0+incompatible // indirect
+	github.com/docker/cli v26.1.2+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker v25.0.5+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.0 // indirect
@@ -182,9 +182,9 @@ require (
 	gopkg.in/evanphx/json-patch.v5 v5.7.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	k8s.io/apiserver v0.30.1 // indirect
-	k8s.io/cli-runtime v0.30.1 // indirect
-	k8s.io/component-base v0.30.1 // indirect
+	k8s.io/apiserver v0.30.2 // indirect
+	k8s.io/cli-runtime v0.30.2 // indirect
+	k8s.io/component-base v0.30.2 // indirect
 	k8s.io/kube-openapi v0.0.0-20240430033511-f0e62f92d13f // indirect
 	k8s.io/utils v0.0.0-20240423183400-0849a56e8f22 // indirect
 	modernc.org/libc v1.37.6 // indirect
@@ -193,7 +193,7 @@ require (
 	modernc.org/sqlite v1.28.0 // indirect
 	oras.land/oras-go v1.2.5 // indirect
 	sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.29.0 // indirect
-	sigs.k8s.io/controller-runtime v0.18.2 // indirect
+	sigs.k8s.io/controller-runtime v0.18.4 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/kustomize/api v0.16.0 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.16.0 // indirect
@@ -203,7 +203,7 @@ require (
 
 require (
 	github.com/hashicorp/go-version v1.7.0
-	k8s.io/apiextensions-apiserver v0.30.1
+	k8s.io/apiextensions-apiserver v0.30.2
 )
 
 require (
@@ -211,16 +211,16 @@ require (
 	github.com/fatih/color v1.17.0
 	github.com/go-logr/logr v1.4.2
 	github.com/go-logr/stdr v1.2.2
-	github.com/gorilla/websocket v1.5.2
+	github.com/gorilla/websocket v1.5.3
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.0
 	github.com/manifoldco/promptui v0.9.0
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240520135716-354d10d9af8b
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240605154909-3bdeab0e72f3
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/test-network-function/oct v0.0.12
-	github.com/test-network-function/privileged-daemonset v1.0.25
+	github.com/test-network-function/privileged-daemonset v1.0.26
 	golang.org/x/term v0.21.0
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/kubectl v0.30.1
+	k8s.io/kubectl v0.30.2
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240520135716-354d10d9af8b
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240605154909-3bdeab0e72f3

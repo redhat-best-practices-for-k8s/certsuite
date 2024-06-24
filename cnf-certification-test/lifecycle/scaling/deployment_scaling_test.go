@@ -28,7 +28,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1app "k8s.io/api/apps/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	v1autoscaling "k8s.io/api/autoscaling/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -37,13 +37,13 @@ import (
 )
 
 func TestScaleDeploymentFunc(t *testing.T) {
-	generateDeployment := func(name string, replicas *int32) *v1app.Deployment {
-		return &v1app.Deployment{
+	generateDeployment := func(name string, replicas *int32) *appsv1.Deployment {
+		return &appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      name,
 				Namespace: "namespace1",
 			},
-			Spec: v1app.DeploymentSpec{
+			Spec: appsv1.DeploymentSpec{
 				Replicas: replicas,
 			},
 		}
@@ -93,13 +93,13 @@ func TestScaleDeploymentFunc(t *testing.T) {
 }
 
 func TestScaleHpaDeploymentFunc(t *testing.T) {
-	generateDeployment := func(name string, replicas *int32) *v1app.Deployment {
-		return &v1app.Deployment{
+	generateDeployment := func(name string, replicas *int32) *appsv1.Deployment {
+		return &appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      name,
 				Namespace: "namespace1",
 			},
-			Spec: v1app.DeploymentSpec{
+			Spec: appsv1.DeploymentSpec{
 				Replicas: replicas,
 			},
 		}
@@ -283,15 +283,15 @@ func TestScaleDeploymentHelper(t *testing.T) {
 		// Create a spoofed deployment to pass to the clientsholder.
 		// This is only needed because the podsets.WaitForDeploymentSetReady function
 		// utilizes the clientsholder straight from the function to retrieve the latest information.
-		dep := &v1app.Deployment{
+		dep := &appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "dp1",
 				Namespace: "ns1",
 			},
-			Status: v1app.DeploymentStatus{
-				Conditions: []v1app.DeploymentCondition{
+			Status: appsv1.DeploymentStatus{
+				Conditions: []appsv1.DeploymentCondition{
 					{
-						Type: v1app.DeploymentAvailable,
+						Type: appsv1.DeploymentAvailable,
 					},
 				},
 				Replicas:          1,

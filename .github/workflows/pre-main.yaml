@@ -47,7 +47,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
@@ -83,7 +83,7 @@ jobs:
           recursive: true
 
       - name: Shfmt
-        run: shfmt -d *.sh script
+        run: shfmt -d script
 
       - name: Markdownlint
         uses: nosborn/github-action-markdown-cli@9b5e871c11cc0649c5ac2526af22e23525fa344d # v3.3.0
@@ -91,7 +91,7 @@ jobs:
           files: .
 
       - name: ShellCheck
-        uses: ludeeus/action-shellcheck@cd81f4475ab741e097ec0fe73b692f3e49d66b8c # master
+        uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # master
 
       # - name: Typos
       #   uses: crate-ci/typos@master
@@ -122,7 +122,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
@@ -179,7 +179,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
@@ -271,7 +271,7 @@ jobs:
 
       # Perform smoke tests using a Certsuite container.
       - name: Check out code into the Go module directory
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
@@ -296,7 +296,7 @@ jobs:
 
       # Prepare collector to be used when running smoke tests
       - name: Check out `Collector`
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           repository: test-network-function/collector
           path: collector
@@ -344,31 +344,31 @@ jobs:
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: |
           docker run --rm --network host \
-            -v $CERTSUITE_CONFIG_DIR:/usr/tnf/config:Z \
-            -v $CERTSUITE_OUTPUT_DIR:/usr/tnf/output:Z \
+            -v $CERTSUITE_CONFIG_DIR:/usr/certsuite/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/certsuite/output:Z \
             ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
-            ./cnf-certification-test/certsuite run \
-            --output-dir=/usr/tnf/output \
-            --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
+            certsuite run \
+            --output-dir=/usr/certsuite/output \
+            --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
             --offline-db=/usr/offline-db \
             --log-level=${SMOKE_TESTS_LOG_LEVEL} \
-            --config-file=/usr/tnf/config/tnf_config.yml \
-            --kubeconfig=/usr/tnf/config/kubeconfig \
+            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --kubeconfig=/usr/certsuite/config/kubeconfig \
 
       - name: 'Test: Run Smoke Tests in a Certsuite container with the certsuite command'
         run: |
           docker run --rm --network host \
-            -v $CERTSUITE_CONFIG_DIR:/usr/tnf/config:Z \
-            -v $CERTSUITE_OUTPUT_DIR:/usr/tnf/output:Z \
+            -v $CERTSUITE_CONFIG_DIR:/usr/certsuite/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/certsuite/output:Z \
             ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
-            ./cnf-certification-test/certsuite run \
-            --output-dir=/usr/tnf/output \
-            --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
+            certsuite run \
+            --output-dir=/usr/certsuite/output \
+            --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
             --offline-db=/usr/offline-db \
             --enable-data-collection=true \
             --log-level=${SMOKE_TESTS_LOG_LEVEL} \
-            --config-file=/usr/tnf/config/tnf_config.yml \
-            --kubeconfig=/usr/tnf/config/kubeconfig \
+            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --kubeconfig=/usr/certsuite/config/kubeconfig \
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Run sanity check on collector
@@ -398,16 +398,16 @@ jobs:
       - name: 'Test: Run Preflight Specific Smoke Tests in a Certsuite container with the certsuite command'
         run: |
           docker run --rm --network host \
-            -v $CERTSUITE_CONFIG_DIR:/usr/tnf/config:Z \
-            -v $CERTSUITE_OUTPUT_DIR:/usr/tnf/output:Z \
+            -v $CERTSUITE_CONFIG_DIR:/usr/certsuite/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/certsuite/output:Z \
             ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
-            ./cnf-certification-test/certsuite run \
-            --output-dir=/usr/tnf/output \
-            --preflight-dockerconfig=/usr/tnf/config/dockerconfig \
+            certsuite run \
+            --output-dir=/usr/certsuite/output \
+            --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
             --offline-db=/usr/offline-db \
             --log-level=${SMOKE_TESTS_LOG_LEVEL} \
-            --config-file=/usr/tnf/config/tnf_config.yml \
-            --kubeconfig=/usr/tnf/config/kubeconfig \
+            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --kubeconfig=/usr/certsuite/config/kubeconfig \
             --label-filter="preflight"
 
   # Only run this job if the previous jobs are successful that build the ARM and x86 images.
@@ -418,7 +418,7 @@ jobs:
     if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
     steps:
       - name: Check out code
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
@@ -436,7 +436,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: Build and push the unstable images for multi-arch
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
+        uses: docker/build-push-action@31159d49c0d4756269a0940a750801a1ea5d7003 # v6.1.0
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
         with:
           context: .
@@ -460,7 +460,7 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Check all dependent Pull Requests are merged
         uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main

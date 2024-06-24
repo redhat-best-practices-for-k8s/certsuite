@@ -34,6 +34,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
+	"github.com/test-network-function/cnf-certification-test/pkg/podhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -685,7 +686,7 @@ func isInstallModeMultiNamespace(installModes []v1alpha1.InstallMode) bool {
 //   - bool: true if one of the passed topOwners is a CSV that is installed by a cluster-wide operator, otherwise return false
 //   - name string : the name of the matching object, if found.
 //   - aNamespace string : the namespace of the matching object, if found.
-func ownedByClusterWideOperator(topOwners map[string]provider.TopOwner, env *provider.TestEnvironment) (aNamespace, name string, found bool) {
+func ownedByClusterWideOperator(topOwners map[string]podhelper.TopOwner, env *provider.TestEnvironment) (aNamespace, name string, found bool) {
 	for _, owner := range topOwners {
 		if isCSVAndClusterWide(owner.Namespace, owner.Name, env) {
 			return owner.Namespace, owner.Name, true

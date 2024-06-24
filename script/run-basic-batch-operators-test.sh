@@ -33,6 +33,10 @@ OPERATOR_CATALOG_NAMESPACE="openshift-marketplace"
 # Operator from user
 OPERATORS_UNDER_TEST=""
 
+# Certsuite container image
+CERTSUITE_IMAGE_NAME=quay.io/testnetworkfunction/cnf-certification-test
+CERTSUITE_IMAGE_TAG=unstable
+
 # OUTPUTS
 
 # Colors
@@ -562,9 +566,25 @@ while IFS=, read -r package_name catalog_index; do
 		oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
 	} >>"$LOG_FILE_PATH" 2>&1
 
-	# run tnf-container
+	# run certsuite container
 	echo_color "$BLUE" "run CNF suite"
-	TNF_LOG_LEVEL=trace ./run-tnf-container.sh -k "$KUBECONFIG" -t "$report_dir" -o "$report_dir" -c "$DOCKER_CONFIG" -l all >>"$LOG_FILE_PATH" 2>&1 || {
+
+	config_dir="$(pwd)"/config
+	mkdir -p "$config_dir"
+	cp "$KUBECONFIG" "$config_dir"/kubeconfig
+	cp "$DOCKER_CONFIG" "$config_dir"/dockerconfig
+	cp "$config_yaml" "$config_dir"/tnf_config.yaml
+
+	docker run --rm --network host \
+		-v "$config_dir":/usr/tnf/config:Z \
+		-v "$report_dir":/usr/tnf/output:Z \
+		${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
+		./cnf-certification-test/certsuite run \
+		--kubeconfig=/usr/tnf/config/kubeconfig \
+		--preflight-dockerconfig=/usr/tnf/config/dockerconfig \
+		--config-file=/usr/tnf/config/tnf_config.yml \
+		--output-dir=/usr/tnf/output \
+		--label-filter=all >>"$LOG_FILE_PATH" 2>&1 || {
 		report_failure "$status" "$ns" "$package_name" "CNF suite exited with errors"
 		continue
 	}
