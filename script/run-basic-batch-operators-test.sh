@@ -275,9 +275,9 @@ wait_all_packages_ok() {
 
 get_packeges() {
 	oc get packagemanifest \
-		-n ${OPERATOR_CATALOG_NAMESPACE} -o json \
-		| jq -r '.items[] | select(.status.catalogSource == "'${OPERATOR_CATALOG_NAME}'") | .metadata.name' \
-		| wc -w
+		-n ${OPERATOR_CATALOG_NAMESPACE} -o json |
+		jq -r '.items[] | select(.status.catalogSource == "'${OPERATOR_CATALOG_NAME}'") | .metadata.name' |
+		wc -w
 }
 
 wait_for_csv_to_appear_and_label() {
