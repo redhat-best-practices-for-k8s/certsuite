@@ -236,6 +236,50 @@ wait_package_ok() {
 	done
 }
 
+wait_all_packages_ok() {
+	local \
+		start_time \
+		prev_count \
+		curr_count \
+		elapsed_time \
+		timeout_seconds=600
+
+	prev_count="$(get_packeges)"
+	start_time="$(date +%s 2>&1)" || {
+		echo "date failed with error $?: $start_time" >>"$LOG_FILE_PATH"
+		return 0
+	}
+
+	# wait until package number is stable
+	while true; do
+		curr_count=$(get_packeges)
+		if [ "${curr_count}" -ne "${prev_count}" ] || [ "${curr_count}" -eq 0 ]; then
+			prev_count="${curr_count}"
+		else
+			return 0
+		fi
+
+		curr_time="$(date +%s)"
+		elapsed_time="$((curr_time - start_time))"
+		# If elapsed time is greater than the timeout report failure
+		if [ "$elapsed_time" -ge "$timeout_seconds" ]; then
+			echo_color "$RED" "Timeout reached $timeout_seconds seconds waiting for packagemanifests to be reachable."
+			return 1
+		fi
+
+		# Otherwise wait a bit
+		echo_color "$BLUE" "Waiting for packages to be reachable..."
+		sleep 5
+	done
+}
+
+get_packeges() {
+	oc get packagemanifest \
+		-n ${OPERATOR_CATALOG_NAMESPACE} -o json |
+		jq -r '.items[] | select(.status.catalogSource == "'${OPERATOR_CATALOG_NAME}'") | .metadata.name' |
+		wc -w
+}
+
 wait_for_csv_to_appear_and_label() {
 	local csv_namespace=$1
 	local timeout_seconds=100
@@ -405,7 +449,8 @@ if [ "$#" -eq 1 ]; then
 	echo_color "$BLUE" "Creating Catalog Source"
 	create_catalog
 	# Get all the packages present in the cluster catalog
-	with_retry 5 10 oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.catalogSource}{"\n"}{end}' | grep "$OPERATOR_CATALOG_NAME" | head -n -1 | sort >"$OPERATOR_LIST_PATH"
+	wait_all_packages_ok
+	with_retry 5 10 oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{",'"$CATALOG_INDEX"'\n"}{end}' | head -n -1 | sort >"$OPERATOR_LIST_PATH"
 
 elif [ "$#" -eq 2 ]; then
 	CATALOG_INDEX=$1
@@ -611,12 +656,6 @@ while IFS=, read -r package_name catalog_index; do
 		echo_color "$RED" "Error, fail to wait for the namespace to be deleted"
 	fi
 
-	# Delete the catalog
-	echo_color "$BLUE" "Remove Catalog"
-	if ! oc delete catalogsources -n "$OPERATOR_CATALOG_NAMESPACE" "$OPERATOR_CATALOG_NAME"; then
-		echo_color "$RED" "Error, failed to delete catalog: $OPERATOR_CATALOG_NAME"
-	fi
-
 	# Check parsing claim file
 	echo_color "$BLUE" "Parse claim file"
 
@@ -654,6 +693,12 @@ while IFS=, read -r package_name catalog_index; do
 	add_headers=""
 
 done <"$OPERATOR_LIST_PATH"
+
+# Delete the catalog
+echo_color "$BLUE" "Remove Catalog"
+if ! oc delete catalogsources -n "$OPERATOR_CATALOG_NAMESPACE" "$OPERATOR_CATALOG_NAME"; then
+	echo_color "$RED" "Error, failed to delete catalog: $OPERATOR_CATALOG_NAME"
+fi
 
 # closing html file
 echo '</body></html>' >>"$REPORT_FOLDER"/"$INDEX_FILE"
