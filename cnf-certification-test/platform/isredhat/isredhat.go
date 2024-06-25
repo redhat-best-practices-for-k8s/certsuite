@@ -45,7 +45,7 @@ func NewBaseImageTester(client clientsholder.Command, ctx clientsholder.Context)
 
 func (b *BaseImageInfo) TestContainerIsRedHatRelease() (bool, error) {
 	output, err := b.runCommand(`if [ -e /etc/redhat-release ]; then cat /etc/redhat-release; else echo \"Unknown Base Image\"; fi`)
-	log.Info("output from /etc/redhat-release: %s", output)
+	log.Info("Output from /etc/redhat-release: %q", output)
 	if err != nil {
 		return false, err
 	}
