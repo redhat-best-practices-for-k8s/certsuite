@@ -177,7 +177,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	// Get cluster crds
 	data.AllCrds, err = getClusterCrdNames()
 	if err != nil {
-		log.Fatal("Cannot get cluster CRD anmes, err: %v", err)
+		log.Fatal("Cannot get cluster CRD names, err: %v", err)
 	}
 	data.Crds = FindTestCrdNames(data.AllCrds, config.CrdFilters)
 
