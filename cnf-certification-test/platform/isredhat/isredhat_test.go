@@ -82,6 +82,13 @@ func TestTestContainerIsRedHatRelease(t *testing.T) {
 			expectedResult: false,
 			expectedErr:    errors.New("random error"),
 		},
+		{ // Test Case #4 - Add UBI9 output
+			resultStdOut:   "Red Hat Enterprise Linux release 9.4 (Plow)",
+			resultStdErr:   "",
+			resultErr:      nil,
+			expectedResult: true,
+			expectedErr:    nil,
+		},
 	}
 
 	for _, tc := range testCases {
