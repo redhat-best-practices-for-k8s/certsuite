@@ -1,0 +1,38 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - cnf-certsuite.yaml
+
+# Uncomment the next line (namespace transformer) to deploy all the cnf-certsuite related
+# resources in a different namespace.
+# namespace: my-custom-ns-name
+
+# Uncomment the next lines so each resource's name have a custom prefix and/or suffix appended.
+# namePrefix: myprefix-
+# nameSuffix: -mysuffix
+
+# Uncomment the next lines (patches) in order to launch the cnf-certsuite pod with a different
+# test cases labels filter/expr. The following example changes the labels to "preflight".
+# patches:
+#   - target:
+#       version: v1
+#       kind: Pod
+#       name: cnf-certsuite
+#     patch: |
+#       - op: replace
+#         path: /spec/containers/0/args/1
+#         value: |
+#           ./run-cnf-suites.sh -l 'preflight' ; sleep inf
+
+# Uncomment the next lines (patches) in order to allow intrusive TCs to run.
+# patches:
+#   - target:
+#       version: v1
+#       kind: Pod
+#       name: cnf-certsuite
+#     patch: |
+#       - op: replace
+#         path: /spec/containers/0/env/0/value
+#         value: false

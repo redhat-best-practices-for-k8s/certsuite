@@ -1,0 +1,146 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cnf-certsuite
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cnf-certsuite-cr
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+  - nonResourceURLs: ["*"]
+    verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cnf-certsuite-crb
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: cnf-certsuite
+roleRef:
+  kind: ClusterRole
+  name: cnf-certsuite-cr
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cnf-certsuite-config
+  namespace: cnf-certsuite
+data:
+  tnf_config.yaml: |
+    targetNameSpaces:
+      - name: tnf
+    podsUnderTestLabels:
+      - "test-network-function.com/generic: target"
+    # deprecated operator label ("test-network-function.com/operator:"") still configured by default, no need to add it here
+    operatorsUnderTestLabels:
+      - "test-network-function.com/operator1:new"
+    targetCrdFilters:
+      - nameSuffix: "group1.test.com"
+        scalable: false
+      - nameSuffix: "test-network-function.com"
+        scalable: false
+      - nameSuffix: "tutorial.my.domain"
+        scalable: true
+    managedDeployments:
+      - name: jack
+    managedStatefulsets:
+      - name: jack
+    certifiedcontainerinfo:
+      - name: rocketchat/rocketchat
+        repository: registry.connect.redhat.com
+        tag: 0.56.0-1 # optional, "latest" assumed if empty
+        digest: # if set, takes precedence over tag. e.g. "sha256:aa34453a6417f8f76423ffd2cf874e9c4a1a5451ac872b78dc636ab54a0ebbc3"
+      - name: rocketchat/rocketchat
+        repository: registry.connect.redhat.com
+        tag: 0.56.0-1
+        digest: sha256:03f7f2499233a302351821d6f78f0e813c3f749258184f4133144558097c57b0
+    checkDiscoveredContainerCertificationStatus: false
+    acceptedKernelTaints:
+      - module: vboxsf
+      - module: vboxguest
+    skipScalingTestDeployments:
+      - name: deployment1
+        namespace: tnf
+    skipScalingTestStatefulsets:
+      - name: statefulset1
+        namespace: tnf
+    skipHelmChartList:
+      - name: coredns
+    validProtocolNames:
+      - "http3"
+      - "sctp"
+    servicesignorelist:
+      - "hazelcast-platform-controller-manager-service"
+      - "hazelcast-platform-webhook-service"
+      - "new-pro-controller-manager-metrics-service"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cnf-certsuite-preflight-dockerconfig
+  namespace: cnf-certsuite
+type: Opaque
+data:
+  # Sample of empty content, base64-coded: '{ "auths": {} }'
+  preflight_dockerconfig.json: |
+    eyAiYXV0aHMiOiB7fSB9Cg==
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cnf-certsuite
+  namespace: cnf-certsuite
+  labels:
+    app: cnf-certsuite
+spec:
+  serviceAccountName: default
+  restartPolicy: Never
+  volumes:
+    - name: config-volume
+      configMap:
+        name: cnf-certsuite-config
+    - name: preflight-dockerconfig
+      secret:
+        secretName: cnf-certsuite-preflight-dockerconfig
+  containers:
+    - name: cnf-certsuite
+      imagePullPolicy: Always
+      image: quay.io/testnetworkfunction/cnf-certification-test:latest
+      resources:
+        limits:
+          memory: 500Mi
+          cpu: 50m
+      command: ["sh"]
+      args:
+        - "-c"
+        - |
+          ./run-cnf-suites.sh -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' ; sleep inf
+      volumeMounts:
+        - name: config-volume
+          mountPath: /usr/tnf/config
+        - name: preflight-dockerconfig
+          mountPath: /usr/tnf/config/preflight
+      env:
+        - name: TNF_NON_INTRUSIVE_ONLY
+          value: "true"
+        - name: TNF_ALLOW_PREFLIGHT_INSECURE
+          value: "true"
+        - name: TNF_LOG_LEVEL
+          value: trace
+        - name: PFLT_DOCKERCONFIG
+          value: /usr/tnf/config/preflight/preflight_dockerconfig.json
+        - name: TNF_CONFIGURATION_PATH
+          value: /usr/tnf/config/tnf_config.yaml
