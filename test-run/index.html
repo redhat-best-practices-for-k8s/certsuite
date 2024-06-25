@@ -12,7 +12,7 @@
         <link rel="prev" href="../runtime-env/">
       
       
-        <link rel="next" href="../test-standalone/">
+        <link rel="next" href="../test-spec/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Prebuilt container - Red Hat Best Practices Test Suite for Kubernetes</title>
+        <title>Run - Red Hat Best Practices Test Suite for Kubernetes</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#test" class="md-skip">
+        <a href="#run-the-test-suite" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Prebuilt container
+              Run
             
           </span>
         </div>
@@ -251,19 +251,16 @@
     
   
   
-    
-    
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
-          
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
   
     
   
-  Build | Execute
+  Run
 
-        </a>
-      </li>
-    
+      </a>
+    </li>
   
 
       
@@ -529,57 +526,6 @@
   
   
   
-    
-    
-      
-        
-      
-        
-      
-    
-    
-      
-        
-        
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    Build | Execute
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Build | Execute
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-    
-  
-  
-  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
@@ -592,7 +538,7 @@
           
   
   <span class="md-ellipsis">
-    Prebuilt container
+    Run
   </span>
   
 
@@ -603,7 +549,7 @@
         
   
   <span class="md-ellipsis">
-    Prebuilt container
+    Run
   </span>
   
 
@@ -625,97 +571,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#with-quay-test-container-image" class="md-nav__link">
+  <a href="#building-the-certsuite-tool-executable" class="md-nav__link">
     <span class="md-ellipsis">
-      With quay test container image
+      Building the Certsuite tool executable
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="With quay test container image">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pull-test-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pull test image
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#check-cluster-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      Check cluster resources
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#run-the-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Run the tests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#run-with-docker" class="md-nav__link">
-    <span class="md-ellipsis">
-      Run with docker
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#output-targz-file-with-results-and-web-viewer-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      Output tar.gz file with results and web viewer files
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#with-local-test-container-image" class="md-nav__link">
+  <a href="#test-labels" class="md-nav__link">
     <span class="md-ellipsis">
-      With local test container image
+      Test labels
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="With local test container image">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selected-flags-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selected flags description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-container-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the container image
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the container image">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#build-locally" class="md-nav__link">
+  <a href="#pull-the-test-image" class="md-nav__link">
     <span class="md-ellipsis">
-      Build locally
+      Pull the test image
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#build-from-an-unofficial-source" class="md-nav__link">
+  <a href="#launch-the-test-suite" class="md-nav__link">
     <span class="md-ellipsis">
-      Build from an unofficial source
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#run-the-tests-2" class="md-nav__link">
-    <span class="md-ellipsis">
-      Run the tests 2
+      Launch the Test Suite
     </span>
   </a>
   
@@ -729,35 +633,6 @@
     </ul>
   
 </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../test-standalone/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Standalone test executable
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -1092,97 +967,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#with-quay-test-container-image" class="md-nav__link">
+  <a href="#building-the-certsuite-tool-executable" class="md-nav__link">
     <span class="md-ellipsis">
-      With quay test container image
+      Building the Certsuite tool executable
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="With quay test container image">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pull-test-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pull test image
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#check-cluster-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      Check cluster resources
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#run-the-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Run the tests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#run-with-docker" class="md-nav__link">
-    <span class="md-ellipsis">
-      Run with docker
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#output-targz-file-with-results-and-web-viewer-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      Output tar.gz file with results and web viewer files
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#with-local-test-container-image" class="md-nav__link">
+  <a href="#test-labels" class="md-nav__link">
     <span class="md-ellipsis">
-      With local test container image
+      Test labels
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="With local test container image">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selected-flags-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selected flags description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-container-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the container image
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the container image">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#build-locally" class="md-nav__link">
+  <a href="#pull-the-test-image" class="md-nav__link">
     <span class="md-ellipsis">
-      Build locally
+      Pull the test image
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#build-from-an-unofficial-source" class="md-nav__link">
+  <a href="#launch-the-test-suite" class="md-nav__link">
     <span class="md-ellipsis">
-      Build from an unofficial source
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#run-the-tests-2" class="md-nav__link">
-    <span class="md-ellipsis">
-      Run the tests 2
+      Launch the Test Suite
     </span>
   </a>
   
@@ -1212,115 +1045,103 @@
 
 
 <!-- markdownlint-disable code-block-style line-length no-bare-urls no-emphasis-as-heading -->
-<h1 id="test">Test<a class="headerlink" href="#test" title="Permanent link">&para;</a></h1>
-<p>The tests can be run within a prebuilt container in the <abbr title="OpenShift Container Platform">OCP</abbr> cluster.</p>
-<p><strong>Prerequisites for the <abbr title="OpenShift Container Platform">OCP</abbr> cluster</strong></p>
-<ul>
-<li>The cluster should have enough resources to drain nodes and reschedule pods. If that is not the case, then <code>lifecycle-pod-recreation</code> test should be skipped.</li>
-</ul>
-<h2 id="with-quay-test-container-image">With quay test container image<a class="headerlink" href="#with-quay-test-container-image" title="Permanent link">&para;</a></h2>
-<h3 id="pull-test-image">Pull test image<a class="headerlink" href="#pull-test-image" title="Permanent link">&para;</a></h3>
-<p>The test image is available at this repository in <a href="https://quay.io/repository/testnetworkfunction/cnf-certification-test">quay.io</a> and can be pulled using
-The image can be pulled using :</p>
-<div class="highlight"><pre><span></span><code>podman<span class="w"> </span>pull<span class="w"> </span>quay.io/testnetworkfunction/cnf-certification-test
+<h1 id="run-the-test-suite">Run the Test Suite<a class="headerlink" href="#run-the-test-suite" title="Permanent link">&para;</a></h1>
+<p>The Test Suite can be run using the Certsuite tool directly or through a container.</p>
+<p>To run the Test Suite direct use:</p>
+<div class="highlight"><pre><span></span><code>./certsuite<span class="w"> </span>run<span class="w"> </span>-l<span class="w"> </span>&lt;label-filter&gt;<span class="w"> </span>-c<span class="w"> </span>&lt;tnf-config&gt;<span class="w"> </span>-k<span class="w"> </span>&lt;kubeconfig&gt;<span class="w"> </span>-o<span class="w"> </span>&lt;output-dir&gt;<span class="w"> </span><span class="o">[</span>&lt;flags&gt;<span class="o">]</span>
 </code></pre></div>
-<h3 id="check-cluster-resources">Check cluster resources<a class="headerlink" href="#check-cluster-resources" title="Permanent link">&para;</a></h3>
-<p>Some tests suites such as <code>platform-alteration</code> require node access to get node configuration like <code>hugepage</code>.
-In order to get the required information, the test suite does not <code>ssh</code> into nodes, but instead rely on <a href="https://docs.openshift.com/container-platform/3.7/cli_reference/basic_cli_operations.html#debug">oc debug tools</a>. This tool makes it easier to fetch information from nodes and also to debug running pods.</p>
-<p><code>oc debug tool</code> will launch a new container ending with <strong>-debug</strong> suffix, and the container will be destroyed once the debug session is done. Ensure that the cluster should have enough resources to create debug pod, otherwise those tests would fail.</p>
+<p>If the <em>kubeconfig</em> is not provided the value of the <code>KUBECONFIG</code> environment variable will be taken by default.</p>
+<p>The CLI output will show the following information:</p>
+<ul>
+<li>Details of the Certsuite and claim file versions, the test case filter used and the location of the output files.</li>
+<li>The results for each test case grouped into test suites (the most recent log line is shown live as each test executes).</li>
+<li>Table with the number of test cases that have passed/failed or been skipped per test suite.</li>
+<li>The log lines produced by each test case that has failed.</li>
+</ul>
+<p>Once the test run has completed, the test results can be visualized by opening the <code>results.html</code> website in a web browser and loading the <code>claim.json</code> file.</p>
+<p>For more information on how to analyze the results see <a href="../test-output/">Test Output</a>.</p>
+<h2 id="building-the-certsuite-tool-executable">Building the Certsuite tool executable<a class="headerlink" href="#building-the-certsuite-tool-executable" title="Permanent link">&para;</a></h2>
+<p>The Certsuite binary can be built as follows:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-certsuite-tool
+</code></pre></div>
+<h2 id="test-labels">Test labels<a class="headerlink" href="#test-labels" title="Permanent link">&para;</a></h2>
+<p>The test cases cases have several labels to allow for different types of groupings when selecting which to run. These are the following:</p>
+<ul>
+<li>The name of the test case</li>
+<li>The name of the test suite</li>
+<li>The category of the test case (common, telco, faredge, extended)</li>
+</ul>
+<p>These labels can be combined with some operators to create label filters that match any condition. For example:</p>
+<ul>
+<li>The label filter &ldquo;observability,access-control&rdquo; will match the test suites <em>observability</em> and <em>access-control</em>.</li>
+<li>The label filter &ldquo;operator &amp;&amp; !operator-crd-versioning&rdquo; will match the <em>operator</em> test suite without the <em>operator_crd_versioning</em> test case.</li>
+<li>To select all the test cases the <em>all</em> label filter can be used.</li>
+</ul>
+<p>To view which test cases will run for a specific label or label filter use the flag <code>--list</code>.</p>
+<p>See the <a href="CATALOG.md">CATALOG.md</a> to find all test labels.</p>
+<h2 id="selected-flags-description">Selected flags description<a class="headerlink" href="#selected-flags-description" title="Permanent link">&para;</a></h2>
+<p>The following is a non-exhaustive list of the most common flags that the <code>certsuite run</code> command accepts. To see the complete list use the <code>-h, --help</code> flag.</p>
+<ul>
+<li><code>-l, --label-filter</code>: Label expression to filter test cases. Can be a test suite or list or test suites, such as <code>"observability,access-control"</code> or a more complex expression with logical operators such as <code>"access-control &amp;&amp; !access-control-sys-admin-capability"</code>.</li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>It&rsquo;s <strong>recommended</strong> to clean up disk space and make sure there&rsquo;s enough resources to deploy another container image in every node before starting the tests.</p>
-</div>
-<h3 id="run-the-tests">Run the tests<a class="headerlink" href="#run-the-tests" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>./run-tnf-container.sh
-</code></pre></div>
-<p><strong>Required arguments</strong></p>
-<ul>
-<li><code>-t</code> to provide the path of the local directory that contains tnf config files</li>
-<li><code>-o</code> to provide the path of the local directory where test results (claim.json), the execution logs (certsuite.log), and the results artifacts file (results.tar.gz) will be available from after the container exits.</li>
-</ul>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This directory must exist in order for the claim file to be written.</p>
-</div>
-<p><strong>Optional arguments</strong></p>
-<ul>
-<li><code>-l</code> to list the labels to be run. See <a href="https://onsi.github.io/ginkgo/#spec-labels">Ginkgo Spec Labels</a> for more information on how to filter tests with labels.</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If <code>-l</code> is not specified, the tnf will run in &lsquo;diagnostic&rsquo; mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc…) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds…</p>
+<p>If <code>-l</code> is not specified, the Test Suite will run in &lsquo;diagnostic&rsquo; mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc…) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds…</p>
 </div>
 <ul>
 <li>
-<p><code>-i</code> to provide a name to a custom <abbr title="Test Network Function">TNF</abbr> container image. Supports local images, as well as images from external registries.</p>
+<p><code>-o, --output-dir</code>: Path of the local directory where test results (claim.json), the execution logs (certsuite.log), and the results artifacts file (results.tar.gz) will be available from after the container exits.</p>
 </li>
 <li>
-<p><code>-k</code> to set a path to one or more kubeconfig files to be used by the container to authenticate with the cluster. Paths must be separated by a colon.</p>
+<p><code>-k, --kubeconfig</code>: Path to the Kubeconfig file of the target cluster.</p>
 </li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If <code>-k</code> is not specified, autodiscovery is performed.</p>
-</div>
-<p>The autodiscovery first looks for paths in the <code>$KUBECONFIG</code> environment variable on the host system, and if the variable is not set or is empty, the default configuration stored in <code>$HOME/.kube/config</code> is checked.</p>
-<ul>
-<li><code>-n</code> to give the network mode of the container. Defaults set to <code>host</code>, which requires selinux to be disabled. Alternatively, <code>bridge</code> mode can be used with selinux if TNF_CONTAINER_CLIENT is set to <code>docker</code> or running the test as root.</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>See the <a href="https://docs.docker.com/engine/reference/run/#network-settings">docker run &ndash;network parameter reference</a> for more information on how to configure network settings.</p>
-</div>
-<ul>
-<li><code>-b</code> to set an external offline DB that will be used to verify the certification status of containers, helm charts and operators. Defaults to the DB included in the <abbr title="Test Network Function">TNF</abbr> container image.</li>
+<li>
+<p><code>-c, --config-file</code>: Path to the <code>tnf_config.yml</code> file.</p>
+</li>
+<li>
+<p><code>--preflight-dockerconfig</code>: Path to the Dockerconfig file to be used by the Preflight test suite</p>
+</li>
+<li>
+<p><code>--offline-db</code>: Path to an offline DB to check the certification status of container images, operators and helm charts. Defaults to the DB included in the test container image.</p>
+</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>See the <a href="https://github.com/test-network-function/oct">OCT tool</a> for more information on how to create this DB.</p>
 </div>
-<p><strong>Command to run</strong></p>
-<div class="highlight"><pre><span></span><code>./run-tnf-container.sh<span class="w"> </span>-k<span class="w"> </span>~/.kube/config<span class="w"> </span>-t<span class="w"> </span>~/tnf/config
--o<span class="w"> </span>~/tnf/output<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;networking,access-control&quot;</span>
+<h2 id="using-the-container-image">Using the container image<a class="headerlink" href="#using-the-container-image" title="Permanent link">&para;</a></h2>
+<p>The only prerequisite for running the Test Suite in container mode is having Docker or Podman installed.</p>
+<h3 id="pull-the-test-image">Pull the test image<a class="headerlink" href="#pull-the-test-image" title="Permanent link">&para;</a></h3>
+<p>The test image is available at this <a href="https://quay.io/repository/testnetworkfunction/cnf-certification-test">repository</a> and can be pulled using:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>quay.io/testnetworkfunction/cnf-certification-test:&lt;image-tag&gt;
 </code></pre></div>
-<p>See <a href="../test-spec/#general-tests">General tests</a> for a list of available keywords.</p>
-<h3 id="run-with-docker">Run with <code>docker</code><a class="headerlink" href="#run-with-docker" title="Permanent link">&para;</a></h3>
-<p>By default, <code>run-container.sh</code> utilizes <code>podman</code>. However, an alternate container virtualization
-client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is particularly useful for operating systems that do not readily support
-<code>podman</code>.</p>
-<p>In order to configure the test harness to use <code>docker</code>, issue the following prior to
-<code>run-tnf-container.sh</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_CONTAINER_CLIENT</span><span class="o">=</span>docker
-</code></pre></div>
-<h3 id="output-targz-file-with-results-and-web-viewer-files">Output tar.gz file with results and web viewer files<a class="headerlink" href="#output-targz-file-with-results-and-web-viewer-files" title="Permanent link">&para;</a></h3>
-<p>After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them.</p>
-<p>By default, only the <code>claim.js</code>, the <code>cnf-certification-tests_junit.xml</code> file and this new tar.gz file are created after the test suite has finished, as this is probably all that normal partners/users will need.</p>
-<p>Two env vars allow to control the web artifacts and the the new tar.gz file generation:</p>
+<p>The image tag can be <code>latest</code> to select the latest release, <code>unstable</code> to fetch the image built with the latest commit in the repository or any existing version number such as <code>v5.1.0</code>.</p>
+<h3 id="launch-the-test-suite">Launch the Test Suite<a class="headerlink" href="#launch-the-test-suite" title="Permanent link">&para;</a></h3>
+<p>The Test Suite requires 3 files that must be provided to the test container:</p>
 <ul>
-<li>TNF_OMIT_ARTIFACTS_ZIP_FILE=true/false : Defaulted to false in the launch scripts. If set to true, the tar.gz generation will be skipped.</li>
-<li>TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER=true/false : Defaulted to false in the launch scripts. If set to true, the web viewer/parser files will also be copied to the output (claim) folder.</li>
+<li>The <em>Kubeconfig</em> for the target cluster.</li>
+<li>The <em>Dockerconfig</em> of the local Docker installation (only for the Preflight test suite).</li>
+<li>The <code>tnf_config.yml</code>.</li>
 </ul>
-<h2 id="with-local-test-container-image">With local test container image<a class="headerlink" href="#with-local-test-container-image" title="Permanent link">&para;</a></h2>
-<h3 id="build-locally">Build locally<a class="headerlink" href="#build-locally" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>cnf-certification-test:v5.1.2<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_VERSION</span><span class="o">=</span>v5.1.2<span class="w"> </span><span class="se">\</span>
-</code></pre></div>
+<p>To reduce the number of shared volumes with the test container in the example below those files are copied into a folder called &ldquo;config&rdquo;. Also, another folder to contain the output files called &ldquo;results&rdquo; has been created. The files saved in the output directory after the test run are:</p>
 <ul>
-<li><code>TNF_VERSION</code> value is set to a branch, a tag, or a hash of a commit that will be installed into the image</li>
+<li>A <code>claim.json</code> file with the test results.</li>
+<li>A <code>certsuite.log</code> file with the execution logs.</li>
+<li>A <code>.tar.gz</code> file with the above two files and an additional <code>results.html</code> file to visualize the results in a website.</li>
 </ul>
-<h3 id="build-from-an-unofficial-source">Build from an unofficial source<a class="headerlink" href="#build-from-an-unofficial-source" title="Permanent link">&para;</a></h3>
-<p>The unofficial source could be a fork of the <abbr title="Test Network Function">TNF</abbr> repository.</p>
-<p>Use the <code>TNF_SRC_URL</code> build argument to override the URL to a source repository.</p>
-<div class="highlight"><pre><span></span><code>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>cnf-certification-test:v5.1.2<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_VERSION</span><span class="o">=</span>v5.1.2<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_SRC_URL</span><span class="o">=</span>https://github.com/test-network-function/cnf-certification-test<span class="w"> </span>.
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>
+<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/config:/usr/certsuite/config:Z
+<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/results:/usr/certsuite/results:Z
+
+<span class="w">  </span>quay.io/testnetworkfunction/cnf-certification-test:latest
+
+<span class="w">  </span>certsuite<span class="w"> </span>run
+<span class="w">  </span>--kubeconfig<span class="o">=</span>/usr/certsuite/config/kubeconfig
+<span class="w">  </span>--preflight-dockerconfig<span class="o">=</span>/usr/certsuite/config/dockerconfig
+<span class="w">  </span>--config-file<span class="o">=</span>/usr/certsuite/config/tnf_config.yml
+<span class="w">  </span>--output-dir<span class="o">=</span>/usr/certsuite/results
+<span class="w">  </span>--label-filter<span class="o">=</span>all
 </code></pre></div>
-<h3 id="run-the-tests-2">Run the tests 2<a class="headerlink" href="#run-the-tests-2" title="Permanent link">&para;</a></h3>
-<p>Specify the custom <abbr title="Test Network Function">TNF</abbr> image using the <code>-i</code> parameter.</p>
-<div class="highlight"><pre><span></span><code>./run-tnf-container.sh<span class="w"> </span>-i<span class="w"> </span>cnf-certification-test:v5.1.2
--t<span class="w"> </span>~/tnf/config<span class="w"> </span>-o<span class="w"> </span>~/tnf/output<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;networking,access-control&quot;</span>
-</code></pre></div>
-<p>Note: see <a href="../test-spec/#general-tests">General tests</a> for a list of available keywords.</p>
 <!-- markdownlint-disable first-line-heading -->
 
 
