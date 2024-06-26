@@ -28,8 +28,8 @@ Please contact us in case the documentation is broken.
 ## Demo
 
 <!-- markdownlint-disable MD033 -->
-<object type="image/svg+xml" data="docs/assets/images/demo-cnfcert.svg">
-<img src="docs/assets/images/demo-cnfcert.svg">
+<object type="image/svg+xml" data="docs/assets/images/demo-certsuite.svg">
+<img src="docs/assets/images/demo-certsuite.svg">
 </object>
 <!-- markdownlint-enable MD033 -->
 
