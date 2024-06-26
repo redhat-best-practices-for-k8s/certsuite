@@ -28,7 +28,7 @@ const (
 	// NotRedHatBasedRegex is the expected output for a container that is not based on Red Hat technologies.
 	NotRedHatBasedRegex = `(?m)Unknown Base Image`
 	// VersionRegex is regular expression expected for a container based on Red Hat technologies.
-	VersionRegex = `(?m)Red Hat Enterprise Linux( Server)? release (\d+\.\d+) \(\w+\)`
+	VersionRegex = `(?m)Red Hat Enterprise Linux( Server)? release (\d+\.\d+)`
 )
 
 type BaseImageInfo struct {
