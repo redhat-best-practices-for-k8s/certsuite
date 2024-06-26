@@ -158,9 +158,6 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 	if clientsHolder.ready {
 		return &clientsHolder
 	}
-	if len(filenames) == 0 {
-		log.Fatal("Please provide a valid Kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config")
-	}
 	clientsHolder, err := newClientsHolder(filenames...)
 	if err != nil {
 		log.Fatal("Failed to create k8s clients holder, err: %v", err)
