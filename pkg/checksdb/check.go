@@ -111,7 +111,7 @@ func (check *Check) GetLogs() string {
 	return check.logArchive.String()
 }
 
-func (check *Check) GetLoggger() *log.Logger {
+func (check *Check) GetLogger() *log.Logger {
 	return check.logger
 }
 

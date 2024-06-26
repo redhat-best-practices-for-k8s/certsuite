@@ -484,7 +484,7 @@ func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironmen
 		}
 		alreadyCheckedNodes[cut.NodeName] = true
 
-		err := bootparams.TestBootParamsHelper(env, cut, check.GetLoggger())
+		err := bootparams.TestBootParamsHelper(env, cut, check.GetLogger())
 		if err != nil {
 			check.LogError("Node %q failed the boot params check", cut.NodeName)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false).

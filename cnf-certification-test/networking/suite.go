@@ -251,8 +251,8 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
 func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommons.IPVersion, aType netcommons.IFType, check *checksdb.Check) {
-	netsUnderTest := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType, check.GetLoggger())
-	report, skip := icmp.RunNetworkingTests(netsUnderTest, defaultNumPings, aIPVersion, check.GetLoggger())
+	netsUnderTest := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType, check.GetLogger())
+	report, skip := icmp.RunNetworkingTests(netsUnderTest, defaultNumPings, aIPVersion, check.GetLogger())
 	if skip {
 		check.LogInfo("There are no %q networks to test with at least 2 pods, skipping test", aIPVersion)
 	}
@@ -264,7 +264,7 @@ func testOCPReservedPortsUsage(check *checksdb.Check, env *provider.TestEnvironm
 	OCPReservedPorts := map[int32]bool{
 		22623: true,
 		22624: true}
-	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, OCPReservedPorts, "OCP", check.GetLoggger())
+	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, OCPReservedPorts, "OCP", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
@@ -281,7 +281,7 @@ func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnviro
 		15001: true,
 		15000: true,
 	}
-	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, ReservedPorts, "Partner", check.GetLoggger())
+	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, ReservedPorts, "Partner", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 

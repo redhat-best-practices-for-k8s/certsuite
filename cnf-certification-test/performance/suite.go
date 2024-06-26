@@ -216,7 +216,7 @@ func testExclusiveCPUPool(check *checksdb.Check, env *provider.TestEnvironment) 
 		nBExclusiveCPUPoolContainers := 0
 		nBSharedCPUPoolContainers := 0
 		for _, cut := range put.Containers {
-			if resources.HasExclusiveCPUsAssigned(cut, check.GetLoggger()) {
+			if resources.HasExclusiveCPUsAssigned(cut, check.GetLogger()) {
 				nBExclusiveCPUPoolContainers++
 			} else {
 				nBSharedCPUPoolContainers++
@@ -266,7 +266,7 @@ func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvi
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Internal error, err=%s", err), false))
 		}
 
-		compliantPids, nonCompliantPids := scheduling.ProcessPidsCPUScheduling(processes, cut, schedulingType, check.GetLoggger())
+		compliantPids, nonCompliantPids := scheduling.ProcessPidsCPUScheduling(processes, cut, schedulingType, check.GetLogger())
 		// Check for the specified priority for each processes running in that pid namespace
 
 		compliantContainersPids = append(compliantContainersPids, compliantPids...)
