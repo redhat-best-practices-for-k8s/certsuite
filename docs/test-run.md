@@ -84,7 +84,7 @@ The test image is available at this [repository](https://quay.io/repository/test
 docker pull quay.io/testnetworkfunction/cnf-certification-test:<image-tag>
 ```
 
-The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository or any existing version number such as `v5.1.0`.
+The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository or any existing version number such as `v5.1.3`.
 
 ### Launch the Test Suite
 
