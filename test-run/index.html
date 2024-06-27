@@ -1129,17 +1129,15 @@
 <li>A <code>certsuite.log</code> file with the execution logs.</li>
 <li>A <code>.tar.gz</code> file with the above two files and an additional <code>results.html</code> file to visualize the results in a website.</li>
 </ul>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>
-<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/config:/usr/certsuite/config:Z
-<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/results:/usr/certsuite/results:Z
-
-<span class="w">  </span>quay.io/testnetworkfunction/cnf-certification-test:latest
-
-<span class="w">  </span>certsuite<span class="w"> </span>run
-<span class="w">  </span>--kubeconfig<span class="o">=</span>/usr/certsuite/config/kubeconfig
-<span class="w">  </span>--preflight-dockerconfig<span class="o">=</span>/usr/certsuite/config/dockerconfig
-<span class="w">  </span>--config-file<span class="o">=</span>/usr/certsuite/config/tnf_config.yml
-<span class="w">  </span>--output-dir<span class="o">=</span>/usr/certsuite/results
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/config:/usr/certsuite/config:Z<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/results:/usr/certsuite/results:Z<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>quay.io/testnetworkfunction/cnf-certification-test:latest<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>certsuite<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--kubeconfig<span class="o">=</span>/usr/certsuite/config/kubeconfig<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--preflight-dockerconfig<span class="o">=</span>/usr/certsuite/config/dockerconfig<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config-file<span class="o">=</span>/usr/certsuite/config/tnf_config.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-dir<span class="o">=</span>/usr/certsuite/results<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--label-filter<span class="o">=</span>all
 </code></pre></div>
 <!-- markdownlint-disable first-line-heading -->
