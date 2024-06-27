@@ -101,16 +101,14 @@ To reduce the number of shared volumes with the test container in the example be
 * A `.tar.gz` file with the above two files and an additional `results.html` file to visualize the results in a website.
 
 ```shell
-docker run --rm --network host 
-  -v <path-to-local-dir>/config:/usr/certsuite/config:Z
-  -v <path-to-local-dir>/results:/usr/certsuite/results:Z
-  
-  quay.io/testnetworkfunction/cnf-certification-test:latest
-  
-  certsuite run
-  --kubeconfig=/usr/certsuite/config/kubeconfig
-  --preflight-dockerconfig=/usr/certsuite/config/dockerconfig
-  --config-file=/usr/certsuite/config/tnf_config.yml
-  --output-dir=/usr/certsuite/results
+docker run --rm --network host \
+  -v <path-to-local-dir>/config:/usr/certsuite/config:Z \
+  -v <path-to-local-dir>/results:/usr/certsuite/results:Z \
+  quay.io/testnetworkfunction/cnf-certification-test:latest \
+  certsuite run \
+  --kubeconfig=/usr/certsuite/config/kubeconfig \
+  --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
+  --config-file=/usr/certsuite/config/tnf_config.yml \
+  --output-dir=/usr/certsuite/results \
   --label-filter=all
 ```
