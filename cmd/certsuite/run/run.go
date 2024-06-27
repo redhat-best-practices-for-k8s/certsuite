@@ -42,6 +42,10 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
 	runCmd.PersistentFlags().String("tnf-image-repository", "quay.io/testnetworkfunction", "The repository where TNF images are stored")
 	runCmd.PersistentFlags().String("tnf-debug-image", "debug-partner:5.1.3", "Name of the TNF debug image")
+	runCmd.PersistentFlags().String("daemonset-cpu-req", "100m", "CPU request for the debug DaemonSet container")
+	runCmd.PersistentFlags().String("daemonset-cpu-lim", "100m", "CPU limit for the debug DaemonSet container")
+	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the debug DaemonSet container")
+	runCmd.PersistentFlags().String("daemonset-mem-lim", "100M", "Memory limit for the debug DaemonSet container")
 
 	return runCmd
 }
@@ -67,6 +71,10 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams.EnableXMLCreation, _ = cmd.Flags().GetBool("create-xml-junit-file")
 	testParams.TnfImageRepo, _ = cmd.Flags().GetString("tnf-image-repository")
 	testParams.TnfDebugImage, _ = cmd.Flags().GetString("tnf-debug-image")
+	testParams.DaemonsetCPUReq, _ = cmd.Flags().GetString("daemonset-cpu-req")
+	testParams.DaemonsetCPULim, _ = cmd.Flags().GetString("daemonset-cpu-lim")
+	testParams.DaemonsetMemReq, _ = cmd.Flags().GetString("daemonset-mem-req")
+	testParams.DaemonsetMemLim, _ = cmd.Flags().GetString("daemonset-mem-lim")
 	timeoutStr, _ := cmd.Flags().GetString("timeout")
 
 	// Check if the output directory exists and, if not, create it
