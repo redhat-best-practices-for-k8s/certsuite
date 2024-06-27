@@ -624,7 +624,7 @@ while IFS=, read -r package_name catalog_index; do
 		-v "$config_dir":/usr/tnf/config:Z \
 		-v "$report_dir":/usr/tnf/output:Z \
 		${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
-		./cnf-certification-test/certsuite run \
+		certsuite run \
 		--kubeconfig=/usr/tnf/config/kubeconfig \
 		--preflight-dockerconfig=/usr/tnf/config/dockerconfig \
 		--config-file=/usr/tnf/config/tnf_config.yml \
