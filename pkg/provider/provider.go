@@ -93,10 +93,10 @@ type TestEnvironment struct { // rename this with testTarget
 	RoleBindings           []rbacv1.RoleBinding
 	Roles                  []rbacv1.Role
 
-	Config    configuration.TestConfiguration
-	variables configuration.TestParameters
-	Crds      []*apiextv1.CustomResourceDefinition `json:"testCrds"`
-	AllCrds   []*apiextv1.CustomResourceDefinition
+	Config  configuration.TestConfiguration
+	params  configuration.TestParameters
+	Crds    []*apiextv1.CustomResourceDefinition `json:"testCrds"`
+	AllCrds []*apiextv1.CustomResourceDefinition
 
 	HorizontalScaler       []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Services               []*corev1.Service                    `json:"testServices"`
@@ -178,7 +178,7 @@ var (
 func deployDaemonSet(namespace string) error {
 	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
 
-	dsImage := env.variables.TnfPartnerRepo + "/" + env.variables.SupportImage
+	dsImage := env.params.TnfImageRepo + "/" + env.params.TnfDebugImage
 	if k8sPrivilegedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
 		return nil
 	}
@@ -207,8 +207,8 @@ func buildTestEnvironment() { //nolint:funlen
 	start := time.Now()
 	env = TestEnvironment{}
 
-	env.variables = *configuration.GetTestParameters()
-	config, err := configuration.LoadConfiguration(env.variables.ConfigurationPath)
+	env.params = *configuration.GetTestParameters()
+	config, err := configuration.LoadConfiguration(env.params.ConfigFile)
 	if err != nil {
 		log.Fatal("Cannot load configuration file: %v", err)
 	}
@@ -496,19 +496,19 @@ func (env *TestEnvironment) SetNeedsRefresh() {
 }
 
 func (env *TestEnvironment) IsIntrusive() bool {
-	return !env.variables.NonIntrusiveOnly
+	return !env.params.NonIntrusiveOnly
 }
 
 func (env *TestEnvironment) IsPreflightInsecureAllowed() bool {
-	return env.variables.AllowPreflightInsecure
+	return env.params.AllowPreflightInsecure
 }
 
 func (env *TestEnvironment) GetDockerConfigFile() string {
-	return env.variables.PfltDockerconfig
+	return env.params.PfltDockerconfig
 }
 
 func (env *TestEnvironment) GetOfflineDBPath() string {
-	return env.variables.OfflineDB
+	return env.params.OfflineDB
 }
 
 func (env *TestEnvironment) GetWorkerCount() int {

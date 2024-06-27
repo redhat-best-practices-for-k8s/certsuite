@@ -21,11 +21,10 @@ REGISTRY_LOCAL?=localhost
 REGISTRY?=quay.io
 TNF_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
 IMAGE_TAG?=localtest
-.PHONY: all clean test
+.PHONY: all clean test build
 .PHONY: \
-	build \
-	build-cnf-tests \
-	build-cnf-tests-debug \
+	build-certsuite-tool \
+	build-certsuite-tool-debug \
 	coverage-html \
 	generate \
 	install-moq \
@@ -57,11 +56,7 @@ RESULTS_HTML_URL=https://raw.githubusercontent.com/test-network-function/parser/
 
 all: build
 
-# Runs the unit tests and build all binaries
-build:
-	make \
-		build-cnf-tests \
-		test
+build: build-certsuite-tool
 
 build-certsuite-tool: results-html
 	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
@@ -70,8 +65,7 @@ build-certsuite-tool: results-html
 # Cleans up auto-generated and report files
 clean:
 	go clean && rm -f all-releases.txt cover.out claim.json cnf-certification-test/claim.json \
-		cnf-certification-test/claimjson.js cnf-certification-test/cnf-certification-test.test \
-		cnf-certification-test/cnf-certification-tests_junit.xml \
+		cnf-certification-test/claimjson.js cnf-certification-test/cnf-certification-tests_junit.xml \
 		cnf-certification-test/results.html jsontest-cli latest-release-tag.txt \
 		release-tag.txt test-out.json certsuite
 
@@ -103,17 +97,10 @@ coverage-qe: build-certsuite-tool
 build-catalog-md: build-certsuite-tool
 	./certsuite generate catalog markdown >CATALOG.md
 
-# build the CNF test binary
-build-cnf-tests: results-html
-	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
-
-# build the CNF test binary for local development
-dev:
-	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
-
-# Builds the CNF test binary with debug flags
-build-cnf-tests-debug: results-html
-	PATH="${PATH}:${GOBIN}" go build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
+# Builds the Certsuite binary with debug flags
+build-certsuite-tool-debug: results-html
+	PATH="${PATH}:${GOBIN}" go build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" -o certsuite -v cmd/certsuite/main.go
+	git restore cnf-certification-test/results/html/results.html
 
 install-mac-brew-tools:
 	brew install \
