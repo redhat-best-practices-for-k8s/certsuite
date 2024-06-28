@@ -1148,31 +1148,31 @@ func TestSetNeedsRefresh(t *testing.T) {
 
 func TestIsIntrusive(t *testing.T) {
 	env := &TestEnvironment{}
-	env.variables.NonIntrusiveOnly = true
+	env.params.NonIntrusiveOnly = true
 	assert.False(t, env.IsIntrusive())
 
-	env.variables.NonIntrusiveOnly = false
+	env.params.NonIntrusiveOnly = false
 	assert.True(t, env.IsIntrusive())
 }
 
 func TestIsPreflightInsecureAllowed(t *testing.T) {
 	env := &TestEnvironment{}
-	env.variables.AllowPreflightInsecure = true
+	env.params.AllowPreflightInsecure = true
 	assert.True(t, env.IsPreflightInsecureAllowed())
 
-	env.variables.AllowPreflightInsecure = false
+	env.params.AllowPreflightInsecure = false
 	assert.False(t, env.IsPreflightInsecureAllowed())
 }
 
 func TestGetDockerConfigFile(t *testing.T) {
 	env := &TestEnvironment{}
-	env.variables.PfltDockerconfig = "/tmp/config.json"
+	env.params.PfltDockerconfig = "/tmp/config.json"
 	assert.Equal(t, "/tmp/config.json", env.GetDockerConfigFile())
 }
 
 func TestGetOfflineDBPath(t *testing.T) {
 	env := &TestEnvironment{}
-	env.variables.OfflineDB = "/tmp/offline.db"
+	env.params.OfflineDB = "/tmp/offline.db"
 	assert.Equal(t, "/tmp/offline.db", env.GetOfflineDBPath())
 }
 

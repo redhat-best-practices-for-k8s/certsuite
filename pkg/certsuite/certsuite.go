@@ -2,7 +2,6 @@ package certsuite
 
 import (
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -26,12 +25,9 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/collector"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/flags"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 )
-
-var timeout time.Duration
 
 func LoadChecksDB(labelsExpr string) {
 	accesscontrol.LoadChecks()
@@ -52,6 +48,8 @@ func LoadChecksDB(labelsExpr string) {
 const (
 	junitXMLOutputFileName = "cnf-certification-tests_junit.xml"
 	collectorAppURL        = "http://claims-collector.cnf-certifications.sysdeseng.com"
+	timeoutDefaultvalue    = 24 * time.Hour
+	noLabelsFilterExpr     = "none"
 )
 
 func getK8sClientsConfigFileNames() []string {
@@ -61,8 +59,9 @@ func getK8sClientsConfigFileNames() []string {
 		// Add the kubeconfig path
 		fileNames = append(fileNames, params.Kubeconfig)
 	}
-	if params.Home != "" {
-		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
+	homeDir := os.Getenv("HOME")
+	if homeDir != "" {
+		kubeConfigFilePath := filepath.Join(homeDir, ".kube", "config")
 		// Check if the kubeconfig path exists
 		if _, err := os.Stat(kubeConfigFilePath); err == nil {
 			log.Info("kubeconfig path %s is present", kubeConfigFilePath)
@@ -76,68 +75,31 @@ func getK8sClientsConfigFileNames() []string {
 	return fileNames
 }
 
-func processFlags() error {
-	// Check if the output directory exists and, if not, create it
-	outputDir := *flags.OutputDir
-	if _, err := os.Stat(outputDir); os.IsNotExist(err) {
-		var dirPerm fs.FileMode = 0o755        // default permissions for a directory
-		err := os.MkdirAll(outputDir, dirPerm) //nolint:govet // err shadowing intended
-		if err != nil {
-			return fmt.Errorf("could not create directory %q, err: %v", outputDir, err)
-		}
-	} else if err != nil {
-		return fmt.Errorf("could not check directory %q, err: %v", outputDir, err)
-	}
+func Startup() {
+	testParams := configuration.GetTestParameters()
 
 	// Create an evaluator to filter test cases with labels
-	if err := checksdb.InitLabelsExprEvaluator(*flags.LabelsFlag); err != nil {
-		return fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
-	}
-
-	// Diagnostic functions will run when no labels are provided.
-	if *flags.LabelsFlag == flags.NoLabelsExpr {
-		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched")
-	}
-
-	t, err := time.ParseDuration(*flags.TimeoutFlag)
-	if err != nil {
-		log.Error("Failed to parse timeout flag %q, err: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
-		timeout = flags.TimeoutFlagDefaultvalue
-	} else {
-		timeout = t
-	}
-
-	return nil
-}
-
-func Startup(initFlags func(interface{}), arg interface{}) {
-	err := configuration.LoadEnvironmentVariables()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v\n", err)
+	if err := checksdb.InitLabelsExprEvaluator(testParams.LabelsFilter); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to initialize a test case label evaluator, err: %v", err)
 		os.Exit(1)
 	}
 
-	initFlags(arg)
-
-	err = processFlags()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error while processing flags: %v", err)
-		os.Exit(1)
-	}
-
-	logLevel := configuration.GetTestParameters().LogLevel
-	err = log.CreateGlobalLogFile(*flags.OutputDir, logLevel)
-	if err != nil {
+	if err := log.CreateGlobalLogFile(testParams.OutputDir, testParams.LogLevel); err != nil {
 		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v\n", err)
 		os.Exit(1)
 	}
 
+	// Diagnostic functions will run when no labels are provided.
+	if testParams.LabelsFilter == noLabelsFilterExpr {
+		log.Warn("The Best Practices Test Suite will run in diagnostic mode so no test case will be launched")
+	}
+
 	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-	LoadChecksDB(*flags.LabelsFlag)
+	LoadChecksDB(testParams.LabelsFilter)
 
 	// If the list flag is passed, print the checks filtered with --labels and leave
-	if *flags.ListFlag {
+	if testParams.ListOnly {
 		checksIDs, err := checksdb.FilterCheckIDs()
 		if err != nil {
 			log.Fatal("Could not list test cases, err: %v", err)
@@ -147,20 +109,20 @@ func Startup(initFlags func(interface{}), arg interface{}) {
 		}
 	}
 
-	log.Info("TNF Version: %v", versions.GitVersion())
+	log.Info("CERTSUITE Version: %v", versions.GitVersion())
 	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
-	log.Info("Labels filter: %v", *flags.LabelsFlag)
-	log.Info("Log level: %s", strings.ToUpper(logLevel))
+	log.Info("Labels filter: %v", testParams.LabelsFilter)
+	log.Info("Log level: %s", strings.ToUpper(testParams.LogLevel))
 
-	log.Debug("Test environment variables: %#v", *configuration.GetTestParameters())
+	log.Debug("Test parameters: %#v", *configuration.GetTestParameters())
 
 	cli.PrintBanner()
 
 	fmt.Printf("CERTSUITE version: %s\n", versions.GitVersion())
 	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
-	fmt.Printf("Checks filter: %s\n", *flags.LabelsFlag)
-	fmt.Printf("Output folder: %s\n", *flags.OutputDir)
-	fmt.Printf("Log file: %s (level=%s)\n", log.LogFileName, logLevel)
+	fmt.Printf("Checks filter: %s\n", testParams.LabelsFilter)
+	fmt.Printf("Output folder: %s\n", testParams.OutputDir)
+	fmt.Printf("Log file: %s (level=%s)\n", log.LogFileName, testParams.LogLevel)
 	fmt.Printf("\n")
 }
 
@@ -174,6 +136,8 @@ func Shutdown() {
 
 //nolint:funlen
 func Run(labelsFilter, outputFolder string) error {
+	testParams := configuration.GetTestParameters()
+
 	fmt.Println("Running discovery of CNF target resources...")
 	fmt.Print("\n")
 
@@ -186,9 +150,9 @@ func Run(labelsFilter, outputFolder string) error {
 
 	claimOutputFile := filepath.Join(outputFolder, results.ClaimFileName)
 
-	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, timeout)
+	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, testParams.Timeout)
 	startTime := time.Now()
-	failedCtr, err := checksdb.RunChecks(timeout)
+	failedCtr, err := checksdb.RunChecks(testParams.Timeout)
 	if err != nil {
 		log.Error("%v", err)
 	}

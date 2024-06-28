@@ -1,13 +1,16 @@
 package run
 
 import (
+	"fmt"
+	"io/fs"
+	"os"
 	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/flags"
 )
 
 const timeoutFlagDefaultvalue = 24 * time.Hour
@@ -39,63 +42,84 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
 	runCmd.PersistentFlags().String("tnf-image-repository", "quay.io/testnetworkfunction", "The repository where TNF images are stored")
 	runCmd.PersistentFlags().String("tnf-debug-image", "debug-partner:5.1.3", "Name of the TNF debug image")
+	runCmd.PersistentFlags().String("daemonset-cpu-req", "100m", "CPU request for the debug DaemonSet container")
+	runCmd.PersistentFlags().String("daemonset-cpu-lim", "100m", "CPU limit for the debug DaemonSet container")
+	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the debug DaemonSet container")
+	runCmd.PersistentFlags().String("daemonset-mem-lim", "100M", "Memory limit for the debug DaemonSet container")
 
 	return runCmd
 }
 
-func initFlags(arg interface{}) {
-	cmd := arg.(*cobra.Command)
-
-	outputDir, _ := cmd.Flags().GetString("output-dir")
-	labelFilter, _ := cmd.Flags().GetString("label-filter")
-	timeout, _ := cmd.Flags().GetString("timeout")
-	list, _ := cmd.Flags().GetBool("list")
-	serverMode, _ := cmd.Flags().GetBool("server-mode")
-	configFile, _ := cmd.Flags().GetString("config-file")
-	kubeconfigFile, _ := cmd.Flags().GetString("kubeconfig")
-	omitZipFile, _ := cmd.Flags().GetBool("omit-artifacts-zip-file")
-	logLevel, _ := cmd.Flags().GetString("log-level")
-	offlineDB, _ := cmd.Flags().GetString("offline-db")
-	pfltDockerconfig, _ := cmd.Flags().GetString("preflight-dockerconfig")
-	nonIntrusive, _ := cmd.Flags().GetBool("non-intrusive")
-	allowPfltInsecure, _ := cmd.Flags().GetBool("allow-preflight-insecure")
-	includeWebFiles, _ := cmd.Flags().GetBool("include-web-files")
-	dataCollection, _ := cmd.Flags().GetBool("enable-data-collection")
-	createXMLJUnitFile, _ := cmd.Flags().GetBool("create-xml-junit-file")
-	tnfImageRepo, _ := cmd.Flags().GetString("tnf-image-repository")
-	tnfDebugImage, _ := cmd.Flags().GetString("tnf-debug-image")
-
-	flags.OutputDir = &outputDir
-	flags.LabelsFlag = &labelFilter
-	flags.TimeoutFlag = &timeout
-	flags.ListFlag = &list
-	flags.ServerModeFlag = &serverMode
-	flags.ConfigurationFile = configFile
-
-	// Override env vars
+func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams := configuration.GetTestParameters()
-	testParams.ConfigurationPath = configFile
-	testParams.Kubeconfig = kubeconfigFile
-	testParams.OmitArtifactsZipFile = omitZipFile
-	testParams.LogLevel = logLevel
-	testParams.OfflineDB = offlineDB
-	testParams.PfltDockerconfig = pfltDockerconfig
-	testParams.NonIntrusiveOnly = nonIntrusive
-	testParams.AllowPreflightInsecure = allowPfltInsecure
-	testParams.IncludeWebFilesInOutputFolder = includeWebFiles
-	testParams.EnableDataCollection = dataCollection
-	testParams.EnableXMLCreation = createXMLJUnitFile
-	testParams.TnfPartnerRepo = tnfImageRepo
-	testParams.SupportImage = tnfDebugImage
-}
-func runTestSuite(cmd *cobra.Command, _ []string) error {
-	certsuite.Startup(initFlags, cmd)
-	defer certsuite.Shutdown()
 
-	err := certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
-	if err != nil {
-		log.Fatal("Failed to run CNF Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
+	// Fetch test params from flags
+	testParams.OutputDir, _ = cmd.Flags().GetString("output-dir")
+	testParams.LabelsFilter, _ = cmd.Flags().GetString("label-filter")
+	testParams.ListOnly, _ = cmd.Flags().GetBool("list")
+	testParams.ServerMode, _ = cmd.Flags().GetBool("server-mode")
+	testParams.ConfigFile, _ = cmd.Flags().GetString("config-file")
+	testParams.Kubeconfig, _ = cmd.Flags().GetString("kubeconfig")
+	testParams.OmitArtifactsZipFile, _ = cmd.Flags().GetBool("omit-artifacts-zip-file")
+	testParams.LogLevel, _ = cmd.Flags().GetString("log-level")
+	testParams.OfflineDB, _ = cmd.Flags().GetString("offline-db")
+	testParams.PfltDockerconfig, _ = cmd.Flags().GetString("preflight-dockerconfig")
+	testParams.NonIntrusiveOnly, _ = cmd.Flags().GetBool("non-intrusive")
+	testParams.AllowPreflightInsecure, _ = cmd.Flags().GetBool("allow-preflight-insecure")
+	testParams.IncludeWebFilesInOutputFolder, _ = cmd.Flags().GetBool("include-web-files")
+	testParams.EnableDataCollection, _ = cmd.Flags().GetBool("enable-data-collection")
+	testParams.EnableXMLCreation, _ = cmd.Flags().GetBool("create-xml-junit-file")
+	testParams.TnfImageRepo, _ = cmd.Flags().GetString("tnf-image-repository")
+	testParams.TnfDebugImage, _ = cmd.Flags().GetString("tnf-debug-image")
+	testParams.DaemonsetCPUReq, _ = cmd.Flags().GetString("daemonset-cpu-req")
+	testParams.DaemonsetCPULim, _ = cmd.Flags().GetString("daemonset-cpu-lim")
+	testParams.DaemonsetMemReq, _ = cmd.Flags().GetString("daemonset-mem-req")
+	testParams.DaemonsetMemLim, _ = cmd.Flags().GetString("daemonset-mem-lim")
+	timeoutStr, _ := cmd.Flags().GetString("timeout")
+
+	// Check if the output directory exists and, if not, create it
+	if _, err := os.Stat(testParams.OutputDir); os.IsNotExist(err) {
+		var dirPerm fs.FileMode = 0o755                   // default permissions for a directory
+		err := os.MkdirAll(testParams.OutputDir, dirPerm) //nolint:govet // err shadowing intended
+		if err != nil {
+			return fmt.Errorf("could not create directory %q, err: %v", testParams.OutputDir, err)
+		}
+	} else if err != nil {
+		return fmt.Errorf("could not check directory %q, err: %v", testParams.OutputDir, err)
 	}
 
-	return err
+	// Process the timeout flag
+	const timeoutDefaultvalue = 24 * time.Hour
+	timeout, err := time.ParseDuration(timeoutStr)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to parse timeout flag %q, err: %v. Using default timeout value %v", timeoutStr, err, timeoutDefaultvalue)
+		testParams.Timeout = timeoutDefaultvalue
+	} else {
+		testParams.Timeout = timeout
+	}
+
+	return nil
+}
+func runTestSuite(cmd *cobra.Command, _ []string) error {
+	err := initTestParamsFromFlags(cmd)
+	if err != nil {
+		log.Fatal("Failed to initialize the test parameters, err: %v", err)
+	}
+
+	certsuite.Startup()
+	defer certsuite.Shutdown()
+
+	testParams := configuration.GetTestParameters()
+	if testParams.ServerMode {
+		log.Info("Running CNF Certification Suite in web server mode")
+		webserver.StartServer(testParams.OutputDir)
+	} else {
+		log.Info("Running CNF Certification Suite in stand-alone mode")
+		err := certsuite.Run(testParams.LabelsFilter, testParams.OutputDir)
+		if err != nil {
+			log.Fatal("Failed to run CNF Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
+		}
+	}
+
+	return nil
 }
