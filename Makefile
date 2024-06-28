@@ -62,6 +62,10 @@ build-certsuite-tool: results-html
 	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
 	git restore cnf-certification-test/results/html/results.html
 
+build-darwin-arm64: results-html
+	PATH="${PATH}:${GOBIN}" GOOS=darwin GOARCH=arm64 go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
+	git restore cnf-certification-test/results/html/results.html
+
 # Cleans up auto-generated and report files
 clean:
 	go clean && rm -f all-releases.txt cover.out claim.json cnf-certification-test/claim.json \
