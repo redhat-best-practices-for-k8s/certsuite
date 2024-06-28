@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  CERTSUITE_X86_64_BIN: certsuite-"${GITHUB_REF}"-x86_64
-  CERTSUITE_ARM64_BIN: certsuite-"${GITHUB_REF}"-arm64
+  CERTSUITE_X86_64_BIN: certsuite-"${GITHUB_REF_NAME}"-x86_64
+  CERTSUITE_ARM64_BIN: certsuite-"${GITHUB_REF_NAME}"-arm64
 
 jobs:
   upload-release-assets:
