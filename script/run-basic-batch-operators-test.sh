@@ -627,7 +627,7 @@ while IFS=, read -r package_name catalog_index; do
 		certsuite run \
 		--kubeconfig=/usr/tnf/config/kubeconfig \
 		--preflight-dockerconfig=/usr/tnf/config/dockerconfig \
-		--config-file=/usr/tnf/config/tnf_config.yml \
+		--config-file=/usr/tnf/config/tnf_config.yaml \
 		--output-dir=/usr/tnf/output \
 		--label-filter=all >>"$LOG_FILE_PATH" 2>&1 || {
 		report_failure "$status" "$ns" "$package_name" "CNF suite exited with errors"
