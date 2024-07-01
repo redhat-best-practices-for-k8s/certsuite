@@ -5,17 +5,18 @@ podsUnderTestLabels:
 operatorsUnderTestLabels:
   - "test-network-function.com/operator:target"
   - "test-network-function.com/operator1:new"
+  - "cnf/test:cr-scale-operator"
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
     scalable: false
   - nameSuffix: "test-network-function.com"
     scalable: false
-  - nameSuffix: "tutorial.my.domain"
-    scalable: true 
+  - nameSuffix: "memcacheds.cache.example.com"
+    scalable: true
 managedDeployments:
-  - name: jack
+  - name: memcached-sample
 managedStatefulsets:
-  - name: jack
+  - name: memcached-sample
 acceptedKernelTaints:
   - module: vboxsf
   - module: vboxguest
