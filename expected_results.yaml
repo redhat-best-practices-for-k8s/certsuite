@@ -29,6 +29,7 @@ testCases:
     - lifecycle-affinity-required-pods
     - lifecycle-container-poststart
     - lifecycle-container-prestop
+    - lifecycle-crd-scaling
     - lifecycle-deployment-scaling
     - lifecycle-image-pull-policy
     - lifecycle-liveness-probe
@@ -73,7 +74,6 @@ testCases:
     - affiliated-certification-helm-version
     - affiliated-certification-helmchart-is-certified
     - lifecycle-cpu-isolation
-    - lifecycle-crd-scaling
     - lifecycle-statefulset-scaling
     - lifecycle-storage-provisioner
     - networking-dpdk-cpu-pinning-exec-probe
