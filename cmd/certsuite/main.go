@@ -10,6 +10,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim"
 	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/generate"
 	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/run"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/version"
 )
 
 var (
@@ -24,6 +25,7 @@ func main() {
 	rootCmd.AddCommand(generate.NewCommand())
 	rootCmd.AddCommand(check.NewCommand())
 	rootCmd.AddCommand(run.NewCommand())
+	rootCmd.AddCommand(version.NewCommand())
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Error("%v", err)
