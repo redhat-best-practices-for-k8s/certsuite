@@ -17,11 +17,14 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	k8sfake "k8s.io/client-go/kubernetes/fake"
 )
 
 func TestDeploymentToString(t *testing.T) {
@@ -35,4 +38,102 @@ func TestDeploymentToString(t *testing.T) {
 	}
 
 	assert.Equal(t, "deployment: test1 ns: testNS", dp.ToString())
+}
+
+func TestGetUpdatedDeployment(t *testing.T) {
+	testCases := []struct {
+		exists      bool
+		expectedErr error
+	}{
+		{exists: true, expectedErr: nil},
+		{exists: false, expectedErr: fmt.Errorf("deployments.apps \"test1\" not found")},
+	}
+
+	for _, testCase := range testCases {
+		var runtimeObjects []runtime.Object
+
+		if testCase.exists {
+			runtimeObjects = append(runtimeObjects, &appsv1.Deployment{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test1",
+					Namespace: "testNS",
+				},
+			})
+		}
+
+		fakeClient := k8sfake.NewSimpleClientset(runtimeObjects...)
+
+		deployment, err := GetUpdatedDeployment(fakeClient.AppsV1(), "testNS", "test1")
+
+		if testCase.expectedErr != nil {
+			assert.NotNil(t, err)
+			assert.Equal(t, testCase.expectedErr.Error(), err.Error())
+		} else {
+			assert.Nil(t, err)
+			assert.NotNil(t, deployment)
+		}
+	}
+}
+
+func TestIsDeploymentReady(t *testing.T) {
+	generateDeployment := func(readyReplicas, unavailableReplicas, availableReplicas, updatedReplicas, replicas int32, conditions []appsv1.DeploymentCondition) *appsv1.Deployment {
+		return &appsv1.Deployment{
+			Status: appsv1.DeploymentStatus{
+				ReadyReplicas:       readyReplicas,
+				UnavailableReplicas: unavailableReplicas,
+				AvailableReplicas:   availableReplicas,
+				UpdatedReplicas:     updatedReplicas,
+				Conditions:          conditions,
+			},
+			Spec: appsv1.DeploymentSpec{
+				Replicas: &replicas,
+			},
+		}
+	}
+
+	testCases := []struct {
+		testDeployment *appsv1.Deployment
+		expectedResult bool
+	}{
+		{ // Test Case #1 - Deployment condition is available
+			testDeployment: generateDeployment(1, 0, 1, 1, 1, []appsv1.DeploymentCondition{
+				{
+					Type: appsv1.DeploymentAvailable,
+				},
+			}),
+			expectedResult: true,
+		},
+		{ // Test Case #2 - Deployment condition is not available
+			testDeployment: generateDeployment(1, 0, 1, 1, 1, []appsv1.DeploymentCondition{
+				{
+					Type: appsv1.DeploymentProgressing,
+				},
+			}),
+			expectedResult: false,
+		},
+		{ // Test Case #3 - Unavailable replicas are not 0
+			testDeployment: generateDeployment(1, 1, 1, 1, 1, []appsv1.DeploymentCondition{
+				{
+					Type: appsv1.DeploymentAvailable,
+				},
+			}),
+			expectedResult: false,
+		},
+		{ // Test Case #4 - Ready replicas do not match total replicas
+			testDeployment: generateDeployment(0, 0, 1, 1, 1, []appsv1.DeploymentCondition{
+				{
+					Type: appsv1.DeploymentAvailable,
+				},
+			}),
+			expectedResult: false,
+		},
+	}
+
+	for _, testCase := range testCases {
+		deployment := Deployment{
+			Deployment: testCase.testDeployment,
+		}
+
+		assert.Equal(t, testCase.expectedResult, deployment.IsDeploymentReady())
+	}
 }
