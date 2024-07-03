@@ -373,6 +373,8 @@ func testOperatorPodsRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvir
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
+	var knownContainersToSkip = []string{"kube-rbac-proxy"}
+
 	for csv, pods := range env.CSVToPodListMap {
 		CsvResult := SplitCsv(csv)
 		check.LogInfo("Name of csv: %q in namespaces: %q", CsvResult.NameCsv, CsvResult.Namespace)
@@ -380,6 +382,21 @@ func testOperatorPodsRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvir
 			check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
 			// We are looking through both the containers and the pods separately to make compliant and non-compliant objects.
 			for _, c := range pod.Containers {
+
+				skipKnownContainer := false
+				for _, k := range knownContainersToSkip {
+					if c.Name == k {
+						check.LogInfo("Skipping container %q in Pod %q", c.Name, pod.Name)
+						compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(c.Namespace, c.Name, "Container is allowed to run as root", true))
+						skipKnownContainer = true
+						break
+					}
+				}
+
+				if skipKnownContainer {
+					continue
+				}
+
 				if c.IsContainerRunAsNonRoot() {
 					check.LogInfo("Container %q in Pod %q is running as non-root", c.Name, pod.Name)
 					compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(c.Namespace, c.Name, "Container is running as non-root", true))
