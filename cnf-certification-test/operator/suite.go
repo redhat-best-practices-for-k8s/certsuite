@@ -382,7 +382,6 @@ func testOperatorPodsRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvir
 			check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
 			// We are looking through both the containers and the pods separately to make compliant and non-compliant objects.
 			for _, c := range pod.Containers {
-
 				skipKnownContainer := false
 				for _, k := range knownContainersToSkip {
 					if c.Name == k {
