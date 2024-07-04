@@ -1,4 +1,4 @@
-// Copyright (C) 2022-2023 Red Hat, Inc.
+// Copyright (C) 2022-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@ package provider
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -48,7 +47,7 @@ func (node *Node) IsWorkerNode() bool {
 	return false
 }
 
-func (node *Node) IsMasterNode() bool {
+func (node *Node) IsControlPlaneNode() bool {
 	for nodeLabel := range node.Data.Labels {
 		if stringhelper.StringInSlice(MasterLabels, nodeLabel, true) {
 			return true
@@ -80,19 +79,12 @@ func (node *Node) GetRHCOSVersion() (string, error) {
 		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
 	}
 
-	path, err := os.Getwd()
-	if err != nil {
-		return "", err
-	}
-
-	filePath := fmt.Sprintf(rhcosRelativePath, path)
-
 	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
 	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhcosName)
 	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
 
 	// Get the short version string from the long version string
-	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0], filePath)
+	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0])
 	if err != nil {
 		return "", err
 	}

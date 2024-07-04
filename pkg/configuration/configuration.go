@@ -16,6 +16,8 @@
 
 package configuration
 
+import "time"
+
 const (
 	defaultDebugDaemonSetNamespace = "cnf-suite"
 )
@@ -93,20 +95,26 @@ type TestConfiguration struct {
 }
 
 type TestParameters struct {
-	Home                          string `envconfig:"home"`
-	Kubeconfig                    string `envconfig:"kubeconfig"`
-	ConfigurationPath             string `split_words:"true" default:"tnf_config.yml"`
-	NonIntrusiveOnly              bool   `split_words:"true"`
-	LogLevel                      string `default:"debug" split_words:"true"`
-	OfflineDB                     string `split_words:"true"`
-	AllowPreflightInsecure        bool   `split_words:"true"`
-	PfltDockerconfig              string `split_words:"true" envconfig:"PFLT_DOCKERCONFIG"`
-	IncludeWebFilesInOutputFolder bool   `split_words:"true" default:"false"`
-	OmitArtifactsZipFile          bool   `split_words:"true" default:"false"`
-	EnableDataCollection          bool   `split_words:"true" envconfig:"ENABLE_DATA_COLLECTION" default:"false"`
-	EnableXMLCreation             bool   `split_words:"true" envconfig:"TNF_ENABLE_XML_CREATION" default:"false"`
-	DaemonsetCPUReq               string `default:"100m" split_words:"true"`
-	DaemonsetCPULim               string `default:"100m" split_words:"true"`
-	DaemonsetMemReq               string `default:"100M" split_words:"true"`
-	DaemonsetMemLim               string `default:"100M" split_words:"true"`
+	Kubeconfig                    string
+	ConfigFile                    string
+	PfltDockerconfig              string
+	OutputDir                     string
+	LabelsFilter                  string
+	LogLevel                      string
+	OfflineDB                     string
+	DaemonsetCPUReq               string
+	DaemonsetCPULim               string
+	DaemonsetMemReq               string
+	DaemonsetMemLim               string
+	TnfImageRepo                  string
+	TnfDebugImage                 string
+	NonIntrusiveOnly              bool
+	AllowPreflightInsecure        bool
+	IncludeWebFilesInOutputFolder bool
+	OmitArtifactsZipFile          bool
+	EnableDataCollection          bool
+	EnableXMLCreation             bool
+	ServerMode                    bool
+	ListOnly                      bool
+	Timeout                       time.Duration
 }

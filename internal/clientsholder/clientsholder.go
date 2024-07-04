@@ -19,7 +19,6 @@ package clientsholder
 import (
 	"errors"
 	"fmt"
-	"os"
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
@@ -37,7 +36,7 @@ import (
 	"k8s.io/client-go/scale"
 
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
-	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
+	ocpMachine "github.com/openshift/client-go/machineconfiguration/clientset/versioned"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -51,6 +50,10 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
+)
+
+const (
+	DefaultTimeout = 10 * time.Second
 )
 
 type ClientsHolder struct {
@@ -152,22 +155,12 @@ func ClearTestClientsHolder() {
 
 // GetClientsHolder returns the singleton ClientsHolder object.
 func GetClientsHolder(filenames ...string) *ClientsHolder {
-	const exitUsage = 2
 	if clientsHolder.ready {
 		return &clientsHolder
 	}
-	if len(filenames) == 0 {
-		errMsg := "Please provide a valid Kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config"
-		log.Error(errMsg)
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
-		os.Exit(exitUsage)
-	}
 	clientsHolder, err := newClientsHolder(filenames...)
 	if err != nil {
-		errMsg := fmt.Sprintf("Failed to create k8s clients holder, err: %v", err)
-		log.Error(errMsg)
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
-		os.Exit(1)
+		log.Fatal("Failed to create k8s clients holder, err: %v", err)
 	}
 	return clientsHolder
 }
@@ -175,10 +168,7 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 func GetNewClientsHolder(kubeconfigFile string) *ClientsHolder {
 	_, err := newClientsHolder(kubeconfigFile)
 	if err != nil {
-		errMsg := fmt.Sprintf("Failed to create k8s clients holder, err: %v", err)
-		log.Error(errMsg)
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
-		os.Exit(1)
+		log.Fatal("Failed to create k8s clients holder, err: %v", err)
 	}
 
 	return &clientsHolder
@@ -281,8 +271,6 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("failed to get rest.Config: %v", err)
 	}
-
-	DefaultTimeout := 10 * time.Second
 	clientsHolder.RestConfig.Timeout = DefaultTimeout
 
 	clientsHolder.DynamicClient, err = dynamic.NewForConfig(clientsHolder.RestConfig)

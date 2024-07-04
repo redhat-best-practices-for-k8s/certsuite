@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	LogFileName        = "cnf-certsuite.log"
+	LogFileName        = "certsuite.log"
 	LogFilePermissions = 0o644
 )
 
@@ -22,6 +22,7 @@ const (
 	LevelInfo  = "info"
 	LevelWarn  = "warn"
 	LevelError = "error"
+	LevelFatal = "fatal"
 )
 
 type Logger struct {
@@ -31,7 +32,30 @@ type Logger struct {
 var (
 	globalLogger   *Logger
 	globalLogLevel slog.Level
+	globalLogFile  *os.File
 )
+
+func CreateGlobalLogFile(outputDir, logLevel string) error {
+	logFilePath := outputDir + "/" + LogFileName
+	err := os.Remove(logFilePath)
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("could not delete old log file, err: %v", err)
+	}
+
+	logFile, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE, LogFilePermissions)
+	if err != nil {
+		return fmt.Errorf("could not open a new log file, err: %v", err)
+	}
+
+	SetupLogger(logFile, logLevel)
+	globalLogFile = logFile
+
+	return nil
+}
+
+func CloseGlobalLogFile() error {
+	return globalLogFile.Close()
+}
 
 func SetupLogger(logWriter io.Writer, level string) {
 	logLevel, err := parseLevel(level)
@@ -42,8 +66,21 @@ func SetupLogger(logWriter io.Writer, level string) {
 		globalLogLevel = logLevel
 	}
 
-	opts := Options{
+	opts := slog.HandlerOptions{
 		Level: globalLogLevel,
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			if a.Key == slog.LevelKey {
+				level := a.Value.Any().(slog.Level)
+				levelLabel, exists := CustomLevelNames[level]
+				if !exists {
+					levelLabel = level.String()
+				}
+
+				a.Value = slog.StringValue(levelLabel)
+			}
+
+			return a
+		},
 	}
 
 	globalLogger = &Logger{
@@ -60,11 +97,28 @@ func GetLogger() *Logger {
 }
 
 func GetMultiLogger(writers ...io.Writer) *Logger {
-	opts := Options{
+	opts := slog.HandlerOptions{
 		Level: globalLogLevel,
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			if a.Key == slog.LevelKey {
+				level := a.Value.Any().(slog.Level)
+				levelLabel, exists := CustomLevelNames[level]
+				if !exists {
+					levelLabel = level.String()
+				}
+
+				a.Value = slog.StringValue(levelLabel)
+			}
+
+			return a
+		},
 	}
 
-	handlers := []slog.Handler{globalLogger.l.Handler()}
+	var handlers []slog.Handler
+	if globalLogger != nil {
+		handlers = []slog.Handler{globalLogger.l.Handler()}
+	}
+
 	for _, writer := range writers {
 		handlers = append(handlers, NewCustomHandler(writer, &opts))
 	}
@@ -89,18 +143,33 @@ func Error(msg string, args ...any) {
 	Logf(globalLogger, LevelError, msg, args...)
 }
 
+func Fatal(msg string, args ...any) {
+	Logf(globalLogger, LevelFatal, msg, args...)
+	fmt.Fprintf(os.Stderr, "\nFATAL: "+msg+"\n", args...)
+	os.Exit(1)
+}
+
 // Log methods for a logger instance
 func (logger *Logger) Debug(msg string, args ...any) {
 	Logf(logger, LevelDebug, msg, args...)
 }
+
 func (logger *Logger) Info(msg string, args ...any) {
 	Logf(logger, LevelInfo, msg, args...)
 }
+
 func (logger *Logger) Warn(msg string, args ...any) {
 	Logf(logger, LevelWarn, msg, args...)
 }
+
 func (logger *Logger) Error(msg string, args ...any) {
 	Logf(logger, LevelError, msg, args...)
+}
+
+func (logger *Logger) Fatal(msg string, args ...any) {
+	Logf(logger, LevelFatal, msg, args...)
+	fmt.Fprintf(os.Stderr, "\nFATAL: "+msg+"\n", args...)
+	os.Exit(1)
 }
 
 func (logger *Logger) With(args ...any) *Logger {
@@ -119,6 +188,8 @@ func parseLevel(level string) (slog.Level, error) {
 		return slog.LevelWarn, nil
 	case "error":
 		return slog.LevelError, nil
+	case "fatal":
+		return CustomLevelFatal, nil
 	}
 
 	return 0, fmt.Errorf("not a valid slog Level: %q", level)
@@ -135,8 +206,7 @@ func Logf(logger *Logger, level, format string, args ...any) {
 
 	logLevel, err := parseLevel(level)
 	if err != nil {
-		logger.Error("Error when parsing log level, err: %v", err)
-		os.Exit(1)
+		logger.Fatal("Error when parsing log level, err: %v", err)
 	}
 
 	if !logger.l.Enabled(context.Background(), logLevel) {
@@ -144,7 +214,7 @@ func Logf(logger *Logger, level, format string, args ...any) {
 	}
 	var pcs [1]uintptr
 	// skip [Callers, Log, LogWrapper]
-	runtime.Callers(3, pcs[:]) //nolint:gomnd
+	runtime.Callers(3, pcs[:]) //nolint:mnd
 	r := slog.NewRecord(time.Now(), logLevel, fmt.Sprintf(format, args...), pcs[0])
 	_ = logger.l.Handler().Handle(context.Background(), r)
 }

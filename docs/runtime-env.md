@@ -29,6 +29,13 @@ following:
 export TNF_NON_INTRUSIVE_ONLY=true
 ```
 
+The intrusive test cases are:
+
+- [lifecycle-deployment-scaling](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-deployment-scaling)
+- [lifecycle-statefulset-scaling](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-statefulset-scaling)
+- [lifecycle-crd-scaling](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-crd-scaling)
+- [lifecycle-pod-recreation](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-pod-recreation)
+
 Likewise, to enable intrusive tests, set the following:
 
 ```shell
@@ -68,4 +75,4 @@ export TNF_PARTNER_REPO=registry.dfwt5g.lab:5000/testnetworkfunction
 ```
 
 Note that you can also specify the debug pod image to use with `SUPPORT_IMAGE`
-environment variable, default to `debug-partner:5.0.5`.
+environment variable, default to `debug-partner:5.2.0`.

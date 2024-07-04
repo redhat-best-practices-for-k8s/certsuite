@@ -18,7 +18,6 @@ package provider
 
 import (
 	"context"
-	"os"
 	"regexp"
 	"time"
 
@@ -27,7 +26,7 @@ import (
 
 	"encoding/json"
 
-	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
+	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -59,16 +58,13 @@ const (
 	rhcosName                        = "Red Hat Enterprise Linux CoreOS"
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
-	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
-	supportImageDef                  = "debug-partner:5.0.5"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
 // Master's role label "master" is deprecated since k8s 1.20.
 var (
-	WorkerLabels      = []string{"node-role.kubernetes.io/worker"}
-	MasterLabels      = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
-	rhcosRelativePath = "%s/platform/operatingsystem/files/rhcos_version_map"
+	WorkerLabels = []string{"node-role.kubernetes.io/worker"}
+	MasterLabels = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
 )
 
 type TestEnvironment struct { // rename this with testTarget
@@ -76,9 +72,10 @@ type TestEnvironment struct { // rename this with testTarget
 	AbnormalEvents []*Event
 
 	// Pod Groupings
-	Pods      []*Pod                 `json:"testPods"`
-	DebugPods map[string]*corev1.Pod // map from nodename to debugPod
-	AllPods   []*Pod                 `json:"AllPods"`
+	Pods            []*Pod                 `json:"testPods"`
+	DebugPods       map[string]*corev1.Pod // map from nodename to debugPod
+	AllPods         []*Pod                 `json:"AllPods"`
+	CSVToPodListMap map[string][]*Pod      `json:"CSVToPodListMap"`
 
 	// Deployment Groupings
 	Deployments []*Deployment `json:"testDeployments"`
@@ -96,9 +93,10 @@ type TestEnvironment struct { // rename this with testTarget
 	RoleBindings           []rbacv1.RoleBinding
 	Roles                  []rbacv1.Role
 
-	Config    configuration.TestConfiguration
-	variables configuration.TestParameters
-	Crds      []*apiextv1.CustomResourceDefinition `json:"testCrds"`
+	Config  configuration.TestConfiguration
+	params  configuration.TestParameters
+	Crds    []*apiextv1.CustomResourceDefinition `json:"testCrds"`
+	AllCrds []*apiextv1.CustomResourceDefinition
 
 	HorizontalScaler       []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Services               []*corev1.Service                    `json:"testServices"`
@@ -177,24 +175,10 @@ var (
 	loaded = false
 )
 
-// Build image with version based on environment variables if provided, else use a default value
-func buildImageWithVersion() string {
-	tnfPartnerRepo := os.Getenv("TNF_PARTNER_REPO")
-	if tnfPartnerRepo == "" {
-		tnfPartnerRepo = tnfPartnerRepoDef
-	}
-	supportImage := os.Getenv("SUPPORT_IMAGE")
-	if supportImage == "" {
-		supportImage = supportImageDef
-	}
-
-	return tnfPartnerRepo + "/" + supportImage
-}
-
 func deployDaemonSet(namespace string) error {
 	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
-	dsImage := buildImageWithVersion()
 
+	dsImage := env.params.TnfImageRepo + "/" + env.params.TnfDebugImage
 	if k8sPrivilegedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
 		return nil
 	}
@@ -223,13 +207,12 @@ func buildTestEnvironment() { //nolint:funlen
 	start := time.Now()
 	env = TestEnvironment{}
 
-	env.variables = *configuration.GetTestParameters()
-	config, err := configuration.LoadConfiguration(env.variables.ConfigurationPath)
+	env.params = *configuration.GetTestParameters()
+	config, err := configuration.LoadConfiguration(env.params.ConfigFile)
 	if err != nil {
-		log.Error("Cannot load configuration file: %v", err)
-		os.Exit(1)
+		log.Fatal("Cannot load configuration file: %v", err)
 	}
-	log.Debug("CNFCERT configuration: %+v", config)
+	log.Debug("CERTSUITE configuration: %+v", config)
 
 	// Wait for the debug pods to be ready before the autodiscovery starts.
 	if err := deployDaemonSet(config.DebugDaemonSetNamespace); err != nil {
@@ -248,6 +231,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.AllCatalogSources = data.AllCatalogSources
 	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
+	env.AllCrds = data.AllCrds
 	env.Namespaces = data.Namespaces
 	env.Nodes = createNodes(data.Nodes.Items)
 	env.IstioServiceMeshFound = data.IstioServiceMeshFound
@@ -272,6 +256,16 @@ func buildTestEnvironment() { //nolint:funlen
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName
 		env.DebugPods[nodeName] = &data.DebugPods[i]
+	}
+
+	env.CSVToPodListMap = make(map[string][]*Pod)
+	for k, podList := range data.CSVToPodListMap {
+		var pods []*Pod
+		for i := 0; i < len(podList); i++ {
+			aNewPod := NewPod(podList[i])
+			pods = append(pods, &aNewPod)
+		}
+		env.CSVToPodListMap[k] = pods
 	}
 
 	env.OCPStatus = data.OCPStatus
@@ -502,19 +496,19 @@ func (env *TestEnvironment) SetNeedsRefresh() {
 }
 
 func (env *TestEnvironment) IsIntrusive() bool {
-	return !env.variables.NonIntrusiveOnly
+	return !env.params.NonIntrusiveOnly
 }
 
 func (env *TestEnvironment) IsPreflightInsecureAllowed() bool {
-	return env.variables.AllowPreflightInsecure
+	return env.params.AllowPreflightInsecure
 }
 
 func (env *TestEnvironment) GetDockerConfigFile() string {
-	return env.variables.PfltDockerconfig
+	return env.params.PfltDockerconfig
 }
 
 func (env *TestEnvironment) GetOfflineDBPath() string {
-	return env.variables.OfflineDB
+	return env.params.OfflineDB
 }
 
 func (env *TestEnvironment) GetWorkerCount() int {
@@ -530,7 +524,7 @@ func (env *TestEnvironment) GetWorkerCount() int {
 func (env *TestEnvironment) GetMasterCount() int {
 	masterCount := 0
 	for _, e := range env.Nodes {
-		if e.IsMasterNode() {
+		if e.IsControlPlaneNode() {
 			masterCount++
 		}
 	}

@@ -4,11 +4,14 @@ on:
   pull_request:
     types: [synchronize, opened, reopened, labeled, unlabeled]
 
+permissions:
+  contents: read
+
 jobs:
   do-not-merge:
     if: ${{ contains(github.event.*.labels.*.name, 'do not merge') }}
     name: Prevent Merging
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Check for label
         run: |

@@ -3,7 +3,6 @@ name: 'Publish the `cnf-certification-test` image (latest release only)'
 "on":
   # Run the workflow when a new release gets published
   release:
-    target_commitish: main
     types: [published]
   # Run the workflow every day at 5 am UTC (1 am EST, 7am CET)
   # This is useful for keeping the image up-to-date with security
@@ -14,6 +13,10 @@ name: 'Publish the `cnf-certification-test` image (latest release only)'
   schedule:
     - cron: '0 5 * * *'
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 defaults:
   run:
     shell: bash
@@ -55,7 +58,7 @@ jobs:
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Checkout generic working branch of the current version
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
           fetch-depth: '0'
@@ -111,19 +114,18 @@ jobs:
         run: echo "Tag '$PARTNER_VERSION' does not exist on remote $PARTNER_SRC_URL"
 
       - name: Checkout the version tag
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ env.TNF_VERSION }}
 
-      - name: Build the `cnf-certification-test` image
-        run: |
-          make build-image-tnf
-        env:
-          TNF_VERSION: ${{ env.TNF_VERSION }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@5927c834f5b4fdf503fca6f4c7eccda82949e1ee # v3.1.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
 
       # Push the new TNF image to Quay.io.
       - name: Authenticate against Quay.io
-        uses: docker/login-action@v3
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
         with:
           registry: ${{ env.REGISTRY }}
           # Use a Robot Account to authenticate against Quay.io
@@ -131,12 +133,20 @@ jobs:
           username: ${{ secrets.QUAY_ROBOT_USERNAME }}
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
-      - name: Push the newly built image to Quay.io
-        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
+      - name: Build and push the TNF image for multi-arch
+        uses: docker/build-push-action@1a162644f9a7e87d8f4b053101d1d9a712edc18c # v6.3.0
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{env.TNF_IMAGE_NAME}}:${{ env.TNF_VERSION }}
+            ${{ env.REGISTRY }}/${{env.TNF_IMAGE_NAME}}:${{ env.IMAGE_TAG }}
 
       - name: If failed to create the image, send alert msg to dev team.
         if: ${{ failure() }}
         uses: ./.github/actions/slack-webhook-sender
         with:
-          message: 'Failed to create official container image version ${{ env.TNF_VERSION }}'
+          message: 'Failed to create official container image manifest version ${{ env.TNF_VERSION }}'
           slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'

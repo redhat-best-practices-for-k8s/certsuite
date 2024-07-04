@@ -1,5 +1,5 @@
 ---
-site_name: CNF Certification Test
+site_name: Red Hat Best Practices Test Suite for Kubernetes
 repo_name: GitHub
 repo_url: https://github.com/test-network-function/cnf-certification-test/
 theme:
@@ -67,18 +67,14 @@ nav:
     - Setup:
       - Test Configuration: "configuration.md"
       - Runtime environment variables: "runtime-env.md"
-    - Build | Execute:
-        - Prebuilt container: "test-container.md"
-        - Standalone test executable: "test-standalone.md"
-    - Test:
-        - Test Specifications: "test-spec.md"
-        - Test Result: "test-output.md"
-    - Exception Process: "exception.md"
-  - QuickStart:
-      - Users Guide: "users.md"
-      - Developers' Guide:
-          - Developers: "developers.md"
-          - CNF Developers: "cnf-developers.md"
-
+  - Run: "test-run.md"
+  - Available Test Specs:
+      - Test Specs: "test-spec.md"
+      - Implementation: "test-spec-implementation.md"
+  - Test Output: "test-output.md"
+  - Exception Process: "exception.md"
+  - Developers' Guide:
+      - Developers: "developers.md"
+      - Workload Developers: "workload-developers.md"
   - Reference:
       - reference.md

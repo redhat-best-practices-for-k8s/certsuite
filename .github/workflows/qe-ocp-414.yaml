@@ -7,12 +7,39 @@ on:
   # Schedule a daily cron at midnight UTC
   schedule:
     - cron: '0 0 * * *'
+
+permissions:
+  contents: read
+
 env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
 jobs:
+  pull-unstable-image:
+    runs-on: qe-ocp-414
+    env:
+      SHELL: /bin/bash
+      FORCE_DOWNLOAD_UNSTABLE: true
+    steps:
+      - name: Check out code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Clone the QE repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          repository: ${{ env.QE_REPO }}
+          path: cnfcert-tests-verification
+
+      - name: Run the script to pull the unstable image
+        run: ./scripts/download-unstable.sh
+        working-directory: cnfcert-tests-verification
+
   qe-ocp-414-testing:
     runs-on: qe-ocp-414
+    needs: pull-unstable-image
+    if: needs.pull-unstable-image.result == 'success'
     strategy:
       fail-fast: false
       matrix: 
@@ -22,35 +49,25 @@ jobs:
       KUBECONFIG: '/home/labuser2/.kube/config'
       PFLT_DOCKERCONFIG: '/home/labuser2/.docker/config'
       TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
-      TEST_TNF_IMAGE_TAG: localtest
+      TEST_TNF_IMAGE_TAG: unstable
       DOCKER_CONFIG_DIR: '/home/labuser2/.docker'
       TNF_CONFIG_DIR: '/home/labuser2/tnf_config'
       TNF_REPORT_DIR: '/home/labuser2/tnf_report'
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
       - name: Run initial setup
         uses: ./.github/actions/setup
 
-      - name: Preemptively prune docker resources
-        run: docker system prune -f --volumes
-
-      - name: Build the test image
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 90
-          max_attempts: 3
-          command: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
-
       - name: Show pods
         run: oc get pods -A
 
       - name: Clone the QE repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
@@ -59,18 +76,32 @@ jobs:
         run: ./scripts/delete-namespaces.sh
         working-directory: cnfcert-tests-verification
 
+      - name: Preemptively delete contents of openshift-marketplace namespace
+        run: ./scripts/clean-marketplace.sh
+        working-directory: cnfcert-tests-verification
+
       - name: Preemptively delete report and config folders
         shell: bash
         run: |
           sudo rm -rf ${{env.TNF_CONFIG_DIR}}
           sudo rm -rf ${{env.TNF_REPORT_DIR}}
 
-      - name: Run the tests
-        uses: nick-fields/retry@v3
+      - name: Run the tests (against image)
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 60
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+
+      - name: Build the binary
+        run: make build-certsuite-tool
+
+      - name: Run the tests (against binary)
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}

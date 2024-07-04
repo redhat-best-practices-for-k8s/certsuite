@@ -108,8 +108,7 @@ func RunChecks(timeout time.Duration) (failedCtr int, err error) {
 func recordCheckResult(check *Check) {
 	claimID, ok := identifiers.TestIDToClaimID[check.ID]
 	if !ok {
-		check.LogError("TestID %s has no corresponding Claim ID", check.ID)
-		os.Exit(1)
+		check.LogFatal("TestID %s has no corresponding Claim ID", check.ID)
 	}
 
 	check.LogInfo("Recording result %q, claimID: %+v", strings.ToUpper(check.Result.String()), claimID)
@@ -246,6 +245,13 @@ func FilterCheckIDs() ([]string, error) {
 }
 
 func InitLabelsExprEvaluator(labelsFilter string) error {
+	// Expand the abstract "all" label into actual existing labels
+	if labelsFilter == "all" {
+		allTags := []string{identifiers.TagCommon, identifiers.TagExtended,
+			identifiers.TagFarEdge, identifiers.TagTelco}
+		labelsFilter = strings.Join(allTags, ",")
+	}
+
 	eval, err := newLabelsExprEvaluator(labelsFilter)
 	if err != nil {
 		return fmt.Errorf("could not create a label evaluator, err: %v", err)

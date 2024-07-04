@@ -22,10 +22,12 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
+
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 )
 
 var (
@@ -50,10 +52,10 @@ func LoadChecks() {
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorNoPrivileges)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorNoSCCAccess)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
-			testOperatorInstallationWithoutPrivileges(c, &env)
+			testOperatorInstallationAccessToSCC(c, &env)
 			return nil
 		}))
 
@@ -63,6 +65,127 @@ func LoadChecks() {
 			testOperatorOlmSubscription(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorHasSemanticVersioningIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorSemanticVersioning(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCrdVersioningIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorCrdsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorCrdVersioning(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCrdSchemaIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorCrdsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorCrdOpenAPISpec(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorSingleCrdOwnerIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorSingleCrdOwner(c, &env)
+			return nil
+		}))
+}
+
+// This function check if the Operator CRD version follows K8s versioning
+func testOperatorCrdVersioning(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testOperatorCrdVersioning")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, crd := range env.Crds {
+		doesUseK8sVersioning := true
+		nonCompliantVersion := ""
+
+		for _, crdVersion := range crd.Spec.Versions {
+			versionName := crdVersion.Name
+			check.LogDebug("Checking for Operator CRD %s with version %s", crd.Name, versionName)
+
+			if !versions.IsValidK8sVersion(versionName) {
+				doesUseK8sVersioning = false
+				nonCompliantVersion = versionName
+				break
+			}
+		}
+
+		if doesUseK8sVersioning {
+			check.LogInfo("Operator CRD %s has valid K8s versioning ", crd.Name)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD has valid K8s versioning ", true).AddField(testhelper.CrdVersion, crd.Name))
+		} else {
+			check.LogError("Operator CRD %s has invalid K8s versioning %s ", crd.Name, nonCompliantVersion)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD has invalid K8s versioning ", false).AddField(testhelper.CrdVersion, crd.Name))
+		}
+	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+// This function checks if the operator CRD is defined with OpenAPI 3 specification
+func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testOperatorCrdOpenAPISpec")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, crd := range env.Crds {
+		isCrdDefinedWithOpenAPI3Schema := false
+
+		for _, version := range crd.Spec.Versions {
+			crdSchema := version.Schema.String()
+
+			containsOpenAPIV3SchemaSubstr := strings.Contains(strings.ToLower(crdSchema),
+				strings.ToLower(testhelper.OpenAPIV3Schema))
+
+			if containsOpenAPIV3SchemaSubstr {
+				isCrdDefinedWithOpenAPI3Schema = true
+				break
+			}
+		}
+
+		if isCrdDefinedWithOpenAPI3Schema {
+			check.LogInfo("Operator CRD %s is defined with OpenAPIV3 schema ", crd.Name)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD is defined with OpenAPIV3 schema ", true).AddField(testhelper.OpenAPIV3Schema, crd.Name))
+		} else {
+			check.LogInfo("Operator CRD %s is not defined with OpenAPIV3 schema ", crd.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
+				"Operator CRD is not defined with OpenAPIV3 schema ", false).AddField(testhelper.OpenAPIV3Schema, crd.Name))
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+// This function checks for semantic versioning of the installed operators
+func testOperatorSemanticVersioning(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testOperatorSemanticVersioning")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, operator := range env.Operators {
+		operatorVersion := operator.Version
+		check.LogInfo("Testing Operator %q for version %s", operator, operatorVersion)
+
+		if versions.IsValidSemanticVersion(operatorVersion) {
+			check.LogInfo("Operator %q has a valid semantic version %s", operator, operatorVersion)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"Operator has a valid semantic version ", true).AddField(testhelper.Version, operatorVersion))
+		} else {
+			check.LogError("Operator %q has an invalid semantic version %s", operator, operatorVersion)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"Operator has an invalid semantic version ", false).AddField(testhelper.Version, operatorVersion))
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider.TestEnvironment) {
@@ -84,42 +207,58 @@ func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testOperatorInstallationWithoutPrivileges(check *checksdb.Check, env *provider.TestEnvironment) {
+func testOperatorInstallationAccessToSCC(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	for _, op := range env.Operators {
-		check.LogInfo("Testing Operator %q", op)
-		clusterPermissions := op.Csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
+	for i := range env.Operators {
+		operator := env.Operators[i]
+		csv := operator.Csv
+		check.LogDebug("Checking operator %s", operator)
+		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
-			check.LogInfo("Operator %q has no privileged on cluster resources. No clusterPermissions found.", op)
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has no privileges on cluster resources", true))
+			check.LogInfo("No clusterPermissions found in %s's CSV", operator)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"No RBAC rules for Security Context Constraints found in CSV (no clusterPermissions found)", true))
 			continue
 		}
 
-		// Fails in case any cluster permission has a rule with any resource name.
+		// Fails in case any cluster permission has a rule that refers to securitycontextconstraints.
 		badRuleFound := false
 		for permissionIndex := range clusterPermissions {
 			permission := &clusterPermissions[permissionIndex]
 			for ruleIndex := range permission.Rules {
-				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
-					resources := strings.Join(permission.Rules[ruleIndex].ResourceNames, " ")
-					check.LogError("Operator %q has privileges on cluster resources (service account=%q, resources=%q)", op, permission.ServiceAccountName, resources)
-					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
-					badRuleFound = true
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has privileges on cluster resources ", false).
-						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", resources))
-				} else {
-					check.LogInfo("Operator %q has no privileges on cluster resources", op)
-					compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has no privileges on cluster resources", true).
-						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", "n/a"))
+				rule := &permission.Rules[ruleIndex]
+
+				// Check whether the rule is for the security api group.
+				securityGroupFound := false
+				for _, group := range rule.APIGroups {
+					if group == "*" || group == "security.openshift.io" {
+						securityGroupFound = true
+						break
+					}
+				}
+
+				if !securityGroupFound {
+					continue
+				}
+
+				// Now check whether it grants some access to securitycontextconstraint resources.
+				for _, resource := range rule.Resources {
+					if resource == "*" || resource == "securitycontextconstraints" {
+						check.LogInfo("Operator %s has a rule (index %d) for service account %s to access cluster SCCs",
+							operator, ruleIndex, permission.ServiceAccountName)
+						// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
+						badRuleFound = true
+						break
+					}
 				}
 			}
 		}
 
 		if badRuleFound {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has privileges on cluster resources ", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "One or more RBAC rules for Security Context Constraints found in CSV", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has no privileges on cluster resources", true))
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "No RBAC rules for Security Context Constraints found in CSV", true))
 		}
 	}
 
@@ -141,6 +280,38 @@ func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnviro
 			check.LogInfo("OLM subscription %q found for Operator %q", operator.SubscriptionName, operator)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "install-status-no-privilege (subscription found)", true).
 				AddField(testhelper.SubscriptionName, operator.SubscriptionName))
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testOperatorSingleCrdOwner(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	// Map each CRD to a list of operators that own it
+	crdOwners := map[string][]string{}
+	for i := range env.Operators {
+		operator := env.Operators[i]
+		ownedCrds := operator.Csv.Spec.CustomResourceDefinitions.Owned
+		for j := range ownedCrds {
+			crdOwners[ownedCrds[j].Name] = append(crdOwners[ownedCrds[j].Name], operator.Name)
+		}
+	}
+
+	// Flag those that are owned by more than one operator
+	for crd, opList := range crdOwners {
+		if len(opList) > 1 {
+			check.LogError("CRD %q is owned by more than one operator (owners: %v)", crd, opList)
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewCrdReportObject(crd, "", "CRD is owned by more than one operator", false).
+					AddField(testhelper.OperatorList, strings.Join(opList, ", ")))
+		} else {
+			check.LogDebug("CRD %q is owned by a single operator (%v)", crd, opList[0])
+			compliantObjects = append(compliantObjects,
+				testhelper.NewCrdReportObject(crd, "", "CRD is owned by a single operator", true).
+					AddField(testhelper.OperatorName, opList[0]))
 		}
 	}
 

@@ -17,8 +17,10 @@
 package autodiscover
 
 import (
+	"fmt"
 	"strings"
 
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 
@@ -26,18 +28,18 @@ import (
 
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // getClusterCrdNames returns a list of crd names found in the cluster.
-func getClusterCrdNames() (crdList []*apiextv1.CustomResourceDefinition, err error) {
+func getClusterCrdNames() ([]*apiextv1.CustomResourceDefinition, error) {
 	oc := clientsholder.GetClientsHolder()
 	crds, err := oc.APIExtClient.ApiextensionsV1().CustomResourceDefinitions().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Error("error when listing crds")
-		return crdList, err
+		return nil, fmt.Errorf("unable to get cluster CRDs, err: %v", err)
 	}
+
+	var crdList []*apiextv1.CustomResourceDefinition
 	for idx := range crds.Items {
 		crdList = append(crdList, &crds.Items[idx])
 	}
@@ -45,10 +47,9 @@ func getClusterCrdNames() (crdList []*apiextv1.CustomResourceDefinition, err err
 }
 
 // FindTestCrdNames gets a list of CRD names based on configured groups.
-func FindTestCrdNames(crdFilters []configuration.CrdFilter) (targetCrds []*apiextv1.CustomResourceDefinition) {
-	clusterCrds, err := getClusterCrdNames()
-	if err != nil {
-		log.Error("Unable to get cluster CRDs, err: %v", err)
+func FindTestCrdNames(clusterCrds []*apiextv1.CustomResourceDefinition, crdFilters []configuration.CrdFilter) (targetCrds []*apiextv1.CustomResourceDefinition) {
+	if len(clusterCrds) == 0 {
+		log.Error("Cluster does not have any CRDs")
 		return []*apiextv1.CustomResourceDefinition{}
 	}
 	for _, crd := range clusterCrds {

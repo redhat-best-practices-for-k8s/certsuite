@@ -25,12 +25,12 @@ import (
 
 // shared description text
 const (
-	iptablesNftablesImplicitCheck = `Note: this test also ensures iptables and nftables are not configured by CNF pods:
+	iptablesNftablesImplicitCheck = `Note: this test also ensures iptables and nftables are not configured by workload pods:
 - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods.
-nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured
+nftables should be configured by an administrator outside the scope of the workload. nftables are usually configured
 by operators, for instance the Performance Addon Operator (PAO) or istio.
 - Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables
-should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators,
+should be configured by an administrator outside the scope of the workload. iptables are usually configured by operators,
 for instance the Performance Addon Operator (PAO) or istio.`
 )
 
@@ -117,10 +117,14 @@ var (
 	TestNamespaceBestPracticesIdentifier              claim.Identifier
 	TestNonTaintedNodeKernelsIdentifier               claim.Identifier
 	TestOperatorInstallStatusSucceededIdentifier      claim.Identifier
-	TestOperatorNoPrivileges                          claim.Identifier
+	TestOperatorNoSCCAccess                           claim.Identifier
 	TestOperatorIsCertifiedIdentifier                 claim.Identifier
 	TestHelmIsCertifiedIdentifier                     claim.Identifier
 	TestOperatorIsInstalledViaOLMIdentifier           claim.Identifier
+	TestOperatorHasSemanticVersioningIdentifier       claim.Identifier
+	TestOperatorCrdVersioningIdentifier               claim.Identifier
+	TestOperatorCrdSchemaIdentifier                   claim.Identifier
+	TestOperatorSingleCrdOwnerIdentifier              claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
@@ -173,7 +177,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
 		"network-policy-deny-all",
 		common.NetworkingTestKey,
-		`Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic`,
+		`Check that network policies attached to namespaces running workload pods contain a default deny-all rule for both ingress and egress traffic`,
 		NetworkPolicyDenyAllRemediation,
 		NoExceptionProcessForExtendedTests,
 		TestNetworkPolicyDenyAllIdentifierDocLink,
@@ -205,7 +209,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestLimitedUseOfExecProbesIdentifier = AddCatalogEntry(
 		"max-resources-exec-probes",
 		common.PerformanceTestKey,
-		`Checks that less than 10 exec probes are configured in the cluster for this CNF. Also checks that the periodSeconds parameter for each probe is superior or equal to 10.`,
+		`Checks that less than 10 exec probes are configured in the cluster for this workload. Also checks that the periodSeconds parameter for each probe is superior or equal to 10.`,
 		LimitedUseOfExecProbesRemediation,
 		NoDocumentedProcess,
 		TestLimitedUseOfExecProbesIdentifierDocLink,
@@ -381,7 +385,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestDpdkCPUPinningExecProbe = AddCatalogEntry(
 		"dpdk-cpu-pinning-exec-probe",
 		common.NetworkingTestKey,
-		`If a CNF is doing CPU pinning, exec probes may not be used.`,
+		`If a workload is doing CPU pinning, exec probes may not be used.`,
 		DpdkCPUPinningExecProbeRemediation,
 		NoDocumentedProcess,
 		TestDpdkCPUPinningExecProbeDocLink,
@@ -429,9 +433,9 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestIpcLockIdentifier = AddCatalogEntry(
 		"ipc-lock-capability-check",
 		common.AccessControlTestKey,
-		`Ensures that containers do not use IPC_LOCK capability. CNF should avoid accessing host resources - spec.HostIpc should be false.`,
+		`Ensures that containers do not use IPC_LOCK capability. Workloads should avoid accessing host resources - spec.HostIpc should be false.`,
 		SecConRemediation,
-		`Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`,
+		`Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`,
 		TestIpcLockIdentifierDocLink,
 		true,
 		map[string]string{
@@ -461,7 +465,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestBpfIdentifier = AddCatalogEntry(
 		"bpf-capability-check",
 		common.AccessControlTestKey,
-		`Ensures that containers do not use BFP capability. CNF should avoid loading eBPF filters`,
+		`Ensures that containers do not use BPF capability. Workloads should avoid loading eBPF filters`,
 		BpfCapabilityRemediation,
 		`Exception can be considered. Must identify which container requires the capability and detail why.`,
 		TestBpfIdentifierDocLink,
@@ -590,7 +594,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"security-context",
 		common.AccessControlTestKey,
 		`Checks the security context matches one of the 4 categories`,
-		`Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 of the Extended Best Practices guide (private repo)`, //nolint:lll
+		`Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 [here](#security-context-categories)`, //nolint:lll
 		`no exception needed for optional/extended test`,
 		TestSecContextIdentifierDocLink,
 		true,
@@ -717,8 +721,8 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`,                                             //nolint:lll
-		`Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`, //nolint:lll
+		`Checks that each workload Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`,                                                  //nolint:lll
+		`Ensure that the workload is able to communicate via the Default OpenShift network. In some rare cases, workloads may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`, //nolint:lll
 		`No exceptions - must be able to communicate on default network using IPv4`,
 		TestICMPv4ConnectivityIdentifierDocLink,
 		true,
@@ -733,7 +737,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv6ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
+		`Checks that each workload Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
 		ICMPv6ConnectivityRemediation,
 		NoDocumentedProcess,
 		TestICMPv6ConnectivityIdentifierDocLink,
@@ -749,7 +753,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv4ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
+		`Checks that each workload Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
 		ICMPv4ConnectivityMultusRemediation,
 		NoDocumentedProcess,
 		TestICMPv4ConnectivityMultusIdentifierDocLink,
@@ -765,7 +769,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv6ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
+		`Checks that each workload Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
 		ICMPv6ConnectivityMultusRemediation+` Not applicable if IPv6/MULTUS is not supported.`,
 		NoDocumentedProcess,
 		TestICMPv6ConnectivityMultusIdentifierDocLink,
@@ -797,7 +801,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestNamespaceBestPracticesIdentifier = AddCatalogEntry(
 		"namespace",
 		common.AccessControlTestKey,
-		`Tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets
+		`Tests that all workload resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets
 the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces
 tag. (2) It does not have any of the following prefixes: default, openshift-, istio- and aspenmesh-`,
 		NamespaceBestPracticesRemediation,
@@ -815,7 +819,9 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestNonTaintedNodeKernelsIdentifier = AddCatalogEntry(
 		"tainted-node-kernel",
 		common.PlatformAlterationTestKey,
-		`Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have the same hacks.'`,
+		`Ensures that the Node(s) hosting workloads do not utilize tainted kernels. This test case is especially
+important to support Highly Available workloads, since when a workload is re-instantiated on a backup Node,
+that Node's kernel may not have the same hacks.'`,
 		NonTaintedNodeKernelsRemediation,
 		`If taint is necessary, document details of the taint and why it's needed by workload or environment.`,
 		TestNonTaintedNodeKernelsIdentifierDocLink,
@@ -831,7 +837,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestOperatorInstallStatusSucceededIdentifier = AddCatalogEntry(
 		"install-status-succeeded",
 		common.OperatorTestKey,
-		`Ensures that the target CNF operators report "Succeeded" as their installation status.`,
+		`Ensures that the target workload operators report "Succeeded" as their installation status.`,
 		OperatorInstallStatusSucceededRemediation,
 		NoExceptions,
 		TestOperatorInstallStatusSucceededIdentifierDocLink,
@@ -844,10 +850,10 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		},
 		TagCommon)
 
-	TestOperatorNoPrivileges = AddCatalogEntry(
+	TestOperatorNoSCCAccess = AddCatalogEntry(
 		"install-status-no-privileges",
 		common.OperatorTestKey,
-		`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present with no resourceNames under its rules.`,
+		`Checks whether the operator needs access to Security Context Constraints. Test passes if clusterPermissions is not present in the CSV manifest or is present with no RBAC rules related to SCCs.`,
 		OperatorNoPrivilegesRemediation,
 		NoExceptions,
 		TestOperatorNoPrivilegesDocLink,
@@ -863,7 +869,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestOperatorIsCertifiedIdentifier = AddCatalogEntry(
 		"operator-is-certified",
 		common.AffiliatedCertTestKey,
-		`Tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).`,
+		`Tests whether the workload Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).`,
 		OperatorIsCertifiedRemediation,
 		AffiliatedCert,
 		TestOperatorIsCertifiedIdentifierDocLink,
@@ -895,7 +901,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestOperatorIsInstalledViaOLMIdentifier = AddCatalogEntry(
 		"install-source",
 		common.OperatorTestKey,
-		`Tests whether a CNF Operator is installed via OLM.`,
+		`Tests whether a workload Operator is installed via OLM.`,
 		OperatorIsInstalledViaOLMRemediation,
 		NoExceptions,
 		TestOperatorIsInstalledViaOLMIdentifierDocLink,
@@ -908,10 +914,74 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		},
 		TagCommon)
 
+	TestOperatorHasSemanticVersioningIdentifier = AddCatalogEntry(
+		"semantic-versioning",
+		common.OperatorTestKey,
+		`Tests whether an application Operator has a valid semantic versioning.`,
+		OperatorHasSemanticVersioningRemediation,
+		NoExceptions,
+		TestOperatorHasSemanticVersioningIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorCrdVersioningIdentifier = AddCatalogEntry(
+		"crd-versioning",
+		common.OperatorTestKey,
+		`Tests whether the Operator CRD has a valid versioning.`,
+		OperatorCrdVersioningRemediation,
+		NoExceptions,
+		TestOperatorCrdVersioningIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorCrdSchemaIdentifier = AddCatalogEntry(
+		"crd-openapi-schema",
+		common.OperatorTestKey,
+		`Tests whether an application Operator CRD is defined with OpenAPI spec.`,
+		OperatorCrdSchemaIdentifierRemediation,
+		NoExceptions,
+		TestOperatorCrdSchemaIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorSingleCrdOwnerIdentifier = AddCatalogEntry(
+		"single-crd-owner",
+		common.OperatorTestKey,
+		`Tests whether a CRD is owned by a single Operator.`,
+		OperatorSingleCrdOwnerRemediation,
+		NoExceptions,
+		TestOperatorSingleCrdOwnerIdentifierDocLink,
+		false,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
 	TestPodNodeSelectorAndAffinityBestPractices = AddCatalogEntry(
 		"pod-scheduling",
 		common.LifecycleTestKey,
-		`Ensures that CNF Pods do not specify nodeSelector or nodeAffinity. In most cases, Pods should allow for instantiation on any underlying Node. CNFs shall not use node selectors nor taints/tolerations to assign pod location.`,
+		`Ensures that workload Pods do not specify nodeSelector or nodeAffinity. In most cases, Pods should allow for instantiation on any underlying Node. Workloads shall not use node selectors nor taints/tolerations to assign pod location.`,
 		PodNodeSelectorAndAffinityBestPracticesRemediation,
 		`Exception will only be considered if application requires specialized hardware. Must specify which container requires special hardware and why.`,
 		TestPodNodeSelectorAndAffinityBestPracticesDocLink,
@@ -927,7 +997,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestPodHighAvailabilityBestPractices = AddCatalogEntry(
 		"pod-high-availability",
 		common.LifecycleTestKey,
-		`Ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`,
+		`Ensures that workloads Pods specify podAntiAffinity rules and replica value is set to more than 1.`,
 		PodHighAvailabilityBestPracticesRemediation,
 		NoDocumentedProcess+NotApplicableSNO,
 		TestPodHighAvailabilityBestPracticesDocLink,
@@ -959,7 +1029,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestPodDeploymentBestPracticesIdentifier = AddCatalogEntry(
 		"pod-owner-type",
 		common.LifecycleTestKey,
-		`Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).`,
+		`Tests that the workload Pods are deployed as part of a ReplicaSet(s)/StatefulSet(s).`,
 		PodDeploymentBestPracticesRemediation,
 		NoDocumentedProcess+` Pods should not be deployed as DaemonSet or naked pods.`,
 		TestPodDeploymentBestPracticesIdentifierDocLink,
@@ -975,7 +1045,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestDeploymentScalingIdentifier = AddCatalogEntry(
 		"deployment-scaling",
 		common.LifecycleTestKey,
-		`Tests that CNF deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s`, //nolint:lll
+		`Tests that workload deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s`, //nolint:lll
 		DeploymentScalingRemediation,
 		NoDocumentedProcess+NotApplicableSNO,
 		TestDeploymentScalingIdentifierDocLink,
@@ -991,7 +1061,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestStateFulSetScalingIdentifier = AddCatalogEntry(
 		"statefulset-scaling",
 		common.LifecycleTestKey,
-		`Tests that CNF statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s`, //nolint:lll
+		`Tests that workload statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s`, //nolint:lll
 		StatefulSetScalingRemediation,
 		NoDocumentedProcess+NotApplicableSNO,
 		TestStateFulSetScalingIdentifierDocLink,
@@ -1023,7 +1093,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestPodRecreationIdentifier = AddCatalogEntry(
 		"pod-recreation",
 		common.LifecycleTestKey,
-		`Tests that a CNF is configured to support High Availability. First, this test cordons and drains a Node that hosts the CNF Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.`, //nolint:lll
+		`Tests that a workload is configured to support High Availability. First, this test cordons and drains a Node that hosts the workload Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.`, //nolint:lll
 		PodRecreationRemediation,
 		`No exceptions - workloads should be able to be restarted/recreated.`,
 		TestPodRecreationIdentifierDocLink,
@@ -1039,7 +1109,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestPodRoleBindingsBestPracticesIdentifier = AddCatalogEntry(
 		"pod-role-bindings",
 		common.AccessControlTestKey,
-		`Ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.`,
+		`Ensures that a workload does not utilize RoleBinding(s) in a non-workload Namespace.`,
 		PodRoleBindingsBestPracticesRemediation,
 		NoExceptions,
 		TestPodRoleBindingsBestPracticesIdentifierDocLink,
@@ -1055,7 +1125,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestPodServiceAccountBestPracticesIdentifier = AddCatalogEntry(
 		"pod-service-account",
 		common.AccessControlTestKey,
-		`Tests that each CNF Pod utilizes a valid Service Account. Default or empty service account is not valid.`,
+		`Tests that each workload Pod utilizes a valid Service Account. Default or empty service account is not valid.`,
 		PodServiceAccountBestPracticesRemediation,
 		NoExceptions,
 		TestPodServiceAccountBestPracticesIdentifierDocLink,
@@ -1087,7 +1157,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestServicesDoNotUseNodeportsIdentifier = AddCatalogEntry(
 		"service-type",
 		common.AccessControlTestKey,
-		`Tests that each CNF Service does not utilize NodePort(s).`,
+		`Tests that each workload Service does not utilize NodePort(s).`,
 		ServicesDoNotUseNodeportsRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
 		TestServicesDoNotUseNodeportsIdentifierDocLink,
@@ -1312,7 +1382,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		"liveness-probe",
 		common.LifecycleTestKey,
 		`Check that all containers under test have liveness probe defined. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. When starting up, health probes like liveness and readiness checks can be put into place to ensure the application is functioning properly.`, //nolint:lll
-		LivenessProbeRemediation+` CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.`,                                                                                 //nolint:lll
+		LivenessProbeRemediation+` workloads shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.`,                                                                            //nolint:lll
 		NoDocumentedProcess,
 		TestLivenessProbeIdentifierDocLink,
 		true,
@@ -1343,7 +1413,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestStartupProbeIdentifier = AddCatalogEntry(
 		"startup-probe",
 		common.LifecycleTestKey,
-		`Check that all containers under test have startup probe defined. CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.`, //nolint:lll
+		`Check that all containers under test have startup probe defined. Workloads shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.`, //nolint:lll
 		StartupProbeRemediation,
 		NoDocumentedProcess,
 		TestStartupProbeIdentifierDocLink,
@@ -1375,7 +1445,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestSYSNiceRealtimeCapabilityIdentifier = AddCatalogEntry(
 		"sys-nice-realtime-capability",
 		common.AccessControlTestKey,
-		`Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec. In the case that a CNF is running on a node using the real-time kernel, SYS_NICE will be used to allow DPDK application to switch to SCHED_FIFO.`, //nolint:lll
+		`Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec. In the case that a workolad is running on a node using the real-time kernel, SYS_NICE will be used to allow DPDK application to switch to SCHED_FIFO.`, //nolint:lll
 		SYSNiceRealtimeCapabilityRemediation,
 		NoDocumentedProcess,
 		TestSYSNiceRealtimeCapabilityIdentifierDocLink,
@@ -1423,7 +1493,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestNamespaceResourceQuotaIdentifier = AddCatalogEntry(
 		"namespace-resource-quota",
 		common.AccessControlTestKey,
-		`Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.`,
+		`Checks to see if workload pods are running in namespaces that have resource quotas applied.`,
 		NamespaceResourceQuotaRemediation,
 		NoExceptionProcessForExtendedTests,
 		TestNamespaceResourceQuotaIdentifierDocLink,
@@ -1471,7 +1541,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestPersistentVolumeReclaimPolicyIdentifier = AddCatalogEntry(
 		"persistent-volume-reclaim-policy",
 		common.LifecycleTestKey,
-		`Check that the persistent volumes the CNF pods are using have a reclaim policy of delete. Network Functions should clear persistent storage by deleting their PVs when removing their application from a cluster.`,
+		`Check that the persistent volumes the workloads pods are using have a reclaim policy of delete. Network Functions should clear persistent storage by deleting their PVs when removing their application from a cluster.`,
 		PersistentVolumeReclaimPolicyRemediation,
 		NoDocumentedProcess,
 		TestPersistentVolumeReclaimPolicyIdentifierDocLink,
@@ -1551,7 +1621,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestCrdScalingIdentifier = AddCatalogEntry(
 		"crd-scaling",
 		common.LifecycleTestKey,
-		`Tests that CNF crd support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s`, //nolint:lll
+		`Tests that a workload's CRD support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s`, //nolint:lll
 		CrdScalingRemediation,
 		NoDocumentedProcess+NotApplicableSNO,
 		TestCrdScalingIdentifierDocLink,

@@ -1,24 +1,24 @@
 <!-- markdownlint-disable code-block-style line-length no-bare-urls -->
-# CNF Certification configuration
+# Red Hat Best Practices Test Suite for Kubernetes configuration
 
-The CNF Certification Test uses a YAML configuration file to certify a specific CNF workload. This file specifies the CNF resources to be certified, as well as any exceptions or other general configuration options.
+The Red Hat Best Practices Test Suite for Kubernetes uses a YAML configuration file to certify a specific workload. This file specifies the workload's resources to be certified, as well as any exceptions or other general configuration options.
 
-By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml) of the CNF Config File. For a description of each config option see the section [CNF Config File options](#cnf-config-file-options).
+By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml) of the Config File. For a description of each config option see the section [Config File options](#config-file-options).
 
-## CNF Config Generator
+## Config Generator
 
-The CNF config file can be created using the CNF Config Generator, which is part of the TNF tool shipped with the CNF Certification. The purpose of this particular tool is to help users configuring the CNF Certification providing a logical structure of the available options as well as the information required to make use of them. The result is a CNF config file in YAML format that the CNF Certification will parse to adapt the certification process to a specific CNF workload.
+The Config File can be created using the Config Generator, which is part of the _certsuite_ tool shipped with the Test Suite. The purpose of this particular tool is to help users configuring the Test Suite providing a logical structure of the available options as well as the information required to make use of them. The result is a Config File in YAML format that will be parsed to adapt the verification process to a specific workload.
 
-To compile the TNF tool:
+To compile the _certsuite_ tool:
 
 ```shell
-make build-tnf-tool
+make build-certsuite-tool
 ```
 
-To launch the CNF Config Generator:
+To launch the Config Generator:
 
 ```shell
-./tnf generate config
+./certsuite generate config
 ```
 
 Here's an example of how to use the tool:
@@ -29,11 +29,11 @@ Here's an example of how to use the tool:
 </object>
 <!-- markdownlint-enable MD033 -->
 
-## CNF Config File options
+## Config File options
 
-### CNF resources
+### Workload resources
 
-These options allow configuring the workload resources of the CNF to be verified. Only the resources that the CNF uses are required to be configured. The rest can be left empty. Usually a basic configuration includes _Namespaces_ and _Pods_ at least.
+These options allow configuring the workload resources to be verified. Only the resources that the workload uses are required to be configured. The rest can be left empty. Usually a basic configuration includes _Namespaces_ and _Pods_ at least.
 
 !!! note
 
@@ -42,7 +42,7 @@ These options allow configuring the workload resources of the CNF to be verified
 
 #### targetNameSpaces
 
-The namespaces in which the CNF under test will be deployed.
+The namespaces in which the workload under test will be deployed.
 
 ``` { .yaml .annotate }
 targetNameSpaces:
@@ -51,7 +51,7 @@ targetNameSpaces:
 
 #### podsUnderTestLabels
 
-The labels that each Pod of the CNF under test must have to be verified by the CNF Certification Suite.
+The labels that each Pod of the workload under test must have to be verified by the Test Suite.
 
 !!! note "Highly recommended"
 
@@ -64,9 +64,9 @@ podsUnderTestLabels:
 
 #### operatorsUnderTestLabels
 
-The labels that each operator's CSV of the CNF under test must have to be verified by the CNF Certification Suite.
+The labels that each operator's CSV of the workload under test must have to be verified by the Test Suite.
 
-If a new label is used for this purpose make sure it is added to the CNF operator's CSVs.
+If a new label is used for this purpose make sure it is added to the workload operator's CSVs.
 
 ``` { .yaml .annotate }
 operatorsUnderTestLabels:
@@ -75,7 +75,7 @@ operatorsUnderTestLabels:
 
 #### targetCrdFilters
 
-The CRD name suffix used to filter the CNF's CRDs among all the CRDs present in the cluster. For each CRD it can also be specified if it's scalable or not in order to avoid some lifecycle test cases.
+The CRD name suffix used to filter the workload's CRDs among all the CRDs present in the cluster. For each CRD it can also be specified if it's scalable or not in order to avoid some lifecycle test cases.
 
 ``` { .yaml .annotate }
 targetCrdFilters:
@@ -124,11 +124,11 @@ This utilizes the `--add-host` flag in Docker to be able to point `api.crc.testi
 
 ### Exceptions
 
-These options allow adding exceptions to skip several checks for different resources. The exceptions must be justified in order to pass the CNF Certification.
+These options allow adding exceptions to skip several checks for different resources. The exceptions must be justified in order to satisfy the Red Hat Best Practices for Kubernetes.
 
 #### acceptedKernelTaints
 
-The list of kernel modules loaded by the CNF that make the Linux kernel mark itself as _tainted_ but that should skip verification.
+The list of kernel modules loaded by the workload that make the Linux kernel mark itself as _tainted_ but that should skip verification.
 
 Test cases affected: _platform-alteration-tainted-node-kernel_.
 
@@ -140,7 +140,7 @@ acceptedKernelTaints:
 
 #### skipHelmChartList
 
-The list of Helm charts that the CNF uses whose certification status will not be verified.
+The list of Helm charts that the workload uses whose certification status will not be verified.
 
 If no exception is configured, the certification status for all Helm charts will be checked in the [OpenShift Helms Charts repository](https://charts.openshift.io/).
 
@@ -197,7 +197,7 @@ skipScalingTestStatefulSetNames:
     namespace: tnf
 ```
 
-### CNF Certification settings
+### Red Hat Best Practices Test Suite settings
 
 #### debugDaemonSetNamespace
 
@@ -207,7 +207,7 @@ This is an optional field with the name of the namespace where a privileged Daem
 debugDaemonSetNamespace: cnf-cert
 ```
 
-This DaemonSet, called _tnf-debug_ is deployed and used internally by the CNF Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn't deployed correctly.
+This DaemonSet, called _tnf-debug_ is deployed and used internally by the Test Suite tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn't deployed correctly.
 
 ### Other settings
 
@@ -228,4 +228,4 @@ The label _test-network-function.com/skip_multus_connectivity_tests_ excludes Po
 
 #### Affinity requirements
 
-For CNF workloads that require Pods to use Pod or Node Affinity rules, the label _AffinityRequired: true_ must be included on the Pod YAML. This will ensure that the affinity best practices are tested and prevent any test cases for anti-affinity to fail.
+For workloads that require Pods to use Pod or Node Affinity rules, the label _AffinityRequired: true_ must be included on the Pod YAML. This will ensure that the affinity best practices are tested and prevent any test cases for anti-affinity to fail.

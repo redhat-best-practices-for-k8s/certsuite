@@ -34,6 +34,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
+	"github.com/test-network-function/cnf-certification-test/pkg/podhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -290,27 +291,27 @@ func checkForbiddenCapability(containers []*provider.Container, capability strin
 }
 
 func testSysAdminCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "SYS_ADMIN", check.GetLoggger())
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "SYS_ADMIN", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testNetAdminCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_ADMIN", check.GetLoggger())
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_ADMIN", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testNetRawCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_RAW", check.GetLoggger())
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_RAW", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testIpcLockCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "IPC_LOCK", check.GetLoggger())
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "IPC_LOCK", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testBpfCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "BPF", check.GetLoggger())
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "BPF", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
@@ -501,13 +502,13 @@ func testNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
 		check.SetResult(compliantObjects, nonCompliantObjects)
 	}
 
-	invalidCrs, err := namespace.TestCrsNamespaces(env.Crds, env.Namespaces, check.GetLoggger())
+	invalidCrs, err := namespace.TestCrsNamespaces(env.Crds, env.Namespaces, check.GetLogger())
 	if err != nil {
 		check.LogError("Error while testing CRs namespaces, err=%v", err)
 		return
 	}
 
-	invalidCrsNum := namespace.GetInvalidCRsNum(invalidCrs, check.GetLoggger())
+	invalidCrsNum := namespace.GetInvalidCRsNum(invalidCrs, check.GetLogger())
 	if invalidCrsNum > 0 {
 		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("CRs are not in the configured namespaces", testhelper.Namespace, false))
 	} else {
@@ -616,7 +617,7 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 
 	for _, put := range env.Pods {
 		check.LogInfo("Testing Pod %q", put)
-		result, roleRefName, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings, check.GetLoggger())
+		result, roleRefName, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings, check.GetLogger())
 		if err != nil {
 			check.LogError("Failed to determine if Pod %q is using a cluster role binding, err=%v", put, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("failed to determine if pod is using a cluster role binding: %v", err), false).
@@ -685,7 +686,7 @@ func isInstallModeMultiNamespace(installModes []v1alpha1.InstallMode) bool {
 //   - bool: true if one of the passed topOwners is a CSV that is installed by a cluster-wide operator, otherwise return false
 //   - name string : the name of the matching object, if found.
 //   - aNamespace string : the namespace of the matching object, if found.
-func ownedByClusterWideOperator(topOwners map[string]provider.TopOwner, env *provider.TestEnvironment) (aNamespace, name string, found bool) {
+func ownedByClusterWideOperator(topOwners map[string]podhelper.TopOwner, env *provider.TestEnvironment) (aNamespace, name string, found bool) {
 	for _, owner := range topOwners {
 		if isCSVAndClusterWide(owner.Namespace, owner.Name, env) {
 			return owner.Namespace, owner.Name, true
@@ -923,7 +924,7 @@ func testPodRequestsAndLimits(check *checksdb.Check, env *provider.TestEnvironme
 	// These need to be defined in order to pass.
 	for _, cut := range env.Containers {
 		check.LogInfo("Testing Container %q", cut)
-		if !resources.HasRequestsAndLimitsSet(cut, check.GetLoggger()) {
+		if !resources.HasRequestsAndLimitsSet(cut, check.GetLogger()) {
 			check.LogError("Container %q is missing resource requests or limits", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing resource requests or limits", false))
 		} else {

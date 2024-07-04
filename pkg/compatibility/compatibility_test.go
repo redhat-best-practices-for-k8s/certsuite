@@ -184,6 +184,11 @@ func TestIsRHCOSCompatible(t *testing.T) {
 			testMachineVersion: "4.13.0-rc.2",
 			expectedOutput:     true,
 		},
+		{
+			testOCPVersion:     "4.16.0-rc.1",
+			testMachineVersion: "4.16.0-rc.1",
+			expectedOutput:     true,
+		},
 	}
 
 	for _, tc := range testCases {

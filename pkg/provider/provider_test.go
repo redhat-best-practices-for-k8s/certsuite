@@ -18,7 +18,6 @@ package provider
 
 import (
 	"errors"
-	"os"
 	"reflect"
 	"testing"
 
@@ -395,7 +394,7 @@ func TestIsWorkerNode(t *testing.T) {
 	}
 }
 
-func TestIsMasterNode(t *testing.T) {
+func TestIsControlPlaneNode(t *testing.T) {
 	testCases := []struct {
 		node           *corev1.Node
 		expectedResult bool
@@ -490,7 +489,7 @@ func TestIsMasterNode(t *testing.T) {
 
 	for _, tc := range testCases {
 		node := Node{Data: tc.node}
-		assert.Equal(t, tc.expectedResult, node.IsMasterNode())
+		assert.Equal(t, tc.expectedResult, node.IsControlPlaneNode())
 	}
 }
 
@@ -679,12 +678,9 @@ func TestGetRHCOSVersion(t *testing.T) {
 			},
 		}
 
-		origValue := rhcosRelativePath
-		rhcosRelativePath = "%s/../../cnf-certification-test/platform/operatingsystem/files/rhcos_version_map" // for testing only
 		result, err := node.GetRHCOSVersion()
 		assert.Equal(t, tc.expectedErr, err)
 		assert.Equal(t, tc.expectedOutput, result)
-		rhcosRelativePath = origValue
 	}
 }
 
@@ -771,36 +767,6 @@ func TestGetRHELVersion(t *testing.T) {
 		result, err := node.GetRHELVersion()
 		assert.Equal(t, tc.expectedErr, err)
 		assert.Equal(t, tc.expectedOutput, result)
-	}
-}
-
-func TestBuildImageWithVersion(t *testing.T) {
-	testCases := []struct {
-		repoVar         string
-		supportImageVar string
-		expectedOutput  string
-	}{
-		{
-			repoVar:         "test1",
-			supportImageVar: "image1",
-			expectedOutput:  "test1/image1",
-		},
-		{
-			repoVar:         "",
-			supportImageVar: "",
-			expectedOutput:  "quay.io/testnetworkfunction/debug-partner:5.0.5",
-		},
-	}
-
-	defer func() {
-		os.Unsetenv("TNF_PARTNER_REPO")
-		os.Unsetenv("SUPPORT_IMAGE")
-	}()
-
-	for _, tc := range testCases {
-		os.Setenv("TNF_PARTNER_REPO", tc.repoVar)
-		os.Setenv("SUPPORT_IMAGE", tc.supportImageVar)
-		assert.Equal(t, tc.expectedOutput, buildImageWithVersion())
 	}
 }
 
@@ -1171,4 +1137,60 @@ func Test_getPodContainers(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSetNeedsRefresh(t *testing.T) {
+	loaded = true
+	env := &TestEnvironment{}
+	env.SetNeedsRefresh()
+	assert.False(t, loaded)
+}
+
+func TestIsIntrusive(t *testing.T) {
+	env := &TestEnvironment{}
+	env.params.NonIntrusiveOnly = true
+	assert.False(t, env.IsIntrusive())
+
+	env.params.NonIntrusiveOnly = false
+	assert.True(t, env.IsIntrusive())
+}
+
+func TestIsPreflightInsecureAllowed(t *testing.T) {
+	env := &TestEnvironment{}
+	env.params.AllowPreflightInsecure = true
+	assert.True(t, env.IsPreflightInsecureAllowed())
+
+	env.params.AllowPreflightInsecure = false
+	assert.False(t, env.IsPreflightInsecureAllowed())
+}
+
+func TestGetDockerConfigFile(t *testing.T) {
+	env := &TestEnvironment{}
+	env.params.PfltDockerconfig = "/tmp/config.json"
+	assert.Equal(t, "/tmp/config.json", env.GetDockerConfigFile())
+}
+
+func TestGetOfflineDBPath(t *testing.T) {
+	env := &TestEnvironment{}
+	env.params.OfflineDB = "/tmp/offline.db"
+	assert.Equal(t, "/tmp/offline.db", env.GetOfflineDBPath())
+}
+
+func TestIsSNO(t *testing.T) {
+	env := &TestEnvironment{}
+	env.Nodes = map[string]Node{
+		"node1": {
+			Data: &corev1.Node{},
+		},
+	}
+	assert.True(t, env.IsSNO())
+
+	env.Nodes = map[string]Node{}
+	assert.False(t, env.IsSNO())
+}
+
+func TestIsOCPCluster(t *testing.T) {
+	env := &TestEnvironment{}
+	env.OpenshiftVersion = "4.8.0"
+	assert.True(t, IsOCPCluster())
 }

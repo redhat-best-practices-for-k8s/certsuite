@@ -24,18 +24,16 @@ const (
 )
 
 // ASCII art generated on http://www.patorjk.com/software/taag/ with
-// the font DOOM by Frans P. de Vries <fpv@xymph.iaf.nl>  18 Jun 1996.
-// All backticks (`) were removed for string literal compatibility.
+// the font Standard by Glenn Chappell & Ian Chai 3/93.
 const banner = `
 
- _____  _   _ ______  _____  _____ ______  _____    __        _____     _____ __  
-/  __ \| \ | ||  ___|/  __ \|  ___|| ___ \|_   _|  / /       |  ___|   |  _  |\ \ 
-| /  \/|  \| || |_   | /  \/| |__  | |_/ /  | |   | | __   __|___ \    | |/' | | |
-| |    | .   ||  _|  | |    |  __| |    /   | |   | | \ \ / /    \ \   |  /| | | |
-| \__/\| |\  || |    | \__/\| |___ | |\ \   | |   | |  \ V / /\__/ / _ \ |_/ / | |
- \____/\_| \_/\_|     \____/\____/ \_| \_|  \_/   | |   \_/  \____/ (_) \___/  | |
-                                                   \_\                        /_/ 
-																				 
+   ____  _____  ____  _____  ____   _   _  ___  _____  _____          ____     ____
+  / ___|| ____||  _ \|_   _|/ ___| | | | ||_ _||_   _|| ____| __   __| ___|   |___ \
+ | |    |  _|  | |_) | | |  \___ \ | | | | | |   | |  |  _|   \ \ / /|___ \     __) |
+ | |___ | |___ |  _ <  | |   ___) || |_| | | |   | |  | |___   \ V /  ___) |_  / __/
+  \____||_____||_| \_\ |_|  |____/  \___/ |___|  |_|  |_____|   \_/  |____/(_)|_____|
+
+
 
 `
 
@@ -46,6 +44,9 @@ const (
 	CheckResultTagRunning = Cyan + "RUNNING" + Reset
 	CheckResultTagAborted = Red + "ABORTED" + Reset
 	CheckResultTagError   = Red + "ERROR" + Reset
+
+	tickerPeriodSeconds = 10
+	lineLength          = 5
 )
 
 var CliCheckLogSniffer = &cliCheckLogSniffer{}
@@ -74,7 +75,7 @@ func updateRunningCheckLine(checkName string, stopChan <-chan bool) {
 	tickerPeriod := 1 * time.Second
 	if !isTTY() {
 		// Increase it to avoid flooding the text output.
-		tickerPeriod = 10 * time.Second
+		tickerPeriod = tickerPeriodSeconds * time.Second
 	}
 
 	timer := time.NewTicker(tickerPeriod)
@@ -119,7 +120,7 @@ func printRunningCheckLine(checkName string, startTime time.Time, logLine string
 	}
 
 	// Add check's last log line only if the program is running in a tty/ptty.
-	maxAvailableWidth := getTerminalWidth() - len(line) - 5
+	maxAvailableWidth := getTerminalWidth() - len(line) - lineLength
 	if logLine != "" && maxAvailableWidth > minColsNeededForLogLine {
 		// Append a cropped log line only if it makes sense due to the available space on the right.
 		line += "   " + cropLogLine(logLine, maxAvailableWidth)

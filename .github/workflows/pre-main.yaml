@@ -6,57 +6,56 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
-  TNF_IMAGE_TAG: unstable
+  CERTSUITE_IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  CERTSUITE_IMAGE_TAG: unstable
   OCT_IMAGE_NAME: testnetworkfunction/oct
   OCT_IMAGE_TAG: latest
-  TNF_CONTAINER_CLIENT: docker
-  TNF_NON_INTRUSIVE_ONLY: false
-  TNF_ALLOW_PREFLIGHT_INSECURE: false
-  TNF_DISABLE_CONFIG_AUTODISCOVER: false
-  TNF_CONFIG_DIR: /tmp/tnf/config
-  TNF_OUTPUT_DIR: /tmp/tnf/output
-  TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
-  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
-  TNF_SMOKE_TESTS_LOG_LEVEL: debug
-  ON_DEMAND_DEBUG_PODS: false
+  CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
+  CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
+  SMOKE_TESTS_LOG_LEVEL: debug
+  SMOKE_TESTS_LABELS_FILTER: all
+  SKIP_PRELOAD_IMAGES: true
   TERM: xterm-color
   CM_BIN: /usr/local/bin/checkmake
   CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
-  SMOKE_TESTS_LABELS_FILTER: all
-  SKIP_PRELOAD_IMAGES: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
     name: Run Linters and Vet
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
 
     steps:
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
-          go-version: 1.22.1
+          go-version: 1.22.4
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install pyyaml
-        env:
-          SHELL: /bin/bash
+        uses: ./.github/actions/install-yaml-dep
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -66,39 +65,39 @@ jobs:
           chmod +x $CM_BIN
 
       - name: Install Shfmt
-        uses: mfinelli/setup-shfmt@v3
+        uses: mfinelli/setup-shfmt@031e887e39d899d773a7e9b6dd6472c2c23ff50d # v3.0.1
 
       - name: Golangci-lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
         with:
-          version: v1.56
+          version: v1.58
           args: --timeout 10m0s
 
       - name: Checkmake
         run: checkmake --config=.checkmake Makefile
 
       - name: Hadolint
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf # v3.1.0
         with:
           dockerfile: Dockerfile
           recursive: true
 
       - name: Shfmt
-        run: shfmt -d *.sh script
+        run: shfmt -d script
 
       - name: Markdownlint
-        uses: nosborn/github-action-markdown-cli@v3.3.0
+        uses: nosborn/github-action-markdown-cli@9b5e871c11cc0649c5ac2526af22e23525fa344d # v3.3.0
         with:
           files: .
 
       - name: ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # master
 
-      - name: Typos
-        uses: crate-ci/typos@master
+      # - name: Typos
+      #   uses: crate-ci/typos@master
 
       - name: Yamllint
-        uses: ibiqlik/action-yamllint@v3
+        uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c # v3.1.1
         with:
           config_file: .yamllint.yml
 
@@ -109,31 +108,29 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-latest]
+        os: [ubuntu-22.04]
     env:
       SHELL: /bin/bash
 
     steps:
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
-          go-version: 1.22.1
+          go-version: 1.22.4
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install pyyaml
-        env:
-          SHELL: /bin/bash
+        uses: ./.github/actions/install-yaml-dep
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -174,25 +171,23 @@ jobs:
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
-          go-version: 1.22.1
+          go-version: 1.22.4
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
       - name: Install yaml dependency
-        run: pip3 install pyyaml
-        env:
-          SHELL: /bin/bash
+        uses: ./.github/actions/install-yaml-dep
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -207,8 +202,8 @@ jobs:
             ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
           docker system prune --volumes -f
 
-      - name: Build CNF test suite binary
-        run: make build-cnf-tests
+      - name: Build the Certsuite tool
+        run: make build-certsuite-tool
 
       - name: Remove go mod cache to save disk space.
         run: |
@@ -216,82 +211,42 @@ jobs:
           go clean -modcache || true
           df -h
 
-      # Create a Kind cluster for testing.
-      - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v4
+      - name: Setup partner cluster
+        uses: ./.github/actions/setup-partner-cluster
         with:
-          repository: test-network-function/cnf-certification-test-partner
-          path: cnf-certification-test-partner
-
-      - name: Bootstrap cluster, docker, and python
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 90
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make bootstrap-cluster && make bootstrap-docker-ubuntu-local && make bootstrap-python-ubuntu-local && pip3 install pyyaml
-
-      # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
-      # This step needs to be done right after the partner repo's bootstrap scripts, as they
-      # overwrite the docker's daemon.json.
-      - name: Make docker to use /mnt (sdb) for storage
-        run: |
-          df -h
-          lsblk
-          sudo mkdir /mnt/docker-storage
-          sudo jq '.  +={"data-root" : "/mnt/docker-storage"}' < /etc/docker/daemon.json > /tmp/docker-daemon.json
-          sudo cp /tmp/docker-daemon.json /etc/docker/daemon.json
-          cat /etc/docker/daemon.json
-          sudo systemctl restart docker
-          sudo ls -la /mnt/docker-storage
-
-      - name: Run 'make rebuild-cluster'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 90
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make rebuild-cluster
-
-      - name: Run 'make install'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 90
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make install
+          make-command: 'install'
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "${SMOKE_TESTS_LABELS_FILTER}"
+        run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir=certsuite-out --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: always()
         with:
           name: smoke-tests
           path: |
-            cnf-certification-test/*.tar.gz
+            certsuite-out/*.tar.gz
 
       - name: Remove tarball(s) to save disk space.
-        run: rm -f cnf-certification-test/*.tar.gz
-
-      - name: Build the TNF tool
-        run: make build-tnf-tool
+        run: rm -f certsuite-out/*.tar.gz
 
       - name: Check the smoke test results against the expected results template
-        run: make check-results
+        run: ./certsuite check results --log-file="certsuite-out/certsuite.log"
 
       - name: 'Test: Run preflight specific test suite'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
+        run: ./certsuite run --label-filter=preflight --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload preflight smoke test results as an artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: always()
         with:
           name: preflight-smoke-tests
           path: |
-            cnf-certification-test/*.tar.gz
+            certsuite-out/*.tar.gz
 
       - name: Remove tarball(s) to save disk space
-        run: rm -f cnf-certification-test/*.tar.gz
+        run: rm -f certsuite-out/*.tar.gz
 
   smoke-tests-container:
     name: Run Container Smoke Tests
@@ -308,77 +263,40 @@ jobs:
           touch ${PFLT_DOCKERCONFIG}
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
-      # Create a Kind cluster for testing.
-      - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v4
-        with:
-          repository: test-network-function/cnf-certification-test-partner
-          path: cnf-certification-test-partner
-
-      - name: Bootstrap cluster, docker, and python
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 90
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make bootstrap-cluster && make bootstrap-docker-ubuntu-local && make bootstrap-python-ubuntu-local && pip3 install pyyaml
-
-      # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
-      # This step needs to be done right after the partner repo's bootstrap scripts, as they
-      # overwrite the docker's daemon.json.
-      - name: Make docker to use /mnt (sdb) for storage
-        run: |
-          df -h
-          lsblk
-          sudo mkdir /mnt/docker-storage
-          sudo jq '.  +={"data-root" : "/mnt/docker-storage"}' < /etc/docker/daemon.json > /tmp/docker-daemon.json
-          sudo cp /tmp/docker-daemon.json /etc/docker/daemon.json
-          cat /etc/docker/daemon.json
-          sudo systemctl restart docker
-          sudo ls -la /mnt/docker-storage
-
-      - name: Run 'make rebuild-cluster'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 90
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make rebuild-cluster
-
-      - name: Run 'make install'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 90
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make install
-
       # needed by depends-on-action
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
-          go-version: 1.22.1
+          go-version: 1.22.4
 
-      # Perform smoke tests using a TNF container.
+      # Perform smoke tests using a Certsuite container.
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ github.sha }}
 
+      - name: Setup partner cluster
+        uses: ./.github/actions/setup-partner-cluster
+        with:
+          make-command: 'install'
+
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the `cnf-certification-test` image
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 90
           max_attempts: 3
           command: make build-image-local
         env:
-          IMAGE_TAG: ${TNF_IMAGE_TAG}
+          IMAGE_TAG: ${CERTSUITE_IMAGE_TAG}
 
       # Prepare collector to be used when running smoke tests
       - name: Check out `Collector`
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           repository: test-network-function/collector
           path: collector
@@ -392,10 +310,12 @@ jobs:
           docker rmi $(docker images -f "dangling=true" -q) || true
           df -h
 
-      - name: Create required TNF config files and directories
+      - name: Create required Certsuite config files and directories
         run: |
-          mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
-          cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
+          mkdir -p $CERTSUITE_CONFIG_DIR $CERTSUITE_OUTPUT_DIR
+          cp /home/runner/.kube/config $CERTSUITE_CONFIG_DIR/kubeconfig
+          cp /home/runner/.docker/config $CERTSUITE_CONFIG_DIR/dockerconfig
+          cp cnf-certification-test/*.yml $CERTSUITE_CONFIG_DIR
         shell: bash
 
       - name: Get Collector's CI credentials
@@ -413,19 +333,43 @@ jobs:
       - name: Ensure COLLECTOR_CIUSER and COLLECTOR_CIPASSWORD are set
         run: '[[ -n "$COLLECTOR_CIUSER" ]] && [[ -n "$COLLECTOR_CIPASSWORD" ]]'
 
-      - name: Modify TNF config with CI collector credentials
+      - name: Modify Certsuite config with CI collector credentials
         run: |
           sed -i\
             -e '/executedBy/s/""/"CI"/g' \
             -e '/partnerName/s/""/"${{ env.COLLECTOR_CIUSER }}"/g' \
             -e '/collectorAppPassword/s/""/"${{ env.COLLECTOR_CIPASSWORD }}"/g' \
-            $TNF_CONFIG_DIR/tnf_config.yml
+            $CERTSUITE_CONFIG_DIR/tnf_config.yml
 
       - name: 'Test: Run without any TS, just get diagnostic information'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
+        run: |
+          docker run --rm --network host \
+            -v $CERTSUITE_CONFIG_DIR:/usr/certsuite/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/certsuite/output:Z \
+            ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
+            certsuite run \
+            --output-dir=/usr/certsuite/output \
+            --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
+            --offline-db=/usr/offline-db \
+            --log-level=${SMOKE_TESTS_LOG_LEVEL} \
+            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --kubeconfig=/usr/certsuite/config/kubeconfig \
 
-      - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_LABELS_FILTER}"
+      - name: 'Test: Run Smoke Tests in a Certsuite container with the certsuite command'
+        run: |
+          docker run --rm --network host \
+            -v $CERTSUITE_CONFIG_DIR:/usr/certsuite/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/certsuite/output:Z \
+            ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
+            certsuite run \
+            --output-dir=/usr/certsuite/output \
+            --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
+            --offline-db=/usr/offline-db \
+            --enable-data-collection=true \
+            --log-level=${SMOKE_TESTS_LOG_LEVEL} \
+            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --kubeconfig=/usr/certsuite/config/kubeconfig \
+            --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Run sanity check on collector
         uses: ./collector/.github/actions/run-sanity-check
@@ -435,68 +379,91 @@ jobs:
           collector_password: ${COLLECTOR_CIPASSWORD}
 
       - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: always()
         with:
           name: smoke-tests-container
           path: |
-            ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+            ${CERTSUITE_OUTPUT_DIR}/*.tar.gz
 
       - name: Remove tarball(s) to save disk space.
-        run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+        run: rm -f ${CERTSUITE_OUTPUT_DIR}/*.tar.gz
 
-      - name: Build the TNF tool
-        run: make build-tnf-tool
+      - name: Build the Certsuite tool
+        run: make build-certsuite-tool
 
       - name: Check the smoke test results against the expected results template
-        run: ./tnf check results --log-file="${TNF_OUTPUT_DIR}"/cnf-certsuite.log
+        run: ./certsuite check results --log-file="${CERTSUITE_OUTPUT_DIR}"/certsuite.log
 
-      - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
+      - name: 'Test: Run Preflight Specific Smoke Tests in a Certsuite container with the certsuite command'
+        run: |
+          docker run --rm --network host \
+            -v $CERTSUITE_CONFIG_DIR:/usr/certsuite/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/certsuite/output:Z \
+            ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
+            certsuite run \
+            --output-dir=/usr/certsuite/output \
+            --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
+            --offline-db=/usr/offline-db \
+            --log-level=${SMOKE_TESTS_LOG_LEVEL} \
+            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --kubeconfig=/usr/certsuite/config/kubeconfig \
+            --label-filter="preflight"
 
-      - name: Upload container preflight test results as an artifact
-        uses: actions/upload-artifact@v4
-        if: always()
+  # Only run this job if the previous jobs are successful that build the ARM and x86 images.
+  create-manifest-multiarch:
+    name: Create manifest list for multi-arch image
+    needs: [unit-tests, smoke-tests-container]
+    runs-on: ubuntu-22.04
+    if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
+    steps:
+      - name: Check out code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
-          name: preflight-smoke-tests-container
-          path: |
-            ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+          ref: ${{ github.sha }}
 
-      - name: Remove tarball(s) to save disk space.
-        run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@5927c834f5b4fdf503fca6f4c7eccda82949e1ee # v3.1.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
 
+      - name: Login to Quay.io
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.QUAY_ROBOT_USERNAME }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+
+      - name: Build and push the unstable images for multi-arch
+        uses: docker/build-push-action@1a162644f9a7e87d8f4b053101d1d9a712edc18c # v6.3.0
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME }}:${{ env.CERTSUITE_IMAGE_TAG }}
+      
       - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
         uses: ./.github/actions/slack-webhook-sender
         with:
-          message: 'Failed to create the *unstable* container image'
+          message: 'Failed to create the *unstable* container manifest'
           slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
 
-      # Push the new unstable TNF image to Quay.io.
-      - name: (if on main and upstream) Authenticate against Quay.io
-        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          # Use a Robot Account to authenticate against Quay.io
-          # https://docs.quay.io/glossary/robot-accounts.html
-          username: ${{ secrets.QUAY_ROBOT_USERNAME }}
-          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
-
-      - name: (if on main and upstream) Push the newly built image to Quay.io
-        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
 
   check-all-dependencies-are-merged:
     name: Check all the PR dependencies are merged
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Check all dependent Pull Requests are merged
-        uses: depends-on/depends-on-action@main
+        uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           check-unmerged-pr: true

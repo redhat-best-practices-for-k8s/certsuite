@@ -4,8 +4,15 @@ on:
   # Triggers the workflow every day
   schedule:
     - cron: "0 0 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+
 jobs:
   update-certification:
+    permissions:
+      contents: write  # for peter-evans/create-pull-request to create branch
+      pull-requests: write  # for peter-evans/create-pull-request to create a PR
     name: Update offline mapping of RHCOS to OCP version
     runs-on: ubuntu-22.04
     env:
@@ -13,7 +20,7 @@ jobs:
 
     steps:
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: main
 
@@ -21,9 +28,9 @@ jobs:
         run: make update-rhcos-versions
 
       - name: Set up Go 1.22
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
-          go-version: 1.22.1
+          go-version: 1.22.4
 
         # This prevents any failures due to the updated rhcos_versions_map file from
         # making it into the PR phase.
@@ -31,7 +38,7 @@ jobs:
         run: make test
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # v6.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.UPDATE_CERTIFIED_DB_TOKEN }}
         with:

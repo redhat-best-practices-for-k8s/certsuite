@@ -130,6 +130,8 @@ const (
 	Repository                      = "Repository"
 	ImageName                       = "Image Name"
 	Version                         = "Version"
+	OpenAPIV3Schema                 = "OpenAPIV3Schema"
+	CrdVersion                      = "Operator CRD Version"
 	OCPVersion                      = "OCP Version"
 	OCPChannel                      = "OCP Channel"
 	NodeSelector                    = "Node Selector"
@@ -169,9 +171,13 @@ const (
 	PortNumber   = "Port Number"
 	PortProtocol = "Port Protocol"
 
-	//
+	// OLM
 	SubscriptionName = "Subscription Name"
 	OperatorPhase    = "Operator Phase"
+	OperatorName     = "Operator Name"
+
+	// Lists
+	OperatorList = "Operator List"
 )
 
 // When adding new object types, please update the following:
@@ -636,6 +642,15 @@ func GetNoOperatorsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Operators) == 0 {
 			return true, "no operators found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoOperatorCrdsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Crds) == 0 {
+			return true, "no operator crds found"
 		}
 		return false, ""
 	}

@@ -1,6 +1,9 @@
-# CNF Certification Test
+# Red Hat Best Practices Test Suite for Kubernetes
 
 ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg)
+[![QE OCP 4.14 Testing](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-414.yaml/badge.svg)](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-414.yaml)
+[![QE OCP 4.15 Testing](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-415.yaml/badge.svg)](https://github.com/test-network-function/cnf-certification-test/actions/workflows/qe-ocp-415.yaml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/test-network-function/cnf-certification-test/badge)](https://scorecard.dev/viewer/?uri=github.com/test-network-function/cnf-certification-test)
 [![go report](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test)
 [![go-doc](https://godoc.org/github.com/test-network-function/cnf-certification-test?status.svg)](https://godoc.org/github.com/test-network-function/cnf-certification-test)
 [![release)](https://img.shields.io/github/v/release/test-network-function/cnf-certification-test?color=blue&label=%20&logo=semver&logoColor=white&style=flat)](https://github.com/test-network-function/cnf-certification-test/releases)
@@ -25,8 +28,8 @@ Please contact us in case the documentation is broken.
 ## Demo
 
 <!-- markdownlint-disable MD033 -->
-<object type="image/svg+xml" data="docs/assets/images/demo-cnfcert.svg">
-<img src="docs/assets/images/demo-cnfcert.svg">
+<object type="image/svg+xml" data="docs/assets/images/demo-certsuite.svg">
+<img src="docs/assets/images/demo-certsuite.svg">
 </object>
 <!-- markdownlint-enable MD033 -->
 
@@ -59,6 +62,5 @@ Please contact us in case the documentation is broken.
 
 ## License
 
-CNF Certification Test is copyright [Red Hat, Inc.](https://www.redhat.com) and available
-under an
-[Apache 2 license](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE).
+Red Hat Best Practices Test Suite for Kubernetes is copyright
+[Red Hat, Inc.](https://www.redhat.com) and available under an [Apache 2 license](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE).

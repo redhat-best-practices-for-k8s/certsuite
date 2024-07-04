@@ -1,14 +1,13 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.3-1610 AS build
-ENV TNF_DIR=/usr/tnf
+FROM registry.access.redhat.com/ubi9/ubi:9.4-1123.1719560047@sha256:081c96d1b1c7cd1855722d01f1ca53360510443737b1eb33284c6c4c330e537c AS build
+ENV CERTSUITE_DIR=/usr/certsuite
 ENV \
-	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
-	TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test \
+	CERTSUITE_SRC_DIR=${CERTSUITE_DIR}/src \
 	TEMP_DIR=/tmp
 
 # Install dependencies
 # hadolint ignore=DL3041
 RUN \
-	mkdir ${TNF_DIR} \
+	mkdir ${CERTSUITE_DIR} \
 	&& dnf update --assumeyes --disableplugin=subscription-manager \
 	&& dnf install --assumeyes --disableplugin=subscription-manager \
 		gcc \
@@ -19,17 +18,28 @@ RUN \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
 	&& rm -rf /var/cache/yum
 
+# Set environment specific variables
+ENV \
+	OPERATOR_SDK_X86_FILENAME=operator-sdk_linux_amd64 \
+	OPERATOR_SDK_ARM_FILENAME=operator-sdk_linux_arm64
+
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.22.1.linux-amd64.tar.gz \
 	GOPATH=/root/go
-ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
+ENV GO_BIN_URL_x86_64=${GO_DL_URL}/go1.22.4.linux-amd64.tar.gz
+ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.22.4.linux-arm64.tar.gz
+
+# Determine the CPU architecture and download the appropriate Go binary
 RUN \
 	if [ "$(uname -m)" = x86_64 ]; then \
 		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_x86_64} --quiet \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf ${TEMP_DIR}/${GO_BIN_TAR}; \
+		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.22.4.linux-amd64.tar.gz; \
+	elif [ "$(uname -m)" = aarch64 ]; then \
+		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_aarch64} --quiet \
+		&& rm -rf /usr/local/go \
+		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.22.4.linux-arm64.tar.gz; \
 	else \
 		echo "CPU architecture is not supported." && exit 1; \
 	fi
@@ -37,50 +47,48 @@ ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
 # Download operator-sdk binary
 ENV \
-	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.34.1 \
+	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.35.0 \
 	OSDK_BIN=/usr/local/osdk/bin
 
-# Either use Wget or Curl but not both.
+RUN \
+	mkdir -p ${OSDK_BIN}
+
 # hadolint ignore=DL4001
 RUN \
-	mkdir -p ${OSDK_BIN} \
-	&& curl \
-		--location \
-		--remote-name \
-		${OPERATOR_SDK_DL_URL}/operator-sdk_linux_amd64 \
-	&& mv operator-sdk_linux_amd64 ${OSDK_BIN}/operator-sdk \
-	&& chmod +x ${OSDK_BIN}/operator-sdk
+	if [ "$(uname -m)" = x86_64 ]; then \
+		curl \
+			--location \
+			--remote-name \
+			${OPERATOR_SDK_DL_URL}/${OPERATOR_SDK_X86_FILENAME} \
+			&& mv ${OPERATOR_SDK_X86_FILENAME} ${OSDK_BIN}/operator-sdk \
+			&& chmod +x ${OSDK_BIN}/operator-sdk; \
+	elif [ "$(uname -m)" = aarch64 ]; then \
+		curl \
+			--location \
+			--remote-name \
+			${OPERATOR_SDK_DL_URL}/${OPERATOR_SDK_ARM_FILENAME} \
+			&& mv ${OPERATOR_SDK_ARM_FILENAME} ${OSDK_BIN}/operator-sdk \
+			&& chmod +x ${OSDK_BIN}/operator-sdk; \
+	else \
+		echo "CPU architecture is not supported." && exit 1; \
+	fi
 
 # Copy all of the files into the source directory and then switch contexts
-COPY . ${TNF_SRC_DIR}
-WORKDIR ${TNF_SRC_DIR}
-RUN make build-cnf-tests build-tnf-tool
+COPY . ${CERTSUITE_SRC_DIR}
+WORKDIR ${CERTSUITE_SRC_DIR}
 
-# Extract what's needed to run at a separate location
-# Quote this to prevent word splitting.
-# hadolint ignore=SC2046
-RUN \
-	mkdir ${TNF_BIN_DIR} \
-	&& cp run-cnf-suites.sh ${TNF_DIR} \
-	# copy all JSON files to allow tests to run
-	&& cp --parents $(find . -name '*.json*') ${TNF_DIR} \
-	&& cp cnf-certification-test/cnf-certification-test ${TNF_BIN_DIR} \
-	# copy the tnf command binary
-	&& cp tnf ${TNF_BIN_DIR} \
-	# copy the rhcos_version_map
-	&& mkdir -p ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files \
-	&& cp \
-		cnf-certification-test/platform/operatingsystem/files/rhcos_version_map \
-		${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
+# Build the certsuite binary
+RUN make build-certsuite-tool \
+	&& cp certsuite ${CERTSUITE_DIR}
 
-# Switch contexts back to the root TNF directory
-WORKDIR ${TNF_DIR}
+# Switch contexts back to the root CERTSUITE directory
+WORKDIR ${CERTSUITE_DIR}
 
 # Remove most of the build artefacts
 RUN \
 	dnf remove --assumeyes --disableplugin=subscription-manager gcc git wget \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
-	&& rm -rf ${TNF_SRC_DIR} \
+	&& rm -rf ${CERTSUITE_SRC_DIR} \
 	&& rm -rf ${TEMP_DIR} \
 	&& rm -rf /root/.cache \
 	&& rm -rf /root/go/pkg \
@@ -94,31 +102,27 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.3-1612
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4-1134@sha256:a7d837b00520a32502ada85ae339e33510cdfdbc8d2ddf460cc838e12ec5fa5a
 
 ENV \
-	TNF_DIR=/usr/tnf \
+	CERTSUITE_DIR=/usr/certsuite \
 	OSDK_BIN=/usr/local/osdk/bin
 
-# Copy all of the necessary files over from the TNF_DIR
-COPY --from=build ${TNF_DIR} ${TNF_DIR}
+# Install the certsuite binary
+COPY --from=build ${CERTSUITE_DIR} ${CERTSUITE_DIR}
+RUN cp ${CERTSUITE_DIR}/certsuite /usr/local/bin
 
 # Add operatorsdk binary to image
 COPY --from=build ${OSDK_BIN} ${OSDK_BIN}
 
 # Update the CNF containers, helm charts and operators DB
 ENV \
-	TNF_OFFLINE_DB=/usr/offline-db \
+	CERTSUITE_OFFLINE_DB=/usr/offline-db \
 	OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
-COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
+COPY --from=db ${OCT_DB_PATH} ${CERTSUITE_OFFLINE_DB}
 
-ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
 
-ENV \
-	TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
-	KUBECONFIG=/usr/tnf/kubeconfig/config \
-	PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json \
-	PATH="${OSDK_BIN}:${TNF_BIN_DIR}:${PATH}"
-WORKDIR ${TNF_DIR}
+ENV PATH="${OSDK_BIN}:${PATH}"
+WORKDIR ${CERTSUITE_DIR}
 ENV SHELL=/bin/bash
-CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]
+CMD ["certsuite", "-h"]

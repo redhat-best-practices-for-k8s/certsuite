@@ -1,13 +1,13 @@
-<!-- markdownlint-disable line-length no-bare-urls -->
-# cnf-certification-test catalog
+<!-- markdownlint-disable line-length no-bare-urls blanks-around-lists ul-indent blanks-around-headings no-trailing-spaces -->
+# Red Hat Best Practices Test Suite for Kubernetes catalog
 
-The catalog for cnf-certification-test contains a list of test cases aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`
+The catalog for the Red Hat Best Practices Test Suite for Kubernetes contains a list of test cases aiming at testing best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`
 
-Depending on the CNF type, not all tests are required to pass to satisfy best practice requirements. The scenario section indicates which tests are mandatory or optional depending on the scenario. The following CNF types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.
+Depending on the workload type, not all tests are required to pass to satisfy best practice requirements. The scenario section indicates which tests are mandatory or optional depending on the scenario. The following workload types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.
 
 ## Test cases summary
 
-### Total test cases: 105
+### Total test cases: 109
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |manageability|2|
 |networking|11|
 |observability|4|
-|operator|3|
+|operator|7|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 58
+### Non-Telco specific tests only: 62
 
 |Mandatory|Optional|
 |---|---|
-|38|20|
+|42|20|
 
 ### Telco specific tests only: 27
 
@@ -50,7 +50,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test Case list
 
-Test Cases are the specifications used to perform a meaningful test. Test cases may run once, or several times against several targets. CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices. Here is the list of available Test Cases:
+Test Cases are the specifications used to perform a meaningful test. Test cases may run once, or several times against several targets. The Red Hat Best Practices Test Suite for Kubernetes includes a number of normative and informative tests to ensure that workloads follow best practices. Here is the list of available Test Cases:
 
 ### access-control
 
@@ -59,7 +59,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 Property|Description
 ---|---
 Unique ID|access-control-bpf-capability-check
-Description|Ensures that containers do not use BFP capability. CNF should avoid loading eBPF filters
+Description|Ensures that containers do not use BPF capability. Workloads should avoid loading eBPF filters
 Suggested Remediation|Remove the following capability from the container/pod definitions: BPF
 Best Practice Reference|No Doc Link - Telco
 Exception Process|Exception can be considered. Must identify which container requires the capability and detail why.
@@ -76,7 +76,7 @@ Property|Description
 ---|---
 Unique ID|access-control-cluster-role-bindings
 Description|Tests that a Pod does not specify ClusterRoleBindings.
-Suggested Remediation|In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by CNF (often reserved for cluster admin only).
+Suggested Remediation|In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by the workload (often reserved for cluster admin only).
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-security-rbac
 Exception Process|Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles & role bindings
 Tags|telco,access-control
@@ -92,7 +92,7 @@ Property|Description
 ---|---
 Unique ID|access-control-container-host-port
 Description|Verifies if containers define a hostPort.
-Suggested Remediation|Remove hostPort configuration from the container. CNF should avoid accessing host resources - containers should not configure HostPort.
+Suggested Remediation|Remove hostPort configuration from the container. Workloads should avoid accessing host resources - containers should not configure HostPort.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-avoid-accessing-resource-on-host
 Exception Process|Exception for host resource access tests will only be considered in rare cases where it is absolutely needed
 Tags|common,access-control
@@ -123,10 +123,10 @@ Tags|extended,access-control
 Property|Description
 ---|---
 Unique ID|access-control-ipc-lock-capability-check
-Description|Ensures that containers do not use IPC_LOCK capability. CNF should avoid accessing host resources - spec.HostIpc should be false.
-Suggested Remediation|Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.
+Description|Ensures that containers do not use IPC_LOCK capability. Workloads should avoid accessing host resources - spec.HostIpc should be false.
+Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-ipc_lock
-Exception Process|Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.
+Exception Process|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.
 Tags|telco,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -139,8 +139,8 @@ Tags|telco,access-control
 Property|Description
 ---|---
 Unique ID|access-control-namespace
-Description|Tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces tag. (2) It does not have any of the following prefixes: default, openshift-, istio- and aspenmesh-
-Suggested Remediation|Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally, the namespaces should not start with "default, openshift-, istio- or aspenmesh-".
+Description|Tests that all workload resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces tag. (2) It does not have any of the following prefixes: default, openshift-, istio- and aspenmesh-
+Suggested Remediation|Ensure that your workload utilizes namespaces declared in the yaml config file. Additionally, the namespaces should not start with "default, openshift-, istio- or aspenmesh-".
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-requirements-cnf-reqs
 Exception Process|No exceptions
 Tags|common,access-control
@@ -155,8 +155,8 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-namespace-resource-quota
-Description|Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.
-Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running in. The CNF namespace should have resource quota defined.
+Description|Checks to see if workload pods are running in namespaces that have resource quotas applied.
+Suggested Remediation|Apply a ResourceQuota to the namespace your workload is running in. The workload's namespace should have resource quota defined.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-memory-allocation
 Exception Process|No exception needed for optional/extended tests.
 Tags|extended,access-control
@@ -171,8 +171,8 @@ Tags|extended,access-control
 Property|Description
 ---|---
 Unique ID|access-control-net-admin-capability-check
-Description|Ensures that containers do not use NET_ADMIN capability. Note: this test also ensures iptables and nftables are not configured by CNF pods: - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods. nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio. - Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio.
-Suggested Remediation|Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.
+Description|Ensures that containers do not use NET_ADMIN capability. Note: this test also ensures iptables and nftables are not configured by workload pods: - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods. nftables should be configured by an administrator outside the scope of the workload. nftables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio. - Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables should be configured by an administrator outside the scope of the workload. iptables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio.
+Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-net_admin
 Exception Process|Exception will be considered for user plane or networking functions (e.g. SR-IOV, Multicast). Must identify which container requires the capability and detail why.
 Tags|telco,access-control
@@ -187,8 +187,8 @@ Tags|telco,access-control
 Property|Description
 ---|---
 Unique ID|access-control-net-raw-capability-check
-Description|Ensures that containers do not use NET_RAW capability. Note: this test also ensures iptables and nftables are not configured by CNF pods: - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods. nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio. - Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio.
-Suggested Remediation|Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.
+Description|Ensures that containers do not use NET_RAW capability. Note: this test also ensures iptables and nftables are not configured by workload pods: - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods. nftables should be configured by an administrator outside the scope of the workload. nftables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio. - Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables should be configured by an administrator outside the scope of the workload. iptables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio.
+Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-user-plane-cnfs
 Exception Process|Exception will be considered for user plane or networking functions. Must identify which container requires the capability and detail why.
 Tags|telco,access-control
@@ -252,7 +252,7 @@ Property|Description
 ---|---
 Unique ID|access-control-pod-host-ipc
 Description|Verifies that the spec.HostIpc parameter is set to false
-Suggested Remediation|Set the spec.HostIpc parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostIpc should be false.
+Suggested Remediation|Set the spec.HostIpc parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostIpc should be false.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-security
 Exception Process|Exception for host resource access tests will only be considered in rare cases where it is absolutely needed
 Tags|common,access-control
@@ -268,7 +268,7 @@ Property|Description
 ---|---
 Unique ID|access-control-pod-host-network
 Description|Verifies that the spec.HostNetwork parameter is not set (not present)
-Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostNetwork should be false.
+Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostNetwork should be false.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-avoid-the-host-network-namespace
 Exception Process|Exception for host resource access tests will only be considered in rare cases where it is absolutely needed
 Tags|common,access-control
@@ -284,7 +284,7 @@ Property|Description
 ---|---
 Unique ID|access-control-pod-host-path
 Description|Verifies that the spec.HostPath parameter is not set (not present)
-Suggested Remediation|Set the spec.HostPath parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPath should be false.
+Suggested Remediation|Set the spec.HostPath parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostPath should be false.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-security
 Exception Process|Exception for host resource access tests will only be considered in rare cases where it is absolutely needed
 Tags|common,access-control
@@ -300,7 +300,7 @@ Property|Description
 ---|---
 Unique ID|access-control-pod-host-pid
 Description|Verifies that the spec.HostPid parameter is set to false
-Suggested Remediation|Set the spec.HostPid parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPid should be false.
+Suggested Remediation|Set the spec.HostPid parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostPid should be false.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-security
 Exception Process|Exception for host resource access tests will only be considered in rare cases where it is absolutely needed
 Tags|common,access-control
@@ -315,8 +315,8 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-pod-role-bindings
-Description|Ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.
-Suggested Remediation|Ensure the CNF is not configured to use RoleBinding(s) in a non-CNF Namespace. Scope of role must <= scope of creator of role.
+Description|Ensures that a workload does not utilize RoleBinding(s) in a non-workload Namespace.
+Suggested Remediation|Ensure the workload is not configured to use RoleBinding(s) in a non-workload Namespace. Scope of role must <= scope of creator of role.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-security-rbac
 Exception Process|No exceptions
 Tags|common,access-control
@@ -331,8 +331,8 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-pod-service-account
-Description|Tests that each CNF Pod utilizes a valid Service Account. Default or empty service account is not valid.
-Suggested Remediation|Ensure that the each CNF Pod is configured to use a valid Service Account
+Description|Tests that each workload Pod utilizes a valid Service Account. Default or empty service account is not valid.
+Suggested Remediation|Ensure that the each workload Pod is configured to use a valid Service Account
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-scc-permissions-for-an-application
 Exception Process|No exceptions
 Tags|common,access-control
@@ -364,7 +364,7 @@ Property|Description
 ---|---
 Unique ID|access-control-security-context
 Description|Checks the security context matches one of the 4 categories
-Suggested Remediation|Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 of the Extended Best Practices guide (private repo)
+Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 [here](#security-context-categories)
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-security
 Exception Process|no exception needed for optional/extended test
 Tags|extended,access-control
@@ -411,8 +411,8 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-service-type
-Description|Tests that each CNF Service does not utilize NodePort(s).
-Suggested Remediation|Ensure Services are not configured to use NodePort(s).CNF should avoid accessing host resources - tests that each CNF Service does not utilize NodePort(s).
+Description|Tests that each workload Service does not utilize NodePort(s).
+Suggested Remediation|Ensure Services are not configured to use NodePort(s). Workloads should avoid accessing host resources - tests that each workload Service does not utilize NodePort(s).
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-avoid-the-host-network-namespace
 Exception Process|Exception for host resource access tests will only be considered in rare cases where it is absolutely needed
 Tags|common,access-control
@@ -444,7 +444,7 @@ Property|Description
 ---|---
 Unique ID|access-control-sys-admin-capability-check
 Description|Ensures that containers do not use SYS_ADMIN capability
-Suggested Remediation|Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why. Containers should not use the SYS_ADMIN Linux capability.
+Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why. Containers should not use the SYS_ADMIN Linux capability.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-avoid-sys_admin
 Exception Process|No exceptions
 Tags|common,access-control
@@ -459,7 +459,7 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-sys-nice-realtime-capability
-Description|Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec. In the case that a CNF is running on a node using the real-time kernel, SYS_NICE will be used to allow DPDK application to switch to SCHED_FIFO.
+Description|Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec. In the case that a workolad is running on a node using the real-time kernel, SYS_NICE will be used to allow DPDK application to switch to SCHED_FIFO.
 Suggested Remediation|If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-sys_nice
 Exception Process|There is no documented exception process for this.
@@ -496,7 +496,7 @@ Unique ID|affiliated-certification-container-is-certified-digest
 Description|Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).
 Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
 Best Practice Reference|https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview
-Exception Process|There is no documented exception process for this.Partner can run CNF Certification test suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in CNF Certification test suite must be re-run once the other certifications have been granted.
+Exception Process|There is no documented exception process for this. A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.
 Tags|common,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -528,7 +528,7 @@ Unique ID|affiliated-certification-helmchart-is-certified
 Description|Tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.
 Suggested Remediation|Ensure that the helm charts under test passed the Red Hat's helm Certification Program (e.g. listed in https://charts.openshift.io/index.yaml).
 Best Practice Reference|https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview
-Exception Process|There is no documented exception process for this.Partner can run CNF Certification test suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in CNF Certification test suite must be re-run once the other certifications have been granted.
+Exception Process|There is no documented exception process for this. A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.
 Tags|common,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -541,10 +541,10 @@ Tags|common,affiliated-certification
 Property|Description
 ---|---
 Unique ID|affiliated-certification-operator-is-certified
-Description|Tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).
+Description|Tests whether the workload Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).
 Suggested Remediation|Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP).
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
-Exception Process|There is no documented exception process for this.Partner can run CNF Certification test suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in CNF Certification test suite must be re-run once the other certifications have been granted.
+Exception Process|There is no documented exception process for this. A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.
 Tags|common,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -623,8 +623,8 @@ Tags|telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-crd-scaling
-Description|Tests that CNF crd support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s
-Suggested Remediation|Ensure CNF crd/replica sets can scale in/out successfully.
+Description|Tests that a workload's CRD support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s
+Suggested Remediation|Ensure the workload's CRDs can scale in/out successfully.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this. Not applicable to SNO applications.
 Tags|common,lifecycle
@@ -639,8 +639,8 @@ Tags|common,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-deployment-scaling
-Description|Tests that CNF deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s
-Suggested Remediation|Ensure CNF deployments/replica sets can scale in/out successfully.
+Description|Tests that workload deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s
+Suggested Remediation|Ensure the workload's deployments/replica sets can scale in/out successfully.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this. Not applicable to SNO applications.
 Tags|common,lifecycle
@@ -672,7 +672,7 @@ Property|Description
 ---|---
 Unique ID|lifecycle-liveness-probe
 Description|Check that all containers under test have liveness probe defined. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. When starting up, health probes like liveness and readiness checks can be put into place to ensure the application is functioning properly.
-Suggested Remediation|Add a liveness probe to deployed containers. CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.
+Suggested Remediation|Add a liveness probe to deployed containers. workloads shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this.
 Tags|telco,lifecycle
@@ -687,7 +687,7 @@ Tags|telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-persistent-volume-reclaim-policy
-Description|Check that the persistent volumes the CNF pods are using have a reclaim policy of delete. Network Functions should clear persistent storage by deleting their PVs when removing their application from a cluster.
+Description|Check that the persistent volumes the workloads pods are using have a reclaim policy of delete. Network Functions should clear persistent storage by deleting their PVs when removing their application from a cluster.
 Suggested Remediation|Ensure that all persistent volumes are using the reclaim policy: delete
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-csi
 Exception Process|There is no documented exception process for this.
@@ -703,7 +703,7 @@ Tags|telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-pod-high-availability
-Description|Ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.
+Description|Ensures that workloads Pods specify podAntiAffinity rules and replica value is set to more than 1.
 Suggested Remediation|In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 .
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this. Not applicable to SNO applications.
@@ -719,8 +719,8 @@ Tags|common,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-pod-owner-type
-Description|Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).
-Suggested Remediation|Deploy the CNF using ReplicaSet/StatefulSet.
+Description|Tests that the workload Pods are deployed as part of a ReplicaSet(s)/StatefulSet(s).
+Suggested Remediation|Deploy the workload using ReplicaSet/StatefulSet.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-no-naked-pods
 Exception Process|There is no documented exception process for this. Pods should not be deployed as DaemonSet or naked pods.
 Tags|telco,lifecycle
@@ -735,8 +735,8 @@ Tags|telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-pod-recreation
-Description|Tests that a CNF is configured to support High Availability. First, this test cordons and drains a Node that hosts the CNF Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.
-Suggested Remediation|Ensure that CNF Pod(s) utilize a configuration that supports High Availability. Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.
+Description|Tests that a workload is configured to support High Availability. First, this test cordons and drains a Node that hosts the workload Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.
+Suggested Remediation|Ensure that the workloads Pods utilize a configuration that supports High Availability. Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-upgrade-expectations
 Exception Process|No exceptions - workloads should be able to be restarted/recreated.
 Tags|common,lifecycle
@@ -751,8 +751,8 @@ Tags|common,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-pod-scheduling
-Description|Ensures that CNF Pods do not specify nodeSelector or nodeAffinity. In most cases, Pods should allow for instantiation on any underlying Node. CNFs shall not use node selectors nor taints/tolerations to assign pod location.
-Suggested Remediation|In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which CNFs require specialized hardware specific to a particular class of Node.
+Description|Ensures that workload Pods do not specify nodeSelector or nodeAffinity. In most cases, Pods should allow for instantiation on any underlying Node. Workloads shall not use node selectors nor taints/tolerations to assign pod location.
+Suggested Remediation|In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which workloads require specialized hardware specific to a particular class of Node.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|Exception will only be considered if application requires specialized hardware. Must specify which container requires special hardware and why.
 Tags|telco,lifecycle
@@ -799,7 +799,7 @@ Tags|telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-startup-probe
-Description|Check that all containers under test have startup probe defined. CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.
+Description|Check that all containers under test have startup probe defined. Workloads shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.
 Suggested Remediation|Add a startup probe to deployed containers
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-pod-exit-status
 Exception Process|There is no documented exception process for this.
@@ -815,8 +815,8 @@ Tags|telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-statefulset-scaling
-Description|Tests that CNF statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s
-Suggested Remediation|Ensure CNF statefulsets/replica sets can scale in/out successfully.
+Description|Tests that workload statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s
+Suggested Remediation|Ensure the workload's statefulsets/replica sets can scale in/out successfully.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this. Not applicable to SNO applications.
 Tags|common,lifecycle
@@ -883,8 +883,8 @@ Tags|extended,manageability
 Property|Description
 ---|---
 Unique ID|networking-dpdk-cpu-pinning-exec-probe
-Description|If a CNF is doing CPU pinning, exec probes may not be used.
-Suggested Remediation|If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually.
+Description|If a workload is doing CPU pinning, exec probes may not be used.
+Suggested Remediation|If the workload is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cpu-manager-pinning
 Exception Process|There is no documented exception process for this.
 Tags|telco,networking
@@ -900,7 +900,7 @@ Property|Description
 ---|---
 Unique ID|networking-dual-stack-service
 Description|Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the debug daemonset.
-Suggested Remediation|Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer.
+Suggested Remediation|Configure every workload service with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-ipv4-&-ipv6
 Exception Process|No exception needed for optional/extended tests.
 Tags|extended,networking
@@ -915,8 +915,8 @@ Tags|extended,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv4-connectivity
-Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
-Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.
+Description|Checks that each workload Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
+Suggested Remediation|Ensure that the workload is able to communicate via the Default OpenShift network. In some rare cases, workloads may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-ipv4-&-ipv6
 Exception Process|No exceptions - must be able to communicate on default network using IPv4
 Tags|common,networking
@@ -931,8 +931,8 @@ Tags|common,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv4-connectivity-multus
-Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
-Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if MULTUS is not supported.
+Description|Checks that each workload Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
+Suggested Remediation|Ensure that the workload is able to communicate via the Multus network(s). In some rare cases, workloads may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if MULTUS is not supported.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this.
 Tags|telco,networking
@@ -947,8 +947,8 @@ Tags|telco,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv6-connectivity
-Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
-Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if IPv6 is not supported.
+Description|Checks that each workload Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
+Suggested Remediation|Ensure that the workload is able to communicate via the Default OpenShift network. In some rare cases, workloads may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if IPv6 is not supported.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-ipv4-&-ipv6
 Exception Process|There is no documented exception process for this.
 Tags|common,networking
@@ -963,8 +963,8 @@ Tags|common,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv6-connectivity-multus
-Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
-Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trivial, only its presence. Not applicable if IPv6/MULTUS is not supported.
+Description|Checks that each workload Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
+Suggested Remediation|Ensure that the workload is able to communicate via the Multus network(s). In some rare cases, workloads may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trivial, only its presence. Not applicable if IPv6/MULTUS is not supported.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this.
 Tags|telco,networking
@@ -979,7 +979,7 @@ Tags|telco,networking
 Property|Description
 ---|---
 Unique ID|networking-network-policy-deny-all
-Description|Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic
+Description|Check that network policies attached to namespaces running workload pods contain a default deny-all rule for both ingress and egress traffic
 Suggested Remediation|Ensure that a NetworkPolicy with a default deny-all is applied. After the default is applied, apply a network policy to allow the traffic your application requires.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-vrfs-aka-routing-instances
 Exception Process|No exception needed for optional/extended tests.
@@ -996,7 +996,7 @@ Property|Description
 ---|---
 Unique ID|networking-ocp-reserved-ports-usage
 Description|Check that containers do not listen on ports that are reserved by OpenShift
-Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by OpenShift. The following ports are reserved by OpenShift and must NOT be used by any application: 22623, 22624.
+Suggested Remediation|Ensure that workload's apps do not listen on ports that are reserved by OpenShift. The following ports are reserved by OpenShift and must NOT be used by any application: 22623, 22624.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-ports-reserved-by-openshift
 Exception Process|No exceptions
 Tags|common,networking
@@ -1044,7 +1044,7 @@ Property|Description
 ---|---
 Unique ID|networking-undeclared-container-ports-usage
 Description|Check that containers do not listen on ports that weren't declared in their specification. Platforms may be configured to block undeclared ports.
-Suggested Remediation|Ensure the CNF apps do not listen on undeclared containers' ports.
+Suggested Remediation|Ensure the workload's apps do not listen on undeclared containers' ports.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-requirements-cnf-reqs
 Exception Process|No exception needed for optional/extended tests.
 Tags|extended,networking
@@ -1122,12 +1122,44 @@ Tags|telco,observability
 
 ### operator
 
+#### operator-crd-openapi-schema
+
+Property|Description
+---|---
+Unique ID|operator-crd-openapi-schema
+Description|Tests whether an application Operator CRD is defined with OpenAPI spec.
+Suggested Remediation|Ensure that the Operator CRD is defined with OpenAPI spec.
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### operator-crd-versioning
+
+Property|Description
+---|---
+Unique ID|operator-crd-versioning
+Description|Tests whether the Operator CRD has a valid versioning.
+Suggested Remediation|Ensure that the Operator CRD has a valid version.
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
 #### operator-install-source
 
 Property|Description
 ---|---
 Unique ID|operator-install-source
-Description|Tests whether a CNF Operator is installed via OLM.
+Description|Tests whether a workload Operator is installed via OLM.
 Suggested Remediation|Ensure that your Operator is installed via OLM.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
 Exception Process|No exceptions
@@ -1143,8 +1175,8 @@ Tags|common,operator
 Property|Description
 ---|---
 Unique ID|operator-install-status-no-privileges
-Description|The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present with no resourceNames under its rules.
-Suggested Remediation|Ensure all the CNF operators have no privileges on cluster resources.
+Description|Checks whether the operator needs access to Security Context Constraints. Test passes if clusterPermissions is not present in the CSV manifest or is present with no RBAC rules related to SCCs.
+Suggested Remediation|Ensure all the workload's operators have no privileges on cluster resources.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator
@@ -1159,8 +1191,40 @@ Tags|common,operator
 Property|Description
 ---|---
 Unique ID|operator-install-status-succeeded
-Description|Ensures that the target CNF operators report "Succeeded" as their installation status.
-Suggested Remediation|Ensure all the CNF operators have been successfully installed by OLM.
+Description|Ensures that the target workload operators report "Succeeded" as their installation status.
+Suggested Remediation|Ensure all the workload's operators have been successfully installed by OLM.
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### operator-semantic-versioning
+
+Property|Description
+---|---
+Unique ID|operator-semantic-versioning
+Description|Tests whether an application Operator has a valid semantic versioning.
+Suggested Remediation|Ensure that the Operator has a valid semantic versioning.
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### operator-single-crd-owner
+
+Property|Description
+---|---
+Unique ID|operator-single-crd-owner
+Description|Tests whether a CRD is owned by a single Operator.
+Suggested Remediation|Ensure that a CRD is owned by only one Operator
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator
@@ -1225,8 +1289,8 @@ Tags|faredge,performance
 Property|Description
 ---|---
 Unique ID|performance-max-resources-exec-probes
-Description|Checks that less than 10 exec probes are configured in the cluster for this CNF. Also checks that the periodSeconds parameter for each probe is superior or equal to 10.
-Suggested Remediation|Reduce the number of exec probes in the cluster for this CNF to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.
+Description|Checks that less than 10 exec probes are configured in the cluster for this workload. Also checks that the periodSeconds parameter for each probe is superior or equal to 10.
+Suggested Remediation|Reduce the number of exec probes in the cluster for this workload to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.
 Best Practice Reference|No Doc Link - Far Edge
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
@@ -1340,7 +1404,7 @@ Property|Description
 ---|---
 Unique ID|platform-alteration-hugepages-config
 Description|Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet. First, the "worker" MachineConfig is polled, and the Hugepage settings are extracted. Next, the underlying Nodes are polled for configured HugePages through inspection of /proc/meminfo. The results are compared, and the test passes only if they are the same.
-Suggested Remediation|HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your CNF on a Node that is part of the corresponding MachineConfigSet. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet.
+Suggested Remediation|HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your workload on a Node that is part of the corresponding MachineConfigSet. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-huge-pages
 Exception Process|No exceptions
 Tags|common,platform-alteration
@@ -1436,7 +1500,7 @@ Property|Description
 ---|---
 Unique ID|platform-alteration-service-mesh-usage
 Description|Checks if the istio namespace ("istio-system") is present. If it is present, checks that the istio sidecar is present in all pods under test.
-Suggested Remediation|Ensure all the CNF pods are using service mesh if the cluster provides it.
+Suggested Remediation|Ensure all the workload pods are using service mesh if the cluster provides it.
 Best Practice Reference|No Doc Link - Extended
 Exception Process|No exception needed for optional/extended tests.
 Tags|extended,platform-alteration
@@ -1467,8 +1531,8 @@ Tags|common,platform-alteration
 Property|Description
 ---|---
 Unique ID|platform-alteration-tainted-node-kernel
-Description|Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have the same hacks.'
-Suggested Remediation|Test failure indicates that the underlying Node's kernel is tainted. Ensure that you have not altered underlying Node(s) kernels in order to run the CNF.
+Description|Ensures that the Node(s) hosting workloads do not utilize tainted kernels. This test case is especially important to support Highly Available workloads, since when a workload is re-instantiated on a backup Node, that Node's kernel may not have the same hacks.'
+Suggested Remediation|Test failure indicates that the underlying Node's kernel is tainted. Ensure that you have not altered underlying Node(s) kernels in order to run the workload.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|If taint is necessary, document details of the taint and why it's needed by workload or environment.
 Tags|common,platform-alteration
@@ -1751,3 +1815,41 @@ Tags|common,preflight
 |Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
+
+## Security Context Categories
+
+Security context categories referred here are applicable to the [access control test case](#access-control-security-context).
+
+### 1st Category
+Default SCC for all users if namespace does not use service mesh.
+
+Workloads under this category should: 
+ - Use default CNI (OVN) network interface
+ - Not request NET_ADMIN or NET_RAW for advanced networking functions
+
+### 2nd Category
+For workloads which utilize Service Mesh sidecars for mTLS or load balancing. These workloads must utilize an alternative SCC “restricted-no-uid0” to workaround a service mesh UID limitation. Workloads under this category should not run as root (UID0).
+
+### 3rd Category
+For workloads with advanced networking functions/requirements (e.g. CAP_NET_RAW, CAP_NET_ADMIN, may run as root).
+
+For example:
+  - Manipulate the low-level protocol flags, such as the 802.1p priority, VLAN tag, DSCP value, etc.
+  - Manipulate the interface IP addresses or the routing table or the firewall rules on-the-fly.
+  - Process Ethernet packets
+Workloads under this category may
+  - Use Macvlan interface to sending and receiving Ethernet packets
+  - Request CAP_NET_RAW for creating raw sockets
+  - Request CAP_NET_ADMIN for
+    - Modify the interface IP address on-the-fly
+    - Manipulating the routing table on-the-fly
+    - Manipulating firewall rules on-the-fly
+    - Setting packet DSCP value
+
+### 4th Category
+For workloads handling user plane traffic or latency-sensitive payloads at line rate, such as load balancing, routing, deep packet inspection etc. Workloads under this category may also need to process the packets at a lower level.
+
+These workloads shall 
+  - Use SR-IOV interfaces 
+  - Fully or partially bypassing kernel networking stack with userspace networking technologies,such as DPDK, F-stack, VPP, OpenFastPath, etc. A userspace networking stack not only improvesthe performance but also reduces the need for CAP_NET_ADMIN and CAP_NET_RAW.
+CAP_IPC_LOCK is mandatory for allocating hugepage memory, hence shall be granted to DPDK applications. If the workload is latency-sensitive and needs a real-time kernel, CAP_SYS_NICE would be required.

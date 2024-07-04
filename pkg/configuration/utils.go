@@ -17,10 +17,8 @@
 package configuration
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/kelseyhightower/envconfig"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"gopkg.in/yaml.v3"
 )
@@ -60,15 +58,6 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 
 	confLoaded = true
 	return configuration, nil
-}
-
-func LoadEnvironmentVariables() error {
-	err := envconfig.Process("tnf", &parameters)
-	if err != nil {
-		return fmt.Errorf("could not process the environment variables values, error: %v", err)
-	}
-
-	return nil
 }
 
 func GetTestParameters() *TestParameters {

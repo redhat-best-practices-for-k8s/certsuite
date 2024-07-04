@@ -1,0 +1,44 @@
+name: Upload release assets 
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  upload-release-assets:
+    name: Upload release assets
+    runs-on: ubuntu-22.04
+    steps:
+
+      - name: Set up Go 1.22
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+        with:
+          go-version: 1.22.4
+
+      - name: Check out code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Build Certsuite binary (x86_64)
+        env:
+          SHELL: /bin/bash
+        run: |
+          make build
+          tar -cvzf certsuite-${GITHUB_REF_NAME}-x86_64.tar.gz certsuite
+          rm certsuite
+
+      - name: Build Certsuite binary (ARM 64)
+        env:
+          SHELL: /bin/bash
+        run: |
+          make build-darwin-arm64
+          tar -cvzf certsuite-${GITHUB_REF_NAME}-arm64.tar.gz certsuite
+          rm certsuite
+
+      - name: Upload Certsuite binaries
+        env:
+          SHELL: /bin/bash
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${GITHUB_REF_NAME} certsuite-${GITHUB_REF_NAME}-x86_64.tar.gz certsuite-${GITHUB_REF_NAME}-arm64.tar.gz

@@ -17,7 +17,6 @@
 package lifecycle
 
 import (
-	"os"
 	"time"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
@@ -343,7 +342,7 @@ func testPodsOwnerReference(check *checksdb.Check, env *provider.TestEnvironment
 	for _, put := range env.Pods {
 		check.LogInfo("Testing Pod %q", put)
 		o := ownerreference.NewOwnerReference(put.Pod)
-		o.RunTest(check.GetLoggger())
+		o.RunTest(check.GetLogger())
 		if o.GetResults() != testhelper.SUCCESS {
 			check.LogError("Pod %q found with non-compliant owner reference", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has non-compliant owner reference", false))
@@ -427,7 +426,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration,
 			// if the deployment is controller by
 			// horizontal scaler, then test that scaler
 			// can scale the deployment
-			if !scaling.TestScaleHpaDeployment(deployment, hpa, timeout, check.GetLoggger()) {
+			if !scaling.TestScaleHpaDeployment(deployment, hpa, timeout, check.GetLogger()) {
 				check.LogError("Deployment %q has failed the HPA scale test", deployment.ToString())
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(deployment.Namespace, deployment.Name, "Deployment has failed the HPA scale test", false))
 			}
@@ -435,7 +434,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration,
 		}
 		// if the deployment is not controller by HPA
 		// scale it directly
-		if !scaling.TestScaleDeployment(deployment.Deployment, timeout, check.GetLoggger()) {
+		if !scaling.TestScaleDeployment(deployment.Deployment, timeout, check.GetLogger()) {
 			check.LogError("Deployment %q has failed the non-HPA scale test", deployment.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(deployment.Namespace, deployment.Name, "Deployment has failed the non-HPA scale test", false))
 		} else {
@@ -455,13 +454,13 @@ func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration, check *c
 		groupResourceSchema := env.ScaleCrUnderTest[i].GroupResourceSchema
 		scaleCr := env.ScaleCrUnderTest[i].Scale
 		if hpa := scaling.GetResourceHPA(env.HorizontalScaler, scaleCr.Name, scaleCr.Namespace, scaleCr.Kind); hpa != nil {
-			if !scaling.TestScaleHPACrd(&scaleCr, hpa, groupResourceSchema, timeout, check.GetLoggger()) {
+			if !scaling.TestScaleHPACrd(&scaleCr, hpa, groupResourceSchema, timeout, check.GetLogger()) {
 				check.LogError("CR has failed the scaling test: %s", scaleCr.GetName())
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "cr has failed the HPA scaling test", false))
 			}
 			continue
 		}
-		if !scaling.TestScaleCrd(&scaleCr, groupResourceSchema, timeout, check.GetLoggger()) {
+		if !scaling.TestScaleCrd(&scaleCr, groupResourceSchema, timeout, check.GetLogger()) {
 			check.LogError("CR has failed the non-HPA scale test: %s", scaleCr.GetName())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "CR has failed the non-HPA scale test", false))
 		} else {
@@ -501,7 +500,7 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 			// if the statefulset is controller by
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
-			if !scaling.TestScaleHpaStatefulSet(statefulSet.StatefulSet, hpa, timeout, check.GetLoggger()) {
+			if !scaling.TestScaleHpaStatefulSet(statefulSet.StatefulSet, hpa, timeout, check.GetLogger()) {
 				check.LogError("StatefulSet has failed the scaling test: %q", statefulSet.ToString())
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(statefulSet.Namespace, statefulSet.Name, "StatefulSet has failed the HPA scaling test", false))
 			}
@@ -509,7 +508,7 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 		}
 		// if the statefulset is not controller by HPA
 		// scale it directly
-		if !scaling.TestScaleStatefulSet(statefulSet.StatefulSet, timeout, check.GetLoggger()) {
+		if !scaling.TestScaleStatefulSet(statefulSet.StatefulSet, timeout, check.GetLogger()) {
 			check.LogError("StatefulSet has failed the scaling test: %s", statefulSet.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(statefulSet.Namespace, statefulSet.Name, "StatefulSet has failed the non-HPA scale test", false))
 		} else {
@@ -595,7 +594,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	// Before draining any node, wait until all podsets are ready. The timeout depends on the number of podsets to check.
 	// timeout = k-mins + (1min * (num-deployments + num-statefulsets))
 	allPodsetsReadyTimeout := timeoutPodSetReady + time.Minute*time.Duration(len(env.Deployments)+len(env.StatefulSets))
-	notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, allPodsetsReadyTimeout, check.GetLoggger())
+	notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, allPodsetsReadyTimeout, check.GetLogger())
 	if len(notReadyDeployments) > 0 || len(notReadyStatefulSets) > 0 {
 		for _, dep := range notReadyDeployments {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dep.Namespace, dep.Name, "Deployment was not ready before draining any node.", false))
@@ -651,7 +650,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 			return
 		}
 
-		notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, nodeTimeout, check.GetLoggger())
+		notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, nodeTimeout, check.GetLogger())
 		if len(notReadyDeployments) > 0 || len(notReadyStatefulSets) > 0 {
 			for _, dep := range notReadyDeployments {
 				check.LogError("Deployment %q not ready after draining node %q", dep.ToString(), nodeName)
@@ -666,8 +665,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 
 		err = podrecreation.CordonHelper(nodeName, podrecreation.Uncordon)
 		if err != nil {
-			check.LogError("Error uncordoning the node: %s", nodeName)
-			os.Exit(1) //nolint: gocritic
+			check.LogFatal("Error uncordoning the node: %s", nodeName)
 		}
 	}
 
