@@ -258,7 +258,7 @@ func LineAlignLeft(s string, w int) string {
 }
 
 func LineAlignCenter(s string, w int) string {
-	return fmt.Sprintf("%[1]*s", -w, fmt.Sprintf("%[1]*s", (w+len(s))/2, s))
+	return fmt.Sprintf("%[1]*s", -w, fmt.Sprintf("%[1]*s", (w+len(s))/2, s)) //nolint:mnd // magic number
 }
 
 func LineColor(s, color string) string {
