@@ -7,7 +7,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
-	github.com/test-network-function/test-network-function-claim v1.0.39
+	github.com/test-network-function/test-network-function-claim v1.0.41
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
