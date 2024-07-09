@@ -9,6 +9,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+	"golang.org/x/term"
 )
 
 var (
@@ -19,7 +20,7 @@ var (
 	}
 )
 
-func showInfo(cmd *cobra.Command, _ []string) error {
+func showInfo(cmd *cobra.Command, _ []string) error { //nolint:funlen
 	testCaseFlag, _ := cmd.Flags().GetString("test-case")
 
 	var testCase claim.TestCaseDescription
@@ -34,15 +35,27 @@ func showInfo(cmd *cobra.Command, _ []string) error {
 		return fmt.Errorf("no test case found matching name %q", testCaseFlag)
 	}
 
-	const lineMaxWidth = 120
+	// Adjust text box line width
+	const linePadding = 4
+	lineMaxWidth := 120
+	if term.IsTerminal(0) {
+		width, _, err := term.GetSize(0)
+		fmt.Println("Term Width: ", width)
+		if err != nil {
+			return fmt.Errorf("could not get terminal size, err: %v", err)
+		}
+		if width < lineMaxWidth+linePadding {
+			lineMaxWidth = width - linePadding
+		}
+	}
 
 	// Test case identifier
-	border := strings.Repeat("-", lineMaxWidth+4) //nolint:mnd // magic number
+	border := strings.Repeat("-", lineMaxWidth+linePadding)
 	fmt.Println(border)
 	fmt.Printf("| %s |\n", cli.LineColor(cli.LineAlignCenter(testCase.Identifier.Id, lineMaxWidth), cli.Cyan))
 
 	// Description
-	border = strings.Repeat("-", lineMaxWidth+4) //nolint:mnd // magic number
+	border = strings.Repeat("-", lineMaxWidth+linePadding)
 	fmt.Println(border)
 	fmt.Printf("| %s |\n", cli.LineColor(cli.LineAlignCenter("DESCRIPTION", lineMaxWidth), cli.Green))
 	fmt.Println(border)
