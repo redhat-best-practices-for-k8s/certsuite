@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	runCmd = &cobra.Command{
+	versionCmd = &cobra.Command{
 		Use:   "version",
 		Short: "Show the Red Hat Best Practices Test Suite for Kubernetes version",
 		RunE:  showVersion,
@@ -23,5 +23,5 @@ func showVersion(cmd *cobra.Command, _ []string) error {
 }
 
 func NewCommand() *cobra.Command {
-	return runCmd
+	return versionCmd
 }

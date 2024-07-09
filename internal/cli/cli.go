@@ -225,3 +225,42 @@ func PrintCheckErrored(checkName string) {
 
 	fmt.Print(ClearLineCode + "[ " + CheckResultTagError + " ] " + checkName + "\n")
 }
+
+func WrapLines(text string, maxWidth int) []string {
+	lines := strings.Split(text, "\n")
+	wrappedLines := make([]string, 0, len(lines))
+	for _, line := range lines {
+		if len(line) <= maxWidth {
+			wrappedLines = append(wrappedLines, line)
+			continue
+		}
+
+		// Break lines longer than maxWidth
+		words := strings.Fields(line)
+		currentLine := words[0]
+		for _, word := range words[1:] {
+			if len(currentLine)+len(word)+1 <= maxWidth {
+				currentLine += " " + word
+			} else {
+				wrappedLines = append(wrappedLines, currentLine)
+				currentLine = word
+			}
+		}
+
+		wrappedLines = append(wrappedLines, currentLine)
+	}
+
+	return wrappedLines
+}
+
+func LineAlignLeft(s string, w int) string {
+	return fmt.Sprintf("%[1]*s", -w, s)
+}
+
+func LineAlignCenter(s string, w int) string {
+	return fmt.Sprintf("%[1]*s", -w, fmt.Sprintf("%[1]*s", (w+len(s))/2, s)) //nolint:mnd // magic number
+}
+
+func LineColor(s, color string) string {
+	return color + s + Reset
+}
