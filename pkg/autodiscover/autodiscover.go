@@ -32,6 +32,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/podhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -52,6 +53,15 @@ const (
 	tnfCsvTargetLabelValue     = ""
 	tnfLabelPrefix             = "test-network-function.com"
 	labelTemplate              = "%s/%s"
+)
+
+var (
+	invalidNamespacePrefixes = []string{
+		"default",
+		"openshift-",
+		"istio-",
+		"aspenmesh-",
+	}
 )
 
 type DiscoveredTestData struct {
@@ -156,6 +166,15 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
 	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
 	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
+
+	// Prompt the user if they are using namespaces that are invalid.
+	// The tests will still run but at least there will be a warning.
+	for _, ns := range data.Namespaces {
+		if stringhelper.StringInSlice(invalidNamespacePrefixes, ns, true) {
+			log.Warn("Namespace %s is not recommended for use. Please consider using a different namespace.", ns)
+		}
+	}
+
 	data.Pods, data.AllPods = findPodsByLabels(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
 	debugLabels := []labelObject{{LabelKey: debugHelperPodsLabelName, LabelValue: debugHelperPodsLabelValue}}
