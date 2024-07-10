@@ -10,10 +10,10 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
+	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 

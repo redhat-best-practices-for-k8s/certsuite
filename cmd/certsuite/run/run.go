@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/webserver"
 )
 
 const timeoutFlagDefaultvalue = 24 * time.Hour

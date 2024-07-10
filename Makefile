@@ -60,11 +60,11 @@ build: build-certsuite-tool
 
 build-certsuite-tool: results-html
 	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
-	git restore cnf-certification-test/results/html/results.html
+	git restore internal/results/html/results.html
 
 build-darwin-arm64: results-html
 	PATH="${PATH}:${GOBIN}" GOOS=darwin GOARCH=arm64 go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
-	git restore cnf-certification-test/results/html/results.html
+	git restore internal/results/html/results.html
 
 # Cleans up auto-generated and report files
 clean:
@@ -104,7 +104,7 @@ build-catalog-md: build-certsuite-tool
 # Builds the Certsuite binary with debug flags
 build-certsuite-tool-debug: results-html
 	PATH="${PATH}:${GOBIN}" go build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" -o certsuite -v cmd/certsuite/main.go
-	git restore cnf-certification-test/results/html/results.html
+	git restore internal/results/html/results.html
 
 install-mac-brew-tools:
 	brew install \
@@ -168,7 +168,7 @@ create-manifest-local:
 		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64
 
 results-html:
-	curl -s -O --output-dir cnf-certification-test/results/html ${RESULTS_HTML_URL}
+	curl -s -O --output-dir internal/results/html ${RESULTS_HTML_URL}
 
 check-results:
 	./certsuite check results
