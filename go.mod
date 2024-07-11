@@ -7,7 +7,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
-	github.com/test-network-function/test-network-function-claim v1.0.39
+	github.com/test-network-function/test-network-function-claim v1.0.41
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -215,7 +215,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240605154909-3bdeab0e72f3
 	github.com/robert-nix/ansihtml v1.0.1
-	github.com/test-network-function/oct v0.0.12
+	github.com/test-network-function/oct v0.0.14
 	github.com/test-network-function/privileged-daemonset v1.0.27
 	golang.org/x/term v0.22.0
 	gopkg.in/yaml.v3 v3.0.1
