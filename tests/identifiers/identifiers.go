@@ -813,10 +813,10 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		TestNamespaceBestPracticesIdentifierDocLink,
 		true,
 		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
-			Extended: Mandatory,
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
