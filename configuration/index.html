@@ -1427,23 +1427,23 @@ If there are labels defined, we get the list of pods, statefulsets, deployments,
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;test-network-function.com/generic:</span><span class="nv"> </span><span class="s">target&quot;</span>
 </code></pre></div>
 <h4 id="operatorsundertestlabels">operatorsUnderTestLabels<a class="headerlink" href="#operatorsundertestlabels" title="Permanent link">&para;</a></h4>
-<p>The labels that each operator&rsquo;s <abbr title="ClusterServiceVersion in Operator Lifecycle Manager">CSV</abbr> of the workload under test must have to be verified by the Test Suite.</p>
+<p>The labels that each operator&rsquo;s CSV of the workload under test must have to be verified by the Test Suite.</p>
 <p>If a new label is used for this purpose make sure it is added to the workload operator&rsquo;s CSVs.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">operatorsUnderTestLabels</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;test-network-function.com/operator:</span><span class="nv"> </span><span class="s">target&quot;</span><span class="w"> </span>
 </code></pre></div>
 <h4 id="targetcrdfilters">targetCrdFilters<a class="headerlink" href="#targetcrdfilters" title="Permanent link">&para;</a></h4>
-<p>The <abbr title="Custom Resource Definition">CRD</abbr> name suffix used to filter the workload&rsquo;s CRDs among all the CRDs present in the cluster. For each <abbr title="Custom Resource Definition">CRD</abbr> it can also be specified if it&rsquo;s scalable or not in order to avoid some lifecycle test cases.</p>
+<p>The CRD name suffix used to filter the workload&rsquo;s CRDs among all the CRDs present in the cluster. For each CRD it can also be specified if it&rsquo;s scalable or not in order to avoid some lifecycle test cases.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetCrdFilters</span><span class="p">:</span>
 <span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;group1.tnf.com&quot;</span>
 <span class="w">   </span><span class="nt">scalable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;anydomain.com&quot;</span>
 <span class="w">   </span><span class="nt">scalable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>With the config show above, all <abbr title="Custom Resource Definition">CRD</abbr> names in the cluster whose names have the suffix <em>group1.tnf.com</em> or <em>anydomain.com</em> ( e.g. <em>crd1.group1.tnf.com</em> or <em>mycrd.mygroup.anydomain.com</em>) will be tested.</p>
+<p>With the config show above, all CRD names in the cluster whose names have the suffix <em>group1.tnf.com</em> or <em>anydomain.com</em> ( e.g. <em>crd1.group1.tnf.com</em> or <em>mycrd.mygroup.anydomain.com</em>) will be tested.</p>
 <h4 id="manageddeployments-managedstatefulsets">managedDeployments / managedStatefulSets<a class="headerlink" href="#manageddeployments-managedstatefulsets" title="Permanent link">&para;</a></h4>
 <p>The Deployments/StatefulSets managed by a Custom Resource whose scaling is controlled using the &ldquo;scale&rdquo; subresource of the CR.</p>
-<p>The <abbr title="Custom Resource Definition">CRD</abbr> defining that CR should be included in the <abbr title="Custom Resource Definition">CRD</abbr> filters with the scalable property set to true. If so, the test case <em>lifecycle-{deployment/statefulset}-scaling</em> will be skipped, otherwise it will fail.</p>
+<p>The CRD defining that CR should be included in the CRD filters with the scalable property set to true. If so, the test case <em>lifecycle-{deployment/statefulset}-scaling</em> will be skipped, otherwise it will fail.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">managedDeployments</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jack</span>
 <span class="nt">managedStatefulsets</span><span class="p">:</span>
@@ -1525,7 +1525,6 @@ If there are labels defined, we get the list of pods, statefulsets, deployments,
 <p>The label <em>test-network-function.com/skip_multus_connectivity_tests</em> excludes Pods from <a href="https://github.com/k8snetworkplumbingwg/multus-cni">Multus</a> connectivity tests. Tests on the default interface are still run.</p>
 <h4 id="affinity-requirements">Affinity requirements<a class="headerlink" href="#affinity-requirements" title="Permanent link">&para;</a></h4>
 <p>For workloads that require Pods to use Pod or Node Affinity rules, the label <em>AffinityRequired: true</em> must be included on the Pod YAML. This will ensure that the affinity best practices are tested and prevent any test cases for anti-affinity to fail.</p>
-<!-- markdownlint-disable first-line-heading -->
 
 
 

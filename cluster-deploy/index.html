@@ -897,15 +897,15 @@
 
 
 <!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
-<h1 id="how-to-deploy-the-cnf-cert-suite-app-inside-a-kubernetesopenshift-cluster">How to deploy the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite App inside a Kubernetes/Openshift cluster<a class="headerlink" href="#how-to-deploy-the-cnf-cert-suite-app-inside-a-kubernetesopenshift-cluster" title="Permanent link">&para;</a></h1>
-<p>This is a developer&rsquo;s guide to deploy a Pod in a kubernetes/Openshift cluster that runs the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite app inside.</p>
+<h1 id="how-to-deploy-the-cnf-cert-suite-app-inside-a-kubernetesopenshift-cluster">How to deploy the CNF Cert Suite App inside a Kubernetes/Openshift cluster<a class="headerlink" href="#how-to-deploy-the-cnf-cert-suite-app-inside-a-kubernetesopenshift-cluster" title="Permanent link">&para;</a></h1>
+<p>This is a developer&rsquo;s guide to deploy a Pod in a kubernetes/Openshift cluster that runs the CNF Cert Suite app inside.</p>
 <p>This folder contains two files:</p>
 <ul>
 <li><a href="cnf-certsuite.yaml">./cnf-certsuite.yaml</a></li>
 <li><a href="kustomization.yaml">./kustomization.yaml</a></li>
 </ul>
 <h2 id="cnf-certsuiteyaml">cnf-certsuite.yaml<a class="headerlink" href="#cnf-certsuiteyaml" title="Permanent link">&para;</a></h2>
-<p>This file contains all the kubernetes templates for deploying the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite inside a Pod named &ldquo;cnf-certsuite&rdquo; in a namespace also named &ldquo;cnf-certsuite&rdquo;. In order to deploy the pod, just write:</p>
+<p>This file contains all the kubernetes templates for deploying the CNF Cert Suite inside a Pod named &ldquo;cnf-certsuite&rdquo; in a namespace also named &ldquo;cnf-certsuite&rdquo;. In order to deploy the pod, just write:</p>
 <div class="highlight"><pre><span></span><code><span class="go">oc apply -f k8s/cnf-certsuite.yaml</span>
 <span class="go">namespace/cnf-certsuite created</span>
 <span class="go">clusterrole.rbac.authorization.k8s.io/cnf-certsuite-cr created</span>
@@ -914,18 +914,18 @@
 <span class="go">secret/cnf-certsuite-preflight-dockerconfig created</span>
 <span class="go">pod/cnf-certsuite created</span>
 </code></pre></div>
-<p>The first thing in that yaml is the namespace, so it&rsquo;s the first resource that will be created in the cluster. Then, a cluster role and its cluster role binding will be created. This cluster role is needed because the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite needs access to all the resources in the whole cluster.</p>
-<p>Then, there&rsquo;s a configMap with the whole config (tnf_config.yaml) that will be used by the pod to create the tnf_config.yaml file inside a volume folder. Also, there&rsquo;s a secret with the preflight&rsquo;s dockerconfig file content that will also be used by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suitep pod.</p>
-<p>The <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite pod is the last resource defined in the cnf-certsuite.yaml file. It has only one container that uses the <a href="latest">quay.io/testnetworkfunction/cnf-certification-test:latest</a> tag of the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite. The command slice of this container has a hardcoded labels to run as many test cases as possible, excluding the intrusive ones.</p>
+<p>The first thing in that yaml is the namespace, so it&rsquo;s the first resource that will be created in the cluster. Then, a cluster role and its cluster role binding will be created. This cluster role is needed because the CNF Cert Suite needs access to all the resources in the whole cluster.</p>
+<p>Then, there&rsquo;s a configMap with the whole config (tnf_config.yaml) that will be used by the pod to create the tnf_config.yaml file inside a volume folder. Also, there&rsquo;s a secret with the preflight&rsquo;s dockerconfig file content that will also be used by the CNF Cert Suitep pod.</p>
+<p>The CNF Cert Suite pod is the last resource defined in the cnf-certsuite.yaml file. It has only one container that uses the <a href="latest">quay.io/testnetworkfunction/cnf-certification-test:latest</a> tag of the CNF Cert Suite. The command slice of this container has a hardcoded labels to run as many test cases as possible, excluding the intrusive ones.</p>
 <h2 id="kustomizationyaml">kustomization.yaml<a class="headerlink" href="#kustomizationyaml" title="Permanent link">&para;</a></h2>
-<p>This kustomization file allows the deployment of the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite using this command:</p>
+<p>This kustomization file allows the deployment of the CNF Cert Suite using this command:</p>
 <div class="highlight"><pre><span></span><code><span class="go">oc kustomize k8s/ | oc apply -f -</span>
 </code></pre></div>
 <p>The <code>kustomization</code> tool used by <code>oc</code> will parse the content of the <a href="kustomization.yaml">./kustomization.yaml</a> file, which consists of a set of &ldquo;transformers&rdquo; over the resources defined in <a href="cnf-certsuite.yaml">./cnf-certsuite.yaml</a>.</p>
-<p>By default, that command will deploy the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite Pod without any mutation: it will be deployed in the same namespace and with the same configuration than using the <code>oc apply -f k8s/cnf-certsuite.yaml</code>.</p>
+<p>By default, that command will deploy the CNF Cert Suite Pod without any mutation: it will be deployed in the same namespace and with the same configuration than using the <code>oc apply -f k8s/cnf-certsuite.yaml</code>.</p>
 <p>But there are the three example of modifications included in <a href="kustomization.yaml">./kustomization.yaml</a> that can be used out of the box that can be handy:</p>
 <ol>
-<li>The namespace and the prefix/suffix of each resource&rsquo;s name. By default, the <a href="cnf-certsuite.yaml">./cnf-certsuite.yaml</a> uses the namespace &ldquo;cnf-certsuite&rdquo; to deploy all the reources (except the cluster role and the cluster role binding), but this can be changed uncommenting the line that starts with <code>namespace:</code>. It&rsquo;s highly recommended to uncomment at least one of suffixName/prefixName so unique cluster role &amp; cluster role-bindings can be created for each <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Pod. This way, you could run more than one <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Pod in the same cluster!.</li>
+<li>The namespace and the prefix/suffix of each resource&rsquo;s name. By default, the <a href="cnf-certsuite.yaml">./cnf-certsuite.yaml</a> uses the namespace &ldquo;cnf-certsuite&rdquo; to deploy all the reources (except the cluster role and the cluster role binding), but this can be changed uncommenting the line that starts with <code>namespace:</code>. It&rsquo;s highly recommended to uncomment at least one of suffixName/prefixName so unique cluster role &amp; cluster role-bindings can be created for each CNF Cert Pod. This way, you could run more than one CNF Cert Pod in the same cluster!.</li>
 <li>The (ginkgo) labels expression, in case you want to run different test cases. Uncomment the object that starts with &ldquo;patches:&rdquo;. The commented example changes the command to use the &ldquo;preflight&rdquo; label only.</li>
 <li>The value of the TNF_NON_INTRUSIVE_ONLY env var. Uncomment the last object that starts with &ldquo;patches:&rdquo;. The commented example changes the TNF_NON_INTRUSIVE_ONLY to false, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.</li>
 </ol>
@@ -949,7 +949,6 @@
 <span class="go">        path: /spec/containers/0/env/0/value</span>
 <span class="go">        value: false</span>
 </code></pre></div>
-<!-- markdownlint-disable first-line-heading -->
 
 
 
