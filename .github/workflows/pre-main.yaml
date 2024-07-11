@@ -315,7 +315,7 @@ jobs:
           mkdir -p $CERTSUITE_CONFIG_DIR $CERTSUITE_OUTPUT_DIR
           cp /home/runner/.kube/config $CERTSUITE_CONFIG_DIR/kubeconfig
           cp /home/runner/.docker/config $CERTSUITE_CONFIG_DIR/dockerconfig
-          cp cnf-certification-test/*.yml $CERTSUITE_CONFIG_DIR
+          cp config/*.yml $CERTSUITE_CONFIG_DIR
         shell: bash
 
       - name: Get Collector's CI credentials
