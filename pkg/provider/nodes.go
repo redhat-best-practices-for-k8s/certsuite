@@ -23,9 +23,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
+	"github.com/test-network-function/cnf-certification-test/tests/platform/operatingsystem"
 	corev1 "k8s.io/api/core/v1"
 )
 

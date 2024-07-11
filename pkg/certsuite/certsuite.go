@@ -7,26 +7,26 @@ import (
 	"strings"
 	"time"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/manageability"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/internal/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/collector"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
+	"github.com/test-network-function/cnf-certification-test/tests/accesscontrol"
+	"github.com/test-network-function/cnf-certification-test/tests/certification"
+	"github.com/test-network-function/cnf-certification-test/tests/lifecycle"
+	"github.com/test-network-function/cnf-certification-test/tests/manageability"
+	"github.com/test-network-function/cnf-certification-test/tests/networking"
+	"github.com/test-network-function/cnf-certification-test/tests/observability"
+	"github.com/test-network-function/cnf-certification-test/tests/operator"
+	"github.com/test-network-function/cnf-certification-test/tests/performance"
+	"github.com/test-network-function/cnf-certification-test/tests/platform"
+	"github.com/test-network-function/cnf-certification-test/tests/preflight"
 )
 
 func LoadChecksDB(labelsExpr string) {
@@ -47,6 +47,7 @@ func LoadChecksDB(labelsExpr string) {
 
 const (
 	junitXMLOutputFileName = "cnf-certification-tests_junit.xml"
+	claimFileName          = "claim.json"
 	collectorAppURL        = "http://claims-collector.cnf-certifications.sysdeseng.com"
 	timeoutDefaultvalue    = 24 * time.Hour
 	noLabelsFilterExpr     = "none"
@@ -148,7 +149,7 @@ func Run(labelsFilter, outputFolder string) error {
 		log.Fatal("Failed to get claim builder: %v", err)
 	}
 
-	claimOutputFile := filepath.Join(outputFolder, results.ClaimFileName)
+	claimOutputFile := filepath.Join(outputFolder, claimFileName)
 
 	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, testParams.Timeout)
 	startTime := time.Now()
@@ -186,12 +187,12 @@ func Run(labelsFilter, outputFolder string) error {
 
 	// Create HTML artifacts for the web results viewer/parser.
 	resultsOutputDir := outputFolder
-	webFilePaths, err := results.CreateResultsWebFiles(resultsOutputDir)
+	webFilePaths, err := results.CreateResultsWebFiles(resultsOutputDir, claimFileName)
 	if err != nil {
 		log.Error("Failed to create results web files: %v", err)
 	}
 
-	allArtifactsFilePaths := []string{filepath.Join(outputFolder, results.ClaimFileName)}
+	allArtifactsFilePaths := []string{filepath.Join(outputFolder, claimFileName)}
 
 	// Add all the web artifacts file paths.
 	allArtifactsFilePaths = append(allArtifactsFilePaths, webFilePaths...)

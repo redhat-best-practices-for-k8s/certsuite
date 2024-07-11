@@ -29,10 +29,10 @@ import (
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
 	"github.com/sirupsen/logrus"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
+	"github.com/test-network-function/cnf-certification-test/tests/common"
+	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	"github.com/spf13/cobra"

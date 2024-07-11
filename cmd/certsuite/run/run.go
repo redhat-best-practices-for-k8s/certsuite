@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/webserver"
 )
 
 const timeoutFlagDefaultvalue = 24 * time.Hour
@@ -24,10 +24,10 @@ var (
 )
 
 func NewCommand() *cobra.Command {
-	runCmd.PersistentFlags().StringP("output-dir", "o", "cnf-certification-test", "The directory where the output artifacts will be placed")
+	runCmd.PersistentFlags().StringP("output-dir", "o", "results", "The directory where the output artifacts will be placed")
 	runCmd.PersistentFlags().StringP("label-filter", "l", "none", "Label expression to filter test cases  (e.g. --label-filter 'access-control && !access-control-sys-admin-capability')")
 	runCmd.PersistentFlags().String("timeout", timeoutFlagDefaultvalue.String(), "Time allowed for the test suite execution to complete (e.g. --timeout 30m  or -timeout 1h30m)")
-	runCmd.PersistentFlags().StringP("config-file", "c", "cnf-certification-test/tnf_config.yml", "Name of the workload configuration file")
+	runCmd.PersistentFlags().StringP("config-file", "c", "config/tnf_config.yml", "The workload configuration file")
 	runCmd.PersistentFlags().StringP("kubeconfig", "k", "", "The target cluster's Kubeconfig file")
 	runCmd.PersistentFlags().Bool("list", false, "Shows all the available checks/tests (can be filtered with --label-filter)")
 	runCmd.PersistentFlags().Bool("server-mode", false, "Run the certsuite in web server mode")
