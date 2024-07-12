@@ -89,8 +89,6 @@ const (
 
 	OperatorAutomountTokens = `Ensure that the pods have the automount service account token disabled.`
 
-	OperatorReadOnlyFilesystem = `Ensure that the pods have the read-only root filesystem setting enabled.`
-
 	OperatorCrdVersioningRemediation = `Ensure that the Operator CRD has a valid version.`
 
 	OperatorSingleCrdOwnerRemediation = `Ensure that a CRD is owned by only one Operator`

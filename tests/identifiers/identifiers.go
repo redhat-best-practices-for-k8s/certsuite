@@ -982,22 +982,6 @@ that Node's kernel may not have the same hacks.'`,
 		},
 		TagCommon)
 
-	TestOperatorReadOnlyFilesystem = AddCatalogEntry(
-		"read-only-file-system",
-		common.OperatorTestKey,
-		`Tests that check that the pods have the read-only root filesystem setting enabled.`,
-		OperatorReadOnlyFilesystem,
-		NoExceptions,
-		TestOperatorReadOnlyFilesystemDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
-			NonTelco: Optional,
-			Extended: Optional,
-		},
-		TagCommon)
-
 	TestOperatorCrdVersioningIdentifier = AddCatalogEntry(
 		"crd-versioning",
 		common.OperatorTestKey,

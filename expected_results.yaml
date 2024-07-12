@@ -71,7 +71,6 @@ testCases:
   fail:
     - access-control-security-context # test pod does not meet the security requirements
     - affiliated-certification-container-is-certified-digest # test container image is not certified
-    - operator-read-only-file-system
     - operator-run-as-non-root
   skip:
     - access-control-sys-ptrace-capability

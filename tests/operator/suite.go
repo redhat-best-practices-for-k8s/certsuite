@@ -116,13 +116,6 @@ func LoadChecks() {
 			testOperatorPodsAutomountTokens(c, &env)
 			return nil
 		}))
-
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorReadOnlyFilesystem)).
-		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testOperatorContainersReadOnlyFilesystem(c, &env)
-			return nil
-		}))
 }
 
 // This function check if the Operator CRD version follows K8s versioning
@@ -439,28 +432,4 @@ func testOperatorPodsAutomountTokens(check *checksdb.Check, env *provider.TestEn
 		}
 	}
 	check.SetResult(compliantObjects, nonCompliantObjects)
-}
-
-func testOperatorContainersReadOnlyFilesystem(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	for csv, pods := range env.CSVToPodListMap {
-		CsvResult := SplitCsv(csv)
-		check.LogInfo("Name of csv: %q in namespaces: %q", CsvResult.NameCsv, CsvResult.Namespace)
-		for _, pod := range pods {
-			check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
-			for _, cut := range pod.Containers {
-				check.LogInfo("Testing Container %q in Pod %q", cut.Name, pod.Name)
-				if cut.IsReadOnlyRootFilesystem(check.GetLogger()) {
-					check.LogInfo("Container %q in Pod %q has a read-only root filesystem.", cut.Name, pod.Name)
-					compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Container has a read-only root filesystem", true))
-				} else {
-					check.LogError("Container %q in Pod %q does not have a read-only root filesystem.", cut.Name, pod.Name)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Container does not have a read-only root filesystem", false))
-				}
-			}
-		}
-		check.SetResult(compliantObjects, nonCompliantObjects)
-	}
 }
