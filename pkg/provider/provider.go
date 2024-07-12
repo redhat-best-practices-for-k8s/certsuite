@@ -241,28 +241,28 @@ func buildTestEnvironment() { //nolint:funlen
 		env.AbnormalEvents = append(env.AbnormalEvents, &aEvent)
 	}
 	pods := data.Pods
-	for i := 0; i < len(pods); i++ {
-		aNewPod := NewPod(&pods[i])
+	for _, p := range pods {
+		aNewPod := NewPod(&p)
 		env.Pods = append(env.Pods, &aNewPod)
 		// Note: 'getPodContainers' is returning a filtered list of Container objects.
-		env.Containers = append(env.Containers, getPodContainers(&pods[i], true)...)
+		env.Containers = append(env.Containers, getPodContainers(&p, true)...)
 	}
 	pods = data.AllPods
-	for i := 0; i < len(pods); i++ {
-		aNewPod := NewPod(&pods[i])
+	for _, p := range pods {
+		aNewPod := NewPod(&p)
 		env.AllPods = append(env.AllPods, &aNewPod)
 	}
 	env.DebugPods = make(map[string]*corev1.Pod)
-	for i := 0; i < len(data.DebugPods); i++ {
-		nodeName := data.DebugPods[i].Spec.NodeName
-		env.DebugPods[nodeName] = &data.DebugPods[i]
+	for _, dp := range data.DebugPods {
+		nodeName := dp.Spec.NodeName
+		env.DebugPods[nodeName] = &dp
 	}
 
 	env.CSVToPodListMap = make(map[string][]*Pod)
 	for k, podList := range data.CSVToPodListMap {
 		var pods []*Pod
-		for i := 0; i < len(podList); i++ {
-			aNewPod := NewPod(podList[i])
+		for _, pl := range podList {
+			aNewPod := NewPod(pl)
 			pods = append(pods, &aNewPod)
 		}
 		env.CSVToPodListMap[k] = pods

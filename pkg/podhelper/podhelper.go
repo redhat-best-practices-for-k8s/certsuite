@@ -60,13 +60,13 @@ func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient
 func getResourceSchema(resourceList []*metav1.APIResourceList, apiVersion, kind string) (gvr schema.GroupVersionResource) {
 	const groupVersionComponentsNumber = 2
 	for _, gr := range resourceList {
-		for i := 0; i < len(gr.APIResources); i++ {
-			if gr.APIResources[i].Kind == kind && gr.GroupVersion == apiVersion {
+		for _, r := range gr.APIResources {
+			if r.Kind == kind && gr.GroupVersion == apiVersion {
 				groupSplit := strings.Split(gr.GroupVersion, "/")
 				if len(groupSplit) == groupVersionComponentsNumber {
 					gvr.Group = groupSplit[0]
 					gvr.Version = groupSplit[1]
-					gvr.Resource = gr.APIResources[i].Name
+					gvr.Resource = r.Name
 				}
 				return gvr
 			}

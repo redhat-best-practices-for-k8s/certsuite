@@ -82,18 +82,19 @@ func findDeploymentsByLabels(
 		if len(dps.Items) == 0 {
 			log.Warn("Did not find any deployments in ns=%s", ns)
 		}
-		for i := 0; i < len(dps.Items); i++ {
+
+		for _, d := range dps.Items {
 			if len(labels) > 0 {
 				// The deployment is added only once if at least one pod matches one label in the Deployment
-				if isDeploymentsPodsMatchingAtLeastOneLabel(labels, ns, &dps.Items[i]) {
-					allDeployments = append(allDeployments, dps.Items[i])
+				if isDeploymentsPodsMatchingAtLeastOneLabel(labels, ns, &d) {
+					allDeployments = append(allDeployments, d)
 					continue
 				}
 			} else {
 				// If labels are not provided, all deployments in the namespaces under test, are tested by the CNF suite
-				log.Debug("Searching pods in deployment %q found in ns %q without label", dps.Items[i].Name, ns)
-				allDeployments = append(allDeployments, dps.Items[i])
-				log.Info("Deployment %s found in ns=%s", dps.Items[i].Name, ns)
+				log.Debug("Searching pods in deployment %q found in ns %q without label", d.Name, ns)
+				allDeployments = append(allDeployments, d)
+				log.Info("Deployment %s found in ns=%s", d.Name, ns)
 			}
 		}
 	}
@@ -130,18 +131,18 @@ func findStatefulSetsByLabels(
 		if len(statefulSet.Items) == 0 {
 			log.Warn("Did not find any statefulSet in ns=%s", ns)
 		}
-		for i := 0; i < len(statefulSet.Items); i++ {
+		for _, ssItem := range statefulSet.Items {
 			if len(labels) > 0 {
 				// The StatefulSet is added only once if at least one pod matches one label in the Statefulset
-				if isStatefulSetsMatchingAtLeastOneLabel(labels, ns, &statefulSet.Items[i]) {
-					allStatefulSets = append(allStatefulSets, statefulSet.Items[i])
+				if isStatefulSetsMatchingAtLeastOneLabel(labels, ns, &ssItem) {
+					allStatefulSets = append(allStatefulSets, ssItem)
 					continue
 				}
 			} else {
 				// If labels are not provided, all statefulsets in the namespaces under test, are tested by the CNF suite
-				log.Debug("Searching pods in statefulset %q found in ns %q without label", statefulSet.Items[i].Name, ns)
-				allStatefulSets = append(allStatefulSets, statefulSet.Items[i])
-				log.Info("StatefulSet %s found in ns=%s", statefulSet.Items[i].Name, ns)
+				log.Debug("Searching pods in statefulset %q found in ns %q without label", ssItem.Name, ns)
+				allStatefulSets = append(allStatefulSets, ssItem)
+				log.Info("StatefulSet %s found in ns=%s", ssItem.Name, ns)
 			}
 		}
 	}
@@ -159,8 +160,8 @@ func findHpaControllers(cs kubernetes.Interface, namespaces []string) []*scaling
 			log.Error("Cannot list HorizontalPodAutoscalers on namespace %q, err: %v", ns, err)
 			return m
 		}
-		for i := 0; i < len(hpas.Items); i++ {
-			m = append(m, &hpas.Items[i])
+		for _, hpaItem := range hpas.Items {
+			m = append(m, &hpaItem)
 		}
 	}
 	if len(m) == 0 {
