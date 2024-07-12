@@ -40,7 +40,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 |Mandatory|Optional|
 |---|---|
-|45|21|
+|44|22|
 
 ### Telco specific tests only: 27
 
@@ -1229,10 +1229,10 @@ Best Practice Reference|https://test-network-function.github.io/cnf-best-practic
 Exception Process|No exceptions
 Tags|common,operator
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### operator-run-as-non-root
 

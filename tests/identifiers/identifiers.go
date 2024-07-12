@@ -991,10 +991,10 @@ that Node's kernel may not have the same hacks.'`,
 		TestOperatorReadOnlyFilesystemDocLink,
 		true,
 		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
-			Extended: Mandatory,
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
