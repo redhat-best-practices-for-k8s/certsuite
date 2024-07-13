@@ -215,7 +215,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240605154909-3bdeab0e72f3
 	github.com/robert-nix/ansihtml v1.0.1
-	github.com/test-network-function/oct v0.0.14
+	github.com/test-network-function/oct v0.0.15
 	github.com/test-network-function/privileged-daemonset v1.0.27
 	golang.org/x/term v0.22.0
 	gopkg.in/yaml.v3 v3.0.1
