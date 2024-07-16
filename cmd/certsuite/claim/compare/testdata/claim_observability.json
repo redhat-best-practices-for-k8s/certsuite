@@ -9295,7 +9295,7 @@
       "access-control-cluster-role-bindings": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-security-rbac",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-security-rbac",
             "description": "Tests that a Pod does not specify ClusterRoleBindings.",
             "exceptionProcess": "Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles \u0026 role bindings",
             "remediation": "In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by CNF (often reserved for cluster admin only)."
@@ -9322,7 +9322,7 @@
       "access-control-container-host-port": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-accessing-resource-on-host",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-avoid-accessing-resource-on-host",
             "description": "Verifies if containers define a hostPort.",
             "exceptionProcess": "Exception for host resource access tests will only be considered in rare cases where it is absolutely needed",
             "remediation": "Remove hostPort configuration from the container. CNF should avoid accessing host resources - containers should not configure HostPort."
@@ -9349,7 +9349,7 @@
       "access-control-crd-roles": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-custom-role-to-access-application-crds",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-custom-role-to-access-application-crds",
             "description": "If an application creates CRDs it must supply a role to access those CRDs and no other API resources/permission. This test checks that there is at least one role present in each namespaces under test that only refers to CRDs under test.",
             "exceptionProcess": "No exception needed for optional/extended tests.",
             "remediation": "Roles providing access to CRDs should not refer to any other api or resources. Change the generation of the CRD role accordingly"
@@ -9376,7 +9376,7 @@
       "access-control-ipc-lock-capability-check": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipc_lock",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-ipc_lock",
             "description": "Ensures that containers do not use IPC_LOCK capability. CNF should avoid accessing host resources - spec.HostIpc should be false.",
             "exceptionProcess": "Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.",
             "remediation": "Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why."
@@ -9403,7 +9403,7 @@
       "access-control-namespace": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-requirements-cnf-reqs",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-requirements-cnf-reqs",
             "description": "Tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets\nthe following conditions: (1) It was declared in the yaml config file under the targetNameSpaces\ntag. (2) It does not have any of the following prefixes: default, openshift-, istio- and aspenmesh-",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally, the namespaces should not start with \"default, openshift-, istio- or aspenmesh-\"."
@@ -9430,7 +9430,7 @@
       "access-control-namespace-resource-quota": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-memory-allocation",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-memory-allocation",
             "description": "Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.",
             "exceptionProcess": "No exception needed for optional/extended tests.",
             "remediation": "Apply a ResourceQuota to the namespace your CNF is running in. The CNF namespace should have resource quota defined."
@@ -9457,7 +9457,7 @@
       "access-control-net-admin-capability-check": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-net_admin",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-net_admin",
             "description": "Ensures that containers do not use NET_ADMIN capability. Note: this test also ensures iptables and nftables are not configured by CNF pods:\n- NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods.\nnftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured\nby operators, for instance the Performance Addon Operator (PAO) or istio.\n- Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables\nshould be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators,\nfor instance the Performance Addon Operator (PAO) or istio.",
             "exceptionProcess": "Exception will be considered for user plane or networking functions (e.g. SR-IOV, Multicast). Must identify which container requires the capability and detail why.",
             "remediation": "Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why."
@@ -9484,7 +9484,7 @@
       "access-control-net-raw-capability-check": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-user-plane-cnfs",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-user-plane-cnfs",
             "description": "Ensures that containers do not use NET_RAW capability. Note: this test also ensures iptables and nftables are not configured by CNF pods:\n- NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods.\nnftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured\nby operators, for instance the Performance Addon Operator (PAO) or istio.\n- Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables\nshould be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators,\nfor instance the Performance Addon Operator (PAO) or istio.",
             "exceptionProcess": "Exception will be considered for user plane or networking functions. Must identify which container requires the capability and detail why.",
             "remediation": "Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why."
@@ -9538,7 +9538,7 @@
       "access-control-one-process-per-container": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-one-process-per-container",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-one-process-per-container",
             "description": "Check that all containers under test have only one process running",
             "exceptionProcess": "No exception needed for optional/extended tests. Not applicable to SNO applications.",
             "remediation": "Launch only one process per container. Should adhere to 1 process per container best practice wherever possible."
@@ -9565,7 +9565,7 @@
       "access-control-pod-automount-service-account-token": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-automount-services-for-pods",
             "description": "Check that all pods under test have automountServiceAccountToken set to false. Only pods that require access to the kubernetes API server should have automountServiceAccountToken set to true",
             "exceptionProcess": "Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.",
             "remediation": "Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false, unless the pod needs access to the kubernetes API server. Pods which do not need API access should set automountServiceAccountToken to false in pod spec."
@@ -9592,7 +9592,7 @@
       "access-control-pod-host-ipc": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-security",
             "description": "Verifies that the spec.HostIpc parameter is set to false",
             "exceptionProcess": "Exception for host resource access tests will only be considered in rare cases where it is absolutely needed",
             "remediation": "Set the spec.HostIpc parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostIpc should be false."
@@ -9619,7 +9619,7 @@
       "access-control-pod-host-network": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-the-host-network-namespace",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-avoid-the-host-network-namespace",
             "description": "Verifies that the spec.HostNetwork parameter is not set (not present)",
             "exceptionProcess": "Exception for host resource access tests will only be considered in rare cases where it is absolutely needed",
             "remediation": "Set the spec.HostNetwork parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostNetwork should be false."
@@ -9646,7 +9646,7 @@
       "access-control-pod-host-path": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-security",
             "description": "Verifies that the spec.HostPath parameter is not set (not present)",
             "exceptionProcess": "Exception for host resource access tests will only be considered in rare cases where it is absolutely needed",
             "remediation": "Set the spec.HostPath parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPath should be false."
@@ -9673,7 +9673,7 @@
       "access-control-pod-host-pid": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-security",
             "description": "Verifies that the spec.HostPid parameter is set to false",
             "exceptionProcess": "Exception for host resource access tests will only be considered in rare cases where it is absolutely needed",
             "remediation": "Set the spec.HostPid parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPid should be false."
@@ -9700,7 +9700,7 @@
       "access-control-pod-role-bindings": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-security-rbac",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-security-rbac",
             "description": "Ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure the CNF is not configured to use RoleBinding(s) in a non-CNF Namespace. Scope of role must \u003c= scope of creator of role."
@@ -9727,7 +9727,7 @@
       "access-control-pod-service-account": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-scc-permissions-for-an-application",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-scc-permissions-for-an-application",
             "description": "Tests that each CNF Pod utilizes a valid Service Account. Default or empty service account is not valid.",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure that the each CNF Pod is configured to use a valid Service Account"
@@ -9754,7 +9754,7 @@
       "access-control-projected-volume-service-account-token": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-automount-services-for-pods",
             "description": "Checks that pods do not use projected volumes and service account tokens",
             "exceptionProcess": "Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.",
             "remediation": "Ensure that pods do not use projected volumes and service account tokens"
@@ -9781,7 +9781,7 @@
       "access-control-requests-and-limits": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-requests/limits",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-requests/limits",
             "description": "Check that containers have resource requests and limits specified in their spec.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Add requests and limits to your container spec. See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits"
@@ -9808,7 +9808,7 @@
       "access-control-security-context": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-security",
             "description": "Checks the security context matches one of the 4 categories",
             "exceptionProcess": "no exception needed for optional/extended test",
             "remediation": "Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 of the Extended Best Practices guide (private repo)"
@@ -9835,7 +9835,7 @@
       "access-control-security-context-non-root-user-check": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-security",
             "description": "Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).",
             "exceptionProcess": "No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.",
             "remediation": "Change the pod and containers \"runAsUser\" uid to something other than root(0)"
@@ -9862,7 +9862,7 @@
       "access-control-security-context-privilege-escalation": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-security",
             "description": "Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true).",
             "exceptionProcess": "No exceptions",
             "remediation": "Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false)."
@@ -9889,7 +9889,7 @@
       "access-control-service-type": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-the-host-network-namespace",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-avoid-the-host-network-namespace",
             "description": "Tests that each CNF Service does not utilize NodePort(s).",
             "exceptionProcess": "Exception for host resource access tests will only be considered in rare cases where it is absolutely needed",
             "remediation": "Ensure Services are not configured to use NodePort(s).CNF should avoid accessing host resources - tests that each CNF Service does not utilize NodePort(s)."
@@ -9916,7 +9916,7 @@
       "access-control-ssh-daemons": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-interaction/configuration",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-pod-interaction/configuration",
             "description": "Check that pods do not run SSH daemons.",
             "exceptionProcess": "No exceptions - special consideration can be given to certain containers which run as utility tool daemon",
             "remediation": "Ensure that no SSH daemons are running inside a pod. Pods should not run as SSH Daemons (replicaset or statefulset only)."
@@ -9943,7 +9943,7 @@
       "access-control-sys-admin-capability-check": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-sys_admin",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-avoid-sys_admin",
             "description": "Ensures that containers do not use SYS_ADMIN capability",
             "exceptionProcess": "No exceptions",
             "remediation": "Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why. Containers should not use the SYS_ADMIN Linux capability."
@@ -9970,7 +9970,7 @@
       "access-control-sys-nice-realtime-capability": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-sys_nice",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-sys_nice",
             "description": "Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec. In the case that a CNF is running on a node using the real-time kernel, SYS_NICE will be used to allow DPDK application to switch to SCHED_FIFO.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec."
@@ -9997,7 +9997,7 @@
       "access-control-sys-ptrace-capability": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-sys_ptrace",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-sys_ptrace",
             "description": "Check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed. This capability is required when using Process Namespace Sharing. This is used when processes from one Container need to be exposed to another Container. For example, to send signals like SIGHUP from a process in a Container to another process in another Container. For more information on these capabilities refer to https://cloud.redhat.com/blog/linux-capabilities-in-openshift and https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod"
@@ -10078,7 +10078,7 @@
       "affiliated-certification-helm-version": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-helm",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-helm",
             "description": "Test to check if the helm chart is v3",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller."
@@ -10132,7 +10132,7 @@
       "affiliated-certification-operator-is-certified": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-operator-requirements",
             "description": "Tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).",
             "exceptionProcess": "There is no documented exception process for this.Partner can run CNF Certification test suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in CNF Certification test suite must be re-run once the other certifications have been granted.",
             "remediation": "Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP)."
@@ -10159,7 +10159,7 @@
       "lifecycle-affinity-required-pods": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Pods.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Pods which need to be co-located on the same node need Affinity rules. If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label."
@@ -10186,7 +10186,7 @@
       "lifecycle-container-shutdown": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cloud-native-design-best-practices",
             "description": "Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.",
             "exceptionProcess": "Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.",
             "remediation": "The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code."
@@ -10213,7 +10213,7 @@
       "lifecycle-container-startup": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cloud-native-design-best-practices",
             "description": "Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.",
             "exceptionProcess": "Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.",
             "remediation": "PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins."
@@ -10240,7 +10240,7 @@
       "lifecycle-cpu-isolation": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cpu-isolation",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cpu-isolation",
             "description": "CPU isolation requires: For each container within the pod, resource requests and limits must be identical. Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "CPU isolation testing is enabled. Please ensure that all pods adhere to the CPU isolation requirements."
@@ -10267,7 +10267,7 @@
       "lifecycle-crd-scaling": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Tests that CNF crd support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s",
             "exceptionProcess": "There is no documented exception process for this. Not applicable to SNO applications.",
             "remediation": "Ensure CNF crd/replica sets can scale in/out successfully."
@@ -10294,7 +10294,7 @@
       "lifecycle-deployment-scaling": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Tests that CNF deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s",
             "exceptionProcess": "There is no documented exception process for this. Not applicable to SNO applications.",
             "remediation": "Ensure CNF deployments/replica sets can scale in/out successfully."
@@ -10321,7 +10321,7 @@
       "lifecycle-image-pull-policy": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-use-imagepullpolicy-if-not-present",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-use-imagepullpolicy-if-not-present",
             "description": "Ensure that the containers under test are using IfNotPresent as Image Pull Policy. If there is a situation where the container dies and needs to be restarted, the image pull policy becomes important. PullIfNotPresent is recommended so that a loss of image registry access does not prevent the pod from restarting.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure that the containers under test are using IfNotPresent as Image Pull Policy."
@@ -10348,7 +10348,7 @@
       "lifecycle-liveness-probe": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Check that all containers under test have liveness probe defined. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. When starting up, health probes like liveness and readiness checks can be put into place to ensure the application is functioning properly.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Add a liveness probe to deployed containers. CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum."
@@ -10375,7 +10375,7 @@
       "lifecycle-persistent-volume-reclaim-policy": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-csi",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-csi",
             "description": "Check that the persistent volumes the CNF pods are using have a reclaim policy of delete. Network Functions should clear persistent storage by deleting their PVs when removing their application from a cluster.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure that all persistent volumes are using the reclaim policy: delete"
@@ -10402,7 +10402,7 @@
       "lifecycle-pod-high-availability": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.",
             "exceptionProcess": "There is no documented exception process for this. Not applicable to SNO applications.",
             "remediation": "In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 ."
@@ -10429,7 +10429,7 @@
       "lifecycle-pod-owner-type": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-no-naked-pods",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-no-naked-pods",
             "description": "Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).",
             "exceptionProcess": "There is no documented exception process for this. Pods should not be deployed as DaemonSet or naked pods.",
             "remediation": "Deploy the CNF using ReplicaSet/StatefulSet."
@@ -10456,7 +10456,7 @@
       "lifecycle-pod-recreation": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-upgrade-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-upgrade-expectations",
             "description": "Tests that a CNF is configured to support High Availability. First, this test cordons and drains a Node that hosts the CNF Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.",
             "exceptionProcess": "No exceptions - workloads should be able to be restarted/recreated.",
             "remediation": "Ensure that CNF Pod(s) utilize a configuration that supports High Availability. Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails."
@@ -10483,7 +10483,7 @@
       "lifecycle-pod-scheduling": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Ensures that CNF Pods do not specify nodeSelector or nodeAffinity. In most cases, Pods should allow for instantiation on any underlying Node. CNFs shall not use node selectors nor taints/tolerations to assign pod location.",
             "exceptionProcess": "Exception will only be considered if application requires specialized hardware. Must specify which container requires special hardware and why.",
             "remediation": "In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which CNFs require specialized hardware specific to a particular class of Node."
@@ -10510,7 +10510,7 @@
       "lifecycle-pod-toleration-bypass": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-taints-and-tolerations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-taints-and-tolerations",
             "description": "Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes."
@@ -10537,7 +10537,7 @@
       "lifecycle-readiness-probe": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Check that all containers under test have readiness probe defined. There are different ways a pod can stop on on OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. In the first case, if the administrator has implemented liveness and readiness checks, OpenShift can stop the pod and either restart it on the same node or a different node in the cluster. For the second case, when the application in the pod stops, it should exit with a code and write suitable log entries to help the administrator diagnose what the issue was that caused the problem.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Add a readiness probe to deployed containers"
@@ -10564,7 +10564,7 @@
       "lifecycle-startup-probe": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-exit-status",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-pod-exit-status",
             "description": "Check that all containers under test have startup probe defined. CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Add a startup probe to deployed containers"
@@ -10591,7 +10591,7 @@
       "lifecycle-statefulset-scaling": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Tests that CNF statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s",
             "exceptionProcess": "There is no documented exception process for this. Not applicable to SNO applications.",
             "remediation": "Ensure CNF statefulsets/replica sets can scale in/out successfully."
@@ -10618,7 +10618,7 @@
       "lifecycle-storage-required-pods": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-local-storage",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-local-storage",
             "description": "Checks that pods do not place persistent volumes on local storage.",
             "exceptionProcess": "No exceptions",
             "remediation": "If pod is StatefulSet, make sure servicename is not local-storage (persistent volumes should not be on local storage)."
@@ -10645,7 +10645,7 @@
       "manageability-container-port-name-format": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-requirements-cnf-reqs",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-requirements-cnf-reqs",
             "description": "Check that the container's ports name follow the naming conventions. Name field in ContainerPort section must be of form `\u003cprotocol\u003e[-\u003csuffix\u003e]`. More naming convention requirements may be released in future",
             "exceptionProcess": "No exception needed for optional/extended tests.",
             "remediation": "Ensure that the container's ports name follow our partner naming conventions"
@@ -10672,7 +10672,7 @@
       "manageability-containers-image-tag": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-image-tagging",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-image-tagging",
             "description": "Check that image tag exists on containers.",
             "exceptionProcess": "No exception needed for optional/extended tests.",
             "remediation": "Ensure that all the container images are tagged. Checks containers have image tags (e.g. latest, stable, dev)."
@@ -10699,7 +10699,7 @@
       "networking-dpdk-cpu-pinning-exec-probe": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cpu-manager-pinning",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cpu-manager-pinning",
             "description": "If a CNF is doing CPU pinning, exec probes may not be used.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually."
@@ -10726,7 +10726,7 @@
       "networking-dual-stack-service": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-\u0026-ipv6",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-ipv4-\u0026-ipv6",
             "description": "Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the debug daemonset.",
             "exceptionProcess": "No exception needed for optional/extended tests.",
             "remediation": "Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer."
@@ -10753,7 +10753,7 @@
       "networking-icmpv4-connectivity": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-\u0026-ipv6",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-ipv4-\u0026-ipv6",
             "description": "Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.",
             "exceptionProcess": "No exceptions - must be able to communicate on default network using IPv4",
             "remediation": "Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence."
@@ -10780,7 +10780,7 @@
       "networking-icmpv4-connectivity-multus": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if MULTUS is not supported."
@@ -10807,7 +10807,7 @@
       "networking-icmpv6-connectivity": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-\u0026-ipv6",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-ipv4-\u0026-ipv6",
             "description": "Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if IPv6 is not supported."
@@ -10834,7 +10834,7 @@
       "networking-icmpv6-connectivity-multus": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trivial, only its presence. Not applicable if IPv6/MULTUS is not supported."
@@ -10861,7 +10861,7 @@
       "networking-network-policy-deny-all": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-vrfs-aka-routing-instances",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-vrfs-aka-routing-instances",
             "description": "Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic",
             "exceptionProcess": "No exception needed for optional/extended tests.",
             "remediation": "Ensure that a NetworkPolicy with a default deny-all is applied. After the default is applied, apply a network policy to allow the traffic your application requires."
@@ -10888,7 +10888,7 @@
       "networking-ocp-reserved-ports-usage": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ports-reserved-by-openshift",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-ports-reserved-by-openshift",
             "description": "Check that containers do not listen on ports that are reserved by OpenShift",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure that CNF apps do not listen on ports that are reserved by OpenShift. The following ports are reserved by OpenShift and must NOT be used by any application: 22623, 22624."
@@ -10969,7 +10969,7 @@
       "networking-undeclared-container-ports-usage": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-requirements-cnf-reqs",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-requirements-cnf-reqs",
             "description": "Check that containers do not listen on ports that weren't declared in their specification. Platforms may be configured to block undeclared ports.",
             "exceptionProcess": "No exception needed for optional/extended tests.",
             "remediation": "Ensure the CNF apps do not listen on undeclared containers' ports."
@@ -10997,7 +10997,7 @@
         {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"xdp\",\"xdp-c\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-logging",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-logging",
             "description": "Check that all containers under test use standard input output and standard error when logging. A container must provide APIs for the platform to observe the container health and act accordingly. These APIs include health checks (liveness and readiness), logging to stderr and stdout for log aggregation (by tools such as Logstash or Filebeat), and integrate with tracing and metrics-gathering libraries (such as Prometheus or Metricbeat).",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure containers are not redirecting stdout/stderr"
@@ -11024,7 +11024,7 @@
       "observability-crd-status": {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Custom Resource Definition\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Custom Resource Definition Name\",\"Custom Resource Definition Version\"],\"ObjectFieldsValues\":[\"Crd has a status sub resource set\",\"crdexamples.test-network-function.com\",\"v1\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-operator-requirements",
             "description": "Checks that all CRDs have a status sub-resource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”])."
@@ -11052,7 +11052,7 @@
         {
           "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"StatefulSet\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"StatefulSet\",\"Pod Disruption Budget Reference\"],\"ObjectFieldsValues\":[\"StatefulSet: references PodDisruptionBudget\",\"test\",\"test-pdb-max\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-upgrade-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-upgrade-expectations",
             "description": "Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica"
@@ -11080,7 +11080,7 @@
         {
           "capturedTestOutput": "FAILURE: [container: xdp-c pod: xdp ns: tnf] does not have a TerminationMessagePolicy: FallbackToLogsOnError\n{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is not FallbackToLogsOnError\",\"tnf\",\"xdp\",\"xdp-c\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-exit-status",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-pod-exit-status",
             "description": "Check that all containers are using terminationMessagePolicy: FallbackToLogsOnError. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. In the first case, if the administrator has implemented liveness and readiness checks, OpenShift can stop the pod and either restart it on the same node or a different node in the cluster. For the second case, when the application in the pod stops, it should exit with a code and write suitable log entries to help the administrator diagnose what the issue was that caused the problem.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure containers are all using FallbackToLogsOnError in terminationMessagePolicy"
@@ -11107,7 +11107,7 @@
       "operator-install-source": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-operator-requirements",
             "description": "Tests whether a CNF Operator is installed via OLM.",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure that your Operator is installed via OLM."
@@ -11134,7 +11134,7 @@
       "operator-install-status-no-privileges": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-operator-requirements",
             "description": "The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present with no resourceNames under its rules.",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure all the CNF operators have no privileges on cluster resources."
@@ -11161,7 +11161,7 @@
       "operator-install-status-succeeded": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-operator-requirements",
             "description": "Ensures that the target CNF operators report \"Succeeded\" as their installation status.",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure all the CNF operators have been successfully installed by OLM."
@@ -11350,7 +11350,7 @@
       "platform-alteration-base-image": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-image-standards",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-image-standards",
             "description": "Ensures that the Container Base Image is not altered post-startup. This test is a heuristic, and ensures that there are no changes to the following directories: 1) /var/lib/rpm 2) /var/lib/dpkg 3) /bin 4) /sbin 5) /lib 6) /lib64 7) /usr/bin 8) /usr/sbin 9) /usr/lib 10) /usr/lib64",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure that Container applications do not modify the Container Base Image. In particular, ensure that the following directories are not modified: 1) /var/lib/rpm 2) /var/lib/dpkg 3) /bin 4) /sbin 5) /lib 6) /lib64 7) /usr/bin 8) /usr/sbin 9) /usr/lib 10) /usr/lib64 Ensure that all required binaries are built directly into the container image, and are not installed post startup."
@@ -11377,7 +11377,7 @@
       "platform-alteration-boot-params": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-host-os",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-host-os",
             "description": "Tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.",
             "exceptionProcess": "No exceptions",
             "remediation": "Ensure that boot parameters are set directly through the MachineConfigOperator, or indirectly through the PerformanceAddonOperator. Boot parameters should not be changed directly through the Node, as OpenShift should manage the changes for you."
@@ -11431,7 +11431,7 @@
       "platform-alteration-hugepages-2m-only": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-huge-pages",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-huge-pages",
             "description": "Check that pods using hugepages only use 2Mi size",
             "exceptionProcess": "No exception needed for optional/extended tests.",
             "remediation": "Modify pod to consume 2Mi hugepages only"
@@ -11458,7 +11458,7 @@
       "platform-alteration-hugepages-config": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-huge-pages",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-huge-pages",
             "description": "Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are configured with the \"worker\" MachineConfigSet. First, the \"worker\" MachineConfig is polled, and the Hugepage settings are extracted. Next, the underlying Nodes are polled for configured HugePages through inspection of /proc/meminfo. The results are compared, and the test passes only if they are the same.",
             "exceptionProcess": "No exceptions",
             "remediation": "HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your CNF on a Node that is part of the corresponding MachineConfigSet. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings. This test case applies only to Nodes that are configured with the \"worker\" MachineConfigSet."
@@ -11512,7 +11512,7 @@
       "platform-alteration-is-selinux-enforcing": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-security",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-pod-security",
             "description": "verifies that all openshift platform/cluster nodes have selinux in \"Enforcing\" mode.",
             "exceptionProcess": "No exceptions",
             "remediation": "Configure selinux and enable enforcing mode."
@@ -11539,7 +11539,7 @@
       "platform-alteration-isredhat-release": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-base-images",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-base-images",
             "description": "verifies if the container base image is redhat.",
             "exceptionProcess": "No exceptions",
             "remediation": "Build a new container image that is based on UBI (Red Hat Universal Base Image)."
@@ -11566,7 +11566,7 @@
       "platform-alteration-ocp-lifecycle": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-k8s",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-k8s",
             "description": "Tests that the running OCP version is not end of life.",
             "exceptionProcess": "No exceptions",
             "remediation": "Please update your cluster to a version that is generally available."
@@ -11593,7 +11593,7 @@
       "platform-alteration-ocp-node-os-lifecycle": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-host-os",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-host-os",
             "description": "Tests that the nodes running in the cluster have operating systems that are compatible with the deployed version of OpenShift.",
             "exceptionProcess": "No exceptions",
             "remediation": "Please update your workers to a version that is supported by your version of OpenShift"
@@ -11647,7 +11647,7 @@
       "platform-alteration-sysctl-config": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-cnf-security",
             "description": "Tests that no one has changed the node's sysctl configs after the node was created, the tests works by checking if the sysctl configs are consistent with the MachineConfig CR which defines how the node should be configured",
             "exceptionProcess": "No exceptions",
             "remediation": "You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes"
@@ -11674,7 +11674,7 @@
       "platform-alteration-tainted-node-kernel": {
           "capturedTestOutput": "",
           "catalogInfo": {
-            "bestPracticeReference": "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations",
+            "bestPracticeReference": "https://test-network-function.github.io/k8s-best-practices-guide/#k8s-best-practices-high-level-cnf-expectations",
             "description": "Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have the same hacks.'",
             "exceptionProcess": "If taint is necessary, document details of the taint and why it's needed by workload or environment.",
             "remediation": "Test failure indicates that the underlying Node's kernel is tainted. Ensure that you have not altered underlying Node(s) kernels in order to run the CNF."
