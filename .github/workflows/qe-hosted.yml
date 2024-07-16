@@ -37,7 +37,9 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          tags: quay.io/testnetworkfunction/cnf-certification-test:localtest
+          tags: |
+            quay.io/testnetworkfunction/cnf-certification-test:localtest
+            quay.io/testnetworkfunction/k8s-best-practices-certsuite:localtest
           outputs: type=docker,dest=/tmp/testimage.tar
       
       - name: Store image as artifact

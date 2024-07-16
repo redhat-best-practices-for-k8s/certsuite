@@ -20,6 +20,7 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 REGISTRY_LOCAL?=localhost
 REGISTRY?=quay.io
 TNF_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
+TNF_IMAGE_NAME_NEW?=testnetworkfunction/k8s-best-practices-certsuite
 IMAGE_TAG?=localtest
 .PHONY: all clean test build
 .PHONY: \
@@ -148,24 +149,9 @@ build-image-local:
 	docker build --pull --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME_NEW}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${TNF_IMAGE_NAME_NEW}:${IMAGE_TAG} \
 		-f Dockerfile .
-
-build-image-local-x86:
-	docker build --pull --no-cache --platform linux/amd64 \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		-f Dockerfile .
-
-build-image-local-arm:
-	docker build --pull --no-cache --platform linux/arm64 \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64 \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64 \
-		-f Dockerfile .
-
-create-manifest-local:
-	docker manifest create ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-amd64 \
-		${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG}-linux-arm64
 
 results-html:
 	curl -s -O --output-dir internal/results/html ${RESULTS_HTML_URL}
