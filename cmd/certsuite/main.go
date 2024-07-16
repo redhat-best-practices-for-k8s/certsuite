@@ -14,14 +14,12 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/version"
 )
 
-var (
-	rootCmd = &cobra.Command{
+func newRootCmd() *cobra.Command {
+	rootCmd := cobra.Command{
 		Use:   "certsuite",
 		Short: "A CLI tool for the Red Hat Best Practices Test Suite for Kubernetes.",
 	}
-)
 
-func main() {
 	rootCmd.AddCommand(claim.NewCommand())
 	rootCmd.AddCommand(generate.NewCommand())
 	rootCmd.AddCommand(check.NewCommand())
@@ -29,6 +27,11 @@ func main() {
 	rootCmd.AddCommand(info.NewCommand())
 	rootCmd.AddCommand(version.NewCommand())
 
+	return &rootCmd
+}
+
+func main() {
+	rootCmd := newRootCmd()
 	if err := rootCmd.Execute(); err != nil {
 		log.Error("%v", err)
 		os.Exit(1)
