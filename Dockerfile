@@ -10,9 +10,7 @@ RUN \
 	mkdir ${CERTSUITE_DIR} \
 	&& dnf update --assumeyes --disableplugin=subscription-manager \
 	&& dnf install --assumeyes --disableplugin=subscription-manager \
-		gcc \
 		git \
-		jq \
 		cmake \
 		wget \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
