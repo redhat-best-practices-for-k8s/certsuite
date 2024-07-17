@@ -40,7 +40,6 @@ func showInfo(cmd *cobra.Command, _ []string) error { //nolint:funlen
 	lineMaxWidth := 120
 	if term.IsTerminal(0) {
 		width, _, err := term.GetSize(0)
-		fmt.Println("Term Width: ", width)
 		if err != nil {
 			return fmt.Errorf("could not get terminal size, err: %v", err)
 		}
