@@ -33,6 +33,7 @@ jobs:
         with:
           repository: redhat-openshift-ecosystem/openshift-preflight
           path: openshift-preflight
+          ref: 1.10.0
 
       - name: Run preflight
         working-directory: openshift-preflight
