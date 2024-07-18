@@ -5,7 +5,10 @@ import (
 	"os"
 	"testing"
 
+	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/info"
+	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/version"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 )
 
@@ -20,7 +23,7 @@ func TestCertsuiteVersionCmd(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	cmd := newRootCmd()
+	cmd := createCommand(version.NewCommand())
 	cmd.SetArgs([]string{
 		"version",
 	})
@@ -42,7 +45,7 @@ func TestCertsuiteInfoCmd(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	cmd := newRootCmd()
+	cmd := createCommand(info.NewCommand())
 	cmd.SetArgs([]string{
 		"info",
 		"--test-label=observability",
@@ -66,4 +69,14 @@ func TestCertsuiteInfoCmd(t *testing.T) {
 ------------------------------------------------------------
 `
 	assert.Equal(t, expectedOutput, string(out))
+}
+
+func createCommand(cmd *cobra.Command) *cobra.Command {
+	rootCmd := cobra.Command{
+		Use:   "certsuite",
+		Short: "A CLI tool for the Red Hat Best Practices Test Suite for Kubernetes.",
+	}
+	rootCmd.AddCommand(cmd)
+
+	return &rootCmd
 }
