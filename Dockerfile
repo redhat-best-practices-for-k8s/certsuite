@@ -10,9 +10,7 @@ RUN \
 	mkdir ${CERTSUITE_DIR} \
 	&& dnf update --assumeyes --disableplugin=subscription-manager \
 	&& dnf install --assumeyes --disableplugin=subscription-manager \
-		gcc \
 		git \
-		jq \
 		cmake \
 		wget \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
@@ -84,9 +82,9 @@ RUN make build-certsuite-tool \
 # Switch contexts back to the root CERTSUITE directory
 WORKDIR ${CERTSUITE_DIR}
 
-# Remove most of the build artefacts
+# Remove most of the build artifacts
 RUN \
-	dnf remove --assumeyes --disableplugin=subscription-manager gcc git wget \
+	dnf remove --assumeyes --disableplugin=subscription-manager git wget \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
 	&& rm -rf ${CERTSUITE_SRC_DIR} \
 	&& rm -rf ${TEMP_DIR} \
