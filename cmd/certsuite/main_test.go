@@ -32,6 +32,38 @@ func TestCertsuiteVersionCmd(t *testing.T) {
 	os.Stdout = savedStdout
 
 	// Check the result
-	const expectedOut = "Certsuite version: v0.0.0 (aaabbbccc)\nClaim file version: v0.0.0\n"
-	assert.Equal(t, expectedOut, string(out))
+	const expectedOutput = "Certsuite version: v0.0.0 (aaabbbccc)\nClaim file version: v0.0.0\n"
+	assert.Equal(t, expectedOutput, string(out))
+}
+
+func TestCertsuiteInfoCmd(t *testing.T) {
+	// Run the command
+	savedStdout := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+
+	cmd := newRootCmd()
+	cmd.SetArgs([]string{
+		"info",
+		"--test-label=observability",
+		"--list",
+	})
+	err := cmd.Execute()
+	assert.Nil(t, err)
+
+	w.Close()
+	out, _ := io.ReadAll(r)
+	os.Stdout = savedStdout
+
+	// Check the result
+	const expectedOutput = `------------------------------------------------------------
+|                   TEST CASE SELECTION                    |
+------------------------------------------------------------
+| observability-container-logging                          |
+| observability-crd-status                                 |
+| observability-termination-policy                         |
+| observability-pod-disruption-budget                      |
+------------------------------------------------------------
+`
+	assert.Equal(t, expectedOutput, string(out))
 }

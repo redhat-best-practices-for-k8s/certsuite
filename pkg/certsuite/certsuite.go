@@ -29,7 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/tests/preflight"
 )
 
-func LoadChecksDB(labelsExpr string) {
+func LoadInternalChecksDB() {
 	accesscontrol.LoadChecks()
 	certification.LoadChecks()
 	lifecycle.LoadChecks()
@@ -39,6 +39,10 @@ func LoadChecksDB(labelsExpr string) {
 	performance.LoadChecks()
 	platform.LoadChecks()
 	operator.LoadChecks()
+}
+
+func LoadChecksDB(labelsExpr string) {
+	LoadInternalChecksDB()
 
 	if preflight.ShouldRun(labelsExpr) {
 		preflight.LoadChecks()
@@ -99,18 +103,7 @@ func Startup() {
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 	LoadChecksDB(testParams.LabelsFilter)
 
-	// If the list flag is passed, print the checks filtered with --labels and leave
-	if testParams.ListOnly {
-		checksIDs, err := checksdb.FilterCheckIDs()
-		if err != nil {
-			log.Fatal("Could not list test cases, err: %v", err)
-		} else {
-			cli.PrintChecksList(checksIDs)
-			os.Exit(0)
-		}
-	}
-
-	log.Info("CERTSUITE Version: %v", versions.GitVersion())
+	log.Info("Certsuite Version: %v", versions.GitVersion())
 	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
 	log.Info("Labels filter: %v", testParams.LabelsFilter)
 	log.Info("Log level: %s", strings.ToUpper(testParams.LogLevel))
@@ -119,7 +112,7 @@ func Startup() {
 
 	cli.PrintBanner()
 
-	fmt.Printf("CERTSUITE version: %s\n", versions.GitVersion())
+	fmt.Printf("Certsuite version: %s\n", versions.GitVersion())
 	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
 	fmt.Printf("Checks filter: %s\n", testParams.LabelsFilter)
 	fmt.Printf("Output folder: %s\n", testParams.OutputDir)
