@@ -19,7 +19,10 @@ env:
 
 jobs:
   pull-unstable-image:
-    runs-on: qe-ocp-416
+    strategy:
+      matrix:
+        runs-on: [qe-ocp-414, qe-ocp-415, qe-ocp-416, qe-ocp-417]
+    runs-on: ${{ matrix.runs-on }}
     env:
       SHELL: /bin/bash
       FORCE_DOWNLOAD_UNSTABLE: true
@@ -40,13 +43,14 @@ jobs:
         working-directory: cnfcert-tests-verification
 
   qe-ocp-testing:
-    runs-on: qe-ocp-416
+    runs-on: ${{ matrix.runs-on }}
     needs: pull-unstable-image
     if: needs.pull-unstable-image.result == 'success'
     strategy:
       fail-fast: false
       matrix: 
         suite: [affiliatedcertification, operator]
+        runs-on: [qe-ocp-414, qe-ocp-415, qe-ocp-416, qe-ocp-417]
     env:
       SHELL: /bin/bash
 
