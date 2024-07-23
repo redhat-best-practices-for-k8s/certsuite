@@ -87,7 +87,7 @@ jobs:
           echo "debug_version_number=$VERSION_FROM_FILE_DEBUG" >> $GITHUB_OUTPUT
         id: set_debug_version
         env:
-          VERSION_FROM_FILE_DEBUG: ${{ fromJSON(steps.get_version_json_file.outputs.json).debug_tag }}
+          VERSION_FROM_FILE_DEBUG: ${{ fromJSON(steps.get_version_json_file.outputs.json).debugTag }}
 
       - name: Update env variables
         run: |
@@ -107,7 +107,7 @@ jobs:
       - name: Check whether the version tag exists on remote
         run: git ls-remote --exit-code ${{ env.DEBUG_IMAGE_SRC_URL }} refs/tags/$DEBUG_IMAGE_VERSION
 
-      - name: (if debug_tag is missing) Display debug message
+      - name: (if debugTag is missing) Display debug message
         if: ${{ failure() }}
         run: echo "Tag '$DEBUG_IMAGE_VERSION' does not exist on remote $DEBUG_IMAGE_SRC_URL"
 
