@@ -23,7 +23,6 @@ defaults:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  RELEASE_LEVEL: 4.12
   TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
   TNF_IMAGE_NAME_NEW: testnetworkfunction/k8s-best-practices-certsuite
   IMAGE_TAG: latest
