@@ -7,10 +7,14 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/test-network-function/cnf-certification-test/internal/cli"
+	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 	"golang.org/x/term"
 )
+
+const linePadding = 4
 
 var (
 	infoCmd = &cobra.Command{
@@ -18,36 +22,54 @@ var (
 		Short: "Displays information from the test catalog",
 		RunE:  showInfo,
 	}
+	lineMaxWidth = 120
 )
 
-func showInfo(cmd *cobra.Command, _ []string) error { //nolint:funlen
-	testCaseFlag, _ := cmd.Flags().GetString("test-case")
+func showInfo(cmd *cobra.Command, _ []string) error {
+	testCaseFlag, _ := cmd.Flags().GetString("test-label")
+	listFlag, _ := cmd.Flags().GetBool("list")
 
-	var testCase claim.TestCaseDescription
-	for id := range identifiers.Catalog {
-		if id.Id == testCaseFlag {
-			testCase = identifiers.Catalog[id]
-			break
-		}
+	// Get a list of matching test cases names
+	testIDs, err := getMatchingTestIDs(testCaseFlag)
+	if err != nil {
+		return fmt.Errorf("could not get the matching test case list, err: %v", err)
 	}
 
-	if testCase.Identifier.Id == "" {
+	// Print the list and leave if only listing is required
+	if listFlag {
+		printTestList(testIDs)
+		return nil
+	}
+
+	// Get a list of test descriptions with detail info per test case
+	testCases := getTestDescriptionsFromTestIDs(testIDs)
+	if len(testCases) == 0 {
 		return fmt.Errorf("no test case found matching name %q", testCaseFlag)
 	}
 
 	// Adjust text box line width
-	const linePadding = 4
-	lineMaxWidth := 120
-	if term.IsTerminal(0) {
-		width, _, err := term.GetSize(0)
-		if err != nil {
-			return fmt.Errorf("could not get terminal size, err: %v", err)
-		}
-		if width < lineMaxWidth+linePadding {
-			lineMaxWidth = width - linePadding
-		}
+	adjustLineMaxWidth()
+
+	// Print test case info box
+	for i := range testCases {
+		printTestCaseInfoBox(&testCases[i])
 	}
 
+	return nil
+}
+
+func NewCommand() *cobra.Command {
+	infoCmd.PersistentFlags().StringP("test-label", "t", "", "The test label filter to select the test cases to show information about")
+	infoCmd.PersistentFlags().BoolP("list", "l", false, "Show only the names of the test cases for a given test label")
+	err := infoCmd.MarkPersistentFlagRequired("test-label")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not mark persistent flag \"test-case\" as required, err: %v", err)
+		return nil
+	}
+	return infoCmd
+}
+
+func printTestCaseInfoBox(testCase *claim.TestCaseDescription) {
 	// Test case identifier
 	border := strings.Repeat("-", lineMaxWidth+linePadding)
 	fmt.Println(border)
@@ -86,16 +108,53 @@ func showInfo(cmd *cobra.Command, _ []string) error { //nolint:funlen
 		fmt.Printf("| %s |\n", cli.LineAlignLeft(line, lineMaxWidth))
 	}
 	fmt.Println(border)
-
-	return nil
+	fmt.Printf("\n\n")
 }
 
-func NewCommand() *cobra.Command {
-	infoCmd.PersistentFlags().StringP("test-case", "t", "", "The test case to display information about")
-	err := infoCmd.MarkPersistentFlagRequired("test-case")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not mark persistent flag \"test-case\" as required, err: %v", err)
-		return nil
+func printTestList(testIDs []string) {
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("|                   TEST CASE SELECTION                    |")
+	fmt.Println("------------------------------------------------------------")
+	for _, testID := range testIDs {
+		fmt.Printf("| %-56s |\n", testID)
 	}
-	return infoCmd
+	fmt.Println("------------------------------------------------------------")
+}
+
+func getMatchingTestIDs(labelExpr string) ([]string, error) {
+	if err := checksdb.InitLabelsExprEvaluator(labelExpr); err != nil {
+		return nil, fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
+	}
+	certsuite.LoadInternalChecksDB()
+	testIDs, err := checksdb.FilterCheckIDs()
+	if err != nil {
+		return nil, fmt.Errorf("could not list test cases, err: %v", err)
+	}
+
+	return testIDs, nil
+}
+
+func getTestDescriptionsFromTestIDs(testIDs []string) []claim.TestCaseDescription {
+	var testCases []claim.TestCaseDescription
+	for _, test := range testIDs {
+		for id := range identifiers.Catalog {
+			if id.Id == test {
+				testCases = append(testCases, identifiers.Catalog[id])
+				break
+			}
+		}
+	}
+	return testCases
+}
+
+func adjustLineMaxWidth() {
+	if term.IsTerminal(0) {
+		width, _, err := term.GetSize(0)
+		if err != nil {
+			return
+		}
+		if width < lineMaxWidth+linePadding {
+			lineMaxWidth = width - linePadding
+		}
+	}
 }

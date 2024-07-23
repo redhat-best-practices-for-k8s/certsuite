@@ -115,6 +115,5 @@ type TestParameters struct {
 	EnableDataCollection          bool
 	EnableXMLCreation             bool
 	ServerMode                    bool
-	ListOnly                      bool
 	Timeout                       time.Duration
 }

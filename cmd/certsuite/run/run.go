@@ -29,7 +29,6 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().String("timeout", timeoutFlagDefaultvalue.String(), "Time allowed for the test suite execution to complete (e.g. --timeout 30m  or -timeout 1h30m)")
 	runCmd.PersistentFlags().StringP("config-file", "c", "config/tnf_config.yml", "The workload configuration file")
 	runCmd.PersistentFlags().StringP("kubeconfig", "k", "", "The target cluster's Kubeconfig file")
-	runCmd.PersistentFlags().Bool("list", false, "Shows all the available checks/tests (can be filtered with --label-filter)")
 	runCmd.PersistentFlags().Bool("server-mode", false, "Run the certsuite in web server mode")
 	runCmd.PersistentFlags().Bool("omit-artifacts-zip-file", false, "Prevents the creation of a zip file with the result artifacts")
 	runCmd.PersistentFlags().String("log-level", "debug", "Sets the log level")
@@ -56,7 +55,6 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	// Fetch test params from flags
 	testParams.OutputDir, _ = cmd.Flags().GetString("output-dir")
 	testParams.LabelsFilter, _ = cmd.Flags().GetString("label-filter")
-	testParams.ListOnly, _ = cmd.Flags().GetBool("list")
 	testParams.ServerMode, _ = cmd.Flags().GetBool("server-mode")
 	testParams.ConfigFile, _ = cmd.Flags().GetString("config-file")
 	testParams.Kubeconfig, _ = cmd.Flags().GetString("kubeconfig")
