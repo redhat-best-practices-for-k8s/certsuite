@@ -3,7 +3,7 @@
 
 The Red Hat Best Practices Test Suite for Kubernetes uses a YAML configuration file to certify a specific workload. This file specifies the workload's resources to be certified, as well as any exceptions or other general configuration options.
 
-By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml) of the Config File. For a description of each config option see the section [Config File options](#config-file-options).
+By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/test-network-function/cnf-certification-test/blob/main/config/tnf_config.yml) of the Config File. For a description of each config option see the section [Config File options](#config-file-options).
 
 ## Config Generator
 
