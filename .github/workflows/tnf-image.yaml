@@ -31,7 +31,6 @@ env:
   TNF_ALLOW_PREFLIGHT_INSECURE: false
   TNF_DISABLE_CONFIG_AUTODISCOVER: false
   TNF_CONFIG_DIR: /tmp/tnf/config
-  TNF_OUTPUT_DIR: /tmp/tnf/output
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
   DEBUG_IMAGE_REPO: test-network-function/k8s-best-practices-debug
   DEBUG_IMAGE_SRC_URL: 'https://github.com/${DEBUG_IMAGE_REPO}'

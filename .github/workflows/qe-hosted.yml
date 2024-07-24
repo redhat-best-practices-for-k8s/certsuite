@@ -13,6 +13,10 @@ permissions:
 
 env:
   QE_REPO: test-network-function/cnfcert-tests-verification
+  TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
+  TEST_TNF_IMAGE_NAME_NEW: quay.io/testnetworkfunction/k8s-best-practices-certsuite
+  TEST_TNF_IMAGE_TAG: localtest
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -38,8 +42,8 @@ jobs:
           context: .
           file: ./Dockerfile
           tags: |
-            quay.io/testnetworkfunction/cnf-certification-test:localtest
-            quay.io/testnetworkfunction/k8s-best-practices-certsuite:localtest
+            ${{ env.TEST_TNF_IMAGE_NAME }}:${{ env.TEST_TNF_IMAGE_TAG }}
+            ${{ env.TEST_TNF_IMAGE_NAME_NEW }}:${{ env.TEST_TNF_IMAGE_TAG }}
           outputs: type=docker,dest=/tmp/testimage.tar
       
       - name: Store image as artifact
@@ -60,8 +64,6 @@ jobs:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
-      TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
-      TEST_TNF_IMAGE_TAG: localtest
       DOCKER_CONFIG_DIR: '/home/runner/.docker/'
       SKIP_PRELOAD_IMAGES: true
 
