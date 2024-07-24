@@ -45,6 +45,7 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().String("daemonset-cpu-lim", "100m", "CPU limit for the debug DaemonSet container")
 	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the debug DaemonSet container")
 	runCmd.PersistentFlags().String("daemonset-mem-lim", "100M", "Memory limit for the debug DaemonSet container")
+	runCmd.PersistentFlags().Bool("sanitize-claim", false, "Sanitize the claim.json file before sending it to the collector")
 
 	return runCmd
 }
@@ -73,6 +74,7 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams.DaemonsetCPULim, _ = cmd.Flags().GetString("daemonset-cpu-lim")
 	testParams.DaemonsetMemReq, _ = cmd.Flags().GetString("daemonset-mem-req")
 	testParams.DaemonsetMemLim, _ = cmd.Flags().GetString("daemonset-mem-lim")
+	testParams.SanitizeClaim, _ = cmd.Flags().GetBool("sanitize-claim")
 	timeoutStr, _ := cmd.Flags().GetString("timeout")
 
 	// Check if the output directory exists and, if not, create it

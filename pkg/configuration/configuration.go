@@ -106,6 +106,7 @@ type TestParameters struct {
 	DaemonsetCPULim               string
 	DaemonsetMemReq               string
 	DaemonsetMemLim               string
+	SanitizeClaim                 bool
 	TnfImageRepo                  string
 	TnfDebugImage                 string
 	NonIntrusiveOnly              bool

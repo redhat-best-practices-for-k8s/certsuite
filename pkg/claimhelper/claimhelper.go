@@ -148,6 +148,11 @@ func (c *ClaimBuilder) Build(outputFile string) {
 	log.Info("Claim file created at %s", outputFile)
 }
 
+func (c *ClaimBuilder) GetClaimResults() *claim.Root {
+	c.claimRoot.Claim.Results = checksdb.GetReconciledResults()
+	return c.claimRoot
+}
+
 //nolint:funlen
 func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuitesXML {
 	const (
@@ -302,11 +307,7 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	if err != nil {
 		log.Error("ReadFile failed with err: %v", err)
 	}
-	path, err := os.Getwd()
-	if err != nil {
-		log.Error("Getwd failed with err: %v", err)
-	}
-	log.Info("Reading claim file at path: %s", path)
+	log.Info("Reading claim file at path: %s", claimFileName)
 	return data, nil
 }
 
@@ -340,6 +341,7 @@ func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 
 // WriteClaimOutput writes the output payload to the claim file.  In the event of an error, this method fatally fails.
 func WriteClaimOutput(claimOutputFile string, payload []byte) {
+	log.Info("Writing claim data to %s", claimOutputFile)
 	err := os.WriteFile(claimOutputFile, payload, claimFilePermissions)
 	if err != nil {
 		log.Fatal("Error writing claim data:\n%s", string(payload))
@@ -373,4 +375,31 @@ func CreateClaimRoot() *claim.Root {
 			},
 		},
 	}
+}
+
+func SanitizeClaimFile(claimFileName, labelsFilter string) (string, error) {
+	log.Info("Sanitizing claim file %s", claimFileName)
+	data, err := ReadClaimFile(claimFileName)
+	if err != nil {
+		log.Error("ReadClaimFile failed with err: %v", err)
+		return "", err
+	}
+	var aRoot claim.Root
+	UnmarshalClaim(data, &aRoot)
+
+	// Remove the results that do not match the labels filter
+	for testID := range aRoot.Claim.Results {
+		if aRoot.Claim.Results[testID].TestID.Id != labelsFilter {
+			log.Info("Removing test ID: %s from the claim", testID)
+			delete(aRoot.Claim.Results, testID)
+		}
+	}
+
+	log.Info("Number of results after sanitizing: %d", len(aRoot.Claim.Results))
+	if len(aRoot.Claim.Results) == 1 {
+		log.Info("Sanitized claim file contains only one test case: %s", labelsFilter)
+	}
+
+	WriteClaimOutput(claimFileName, MarshalClaimOutput(&aRoot))
+	return claimFileName, nil
 }
