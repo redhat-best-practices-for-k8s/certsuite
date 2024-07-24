@@ -661,7 +661,7 @@ while IFS=, read -r package_name catalog_index; do
 
 	# merge claim.json from each operator to a single csv file
 	echo_color "$BLUE" "add claim.json from this operator to the csv file"
-	if ! ./tnf claim show csv -c "$report_dir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$add_headers" >>"$REPORT_FOLDER"/results.csv; then
+	if ! ./certsuite claim show csv -c "$report_dir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$add_headers" >>"$REPORT_FOLDER"/results.csv; then
 		echo_color "$RED" "failed to parse claim file"
 	fi
 
