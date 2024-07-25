@@ -574,15 +574,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#disconnected-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Disconnected environment
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -974,15 +965,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#disconnected-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Disconnected environment
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1041,16 +1023,8 @@ images and image bundles for testing.</p>
 <p>See more about this variable <a href="https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md">here</a>.</p>
 <p><code>TNF_ALLOW_PREFLIGHT_INSECURE</code> (default: false) is required set to <code>true</code> if you are running
 against a private container registry that has self-signed certificates.</p>
-<h2 id="disconnected-environment">Disconnected environment<a class="headerlink" href="#disconnected-environment" title="Permanent link">&para;</a></h2>
-<p>In a disconnected environment, only specific versions of images are mirrored to
-the local repo. For those environments, the partner pod image
-<code>quay.io/testnetworkfunction/cnf-test-partner</code> and debug pod image
-<code>quay.io/testnetworkfunction/debug-partner</code> should be mirrored and
-<code>TNF_PARTNER_REPO</code> should be set to the local repo, e.g.:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_PARTNER_REPO</span><span class="o">=</span>registry.dfwt5g.lab:5000/testnetworkfunction
-</code></pre></div>
 <p>Note that you can also specify the debug pod image to use with <code>SUPPORT_IMAGE</code>
-environment variable, default to <code>debug-partner:5.2.1</code>.</p>
+environment variable, default to <code>k8s-best-practices-debug:v0.0.2</code>.</p>
 
 
 
