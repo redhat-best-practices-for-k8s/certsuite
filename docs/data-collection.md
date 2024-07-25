@@ -6,7 +6,8 @@ Your test suite results can be collected and stored in our
 ## What information is shared
 
 * Only partner name and pass/fail/skip status per test case is stored
-* Protected by password, partners can access only the data they have submitted. Red Hat team can access data from all partners.
+* Protected by password, partners can access only the data they have submitted.
+Red Hat team can access data from all partners.
 
 ## Why should I store my data in the Collector?
 
