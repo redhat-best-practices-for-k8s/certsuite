@@ -33,10 +33,8 @@ env:
   TNF_CONFIG_DIR: /tmp/tnf/config
   TNF_OUTPUT_DIR: /tmp/tnf/output
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
-  PARTNER_REPO: test-network-function/cnf-certification-test-partner
-  PARTNER_SRC_URL: 'https://github.com/${PARTNER_REPO}'
-  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
-  ON_DEMAND_DEBUG_PODS: false
+  DEBUG_IMAGE_REPO: test-network-function/k8s-best-practices-debug
+  DEBUG_IMAGE_SRC_URL: 'https://github.com/${DEBUG_IMAGE_REPO}'
 
 jobs:
   test-and-push-tnf-image-main:
@@ -48,7 +46,7 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
       CURRENT_VERSION_GENERIC_BRANCH: main
       TNF_VERSION: ""
-      PARTNER_VERSION: ""
+      DEBUG_IMAGE_VERSION: ""
     steps:
 
       - name: Write temporary docker file
@@ -83,21 +81,21 @@ jobs:
         run: echo "json=$(cat version.json | tr -d '[:space:]')" >> $GITHUB_OUTPUT
         id: get_version_json_file
 
-      - name: Get the partner version number from file
+      - name: Get the debug version number from file
         run: |
-          echo Partner version tag: $VERSION_FROM_FILE_PARTNER
-          echo "partner_version_number=$VERSION_FROM_FILE_PARTNER" >> $GITHUB_OUTPUT
-        id: set_partner_version
+          echo Debug version tag: $VERSION_FROM_FILE_DEBUG
+          echo "debug_version_number=$VERSION_FROM_FILE_DEBUG" >> $GITHUB_OUTPUT
+        id: set_debug_version
         env:
-          VERSION_FROM_FILE_PARTNER: ${{ fromJSON(steps.get_version_json_file.outputs.json).partner_tag }}
+          VERSION_FROM_FILE_DEBUG: ${{ fromJSON(steps.get_version_json_file.outputs.json).debugTag }}
 
       - name: Update env variables
         run: |
           echo "TNF_VERSION=${{ steps.set_tnf_version.outputs.version_number }}" >> $GITHUB_ENV
-          echo "PARTNER_VERSION=${{ steps.set_partner_version.outputs.partner_version_number }}" >> $GITHUB_ENV
+          echo "DEBUG_IMAGE_VERSION=${{ steps.set_debug_version.outputs.debug_version_number }}" >> $GITHUB_ENV
 
       - name: Ensure $TNF_VERSION and $IMAGE_TAG are set
-        run: '[[ -n "$TNF_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$PARTNER_VERSION" ]]'
+        run: '[[ -n "$TNF_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$DEBUG_IMAGE_VERSION" ]]'
 
       - name: Check whether the version tag exists on remote
         run: git ls-remote --exit-code $TNF_SRC_URL refs/tags/$TNF_VERSION
@@ -107,11 +105,11 @@ jobs:
         run: echo "Tag '$TNF_VERSION' does not exist on remote $TNF_SRC_URL"
 
       - name: Check whether the version tag exists on remote
-        run: git ls-remote --exit-code ${{ env.PARTNER_SRC_URL }} refs/tags/$PARTNER_VERSION
+        run: git ls-remote --exit-code ${{ env.DEBUG_IMAGE_SRC_URL }} refs/tags/$DEBUG_IMAGE_VERSION
 
-      - name: (if partner_tag is missing) Display debug message
+      - name: (if debugTag is missing) Display debug message
         if: ${{ failure() }}
-        run: echo "Tag '$PARTNER_VERSION' does not exist on remote $PARTNER_SRC_URL"
+        run: echo "Tag '$DEBUG_IMAGE_VERSION' does not exist on remote $DEBUG_IMAGE_SRC_URL"
 
       - name: Checkout the version tag
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7

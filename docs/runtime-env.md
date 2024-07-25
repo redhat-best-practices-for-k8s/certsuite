@@ -62,17 +62,5 @@ See more about this variable [here](https://github.com/redhat-openshift-ecosyste
 `TNF_ALLOW_PREFLIGHT_INSECURE` (default: false) is required set to `true` if you are running
 against a private container registry that has self-signed certificates.
 
-## Disconnected environment
-
-In a disconnected environment, only specific versions of images are mirrored to
-the local repo. For those environments, the partner pod image
-`quay.io/testnetworkfunction/cnf-test-partner` and debug pod image
-`quay.io/testnetworkfunction/debug-partner` should be mirrored and
-`TNF_PARTNER_REPO` should be set to the local repo, e.g.:
-
-```shell
-export TNF_PARTNER_REPO=registry.dfwt5g.lab:5000/testnetworkfunction
-```
-
 Note that you can also specify the debug pod image to use with `SUPPORT_IMAGE`
-environment variable, default to `debug-partner:5.2.1`.
+environment variable, default to `k8s-best-practices-debug:v0.0.2`.

@@ -18,6 +18,8 @@ env:
   CERTSUITE_IMAGE_TAG: unstable
   OCT_IMAGE_NAME: testnetworkfunction/oct
   OCT_IMAGE_TAG: latest
+  DEBUG_IMAGE_NAME: testnetworkfunction/k8s-best-practices-debug
+  DEBUG_IMAGE_TAG: v0.0.2
   CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
   CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
   SMOKE_TESTS_LOG_LEVEL: debug
@@ -156,8 +158,22 @@ jobs:
               exit 1
           fi
 
+  precheck-images:
+    name: Precheck Images
+    runs-on: ubuntu-22.04
+    env:
+      SHELL: /bin/bash
+    steps:
+      - name: Pull the images to verify they exist
+        run: |
+          docker pull ${REGISTRY}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}
+          docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+          docker pull ${REGISTRY}/${DEBUG_IMAGE_NAME}:${DEBUG_IMAGE_TAG}
+
   smoke-tests-local:
     name: Run Local Smoke Tests
+    needs: precheck-images
+    if: needs.precheck-images.result == 'success'
     runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
@@ -251,6 +267,8 @@ jobs:
 
   smoke-tests-container:
     name: Run Container Smoke Tests
+    needs: precheck-images
+    if: needs.precheck-images.result == 'success'
     runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
