@@ -1,4 +1,4 @@
-# Collect Test Suite Results
+# Share Test Suite Results with Red Hat
 
 Your test suite results can be collected and stored in our
 [Collector](https://github.com/test-network-function/collector) database.
