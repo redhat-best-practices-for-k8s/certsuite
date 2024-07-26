@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../runtime-env/">
+        <link rel="prev" href="../reference/">
       
-      
-        <link rel="next" href="../test-spec/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +18,7 @@
     
     
       
-        <title>Run - Red Hat Best Practices Test Suite for Kubernetes</title>
+        <title>Data Collection - Red Hat Best Practices Test Suite for Kubernetes</title>
       
     
     
@@ -72,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#run-the-test-suite" class="md-skip">
+        <a href="#share-test-suite-results-with-red-hat" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Run
+              Data Collection
             
           </span>
         </div>
@@ -248,11 +246,9 @@
         
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../test-run/" class="md-tabs__link">
         
   
     
@@ -361,9 +357,11 @@
         
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../data-collection/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
     
@@ -539,30 +537,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Run
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../test-run/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -571,86 +549,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#building-the-certsuite-tool-executable" class="md-nav__link">
-    <span class="md-ellipsis">
-      Building the Certsuite tool executable
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#test-labels" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test labels
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#selected-flags-description" class="md-nav__link">
-    <span class="md-ellipsis">
-      Selected flags description
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-the-container-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using the container image
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Using the container image">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pull-the-test-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pull the test image
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#launch-the-test-suite" class="md-nav__link">
-    <span class="md-ellipsis">
-      Launch the Test Suite
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -961,10 +859,30 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../data-collection/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Data Collection
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -973,6 +891,44 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-information-is-shared" class="md-nav__link">
+    <span class="md-ellipsis">
+      What information is shared
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-should-i-store-my-data-in-the-collector" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why should I store my data in the Collector?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1004,62 +960,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#building-the-certsuite-tool-executable" class="md-nav__link">
+  <a href="#what-information-is-shared" class="md-nav__link">
     <span class="md-ellipsis">
-      Building the Certsuite tool executable
+      What information is shared
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#test-labels" class="md-nav__link">
+  <a href="#why-should-i-store-my-data-in-the-collector" class="md-nav__link">
     <span class="md-ellipsis">
-      Test labels
+      Why should I store my data in the Collector?
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#selected-flags-description" class="md-nav__link">
-    <span class="md-ellipsis">
-      Selected flags description
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-the-container-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using the container image
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Using the container image">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pull-the-test-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pull the test image
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#launch-the-test-suite" class="md-nav__link">
-    <span class="md-ellipsis">
-      Launch the Test Suite
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1081,102 +995,21 @@
   
 
 
-<!-- markdownlint-disable code-block-style line-length no-bare-urls no-emphasis-as-heading -->
-<h1 id="run-the-test-suite">Run the Test Suite<a class="headerlink" href="#run-the-test-suite" title="Permanent link">&para;</a></h1>
-<p>The Test Suite can be run using the Certsuite tool directly or through a container.</p>
-<p>To run the Test Suite direct use:</p>
-<div class="highlight"><pre><span></span><code>./certsuite<span class="w"> </span>run<span class="w"> </span>-l<span class="w"> </span>&lt;label-filter&gt;<span class="w"> </span>-c<span class="w"> </span>&lt;tnf-config&gt;<span class="w"> </span>-k<span class="w"> </span>&lt;kubeconfig&gt;<span class="w"> </span>-o<span class="w"> </span>&lt;output-dir&gt;<span class="w"> </span><span class="o">[</span>&lt;flags&gt;<span class="o">]</span>
-</code></pre></div>
-<p>If the <em>kubeconfig</em> is not provided the value of the <code>KUBECONFIG</code> environment variable will be taken by default.</p>
-<p>The CLI output will show the following information:</p>
+<h1 id="share-test-suite-results-with-red-hat">Share Test Suite Results with Red Hat<a class="headerlink" href="#share-test-suite-results-with-red-hat" title="Permanent link">&para;</a></h1>
+<p>Your test suite results can be collected and stored in our
+<a href="https://github.com/test-network-function/collector">Collector</a> database.</p>
+<h2 id="what-information-is-shared">What information is shared<a class="headerlink" href="#what-information-is-shared" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Details of the Certsuite and claim file versions, the test case filter used and the location of the output files.</li>
-<li>The results for each test case grouped into test suites (the most recent log line is shown live as each test executes).</li>
-<li>Table with the number of test cases that have passed/failed or been skipped per test suite.</li>
-<li>The log lines produced by each test case that has failed.</li>
+<li>Only partner name and pass/fail/skip status per test case is stored</li>
+<li>Protected by password, partners can access only the data they have submitted.
+Red Hat team can access data from all partners.</li>
 </ul>
-<p>Once the test run has completed, the test results can be visualized by opening the <code>results.html</code> website in a web browser and loading the <code>claim.json</code> file.</p>
-<p>For more information on how to analyze the results see <a href="../test-output/">Test Output</a>.</p>
-<h2 id="building-the-certsuite-tool-executable">Building the Certsuite tool executable<a class="headerlink" href="#building-the-certsuite-tool-executable" title="Permanent link">&para;</a></h2>
-<p>The Certsuite binary can be built as follows:</p>
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-certsuite-tool
-</code></pre></div>
-<h2 id="test-labels">Test labels<a class="headerlink" href="#test-labels" title="Permanent link">&para;</a></h2>
-<p>The test cases cases have several labels to allow for different types of groupings when selecting which to run. These are the following:</p>
+<h2 id="why-should-i-store-my-data-in-the-collector">Why should I store my data in the Collector?<a class="headerlink" href="#why-should-i-store-my-data-in-the-collector" title="Permanent link">&para;</a></h2>
 <ul>
-<li>The name of the test case</li>
-<li>The name of the test suite</li>
-<li>The category of the test case (common, telco, faredge, extended)</li>
+<li>Keep track of your test suite results over time.</li>
+<li>Contribute to our statistics and analysis,
+to improve Red Hat best practices test suite for Kubernetes.</li>
 </ul>
-<p>These labels can be combined with some operators to create label filters that match any condition. For example:</p>
-<ul>
-<li>The label filter &ldquo;observability,access-control&rdquo; will match the test suites <em>observability</em> and <em>access-control</em>.</li>
-<li>The label filter &ldquo;operator &amp;&amp; !operator-crd-versioning&rdquo; will match the <em>operator</em> test suite without the <em>operator_crd_versioning</em> test case.</li>
-<li>To select all the test cases the <em>all</em> label filter can be used.</li>
-</ul>
-<p>To view which test cases will run for a specific label or label filter use the flag <code>--list</code>.</p>
-<p>See the <a href="CATALOG.md">CATALOG.md</a> to find all test labels.</p>
-<h2 id="selected-flags-description">Selected flags description<a class="headerlink" href="#selected-flags-description" title="Permanent link">&para;</a></h2>
-<p>The following is a non-exhaustive list of the most common flags that the <code>certsuite run</code> command accepts. To see the complete list use the <code>-h, --help</code> flag.</p>
-<ul>
-<li><code>-l, --label-filter</code>: Label expression to filter test cases. Can be a test suite or list or test suites, such as <code>"observability,access-control"</code> or a more complex expression with logical operators such as <code>"access-control &amp;&amp; !access-control-sys-admin-capability"</code>.</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If <code>-l</code> is not specified, the Test Suite will run in &lsquo;diagnostic&rsquo; mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc…) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds…</p>
-</div>
-<ul>
-<li>
-<p><code>-o, --output-dir</code>: Path of the local directory where test results (claim.json), the execution logs (certsuite.log), and the results artifacts file (results.tar.gz) will be available from after the container exits.</p>
-</li>
-<li>
-<p><code>-k, --kubeconfig</code>: Path to the Kubeconfig file of the target cluster.</p>
-</li>
-<li>
-<p><code>-c, --config-file</code>: Path to the <code>tnf_config.yml</code> file.</p>
-</li>
-<li>
-<p><code>--preflight-dockerconfig</code>: Path to the Dockerconfig file to be used by the Preflight test suite</p>
-</li>
-<li>
-<p><code>--offline-db</code>: Path to an offline DB to check the certification status of container images, operators and helm charts. Defaults to the DB included in the test container image.</p>
-</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>See the <a href="https://github.com/test-network-function/oct">OCT tool</a> for more information on how to create this DB.</p>
-</div>
-<h2 id="using-the-container-image">Using the container image<a class="headerlink" href="#using-the-container-image" title="Permanent link">&para;</a></h2>
-<p>The only prerequisite for running the Test Suite in container mode is having Docker or Podman installed.</p>
-<h3 id="pull-the-test-image">Pull the test image<a class="headerlink" href="#pull-the-test-image" title="Permanent link">&para;</a></h3>
-<p>The test image is available at this <a href="https://quay.io/repository/testnetworkfunction/cnf-certification-test">repository</a> and can be pulled using:</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>quay.io/testnetworkfunction/cnf-certification-test:&lt;image-tag&gt;
-</code></pre></div>
-<p>The image tag can be <code>latest</code> to select the latest release, <code>unstable</code> to fetch the image built with the latest commit in the repository or any existing version number such as <code>v5.2.1</code>.</p>
-<h3 id="launch-the-test-suite">Launch the Test Suite<a class="headerlink" href="#launch-the-test-suite" title="Permanent link">&para;</a></h3>
-<p>The Test Suite requires 3 files that must be provided to the test container:</p>
-<ul>
-<li>The <em>Kubeconfig</em> for the target cluster.</li>
-<li>The <em>Dockerconfig</em> of the local Docker installation (only for the Preflight test suite).</li>
-<li>The <code>tnf_config.yml</code>.</li>
-</ul>
-<p>To reduce the number of shared volumes with the test container in the example below those files are copied into a folder called &ldquo;config&rdquo;. Also, another folder to contain the output files called &ldquo;results&rdquo; has been created. The files saved in the output directory after the test run are:</p>
-<ul>
-<li>A <code>claim.json</code> file with the test results.</li>
-<li>A <code>certsuite.log</code> file with the execution logs.</li>
-<li>A <code>.tar.gz</code> file with the above two files and an additional <code>results.html</code> file to visualize the results in a website.</li>
-</ul>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/config:/usr/certsuite/config:Z<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/results:/usr/certsuite/results:Z<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>quay.io/testnetworkfunction/cnf-certification-test:latest<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>certsuite<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--kubeconfig<span class="o">=</span>/usr/certsuite/config/kubeconfig<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--preflight-dockerconfig<span class="o">=</span>/usr/certsuite/config/dockerconfig<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--config-file<span class="o">=</span>/usr/certsuite/config/tnf_config.yml<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--output-dir<span class="o">=</span>/usr/certsuite/results<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--label-filter<span class="o">=</span>all
-</code></pre></div>
 
 
 
