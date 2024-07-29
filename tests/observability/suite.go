@@ -32,6 +32,8 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 )
 
 var (
@@ -191,24 +193,32 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 	// Loop through all of the of Deployments and StatefulSets and check if the PDBs are valid
 	for _, d := range env.Deployments {
 		check.LogInfo("Testing Deployment %q", d.ToString())
+		deploymentSelector := labels.Set(d.Spec.Template.Labels)
 		pdbFound := false
 		for pdbIndex := range env.PodDisruptionBudgets {
-			for k, v := range d.Spec.Template.Labels {
-				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
-					pdbFound = true
-					if ok, err := pdbv1.CheckPDBIsValid(&env.PodDisruptionBudgets[pdbIndex], d.Spec.Replicas); !ok {
-						check.LogError("PDB %q is not valid for Deployment %q, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, d.Name, err)
-						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.DeploymentType, false).
-							AddField(testhelper.DeploymentName, d.Name).
-							AddField(testhelper.Namespace, d.Namespace).
-							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
-					} else {
-						check.LogInfo("PDB %q is valid for Deployment: %q", env.PodDisruptionBudgets[pdbIndex].Name, d.Name)
-						compliantObjects = append(compliantObjects, testhelper.NewReportObject("Deployment: references PodDisruptionBudget", testhelper.DeploymentType, true).
-							AddField(testhelper.DeploymentName, d.Name).
-							AddField(testhelper.Namespace, d.Namespace).
-							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
-					}
+			pdb := &env.PodDisruptionBudgets[pdbIndex]
+			if pdb.Namespace != d.Namespace {
+				continue
+			}
+			pdbSelector, err := metav1.LabelSelectorAsSelector(pdb.Spec.Selector)
+			if err != nil {
+				check.LogError("Could not convert the PDB %q label selector to selector, err: %v", pdbSelector, err)
+				continue
+			}
+			if pdbSelector.Matches(deploymentSelector) {
+				pdbFound = true
+				if ok, err := pdbv1.CheckPDBIsValid(pdb, d.Spec.Replicas); !ok {
+					check.LogError("PDB %q is not valid for Deployment %q, err: %v", pdb.Name, d.Name, err)
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.DeploymentType, false).
+						AddField(testhelper.DeploymentName, d.Name).
+						AddField(testhelper.Namespace, d.Namespace).
+						AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
+				} else {
+					check.LogInfo("PDB %q is valid for Deployment: %q", pdb.Name, d.Name)
+					compliantObjects = append(compliantObjects, testhelper.NewReportObject("Deployment: references PodDisruptionBudget", testhelper.DeploymentType, true).
+						AddField(testhelper.DeploymentName, d.Name).
+						AddField(testhelper.Namespace, d.Namespace).
+						AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
 				}
 			}
 		}
@@ -222,24 +232,32 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 
 	for _, s := range env.StatefulSets {
 		check.LogInfo("Testing StatefulSet %q", s.ToString())
+		statefulSetSelector := labels.Set(s.Spec.Template.Labels)
 		pdbFound := false
 		for pdbIndex := range env.PodDisruptionBudgets {
-			for k, v := range s.Spec.Template.Labels {
-				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
-					pdbFound = true
-					if ok, err := pdbv1.CheckPDBIsValid(&env.PodDisruptionBudgets[pdbIndex], s.Spec.Replicas); !ok {
-						check.LogError("PDB %q is not valid for StatefulSet %q, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, s.Name, err)
-						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.StatefulSetType, false).
-							AddField(testhelper.StatefulSetName, s.Name).
-							AddField(testhelper.Namespace, s.Namespace).
-							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
-					} else {
-						check.LogInfo("PDB %q is valid for StatefulSet: %q", env.PodDisruptionBudgets[pdbIndex].Name, s.Name)
-						compliantObjects = append(compliantObjects, testhelper.NewReportObject("StatefulSet: references PodDisruptionBudget", testhelper.StatefulSetType, true).
-							AddField(testhelper.StatefulSetName, s.Name).
-							AddField(testhelper.Namespace, s.Namespace).
-							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
-					}
+			pdb := &env.PodDisruptionBudgets[pdbIndex]
+			if pdb.Namespace != s.Namespace {
+				continue
+			}
+			pdbSelector, err := metav1.LabelSelectorAsSelector(pdb.Spec.Selector)
+			if err != nil {
+				check.LogError("Could not convert the PDB %q label selector to selector, err: %v", pdbSelector, err)
+				continue
+			}
+			if pdbSelector.Matches(statefulSetSelector) {
+				pdbFound = true
+				if ok, err := pdbv1.CheckPDBIsValid(pdb, s.Spec.Replicas); !ok {
+					check.LogError("PDB %q is not valid for StatefulSet %q, err: %v", pdb.Name, s.Name, err)
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.StatefulSetType, false).
+						AddField(testhelper.StatefulSetName, s.Name).
+						AddField(testhelper.Namespace, s.Namespace).
+						AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
+				} else {
+					check.LogInfo("PDB %q is valid for StatefulSet: %q", pdb.Name, s.Name)
+					compliantObjects = append(compliantObjects, testhelper.NewReportObject("StatefulSet: references PodDisruptionBudget", testhelper.StatefulSetType, true).
+						AddField(testhelper.StatefulSetName, s.Name).
+						AddField(testhelper.Namespace, s.Namespace).
+						AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
 				}
 			}
 		}
