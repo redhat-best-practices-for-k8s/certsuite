@@ -27,13 +27,13 @@ import (
 	pdbv1 "github.com/test-network-function/cnf-certification-test/tests/observability/pdb"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/datautil"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 )
 
 var (
@@ -193,18 +193,19 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 	// Loop through all of the of Deployments and StatefulSets and check if the PDBs are valid
 	for _, d := range env.Deployments {
 		check.LogInfo("Testing Deployment %q", d.ToString())
+		deploymentSelector := labels.Set(d.Spec.Template.Labels)
 		pdbFound := false
 		for pdbIndex := range env.PodDisruptionBudgets {
 			pdb := &env.PodDisruptionBudgets[pdbIndex]
 			if pdb.Namespace != d.Namespace {
 				continue
 			}
-			pdbSelectorMap, err := metav1.LabelSelectorAsMap(pdb.Spec.Selector)
+			pdbSelector, err := metav1.LabelSelectorAsSelector(pdb.Spec.Selector)
 			if err != nil {
-				check.LogError("Could not convert the PDB %q selector to a map, err: %v", pdb.Name, err)
+				check.LogError("Could not convert the PDB %q label selector to selector, err: %v", pdbSelector, err)
 				continue
 			}
-			if pdbSelectorMap != nil && datautil.IsMapSubset(d.Spec.Template.Labels, pdbSelectorMap) {
+			if pdbSelector.Matches(deploymentSelector) {
 				pdbFound = true
 				if ok, err := pdbv1.CheckPDBIsValid(pdb, d.Spec.Replicas); !ok {
 					check.LogError("PDB %q is not valid for Deployment %q, err: %v", pdb.Name, d.Name, err)
@@ -231,17 +232,19 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 
 	for _, s := range env.StatefulSets {
 		check.LogInfo("Testing StatefulSet %q", s.ToString())
+		statefulSetSelector := labels.Set(s.Spec.Template.Labels)
 		pdbFound := false
 		for pdbIndex := range env.PodDisruptionBudgets {
 			pdb := &env.PodDisruptionBudgets[pdbIndex]
 			if pdb.Namespace != s.Namespace {
 				continue
 			}
-			pdbSelectorMap, err := metav1.LabelSelectorAsMap(pdb.Spec.Selector)
+			pdbSelector, err := metav1.LabelSelectorAsSelector(pdb.Spec.Selector)
 			if err != nil {
-				check.LogError("Could not convert the PDB %q selector to a map, err: %v", pdb.Name, err)
+				check.LogError("Could not convert the PDB %q label selector to selector, err: %v", pdbSelector, err)
+				continue
 			}
-			if pdbSelectorMap != nil && datautil.IsMapSubset(s.Spec.Template.Labels, pdbSelectorMap) {
+			if pdbSelector.Matches(statefulSetSelector) {
 				pdbFound = true
 				if ok, err := pdbv1.CheckPDBIsValid(pdb, s.Spec.Replicas); !ok {
 					check.LogError("PDB %q is not valid for StatefulSet %q, err: %v", pdb.Name, s.Name, err)
