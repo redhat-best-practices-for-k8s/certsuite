@@ -138,13 +138,13 @@ func recordCheckResult(check *Check) {
 
 // GetReconciledResults is a function added to aggregate a Claim's results.  Due to the limitations of
 // test-network-function-claim's Go Client, results are generalized to map[string]interface{}.
-func GetReconciledResults() map[string]interface{} {
-	resultMap := make(map[string]interface{})
+func GetReconciledResults() map[string]claim.Result {
+	resultMap := make(map[string]claim.Result)
 	//nolint:gocritic
 	for key, val := range resultsDB {
 		// initializes the result map, if necessary
 		if _, ok := resultMap[key]; !ok {
-			resultMap[key] = make([]claim.Result, 0)
+			resultMap[key] = claim.Result{}
 		}
 
 		resultMap[key] = val

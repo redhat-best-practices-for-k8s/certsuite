@@ -156,9 +156,8 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 
 	// Collector all of the Test IDs
 	allTestIDs := []string{}
-	for _, result := range c.Results {
-		typedResult := result.(claim.Result)
-		allTestIDs = append(allTestIDs, typedResult.TestID.Id)
+	for testID := range c.Results {
+		allTestIDs = append(allTestIDs, c.Results[testID].TestID.Id)
 	}
 
 	// Sort the test IDs
@@ -170,18 +169,16 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 
 	// Count all of the failed tests in the suite
 	failedTests := 0
-	for _, result := range c.Results {
-		typedResult := result.(claim.Result)
-		if typedResult.State == TestStateFailed {
+	for testID := range c.Results {
+		if c.Results[testID].State == TestStateFailed {
 			failedTests++
 		}
 	}
 
 	// Count all of the skipped tests in the suite
 	skippedTests := 0
-	for _, result := range c.Results {
-		typedResult := result.(claim.Result)
-		if typedResult.State == TestStateSkipped {
+	for testID := range c.Results {
+		if c.Results[testID].State == TestStateSkipped {
 			skippedTests++
 		}
 	}
@@ -207,20 +204,17 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 	// <testcase>
 	// Loop through all of the sorted test IDs
 	for _, testID := range allTestIDs {
-		// Type the result
-		typedResult := c.Results[testID].(claim.Result)
-
 		testCase := TestCase{}
 		testCase.Name = testID
 		testCase.Classname = TestSuiteName
-		testCase.Status = typedResult.State
+		testCase.Status = c.Results[testID].State
 
 		// Clean the time strings to remove the " m=" suffix
-		start, err := time.Parse(DateTimeFormatDirective, strings.Split(typedResult.StartTime, " m=")[0])
+		start, err := time.Parse(DateTimeFormatDirective, strings.Split(c.Results[testID].StartTime, " m=")[0])
 		if err != nil {
 			log.Error("Failed to parse start time: %v", err)
 		}
-		end, err := time.Parse(DateTimeFormatDirective, strings.Split(typedResult.EndTime, " m=")[0])
+		end, err := time.Parse(DateTimeFormatDirective, strings.Split(c.Results[testID].EndTime, " m=")[0])
 		if err != nil {
 			log.Error("Failed to parse end time: %v", err)
 		}
@@ -232,7 +226,7 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 		// Populate the skipped message if the test case was skipped
 		if testCase.Status == TestStateSkipped {
 			testCase.Skipped = &SkippedMessage{}
-			testCase.Skipped.Text = typedResult.SkipReason
+			testCase.Skipped.Text = c.Results[testID].SkipReason
 		} else {
 			testCase.Skipped = nil
 		}
@@ -240,7 +234,7 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 		// Populate the failure message if the test case failed
 		if testCase.Status == TestStateFailed {
 			testCase.Failure = &FailureMessage{}
-			testCase.Failure.Text = typedResult.CheckDetails
+			testCase.Failure.Text = c.Results[testID].CheckDetails
 		} else {
 			testCase.Failure = nil
 		}

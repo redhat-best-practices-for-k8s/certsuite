@@ -28,7 +28,7 @@ import (
 func TestPopulateXMLFromClaim(t *testing.T) {
 	generateClaim := func(results map[string]claim.Result) claim.Claim {
 		c := claim.Claim{}
-		c.Results = make(map[string]interface{})
+		c.Results = make(map[string]claim.Result)
 
 		// Set the results if any
 		for k, v := range results {
