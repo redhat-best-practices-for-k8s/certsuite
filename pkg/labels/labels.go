@@ -1,4 +1,4 @@
-package checksdb
+package labels
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ type labelsExprParser struct {
 	astRootNode ast.Expr
 }
 
-func newLabelsExprEvaluator(labelsExpr string) (LabelsExprEvaluator, error) {
+func NewLabelsExprEvaluator(labelsExpr string) (LabelsExprEvaluator, error) {
 	goLikeExpr := strings.ReplaceAll(labelsExpr, "-", "_")
 	goLikeExpr = strings.ReplaceAll(goLikeExpr, ",", "||")
 

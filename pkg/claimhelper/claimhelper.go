@@ -28,9 +28,11 @@ import (
 	"time"
 
 	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
 
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
+	"github.com/test-network-function/cnf-certification-test/pkg/labels"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
@@ -146,11 +148,6 @@ func (c *ClaimBuilder) Build(outputFile string) {
 	WriteClaimOutput(outputFile, payload)
 
 	log.Info("Claim file created at %s", outputFile)
-}
-
-func (c *ClaimBuilder) GetClaimResults() *claim.Root {
-	c.claimRoot.Claim.Results = checksdb.GetReconciledResults()
-	return c.claimRoot
 }
 
 //nolint:funlen
@@ -389,15 +386,18 @@ func SanitizeClaimFile(claimFileName, labelsFilter string) (string, error) {
 
 	// Remove the results that do not match the labels filter
 	for testID := range aRoot.Claim.Results {
-		if aRoot.Claim.Results[testID].TestID.Id != labelsFilter {
+		evaluator, err := labels.NewLabelsExprEvaluator(labelsFilter)
+		if err != nil {
+			log.Error("Failed to create labels expression evaluator: %v", err)
+			return "", err
+		}
+
+		_, gatheredLabels := identifiers.GetTestIDAndLabels(*aRoot.Claim.Results[testID].TestID)
+
+		if !evaluator.Eval(gatheredLabels) {
 			log.Info("Removing test ID: %s from the claim", testID)
 			delete(aRoot.Claim.Results, testID)
 		}
-	}
-
-	log.Info("Number of results after sanitizing: %d", len(aRoot.Claim.Results))
-	if len(aRoot.Claim.Results) == 1 {
-		log.Info("Sanitized claim file contains only one test case: %s", labelsFilter)
 	}
 
 	WriteClaimOutput(claimFileName, MarshalClaimOutput(&aRoot))
