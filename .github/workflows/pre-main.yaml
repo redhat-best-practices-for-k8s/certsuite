@@ -19,7 +19,7 @@ env:
   OCT_IMAGE_NAME: testnetworkfunction/oct
   OCT_IMAGE_TAG: latest
   DEBUG_IMAGE_NAME: testnetworkfunction/k8s-best-practices-debug
-  DEBUG_IMAGE_TAG: v0.0.2
+  DEBUG_IMAGE_TAG: v0.0.3
   CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
   CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
   SMOKE_TESTS_LOG_LEVEL: debug
