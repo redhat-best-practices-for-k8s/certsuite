@@ -63,4 +63,4 @@ See more about this variable [here](https://github.com/redhat-openshift-ecosyste
 against a private container registry that has self-signed certificates.
 
 Note that you can also specify the debug pod image to use with `SUPPORT_IMAGE`
-environment variable, default to `k8s-best-practices-debug:v0.0.2`.
+environment variable, default to `k8s-best-practices-debug:v0.0.3`.
