@@ -167,11 +167,19 @@ func Run(labelsFilter, outputFolder string) error {
 		claimBuilder.ToJUnitXML(junitOutputFileName, startTime, endTime)
 	}
 
+	if configuration.GetTestParameters().SanitizeClaim {
+		claimOutputFile, err = claimhelper.SanitizeClaimFile(claimOutputFile, configuration.GetTestParameters().LabelsFilter)
+		if err != nil {
+			log.Error("Failed to sanitize claim file: %v", err)
+		}
+	}
+
 	// Send claim file to the collector if specified by env var
 	if configuration.GetTestParameters().EnableDataCollection {
 		if env.CollectorAppEndpoint == "" {
 			env.CollectorAppEndpoint = collectorAppURL
 		}
+
 		err = collector.SendClaimFileToCollector(env.CollectorAppEndpoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
 		if err != nil {
 			log.Error("Failed to send post request to the collector: %v", err)

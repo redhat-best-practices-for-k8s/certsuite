@@ -12,6 +12,7 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/labels"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
@@ -23,7 +24,7 @@ var (
 
 	resultsDB = map[string]claim.Result{}
 
-	labelsExprEvaluator LabelsExprEvaluator
+	labelsExprEvaluator labels.LabelsExprEvaluator
 )
 
 type AbortPanicMsg string
@@ -252,7 +253,7 @@ func InitLabelsExprEvaluator(labelsFilter string) error {
 		labelsFilter = strings.Join(allTags, ",")
 	}
 
-	eval, err := newLabelsExprEvaluator(labelsFilter)
+	eval, err := labels.NewLabelsExprEvaluator(labelsFilter)
 	if err != nil {
 		return fmt.Errorf("could not create a label evaluator, err: %v", err)
 	}
