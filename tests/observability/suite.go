@@ -21,11 +21,14 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"strings"
 
+	"github.com/Masterminds/semver"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	pdbv1 "github.com/redhat-best-practices-for-k8s/certsuite/tests/observability/pdb"
 
+	apiserv1 "github.com/openshift/api/apiserver/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
@@ -77,6 +80,12 @@ func LoadChecks() {
 		WithSkipModeAll().
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodDisruptionBudgets(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestAPICompatibilityWithNextOCPReleaseIdentifier)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testAPICompatibilityWithNextOCPRelease(c, &env)
 			return nil
 		}))
 }
@@ -269,5 +278,148 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 		}
 	}
 
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+// Function to build a map from workload service accounts
+// to their associated to-be-deprecated APIs and the release version
+// Filters:
+// - status.removedInRelease is not empty
+// - Verifies if the service account is inside the workload SA list from env.ServiceAccounts
+func buildServiceAccountToDeprecatedAPIMap(apiRequestCounts []apiserv1.APIRequestCount, workloadServiceAccountNames map[string]struct{}) map[string]map[string]string {
+	// Define a map where the key is the service account name and the value is another map
+	// The inner map key is the API name and the value is the release version in which it will be removed
+	serviceAccountToDeprecatedAPIs := make(map[string]map[string]string)
+
+	for i := range apiRequestCounts {
+		obj := &apiRequestCounts[i]
+		// Filter by non-empty removedInRelease
+		if obj.Status.RemovedInRelease != "" {
+			// Iterate over the last 24h usage data
+			for _, last24h := range obj.Status.Last24h {
+				for _, byNode := range last24h.ByNode {
+					for _, byUser := range byNode.ByUser {
+						// Split the username by ":" and take the last chunk to extract ServiceAccount
+						// from composed structures like system:serviceaccount:default:eventtest-operator-service-account
+						serviceAccountParts := strings.Split(byUser.UserName, ":")
+						strippedServiceAccount := serviceAccountParts[len(serviceAccountParts)-1]
+
+						// Check if the service account is in the workload SA list
+						if _, exists := workloadServiceAccountNames[strippedServiceAccount]; exists {
+							// Initialize the inner map if it does not exist
+							if serviceAccountToDeprecatedAPIs[strippedServiceAccount] == nil {
+								serviceAccountToDeprecatedAPIs[strippedServiceAccount] = make(map[string]string)
+							}
+							// Add the API and its RemovedInRelease K8s version to the map
+							serviceAccountToDeprecatedAPIs[strippedServiceAccount][obj.Name] = obj.Status.RemovedInRelease
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return serviceAccountToDeprecatedAPIs
+}
+
+// Evaluate workload API compliance with the next Kubernetes version
+func evaluateAPICompliance(
+	serviceAccountToDeprecatedAPIs map[string]map[string]string,
+	kubernetesVersion string,
+	workloadServiceAccountNames map[string]struct{}) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
+	version, err := semver.NewVersion(kubernetesVersion)
+	if err != nil {
+		fmt.Printf("Failed to parse Kubernetes version %q: %v", kubernetesVersion, err)
+		return nil, nil
+	}
+
+	// Increment the version to represent the next release for comparison
+	nextK8sVersion := version.IncMinor()
+
+	// Iterate over each service account and its deprecated APIs
+	for saName, deprecatedAPIs := range serviceAccountToDeprecatedAPIs {
+		for apiName, removedInRelease := range deprecatedAPIs {
+			removedVersion, err := semver.NewVersion(removedInRelease)
+			if err != nil {
+				fmt.Printf("Failed to parse Kubernetes version from APIRequestCount.status.removedInRelease: %s\n", err)
+				// Skip this API if the version parsing fails
+				continue
+			}
+
+			isCompliantWithNextK8sVersion := removedVersion.Minor() > nextK8sVersion.Minor()
+
+			// Define reasons with version information
+			nonCompliantReason := fmt.Sprintf("API %s used by service account %s is NOT compliant with Kubernetes version %s, it will be removed in release %s", apiName, saName, nextK8sVersion.String(), removedInRelease)
+			compliantReason := fmt.Sprintf("API %s used by service account %s is compliant with Kubernetes version %s, it will be removed in release %s", apiName, saName, nextK8sVersion.String(), removedInRelease)
+
+			var reportObject *testhelper.ReportObject
+			if isCompliantWithNextK8sVersion {
+				reportObject = testhelper.NewReportObject(compliantReason, "API", true)
+				reportObject.AddField("ActiveInRelease", nextK8sVersion.String())
+				compliantObjects = append(compliantObjects, reportObject)
+			} else {
+				reportObject = testhelper.NewReportObject(nonCompliantReason, "API", false)
+				reportObject.AddField("RemovedInRelease", removedInRelease)
+				nonCompliantObjects = append(nonCompliantObjects, reportObject)
+			}
+
+			reportObject.AddField("APIName", apiName)
+			reportObject.AddField("ServiceAccount", saName)
+		}
+	}
+
+	// Force the test to pass if both lists are empty
+	if len(compliantObjects) == 0 && len(nonCompliantObjects) == 0 {
+		for saName := range workloadServiceAccountNames {
+			reportObject := testhelper.NewReportObject("SA does not use any removed API", "ServiceAccount", true).
+				AddField("Name", saName)
+			compliantObjects = append(compliantObjects, reportObject)
+		}
+	}
+
+	return compliantObjects, nonCompliantObjects
+}
+
+// Function to extract unique workload-related service account names from the environment
+func extractUniqueServiceAccountNames(env *provider.TestEnvironment) map[string]struct{} {
+	uniqueServiceAccountNames := make(map[string]struct{})
+
+	// Iterate over the service accounts to extract names
+	for _, sa := range env.ServiceAccounts {
+		uniqueServiceAccountNames[sa.ObjectMeta.Name] = struct{}{}
+	}
+
+	return uniqueServiceAccountNames
+}
+
+// Function to test API compatibility with the next OCP release
+func testAPICompatibilityWithNextOCPRelease(check *checksdb.Check, env *provider.TestEnvironment) {
+	isOCP := provider.IsOCPCluster()
+	check.LogInfo("Is OCP: %v", isOCP)
+
+	if !isOCP {
+		check.LogInfo("The Kubernetes distribution is not OpenShift. Skipping API compatibility test.")
+		return
+	}
+
+	// Retrieve APIRequestCount using clientsholder
+	oc := clientsholder.GetClientsHolder()
+	apiRequestCounts, err := oc.ApiserverClient.ApiserverV1().APIRequestCounts().List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		check.LogError("Error retrieving APIRequestCount objects: %s", err)
+		return
+	}
+
+	// Extract unique service account names from env.ServiceAccounts
+	workloadServiceAccountNames := extractUniqueServiceAccountNames(env)
+	check.LogInfo("Detected %d unique service account names for the workload: %v", len(workloadServiceAccountNames), workloadServiceAccountNames)
+
+	// Build a map from service accounts to deprecated APIs
+	serviceAccountToDeprecatedAPIs := buildServiceAccountToDeprecatedAPIMap(apiRequestCounts.Items, workloadServiceAccountNames)
+
+	// Evaluate API compliance with the next Kubernetes version
+	compliantObjects, nonCompliantObjects := evaluateAPICompliance(serviceAccountToDeprecatedAPIs, env.K8sVersion, workloadServiceAccountNames)
+
+	// Add test results
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }

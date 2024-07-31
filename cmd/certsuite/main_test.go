@@ -66,6 +66,7 @@ func TestCertsuiteInfoCmd(t *testing.T) {
 | observability-crd-status                                 |
 | observability-termination-policy                         |
 | observability-pod-disruption-budget                      |
+| observability-compatibility-with-next-ocp-release        |
 ------------------------------------------------------------
 `
 	assert.Equal(t, expectedOutput, string(out))
