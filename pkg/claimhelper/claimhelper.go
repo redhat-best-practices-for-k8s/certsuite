@@ -108,6 +108,12 @@ type ClaimBuilder struct {
 }
 
 func NewClaimBuilder() (*ClaimBuilder, error) {
+	if os.Getenv("UNIT_TEST") == "true" {
+		return &ClaimBuilder{
+			claimRoot: CreateClaimRoot(),
+		}, nil
+	}
+
 	log.Debug("Creating claim file builder.")
 	configurations, err := MarshalConfigurations()
 	if err != nil {
@@ -302,11 +308,7 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	if err != nil {
 		log.Error("ReadFile failed with err: %v", err)
 	}
-	path, err := os.Getwd()
-	if err != nil {
-		log.Error("Getwd failed with err: %v", err)
-	}
-	log.Info("Reading claim file at path: %s", path)
+	log.Info("Reading claim file at path: %s", claimFileName)
 	return data, nil
 }
 
