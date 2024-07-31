@@ -288,14 +288,6 @@ func UnmarshalConfigurations(configurations []byte, claimConfigurations map[stri
 	}
 }
 
-// UnmarshalClaim unmarshals the claim file
-func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
-	err := j.Unmarshal(claimFile, &claimRoot)
-	if err != nil {
-		log.Fatal("error unmarshalling claim file: %v", err)
-	}
-}
-
 // ReadClaimFile writes the output payload to the claim file.  In the event of an error, this method fatally fails.
 func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	data, err = os.ReadFile(claimFileName)
@@ -308,24 +300,6 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	}
 	log.Info("Reading claim file at path: %s", path)
 	return data, nil
-}
-
-// GetConfigurationFromClaimFile retrieves configuration details from claim file
-func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvironment, err error) {
-	data, err := ReadClaimFile(claimFileName)
-	if err != nil {
-		log.Error("ReadClaimFile failed with err: %v", err)
-		return env, err
-	}
-	var aRoot claim.Root
-	fmt.Printf("%s", data)
-	UnmarshalClaim(data, &aRoot)
-	configJSON, err := j.Marshal(aRoot.Claim.Configurations)
-	if err != nil {
-		return nil, fmt.Errorf("cannot convert config to json")
-	}
-	err = j.Unmarshal(configJSON, &env)
-	return env, err
 }
 
 // MarshalClaimOutput is a helper function to serialize a claim as JSON for output.  In the event of an error, this
