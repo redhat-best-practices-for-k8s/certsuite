@@ -16,6 +16,8 @@ env:
   CERTSUITE_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
   CERTSUITE_IMAGE_NAME_NEW: quay.io/testnetworkfunction/k8s-best-practices-certsuite
   TEST_CERTSUITE_IMAGE_TAG: localtest
+  CERTSUITE_CONFIG_DIR: '/tmp/certsuite_config'
+  CERTSUITE_REPORT_DIR: '/tmp/certsuite_report'
 
 
 concurrency:

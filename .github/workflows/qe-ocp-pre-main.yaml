@@ -34,6 +34,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
+          ref: main
 
       - name: Run the script to pull the unstable image
         run: ./scripts/download-unstable.sh
@@ -67,6 +68,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
+          ref: main
 
       - name: Preemptively potential QE namespaces
         run: ./scripts/delete-namespaces.sh
