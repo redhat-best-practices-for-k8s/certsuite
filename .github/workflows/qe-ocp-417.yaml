@@ -48,11 +48,11 @@ jobs:
       SHELL: /bin/bash
       KUBECONFIG: '/home/labuser4/.kube/config'
       PFLT_DOCKERCONFIG: '/home/labuser4/.docker/config'
-      TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
-      TEST_TNF_IMAGE_TAG: unstable
+      CERTSUITE_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
+      TEST_CERTSUITE_IMAGE_TAG: unstable
       DOCKER_CONFIG_DIR: '/home/labuser4/.docker'
-      TNF_CONFIG_DIR: '/home/labuser4/tnf_config'
-      TNF_REPORT_DIR: '/home/labuser4/tnf_report'
+      CERTSUITE_CONFIG_DIR: '/home/labuser4/tnf_config'
+      CERTSUITE_REPORT_DIR: '/home/labuser4/tnf_report'
 
     steps:
       - name: Check out code
@@ -83,15 +83,15 @@ jobs:
       - name: Preemptively delete report and config folders
         shell: bash
         run: |
-          sudo rm -rf ${{env.TNF_CONFIG_DIR}}
-          sudo rm -rf ${{env.TNF_REPORT_DIR}}
+          sudo rm -rf ${{env.CERTSUITE_CONFIG_DIR}}
+          sudo rm -rf ${{env.CERTSUITE_REPORT_DIR}}
 
       - name: Run the tests (against image)
         uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       - name: Build the binary
         run: make build-certsuite-tool
@@ -101,7 +101,7 @@ jobs:
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}

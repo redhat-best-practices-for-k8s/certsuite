@@ -61,7 +61,7 @@ The "20230620-110654" sample prefix means "June-20th 2023, 11:06:54"
 This is the content of the tar.gz file:
 
 * claim.json
-* cnf-certification-tests_junit.xml (Only if enabled via `TNF_ENABLE_XML_CREATION` environment variable)
+* cnf-certification-tests_junit.xml (Only if enabled via `CERTSUITE_ENABLE_XML_CREATION` environment variable)
 * claimjson.js
 * classification.js
 * results.html

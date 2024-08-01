@@ -26,7 +26,7 @@ To skip intrusive tests which may disrupt cluster operations, issue the
 following:
 
 ```shell
-export TNF_NON_INTRUSIVE_ONLY=true
+export CERTSUITE_NON_INTRUSIVE_ONLY=true
 ```
 
 The intrusive test cases are:
@@ -39,7 +39,7 @@ The intrusive test cases are:
 Likewise, to enable intrusive tests, set the following:
 
 ```shell
-export TNF_NON_INTRUSIVE_ONLY=false
+export CERTSUITE_NON_INTRUSIVE_ONLY=false
 ```
 
 Intrusive tests are enabled by default.
@@ -59,7 +59,7 @@ When running as a standalone binary, the environment variables are consumed dire
 
 See more about this variable [here](https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md).
 
-`TNF_ALLOW_PREFLIGHT_INSECURE` (default: false) is required set to `true` if you are running
+`CERTSUITE_ALLOW_PREFLIGHT_INSECURE` (default: false) is required set to `true` if you are running
 against a private container registry that has self-signed certificates.
 
 Note that you can also specify the debug pod image to use with `SUPPORT_IMAGE`
