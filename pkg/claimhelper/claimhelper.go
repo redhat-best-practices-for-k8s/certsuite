@@ -110,6 +110,12 @@ type ClaimBuilder struct {
 }
 
 func NewClaimBuilder() (*ClaimBuilder, error) {
+	if os.Getenv("UNIT_TEST") == "true" {
+		return &ClaimBuilder{
+			claimRoot: CreateClaimRoot(),
+		}, nil
+	}
+
 	log.Debug("Creating claim file builder.")
 	configurations, err := MarshalConfigurations()
 	if err != nil {
