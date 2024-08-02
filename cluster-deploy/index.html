@@ -964,7 +964,7 @@
 <ol>
 <li>The namespace and the prefix/suffix of each resource&rsquo;s name. By default, the <a href="cnf-certsuite.yaml">./cnf-certsuite.yaml</a> uses the namespace &ldquo;cnf-certsuite&rdquo; to deploy all the reources (except the cluster role and the cluster role binding), but this can be changed uncommenting the line that starts with <code>namespace:</code>. It&rsquo;s highly recommended to uncomment at least one of suffixName/prefixName so unique cluster role &amp; cluster role-bindings can be created for each CNF Cert Pod. This way, you could run more than one CNF Cert Pod in the same cluster!.</li>
 <li>The (ginkgo) labels expression, in case you want to run different test cases. Uncomment the object that starts with &ldquo;patches:&rdquo;. The commented example changes the command to use the &ldquo;preflight&rdquo; label only.</li>
-<li>The value of the TNF_NON_INTRUSIVE_ONLY env var. Uncomment the last object that starts with &ldquo;patches:&rdquo;. The commented example changes the TNF_NON_INTRUSIVE_ONLY to false, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.</li>
+<li>The value of the CERTSUITE_NON_INTRUSIVE_ONLY env var. Uncomment the last object that starts with &ldquo;patches:&rdquo;. The commented example changes the CERTSUITE_NON_INTRUSIVE_ONLY to false, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.</li>
 </ol>
 <p>In case both (1) and (2) wants to be used, just create a list of patches like this:</p>
 <div class="highlight"><pre><span></span><code><span class="go">patches:</span>

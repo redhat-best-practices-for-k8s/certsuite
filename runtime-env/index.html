@@ -1036,7 +1036,7 @@ oc<span class="w"> </span>label<span class="w"> </span>namespace/default<span cl
 <h2 id="disable-intrusive-tests">Disable intrusive tests<a class="headerlink" href="#disable-intrusive-tests" title="Permanent link">&para;</a></h2>
 <p>To skip intrusive tests which may disrupt cluster operations, issue the
 following:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">CERTSUITE_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
 <p>The intrusive test cases are:</p>
 <ul>
@@ -1046,7 +1046,7 @@ following:</p>
 <li><a href="https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-pod-recreation">lifecycle-pod-recreation</a></li>
 </ul>
 <p>Likewise, to enable intrusive tests, set the following:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">false</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">CERTSUITE_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
 <p>Intrusive tests are enabled by default.</p>
 <h2 id="preflight-integration">Preflight Integration<a class="headerlink" href="#preflight-integration" title="Permanent link">&para;</a></h2>
@@ -1058,7 +1058,7 @@ images and image bundles for testing.</p>
 <p>When running as a container, the docker config is mounted to the container via volume mount.</p>
 <p>When running as a standalone binary, the environment variables are consumed directly from your local machine.</p>
 <p>See more about this variable <a href="https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md">here</a>.</p>
-<p><code>TNF_ALLOW_PREFLIGHT_INSECURE</code> (default: false) is required set to <code>true</code> if you are running
+<p><code>CERTSUITE_ALLOW_PREFLIGHT_INSECURE</code> (default: false) is required set to <code>true</code> if you are running
 against a private container registry that has self-signed certificates.</p>
 <p>Note that you can also specify the debug pod image to use with <code>SUPPORT_IMAGE</code>
 environment variable, default to <code>k8s-best-practices-debug:v0.0.3</code>.</p>

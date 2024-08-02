@@ -134,13 +134,13 @@ spec:
         - name: preflight-dockerconfig
           mountPath: /usr/tnf/config/preflight
       env:
-        - name: TNF_NON_INTRUSIVE_ONLY
+        - name: CERTSUITE_NON_INTRUSIVE_ONLY
           value: "true"
-        - name: TNF_ALLOW_PREFLIGHT_INSECURE
+        - name: CERTSUITE_ALLOW_PREFLIGHT_INSECURE
           value: "true"
-        - name: TNF_LOG_LEVEL
+        - name: CERTSUITE_LOG_LEVEL
           value: trace
         - name: PFLT_DOCKERCONFIG
           value: /usr/tnf/config/preflight/preflight_dockerconfig.json
-        - name: TNF_CONFIGURATION_PATH
+        - name: CERTSUITE_CONFIGURATION_PATH
           value: /usr/tnf/config/tnf_config.yaml
