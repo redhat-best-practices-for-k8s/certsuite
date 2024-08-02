@@ -47,7 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: 
-        suite: [affiliatedcertification, operator]
+        suite: [affiliatedcertification, operator, observability]
     env:
       SHELL: /bin/bash
 
