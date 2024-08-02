@@ -11,11 +11,11 @@ env:
   QE_REPO: test-network-function/cnfcert-tests-verification
   KUBECONFIG: /home/labuser3/.kube/config
   PFLT_DOCKERCONFIG: '/home/labuser3/.docker/config'
-  TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
-  TEST_TNF_IMAGE_TAG: unstable
+  CERTSUITE_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
+  TEST_CERTSUITE_IMAGE_TAG: unstable
   DOCKER_CONFIG_DIR: '/home/labuser3/.docker'
-  TNF_CONFIG_DIR: '/home/labuser3/tnf_config'
-  TNF_REPORT_DIR: '/home/labuser3/tnf_report'
+  CERTSUITE_CONFIG_DIR: '/home/labuser3/tnf_config'
+  CERTSUITE_REPORT_DIR: '/home/labuser3/tnf_report'
 
 jobs:
   pull-unstable-image:
@@ -34,6 +34,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
+          ref: main
 
       - name: Run the script to pull the unstable image
         run: ./scripts/download-unstable.sh
@@ -67,6 +68,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
+          ref: main
 
       - name: Preemptively potential QE namespaces
         run: ./scripts/delete-namespaces.sh
@@ -79,12 +81,12 @@ jobs:
       - name: Preemptively delete report and config folders
         shell: bash
         run: |
-          sudo rm -rf ${{env.TNF_CONFIG_DIR}}
-          sudo rm -rf ${{env.TNF_REPORT_DIR}}
+          sudo rm -rf ${{env.CERTSUITE_CONFIG_DIR}}
+          sudo rm -rf ${{env.CERTSUITE_REPORT_DIR}}
 
       - name: Run the tests (against image)
         uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features

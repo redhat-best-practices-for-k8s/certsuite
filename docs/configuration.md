@@ -107,7 +107,7 @@ The test suite has the ability to create the JUNit XML File output containing th
 To enable this, set:
 
 ```shell
-export TNF_ENABLE_XML_CREATION=true
+--create-xml-junit-file true
 ```
 
 This will create a file named `cnf-certification-test/cnf-certification-tests_junit.xml`.
@@ -117,7 +117,7 @@ This will create a file named `cnf-certification-test/cnf-certification-tests_ju
 While running the test suite as a container, you can enable the container to be able to reach the local CRC instance by setting:
 
 ```shell
-export TNF_ENABLE_CRC_TESTING=true
+export CERTSUITE_ENABLE_CRC_TESTING=true
 ```
 
 This utilizes the `--add-host` flag in Docker to be able to point `api.crc.testing` to the host gateway.

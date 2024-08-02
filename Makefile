@@ -19,8 +19,8 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 # Default values
 REGISTRY_LOCAL?=localhost
 REGISTRY?=quay.io
-TNF_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
-TNF_IMAGE_NAME_NEW?=testnetworkfunction/k8s-best-practices-certsuite
+CERTSUITE_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
+CERTSUITE_IMAGE_NAME_NEW?=testnetworkfunction/k8s-best-practices-certsuite
 IMAGE_TAG?=localtest
 .PHONY: all clean test build
 .PHONY: \
@@ -47,10 +47,10 @@ GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
 CLAIM_FORMAT_VERSION=$(shell script/get-claim-version.sh)
 GOLANGCI_VERSION=v1.59.1
-LINKER_TNF_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-test/pkg/versions.GitCommit=${GIT_COMMIT}
-LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitRelease=${GIT_RELEASE}
-LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
-LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
+LINKER_CERTSUITE_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-test/pkg/versions.GitCommit=${GIT_COMMIT}
+LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitRelease=${GIT_RELEASE}
+LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
+LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
 BASH_SCRIPTS=$(shell find . -name "*.sh" -not -path "./.git/*")
 PARSER_RELEASE=$(shell jq -r .parserTag version.json)
 RESULTS_HTML_URL=https://raw.githubusercontent.com/test-network-function/parser/${PARSER_RELEASE}/html/results.html
@@ -60,11 +60,11 @@ all: build
 build: build-certsuite-tool
 
 build-certsuite-tool: results-html
-	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
+	PATH="${PATH}:${GOBIN}" go build -ldflags "${LINKER_CERTSUITE_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
 	git restore internal/results/html/results.html
 
 build-darwin-arm64: results-html
-	PATH="${PATH}:${GOBIN}" GOOS=darwin GOARCH=arm64 go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
+	PATH="${PATH}:${GOBIN}" GOOS=darwin GOARCH=arm64 go build -ldflags "${LINKER_CERTSUITE_RELEASE_FLAGS}" -o certsuite -v cmd/certsuite/main.go
 	git restore internal/results/html/results.html
 
 # Cleans up auto-generated and report files
@@ -104,7 +104,7 @@ build-catalog-md: build-certsuite-tool
 
 # Builds the Certsuite binary with debug flags
 build-certsuite-tool-debug: results-html
-	PATH="${PATH}:${GOBIN}" go build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" -o certsuite -v cmd/certsuite/main.go
+	PATH="${PATH}:${GOBIN}" go build -gcflags "all=-N -l" -ldflags "${LINKER_CERTSUITE_RELEASE_FLAGS} -extldflags '-z relro -z now'" -o certsuite -v cmd/certsuite/main.go
 	git restore internal/results/html/results.html
 
 install-mac-brew-tools:
@@ -147,10 +147,10 @@ delete-db:
 # Runs against whatever architecture the host is
 build-image-local:
 	docker build --pull --no-cache \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
-		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME_NEW}:${IMAGE_TAG} \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME_NEW}:${IMAGE_TAG} \
+		-t ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${CERTSUITE_IMAGE_NAME}:${IMAGE_TAG} \
+		-t ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME_NEW}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${CERTSUITE_IMAGE_NAME_NEW}:${IMAGE_TAG} \
 		-f Dockerfile .
 
 results-html:
