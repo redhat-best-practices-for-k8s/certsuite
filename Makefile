@@ -77,7 +77,7 @@ clean:
 # Runs configured linters
 lint:
 	checkmake --config=.checkmake Makefile
-	golangci-lint run --enable godot --timeout 10m0s
+	golangci-lint run --timeout 10m0s
 	hadolint Dockerfile
 	shfmt -d script
 	typos

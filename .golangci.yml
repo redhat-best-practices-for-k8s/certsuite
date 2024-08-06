@@ -59,6 +59,7 @@ linters:
     - gofmt
     - goimports
     - mnd
+    - godot
     - goprintffuncname
     - gosec
     - gosimple
@@ -82,7 +83,6 @@ linters:
   # - gochecknoglobals
   # - gochecknoinits
   # - gocognit
-  # - godot
   # - godox
   # - goerr113
   # - maligned
