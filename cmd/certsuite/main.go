@@ -3,15 +3,15 @@ package main
 import (
 	"os"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
 
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/check"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/generate"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/info"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/run"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/version"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/check"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/run"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/version"
 )
 
 func newRootCmd() *cobra.Command {

@@ -3,9 +3,9 @@ package versions
 import (
 	"testing"
 
+	officialClaimScheme "github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/diff"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/diff"
-	officialClaimScheme "github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 func TestCompare(t *testing.T) {

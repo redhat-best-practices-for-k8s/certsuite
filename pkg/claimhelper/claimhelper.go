@@ -27,15 +27,15 @@ import (
 	"os"
 	"time"
 
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 
-	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
-	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
-	"github.com/test-network-function/cnf-certification-test/pkg/labels"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/versions"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/diagnostics"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/labels"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 )
 
 const (
@@ -367,7 +367,7 @@ func GenerateNodes() map[string]interface{} {
 }
 
 // CreateClaimRoot creates the claim based on the model created in
-// https://github.com/test-network-function/cnf-certification-test-claim.
+// https://github.com/redhat-best-practices-for-k8s/certsuite-claim.
 func CreateClaimRoot() *claim.Root {
 	// Initialize the claim with the start time.
 	startTime := time.Now()

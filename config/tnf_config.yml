@@ -1,15 +1,15 @@
 targetNameSpaces:
   - name: tnf
 podsUnderTestLabels:
-  - "test-network-function.com/generic: target"
+  - "redhat-best-practices-for-k8s.com/generic: target"
 operatorsUnderTestLabels:
-  - "test-network-function.com/operator:target"
-  - "test-network-function.com/operator1:new"
+  - "redhat-best-practices-for-k8s.com/operator:target"
+  - "redhat-best-practices-for-k8s.com/operator1:new"
   - "cnf/test:cr-scale-operator"
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
     scalable: false
-  - nameSuffix: "test-network-function.com"
+  - nameSuffix: "redhat-best-practices-for-k8s.com"
     scalable: false
   - nameSuffix: "memcacheds.cache.example.com"
     scalable: true

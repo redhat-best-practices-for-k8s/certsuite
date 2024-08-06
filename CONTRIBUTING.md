@@ -8,7 +8,7 @@ conduct themselves in a professional and respectful manner.
 ## Peer review
 
 Although this is an open source project, an approval is required from at least two of the
-[CNF Cert team members with write privileges](https://github.com/orgs/test-network-function/teams/cnfcert/members)
+[CNF Cert team members with write privileges](https://github.com/orgs/redhat-best-practices-for-k8s/teams/cnfcert/members)
 prior to merging a Pull Request.
 
 *No Self Review is allowed.* Each Pull Request will be peer reviewed prior to merge.
@@ -16,10 +16,10 @@ prior to merging a Pull Request.
 ## Workflow
 
 If you have a problem with the tools or want to suggest a new addition, the first thing to do is create an
-[Issue](https://github.com/test-network-function/cnf-certification-test/issues) for discussion.
+[Issue](https://github.com/redhat-best-practices-for-k8s/certsuite/issues) for discussion.
 
 When you have a change you want us to include in the main codebase, please open a
-[Pull Request](https://github.com/test-network-function/cnf-certification-test/pulls) for your changes and link it to the
+[Pull Request](https://github.com/redhat-best-practices-for-k8s/certsuite/pulls) for your changes and link it to the
 associated issue(s).
 
 ### Fork and Pull
@@ -86,7 +86,7 @@ that the accompanying documentation and guides are updated to include that infor
 
 Ensure `goimports` has been run against all Pull Requests prior to submission.
 
-In addition, the `test-network-function` project committers expect all Pull Requests have no linting errors when the
+In addition, the `redhat-best-practices-for-k8s` project committers expect all Pull Requests have no linting errors when the
 configured linters are used. Please ensure you run `make lint` and resolve any issues in your changes before submitting
 your PR. Disabled linting must be justified.
 

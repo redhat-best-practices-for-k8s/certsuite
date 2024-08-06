@@ -1,8 +1,8 @@
 package resources
 
 import (
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 // HasRequestsAndLimitsSet checks if a container has both resource limits and resource requests set.

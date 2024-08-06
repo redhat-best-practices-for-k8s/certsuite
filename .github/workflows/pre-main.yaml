@@ -13,13 +13,13 @@ permissions:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  CERTSUITE_IMAGE_NAME: testnetworkfunction/cnf-certification-test
-  CERTSUITE_IMAGE_NAME_NEW: testnetworkfunction/k8s-best-practices-certsuite
+  CERTSUITE_IMAGE_NAME: redhat-best-practices-for-k8s/certsuite
+  CERTSUITE_IMAGE_NAME_LEGACY: testnetworkfunction/cnf-certification-test
   CERTSUITE_IMAGE_TAG: unstable
-  OCT_IMAGE_NAME: testnetworkfunction/oct
+  OCT_IMAGE_NAME: redhat-best-practices-for-k8s/oct
   OCT_IMAGE_TAG: latest
-  DEBUG_IMAGE_NAME: testnetworkfunction/k8s-best-practices-debug
-  DEBUG_IMAGE_TAG: v0.0.4
+  PROBE_IMAGE_NAME: redhat-best-practices-for-k8s/certsuite-probe
+  PROBE_IMAGE_TAG: v0.0.5
   CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
   CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
   SMOKE_TESTS_LOG_LEVEL: debug
@@ -166,9 +166,8 @@ jobs:
     steps:
       - name: Pull the images to verify they exist
         run: |
-          docker pull ${REGISTRY}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}
           docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
-          docker pull ${REGISTRY}/${DEBUG_IMAGE_NAME}:${DEBUG_IMAGE_TAG}
+          docker pull ${REGISTRY}/${PROBE_IMAGE_NAME}:${PROBE_IMAGE_TAG}
 
   smoke-tests-local:
     name: Run Local Smoke Tests
@@ -317,7 +316,7 @@ jobs:
       - name: Check out `Collector`
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
-          repository: test-network-function/collector
+          repository: redhat-best-practices-for-k8s/collector
           path: collector
 
       # Clean up unused container image layers. We need to filter out a possible error return code
@@ -430,6 +429,50 @@ jobs:
             --label-filter="preflight"
 
   # Only run this job if the previous jobs are successful that build the ARM and x86 images.
+  create-manifest-multiarch-legacy:
+    name: Create manifest list for multi-arch image (legacy)
+    needs: [unit-tests, smoke-tests-container]
+    runs-on: ubuntu-22.04
+    if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
+    steps:
+      - name: Check out code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3.2.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+
+      - name: Login to Quay.io
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.QUAY_ROBOT_USERNAME }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+
+      - name: Build and push the unstable images for multi-arch
+        uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME }}:${{ env.CERTSUITE_IMAGE_TAG }}
+            ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME_LEGACY }}:${{ env.CERTSUITE_IMAGE_TAG }}
+      
+      - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
+        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
+        uses: ./.github/actions/slack-webhook-sender
+        with:
+          message: 'Failed to create the *unstable* container manifest'
+          slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
+
+  # Only run this job if the previous jobs are successful that build the ARM and x86 images.
   create-manifest-multiarch:
     name: Create manifest list for multi-arch image
     needs: [unit-tests, smoke-tests-container]
@@ -448,15 +491,15 @@ jobs:
 
       - name: Login to Quay.io
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.QUAY_ROBOT_USERNAME }}
-          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+          username: ${{ secrets.QUAY_ROBOT_USERNAME_K8S }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN_K8S }}
 
       - name: Build and push the unstable images for multi-arch
         uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
-        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         with:
           context: .
           file: Dockerfile
@@ -464,10 +507,9 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME }}:${{ env.CERTSUITE_IMAGE_TAG }}
-            ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME_NEW }}:${{ env.CERTSUITE_IMAGE_TAG }}
       
       - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
-        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         uses: ./.github/actions/slack-webhook-sender
         with:
           message: 'Failed to create the *unstable* container manifest'

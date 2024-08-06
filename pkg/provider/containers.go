@@ -26,7 +26,7 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/go-logr/stdr"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	corev1 "k8s.io/api/core/v1"
 
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"

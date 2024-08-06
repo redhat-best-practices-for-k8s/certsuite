@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/Masterminds/semver/v3"
-	officialClaimScheme "github.com/test-network-function/test-network-function-claim/pkg/claim"
+	officialClaimScheme "github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 )
 
 const (

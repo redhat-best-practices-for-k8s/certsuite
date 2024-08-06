@@ -20,9 +20,9 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
 func TestGetNbOfProcessesInPidNamespace(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/pkg/claim"
 )
 
 func TestParseTargetTestSuitesFlag(t *testing.T) {

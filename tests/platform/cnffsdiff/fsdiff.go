@@ -22,10 +22,10 @@ import (
 	"fmt"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
-	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 const (

@@ -10,12 +10,12 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/test-network-function/cnf-certification-test/internal/cli"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/labels"
-	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
-	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/labels"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 )
 
 var (
@@ -138,7 +138,7 @@ func recordCheckResult(check *Check) {
 }
 
 // GetReconciledResults is a function added to aggregate a Claim's results.  Due to the limitations of
-// test-network-function-claim's Go Client, results are generalized to map[string]interface{}.
+// certsuite-claim's Go Client, results are generalized to map[string]interface{}.
 func GetReconciledResults() map[string]claim.Result {
 	resultMap := make(map[string]claim.Result)
 	//nolint:gocritic

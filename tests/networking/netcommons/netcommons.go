@@ -22,10 +22,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/tests/networking/netutil"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netutil"
 	corev1 "k8s.io/api/core/v1"
 )
 

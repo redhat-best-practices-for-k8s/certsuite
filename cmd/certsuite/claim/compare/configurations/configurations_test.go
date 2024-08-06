@@ -3,9 +3,9 @@ package configurations
 import (
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/diff"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/diff"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/pkg/claim"
 )
 
 func TestGetDiffReport(t *testing.T) {

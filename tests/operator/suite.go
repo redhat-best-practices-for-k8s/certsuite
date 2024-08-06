@@ -19,17 +19,17 @@ package operator
 import (
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/tests/common"
-	"github.com/test-network-function/cnf-certification-test/tests/common/rbac"
-	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
-	"github.com/test-network-function/cnf-certification-test/tests/operator/phasecheck"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common/rbac"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/phasecheck"
 
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/versions"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 )
 
 var (

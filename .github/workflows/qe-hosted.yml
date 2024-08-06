@@ -12,9 +12,9 @@ permissions:
   contents: read
 
 env:
-  QE_REPO: test-network-function/cnfcert-tests-verification
-  CERTSUITE_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
-  CERTSUITE_IMAGE_NAME_NEW: quay.io/testnetworkfunction/k8s-best-practices-certsuite
+  QE_REPO: redhat-best-practices-for-k8s/certsuite-qe
+  CERTSUITE_IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite
+  CERTSUITE_IMAGE_NAME_LEGACY: quay.io/redhat-best-practices-for-k8s/redhat-best-practices-for-k8s-certsuite
   TEST_CERTSUITE_IMAGE_TAG: localtest
   CERTSUITE_CONFIG_DIR: '/tmp/certsuite_config'
   CERTSUITE_REPORT_DIR: '/tmp/certsuite_report'
@@ -45,7 +45,7 @@ jobs:
           file: ./Dockerfile
           tags: |
             ${{ env.CERTSUITE_IMAGE_NAME }}:${{ env.TEST_CERTSUITE_IMAGE_TAG }}
-            ${{ env.CERTSUITE_IMAGE_NAME_NEW }}:${{ env.TEST_CERTSUITE_IMAGE_TAG }}
+            ${{ env.CERTSUITE_IMAGE_NAME_LEGACY }}:${{ env.TEST_CERTSUITE_IMAGE_TAG }}
           outputs: type=docker,dest=/tmp/testimage.tar
       
       - name: Store image as artifact
@@ -98,14 +98,14 @@ jobs:
 
       - name: Wait for all pods to be ready
         run: ./scripts/wait-for-all-pods-running.sh
-        working-directory: cnf-certification-test-partner
+        working-directory: certsuite-sample-workload
         timeout-minutes: 10
 
       - name: Clone the QE repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           repository: ${{ env.QE_REPO }}
-          path: cnfcert-tests-verification
+          path: certsuite-qe
           ref: main
 
       - name: Extract dependent Pull Requests
@@ -118,7 +118,7 @@ jobs:
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+          command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       # Only run against the binary during a scheduled run
       - name: Build the binary
@@ -131,15 +131,15 @@ jobs:
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+          command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
-        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         env:
           COMMIT_SHA: ${{ github.sha }}
           JOB_RUN_ID: ${{ github.run_id }}
           JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
-          GITHUB_REPO: https://github.com/test-network-function/cnf-certification-test
+          GITHUB_REPO: https://github.com/redhat-best-practices-for-k8s/certsuite
         run: |
           curl -X POST --data "{
               \"text\": \"🚨⚠️  Failed to run Github hosted QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"

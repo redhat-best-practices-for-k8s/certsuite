@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/diff"
-	officialClaimScheme "github.com/test-network-function/test-network-function-claim/pkg/claim"
+	officialClaimScheme "github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/diff"
 )
 
 type DiffReport struct {

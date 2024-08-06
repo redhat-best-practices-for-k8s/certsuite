@@ -3,8 +3,8 @@ package configuration_test
 import (
 	"testing"
 
+	configuration "github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/stretchr/testify/assert"
-	configuration "github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 const (

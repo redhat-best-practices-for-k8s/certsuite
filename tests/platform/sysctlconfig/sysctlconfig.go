@@ -21,8 +21,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 // Creates a map describing the final sysctl key-value pair out of the results of "sysctl --system"

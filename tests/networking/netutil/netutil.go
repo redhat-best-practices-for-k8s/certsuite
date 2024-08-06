@@ -21,8 +21,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/crclient"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/crclient"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 const (

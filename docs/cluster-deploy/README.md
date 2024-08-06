@@ -26,7 +26,7 @@ The first thing in that yaml is the namespace, so it's the first resource that w
 
 Then, there's a configMap with the whole config (tnf_config.yaml) that will be used by the pod to create the tnf_config.yaml file inside a volume folder. Also, there's a secret with the preflight's dockerconfig file content that will also be used by the CNF Cert Suitep pod.
 
-The CNF Cert Suite pod is the last resource defined in the cnf-certsuite.yaml file. It has only one container that uses the [quay.io/testnetworkfunction/cnf-certification-test:latest](latest) tag of the CNF Cert Suite. The command slice of this container has a hardcoded labels to run as many test cases as possible, excluding the intrusive ones.
+The CNF Cert Suite pod is the last resource defined in the cnf-certsuite.yaml file. It has only one container that uses the [quay.io/redhat-best-practices-for-k8s/certsuite:latest](latest) tag of the CNF Cert Suite. The command slice of this container has a hardcoded labels to run as many test cases as possible, excluding the intrusive ones.
 
 ## kustomization.yaml
 

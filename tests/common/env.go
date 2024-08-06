@@ -22,7 +22,7 @@ import (
 )
 
 var (
-	// PathRelativeToRoot is used to calculate relative filepaths for the `test-network-function` executable entrypoint.
+	// PathRelativeToRoot is used to calculate relative filepaths for the `redhat-best-practices-for-k8s` executable entrypoint.
 	PathRelativeToRoot = path.Join("..")
 
 	// RelativeSchemaPath is the relative path to the generic-test.schema.json JSON schema.

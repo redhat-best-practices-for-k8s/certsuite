@@ -21,7 +21,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 )
 
 const nbProcessesIndex = 2

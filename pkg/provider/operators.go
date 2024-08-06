@@ -29,11 +29,11 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/go-logr/stdr"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 

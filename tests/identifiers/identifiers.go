@@ -19,8 +19,8 @@ package identifiers
 import (
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/tests/common"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 )
 
 // shared description text
@@ -725,8 +725,8 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity",
 		common.NetworkingTestKey,
-		`Checks that each workload Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`,                                                  //nolint:lll
-		`Ensure that the workload is able to communicate via the Default OpenShift network. In some rare cases, workloads may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`, //nolint:lll
+		`Checks that each workload Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`,                                                          //nolint:lll
+		`Ensure that the workload is able to communicate via the Default OpenShift network. In some rare cases, workloads may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the redhat-best-practices-for-k8s.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`, //nolint:lll
 		`No exceptions - must be able to communicate on default network using IPv4`,
 		TestICMPv4ConnectivityIdentifierDocLink,
 		true,
@@ -1709,7 +1709,7 @@ that Node's kernel may not have the same hacks.'`,
 		"If an application creates CRDs it must supply a role to access those CRDs and no other API resources/permission. This test checks that there is at least one role present in each namespaces under test that only refers to CRDs under test.",
 		"Roles providing access to CRDs should not refer to any other api or resources. Change the generation of the CRD role accordingly",
 		NoExceptionProcessForExtendedTests,
-		"https://test-network-function.github.io/k8s-best-practices-guide-guide/#k8s-best-practices-custom-role-to-access-application-crds",
+		"https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-custom-role-to-access-application-crds",
 		true,
 		map[string]string{
 			FarEdge:  Optional,

@@ -14,8 +14,8 @@ please contact [Red Hat](https://redhat-connect.gitbook.io/red-hat-partner-conne
 ### To add private test cases
 
 Refer this documentation
-https://github.com/test-network-function/cnfextensions
+https://github.com/redhat-best-practices-for-k8s/cnfextensions
 
 **Reference**
 
-[cnf-certification-test-partner](https://github.com/test-network-function/cnf-certification-test-partner) repository provides sample example to model the test setup.
+[certsuite-sample-workload](https://github.com/redhat-best-practices-for-k8s/certsuite-sample-workload) repository provides sample example to model the test setup.

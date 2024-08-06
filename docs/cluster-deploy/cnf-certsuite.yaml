@@ -41,14 +41,14 @@ data:
     targetNameSpaces:
       - name: tnf
     podsUnderTestLabels:
-      - "test-network-function.com/generic: target"
-    # deprecated operator label ("test-network-function.com/operator:"") still configured by default, no need to add it here
+      - "redhat-best-practices-for-k8s.com/generic: target"
+    # deprecated operator label ("redhat-best-practices-for-k8s.com/operator:"") still configured by default, no need to add it here
     operatorsUnderTestLabels:
-      - "test-network-function.com/operator1:new"
+      - "redhat-best-practices-for-k8s.com/operator1:new"
     targetCrdFilters:
       - nameSuffix: "group1.test.com"
         scalable: false
-      - nameSuffix: "test-network-function.com"
+      - nameSuffix: "redhat-best-practices-for-k8s.com"
         scalable: false
       - nameSuffix: "tutorial.my.domain"
         scalable: true
@@ -118,7 +118,7 @@ spec:
   containers:
     - name: cnf-certsuite
       imagePullPolicy: Always
-      image: quay.io/testnetworkfunction/cnf-certification-test:latest
+      image: quay.io/redhat-best-practices-for-k8s/certsuite:latest
       resources:
         limits:
           memory: 500Mi

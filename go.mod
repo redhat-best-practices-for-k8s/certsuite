@@ -1,13 +1,13 @@
-module github.com/test-network-function/cnf-certification-test
+module github.com/redhat-best-practices-for-k8s/certsuite
 
 go 1.22.5
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.45
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
-	github.com/test-network-function/test-network-function-claim v1.0.44
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -212,10 +212,10 @@ require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.1
 	github.com/manifoldco/promptui v0.9.0
+	github.com/redhat-best-practices-for-k8s/oct v0.0.18
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.31
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240715111135-c9048da99aae
 	github.com/robert-nix/ansihtml v1.0.1
-	github.com/test-network-function/oct v0.0.17
-	github.com/test-network-function/privileged-daemonset v1.0.29
 	golang.org/x/term v0.23.0
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.30.3

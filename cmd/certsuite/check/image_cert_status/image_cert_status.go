@@ -20,8 +20,8 @@ import (
 	"fmt"
 
 	"github.com/fatih/color"
+	"github.com/redhat-best-practices-for-k8s/oct/pkg/certdb"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/oct/pkg/certdb"
 )
 
 var checkImageCertStatusCmd = &cobra.Command{

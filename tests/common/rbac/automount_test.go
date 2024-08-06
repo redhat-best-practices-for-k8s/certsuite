@@ -19,8 +19,8 @@ package rbac
 import (
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

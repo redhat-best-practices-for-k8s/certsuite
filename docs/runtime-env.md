@@ -31,10 +31,10 @@ export CERTSUITE_NON_INTRUSIVE_ONLY=true
 
 The intrusive test cases are:
 
-- [lifecycle-deployment-scaling](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-deployment-scaling)
-- [lifecycle-statefulset-scaling](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-statefulset-scaling)
-- [lifecycle-crd-scaling](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-crd-scaling)
-- [lifecycle-pod-recreation](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-pod-recreation)
+- [lifecycle-deployment-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-deployment-scaling)
+- [lifecycle-statefulset-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-statefulset-scaling)
+- [lifecycle-crd-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-crd-scaling)
+- [lifecycle-pod-recreation](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-pod-recreation)
 
 Likewise, to enable intrusive tests, set the following:
 
@@ -63,4 +63,4 @@ See more about this variable [here](https://github.com/redhat-openshift-ecosyste
 against a private container registry that has self-signed certificates.
 
 Note that you can also specify the debug pod image to use with `SUPPORT_IMAGE`
-environment variable, default to `k8s-best-practices-debug:v0.0.4`.
+environment variable, default to `certsuite-probe:v0.0.5`.

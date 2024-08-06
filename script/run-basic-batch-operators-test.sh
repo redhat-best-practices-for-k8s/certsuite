@@ -34,7 +34,7 @@ OPERATOR_CATALOG_NAMESPACE="openshift-marketplace"
 OPERATORS_UNDER_TEST=""
 
 # Certsuite container image
-CERTSUITE_IMAGE_NAME=quay.io/testnetworkfunction/cnf-certification-test
+CERTSUITE_IMAGE_NAME=quay.io/redhat-best-practices-for-k8s/certsuite
 CERTSUITE_IMAGE_TAG=unstable
 
 # OUTPUTS
@@ -310,13 +310,13 @@ wait_for_csv_to_appear_and_label() {
 		fi
 	done
 
-	# Label CSV with "test-network-function.com/operator=target"
-	command=$(with_retry 5 10 oc get csv -n "$csv_namespace" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | grep -v openshift-operator-lifecycle-manager | sed '/^ *$/d' | awk '{print "  with_retry 5 10 oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator=target "}')
+	# Label CSV with "redhat-best-practices-for-k8s.com/operator=target"
+	command=$(with_retry 5 10 oc get csv -n "$csv_namespace" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | grep -v openshift-operator-lifecycle-manager | sed '/^ *$/d' | awk '{print "  with_retry 5 10 oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/operator=target "}')
 	eval "$command"
 
 	# Wait for the CSV to be succeeded
 	echo_color "$BLUE" "Wait for CSV to be succeeded"
-	with_retry 30 0 oc wait csv -l test-network-function.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=5s || status="$?"
+	with_retry 30 0 oc wait csv -l redhat-best-practices-for-k8s.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=5s || status="$?"
 	return $status
 }
 
@@ -484,9 +484,9 @@ cat <<EOF >"$CONFIG_YAML_TEMPLATE"
 targetNameSpaces:
   - name: \$ns
 podsUnderTestLabels:
-  - "test-network-function.com/generic: target"
+  - "redhat-best-practices-for-k8s.com/generic: target"
 operatorsUnderTestLabels:
-  - "test-network-function.com/operator: target" 
+  - "redhat-best-practices-for-k8s.com/operator: target" 
 EOF
 
 OPERATOR_PAGE='<!DOCTYPE html>
@@ -604,11 +604,11 @@ while IFS=, read -r package_name catalog_index; do
 	sleep 30
 
 	echo_color "$BLUE" "Label deployments, statefulsets, pods"
-	# Label deployments, statefulsets and pods with "test-network-function.com/generic=target"
+	# Label deployments, statefulsets and pods with "redhat-best-practices-for-k8s.com/generic=target"
 	{
-		oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
-		oc get statefulset -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
-		oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
+		oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
+		oc get statefulset -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
+		oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
 	} >>"$LOG_FILE_PATH" 2>&1
 
 	# run certsuite container
@@ -636,7 +636,7 @@ while IFS=, read -r package_name catalog_index; do
 
 	echo_color "$BLUE" "unlabel operator"
 	# Unlabel the operator
-	if ! oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator- "}' | bash; then
+	if ! oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/operator- "}' | bash; then
 		echo_color "$RED" "Error, failed to unlabel the operator"
 	fi
 
