@@ -1,5 +1,5 @@
 ---
-name: 'Publish the `cnf-certification-test` image (latest release only)'
+name: 'Publish the `certsuite` image (latest release only)'
 "on":
   # Run the workflow when a new release gets published
   release:
@@ -36,7 +36,119 @@ env:
 
 jobs:
   test-and-push-tnf-image-main:
-    name: 'Test and push the `cnf-certification-test` image'
+    name: 'Test and push the `certsuite` image'
+    runs-on: ubuntu-22.04
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+      CURRENT_VERSION_GENERIC_BRANCH: main
+      CERTSUITE_VERSION: ""
+      DEBUG_IMAGE_VERSION: ""
+    steps:
+
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Checkout generic working branch of the current version
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
+          fetch-depth: '0'
+
+      - name: Get the latest TNF version from GIT
+        run: |
+          GIT_RELEASE=$(git tag --points-at HEAD | head -n 1)
+          GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | tail -n 1)
+          GIT_LATEST_RELEASE=$GIT_RELEASE
+          if [ -z "$GIT_RELEASE" ]; then
+            GIT_LATEST_RELEASE=$GIT_PREVIOUS_RELEASE
+          fi
+
+          echo "version_number=$GIT_LATEST_RELEASE" >> $GITHUB_OUTPUT
+        id: set_certsuite_version
+
+      - name: Print the latest TNF version from GIT
+        run: |
+          echo Version tag: ${{ steps.set_certsuite_version.outputs.version_number }}
+
+      - name: Get contents of the version.json file
+        run: echo "json=$(cat version.json | tr -d '[:space:]')" >> $GITHUB_OUTPUT
+        id: get_version_json_file
+
+      - name: Get the debug version number from file
+        run: |
+          echo Debug version tag: $VERSION_FROM_FILE_DEBUG
+          echo "debug_version_number=$VERSION_FROM_FILE_DEBUG" >> $GITHUB_OUTPUT
+        id: set_debug_version
+        env:
+          VERSION_FROM_FILE_DEBUG: ${{ fromJSON(steps.get_version_json_file.outputs.json).debugTag }}
+
+      - name: Update env variables
+        run: |
+          echo "CERTSUITE_VERSION=${{ steps.set_certsuite_version.outputs.version_number }}" >> $GITHUB_ENV
+          echo "DEBUG_IMAGE_VERSION=${{ steps.set_debug_version.outputs.debug_version_number }}" >> $GITHUB_ENV
+
+      - name: Ensure $CERTSUITE_VERSION and $IMAGE_TAG are set
+        run: '[[ -n "$CERTSUITE_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$DEBUG_IMAGE_VERSION" ]]'
+
+      - name: Check whether the version tag exists on remote
+        run: git ls-remote --exit-code $CERTSUITE_SRC_URL refs/tags/$CERTSUITE_VERSION
+
+      - name: (if tag is missing) Display debug message
+        if: ${{ failure() }}
+        run: echo "Tag '$CERTSUITE_VERSION' does not exist on remote $CERTSUITE_SRC_URL"
+
+      - name: Check whether the version tag exists on remote
+        run: git ls-remote --exit-code ${{ env.DEBUG_IMAGE_SRC_URL }} refs/tags/$DEBUG_IMAGE_VERSION
+
+      - name: (if debugTag is missing) Display debug message
+        if: ${{ failure() }}
+        run: echo "Tag '$DEBUG_IMAGE_VERSION' does not exist on remote $DEBUG_IMAGE_SRC_URL"
+
+      - name: Checkout the version tag
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ env.CERTSUITE_VERSION }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3.2.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+
+      # Push the new TNF image to Quay.io.
+      - name: Authenticate against Quay.io
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          # Use a Robot Account to authenticate against Quay.io
+          # https://docs.quay.io/glossary/robot-accounts.html
+          username: ${{ secrets.QUAY_ROBOT_USERNAME_K8S }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN_K8S }}
+
+      - name: Build and push the TNF image for multi-arch
+        uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME}}:${{ env.CERTSUITE_VERSION }}
+            ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME}}:${{ env.IMAGE_TAG }}
+
+      - name: If failed to create the image, send alert msg to dev team.
+        if: ${{ failure() }}
+        uses: ./.github/actions/slack-webhook-sender
+        with:
+          message: 'Failed to create official container image manifest version ${{ env.CERTSUITE_VERSION }}'
+          slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
+
+  test-and-push-tnf-image-legacy:
+    name: 'Test and push the `cnf-certification-test` image (legacy)'
     runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
@@ -137,8 +249,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME}}:${{ env.CERTSUITE_VERSION }}
-            ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME}}:${{ env.IMAGE_TAG }}
             ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME_LEGACY}}:${{ env.CERTSUITE_VERSION }}
             ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME_LEGACY}}:${{ env.IMAGE_TAG }}
 

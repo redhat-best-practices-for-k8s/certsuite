@@ -462,7 +462,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME }}:${{ env.CERTSUITE_IMAGE_TAG }}
             ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME_LEGACY }}:${{ env.CERTSUITE_IMAGE_TAG }}
       
       - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
