@@ -5,11 +5,11 @@ import (
 	"os"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/version"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/info"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/version"
-	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 )
 
 func TestCertsuiteVersionCmd(t *testing.T) {

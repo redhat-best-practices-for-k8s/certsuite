@@ -19,8 +19,8 @@ package lifecycle
 import (
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 func TestNameInDeploymentSkipList(t *testing.T) {

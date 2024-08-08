@@ -19,8 +19,8 @@ package certification
 import (
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
 func TestGetContainersToQuery(t *testing.T) {

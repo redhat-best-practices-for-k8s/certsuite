@@ -23,9 +23,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
-	"github.com/test-network-function/cnf-certification-test/tests/platform/operatingsystem"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/operatingsystem"
 	corev1 "k8s.io/api/core/v1"
 )
 

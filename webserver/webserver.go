@@ -17,15 +17,15 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/arrayhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/robert-nix/ansihtml"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	yaml "gopkg.in/yaml.v2"
 )

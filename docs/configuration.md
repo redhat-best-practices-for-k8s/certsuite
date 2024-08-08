@@ -3,7 +3,7 @@
 
 The Red Hat Best Practices Test Suite for Kubernetes uses a YAML configuration file to certify a specific workload. This file specifies the workload's resources to be certified, as well as any exceptions or other general configuration options.
 
-By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/test-network-function/cnf-certification-test/blob/main/config/tnf_config.yml) of the Config File. For a description of each config option see the section [Config File options](#config-file-options).
+By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/tnf_config.yml) of the Config File. For a description of each config option see the section [Config File options](#config-file-options).
 
 ## Config Generator
 
@@ -59,7 +59,7 @@ The labels that each Pod of the workload under test must have to be verified by 
 
 ``` { .yaml .annotate }
 podsUnderTestLabels:
-  - "test-network-function.com/generic: target"
+  - "redhat-best-practices-for-k8s.com/generic: target"
 ```
 
 #### operatorsUnderTestLabels
@@ -70,7 +70,7 @@ If a new label is used for this purpose make sure it is added to the workload op
 
 ``` { .yaml .annotate }
 operatorsUnderTestLabels:
-  - "test-network-function.com/operator: target" 
+  - "redhat-best-practices-for-k8s.com/operator: target" 
 ```
 
 #### targetCrdFilters
@@ -222,9 +222,9 @@ The autodiscovery mechanism will attempt to identify the default network device 
 
 - The _k8s.v1.cni.cncf.io/networks-status_ annotation is checked and the _interface_ from the first entry found with _“default”=true_ is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
 
-The label _test-network-function.com/skip_connectivity_tests_ excludes Pods from all connectivity tests.
+The label _redhat-best-practices-for-k8s.com/skip_connectivity_tests_ excludes Pods from all connectivity tests.
 
-The label _test-network-function.com/skip_multus_connectivity_tests_ excludes Pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on the default interface are still run.
+The label _redhat-best-practices-for-k8s.com/skip_multus_connectivity_tests_ excludes Pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on the default interface are still run.
 
 #### Affinity requirements
 

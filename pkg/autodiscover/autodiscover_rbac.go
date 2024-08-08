@@ -19,7 +19,7 @@ package autodiscover
 import (
 	"context"
 
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	rbacv1typed "k8s.io/client-go/kubernetes/typed/rbac/v1"

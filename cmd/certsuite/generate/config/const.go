@@ -125,10 +125,10 @@ const (
 	namespaceExample = "cnf, cnf-workload"
 	podsPrompt       = "Enter a comma-separated list of labels to identify the CNF's Pods under test."
 	podsSyntax       = "pod-label-1[, pod-label-2]..."
-	podsExample      = "test-network-function.com/generic: target"
+	podsExample      = "redhat-best-practices-for-k8s.com/generic: target"
 	operatorsPrompt  = "Enter a comma-separated list of labels to identify the CNF's operators under test."
 	operatorsSyntax  = "operator-label-1[, operator-label-2]..."
-	operatorsExample = "test-network-function.com/operator1: target"
+	operatorsExample = "redhat-best-practices-for-k8s.com/operator1: target"
 	crdFiltersPrompt = "Enter a comma-separated list of the CRD's name suffixes that the CNF contains. Also, specify if the\n" +
 		"resources managed by those CRDs are scalable."
 	crdFiltersSyntax           = "crd-name-suffix/{true|false}[,crd-name-suffix/{true|false}]..."

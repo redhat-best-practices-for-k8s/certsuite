@@ -19,9 +19,9 @@ package preflight
 import (
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/tests/common"
-	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
 )
 
 func TestGetUniqueTestEntriesFromContainerResults(_ *testing.T) {

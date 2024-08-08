@@ -28,12 +28,12 @@ import (
 
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+	k8sPrivilegedDs "github.com/redhat-best-practices-for-k8s/privileged-daemonset"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	k8sPrivilegedDs "github.com/test-network-function/privileged-daemonset"
 	"helm.sh/helm/v3/pkg/release"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -53,8 +53,8 @@ const (
 	DaemonSetName                    = "tnf-debug"
 	debugPodsTimeout                 = 5 * time.Minute
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/network-status"
-	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
-	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
+	skipConnectivityTestsLabel       = "redhat-best-practices-for-k8s.com/skip_connectivity_tests"
+	skipMultusConnectivityTestsLabel = "redhat-best-practices-for-k8s.com/skip_multus_connectivity_tests"
 	rhcosName                        = "Red Hat Enterprise Linux CoreOS"
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
@@ -185,7 +185,7 @@ func deployDaemonSet(namespace string) error {
 
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = DaemonSetName
-	matchLabels["test-network-function.com/app"] = DaemonSetName
+	matchLabels["redhat-best-practices-for-k8s.com/app"] = DaemonSetName
 	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout,
 		configuration.GetTestParameters().DaemonsetCPUReq,
 		configuration.GetTestParameters().DaemonsetCPULim,

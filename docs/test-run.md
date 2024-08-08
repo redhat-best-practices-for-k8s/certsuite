@@ -70,7 +70,7 @@ The following is a non-exhaustive list of the most common flags that the `certsu
 
 !!! note
 
-    See the [OCT tool](https://github.com/test-network-function/oct) for more information on how to create this DB.
+    See the [OCT tool](https://github.com/redhat-best-practices-for-k8s/oct) for more information on how to create this DB.
 
 ## Using the container image
 
@@ -78,10 +78,10 @@ The only prerequisite for running the Test Suite in container mode is having Doc
 
 ### Pull the test image
 
-The test image is available at this [repository](https://quay.io/repository/testnetworkfunction/cnf-certification-test) and can be pulled using:
+The test image is available at this [repository](https://quay.io/repository/redhat-best-practices-for-k8s/certsuite) and can be pulled using:
 
 ```shell
-docker pull quay.io/testnetworkfunction/cnf-certification-test:<image-tag>
+docker pull quay.io/redhat-best-practices-for-k8s/certsuite:<image-tag>
 ```
 
 The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository or any existing version number such as `v5.2.1`.
@@ -104,7 +104,7 @@ To reduce the number of shared volumes with the test container in the example be
 docker run --rm --network host \
   -v <path-to-local-dir>/config:/usr/certsuite/config:Z \
   -v <path-to-local-dir>/results:/usr/certsuite/results:Z \
-  quay.io/testnetworkfunction/cnf-certification-test:latest \
+  quay.io/redhat-best-practices-for-k8s/certsuite:latest \
   certsuite run \
   --kubeconfig=/usr/certsuite/config/kubeconfig \
   --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \

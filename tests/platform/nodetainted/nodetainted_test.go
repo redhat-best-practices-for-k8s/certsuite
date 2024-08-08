@@ -20,8 +20,8 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
 func TestDecodeKernelTaints(t *testing.T) {

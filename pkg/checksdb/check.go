@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/test-network-function/cnf-certification-test/internal/cli"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 const (

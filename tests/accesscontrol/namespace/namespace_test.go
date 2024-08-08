@@ -20,8 +20,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 func TestGetInvalidCRsNum(t *testing.T) {

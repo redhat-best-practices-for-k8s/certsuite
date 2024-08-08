@@ -10,8 +10,8 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"gopkg.in/yaml.v3"
 )
 

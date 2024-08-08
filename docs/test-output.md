@@ -75,7 +75,7 @@ This file serves two different purposes:
 
 A standalone HTML page is available to decode the results.
 For more details, see:
-https://github.com/test-network-function/parser
+https://github.com/redhat-best-practices-for-k8s/parser
 
 ## Compare claim files from two different Test Suite runs
 

@@ -3,8 +3,8 @@ package version
 import (
 	"fmt"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 )
 
 var (

@@ -98,7 +98,7 @@ RUN \
 
 # Using latest is prone to errors.
 # hadolint ignore=DL3007
-FROM quay.io/testnetworkfunction/oct:latest AS db
+FROM quay.io/redhat-best-practices-for-k8s/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root

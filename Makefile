@@ -19,8 +19,8 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 # Default values
 REGISTRY_LOCAL?=localhost
 REGISTRY?=quay.io
-CERTSUITE_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
-CERTSUITE_IMAGE_NAME_NEW?=testnetworkfunction/k8s-best-practices-certsuite
+CERTSUITE_IMAGE_NAME?=redhat-best-practices-for-k8s/certsuite
+CERTSUITE_IMAGE_NAME_LEGACY?=testnetworkfunction/cnf-certification-test
 IMAGE_TAG?=localtest
 .PHONY: all clean test build
 .PHONY: \
@@ -47,13 +47,13 @@ GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
 CLAIM_FORMAT_VERSION=$(shell script/get-claim-version.sh)
 GOLANGCI_VERSION=v1.59.1
-LINKER_CERTSUITE_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-test/pkg/versions.GitCommit=${GIT_COMMIT}
-LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitRelease=${GIT_RELEASE}
-LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
-LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
+LINKER_CERTSUITE_RELEASE_FLAGS=-X github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions.GitCommit=${GIT_COMMIT}
+LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions.GitRelease=${GIT_RELEASE}
+LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
+LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
 BASH_SCRIPTS=$(shell find . -name "*.sh" -not -path "./.git/*")
 PARSER_RELEASE=$(shell jq -r .parserTag version.json)
-RESULTS_HTML_URL=https://raw.githubusercontent.com/test-network-function/parser/${PARSER_RELEASE}/html/results.html
+RESULTS_HTML_URL=https://raw.githubusercontent.com/redhat-best-practices-for-k8s/parser/${PARSER_RELEASE}/html/results.html
 
 all: build
 
@@ -134,7 +134,7 @@ generate: install-moq
 update-rhcos-versions:
 	./script/rhcos_versions.sh
 
-OCT_IMAGE=quay.io/testnetworkfunction/oct:latest
+OCT_IMAGE=quay.io/redhat-best-practices-for-k8s/oct:latest
 REPO_DIR=$(shell pwd)
 
 get-db:
@@ -149,8 +149,8 @@ build-image-local:
 	docker build --pull --no-cache \
 		-t ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${CERTSUITE_IMAGE_NAME}:${IMAGE_TAG} \
-		-t ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME_NEW}:${IMAGE_TAG} \
-		-t ${REGISTRY}/${CERTSUITE_IMAGE_NAME_NEW}:${IMAGE_TAG} \
+		-t ${REGISTRY_LOCAL}/${CERTSUITE_IMAGE_NAME_LEGACY}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${CERTSUITE_IMAGE_NAME_LEGACY}:${IMAGE_TAG} \
 		-f Dockerfile .
 
 results-html:

@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/configurations"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/nodes"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/testcases"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/versions"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/configurations"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/nodes"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/testcases"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/versions"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/pkg/claim"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 const longHelp = `Compares sections of both claim files and the differences are shown in a table per section.

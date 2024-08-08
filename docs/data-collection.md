@@ -1,7 +1,7 @@
 # Share Test Suite Results with Red Hat
 
 Your test suite results can be collected and stored in our
-[Collector](https://github.com/test-network-function/collector) database.
+[Collector](https://github.com/redhat-best-practices-for-k8s/collector) database.
 
 ## What information is shared
 

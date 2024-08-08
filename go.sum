@@ -373,6 +373,12 @@ github.com/prometheus/procfs v0.0.2/go.mod h1:TjEm7ze935MbeOT/UhFTIMYKhuLP4wbCsT
 github.com/prometheus/procfs v0.0.3/go.mod h1:4A/X28fw3Fc593LaREMrKMqOKvUAntwMDaekg4FpcdQ=
 github.com/prometheus/procfs v0.14.0 h1:Lw4VdGGoKEZilJsayHf0B+9YgLGREba2C6xr+Fdfq6s=
 github.com/prometheus/procfs v0.14.0/go.mod h1:XL+Iwz8k8ZabyZfMFHPiilCniixqQarAy5Mu67pHlNQ=
+github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.45 h1:lvsPZBl4owH80mX2fU879iIz0vYVbjj37CPnMifz5jw=
+github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.45/go.mod h1:ymD8Lckn+C1k/QFalRv5srVro6w1GdcwtyRoSE4XWKM=
+github.com/redhat-best-practices-for-k8s/oct v0.0.18 h1:Sri0/c85m8Gn5yTNbSZu9KGc/gJAOOM94D1CwKdlIJw=
+github.com/redhat-best-practices-for-k8s/oct v0.0.18/go.mod h1:ucn2BTjdhHWZ7/c0tLmrxCvRedtV8FpjffsD8L233ro=
+github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.31 h1:LBb6aB2zGUPyROM/C5LOOLvVtGfM4PxvLI5rW0q4ja4=
+github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.31/go.mod h1:OGSlK+KdZ050HazHfs+9iQbv7fIqtaidNXgWRq5zMbg=
 github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240715111135-c9048da99aae h1:ztCHw10EtpMfX1d9Xz/TenJ6XsZrwkGd2uetdrAAMkg=
 github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240715111135-c9048da99aae/go.mod h1:e2SE87xDQYxted00f0zoB4ZhlnGiwaj90kpOcL2J/eA=
 github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec h1:W09IVJc94icq4NjY3clb7Lk8O1qJ8BdBEF8z0ibU0rE=
@@ -437,12 +443,6 @@ github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsT
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 github.com/subosito/gotenv v1.6.0 h1:9NlTDc1FTs4qu0DDq7AEtTPNw6SVm7uBMsUCUjABIf8=
 github.com/subosito/gotenv v1.6.0/go.mod h1:Dk4QP5c2W3ibzajGcXpNraDfq2IrhjMIvMSWPKKo0FU=
-github.com/test-network-function/oct v0.0.17 h1:2FNfKOam2iz5hXBhvVAXk31gxbXBACE+ZH2av1qb6I8=
-github.com/test-network-function/oct v0.0.17/go.mod h1:fO+xvJYjjDOAX2xlmrhLF4UmVzMMxVGqurcAda+HkSs=
-github.com/test-network-function/privileged-daemonset v1.0.29 h1:1iaNUNgfTAR2IIRshGMPhE4CJvHSBK2DIAj9tUjpJ/Y=
-github.com/test-network-function/privileged-daemonset v1.0.29/go.mod h1:ArMMrh90RKfgrVA5IW98Bz8AuUuKSGpgg4CM09RVul8=
-github.com/test-network-function/test-network-function-claim v1.0.44 h1:5zTSJxCuTkxIAMP8Otz1KQye0mF2CRTrikTUO2SUUoI=
-github.com/test-network-function/test-network-function-claim v1.0.44/go.mod h1:qx39rLEBKV1Th5IcmaapgVpNbOtBYPpzvgg6Qw/hkxI=
 github.com/vbatts/tar-split v0.11.5 h1:3bHCTIheBm1qFTcgh9oPu+nNBtX+XJIupG/vacinCts=
 github.com/vbatts/tar-split v0.11.5/go.mod h1:yZbwRsSeGjusneWgA781EKej9HF8vme8okylkAeNKLk=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=

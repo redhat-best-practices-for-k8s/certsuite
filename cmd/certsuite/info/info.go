@@ -5,12 +5,12 @@ import (
 	"os"
 	"strings"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/internal/cli"
-	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
-	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
-	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 	"golang.org/x/term"
 )
 

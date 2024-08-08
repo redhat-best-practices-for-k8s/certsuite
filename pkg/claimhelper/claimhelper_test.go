@@ -22,8 +22,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 func TestPopulateXMLFromClaim(t *testing.T) {

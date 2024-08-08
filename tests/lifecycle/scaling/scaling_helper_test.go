@@ -3,8 +3,8 @@ package scaling
 import (
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

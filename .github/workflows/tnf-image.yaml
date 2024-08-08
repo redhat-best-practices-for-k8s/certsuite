@@ -23,15 +23,15 @@ defaults:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  CERTSUITE_IMAGE_NAME: testnetworkfunction/cnf-certification-test
-  CERTSUITE_IMAGE_NAME_NEW: testnetworkfunction/k8s-best-practices-certsuite
+  CERTSUITE_IMAGE_NAME: redhat-best-practices-for-k8s/certsuite
+  CERTSUITE_IMAGE_NAME_LEGACY: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: latest
   CERTSUITE_CONTAINER_CLIENT: docker
   CERTSUITE_NON_INTRUSIVE_ONLY: false
   CERTSUITE_ALLOW_PREFLIGHT_INSECURE: false
   CERTSUITE_CONFIG_DIR: /tmp/tnf/config
   CERTSUITE_SRC_URL: 'https://github.com/${{ github.repository }}'
-  DEBUG_IMAGE_REPO: test-network-function/k8s-best-practices-debug
+  DEBUG_IMAGE_REPO: -probe
   DEBUG_IMAGE_SRC_URL: 'https://github.com/${DEBUG_IMAGE_REPO}'
 
 jobs:
@@ -139,8 +139,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME}}:${{ env.CERTSUITE_VERSION }}
             ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME}}:${{ env.IMAGE_TAG }}
-            ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME_NEW}}:${{ env.CERTSUITE_VERSION }}
-            ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME_NEW}}:${{ env.IMAGE_TAG }}
+            ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME_LEGACY}}:${{ env.CERTSUITE_VERSION }}
+            ${{ env.REGISTRY }}/${{env.CERTSUITE_IMAGE_NAME_LEGACY}}:${{ env.IMAGE_TAG }}
 
       - name: If failed to create the image, send alert msg to dev team.
         if: ${{ failure() }}

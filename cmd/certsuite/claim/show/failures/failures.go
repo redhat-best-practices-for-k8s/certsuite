@@ -7,9 +7,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/pkg/claim"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
 var (

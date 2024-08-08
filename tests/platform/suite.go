@@ -21,23 +21,23 @@ import (
 	"strconv"
 	"strings"
 
-	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
-	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/tests/common"
-	"github.com/test-network-function/cnf-certification-test/tests/identifiers"
-	"github.com/test-network-function/cnf-certification-test/tests/platform/bootparams"
-	"github.com/test-network-function/cnf-certification-test/tests/platform/cnffsdiff"
-	"github.com/test-network-function/cnf-certification-test/tests/platform/hugepages"
-	"github.com/test-network-function/cnf-certification-test/tests/platform/isredhat"
+	clientsholder "github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/compatibility"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/bootparams"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/cnffsdiff"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/hugepages"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/isredhat"
 
-	"github.com/test-network-function/cnf-certification-test/tests/platform/operatingsystem"
-	"github.com/test-network-function/cnf-certification-test/tests/platform/sysctlconfig"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/operatingsystem"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/sysctlconfig"
 
-	"github.com/test-network-function/cnf-certification-test/tests/platform/nodetainted"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
 )
 
 var (

@@ -19,8 +19,8 @@ package services
 import (
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/tests/networking/netcommons"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

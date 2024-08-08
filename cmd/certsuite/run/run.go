@@ -6,11 +6,11 @@ import (
 	"os"
 	"time"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+	"github.com/redhat-best-practices-for-k8s/certsuite/webserver"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/webserver"
 )
 
 const timeoutFlagDefaultvalue = 24 * time.Hour
@@ -39,8 +39,8 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().Bool("include-web-files", false, "Save web files in the configured output folder")
 	runCmd.PersistentFlags().Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
 	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
-	runCmd.PersistentFlags().String("tnf-image-repository", "quay.io/testnetworkfunction", "The repository where TNF images are stored")
-	runCmd.PersistentFlags().String("tnf-debug-image", "k8s-best-practices-debug:v0.0.4", "Name of the k8s-best-practices-debug image")
+	runCmd.PersistentFlags().String("tnf-image-repository", "quay.io/redhat-best-practices-for-k8s", "The repository where TNF images are stored")
+	runCmd.PersistentFlags().String("tnf-debug-image", "certsuite-probe:v0.0.5", "Name of the certsuite-probe image")
 	runCmd.PersistentFlags().String("daemonset-cpu-req", "100m", "CPU request for the debug DaemonSet container")
 	runCmd.PersistentFlags().String("daemonset-cpu-lim", "100m", "CPU limit for the debug DaemonSet container")
 	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the debug DaemonSet container")

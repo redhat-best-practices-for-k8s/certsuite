@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"

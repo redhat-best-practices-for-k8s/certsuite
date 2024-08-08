@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
-      IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test:unstable
+      IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite:unstable
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
