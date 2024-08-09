@@ -31,8 +31,8 @@ env:
   CERTSUITE_ALLOW_PREFLIGHT_INSECURE: false
   CERTSUITE_CONFIG_DIR: /tmp/tnf/config
   CERTSUITE_SRC_URL: 'https://github.com/${{ github.repository }}'
-  DEBUG_IMAGE_REPO: -probe
-  DEBUG_IMAGE_SRC_URL: 'https://github.com/${DEBUG_IMAGE_REPO}'
+  PROBE_IMAGE_REPO: redhat-best-practices-for-k8s/certsuite-probe
+  PROBE_IMAGE_SRC_URL: 'https://github.com/${PROBE_IMAGE_REPO}'
 
 jobs:
   test-and-push-tnf-image-main:
@@ -44,7 +44,7 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
       CURRENT_VERSION_GENERIC_BRANCH: main
       CERTSUITE_VERSION: ""
-      DEBUG_IMAGE_VERSION: ""
+      PROBE_IMAGE_VERSION: ""
     steps:
 
       - name: Write temporary docker file
@@ -79,21 +79,21 @@ jobs:
         run: echo "json=$(cat version.json | tr -d '[:space:]')" >> $GITHUB_OUTPUT
         id: get_version_json_file
 
-      - name: Get the debug version number from file
+      - name: Get the probe version number from file
         run: |
-          echo Debug version tag: $VERSION_FROM_FILE_DEBUG
-          echo "debug_version_number=$VERSION_FROM_FILE_DEBUG" >> $GITHUB_OUTPUT
-        id: set_debug_version
+          echo Probe version tag: $VERSION_FROM_FILE_PROBE
+          echo "probe_version_number=$VERSION_FROM_FILE_PROBE" >> $GITHUB_OUTPUT
+        id: set_probe_version
         env:
-          VERSION_FROM_FILE_DEBUG: ${{ fromJSON(steps.get_version_json_file.outputs.json).debugTag }}
+          VERSION_FROM_FILE_PROBE: ${{ fromJSON(steps.get_version_json_file.outputs.json).debugTag }}
 
       - name: Update env variables
         run: |
           echo "CERTSUITE_VERSION=${{ steps.set_certsuite_version.outputs.version_number }}" >> $GITHUB_ENV
-          echo "DEBUG_IMAGE_VERSION=${{ steps.set_debug_version.outputs.debug_version_number }}" >> $GITHUB_ENV
+          echo "PROBE_IMAGE_VERSION=${{ steps.set_probe_version.outputs.probe_version_number }}" >> $GITHUB_ENV
 
       - name: Ensure $CERTSUITE_VERSION and $IMAGE_TAG are set
-        run: '[[ -n "$CERTSUITE_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$DEBUG_IMAGE_VERSION" ]]'
+        run: '[[ -n "$CERTSUITE_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$PROBE_IMAGE_VERSION" ]]'
 
       - name: Check whether the version tag exists on remote
         run: git ls-remote --exit-code $CERTSUITE_SRC_URL refs/tags/$CERTSUITE_VERSION
@@ -103,11 +103,11 @@ jobs:
         run: echo "Tag '$CERTSUITE_VERSION' does not exist on remote $CERTSUITE_SRC_URL"
 
       - name: Check whether the version tag exists on remote
-        run: git ls-remote --exit-code ${{ env.DEBUG_IMAGE_SRC_URL }} refs/tags/$DEBUG_IMAGE_VERSION
+        run: git ls-remote --exit-code ${{ env.PROBE_IMAGE_SRC_URL }} refs/tags/$PROBE_IMAGE_VERSION
 
       - name: (if debugTag is missing) Display debug message
         if: ${{ failure() }}
-        run: echo "Tag '$DEBUG_IMAGE_VERSION' does not exist on remote $DEBUG_IMAGE_SRC_URL"
+        run: echo "Tag '$PROBE_IMAGE_VERSION' does not exist on remote $PROBE_IMAGE_SRC_URL"
 
       - name: Checkout the version tag
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -156,7 +156,7 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
       CURRENT_VERSION_GENERIC_BRANCH: main
       CERTSUITE_VERSION: ""
-      DEBUG_IMAGE_VERSION: ""
+      PROBE_IMAGE_VERSION: ""
     steps:
 
       - name: Write temporary docker file
@@ -191,21 +191,21 @@ jobs:
         run: echo "json=$(cat version.json | tr -d '[:space:]')" >> $GITHUB_OUTPUT
         id: get_version_json_file
 
-      - name: Get the debug version number from file
+      - name: Get the probe version number from file
         run: |
-          echo Debug version tag: $VERSION_FROM_FILE_DEBUG
-          echo "debug_version_number=$VERSION_FROM_FILE_DEBUG" >> $GITHUB_OUTPUT
-        id: set_debug_version
+          echo Probe version tag: $VERSION_FROM_FILE_PROBE
+          echo "probe_version_number=$VERSION_FROM_FILE_PROBE" >> $GITHUB_OUTPUT
+        id: set_probe_version
         env:
-          VERSION_FROM_FILE_DEBUG: ${{ fromJSON(steps.get_version_json_file.outputs.json).debugTag }}
+          VERSION_FROM_FILE_PROBE: ${{ fromJSON(steps.get_version_json_file.outputs.json).debugTag }}
 
       - name: Update env variables
         run: |
           echo "CERTSUITE_VERSION=${{ steps.set_certsuite_version.outputs.version_number }}" >> $GITHUB_ENV
-          echo "DEBUG_IMAGE_VERSION=${{ steps.set_debug_version.outputs.debug_version_number }}" >> $GITHUB_ENV
+          echo "PROBE_IMAGE_VERSION=${{ steps.set_probe_version.outputs.probe_version_number }}" >> $GITHUB_ENV
 
       - name: Ensure $CERTSUITE_VERSION and $IMAGE_TAG are set
-        run: '[[ -n "$CERTSUITE_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$DEBUG_IMAGE_VERSION" ]]'
+        run: '[[ -n "$CERTSUITE_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$PROBE_IMAGE_VERSION" ]]'
 
       - name: Check whether the version tag exists on remote
         run: git ls-remote --exit-code $CERTSUITE_SRC_URL refs/tags/$CERTSUITE_VERSION
@@ -215,11 +215,11 @@ jobs:
         run: echo "Tag '$CERTSUITE_VERSION' does not exist on remote $CERTSUITE_SRC_URL"
 
       - name: Check whether the version tag exists on remote
-        run: git ls-remote --exit-code ${{ env.DEBUG_IMAGE_SRC_URL }} refs/tags/$DEBUG_IMAGE_VERSION
+        run: git ls-remote --exit-code ${{ env.PROBE_IMAGE_SRC_URL }} refs/tags/$PROBE_IMAGE_VERSION
 
       - name: (if debugTag is missing) Display debug message
         if: ${{ failure() }}
-        run: echo "Tag '$DEBUG_IMAGE_VERSION' does not exist on remote $DEBUG_IMAGE_SRC_URL"
+        run: echo "Tag '$PROBE_IMAGE_VERSION' does not exist on remote $PROBE_IMAGE_SRC_URL"
 
       - name: Checkout the version tag
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
