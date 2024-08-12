@@ -40,9 +40,6 @@ func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient
 		}
 		// Get owner references of the unstructured object
 		ownerReferences := resource.GetOwnerReferences()
-		if err != nil {
-			return fmt.Errorf("error getting owner references. err= %s", err)
-		}
 		// if no owner references, we have reached the top record it
 		if len(ownerReferences) == 0 {
 			topOwners[ownerRef.Name] = TopOwner{Kind: ownerRef.Kind, Name: ownerRef.Name, Namespace: namespace}
