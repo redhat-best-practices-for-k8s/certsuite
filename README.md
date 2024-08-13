@@ -19,7 +19,7 @@ OpenShift clusters are followed.
 * The test suite can be run as a standalone (after compiling the Golang code)
 or as a container.
 * The **full documentation** is published
-[here](https://redhat-best-practices-for-k8s.github.io/cnf-certification-test/).
+[here](https://redhat-best-practices-for-k8s.github.io/certsuite/).
 Please contact us in case the documentation is broken.
 
 * The catalog of all the available test cases can be found [here](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md).
