@@ -38,7 +38,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netutil"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/services"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 )
 
@@ -266,7 +266,7 @@ func LoadChecks() {
 
 // isContainerCapabilitySet checks whether a container capability was explicitly set
 // in securityContext.capabilities.add list.
-func isContainerCapabilitySet(containerCapabilities *v1.Capabilities, capability string) bool {
+func isContainerCapabilitySet(containerCapabilities *corev1.Capabilities, capability string) bool {
 	if containerCapabilities == nil {
 		return false
 	}
@@ -275,8 +275,8 @@ func isContainerCapabilitySet(containerCapabilities *v1.Capabilities, capability
 		return false
 	}
 
-	if stringhelper.StringInSlice(containerCapabilities.Add, v1.Capability("ALL"), true) ||
-		stringhelper.StringInSlice(containerCapabilities.Add, v1.Capability(capability), true) {
+	if stringhelper.StringInSlice(containerCapabilities.Add, corev1.Capability("ALL"), true) ||
+		stringhelper.StringInSlice(containerCapabilities.Add, corev1.Capability(capability), true) {
 		return true
 	}
 

@@ -20,12 +20,12 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 func Test_isContainerCapabilitySet(t *testing.T) {
 	type args struct {
-		containerCapabilities *v1.Capabilities
+		containerCapabilities *corev1.Capabilities
 		capability            string
 	}
 	tests := []struct {
@@ -45,7 +45,7 @@ func Test_isContainerCapabilitySet(t *testing.T) {
 			name: "empty capabilities",
 			args: args{
 				capability:            "IPC_LOCK",
-				containerCapabilities: &v1.Capabilities{},
+				containerCapabilities: &corev1.Capabilities{},
 			},
 			want: false,
 		},
@@ -53,7 +53,7 @@ func Test_isContainerCapabilitySet(t *testing.T) {
 			name: "explicitly empty add list",
 			args: args{
 				capability:            "IPC_LOCK",
-				containerCapabilities: &v1.Capabilities{Add: []v1.Capability{}},
+				containerCapabilities: &corev1.Capabilities{Add: []corev1.Capability{}},
 			},
 			want: false,
 		},
@@ -61,7 +61,7 @@ func Test_isContainerCapabilitySet(t *testing.T) {
 			name: "explicitly empty drop list",
 			args: args{
 				capability:            "IPC_LOCK",
-				containerCapabilities: &v1.Capabilities{Drop: []v1.Capability{}},
+				containerCapabilities: &corev1.Capabilities{Drop: []corev1.Capability{}},
 			},
 			want: false,
 		},
@@ -69,9 +69,9 @@ func Test_isContainerCapabilitySet(t *testing.T) {
 			name: "IPC_LOCK not found in any list",
 			args: args{
 				capability: "IPC_LOCK",
-				containerCapabilities: &v1.Capabilities{
-					Add:  []v1.Capability{"NET_CAP_BINDING"},
-					Drop: []v1.Capability{"SYS_ADMIN", "NET_ADMIN"},
+				containerCapabilities: &corev1.Capabilities{
+					Add:  []corev1.Capability{"NET_CAP_BINDING"},
+					Drop: []corev1.Capability{"SYS_ADMIN", "NET_ADMIN"},
 				},
 			},
 			want: false,
@@ -80,9 +80,9 @@ func Test_isContainerCapabilitySet(t *testing.T) {
 			name: "IPC_LOCK found in the add list",
 			args: args{
 				capability: "IPC_LOCK",
-				containerCapabilities: &v1.Capabilities{
-					Add:  []v1.Capability{"NET_ADMIN", "IPC_LOCK"},
-					Drop: []v1.Capability{"SYS_ADMIN"}},
+				containerCapabilities: &corev1.Capabilities{
+					Add:  []corev1.Capability{"NET_ADMIN", "IPC_LOCK"},
+					Drop: []corev1.Capability{"SYS_ADMIN"}},
 			},
 			want: true,
 		},
@@ -90,7 +90,7 @@ func Test_isContainerCapabilitySet(t *testing.T) {
 			name: "IPC_LOCK appears in the drop list only",
 			args: args{
 				capability:            "IPC_LOCK",
-				containerCapabilities: &v1.Capabilities{Drop: []v1.Capability{"SYS_ADMIN", "IPC_LOCK", "NET_ADMIN"}},
+				containerCapabilities: &corev1.Capabilities{Drop: []corev1.Capability{"SYS_ADMIN", "IPC_LOCK", "NET_ADMIN"}},
 			},
 			want: false,
 		},
@@ -100,9 +100,9 @@ func Test_isContainerCapabilitySet(t *testing.T) {
 			name: "IPC_LOCK set in both add and drop lists.",
 			args: args{
 				capability: "IPC_LOCK",
-				containerCapabilities: &v1.Capabilities{
-					Add:  []v1.Capability{"IPC_LOCK"},
-					Drop: []v1.Capability{"SYS_ADMIN", "IPC_LOCK", "NET_ADMIN"},
+				containerCapabilities: &corev1.Capabilities{
+					Add:  []corev1.Capability{"IPC_LOCK"},
+					Drop: []corev1.Capability{"SYS_ADMIN", "IPC_LOCK", "NET_ADMIN"},
 				},
 			},
 			want: true,
@@ -111,7 +111,7 @@ func Test_isContainerCapabilitySet(t *testing.T) {
 			name: "ALL capabilities in the add list",
 			args: args{
 				capability:            "IPC_LOCK",
-				containerCapabilities: &v1.Capabilities{Add: []v1.Capability{"ALL"}},
+				containerCapabilities: &corev1.Capabilities{Add: []corev1.Capability{"ALL"}},
 			},
 			want: true,
 		},
