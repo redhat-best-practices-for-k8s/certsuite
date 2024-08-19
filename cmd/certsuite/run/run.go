@@ -100,6 +100,7 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 
 	return nil
 }
+
 func runTestSuite(cmd *cobra.Command, _ []string) error {
 	err := initTestParamsFromFlags(cmd)
 	if err != nil {
