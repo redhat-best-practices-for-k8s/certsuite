@@ -38,6 +38,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netutil"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/services"
+	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 )
 
@@ -263,6 +264,25 @@ func LoadChecks() {
 		}))
 }
 
+// isContainerCapabilitySet checks whether a container capability was explicitly set
+// in securityContext.capabilities.add list.
+func isContainerCapabilitySet(containerCapabilities *corev1.Capabilities, capability string) bool {
+	if containerCapabilities == nil {
+		return false
+	}
+
+	if len(containerCapabilities.Add) == 0 {
+		return false
+	}
+
+	if stringhelper.StringInSlice(containerCapabilities.Add, corev1.Capability("ALL"), true) ||
+		stringhelper.StringInSlice(containerCapabilities.Add, corev1.Capability(capability), true) {
+		return true
+	}
+
+	return false
+}
+
 // checkForbiddenCapability checks if containers use a forbidden capability.
 // Returns:
 //   - compliantObjects []*testhelper.ReportObject : Slice containing report objects for containers compliant with the capability restrictions.
@@ -275,7 +295,7 @@ func checkForbiddenCapability(containers []*provider.Container, capability strin
 		switch {
 		case cut.SecurityContext == nil:
 		case cut.SecurityContext.Capabilities == nil:
-		case strings.Contains(cut.SecurityContext.Capabilities.String(), capability):
+		case isContainerCapabilitySet(cut.SecurityContext.Capabilities, capability):
 			compliant = false
 		}
 
