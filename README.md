@@ -37,27 +37,16 @@ Please contact us in case the documentation is broken.
 * Partner
 * Developer
 
-## Technical Pre-requisites for Running the Test Suite
+## Pre-requisites for Running the Test Suite
 
 * OCP or Kubernetes Cluster
 * Docker or Podman (if running the container-based version)
 
-## Pre-requisites for Topics Covered
+## Pre-requisites Knowledge
 
-* Knowledge on Kubernetes
-* OpenShift Container Platform
+* Basics of Kubernetes
+* OpenShift Container Platform (OCP)
 * Kubernetes Operator
-
-## Linters for the Codebase
-
-* [`checkmake`](https://github.com/mrtazz/checkmake)
-* [`golangci-lint`](https://github.com/golangci/golangci-lint)
-* [`hadolint`](https://github.com/hadolint/hadolint)
-* [`markdownlint`](https://github.com/igorshubovych/markdownlint-cli)
-* [`shellcheck`](https://github.com/koalaman/shellcheck)
-* [`shfmt`](https://github.com/mvdan/sh)
-* [`typos`](https://github.com/crate-ci/typos)
-* [`yamllint`](https://github.com/adrienverge/yamllint)
 
 ## License
 
