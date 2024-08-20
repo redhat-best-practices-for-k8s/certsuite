@@ -44,7 +44,7 @@ jobs:
       - name: Set up Go 1.22
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
         with:
-          go-version: 1.22.5
+          go-version: 1.22.6
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -119,7 +119,7 @@ jobs:
       - name: Set up Go 1.22
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
         with:
-          go-version: 1.22.5
+          go-version: 1.22.6
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -189,7 +189,7 @@ jobs:
       - name: Set up Go 1.22
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
         with:
-          go-version: 1.22.5
+          go-version: 1.22.6
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -285,7 +285,7 @@ jobs:
       - name: Set up Go 1.22
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
         with:
-          go-version: 1.22.5
+          go-version: 1.22.6
 
       # Perform smoke tests using a Certsuite container.
       - name: Check out code
