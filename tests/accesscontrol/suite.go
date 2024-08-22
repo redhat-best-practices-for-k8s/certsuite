@@ -732,6 +732,7 @@ func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironm
 		client := clientsholder.GetClientsHolder()
 		podPassed, newMsg := rbac.EvaluateAutomountTokens(client.K8sClient.CoreV1(), put.Pod)
 		if !podPassed {
+			//nolint:govet
 			check.LogError(newMsg)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, newMsg, false))
 		} else {
@@ -915,6 +916,7 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 		}
 
 		// 2. Check if SSH port is listening
+		//nolint:gosec
 		sshPortInfo := netutil.PortInfo{PortNumber: int32(sshServicePortNumber), Protocol: sshServicePortProtocol}
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {

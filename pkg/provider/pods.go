@@ -207,10 +207,7 @@ func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
 
 func (p *Pod) HasNodeSelector() bool {
 	// Checks whether or not the pod has a nodeSelector or a NodeName supplied
-	if p.Spec.NodeSelector == nil || len(p.Spec.NodeSelector) == 0 {
-		return false
-	}
-	return true
+	return len(p.Spec.NodeSelector) != 0
 }
 
 func (p *Pod) IsRuntimeClassNameSpecified() bool {
