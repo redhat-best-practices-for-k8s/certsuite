@@ -180,7 +180,7 @@ func LoadChecks() {
 		}))
 
 	// Statefulset scaling test
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestStateFulSetScalingIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestStatefulSetScalingIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNotIntrusiveSkipFn(&env),
 			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle)).
