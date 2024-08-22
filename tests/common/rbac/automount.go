@@ -17,27 +17,11 @@
 package rbac
 
 import (
-	"context"
 	"fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
-	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	corev1typed "k8s.io/client-go/kubernetes/typed/core/v1"
 )
-
-// AutomountServiceAccountSetOnSA checks if the AutomountServiceAccountToken field is set on a ServiceAccount.
-// Returns:
-//   - A boolean pointer indicating whether the AutomountServiceAccountToken field is set.
-//   - An error if any occurred during the operation.
-func AutomountServiceAccountSetOnSA(client corev1typed.CoreV1Interface, serviceAccountName, podNamespace string) (*bool, error) {
-	sa, err := client.ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, metav1.GetOptions{})
-	if err != nil {
-		log.Error("executing serviceaccount command failed with error: %v", err)
-		return nil, err
-	}
-	return sa.AutomountServiceAccountToken, nil
-}
 
 // EvaluateAutomountTokens evaluates whether the automountServiceAccountToken is correctly configured for the given Pod.
 // Checks if the token is explicitly set in the Pod's spec or if it is inherited from the associated ServiceAccount.
@@ -46,7 +30,7 @@ func AutomountServiceAccountSetOnSA(client corev1typed.CoreV1Interface, serviceA
 //   - string: Error message if the Pod is misconfigured, otherwise an empty string.
 //
 //nolint:gocritic
-func EvaluateAutomountTokens(client corev1typed.CoreV1Interface, put *corev1.Pod) (bool, string) {
+func EvaluateAutomountTokens(client corev1typed.CoreV1Interface, put *provider.Pod) (bool, string) {
 	// The token can be specified in the pod directly
 	// or it can be specified in the service account of the pod
 	// if no service account is configured, then the pod will use the configuration
@@ -59,7 +43,7 @@ func EvaluateAutomountTokens(client corev1typed.CoreV1Interface, put *corev1.Pod
 	}
 
 	// Collect information about the service account attached to the pod.
-	saAutomountServiceAccountToken, err := AutomountServiceAccountSetOnSA(client, put.Spec.ServiceAccountName, put.Namespace)
+	saAutomountServiceAccountToken, err := put.IsAutomountServiceAccountSetOnSA()
 	if err != nil {
 		return false, ""
 	}

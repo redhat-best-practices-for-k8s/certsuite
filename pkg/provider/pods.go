@@ -42,6 +42,7 @@ const (
 
 type Pod struct {
 	*corev1.Pod
+	AllServiceAccountsMap   *map[string]*corev1.ServiceAccount
 	Containers              []*Container
 	MultusNetworkInterfaces map[string]CniNetworkInterface
 	MultusPCIs              []string
@@ -415,4 +416,18 @@ func (p *Pod) IsRunAsNonRoot() bool {
 // Get the list of top owners of pods
 func (p *Pod) GetTopOwner() (topOwners map[string]podhelper.TopOwner, err error) {
 	return podhelper.GetPodTopOwner(p.Namespace, p.OwnerReferences)
+}
+
+// AutomountServiceAccountSetOnSA checks if the AutomountServiceAccountToken field is set on the pod's ServiceAccount.
+// Returns:
+//   - A boolean pointer indicating whether the AutomountServiceAccountToken field is set.
+//   - An error if any occurred during the operation.
+func (p *Pod) IsAutomountServiceAccountSetOnSA() (isSet *bool, err error) {
+	if p.AllServiceAccountsMap == nil {
+		return isSet, fmt.Errorf("AllServiceAccountsMap is not initialized for pod with ns: %s and name %s", p.Namespace, p.Name)
+	}
+	if _, ok := (*p.AllServiceAccountsMap)[p.Namespace+p.Spec.ServiceAccountName]; !ok {
+		return isSet, fmt.Errorf("could not find a service account with ns: %s and name %s", p.Namespace, p.Spec.ServiceAccountName)
+	}
+	return (*p.AllServiceAccountsMap)[p.Namespace+p.Spec.ServiceAccountName].AutomountServiceAccountToken, nil
 }
