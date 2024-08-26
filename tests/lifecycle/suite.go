@@ -180,7 +180,7 @@ func LoadChecks() {
 		}))
 
 	// Statefulset scaling test
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestStateFulSetScalingIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestStatefulSetScalingIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNotIntrusiveSkipFn(&env),
 			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle)).
@@ -582,6 +582,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	needsPostMortemInfo := true
 	defer func() {
 		if needsPostMortemInfo {
+			//nolint:govet
 			check.LogDebug(postmortem.Log())
 		}
 		// Since we are possible exiting early, we need to make sure we set the result at the end of the function.

@@ -63,6 +63,7 @@ func PrintBanner() {
 type cliCheckLogSniffer struct{}
 
 func isTTY() bool {
+	//nolint:gosec
 	return term.IsTerminal(int(os.Stdin.Fd()))
 }
 
@@ -94,6 +95,7 @@ func updateRunningCheckLine(checkName string, stopChan <-chan bool) {
 }
 
 func getTerminalWidth() int {
+	//nolint:gosec
 	width, _, _ := term.GetSize(int(os.Stdin.Fd()))
 	return width
 }

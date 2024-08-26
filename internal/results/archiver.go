@@ -19,6 +19,7 @@ const (
 )
 
 func generateZipFileName() string {
+	//nolint:govet
 	return fmt.Sprintf(time.Now().Format(tarGzFileNamePrefixLayout) + "-" + tarGzFileNameSuffix)
 }
 
