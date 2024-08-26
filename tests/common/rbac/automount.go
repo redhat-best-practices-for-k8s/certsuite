@@ -45,7 +45,7 @@ func EvaluateAutomountTokens(client corev1typed.CoreV1Interface, put *provider.P
 	// Collect information about the service account attached to the pod.
 	saAutomountServiceAccountToken, err := put.IsAutomountServiceAccountSetOnSA()
 	if err != nil {
-		return false, ""
+		return false, err.Error()
 	}
 
 	// The pod token is false means the pod is configured properly
