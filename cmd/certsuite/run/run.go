@@ -40,7 +40,7 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
 	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
 	runCmd.PersistentFlags().String("tnf-image-repository", "quay.io/redhat-best-practices-for-k8s", "The repository where TNF images are stored")
-	runCmd.PersistentFlags().String("tnf-debug-image", "certsuite-probe:v0.0.6", "Name of the certsuite-probe image")
+	runCmd.PersistentFlags().String("tnf-debug-image", "certsuite-probe:v0.0.7", "Name of the certsuite-probe image")
 	runCmd.PersistentFlags().String("daemonset-cpu-req", "100m", "CPU request for the debug DaemonSet container")
 	runCmd.PersistentFlags().String("daemonset-cpu-lim", "100m", "CPU limit for the debug DaemonSet container")
 	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the debug DaemonSet container")
