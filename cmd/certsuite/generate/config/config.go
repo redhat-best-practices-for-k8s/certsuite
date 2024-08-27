@@ -25,10 +25,10 @@ func NewCommand() *cobra.Command {
 }
 
 var (
-	// generateConfiCmd is a helper tool to generate a CNF config YAML file
+	// generateConfiCmd is a helper tool to generate a Workload config YAML file
 	generateConfigCmd = &cobra.Command{
 		Use:   "config",
-		Short: "Generates a CNF config YAML file with user input.",
+		Short: "Generates a Workload config YAML file with user input.",
 		Run: func(cmd *cobra.Command, args []string) {
 			generateConfig()
 		},
@@ -84,7 +84,7 @@ func generateConfig() {
 
 func createConfiguration() {
 	createMenu := []configOption{
-		{Option: cnfResources, Help: cnfResourcesHelp},
+		{Option: workloadResources, Help: workloadResourcesHelp},
 		{Option: exceptions, Help: exceptionsdHelp},
 		// {Option: collector, Help: collectordHelp},
 		{Option: settings, Help: settingsHelp},
@@ -107,8 +107,8 @@ func createConfiguration() {
 			return
 		}
 		switch createMenu[i].Option {
-		case cnfResources:
-			createCnfResourcesConfiguration()
+		case workloadResources:
+			createWorkloadResourcesConfiguration()
 		case exceptions:
 			createExceptionsConfiguration()
 		// case collector:
@@ -127,7 +127,7 @@ func showConfiguration(config *configuration.TestConfiguration) {
 		log.Printf("could not marshal the YAML file, err: %v", err)
 		return
 	}
-	fmt.Println("================= CNF CONFIGURATION =================")
+	fmt.Println("================= Workload CONFIGURATION =================")
 	fmt.Println(string(configYaml))
 	fmt.Println("=====================================================")
 }
@@ -140,7 +140,7 @@ func saveConfiguration(config *configuration.TestConfiguration) {
 	}
 
 	saveConfigPrompt := promptui.Prompt{
-		Label:   "CNF config file",
+		Label:   "Workload config file",
 		Default: defaultConfigFileName,
 	}
 
@@ -159,8 +159,8 @@ func saveConfiguration(config *configuration.TestConfiguration) {
 	fmt.Println(color.GreenString("Configuration saved"))
 }
 
-func createCnfResourcesConfiguration() {
-	cnfResourcesOptions := []configOption{
+func createWorkloadResourcesConfiguration() {
+	workloadResourcesOptions := []configOption{
 		{Option: namespaces, Help: namespacesHelp},
 		{Option: pods, Help: podLabelsHelp},
 		{Option: operators, Help: operatorLabelsHelp},
@@ -169,29 +169,29 @@ func createCnfResourcesConfiguration() {
 		{Option: managedStatefulSets, Help: managedStatefulSetsHelp},
 		{Option: previousMenu, Help: backHelp},
 	}
-	cnfResourcesSearcher := func(input string, index int) bool {
-		basicOption := cnfResourcesOptions[index]
+	workloadResourcesSearcher := func(input string, index int) bool {
+		basicOption := workloadResourcesOptions[index]
 		name := strings.ReplaceAll(strings.ToLower(basicOption.Option), " ", "")
 		input = strings.ReplaceAll(strings.ToLower(input), " ", "")
 
 		return strings.Contains(name, input)
 	}
-	cnfResourcesPrompt := promptui.Select{
+	workloadResourcesPrompt := promptui.Select{
 		Label:        "",
-		Items:        cnfResourcesOptions,
+		Items:        workloadResourcesOptions,
 		Templates:    templates,
 		Size:         7,
-		Searcher:     cnfResourcesSearcher,
+		Searcher:     workloadResourcesSearcher,
 		HideSelected: true,
 	}
 	var exit bool
 	for !exit {
-		i, _, err := cnfResourcesPrompt.Run()
+		i, _, err := workloadResourcesPrompt.Run()
 		if err != nil {
 			log.Printf("Prompt failed %v\n", err)
 			return
 		}
-		switch cnfResourcesOptions[i].Option {
+		switch workloadResourcesOptions[i].Option {
 		case namespaces:
 			loadNamespaces(getAnswer(namespacePrompt, namespaceSyntax, namespaceExample))
 		case pods:

@@ -83,7 +83,7 @@ type Schema struct {
 		Nodes Nodes `json:"nodes"`
 
 		RawResults struct {
-			Cnfcertificationtest struct {
+			Workloadcertificationtest struct {
 				Testsuites struct {
 					Testsuite struct {
 						Testcase []TestCaseRawResult `json:"testcase"`

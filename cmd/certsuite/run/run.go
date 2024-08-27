@@ -111,13 +111,13 @@ func runTestSuite(cmd *cobra.Command, _ []string) error {
 
 	testParams := configuration.GetTestParameters()
 	if testParams.ServerMode {
-		log.Info("Running CNF Certification Suite in web server mode")
+		log.Info("Running Workload Certification Suite in web server mode")
 		webserver.StartServer(testParams.OutputDir)
 	} else {
-		log.Info("Running CNF Certification Suite in stand-alone mode")
+		log.Info("Running Workload Certification Suite in stand-alone mode")
 		err := certsuite.Run(testParams.LabelsFilter, testParams.OutputDir)
 		if err != nil {
-			log.Fatal("Failed to run CNF Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
+			log.Fatal("Failed to run Workload Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
 		}
 	}
 
