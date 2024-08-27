@@ -181,7 +181,7 @@ var (
 func deployDaemonSet(namespace string) error {
 	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
 
-	dsImage := env.params.TnfImageRepo + "/" + env.params.TnfDebugImage
+	dsImage := env.params.CertsuiteImageRepo + "/" + env.params.CertsuiteDebugImage
 	if k8sPrivilegedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
 		return nil
 	}

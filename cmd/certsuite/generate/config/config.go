@@ -35,7 +35,7 @@ var (
 	}
 )
 
-var tnfConfig = configuration.TestConfiguration{}
+var certsuiteConfig = configuration.TestConfiguration{}
 
 var templates = &promptui.SelectTemplates{
 	Label:    "{{ . }}",
@@ -73,9 +73,9 @@ func generateConfig() {
 		case create:
 			createConfiguration()
 		case show:
-			showConfiguration(&tnfConfig)
+			showConfiguration(&certsuiteConfig)
 		case save:
-			saveConfiguration(&tnfConfig)
+			saveConfiguration(&certsuiteConfig)
 		case quit:
 			exit = true
 		}
@@ -359,25 +359,25 @@ func getAnswer(prompt, syntax, example string) []string {
 }
 
 func loadNamespaces(namespaces []string) {
-	tnfConfig.TargetNameSpaces = nil
+	certsuiteConfig.TargetNameSpaces = nil
 	for _, namespace := range namespaces {
-		tnfNamespace := configuration.Namespace{Name: namespace}
-		tnfConfig.TargetNameSpaces = append(tnfConfig.TargetNameSpaces, tnfNamespace)
+		certsuiteNamespace := configuration.Namespace{Name: namespace}
+		certsuiteConfig.TargetNameSpaces = append(certsuiteConfig.TargetNameSpaces, certsuiteNamespace)
 	}
 }
 
 func loadPodLabels(podLabels []string) {
-	tnfConfig.PodsUnderTestLabels = nil
-	tnfConfig.PodsUnderTestLabels = podLabels
+	certsuiteConfig.PodsUnderTestLabels = nil
+	certsuiteConfig.PodsUnderTestLabels = podLabels
 }
 
 func loadOperatorLabels(operatorLabels []string) {
-	tnfConfig.OperatorsUnderTestLabels = nil
-	tnfConfig.OperatorsUnderTestLabels = operatorLabels
+	certsuiteConfig.OperatorsUnderTestLabels = nil
+	certsuiteConfig.OperatorsUnderTestLabels = operatorLabels
 }
 
 func loadCRDfilters(crdFilters []string) {
-	tnfConfig.CrdFilters = nil
+	certsuiteConfig.CrdFilters = nil
 	for _, crdFilterStr := range crdFilters {
 		crdFilter := strings.Split(crdFilterStr, "/")
 		crdFilterName := crdFilter[0]
@@ -386,55 +386,55 @@ func loadCRDfilters(crdFilters []string) {
 			log.Printf("could not parse CRD filter, err: %v", err)
 			return
 		}
-		tnfCrdFilter := configuration.CrdFilter{NameSuffix: crdFilterName, Scalable: crdFilterScalable}
-		tnfConfig.CrdFilters = append(tnfConfig.CrdFilters, tnfCrdFilter)
+		certsuiteCrdFilter := configuration.CrdFilter{NameSuffix: crdFilterName, Scalable: crdFilterScalable}
+		certsuiteConfig.CrdFilters = append(certsuiteConfig.CrdFilters, certsuiteCrdFilter)
 	}
 }
 
 func loadManagedDeployments(deployments []string) {
-	tnfConfig.ManagedDeployments = nil
+	certsuiteConfig.ManagedDeployments = nil
 	for _, deployment := range deployments {
-		tnfManagedDeployment := configuration.ManagedDeploymentsStatefulsets{Name: deployment}
-		tnfConfig.ManagedDeployments = append(tnfConfig.ManagedDeployments, tnfManagedDeployment)
+		certsuiteManagedDeployment := configuration.ManagedDeploymentsStatefulsets{Name: deployment}
+		certsuiteConfig.ManagedDeployments = append(certsuiteConfig.ManagedDeployments, certsuiteManagedDeployment)
 	}
 }
 
 func loadManagedStatefulSets(statefulSets []string) {
-	tnfConfig.ManagedStatefulsets = nil
+	certsuiteConfig.ManagedStatefulsets = nil
 	for _, statefulSet := range statefulSets {
-		tnfManagedStatefulSet := configuration.ManagedDeploymentsStatefulsets{Name: statefulSet}
-		tnfConfig.ManagedStatefulsets = append(tnfConfig.ManagedStatefulsets, tnfManagedStatefulSet)
+		certsuiteManagedStatefulSet := configuration.ManagedDeploymentsStatefulsets{Name: statefulSet}
+		certsuiteConfig.ManagedStatefulsets = append(certsuiteConfig.ManagedStatefulsets, certsuiteManagedStatefulSet)
 	}
 }
 
 func loadAcceptedKernelTaints(taints []string) {
-	tnfConfig.AcceptedKernelTaints = nil
+	certsuiteConfig.AcceptedKernelTaints = nil
 	for _, taint := range taints {
-		tnfKernelTaint := configuration.AcceptedKernelTaintsInfo{Module: taint}
-		tnfConfig.AcceptedKernelTaints = append(tnfConfig.AcceptedKernelTaints, tnfKernelTaint)
+		certsuiteKernelTaint := configuration.AcceptedKernelTaintsInfo{Module: taint}
+		certsuiteConfig.AcceptedKernelTaints = append(certsuiteConfig.AcceptedKernelTaints, certsuiteKernelTaint)
 	}
 }
 
 func loadHelmCharts(helmCharts []string) {
-	tnfConfig.SkipHelmChartList = nil
+	certsuiteConfig.SkipHelmChartList = nil
 	for _, chart := range helmCharts {
-		tnfHelmChart := configuration.SkipHelmChartList{Name: chart}
-		tnfConfig.SkipHelmChartList = append(tnfConfig.SkipHelmChartList, tnfHelmChart)
+		certsuiteHelmChart := configuration.SkipHelmChartList{Name: chart}
+		certsuiteConfig.SkipHelmChartList = append(certsuiteConfig.SkipHelmChartList, certsuiteHelmChart)
 	}
 }
 
 func loadProtocolNames(protocolNames []string) {
-	tnfConfig.ValidProtocolNames = nil
-	tnfConfig.ValidProtocolNames = protocolNames
+	certsuiteConfig.ValidProtocolNames = nil
+	certsuiteConfig.ValidProtocolNames = protocolNames
 }
 
 func loadServices(services []string) {
-	tnfConfig.ServicesIgnoreList = nil
-	tnfConfig.ServicesIgnoreList = services
+	certsuiteConfig.ServicesIgnoreList = nil
+	certsuiteConfig.ServicesIgnoreList = services
 }
 
 func loadNonScalableDeployments(nonScalableDeployments []string) {
-	tnfConfig.SkipScalingTestDeployments = nil
+	certsuiteConfig.SkipScalingTestDeployments = nil
 	for _, nonScalableDeploymentStr := range nonScalableDeployments {
 		nonScalableDeployment := strings.Split(nonScalableDeploymentStr, "/")
 		const nonScalableDeploymentsFields = 2
@@ -444,14 +444,14 @@ func loadNonScalableDeployments(nonScalableDeployments []string) {
 		}
 		nonScalableDeploymentName := nonScalableDeployment[0]
 		nonScalableDeploymentNamespace := nonScalableDeployment[1]
-		tnfNonScalableDeployment := configuration.SkipScalingTestDeploymentsInfo{Name: nonScalableDeploymentName,
+		certsuiteNonScalableDeployment := configuration.SkipScalingTestDeploymentsInfo{Name: nonScalableDeploymentName,
 			Namespace: nonScalableDeploymentNamespace}
-		tnfConfig.SkipScalingTestDeployments = append(tnfConfig.SkipScalingTestDeployments, tnfNonScalableDeployment)
+		certsuiteConfig.SkipScalingTestDeployments = append(certsuiteConfig.SkipScalingTestDeployments, certsuiteNonScalableDeployment)
 	}
 }
 
 func loadNonScalableStatefulSets(nonScalableStatefulSets []string) {
-	tnfConfig.SkipScalingTestStatefulSets = nil
+	certsuiteConfig.SkipScalingTestStatefulSets = nil
 	for _, nonScalableStatefulSetStr := range nonScalableStatefulSets {
 		nonScalableStatefulSet := strings.Split(nonScalableStatefulSetStr, "/")
 		const nonScalableStatefulSetFields = 2
@@ -461,12 +461,12 @@ func loadNonScalableStatefulSets(nonScalableStatefulSets []string) {
 		}
 		nonScalableStatefulSetName := nonScalableStatefulSet[0]
 		nonScalableStatefulSetNamespace := nonScalableStatefulSet[1]
-		tnfNonScalableStatefulSet := configuration.SkipScalingTestStatefulSetsInfo{Name: nonScalableStatefulSetName,
+		certsuiteNonScalableStatefulSet := configuration.SkipScalingTestStatefulSetsInfo{Name: nonScalableStatefulSetName,
 			Namespace: nonScalableStatefulSetNamespace}
-		tnfConfig.SkipScalingTestStatefulSets = append(tnfConfig.SkipScalingTestStatefulSets, tnfNonScalableStatefulSet)
+		certsuiteConfig.SkipScalingTestStatefulSets = append(certsuiteConfig.SkipScalingTestStatefulSets, certsuiteNonScalableStatefulSet)
 	}
 }
 
 func loadDebugDaemonSetNamespace(namespace []string) {
-	tnfConfig.DebugDaemonSetNamespace = namespace[0]
+	certsuiteConfig.DebugDaemonSetNamespace = namespace[0]
 }

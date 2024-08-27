@@ -26,27 +26,27 @@ failure reasons. Using the flag "--output json", the program will print a json r
 A comma separated list of test suites can be provided with the flag "--testsuites "testSuite1,testSuite2", so the
 output will only print failed test cases from those test suites only.
 `,
-		Example: `./tnf claim show failures --claim path/to/claim.json
+		Example: `./certsuite claim show failures --claim path/to/claim.json
 Test Suite: access-control
   Test Case: access-control-sys-admin-capability-check
     Description: Ensures that containers do not use SYS_ADMIN capability
     Failure reasons:
        1 - Type: Container, Reason: Non compliant capability detected in container
-           Namespace: tnf, Pod Name: test-887998557-8gwwm, Container Name: test, SCC Capability: SYS_ADMIN
+           Namespace: workload, Pod Name: test-887998557-8gwwm, Container Name: test, SCC Capability: SYS_ADMIN
        2 - Type: Container, Reason: Non compliant capability detected in container
-           Namespace: tnf, Pod Name: test-887998557-pr2w5, Container Name: test, SCC Capability: SYS_ADMIN
+           Namespace: workload, Pod Name: test-887998557-pr2w5, Container Name: test, SCC Capability: SYS_ADMIN
   Test Case: access-control-security-context
     Description: Checks the security context matches one of the 4 categories
     Failure reasons:
        1 - Type: ContainerCategory, Reason: container category is NOT category 1 or category NoUID0
-           Namespace: tnf, Pod Name: jack-6f88b5bfb4-q5cw6, Container Name: jack, Category: CategoryID4(anything not matching lower category)
+           Namespace: workload, Pod Name: jack-6f88b5bfb4-q5cw6, Container Name: jack, Category: CategoryID4(anything not matching lower category)
        2 - ...
        ...
 Test Suite: lifecycle
   Test Case: ...
     ...
 
-./tnf claim show failures --claim path/to/claim.json --o json
+./certsuite claim show failures --claim path/to/claim.json --o json
 {
 	"testSuites": [
 	  {
@@ -60,7 +60,7 @@ Test Suite: lifecycle
 				"type": "Container",
 				"reason": "Non compliant capability detected in container",
 				"spec": {
-				  "Namespace": "tnf",
+				  "Namespace": "workload",
 				  "Pod Name": "test-887998557-8gwwm",
 				  "Container Name": "test",
 				  "SCC Capability": "SYS_ADMIN"
@@ -70,7 +70,7 @@ Test Suite: lifecycle
 				"type": "Container",
 				"reason": "Non compliant capability detected in container",
 				"spec": {
-				  "Namespace": "tnf",
+				  "Namespace": "workload",
 				  "Pod Name": "test-887998557-pr2w5",
 				  "Container Name": "test",
 				  "SCC Capability": "SYS_ADMIN"

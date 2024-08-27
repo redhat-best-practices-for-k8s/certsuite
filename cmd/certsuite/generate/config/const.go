@@ -43,7 +43,7 @@ const (
 	// Main menu
 	createConfigHelp = "Create a configuration for the Workload Certification Suite"
 	showConfigHelp   = "Show the current configuration in YAML format"
-	saveConfigHelp   = `Save the current configuration to a YAML file (default "tnf_config.yaml")`
+	saveConfigHelp   = `Save the current configuration to a YAML file (default "certsuite_config.yaml")`
 	exitHelp         = "Exit the tool (changes not saved will be lost)"
 	backHelp         = "Move to previous menu"
 	// Create
@@ -112,7 +112,7 @@ Test cases affected: lifecycle-statefulset-scaling`
 	debugDaemonSetHelp = `Set the namespace where the debug DaemonSet will be deployed.
 The namespace will be created in case it does not exist. If not set, the default namespace
 is "workload-suite".
-This DaemonSet, called "tnf-debug" is deployed and used internally by the Workload Certification Suite
+This DaemonSet, called "certsuite-debug" is deployed and used internally by the Workload Certification Suite
 to issue some shell commands that are needed in certain test cases. Some of these test cases might
 fail or be skipped in case it is not deployed correctly.`
 )
@@ -167,6 +167,6 @@ const (
 
 // Internal constants
 const (
-	defaultConfigFileName        = "tnf_config.yml"
+	defaultConfigFileName        = "certsuite_config.yml"
 	defaultConfigFilePermissions = 0o644
 )
