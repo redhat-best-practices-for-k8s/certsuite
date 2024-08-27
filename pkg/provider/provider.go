@@ -100,11 +100,14 @@ type TestEnvironment struct { // rename this with testTarget
 
 	HorizontalScaler       []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Services               []*corev1.Service                    `json:"testServices"`
-	Nodes                  map[string]Node                      `json:"-"`
-	K8sVersion             string                               `json:"-"`
-	OpenshiftVersion       string                               `json:"-"`
-	OCPStatus              string                               `json:"-"`
-	HelmChartReleases      []*release.Release                   `json:"testHelmChartReleases"`
+	ServiceAccounts        []*corev1.ServiceAccount             `json:"testServiceAccounts"`
+	AllServiceAccounts     []*corev1.ServiceAccount             `json:"AllServiceAccounts"`
+	AllServiceAccountsMap  map[string]*corev1.ServiceAccount
+	Nodes                  map[string]Node    `json:"-"`
+	K8sVersion             string             `json:"-"`
+	OpenshiftVersion       string             `json:"-"`
+	OCPStatus              string             `json:"-"`
+	HelmChartReleases      []*release.Release `json:"testHelmChartReleases"`
 	ResourceQuotas         []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
 	NetworkPolicies        []networkingv1.NetworkPolicy
@@ -240,9 +243,19 @@ func buildTestEnvironment() { //nolint:funlen
 		aEvent := NewEvent(&data.AbnormalEvents[i])
 		env.AbnormalEvents = append(env.AbnormalEvents, &aEvent)
 	}
+	// Service accounts
+	env.ServiceAccounts = data.ServiceAccounts
+	env.AllServiceAccounts = data.AllServiceAccounts
+	env.AllServiceAccountsMap = make(map[string]*corev1.ServiceAccount)
+	for i := 0; i < len(data.AllServiceAccounts); i++ {
+		mapIndex := data.AllServiceAccounts[i].ObjectMeta.Namespace + data.AllServiceAccounts[i].ObjectMeta.Name
+		env.AllServiceAccountsMap[mapIndex] = data.AllServiceAccounts[i]
+	}
+	// Pods
 	pods := data.Pods
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
+		aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
 		env.Pods = append(env.Pods, &aNewPod)
 		// Note: 'getPodContainers' is returning a filtered list of Container objects.
 		env.Containers = append(env.Containers, getPodContainers(&pods[i], true)...)
@@ -250,6 +263,7 @@ func buildTestEnvironment() { //nolint:funlen
 	pods = data.AllPods
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
+		aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
 		env.AllPods = append(env.AllPods, &aNewPod)
 	}
 	env.DebugPods = make(map[string]*corev1.Pod)
@@ -263,6 +277,7 @@ func buildTestEnvironment() { //nolint:funlen
 		var pods []*Pod
 		for i := 0; i < len(podList); i++ {
 			aNewPod := NewPod(podList[i])
+			aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
 			pods = append(pods, &aNewPod)
 		}
 		env.CSVToPodListMap[k] = pods
