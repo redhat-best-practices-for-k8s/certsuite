@@ -3,7 +3,7 @@ module github.com/redhat-best-practices-for-k8s/certsuite
 go 1.22.6
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.46
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
