@@ -107,8 +107,8 @@ type TestParameters struct {
 	DaemonsetMemReq               string
 	DaemonsetMemLim               string
 	SanitizeClaim                 bool
-	CertsuiteImageRepo            string
-	CertsuiteDebugImage           string
+	CertSuiteImageRepo            string
+	CertSuiteProbeImage           string
 	NonIntrusiveOnly              bool
 	AllowPreflightInsecure        bool
 	IncludeWebFilesInOutputFolder bool
