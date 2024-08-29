@@ -82,16 +82,6 @@ type Schema struct {
 
 		Nodes Nodes `json:"nodes"`
 
-		RawResults struct {
-			Workloadcertificationtest struct {
-				Testsuites struct {
-					Testsuite struct {
-						Testcase []TestCaseRawResult `json:"testcase"`
-					} `json:"testsuite"`
-				} `json:"testsuites"`
-			} `json:"cnf-certification-test"`
-		} `json:"rawResults"`
-
 		Results  TestSuiteResults             `json:"results"`
 		Versions officialClaimScheme.Versions `json:"versions"`
 	} `json:"claim"`

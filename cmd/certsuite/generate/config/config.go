@@ -25,10 +25,10 @@ func NewCommand() *cobra.Command {
 }
 
 var (
-	// generateConfiCmd is a helper tool to generate a Workload config YAML file
+	// generateConfiCmd is a helper tool to generate a Cert Suiteconfig YAML file
 	generateConfigCmd = &cobra.Command{
 		Use:   "config",
-		Short: "Generates a Workload config YAML file with user input.",
+		Short: "Generates a Cert Suite config YAML file with user input.",
 		Run: func(cmd *cobra.Command, args []string) {
 			generateConfig()
 		},
@@ -84,7 +84,7 @@ func generateConfig() {
 
 func createConfiguration() {
 	createMenu := []configOption{
-		{Option: workloadResources, Help: workloadResourcesHelp},
+		{Option: certSuiteResources, Help: certSuiteResourcesHelp},
 		{Option: exceptions, Help: exceptionsdHelp},
 		// {Option: collector, Help: collectordHelp},
 		{Option: settings, Help: settingsHelp},
@@ -107,8 +107,8 @@ func createConfiguration() {
 			return
 		}
 		switch createMenu[i].Option {
-		case workloadResources:
-			createWorkloadResourcesConfiguration()
+		case certSuiteResources:
+			createCertSuiteResourcesConfiguration()
 		case exceptions:
 			createExceptionsConfiguration()
 		// case collector:
@@ -127,7 +127,7 @@ func showConfiguration(config *configuration.TestConfiguration) {
 		log.Printf("could not marshal the YAML file, err: %v", err)
 		return
 	}
-	fmt.Println("================= Workload CONFIGURATION =================")
+	fmt.Println("================= Cert Suite CONFIGURATION =================")
 	fmt.Println(string(configYaml))
 	fmt.Println("=====================================================")
 }
@@ -140,7 +140,7 @@ func saveConfiguration(config *configuration.TestConfiguration) {
 	}
 
 	saveConfigPrompt := promptui.Prompt{
-		Label:   "Workload config file",
+		Label:   "Cert Suite config file",
 		Default: defaultConfigFileName,
 	}
 
@@ -159,8 +159,8 @@ func saveConfiguration(config *configuration.TestConfiguration) {
 	fmt.Println(color.GreenString("Configuration saved"))
 }
 
-func createWorkloadResourcesConfiguration() {
-	workloadResourcesOptions := []configOption{
+func createCertSuiteResourcesConfiguration() {
+	certSuiteResourcesOptions := []configOption{
 		{Option: namespaces, Help: namespacesHelp},
 		{Option: pods, Help: podLabelsHelp},
 		{Option: operators, Help: operatorLabelsHelp},
@@ -169,29 +169,29 @@ func createWorkloadResourcesConfiguration() {
 		{Option: managedStatefulSets, Help: managedStatefulSetsHelp},
 		{Option: previousMenu, Help: backHelp},
 	}
-	workloadResourcesSearcher := func(input string, index int) bool {
-		basicOption := workloadResourcesOptions[index]
+	certSuiteResourcesSearcher := func(input string, index int) bool {
+		basicOption := certSuiteResourcesOptions[index]
 		name := strings.ReplaceAll(strings.ToLower(basicOption.Option), " ", "")
 		input = strings.ReplaceAll(strings.ToLower(input), " ", "")
 
 		return strings.Contains(name, input)
 	}
-	workloadResourcesPrompt := promptui.Select{
+	certSuiteResourcesPrompt := promptui.Select{
 		Label:        "",
-		Items:        workloadResourcesOptions,
+		Items:        certSuiteResourcesOptions,
 		Templates:    templates,
 		Size:         7,
-		Searcher:     workloadResourcesSearcher,
+		Searcher:     certSuiteResourcesSearcher,
 		HideSelected: true,
 	}
 	var exit bool
 	for !exit {
-		i, _, err := workloadResourcesPrompt.Run()
+		i, _, err := certSuiteResourcesPrompt.Run()
 		if err != nil {
 			log.Printf("Prompt failed %v\n", err)
 			return
 		}
-		switch workloadResourcesOptions[i].Option {
+		switch certSuiteResourcesOptions[i].Option {
 		case namespaces:
 			loadNamespaces(getAnswer(namespacePrompt, namespaceSyntax, namespaceExample))
 		case pods:

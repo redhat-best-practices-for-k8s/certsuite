@@ -119,7 +119,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 					],
 					"ObjectFieldsValues": [
 					  "Non compliant capability detected in container",
-					  "workload",
+					  "certSuite",
 					  "test-887998557-8gwwm",
 					  "test",
 					  "SYS_ADMIN"
@@ -138,7 +138,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 						}{
 							{
 								Key:   "Namespace",
-								Value: "workload",
+								Value: "certSuite",
 							},
 							{
 								Key:   "Pod Name",
@@ -173,7 +173,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 					],
 					"ObjectFieldsValues": [
 					  "Non compliant capability detected in container",
-					  "workload",
+					  "certSuite",
 					  "test-887998557-8gwwm",
 					  "test",
 					  "SYS_ADMIN"
@@ -190,7 +190,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 					],
 					"ObjectFieldsValues": [
 					  "Non compliant capability detected in container",
-					  "workload",
+					  "certSuite",
 					  "test-887998557-pr2w5",
 					  "test",
 					  "SYS_ADMIN"
@@ -210,7 +210,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 						}{
 							{
 								Key:   "Namespace",
-								Value: "workload",
+								Value: "certSuite",
 							},
 							{
 								Key:   "Pod Name",
@@ -237,7 +237,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 						}{
 							{
 								Key:   "Namespace",
-								Value: "workload",
+								Value: "certSuite",
 							},
 							{
 								Key:   "Pod Name",
@@ -322,7 +322,7 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 										}{
 											{
 												Key:   "Namespace",
-												Value: "workload",
+												Value: "certSuite",
 											},
 											{
 												Key:   "Pod Name",
@@ -349,7 +349,7 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 										}{
 											{
 												Key:   "Namespace",
-												Value: "workload",
+												Value: "certSuite",
 											},
 											{
 												Key:   "Pod Name",

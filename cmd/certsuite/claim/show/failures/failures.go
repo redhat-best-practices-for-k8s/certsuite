@@ -32,14 +32,14 @@ Test Suite: access-control
     Description: Ensures that containers do not use SYS_ADMIN capability
     Failure reasons:
        1 - Type: Container, Reason: Non compliant capability detected in container
-           Namespace: workload, Pod Name: test-887998557-8gwwm, Container Name: test, SCC Capability: SYS_ADMIN
+           Namespace: certsuite, Pod Name: test-887998557-8gwwm, Container Name: test, SCC Capability: SYS_ADMIN
        2 - Type: Container, Reason: Non compliant capability detected in container
-           Namespace: workload, Pod Name: test-887998557-pr2w5, Container Name: test, SCC Capability: SYS_ADMIN
+           Namespace: certsuite, Pod Name: test-887998557-pr2w5, Container Name: test, SCC Capability: SYS_ADMIN
   Test Case: access-control-security-context
     Description: Checks the security context matches one of the 4 categories
     Failure reasons:
        1 - Type: ContainerCategory, Reason: container category is NOT category 1 or category NoUID0
-           Namespace: workload, Pod Name: jack-6f88b5bfb4-q5cw6, Container Name: jack, Category: CategoryID4(anything not matching lower category)
+           Namespace: certsuite, Pod Name: jack-6f88b5bfb4-q5cw6, Container Name: jack, Category: CategoryID4(anything not matching lower category)
        2 - ...
        ...
 Test Suite: lifecycle
@@ -60,7 +60,7 @@ Test Suite: lifecycle
 				"type": "Container",
 				"reason": "Non compliant capability detected in container",
 				"spec": {
-				  "Namespace": "workload",
+				  "Namespace": "certsuite",
 				  "Pod Name": "test-887998557-8gwwm",
 				  "Container Name": "test",
 				  "SCC Capability": "SYS_ADMIN"
@@ -70,7 +70,7 @@ Test Suite: lifecycle
 				"type": "Container",
 				"reason": "Non compliant capability detected in container",
 				"spec": {
-				  "Namespace": "workload",
+				  "Namespace": "certsuite",
 				  "Pod Name": "test-887998557-pr2w5",
 				  "Container Name": "test",
 				  "SCC Capability": "SYS_ADMIN"

@@ -211,7 +211,7 @@ func TestMarshalClaimOutput(t *testing.T) {
 				EndTime:   "2023-12-20 14:51:34 -0600 MST",
 			},
 			Versions: &claim.Versions{
-				Certsuite: "1.0.0",
+				CertSuite: "1.0.0",
 			},
 			Results: map[string]claim.Result{
 				"test-case1": {
@@ -241,7 +241,7 @@ func TestWriteClaimOutput(t *testing.T) {
 				EndTime:   "2023-12-20 14:51:34 -0600 MST",
 			},
 			Versions: &claim.Versions{
-				Certsuite: "1.0.0",
+				CertSuite: "1.0.0",
 			},
 			Results: map[string]claim.Result{
 				"test-case1": {
@@ -282,7 +282,7 @@ func TestReadClaimFile(t *testing.T) {
 				EndTime:   "2023-12-20 14:51:34 -0600 MST",
 			},
 			Versions: &claim.Versions{
-				Certsuite: "1.0.0",
+				CertSuite: "1.0.0",
 			},
 			Results: map[string]claim.Result{
 				"test-case1": {

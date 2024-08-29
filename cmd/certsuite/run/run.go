@@ -27,7 +27,7 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().StringP("output-dir", "o", "results", "The directory where the output artifacts will be placed")
 	runCmd.PersistentFlags().StringP("label-filter", "l", "none", "Label expression to filter test cases  (e.g. --label-filter 'access-control && !access-control-sys-admin-capability')")
 	runCmd.PersistentFlags().String("timeout", timeoutFlagDefaultvalue.String(), "Time allowed for the test suite execution to complete (e.g. --timeout 30m  or -timeout 1h30m)")
-	runCmd.PersistentFlags().StringP("config-file", "c", "config/certsuite_config.yml", "The workload configuration file")
+	runCmd.PersistentFlags().StringP("config-file", "c", "config/certsuite_config.yml", "The certsuite configuration file")
 	runCmd.PersistentFlags().StringP("kubeconfig", "k", "", "The target cluster's Kubeconfig file")
 	runCmd.PersistentFlags().Bool("server-mode", false, "Run the certsuite in web server mode")
 	runCmd.PersistentFlags().Bool("omit-artifacts-zip-file", false, "Prevents the creation of a zip file with the result artifacts")
@@ -111,13 +111,13 @@ func runTestSuite(cmd *cobra.Command, _ []string) error {
 
 	testParams := configuration.GetTestParameters()
 	if testParams.ServerMode {
-		log.Info("Running Workload Certification Suite in web server mode")
+		log.Info("Running Certification Suite in web server mode")
 		webserver.StartServer(testParams.OutputDir)
 	} else {
-		log.Info("Running Workload Certification Suite in stand-alone mode")
+		log.Info("Running Certification Suite in stand-alone mode")
 		err := certsuite.Run(testParams.LabelsFilter, testParams.OutputDir)
 		if err != nil {
-			log.Fatal("Failed to run Workload Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
+			log.Fatal("Failed to run Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
 		}
 	}
 

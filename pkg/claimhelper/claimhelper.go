@@ -130,8 +130,8 @@ func NewClaimBuilder() (*ClaimBuilder, error) {
 	root.Claim.Configurations = claimConfigurations
 	root.Claim.Nodes = GenerateNodes()
 	root.Claim.Versions = &claim.Versions{
-		Certsuite:          versions.GitDisplayRelease,
-		CertsuiteGitCommit: versions.GitCommit,
+		CertSuite:          versions.GitDisplayRelease,
+		CertSuiteGitCommit: versions.GitCommit,
 		OcClient:           diagnostics.GetVersionOcClient(),
 		Ocp:                diagnostics.GetVersionOcp(),
 		K8s:                diagnostics.GetVersionK8s(),

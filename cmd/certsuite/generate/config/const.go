@@ -10,12 +10,12 @@ const (
 	save   = "Save"
 	quit   = "Exit"
 	// Create
-	workloadResources = "Workload resources"
-	exceptions   = "Exceptions"
-	collector    = "Collector"
-	settings     = "Settings"
-	previousMenu = "\U0001F878"
-	// Workload resources
+	certSuiteResources = "resources"
+	exceptions         = "Exceptions"
+	collector          = "Collector"
+	settings           = "Settings"
+	previousMenu       = "\U0001F878"
+	// CertSuite resources
 	namespaces          = "Namespaces"
 	pods                = "Pods"
 	operators           = "Operators"
@@ -41,37 +41,37 @@ const (
 // Menu help
 const (
 	// Main menu
-	createConfigHelp = "Create a configuration for the Workload Certification Suite"
+	createConfigHelp = "Create a configuration for the Certification Suite"
 	showConfigHelp   = "Show the current configuration in YAML format"
 	saveConfigHelp   = `Save the current configuration to a YAML file (default "certsuite_config.yaml")`
 	exitHelp         = "Exit the tool (changes not saved will be lost)"
 	backHelp         = "Move to previous menu"
 	// Create
-	workloadResourcesHelp = `Configure the workload resources of the Workload to be verified.
-Only the resources that the Workload uses are required to be configured. The rest can be left empty.
+	certSuiteResourcesHelp = `Configure the workload resources of the CertSuite to be verified.
+Only the resources that the CertSuite uses are required to be configured. The rest can be left empty.
 Usually a basic configuration includes "Namespaces" and "Pods" at least.`
 	exceptionsdHelp = `Allow adding exceptions to skip several checks for different resources.
-The exceptions must be justified in order to pass the Workload Certification. Feedback
+The exceptions must be justified in order to pass the CertSuite. Feedback
 regarding the exceptions configured can be provided in an HTML page after loading
 the claim.json file with the results.`
-	collectordHelp = `Parameters required to send the Workload Certification Suite results to a data collector.`
-	settingsHelp   = `Configure various settings for the Workload Certification Suite.`
-	// Workload resources
-	namespacesHelp = `The namespaces in which the Workload under test will be deployed.`
+	collectordHelp = `Parameters required to send the CertSuite Certification Suite results to a data collector.`
+	settingsHelp   = `Configure various settings for the CertSuite Certification Suite.`
+	// CertSuite resources
+	namespacesHelp = `The namespaces in which the workload under test will be deployed.`
 
-	podLabelsHelp = `The labels that each Pod of the Workload under test must have to be verified
-by the Workload Certification Suite.
-If a new label is used for this purpose make sure it is added to the Workload's Pods,
+	podLabelsHelp = `The labels that each Pod of the workload under test must have to be verified
+by the Certification Suite.
+If a new label is used for this purpose make sure it is added to the workload's Pods,
 ideally in the pod's definition as the on-the-fly labels are lost if the Pod gets
 rescheduled.
 For Pods own by a Deployment, the same label as the one defined in the
 "spec.selector.matchLabels" section of the Deployment can be used.`
 
-	operatorLabelsHelp = `The labels that each operator's CSV of the Workload under test must have to be verified
-by the Workload Certification Suite.
-If a new label is used for this purpose make sure it is added to the Workload operator's CSVs.`
+	operatorLabelsHelp = `The labels that each operator's CSV of the workload under test must have to be verified
+by the Certification Suite.
+If a new label is used for this purpose make sure it is added to the workload operator's CSVs.`
 
-	crdFiltersHelp = `The CRD name suffix used to filter the Workload's CRDs among all the CRDs present in the cluster.
+	crdFiltersHelp = `The CRD name suffix used to filter the workload's CRDs among all the CRDs present in the cluster.
 It must also be specified if the resources own by the CRD are scalable or not in order to avoid
 some lifecycle test cases.`
 	managedDeploymentsHelp = `The Deployments managed by a Custom Resource whose scaling is controlled using
@@ -85,10 +85,10 @@ The CRD defining that CR should be included in the CRD filters with the scalable
 property set to true. If so, the test case "lifecycle-statefulset-scaling" will be
 skipped, otherwise it will fail.`
 	// Exceptions
-	kernelTaintsHelp = `The list of kernel modules loaded by the Workload that make the Linux kernel mark itself
+	kernelTaintsHelp = `The list of kernel modules loaded by the workload that make the Linux kernel mark itself
 as "tainted" but that should skip verification.
 Test cases affected: platform-alteration-tainted-node-kernel.`
-	helmChartsHelp = `The list of Helm charts that the Workload uses whose certification status will not be verified.
+	helmChartsHelp = `The list of Helm charts that the workload uses whose certification status will not be verified.
 If no exception is configured, the certification status for all Helm charts will be checked
 in the OpenShift Helms Charts repository (see https://charts.openshift.io/).
 Test cases affected: affiliated-certification-helmchart-is-certified`
@@ -111,25 +111,25 @@ Test cases affected: lifecycle-statefulset-scaling`
 	// Settings
 	debugDaemonSetHelp = `Set the namespace where the debug DaemonSet will be deployed.
 The namespace will be created in case it does not exist. If not set, the default namespace
-is "workload-suite".
-This DaemonSet, called "certsuite-debug" is deployed and used internally by the Workload Certification Suite
+is "certsuite".
+This DaemonSet, called "certsuite-debug" is deployed and used internally by the Certification Suite
 to issue some shell commands that are needed in certain test cases. Some of these test cases might
 fail or be skipped in case it is not deployed correctly.`
 )
 
 // Prompts, syxtax, examples
 const (
-	// Workload resources
-	namespacePrompt  = "Enter a comma-separated list of the namespaces in which the Workload is deploying its workload."
+	// CertSuite resources
+	namespacePrompt  = "Enter a comma-separated list of the namespaces in which the CertSuite is deploying its workload."
 	namespaceSyntax  = "ns1[, ns2]..."
 	namespaceExample = "workload, sample-workload"
-	podsPrompt       = "Enter a comma-separated list of labels to identify the Workload's Pods under test."
+	podsPrompt       = "Enter a comma-separated list of labels to identify the CertSuite's Pods under test."
 	podsSyntax       = "pod-label-1[, pod-label-2]..."
 	podsExample      = "redhat-best-practices-for-k8s.com/generic: target"
-	operatorsPrompt  = "Enter a comma-separated list of labels to identify the Workload's operators under test."
+	operatorsPrompt  = "Enter a comma-separated list of labels to identify the CertSuite's operators under test."
 	operatorsSyntax  = "operator-label-1[, operator-label-2]..."
 	operatorsExample = "redhat-best-practices-for-k8s.com/operator1: target"
-	crdFiltersPrompt = "Enter a comma-separated list of the CRD's name suffixes that the Workload contains. Also, specify if the\n" +
+	crdFiltersPrompt = "Enter a comma-separated list of the CRD's name suffixes that the CertSuite contains. Also, specify if the\n" +
 		"resources managed by those CRDs are scalable."
 	crdFiltersSyntax           = "crd-name-suffix/{true|false}[,crd-name-suffix/{true|false}]..."
 	crdFiltersExample          = "group1.test.com/true"
@@ -154,15 +154,15 @@ const (
 	servicesExample                = "hazelcast-platform-controller-manager-service, hazelcast-platform-webhook-service"
 	nonScalableDeploymentsPrompt   = "Enter a comma-separated list of Deployments that do not support scaling operations."
 	nonScalableDeploymentsSyntax   = "deployment1-name/deployment1-namespace[,deployment2-name/deployment2-namespace]..."
-	nonScalableDeploymentsExample  = "deployment-test/workload-test"
+	nonScalableDeploymentsExample  = "deployment-test/certsuite-test"
 	nonScalableStatefulSetsPrompt  = "Enter a comma-separated list of StatefulSets that do not support scaling operations."
 	nonScalableStatefulSetsSyxtax  = "statefulset1-name/statefulset1-namespace[,statefulset2-name/statefulset2-namespace]..."
-	nonScalableStatefulSetsExample = "statefulset-test-test/workload-test"
+	nonScalableStatefulSetsExample = "statefulset-test-test/certsuite-test"
 	// Collector (TODO)
 	// Settings
 	debugDaemonSetPrompt  = "Enter the namespace in which de debug DaemonSet will be deployed."
 	debugDaemonSetSyntax  = "ds-namespace"
-	debugDaemonSetExample = "workload-cert"
+	debugDaemonSetExample = "certsuite-cert"
 )
 
 // Internal constants
