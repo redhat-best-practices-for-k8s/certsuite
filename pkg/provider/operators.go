@@ -114,7 +114,6 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	}
 
 	// Take all of the preflight logs and stick them into our log.
-	//nolint:govet
 	log.Info(logbytes.String())
 
 	e := os.RemoveAll("artifacts/")
