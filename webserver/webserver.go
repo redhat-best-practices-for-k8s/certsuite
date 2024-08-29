@@ -266,7 +266,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	log.Info("Web Server kubeconfig file : %v (copied into %v)", fileHeader.Filename, kubeconfigTempFile.Name())
 	log.Info("Web Server Labels filter   : %v", flattenedOptions)
 
-	tnfConfig, err := os.ReadFile("tnf_config.yml")
+	tnfConfig, err := os.ReadFile("certsuite_config.yml")
 	if err != nil {
 		log.Fatal("Error reading YAML file: %v", err) //nolint:gocritic // exitAfterDefer
 	}
@@ -275,7 +275,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the modified YAML data back to the file
 	var filePerm fs.FileMode = 0o644 // owner can read/write, group and others can only read
-	err = os.WriteFile("tnf_config.yml", newData, filePerm)
+	err = os.WriteFile("certsuite_config.yml", newData, filePerm)
 	if err != nil {
 		log.Fatal("Error writing YAML file: %v", err)
 	}

@@ -3,7 +3,7 @@
 
 The Red Hat Best Practices Test Suite for Kubernetes uses a YAML configuration file to certify a specific workload. This file specifies the workload's resources to be certified, as well as any exceptions or other general configuration options.
 
-By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/tnf_config.yml) of the Config File. For a description of each config option see the section [Config File options](#config-file-options).
+By default a file named _certsuite_config.yml_ will be used. Here's an [example](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/certsuite_config.yml) of the Config File. For a description of each config option see the section [Config File options](#config-file-options).
 
 ## Config Generator
 
@@ -38,7 +38,7 @@ These options allow configuring the workload resources to be verified. Only the 
 !!! note
 
     Using the number of labels to determine how to get the resources under test.<br> 
-    If there are labels defined, we get the list of pods, statefulsets, deployments, csvs, by fetching the resources matching the labels. Otherwise, if the labels are not defined, we only test the resources that are in the namespaces under test (defined in tnf_config.yml).
+    If there are labels defined, we get the list of pods, statefulsets, deployments, csvs, by fetching the resources matching the labels. Otherwise, if the labels are not defined, we only test the resources that are in the namespaces under test (defined in certsuite_config.yml).
 
 #### targetNameSpaces
 
