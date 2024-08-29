@@ -60,7 +60,7 @@
         "skipScalingTestDeployments": [
           {
             "name": "deployment1",
-            "namespace": "tnf"
+            "namespace": "certsuite"
           }
         ],
         "targetCrdFilters": [
@@ -78,7 +78,7 @@
           }
         ],
         "targetNameSpaces": [
-          "tnf"
+          "certsuite"
         ],
         "validProtocolNames": [
           "http3",
@@ -10005,7 +10005,7 @@
         },
       "observability-container-logging": 
         {
-          "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"tnf\",\"xdp\",\"xdp-c\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
+          "capturedTestOutput": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"certsuite\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"certsuite\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"certsuite\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"certsuite\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Found log line to stderr/stdout\",\"certsuite\",\"xdp\",\"xdp-c\"]}],\"NonCompliantObjectsOut\":null}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-logging",
             "description": "Check that all containers under test use standard input output and standard error when logging. A container must provide APIs for the platform to observe the container health and act accordingly. These APIs include health checks (liveness and readiness), logging to stderr and stdout for log aggregation (by tools such as Logstash or Filebeat), and integrate with tracing and metrics-gathering libraries (such as Prometheus or Metricbeat).",
@@ -10088,7 +10088,7 @@
         },
       "observability-termination-policy":
         {
-          "capturedTestOutput": "FAILURE: [container: xdp-c pod: xdp ns: tnf] does not have a TerminationMessagePolicy: FallbackToLogsOnError\n{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is not FallbackToLogsOnError\",\"tnf\",\"xdp\",\"xdp-c\"]}]}\n%!(EXTRA []interface {}=[])",
+          "capturedTestOutput": "FAILURE: [container: xdp-c pod: xdp ns: tnf] does not have a TerminationMessagePolicy: FallbackToLogsOnError\n{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"certsuite\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"certsuite\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"certsuite\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"certsuite\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is not FallbackToLogsOnError\",\"certsuite\",\"xdp\",\"xdp-c\"]}]}\n%!(EXTRA []interface {}=[])",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-pod-exit-status",
             "description": "Check that all containers are using terminationMessagePolicy: FallbackToLogsOnError. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. In the first case, if the administrator has implemented liveness and readiness checks, OpenShift can stop the pod and either restart it on the same node or a different node in the cluster. For the second case, when the application in the pod stops, it should exit with a code and write suitable log entries to help the administrator diagnose what the issue was that caused the problem.",
@@ -10105,7 +10105,7 @@
           "endTime": "2023-09-04 09:18:08.855819327 -0500 CDT m=+20.597831097",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is not FallbackToLogsOnError\",\"tnf\",\"xdp\",\"xdp-c\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"certsuite\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"certsuite\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"certsuite\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is FallbackToLogsOnError\",\"certsuite\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"TerminationMessagePolicy is not FallbackToLogsOnError\",\"certsuite\",\"xdp\",\"xdp-c\"]}]}",
           "startTime": "2023-09-04 09:18:08.855505505 -0500 CDT m=+20.597517275",
           "state": "failed",
           "testID": {
@@ -10714,8 +10714,8 @@
       "k8s": "v1.26.4+c343423",
       "ocClient": "n/a, (not using oc or kubectl client)",
       "ocp": "4.13.1",
-      "tnf": "Unreleased build post v4.3.2",
-      "tnfGitCommit": "1b968e53b79fd8e81e48b761c3efd7a808d4567e"
+      "certSuite": "Unreleased build post v4.3.2",
+      "certSuiteGitCommit": "1b968e53b79fd8e81e48b761c3efd7a808d4567e"
     }
   }
 }
