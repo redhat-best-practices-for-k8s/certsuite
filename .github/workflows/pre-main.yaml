@@ -399,7 +399,7 @@ jobs:
         if: ${{ steps.collector_sanity_check.outcome == 'failure' }}
         uses: ./.github/actions/slack-webhook-sender
         with:
-          message: "Collector's sanity check has failed"
+          message: 'Collector sanity check has failed'
           slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
 
       - name: Upload container test results as an artifact
