@@ -10,6 +10,8 @@ import (
 	"golang.org/x/oauth2"
 )
 
+const tokenPermissions = 0o600
+
 // Retrieve a token, saves the token, then returns the generated client.
 func getClient(config *oauth2.Config) (*http.Client, error) {
 	// The file token.json stores the user's access and refresh tokens, and is
@@ -62,7 +64,7 @@ func tokenFromFile(file string) (*oauth2.Token, error) {
 // Saves a token to a file path.
 func saveToken(path string, token *oauth2.Token) error {
 	fmt.Printf("Saving credential file to: %s\n", path)
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o600)
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, tokenPermissions)
 	if err != nil {
 		return fmt.Errorf("unable to cache oauth token: %v", err)
 	}

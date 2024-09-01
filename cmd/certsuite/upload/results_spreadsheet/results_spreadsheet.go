@@ -32,6 +32,7 @@ const (
 	ocpVersionConclusionsCol      = "OCP Version"
 	workloadNameConclusionsCol    = "Workload Name"
 	resultsConclusionsCol         = "Results"
+	cellContantLimit              = 50000
 )
 
 var conclusionSheetHeaders = []string{categoryConclusionsCol, workloadVersionConclusionsCol, ocpVersionConclusionsCol, workloadNameConclusionsCol, resultsConclusionsCol}
@@ -118,8 +119,8 @@ func prepareRecordsForSpreadSheet(records [][]string) []*sheets.RowData {
 		for _, col := range row {
 			var val string
 			// cell content cannot exceed 50,000 letters.
-			if len(col) > 50000 {
-				col = col[:50000]
+			if len(col) > cellContantLimit {
+				col = col[:cellContantLimit]
 			}
 			// use space for empty values to avoid cells overlapping
 			if col == "" {
