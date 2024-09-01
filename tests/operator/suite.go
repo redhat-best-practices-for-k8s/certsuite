@@ -428,8 +428,8 @@ func testOperatorPodsAutomountTokens(check *checksdb.Check, env *provider.TestEn
 			check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
 			// Evaluate the pod's automount service tokens and any attached service accounts
 			client := clientsholder.GetClientsHolder()
-			podPassed, newMsg := rbac.EvaluateAutomountTokens(client.K8sClient.CoreV1(), pod.Pod)
-			if !podPassed {
+			podPassed, newMsg := rbac.EvaluateAutomountTokens(client.K8sClient.CoreV1(), pod)
+			if podPassed {
 				check.LogInfo("Pod %q in namespace %q has automount service account token set to false", pod.Name, pod.Namespace)
 				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod has automount service account token set to false", true))
 			} else {

@@ -244,7 +244,7 @@ wait_all_packages_ok() {
 		elapsed_time \
 		timeout_seconds=600
 
-	prev_count="$(get_packeges)"
+	prev_count="$(get_packages)"
 	start_time="$(date +%s 2>&1)" || {
 		echo "date failed with error $?: $start_time" >>"$LOG_FILE_PATH"
 		return 0
@@ -252,7 +252,7 @@ wait_all_packages_ok() {
 
 	# wait until package number is stable
 	while true; do
-		curr_count=$(get_packeges)
+		curr_count=$(get_packages)
 		if [ "${curr_count}" -ne "${prev_count}" ] || [ "${curr_count}" -eq 0 ]; then
 			prev_count="${curr_count}"
 		else
@@ -273,7 +273,7 @@ wait_all_packages_ok() {
 	done
 }
 
-get_packeges() {
+get_packages() {
 	oc get packagemanifest \
 		-n ${OPERATOR_CATALOG_NAMESPACE} -o json |
 		jq -r '.items[] | select(.status.catalogSource == "'${OPERATOR_CATALOG_NAME}'") | .metadata.name' |

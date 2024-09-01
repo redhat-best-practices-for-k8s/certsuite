@@ -55,7 +55,6 @@ testCases:
     - observability-crd-status
     - observability-pod-disruption-budget
     - observability-termination-policy
-    - operator-automount-tokens
     - operator-crd-openapi-schema
     - operator-crd-versioning
     - operator-install-source
@@ -73,6 +72,7 @@ testCases:
     - affiliated-certification-container-is-certified-digest # test container image is not certified
     - operator-read-only-file-system
     - operator-run-as-non-root
+    - operator-automount-tokens
   skip:
     - access-control-sys-ptrace-capability
     - affiliated-certification-helm-version

@@ -50,14 +50,14 @@ func TestScaleStatefulSet(statefulset *appsv1.StatefulSet, timeout time.Duration
 		// scale up
 		replicas++
 		logger.Debug("Scale UP statefulset to %d replicas", replicas)
-		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout, logger) {
+		if !scaleStatefulsetHelper(clients, ssClients, statefulset, replicas, timeout, logger) {
 			logger.Error("Cannot scale statefulset = %s:%s", namespace, name)
 			return false
 		}
 		// scale down
 		replicas--
 		logger.Debug("Scale DOWN statefulset to %d replicas", replicas)
-		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout, logger) {
+		if !scaleStatefulsetHelper(clients, ssClients, statefulset, replicas, timeout, logger) {
 			logger.Error("Cannot scale statefulset = %s:%s", namespace, name)
 			return false
 		}
@@ -65,13 +65,13 @@ func TestScaleStatefulSet(statefulset *appsv1.StatefulSet, timeout time.Duration
 		// scale down
 		replicas--
 		logger.Debug("Scale DOWN statefulset to %d replicas", replicas)
-		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout, logger) {
+		if !scaleStatefulsetHelper(clients, ssClients, statefulset, replicas, timeout, logger) {
 			logger.Error("Cannot scale statefulset = %s:%s", namespace, name)
 			return false
 		} // scale up
 		replicas++
 		logger.Debug("Scale UP statefulset to %d replicas", replicas)
-		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout, logger) {
+		if !scaleStatefulsetHelper(clients, ssClients, statefulset, replicas, timeout, logger) {
 			logger.Error("Cannot scale statefulset = %s:%s", namespace, name)
 			return false
 		}
@@ -79,7 +79,7 @@ func TestScaleStatefulSet(statefulset *appsv1.StatefulSet, timeout time.Duration
 	return true
 }
 
-func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.StatefulSetInterface, statefulset *appsv1.StatefulSet, replicas int32, timeout time.Duration, logger *log.Logger) bool {
+func scaleStatefulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.StatefulSetInterface, statefulset *appsv1.StatefulSet, replicas int32, timeout time.Duration, logger *log.Logger) bool {
 	name := statefulset.Name
 	namespace := statefulset.Namespace
 

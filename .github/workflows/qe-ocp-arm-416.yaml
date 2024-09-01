@@ -1,0 +1,116 @@
+name: OCP ARM64 4.16 QE Testing
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+  # Schedule a daily cron at midnight UTC
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: read
+
+env:
+  QE_REPO: redhat-best-practices-for-k8s/certsuite-qe
+  KUBECONFIG: /home/labuser/.kube/config
+  PFLT_DOCKERCONFIG: '/home/labuser/.docker/config'
+  CERTSUITE_IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite
+  TEST_CERTSUITE_IMAGE_TAG: localtest
+  DOCKER_CONFIG_DIR: '/home/labuser/.docker'
+  CERTSUITE_CONFIG_DIR: '/home/labuser/tnf_config'
+  CERTSUITE_REPORT_DIR: '/home/labuser/tnf_report'
+
+jobs:
+  build-arm-image-for-qe:
+    runs-on: qe-ocp-arm1
+    steps:
+      - name: Check out code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+
+      - name: Build temporary image tag for this PR
+        uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6.7.0
+        with:
+          context: .
+          platforms: linux/arm64
+          file: ./Dockerfile
+          tags: |
+            ${{ env.CERTSUITE_IMAGE_NAME }}:${{ env.TEST_CERTSUITE_IMAGE_TAG }}
+          outputs: type=docker,dest=/tmp/testimage.tar
+        
+      - name: Store image as artifact
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        with:
+          name: testimage
+          path: /tmp/testimage.tar
+
+  qe-ocp-arm-testing:
+    runs-on: qe-ocp-arm1
+    needs: build-arm-image-for-qe
+    if: needs.build-arm-image-for-qe.result == 'success'
+    strategy:
+      fail-fast: false
+      matrix: 
+        # suite: [affiliatedcertification, operator] # Note: These do not work correctly on ARM yet.
+        suite: [accesscontrol, manageability, networking, lifecycle, performance, platformalteration, observability]
+    env:
+      SHELL: /bin/bash
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ github.sha }}
+      
+      - name: Run initial setup
+        uses: ./.github/actions/setup
+
+      # Download the image from the artifact and load it into the docker daemon.
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+
+      - name: Download image from artifact
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: testimage
+          path: /tmp
+
+      - name: Load image into docker
+        run: docker load --input /tmp/testimage.tar
+
+      - name: Show pods
+        run: oc get pods -A
+
+      - name: Clone the QE repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          repository: ${{ env.QE_REPO }}
+          path: certsuite-qe
+          ref: limit_procs
+
+      - name: Preemptively potential QE namespaces
+        run: ./scripts/delete-namespaces.sh
+        working-directory: certsuite-qe
+
+      - name: Preemptively delete contents of openshift-marketplace namespace
+        run: ./scripts/clean-marketplace.sh
+        working-directory: certsuite-qe
+
+      - name: Preemptively delete report and config folders
+        shell: bash
+        run: |
+          sudo rm -rf ${{env.CERTSUITE_CONFIG_DIR}}
+          sudo rm -rf ${{env.CERTSUITE_REPORT_DIR}}
+
+      - name: Run the tests (against image)
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+

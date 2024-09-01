@@ -290,6 +290,7 @@ func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz i
 	for size, count := range hugepagesPerSize {
 		sb.WriteString(fmt.Sprintf(", size=%dkB - count=%d", size, count))
 	}
+	//nolint:govet
 	log.Info(sb.String())
 }
 

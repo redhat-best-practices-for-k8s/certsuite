@@ -3,8 +3,8 @@ module github.com/redhat-best-practices-for-k8s/certsuite
 go 1.22.6
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1
-	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.45
+	github.com/Masterminds/semver/v3 v3.3.0
+	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.46
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
@@ -15,7 +15,7 @@ require (
 require k8s.io/client-go v0.31.0
 
 require (
-	github.com/mittwald/go-helm-client v0.12.12
+	github.com/mittwald/go-helm-client v0.12.13
 	github.com/openshift/api v0.0.0-20240817011637-2c10e5887729
 	github.com/openshift/client-go v0.0.0-20240528061634-b054aa794d87
 	github.com/operator-framework/api v0.27.0
@@ -221,8 +221,8 @@ require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.1
 	github.com/manifoldco/promptui v0.9.0
-	github.com/redhat-best-practices-for-k8s/oct v0.0.19
-	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.31
+	github.com/redhat-best-practices-for-k8s/oct v0.0.20
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.33
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240812211034-2f51d732179a
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/oauth2 v0.22.0

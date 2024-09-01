@@ -81,7 +81,7 @@ const (
 	TestPodHighAvailabilityBestPracticesDocLink        = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"
 	TestPodDeploymentBestPracticesIdentifierDocLink    = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-no-naked-pods"
 	TestDeploymentScalingIdentifierDocLink             = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"
-	TestStateFulSetScalingIdentifierDocLink            = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"
+	TestStatefulSetScalingIdentifierDocLink            = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"
 	TestImagePullPolicyIdentifierDocLink               = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-use-imagepullpolicy-if-not-present"
 	TestPodRecreationIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-upgrade-expectations"
 	TestLivenessProbeIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"

@@ -134,7 +134,7 @@ var (
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
 	TestPodDeploymentBestPracticesIdentifier          claim.Identifier
 	TestDeploymentScalingIdentifier                   claim.Identifier
-	TestStateFulSetScalingIdentifier                  claim.Identifier
+	TestStatefulSetScalingIdentifier                  claim.Identifier
 	TestImagePullPolicyIdentifier                     claim.Identifier
 	TestPodRecreationIdentifier                       claim.Identifier
 	TestPodRoleBindingsBestPracticesIdentifier        claim.Identifier
@@ -1126,13 +1126,13 @@ that Node's kernel may not have the same hacks.'`,
 		},
 		TagCommon)
 
-	TestStateFulSetScalingIdentifier = AddCatalogEntry(
+	TestStatefulSetScalingIdentifier = AddCatalogEntry(
 		"statefulset-scaling",
 		common.LifecycleTestKey,
 		`Tests that workload statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s`, //nolint:lll
 		StatefulSetScalingRemediation,
 		NoDocumentedProcess+NotApplicableSNO,
-		TestStateFulSetScalingIdentifierDocLink,
+		TestStatefulSetScalingIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,

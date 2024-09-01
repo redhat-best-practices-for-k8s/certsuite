@@ -75,6 +75,7 @@ func TestScaleDeploymentFunc(t *testing.T) {
 	for _, tc := range testCases {
 		var runtimeObjects []runtime.Object
 		intVar := new(int32)
+		//nolint:gosec
 		*intVar = int32(tc.replicaCount)
 		tempDP := generateDeployment(tc.deploymentName, intVar)
 		runtimeObjects = append(runtimeObjects, tempDP)
@@ -88,6 +89,7 @@ func TestScaleDeploymentFunc(t *testing.T) {
 		// Get the deployment from the fake API
 		dp, err := c.K8sClient.AppsV1().Deployments("namespace1").Get(context.TODO(), tc.deploymentName, metav1.GetOptions{})
 		assert.Nil(t, err)
+		//nolint:gosec
 		assert.Equal(t, int32(tc.replicaCount), *dp.Spec.Replicas)
 	}
 }
@@ -142,6 +144,7 @@ func TestScaleHpaDeploymentFunc(t *testing.T) {
 
 	for _, tc := range testCases {
 		intVar := new(int32)
+		//nolint:gosec
 		*intVar = int32(tc.replicaCount)
 		tempDP := generateDeployment(tc.deploymentName, intVar)
 
@@ -184,6 +187,7 @@ func TestScaleHpaDeploymentFunc(t *testing.T) {
 		// Get the deployment from the fake API
 		hpa, err := c.AutoscalingV1().HorizontalPodAutoscalers("namespace1").Get(context.TODO(), "hpaName", metav1.GetOptions{})
 		assert.Nil(t, err)
+		//nolint:gosec
 		assert.Equal(t, int32(tc.expectedReplicaCount), hpa.Spec.MaxReplicas)
 	}
 }

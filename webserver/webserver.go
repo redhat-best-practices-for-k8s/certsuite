@@ -224,6 +224,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	log.SetLogger(log.GetMultiLogger(buf))
 
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
+	//nolint:govet
 	log.Info(jsonData)
 	var data RequestedData
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
