@@ -11,6 +11,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate"
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/run"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/upload"
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/version"
 )
 
@@ -26,6 +27,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(run.NewCommand())
 	rootCmd.AddCommand(info.NewCommand())
 	rootCmd.AddCommand(version.NewCommand())
+	rootCmd.AddCommand(upload.NewCommand())
 
 	return &rootCmd
 }
