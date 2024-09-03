@@ -24,13 +24,11 @@ linters-settings:
         # do not include the "operation" and "assign"
         checks: argument,case,condition,return
   govet:
-    settings:
-      printf:
-        funcs:
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
+    disable:
+      - printf
+  gosec:
+    excludes: 
+      - G115
   lll:
     line-length: 250
   maligned:
@@ -92,7 +90,6 @@ linters:
   # - prealloc
   # - revive
   # - copyloopvar
-  # - structcheck
   # - testpackage
   # - wsl
 issues:
