@@ -15,31 +15,31 @@ func getHeadersAsInterfaceList(sheet *sheets.Sheet) []interface{} {
 	return headers
 }
 
-func getIndicesFromListByName(headers []interface{}, wantedColumnsNames []string) ([]int, error) {
+func getIndicesFromHeadersByName(headers []interface{}, names []string) ([]int, error) {
 	indices := []int{}
-	for _, wantedColName := range wantedColumnsNames {
+	for _, name := range names {
 		found := false
 		for i, val := range headers {
-			if wantedColName == val {
+			if name == val {
 				found = true
 				indices = append(indices, i)
 				continue
 			}
 		}
 		if !found {
-			return nil, fmt.Errorf("column %s doesn't exist in given headers list", wantedColName)
+			return nil, fmt.Errorf("column %s doesn't exist in given headers list", name)
 		}
 	}
 	return indices, nil
 }
 
-func getSheetIDByName(spreadsheet *sheets.Spreadsheet, wantedSheetName string) (int64, error) {
+func getSheetIDByName(spreadsheet *sheets.Spreadsheet, name string) (int64, error) {
 	for _, sheet := range spreadsheet.Sheets {
-		if sheet.Properties.Title == wantedSheetName {
+		if sheet.Properties.Title == name {
 			return sheet.Properties.SheetId, nil
 		}
 	}
-	return -1, fmt.Errorf("there is no sheet named %s in spreadsheet %s", wantedSheetName, spreadsheet.SpreadsheetUrl)
+	return -1, fmt.Errorf("there is no sheet named %s in spreadsheet %s", name, spreadsheet.SpreadsheetUrl)
 }
 
 func addBasicFilterToSpreadSheet(srv *sheets.Service, spreadsheet *sheets.Spreadsheet) error {
@@ -68,7 +68,7 @@ func addDescendingSortFilterToSheet(srv *sheets.Service, spreadsheet *sheets.Spr
 	if err != nil {
 		return fmt.Errorf("unable to retrieve sheet %s values: %v", sheetName, err)
 	}
-	indices, err := getIndicesFromListByName(sheetsValues.Values[0], []string{colName})
+	indices, err := getIndicesFromHeadersByName(sheetsValues.Values[0], []string{colName})
 	if err != nil {
 		return nil
 	}
@@ -109,7 +109,7 @@ func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *shee
 	if err != nil {
 		return fmt.Errorf("unable to retrieve sheet %s values: %v", sheetName, err)
 	}
-	indices, err := getIndicesFromListByName(sheetsValues.Values[0], []string{"State", "Mandatory/Optional"})
+	indices, err := getIndicesFromHeadersByName(sheetsValues.Values[0], []string{"State", "Mandatory/Optional"})
 	if err != nil {
 		return nil
 	}

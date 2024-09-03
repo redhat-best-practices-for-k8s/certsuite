@@ -138,7 +138,7 @@ func prepareRecordsForSpreadSheet(records [][]string) []*sheets.RowData {
 	return rows
 }
 
-func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, wantedWorkloadName string) (*sheets.Sheet, error) {
+func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workloadName string) (*sheets.Sheet, error) {
 	// Initialize sheet with headers
 	filteredRows := []*sheets.RowData{{Values: []*sheets.CellData{
 		{UserEnteredValue: &sheets.ExtendedValue{StringValue: stringToPointer("Owner/TechLead Conclusion")}},
@@ -147,17 +147,17 @@ func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, wantedWo
 	filteredRows[0].Values = append(filteredRows[0].Values, rawResultsSheet.Data[0].RowData[0].Values...)
 
 	headers := getHeadersAsInterfaceList(rawResultsSheet)
-	indices, err := getIndicesFromListByName(headers, []string{"CNFName"})
+	indices, err := getIndicesFromHeadersByName(headers, []string{"CNFName"})
 	if err != nil {
 		return nil, err
 	}
-	wantedWorkloadIndex := indices[0]
+	workloadIndex := indices[0]
 
 	// add to sheet only rows of given workload name
 	for _, row := range rawResultsSheet.Data[0].RowData[1:] {
-		if len(row.Values) > wantedWorkloadIndex {
-			curWorkloadName := *row.Values[wantedWorkloadIndex].UserEnteredValue.StringValue
-			if curWorkloadName == wantedWorkloadName {
+		if len(row.Values) > workloadIndex {
+			curWorkloadName := *row.Values[workloadIndex].UserEnteredValue.StringValue
+			if curWorkloadName == workloadName {
 				// add empty values in 2 added columns
 				newRow := &sheets.RowData{
 					Values: append([]*sheets.CellData{{}, {}}, row.Values...),
@@ -177,15 +177,15 @@ func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, wantedWo
 	return workloadResultsSheet, nil
 }
 
-func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, driveService *drive.Service, folder *drive.File, rawResultsSheet *sheets.Sheet, wantedWorkloadName string) (*sheets.Spreadsheet, error) {
-	workloadResultsSheet, err := createSingleWorkloadRawResultsSheet(rawResultsSheet, wantedWorkloadName)
+func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, driveService *drive.Service, folder *drive.File, rawResultsSheet *sheets.Sheet, workloadName string) (*sheets.Spreadsheet, error) {
+	workloadResultsSheet, err := createSingleWorkloadRawResultsSheet(rawResultsSheet, workloadName)
 	if err != nil {
 		return nil, err
 	}
 
 	workloadResultsSpreadsheet := &sheets.Spreadsheet{
 		Properties: &sheets.SpreadsheetProperties{
-			Title: fmt.Sprintf("%s Best Practices Test Results", wantedWorkloadName),
+			Title: fmt.Sprintf("%s Best Practices Test Results", workloadName),
 		},
 		Sheets: []*sheets.Sheet{workloadResultsSheet},
 	}
@@ -209,7 +209,7 @@ func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, dri
 //nolint:funlen
 func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.Service, rawResultsSheet *sheets.Sheet) (*sheets.Sheet, error) {
 	headers := getHeadersAsInterfaceList(rawResultsSheet)
-	colsIndices, err := getIndicesFromListByName(headers, []string{"CNFName", "CNFType", "OperatorVersion"})
+	colsIndices, err := getIndicesFromHeadersByName(headers, []string{"CNFName", "CNFType", "OperatorVersion"})
 	if err != nil {
 		return nil, err
 	}
