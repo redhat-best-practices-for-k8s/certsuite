@@ -21,20 +21,20 @@ func TestGetDiffReport(t *testing.T) {
 			configs1: &claim.Configurations{},
 			configs2: &claim.Configurations{},
 			expectedDiff: &DiffReport{
-				Config:         &diff.Diffs{Name: "CNF Cert Suite Configuration"},
+				Config:         &diff.Diffs{Name: "Cert Suite Configuration"},
 				AbnormalEvents: AbnormalEventsCount{},
 			},
 			expectedDiffStr: `CONFIGURATIONS
 --------------
 
-CNF Cert Suite Configuration: Differences
+Cert Suite Configuration: Differences
 FIELD     CLAIM 1     CLAIM 2
 <none>
 
-CNF Cert Suite Configuration: Only in CLAIM 1
+Cert Suite Configuration: Only in CLAIM 1
 <none>
 
-CNF Cert Suite Configuration: Only in CLAIM 2
+Cert Suite Configuration: Only in CLAIM 2
 <none>
 
 Cluster abnormal events count
@@ -57,7 +57,7 @@ CLAIM 1     CLAIM 2
 				AbnormalEvents: []interface{}{"event1", "event2"},
 			},
 			expectedDiff: &DiffReport{
-				Config: &diff.Diffs{Name: "CNF Cert Suite Configuration"},
+				Config: &diff.Diffs{Name: "Cert Suite Configuration"},
 				AbnormalEvents: AbnormalEventsCount{
 					Claim1: 2,
 					Claim2: 2,
@@ -66,14 +66,14 @@ CLAIM 1     CLAIM 2
 			expectedDiffStr: `CONFIGURATIONS
 --------------
 
-CNF Cert Suite Configuration: Differences
+Cert Suite Configuration: Differences
 FIELD     CLAIM 1     CLAIM 2
 <none>
 
-CNF Cert Suite Configuration: Only in CLAIM 1
+Cert Suite Configuration: Only in CLAIM 1
 <none>
 
-CNF Cert Suite Configuration: Only in CLAIM 2
+Cert Suite Configuration: Only in CLAIM 2
 <none>
 
 Cluster abnormal events count
@@ -98,7 +98,7 @@ CLAIM 1     CLAIM 2
 			},
 			expectedDiff: &DiffReport{
 				Config: &diff.Diffs{
-					Name: "CNF Cert Suite Configuration",
+					Name: "Cert Suite Configuration",
 					Fields: []diff.FieldDiff{{
 						FieldPath:   "/field1",
 						Claim1Value: "value1",
@@ -114,14 +114,14 @@ CLAIM 1     CLAIM 2
 			expectedDiffStr: `CONFIGURATIONS
 --------------
 
-CNF Cert Suite Configuration: Differences
+Cert Suite Configuration: Differences
 FIELD       CLAIM 1     CLAIM 2
 /field1     value1      value11
 
-CNF Cert Suite Configuration: Only in CLAIM 1
+Cert Suite Configuration: Only in CLAIM 1
 <none>
 
-CNF Cert Suite Configuration: Only in CLAIM 2
+Cert Suite Configuration: Only in CLAIM 2
 /field2/subfield1=58
 
 Cluster abnormal events count

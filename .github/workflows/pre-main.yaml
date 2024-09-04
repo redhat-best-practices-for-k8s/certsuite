@@ -354,7 +354,7 @@ jobs:
             -e '/executedBy/s/""/"CI"/g' \
             -e '/partnerName/s/""/"${{ env.COLLECTOR_CIUSER }}"/g' \
             -e '/collectorAppPassword/s/""/"${{ env.COLLECTOR_CIPASSWORD }}"/g' \
-            $CERTSUITE_CONFIG_DIR/tnf_config.yml
+            $CERTSUITE_CONFIG_DIR/certsuite_config.yml
 
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: |
@@ -367,7 +367,7 @@ jobs:
             --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
             --offline-db=/usr/offline-db \
             --log-level=${SMOKE_TESTS_LOG_LEVEL} \
-            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --config-file=/usr/certsuite/config/certsuite_config.yml \
             --kubeconfig=/usr/certsuite/config/kubeconfig \
 
       - name: 'Test: Run Smoke Tests in a Certsuite container with the certsuite command'
@@ -382,7 +382,7 @@ jobs:
             --offline-db=/usr/offline-db \
             --enable-data-collection=true \
             --log-level=${SMOKE_TESTS_LOG_LEVEL} \
-            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --config-file=/usr/certsuite/config/certsuite_config.yml \
             --kubeconfig=/usr/certsuite/config/kubeconfig \
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
 
@@ -430,7 +430,7 @@ jobs:
             --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
             --offline-db=/usr/offline-db \
             --log-level=${SMOKE_TESTS_LOG_LEVEL} \
-            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --config-file=/usr/certsuite/config/certsuite_config.yml \
             --kubeconfig=/usr/certsuite/config/kubeconfig \
             --label-filter="preflight"
 

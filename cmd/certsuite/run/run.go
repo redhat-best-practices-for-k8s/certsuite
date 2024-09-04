@@ -27,7 +27,7 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().StringP("output-dir", "o", "results", "The directory where the output artifacts will be placed")
 	runCmd.PersistentFlags().StringP("label-filter", "l", "none", "Label expression to filter test cases  (e.g. --label-filter 'access-control && !access-control-sys-admin-capability')")
 	runCmd.PersistentFlags().String("timeout", timeoutFlagDefaultvalue.String(), "Time allowed for the test suite execution to complete (e.g. --timeout 30m  or -timeout 1h30m)")
-	runCmd.PersistentFlags().StringP("config-file", "c", "config/tnf_config.yml", "The workload configuration file")
+	runCmd.PersistentFlags().StringP("config-file", "c", "config/certsuite_config.yml", "The certsuite configuration file")
 	runCmd.PersistentFlags().StringP("kubeconfig", "k", "", "The target cluster's Kubeconfig file")
 	runCmd.PersistentFlags().Bool("server-mode", false, "Run the certsuite in web server mode")
 	runCmd.PersistentFlags().Bool("omit-artifacts-zip-file", false, "Prevents the creation of a zip file with the result artifacts")
@@ -39,8 +39,7 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().Bool("include-web-files", false, "Save web files in the configured output folder")
 	runCmd.PersistentFlags().Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
 	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
-	runCmd.PersistentFlags().String("tnf-image-repository", "quay.io/redhat-best-practices-for-k8s", "The repository where TNF images are stored")
-	runCmd.PersistentFlags().String("tnf-debug-image", "certsuite-probe:v0.0.7", "Name of the certsuite-probe image")
+	runCmd.PersistentFlags().String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.7", "Certsuite probe image")
 	runCmd.PersistentFlags().String("daemonset-cpu-req", "100m", "CPU request for the debug DaemonSet container")
 	runCmd.PersistentFlags().String("daemonset-cpu-lim", "100m", "CPU limit for the debug DaemonSet container")
 	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the debug DaemonSet container")
@@ -68,8 +67,7 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams.IncludeWebFilesInOutputFolder, _ = cmd.Flags().GetBool("include-web-files")
 	testParams.EnableDataCollection, _ = cmd.Flags().GetBool("enable-data-collection")
 	testParams.EnableXMLCreation, _ = cmd.Flags().GetBool("create-xml-junit-file")
-	testParams.TnfImageRepo, _ = cmd.Flags().GetString("tnf-image-repository")
-	testParams.TnfDebugImage, _ = cmd.Flags().GetString("tnf-debug-image")
+	testParams.CertSuiteProbeImage, _ = cmd.Flags().GetString("certsuite-probe-image")
 	testParams.DaemonsetCPUReq, _ = cmd.Flags().GetString("daemonset-cpu-req")
 	testParams.DaemonsetCPULim, _ = cmd.Flags().GetString("daemonset-cpu-lim")
 	testParams.DaemonsetMemReq, _ = cmd.Flags().GetString("daemonset-mem-req")
@@ -111,13 +109,13 @@ func runTestSuite(cmd *cobra.Command, _ []string) error {
 
 	testParams := configuration.GetTestParameters()
 	if testParams.ServerMode {
-		log.Info("Running CNF Certification Suite in web server mode")
+		log.Info("Running Certification Suite in web server mode")
 		webserver.StartServer(testParams.OutputDir)
 	} else {
-		log.Info("Running CNF Certification Suite in stand-alone mode")
+		log.Info("Running Certification Suite in stand-alone mode")
 		err := certsuite.Run(testParams.LabelsFilter, testParams.OutputDir)
 		if err != nil {
-			log.Fatal("Failed to run CNF Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
+			log.Fatal("Failed to run Certification Suite: %v", err) //nolint:gocritic // exitAfterDefer
 		}
 	}
 

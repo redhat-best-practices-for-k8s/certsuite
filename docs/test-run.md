@@ -62,7 +62,7 @@ The following is a non-exhaustive list of the most common flags that the `certsu
 
 * `-k, --kubeconfig`: Path to the Kubeconfig file of the target cluster.
 
-* `-c, --config-file`: Path to the `tnf_config.yml` file.
+* `-c, --config-file`: Path to the `certsuite_config.yml` file.
 
 * `--preflight-dockerconfig`: Path to the Dockerconfig file to be used by the Preflight test suite
 
@@ -92,7 +92,7 @@ The Test Suite requires 3 files that must be provided to the test container:
 
 * The _Kubeconfig_ for the target cluster.
 * The _Dockerconfig_ of the local Docker installation (only for the Preflight test suite).
-* The `tnf_config.yml`.
+* The `certsuite_config.yml`.
 
 To reduce the number of shared volumes with the test container in the example below those files are copied into a folder called "config". Also, another folder to contain the output files called "results" has been created. The files saved in the output directory after the test run are:
 
@@ -108,7 +108,7 @@ docker run --rm --network host \
   certsuite run \
   --kubeconfig=/usr/certsuite/config/kubeconfig \
   --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
-  --config-file=/usr/certsuite/config/tnf_config.yml \
+  --config-file=/usr/certsuite/config/certsuite_config.yml \
   --output-dir=/usr/certsuite/results \
   --label-filter=all
 ```

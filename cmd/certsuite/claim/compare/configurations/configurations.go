@@ -26,7 +26,7 @@ func (c *AbnormalEventsCount) String() string {
 }
 
 type DiffReport struct {
-	Config         *diff.Diffs         `json:"CNFCertSuiteConfig"`
+	Config         *diff.Diffs         `json:"CertSuiteConfig"`
 	AbnormalEvents AbnormalEventsCount `json:"abnormalEventsCount"`
 }
 
@@ -44,7 +44,7 @@ func (d *DiffReport) String() string {
 
 func GetDiffReport(claim1Configurations, claim2Configurations *claim.Configurations) *DiffReport {
 	return &DiffReport{
-		Config: diff.Compare("CNF Cert Suite Configuration", claim1Configurations.Config, claim2Configurations.Config, nil),
+		Config: diff.Compare("Cert Suite Configuration", claim1Configurations.Config, claim2Configurations.Config, nil),
 		AbnormalEvents: AbnormalEventsCount{
 			Claim1: len(claim1Configurations.AbnormalEvents),
 			Claim2: len(claim2Configurations.AbnormalEvents),

@@ -181,7 +181,7 @@ var (
 func deployDaemonSet(namespace string) error {
 	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
 
-	dsImage := env.params.TnfImageRepo + "/" + env.params.TnfDebugImage
+	dsImage := env.params.CertSuiteProbeImage
 	if k8sPrivilegedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
 		return nil
 	}
@@ -196,11 +196,11 @@ func deployDaemonSet(namespace string) error {
 		configuration.GetTestParameters().DaemonsetMemLim,
 	)
 	if err != nil {
-		return fmt.Errorf("could not deploy tnf daemonset, err=%v", err)
+		return fmt.Errorf("could not deploy certsuite daemonset, err=%v", err)
 	}
 	err = k8sPrivilegedDs.WaitDaemonsetReady(namespace, DaemonSetName, debugPodsTimeout)
 	if err != nil {
-		return fmt.Errorf("timed out waiting for tnf daemonset, err=%v", err)
+		return fmt.Errorf("timed out waiting for certsuite daemonset, err=%v", err)
 	}
 
 	return nil

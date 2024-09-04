@@ -13,7 +13,7 @@ INDEX_FILE=index2.html
 # INPUTS
 
 # tnf_config.yaml template file path
-CONFIG_YAML_TEMPLATE="$(pwd)"/tnf_config.yml.template
+CONFIG_YAML_TEMPLATE="$(pwd)"/certsuite_config.yml.template
 
 # CatalogSource.yaml template file path
 CATALOG_SOURCE_TEMPLATE="$(pwd)"/CatalogSource.yaml.template
@@ -366,7 +366,7 @@ report_failure() {
 
 		# Add tnf_config link
 		echo ", tnf_config: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/certsuite_config.yml">'"link"'</a>'
 
 		# New line
 		echo "<br>"
@@ -584,7 +584,7 @@ while IFS=, read -r package_name catalog_index; do
 		echo_color "$RED" "Error, creating report dir failed"
 	fi
 
-	config_yaml="$report_dir"/tnf_config.yml
+	config_yaml="$report_dir"/certsuite_config.yml
 
 	# Change the target_name_space in tnf_config file
 	sed "s/\$ns/$ns/" "$CONFIG_YAML_TEMPLATE" >"$config_yaml"
@@ -683,7 +683,7 @@ while IFS=, read -r package_name catalog_index; do
 
 		# Add tnf_config link
 		echo ", tnf_config: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/certsuite_config.yml">'"link"'</a>'
 
 		# new line
 		echo "<br>"
