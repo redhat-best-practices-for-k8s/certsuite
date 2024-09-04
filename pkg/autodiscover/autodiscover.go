@@ -58,7 +58,7 @@ type DiscoveredTestData struct {
 	Env                    configuration.TestParameters
 	Pods                   []corev1.Pod
 	AllPods                []corev1.Pod
-	DebugPods              []corev1.Pod
+	ProbePods              []corev1.Pod
 	CSVToPodListMap        map[string][]*corev1.Pod
 	ResourceQuotaItems     []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
@@ -160,9 +160,9 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
 	data.Pods, data.AllPods = findPodsByLabels(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
-	debugLabels := []labelObject{{LabelKey: debugHelperPodsLabelName, LabelValue: debugHelperPodsLabelValue}}
-	debugNS := []string{config.DebugDaemonSetNamespace}
-	data.DebugPods, _ = findPodsByLabels(oc.K8sClient.CoreV1(), debugLabels, debugNS)
+	probeLabels := []labelObject{{LabelKey: probeHelperPodsLabelName, LabelValue: probeHelperPodsLabelValue}}
+	probeNS := []string{config.ProbeDaemonSetNamespace}
+	data.ProbePods, _ = findPodsByLabels(oc.K8sClient.CoreV1(), probeLabels, probeNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
 		log.Fatal("Cannot get resource quotas, err: %v", err)

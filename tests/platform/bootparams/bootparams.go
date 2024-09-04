@@ -32,9 +32,9 @@ const (
 )
 
 func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container, logger *log.Logger) error {
-	debugPod := env.DebugPods[cut.NodeName]
-	if debugPod == nil {
-		return fmt.Errorf("debug pod for container %s not found on node %s", cut, cut.NodeName)
+	probePod := env.ProbePods[cut.NodeName]
+	if probePod == nil {
+		return fmt.Errorf("probe pod for container %s not found on node %s", cut, cut.NodeName)
 	}
 	mcKernelArgumentsMap := GetMcKernelArguments(env, cut.NodeName)
 	currentKernelArgsMap, err := getCurrentKernelCmdlineArgs(env, cut.NodeName)
@@ -73,10 +73,10 @@ func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap 
 
 func getGrubKernelArgs(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, err error) {
 	o := clientsholder.GetClientsHolder()
-	ctx := clientsholder.NewContext(env.DebugPods[nodeName].Namespace, env.DebugPods[nodeName].Name, env.DebugPods[nodeName].Spec.Containers[0].Name)
+	ctx := clientsholder.NewContext(env.ProbePods[nodeName].Namespace, env.ProbePods[nodeName].Name, env.ProbePods[nodeName].Spec.Containers[0].Name)
 	bootConfig, errStr, err := o.ExecCommandContainer(ctx, grubKernelArgsCommand)
 	if err != nil || errStr != "" {
-		return aMap, fmt.Errorf("cannot execute %s on debug pod %s, err=%s, stderr=%s", grubKernelArgsCommand, env.DebugPods[nodeName], err, errStr)
+		return aMap, fmt.Errorf("cannot execute %s on probe pod %s, err=%s, stderr=%s", grubKernelArgsCommand, env.ProbePods[nodeName], err, errStr)
 	}
 
 	splitBootConfig := strings.Split(bootConfig, "\n")
@@ -94,10 +94,10 @@ func getGrubKernelArgs(env *provider.TestEnvironment, nodeName string) (aMap map
 
 func getCurrentKernelCmdlineArgs(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, err error) {
 	o := clientsholder.GetClientsHolder()
-	ctx := clientsholder.NewContext(env.DebugPods[nodeName].Namespace, env.DebugPods[nodeName].Name, env.DebugPods[nodeName].Spec.Containers[0].Name)
+	ctx := clientsholder.NewContext(env.ProbePods[nodeName].Namespace, env.ProbePods[nodeName].Name, env.ProbePods[nodeName].Spec.Containers[0].Name)
 	currentKernelCmdlineArgs, errStr, err := o.ExecCommandContainer(ctx, kernelArgscommand)
 	if err != nil || errStr != "" {
-		return aMap, fmt.Errorf("cannot execute %s on debug pod container %s, err=%s, stderr=%s", grubKernelArgsCommand, env.DebugPods[nodeName].Name, err, errStr)
+		return aMap, fmt.Errorf("cannot execute %s on probe pod container %s, err=%s, stderr=%s", grubKernelArgsCommand, env.ProbePods[nodeName].Name, err, errStr)
 	}
 	currentSplitKernelCmdlineArgs := strings.Split(strings.TrimSuffix(currentKernelCmdlineArgs, "\n"), " ")
 	return arrayhelper.ArgListToMap(currentSplitKernelCmdlineArgs), nil

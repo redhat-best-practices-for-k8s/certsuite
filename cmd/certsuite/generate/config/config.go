@@ -309,7 +309,7 @@ func createCollectorConfiguration() {
 
 func createSettingsConfiguration() {
 	settingsOptions := []configOption{
-		{Option: debugDaemonSet, Help: debugDaemonSetHelp},
+		{Option: probeDaemonSet, Help: probeDaemonSetHelp},
 		{Option: previousMenu, Help: backHelp},
 	}
 	settingsPrompt := promptui.Select{
@@ -327,8 +327,8 @@ func createSettingsConfiguration() {
 			return
 		}
 		switch settingsOptions[i].Option {
-		case debugDaemonSet:
-			loadDebugDaemonSetNamespace(getAnswer(debugDaemonSetPrompt, debugDaemonSetSyntax, debugDaemonSetExample))
+		case probeDaemonSet:
+			loadProbeDaemonSetNamespace(getAnswer(probeDaemonSetPrompt, probeDaemonSetSyntax, probeDaemonSetExample))
 		case previousMenu:
 			exit = true
 		}
@@ -467,6 +467,6 @@ func loadNonScalableStatefulSets(nonScalableStatefulSets []string) {
 	}
 }
 
-func loadDebugDaemonSetNamespace(namespace []string) {
-	certsuiteConfig.DebugDaemonSetNamespace = namespace[0]
+func loadProbeDaemonSetNamespace(namespace []string) {
+	certsuiteConfig.ProbeDaemonSetNamespace = namespace[0]
 }

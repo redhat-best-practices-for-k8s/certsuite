@@ -34,4 +34,4 @@ There are 3 building blocks in the above framework.
 
 * the `Certification container/exec` is the Test Suite running on the platform or in a container. The executable verifies the workload under test configuration and its interactions with OpenShift
 
-* the `Debug` pods are part of a Kubernetes daemonset responsible to run various **privileged commands** on Kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the [privileged-daemonset](https://github.com/redhat-best-practices-for-k8s/privileged-daemonset) repository.
+* the `Debug` pods are part of a Kubernetes daemonset responsible to run various **privileged commands** on Kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The probe daemonset is instantiated via the [privileged-daemonset](https://github.com/redhat-best-practices-for-k8s/privileged-daemonset) repository.

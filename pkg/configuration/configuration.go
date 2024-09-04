@@ -19,7 +19,7 @@ package configuration
 import "time"
 
 const (
-	defaultDebugDaemonSetNamespace = "cnf-suite"
+	defaultProbeDaemonSetNamespace = "cnf-suite"
 )
 
 type SkipHelmChartList struct {
@@ -86,7 +86,7 @@ type TestConfiguration struct {
 	SkipScalingTestStatefulSets []SkipScalingTestStatefulSetsInfo `yaml:"skipScalingTestStatefulSets,omitempty" json:"skipScalingTestStatefulSets,omitempty"`
 	ValidProtocolNames          []string                          `yaml:"validProtocolNames,omitempty" json:"validProtocolNames,omitempty"`
 	ServicesIgnoreList          []string                          `yaml:"servicesignorelist,omitempty" json:"servicesignorelist,omitempty"`
-	DebugDaemonSetNamespace     string                            `yaml:"debugDaemonSetNamespace,omitempty" json:"debugDaemonSetNamespace,omitempty"`
+	ProbeDaemonSetNamespace     string                            `yaml:"probeDaemonSetNamespace,omitempty" json:"probeDaemonSetNamespace,omitempty"`
 	// Collector's parameters
 	ExecutedBy           string `yaml:"executedBy,omitempty" json:"executedBy,omitempty"`
 	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`

@@ -111,7 +111,7 @@ type RequestedData struct {
 	SkipHelmChartList                    []string `json:"skipHelmChartList"`
 	Servicesignorelist                   []string `json:"servicesignorelist"`
 	ValidProtocolNames                   []string `json:"ValidProtocolNames"`
-	DebugDaemonSetNamespace              []string `json:"DebugDaemonSetNamespace"`
+	ProbeDaemonSetNamespace              []string `json:"ProbeDaemonSetNamespace"`
 	CollectorAppEndPoint                 []string `json:"CollectorAppEndPoint"`
 	ExecutedBy                           []string `json:"executedBy"`
 	CollectorAppPassword                 []string `json:"CollectorAppPassword"`
@@ -400,8 +400,8 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	if len(data.PartnerName) > 0 {
 		config.PartnerName = data.PartnerName[0]
 	}
-	if len(data.DebugDaemonSetNamespace) > 0 {
-		config.DebugDaemonSetNamespace = data.DebugDaemonSetNamespace[0]
+	if len(data.ProbeDaemonSetNamespace) > 0 {
+		config.ProbeDaemonSetNamespace = data.ProbeDaemonSetNamespace[0]
 	}
 
 	// Serialize the modified config back to YAML format

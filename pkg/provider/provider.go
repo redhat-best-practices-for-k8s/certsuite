@@ -50,8 +50,8 @@ import (
 const (
 	AffinityRequiredKey              = "AffinityRequired"
 	containerName                    = "container-00"
-	DaemonSetName                    = "tnf-debug"
-	debugPodsTimeout                 = 5 * time.Minute
+	DaemonSetName                    = "certsuite-probe"
+	probePodsTimeout                 = 5 * time.Minute
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/network-status"
 	skipConnectivityTestsLabel       = "redhat-best-practices-for-k8s.com/skip_connectivity_tests"
 	skipMultusConnectivityTestsLabel = "redhat-best-practices-for-k8s.com/skip_multus_connectivity_tests"
@@ -73,7 +73,7 @@ type TestEnvironment struct { // rename this with testTarget
 
 	// Pod Groupings
 	Pods            []*Pod                 `json:"testPods"`
-	DebugPods       map[string]*corev1.Pod // map from nodename to debugPod
+	ProbePods       map[string]*corev1.Pod // map from nodename to probePod
 	AllPods         []*Pod                 `json:"AllPods"`
 	CSVToPodListMap map[string][]*Pod      `json:"CSVToPodListMap"`
 
@@ -189,7 +189,7 @@ func deployDaemonSet(namespace string) error {
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = DaemonSetName
 	matchLabels["redhat-best-practices-for-k8s.com/app"] = DaemonSetName
-	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout,
+	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, probePodsTimeout,
 		configuration.GetTestParameters().DaemonsetCPUReq,
 		configuration.GetTestParameters().DaemonsetCPULim,
 		configuration.GetTestParameters().DaemonsetMemReq,
@@ -198,7 +198,7 @@ func deployDaemonSet(namespace string) error {
 	if err != nil {
 		return fmt.Errorf("could not deploy certsuite daemonset, err=%v", err)
 	}
-	err = k8sPrivilegedDs.WaitDaemonsetReady(namespace, DaemonSetName, debugPodsTimeout)
+	err = k8sPrivilegedDs.WaitDaemonsetReady(namespace, DaemonSetName, probePodsTimeout)
 	if err != nil {
 		return fmt.Errorf("timed out waiting for certsuite daemonset, err=%v", err)
 	}
@@ -217,11 +217,11 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 	log.Debug("CERTSUITE configuration: %+v", config)
 
-	// Wait for the debug pods to be ready before the autodiscovery starts.
-	if err := deployDaemonSet(config.DebugDaemonSetNamespace); err != nil {
+	// Wait for the probe pods to be ready before the autodiscovery starts.
+	if err := deployDaemonSet(config.ProbeDaemonSetNamespace); err != nil {
 		log.Error("The TNF daemonset could not be deployed, err: %v", err)
 		// Because of this failure, we are only able to run a certain amount of tests that do not rely
-		// on the existence of the daemonset debug pods.
+		// on the existence of the daemonset probe pods.
 		env.DaemonsetFailedToSpawn = true
 	}
 
@@ -266,10 +266,10 @@ func buildTestEnvironment() { //nolint:funlen
 		aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
 		env.AllPods = append(env.AllPods, &aNewPod)
 	}
-	env.DebugPods = make(map[string]*corev1.Pod)
-	for i := 0; i < len(data.DebugPods); i++ {
-		nodeName := data.DebugPods[i].Spec.NodeName
-		env.DebugPods[nodeName] = &data.DebugPods[i]
+	env.ProbePods = make(map[string]*corev1.Pod)
+	for i := 0; i < len(data.ProbePods); i++ {
+		nodeName := data.ProbePods[i].Spec.NodeName
+		env.ProbePods[nodeName] = &data.ProbePods[i]
 	}
 
 	env.CSVToPodListMap = make(map[string][]*Pod)

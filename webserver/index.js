@@ -168,10 +168,10 @@ function renderResults() {
     fillData(yamlGlobal.skipScalingTestDeployments, '#skipScalingTestDeploymentsadd', 'skipScalingTestDeployments', 'name', 'namespace')
     fillData(yamlGlobal.skipScalingTestStatefulsets, '#skipScalingTestStatefulsetsadd', 'skipScalingTestStatefulsets', 'name', 'namespace')
     fillData(yamlGlobal.targetCrdFilters, '#targetCrdFiltersadd', 'targetCrdFilters', 'nameSuffix', 'scalable')
-    if (yamlGlobal.DebugDaemonSetNamespace) {
-      document.getElementById('DebugDaemonSetNamespace').value = yamlGlobal.DebugDaemonSetNamespace;
+    if (yamlGlobal.ProbeDaemonSetNamespace) {
+      document.getElementById('ProbeDaemonSetNamespace').value = yamlGlobal.ProbeDaemonSetNamespace;
     }
-    if (yamlGlobal.DebugDaemonSetNamespace) {
+    if (yamlGlobal.ProbeDaemonSetNamespace) {
       document.getElementById('CollectorAppEndPoint').value = yamlGlobal.collectorAppEndPoint;
     }
     if (yamlGlobal.executedBy) {

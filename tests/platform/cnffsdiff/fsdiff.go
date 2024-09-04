@@ -96,7 +96,7 @@ func NewFsDiffTester(check *checksdb.Check, client clientsholder.Command, ctxt c
 }
 
 // Helper function that is used to check whether we should use the podman that comes preinstalled
-// on each ocp node or the one that we've (custom) precompiled inside the debug pods that can only work in
+// on each ocp node or the one that we've (custom) precompiled inside the probe pods that can only work in
 // RHEL 8.x based ocp versions (4.12.z and lower). For ocp >= 4.13.0 this workaround should not be
 // necessary.
 func shouldUseCustomPodman(check *checksdb.Check, ocpVersion string) bool {
@@ -195,7 +195,7 @@ func (f *FsDiff) GetResults() int {
 	return f.result
 }
 
-// Generic helper function to execute a command inside the corresponding debug pod of the
+// Generic helper function to execute a command inside the corresponding probe pod of the
 // container under test. Whatever output in stdout or stderr is considered a failure, so it will
 // return the concatenation of the given errorStr with those stdout, stderr and the error string.
 func (f *FsDiff) execCommandContainer(cmd, errorStr string) error {
@@ -217,12 +217,12 @@ func (f *FsDiff) deleteNodeFolder() error {
 		fmt.Sprintf("failed or unexpected output when deleting folder %s.", nodeTmpMountFolder))
 }
 
-func (f *FsDiff) mountDebugPartnerPodmanFolder() error {
+func (f *FsDiff) mountProbePodmanFolder() error {
 	return f.execCommandContainer(fmt.Sprintf("mount --bind %s %s", partnerPodmanFolder, nodeTmpMountFolder),
 		fmt.Sprintf("failed or unexpected output when mounting %s into %s.", partnerPodmanFolder, nodeTmpMountFolder))
 }
 
-func (f *FsDiff) unmountDebugPartnerPodmanFolder() error {
+func (f *FsDiff) unmountProbePodmanFolder() error {
 	return f.execCommandContainer(fmt.Sprintf("umount %s", nodeTmpMountFolder),
 		fmt.Sprintf("failed or unexpected output when unmounting %s.", nodeTmpMountFolder))
 }
@@ -234,9 +234,9 @@ func (f *FsDiff) installCustomPodman() error {
 		return err
 	}
 
-	// Mount podman from partner debug pod into /host/tmp/...
+	// Mount podman from partner probe pod into /host/tmp/...
 	f.check.LogInfo("Mounting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
-	if mountErr := f.mountDebugPartnerPodmanFolder(); mountErr != nil {
+	if mountErr := f.mountProbePodmanFolder(); mountErr != nil {
 		// We need to delete the temp folder previously created as mount point.
 		if deleteErr := f.deleteNodeFolder(); deleteErr != nil {
 			return fmt.Errorf("failed to mount folder %s: %s, failed to delete %s: %s",
@@ -252,7 +252,7 @@ func (f *FsDiff) installCustomPodman() error {
 func (f *FsDiff) unmountCustomPodman() {
 	// Unmount podman folder from host.
 	f.check.LogInfo("Unmounting folder %s", nodeTmpMountFolder)
-	if err := f.unmountDebugPartnerPodmanFolder(); err != nil {
+	if err := f.unmountProbePodmanFolder(); err != nil {
 		// Here, there's no point on trying to remove the temp folder used as mount point, as
 		// that probably will not work either.
 		f.Error = err
