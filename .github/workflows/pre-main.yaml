@@ -237,7 +237,7 @@ jobs:
         run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir=certsuite-out --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         if: always()
         with:
           name: smoke-tests
@@ -251,7 +251,7 @@ jobs:
         run: ./certsuite run --label-filter=preflight --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload preflight smoke test results as an artifact
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         if: always()
         with:
           name: preflight-smoke-tests
@@ -387,14 +387,23 @@ jobs:
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Run sanity check on collector
+        id: collector_sanity_check
         uses: ./collector/.github/actions/run-sanity-check
         with:
           working_directory: collector
           collector_username: ${COLLECTOR_CIUSER}
           collector_password: ${COLLECTOR_CIPASSWORD}
+        continue-on-error: true
+
+      - name: Send chat msg to dev team if collector's sanity check failed.
+        if: ${{ steps.collector_sanity_check.outcome == 'failure' }}
+        uses: ./.github/actions/slack-webhook-sender
+        with:
+          message: 'Collector sanity check has failed'
+          slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
 
       - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         if: always()
         with:
           name: smoke-tests-container

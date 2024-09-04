@@ -61,7 +61,6 @@ func parseListeningPorts(cmdOut string) (map[PortInfo]bool, error) {
 			return nil, fmt.Errorf("string to int conversion error, err: %v", err)
 		}
 		protocol := strings.ToUpper(fields[indexProtocol])
-		//nolint:gosec
 		portInfo := PortInfo{int32(port), protocol}
 
 		portSet[portInfo] = true
