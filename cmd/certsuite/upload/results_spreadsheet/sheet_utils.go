@@ -17,7 +17,7 @@ func getHeadersFromSheet(sheet *sheets.Sheet) []string {
 func getHeadersFromValueRange(sheetsValues *sheets.ValueRange) []string {
 	headers := []string{}
 	for _, val := range sheetsValues.Values[0] {
-		headers = append(headers, fmt.Sprintf("%s", val))
+		headers = append(headers, fmt.Sprint(val))
 	}
 	return headers
 }
