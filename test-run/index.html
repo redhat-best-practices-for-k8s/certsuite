@@ -1133,7 +1133,7 @@
 <p><code>-k, --kubeconfig</code>: Path to the Kubeconfig file of the target cluster.</p>
 </li>
 <li>
-<p><code>-c, --config-file</code>: Path to the <code>tnf_config.yml</code> file.</p>
+<p><code>-c, --config-file</code>: Path to the <code>certsuite_config.yml</code> file.</p>
 </li>
 <li>
 <p><code>--preflight-dockerconfig</code>: Path to the Dockerconfig file to be used by the Preflight test suite</p>
@@ -1158,7 +1158,7 @@
 <ul>
 <li>The <em>Kubeconfig</em> for the target cluster.</li>
 <li>The <em>Dockerconfig</em> of the local Docker installation (only for the Preflight test suite).</li>
-<li>The <code>tnf_config.yml</code>.</li>
+<li>The <code>certsuite_config.yml</code>.</li>
 </ul>
 <p>To reduce the number of shared volumes with the test container in the example below those files are copied into a folder called &ldquo;config&rdquo;. Also, another folder to contain the output files called &ldquo;results&rdquo; has been created. The files saved in the output directory after the test run are:</p>
 <ul>
@@ -1173,7 +1173,7 @@
 <span class="w">  </span>certsuite<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--kubeconfig<span class="o">=</span>/usr/certsuite/config/kubeconfig<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--preflight-dockerconfig<span class="o">=</span>/usr/certsuite/config/dockerconfig<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--config-file<span class="o">=</span>/usr/certsuite/config/tnf_config.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config-file<span class="o">=</span>/usr/certsuite/config/certsuite_config.yml<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--output-dir<span class="o">=</span>/usr/certsuite/results<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--label-filter<span class="o">=</span>all
 </code></pre></div>
