@@ -6,16 +6,23 @@ import (
 	"google.golang.org/api/sheets/v4"
 )
 
-func getHeadersAsInterfaceList(sheet *sheets.Sheet) []interface{} {
-	headersValues := sheet.Data[0].RowData[0].Values
-	headers := make([]interface{}, len(headersValues))
-	for i, cell := range headersValues {
-		headers[i] = *cell.UserEnteredValue.StringValue
+func getHeadersFromSheet(sheet *sheets.Sheet) []string {
+	headers := []string{}
+	for _, val := range sheet.Data[0].RowData[0].Values {
+		headers = append(headers, *val.UserEnteredValue.StringValue)
 	}
 	return headers
 }
 
-func getIndicesFromHeadersByName(headers []interface{}, names []string) ([]int, error) {
+func getHeadersFromValueRange(sheetsValues *sheets.ValueRange) []string {
+	headers := []string{}
+	for _, val := range sheetsValues.Values[0] {
+		headers = append(headers, fmt.Sprintf("%s", val))
+	}
+	return headers
+}
+
+func getHeaderIndicesByColumnNames(headers, names []string) ([]int, error) {
 	indices := []int{}
 	for _, name := range names {
 		found := false
@@ -23,7 +30,7 @@ func getIndicesFromHeadersByName(headers []interface{}, names []string) ([]int, 
 			if name == val {
 				found = true
 				indices = append(indices, i)
-				continue
+				break
 			}
 		}
 		if !found {
@@ -68,7 +75,8 @@ func addDescendingSortFilterToSheet(srv *sheets.Service, spreadsheet *sheets.Spr
 	if err != nil {
 		return fmt.Errorf("unable to retrieve sheet %s values: %v", sheetName, err)
 	}
-	indices, err := getIndicesFromHeadersByName(sheetsValues.Values[0], []string{colName})
+	headers := getHeadersFromValueRange(sheetsValues)
+	indices, err := getHeaderIndicesByColumnNames(headers, []string{colName})
 	if err != nil {
 		return nil
 	}
@@ -109,7 +117,8 @@ func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *shee
 	if err != nil {
 		return fmt.Errorf("unable to retrieve sheet %s values: %v", sheetName, err)
 	}
-	indices, err := getIndicesFromHeadersByName(sheetsValues.Values[0], []string{"State", "Mandatory/Optional"})
+	headers := getHeadersFromValueRange(sheetsValues)
+	indices, err := getHeaderIndicesByColumnNames(headers, []string{"State", "Mandatory/Optional"})
 	if err != nil {
 		return nil
 	}

@@ -19,7 +19,7 @@ import (
 
 var (
 	resultsFilePath string
-	mainFolderURL   string
+	rootFolderURL   string
 	ocpVersion      string
 )
 
@@ -49,7 +49,7 @@ var (
 
 func NewCommand() *cobra.Command {
 	uploadResultSpreadSheetCmd.Flags().StringVarP(&resultsFilePath, "results-file", "f", "", "Required: path to results file")
-	uploadResultSpreadSheetCmd.Flags().StringVarP(&mainFolderURL, "dest-url", "d", "", "Required: Destination drive folder's URL")
+	uploadResultSpreadSheetCmd.Flags().StringVarP(&rootFolderURL, "dest-url", "d", "", "Required: Destination drive folder's URL")
 	uploadResultSpreadSheetCmd.Flags().StringVarP(&ocpVersion, "version", "v", "", "Optional: OCP Version")
 
 	err := uploadResultSpreadSheetCmd.MarkFlagRequired("results-file")
@@ -146,8 +146,8 @@ func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workload
 	}}}
 	filteredRows[0].Values = append(filteredRows[0].Values, rawResultsSheet.Data[0].RowData[0].Values...)
 
-	headers := getHeadersAsInterfaceList(rawResultsSheet)
-	indices, err := getIndicesFromHeadersByName(headers, []string{"CNFName"})
+	headers := getHeadersFromSheet(rawResultsSheet)
+	indices, err := getHeaderIndicesByColumnNames(headers, []string{"CNFName"})
 	if err != nil {
 		return nil, err
 	}
@@ -208,8 +208,8 @@ func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, dri
 
 //nolint:funlen
 func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.Service, rawResultsSheet *sheets.Sheet) (*sheets.Sheet, error) {
-	headers := getHeadersAsInterfaceList(rawResultsSheet)
-	colsIndices, err := getIndicesFromHeadersByName(headers, []string{"CNFName", "CNFType", "OperatorVersion"})
+	headers := getHeadersFromSheet(rawResultsSheet)
+	colsIndices, err := getHeaderIndicesByColumnNames(headers, []string{"CNFName", "CNFType", "OperatorVersion"})
 	if err != nil {
 		return nil, err
 	}
@@ -313,12 +313,12 @@ func generateResultsSpreadSheet() {
 		log.Fatalf("Unable to create services: %v", err)
 	}
 
-	mainFolderName := strings.TrimLeft(fmt.Sprintf("%s Redhat Best Practices for K8 Test Results %s", ocpVersion, time.Now().Format("2006-01-02T15:04:05Z07:00")), " ")
-	mainFolderParentID, err := extractFolderIDFromURL(mainFolderURL)
+	rootFolderID, err := extractFolderIDFromURL(rootFolderURL)
 	if err != nil {
 		log.Fatalf("error getting folder ID from URL")
 	}
-	mainResultsFolder, err := createDriveFolder(driveService, mainFolderName, mainFolderParentID)
+	mainFolderName := strings.TrimLeft(fmt.Sprintf("%s Redhat Best Practices for K8 Test Results %s", ocpVersion, time.Now().Format("2006-01-02T15:04:05Z07:00")), " ")
+	mainResultsFolder, err := createDriveFolder(driveService, mainFolderName, rootFolderID)
 	if err != nil {
 		log.Fatalf("Unable to create main results folder: %v", err)
 	}
