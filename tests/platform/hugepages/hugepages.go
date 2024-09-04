@@ -200,7 +200,7 @@ func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
 		if total == kernelCount {
 			log.Info("kernelArguments' hugepages count:%d, size:%d match total node ones for that size.", kernelCount, kernelSize)
 		} else {
-			return false, fmt.Errorf("total hugepages of size %d won't match (node count=%d, expected=%d)", kernelSize, total, kernelCount)
+			return false, fmt.Errorf("total hugepages of size %d will not match (node count=%d, expected=%d)", kernelSize, total, kernelCount)
 		}
 	}
 

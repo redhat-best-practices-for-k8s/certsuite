@@ -242,7 +242,7 @@ func getCNCFNetworksNamesFromPodAnnotation(networksAnnotation string) []string {
 	networkNames := []string{}
 
 	// Let's start trying to unmarshal a json array of objects.
-	// We won't care about bad-formatted/invalid annotation value. If that's the case,
+	// We will not care about bad-formatted/invalid annotation value. If that's the case,
 	// the pod wouldn't have been deployed or wouldn't be in running state.
 	if err := json.Unmarshal([]byte(networksAnnotation), &networkObjects); err == nil {
 		for _, network := range networkObjects {

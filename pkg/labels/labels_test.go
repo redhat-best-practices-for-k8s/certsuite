@@ -73,7 +73,7 @@ func TestIsWordInExpr(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "word2 won't match in OR and AND expr",
+			name: "word2 will not match in OR and AND expr",
 			args: args{
 				words: []string{"word2"},
 				expr:  "word1 || (word2 && word3)",
@@ -81,7 +81,7 @@ func TestIsWordInExpr(t *testing.T) {
 			want: false,
 		},
 		{
-			name: "word2 won't match in OR and AND expr",
+			name: "word2 will not match in OR and AND expr",
 			args: args{
 				words: []string{"word1-word2"},
 				expr:  "word1-word2 || (word2 && word3)",
@@ -89,7 +89,7 @@ func TestIsWordInExpr(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "word2 won't match in OR and AND expr",
+			name: "word2 will not match in OR and AND expr",
 			args: args{
 				words: []string{"word1-word2"},
 				expr:  "word1 || (word2 && word3)|| word1-word2",
@@ -97,7 +97,7 @@ func TestIsWordInExpr(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "word2 won't match in OR and AND expr",
+			name: "word2 will not match in OR and AND expr",
 			args: args{
 				words: []string{"word1-word2", "word1"},
 				expr:  "word1 && (word1-word2 || word3)",
@@ -105,7 +105,7 @@ func TestIsWordInExpr(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "word2 won't match in OR and AND expr",
+			name: "word2 will not match in OR and AND expr",
 			args: args{
 				words: []string{"word1-word2", "word1"},
 				expr:  "word1, word3",

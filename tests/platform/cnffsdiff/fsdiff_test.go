@@ -242,14 +242,14 @@ func TestRunTestUnmountFolderErrors(t *testing.T) {
 			mockedClientshHolder: &ClientHoldersUnmountCustomPodmanMock{
 				unmountFolderErr: fmt.Errorf("custom error"),
 			},
-			expectedError: "failed or unexpected output when umounting /host/tmp/tnf-podman. Stderr: , Stdout: , Err: custom error",
+			expectedError: "failed or unexpected output when unmounting /host/tmp/tnf-podman. Stderr: , Stdout: , Err: custom error",
 		},
 		{
 			mockedClientshHolder: &ClientHoldersUnmountCustomPodmanMock{
 				unmountFolderStdout: "custom stdout",
 				unmountFolderStderr: "custom stderr",
 			},
-			expectedError: "failed or unexpected output when umounting /host/tmp/tnf-podman. Stderr: custom stdout, Stdout: custom stderr, Err: <nil>",
+			expectedError: "failed or unexpected output when unmounting /host/tmp/tnf-podman. Stderr: custom stdout, Stdout: custom stderr, Err: <nil>",
 		},
 
 		// Errors deleting the mount point folder.

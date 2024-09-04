@@ -224,7 +224,7 @@ func (f *FsDiff) mountDebugPartnerPodmanFolder() error {
 
 func (f *FsDiff) unmountDebugPartnerPodmanFolder() error {
 	return f.execCommandContainer(fmt.Sprintf("umount %s", nodeTmpMountFolder),
-		fmt.Sprintf("failed or unexpected output when umounting %s.", nodeTmpMountFolder))
+		fmt.Sprintf("failed or unexpected output when unmounting %s.", nodeTmpMountFolder))
 }
 
 func (f *FsDiff) installCustomPodman() error {
@@ -235,7 +235,7 @@ func (f *FsDiff) installCustomPodman() error {
 	}
 
 	// Mount podman from partner debug pod into /host/tmp/...
-	f.check.LogInfo("Mouting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
+	f.check.LogInfo("Mounting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
 	if mountErr := f.mountDebugPartnerPodmanFolder(); mountErr != nil {
 		// We need to delete the temp folder previously created as mount point.
 		if deleteErr := f.deleteNodeFolder(); deleteErr != nil {
@@ -254,7 +254,7 @@ func (f *FsDiff) unmountCustomPodman() {
 	f.check.LogInfo("Unmounting folder %s", nodeTmpMountFolder)
 	if err := f.unmountDebugPartnerPodmanFolder(); err != nil {
 		// Here, there's no point on trying to remove the temp folder used as mount point, as
-		// that probably won't work either.
+		// that probably will not work either.
 		f.Error = err
 		f.result = testhelper.ERROR
 		return

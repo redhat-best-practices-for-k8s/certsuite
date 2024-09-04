@@ -148,7 +148,7 @@ func (client *fakeK8sClient) ExecCommandContainer(_ clientsholder.Context, _ str
 }
 
 func TestPositiveMachineConfigSystemdHugepages(t *testing.T) {
-	// helper pod, so the hugepages struct doesnt crash when accessing the debug container.
+	// helper pod, so the hugepages struct does not crash when accessing the debug container.
 	fakeDebugPod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns1"},
 		Spec:       corev1.PodSpec{Containers: []corev1.Container{{Name: "container1"}}},
@@ -314,7 +314,7 @@ func TestPositiveMachineConfigSystemdHugepages(t *testing.T) {
 }
 
 func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
-	// helper pod, so the hugepages struct doesnt crash when accessing the debug container.
+	// helper pod, so the hugepages struct does not crash when accessing the debug container.
 	fakeDebugPod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns1"},
 		Spec:       corev1.PodSpec{Containers: []corev1.Container{{Name: "container1"}}},
@@ -485,7 +485,7 @@ func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
 }
 
 func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
-	// helper pod, so the hugepages test won't crash when accessing the debug container.
+	// helper pod, so the hugepages test will not crash when accessing the debug container.
 	fakeDebugPod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns1"},
 		Spec:       corev1.PodSpec{Containers: []corev1.Container{{Name: "container1"}}},
@@ -607,7 +607,7 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 }
 
 func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
-	// helper pod, so the hugepages test won't crash when accessing the debug container.
+	// helper pod, so the hugepages test will not crash when accessing the debug container.
 	fakeDebugPod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns1"},
 		Spec:       corev1.PodSpec{Containers: []corev1.Container{{Name: "container1"}}},
@@ -627,28 +627,28 @@ func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:2`,
 			mcKernelArgs:           []string{},
-			expectedErrorMsg:       "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 2048 won't match (node count=2, expected=0)",
+			expectedErrorMsg:       "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 2048 will not match (node count=2, expected=0)",
 		},
 		// Count mismatch: kernelArgs value is non-zero, while node's one is zero.
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:0`,
 			mcKernelArgs:           []string{"hugepages=16"},
-			expectedErrorMsg:       "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 2048 won't match (node count=0, expected=16)",
+			expectedErrorMsg:       "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 2048 will not match (node count=0, expected=16)",
 		},
-		// Count mismatch: Node has two numas with non-zero hugepages each but the total won't match.
+		// Count mismatch: Node has two numas with non-zero hugepages each but the total will not match.
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:8
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages count:7`,
 			mcKernelArgs:     []string{"hugepages=16"},
-			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 2048 won't match (node count=15, expected=16)",
+			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 2048 will not match (node count=15, expected=16)",
 		},
-		// Size mismatch: kernelArgs size won't match node's one (count > 0).
+		// Size mismatch: kernelArgs size will not match node's one (count > 0).
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:8`,
 			mcKernelArgs:           []string{"hugepagesz=1G", "hugepages=8"},
 			expectedErrorMsg:       "failed to compare machineConfig KernelArguments with node ones, err: node's numa 0 hugepages size=2048 does not appear in kernelArgs, but the count is not zero (8)",
 		},
-		// Size mismatch: kernelArgs size won't match node's one (count == 0).
+		// Size mismatch: kernelArgs size will not match node's one (count == 0).
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:0`,
 			mcKernelArgs:           []string{"hugepagesz=1G", "hugepages=8"},
@@ -661,25 +661,25 @@ func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages count:0
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:4`,
 			mcKernelArgs:     []string{"default_hugepagesz=1G"},
-			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 1048576 won't match (node count=8, expected=0)",
+			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 1048576 will not match (node count=8, expected=0)",
 		},
-		// Count mismatch: node has two numas and two sizes, with hugepages count on both. Total for size 2MB won't match kernelArgs.
+		// Count mismatch: node has two numas and two sizes, with hugepages count on both. Total for size 2MB will not match kernelArgs.
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:100
 									 /host/sys/devices/system/node/node0/hugepages/hugepages-1048576kB/nr_hugepages count:4
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages count:200
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:4`,
 			mcKernelArgs:     []string{"hugepagesz=1G", "hugepages=8", "hugepagesz=2M", "hugepages=256"},
-			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 2048 won't match (node count=300, expected=256)",
+			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 2048 will not match (node count=300, expected=256)",
 		},
-		// Count mismatch: node has two numas and two sizes, with hugepages count on both. Total for size 1GB won't match kernelArgs.
+		// Count mismatch: node has two numas and two sizes, with hugepages count on both. Total for size 1GB will not match kernelArgs.
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:256
 									 /host/sys/devices/system/node/node0/hugepages/hugepages-1048576kB/nr_hugepages count:16
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages count:0
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:0`,
 			mcKernelArgs:     []string{"hugepagesz=1G", "hugepages=8", "hugepagesz=2M", "hugepages=256"},
-			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 1048576 won't match (node count=16, expected=8)",
+			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 1048576 will not match (node count=16, expected=8)",
 		},
 	}
 
