@@ -265,7 +265,7 @@ func (nt *NodeTainted) getAllTainterModules() (map[string]string, error) {
 // GetTainterModules runs a command in the node to get all the modules that
 // have set a kernel taint bit. Returns:
 //   - tainters: maps a module to a string of taints letters. Each letter maps
-//     to a single bit in the taint mask. Tainters that appear in the allowlist won't
+//     to a single bit in the taint mask. Tainters that appear in the allowlist will not
 //     be added to this map.
 //   - taintBits: bits (pos) of kernel taints caused by all modules (included the allowlisted ones).
 func (nt *NodeTainted) GetTainterModules(allowList map[string]bool) (tainters map[string]string, taintBits map[int]bool, err error) {

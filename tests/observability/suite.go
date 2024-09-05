@@ -86,7 +86,7 @@ func LoadChecks() {
 func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 	ocpClient := clientsholder.GetClientsHolder()
 
-	// K8s' API won't return lines that do not have the newline termination char, so
+	// K8s' API will not return lines that do not have the newline termination char, so
 	// We need to ask for the last two lines.
 	const tailLogLines = 2
 	numLogLines := int64(tailLogLines)

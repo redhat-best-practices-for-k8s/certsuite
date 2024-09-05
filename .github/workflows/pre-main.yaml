@@ -318,7 +318,7 @@ jobs:
 
       # Clean up unused container image layers. We need to filter out a possible error return code
       # from docker with "|| true" as some images might still be used by running kind containers and
-      # won't be removed.
+      # will not be removed.
       - name: Remove unnamed/dangling container images to save space. Show disk space before and after removing them.
         run: |
           df -h
