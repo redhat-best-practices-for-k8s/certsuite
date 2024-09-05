@@ -91,7 +91,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: certsuite-qe
-          ref: limit_procs
+          ref: main
 
       - name: Preemptively potential QE namespaces
         run: ./scripts/delete-namespaces.sh
