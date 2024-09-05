@@ -1014,7 +1014,7 @@ Please see the <a href="developers/">Developers&rsquo; Guide</a> for more inform
 <p>the <code>Certification container/exec</code> is the Test Suite running on the platform or in a container. The executable verifies the workload under test configuration and its interactions with OpenShift</p>
 </li>
 <li>
-<p>the <code>Debug</code> pods are part of a Kubernetes daemonset responsible to run various <strong>privileged commands</strong> on Kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the <a href="https://github.com/redhat-best-practices-for-k8s/privileged-daemonset">privileged-daemonset</a> repository.</p>
+<p>the <code>Debug</code> pods are part of a Kubernetes daemonset responsible to run various <strong>privileged commands</strong> on Kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The probe daemonset is instantiated via the <a href="https://github.com/redhat-best-practices-for-k8s/privileged-daemonset">privileged-daemonset</a> repository.</p>
 </li>
 </ul>
 

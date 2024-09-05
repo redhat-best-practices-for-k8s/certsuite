@@ -711,9 +711,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#debugdaemonsetnamespace" class="md-nav__link">
+  <a href="#probedaemonsetnamespace" class="md-nav__link">
     <span class="md-ellipsis">
-      debugDaemonSetNamespace
+      probeDaemonSetNamespace
     </span>
   </a>
   
@@ -1344,9 +1344,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#debugdaemonsetnamespace" class="md-nav__link">
+  <a href="#probedaemonsetnamespace" class="md-nav__link">
     <span class="md-ellipsis">
-      debugDaemonSetNamespace
+      probeDaemonSetNamespace
     </span>
   </a>
   
@@ -1542,11 +1542,11 @@ If there are labels defined, we get the list of pods, statefulsets, deployments,
 <span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tnf</span>
 </code></pre></div>
 <h3 id="red-hat-best-practices-test-suite-settings">Red Hat Best Practices Test Suite settings<a class="headerlink" href="#red-hat-best-practices-test-suite-settings" title="Permanent link">&para;</a></h3>
-<h4 id="debugdaemonsetnamespace">debugDaemonSetNamespace<a class="headerlink" href="#debugdaemonsetnamespace" title="Permanent link">&para;</a></h4>
+<h4 id="probedaemonsetnamespace">probeDaemonSetNamespace<a class="headerlink" href="#probedaemonsetnamespace" title="Permanent link">&para;</a></h4>
 <p>This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is <em>cnf-suite</em>.</p>
-<div class="annotate highlight"><pre><span></span><code><span class="nt">debugDaemonSetNamespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cnf-cert</span>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">probeDaemonSetNamespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cnf-cert</span>
 </code></pre></div>
-<p>This DaemonSet, called <em>tnf-debug</em> is deployed and used internally by the Test Suite tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>
+<p>This DaemonSet, called <em>certsuite-probe</em> is deployed and used internally by the Test Suite tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>
 <h3 id="other-settings">Other settings<a class="headerlink" href="#other-settings" title="Permanent link">&para;</a></h3>
 <p>The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the Pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed.</p>
 <h4 id="pod-ips">Pod IPs<a class="headerlink" href="#pod-ips" title="Permanent link">&para;</a></h4>
