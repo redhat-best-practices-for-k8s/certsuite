@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: cnf-certsuite
+  name: certsuite
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: cnf-certsuite-cr
+  name: certsuite-cr
 rules:
   - apiGroups: ["*"]
     resources: ["*"]
@@ -20,24 +20,24 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: cnf-certsuite-crb
+  name: certsuite-crb
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: cnf-certsuite
+    namespace: certsuite
 roleRef:
   kind: ClusterRole
-  name: cnf-certsuite-cr
+  name: certsuite-cr
   apiGroup: rbac.authorization.k8s.io
 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cnf-certsuite-config
-  namespace: cnf-certsuite
+  name: certsuite-config
+  namespace: certsuite
 data:
-  tnf_config.yaml: |
+  certsuite_config.yaml: |
     targetNameSpaces:
       - name: tnf
     podsUnderTestLabels:
@@ -89,8 +89,8 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: cnf-certsuite-preflight-dockerconfig
-  namespace: cnf-certsuite
+  name: certsuite-preflight-dockerconfig
+  namespace: certsuite
 type: Opaque
 data:
   # Sample of empty content, base64-coded: '{ "auths": {} }'
@@ -101,22 +101,22 @@ data:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: cnf-certsuite
-  namespace: cnf-certsuite
+  name: certsuite
+  namespace: certsuite
   labels:
-    app: cnf-certsuite
+    app: certsuite
 spec:
   serviceAccountName: default
   restartPolicy: Never
   volumes:
     - name: config-volume
       configMap:
-        name: cnf-certsuite-config
+        name: certsuite-config
     - name: preflight-dockerconfig
       secret:
-        secretName: cnf-certsuite-preflight-dockerconfig
+        secretName: certsuite-preflight-dockerconfig
   containers:
-    - name: cnf-certsuite
+    - name: certsuite
       imagePullPolicy: Always
       image: quay.io/redhat-best-practices-for-k8s/certsuite:latest
       resources:
@@ -143,4 +143,4 @@ spec:
         - name: PFLT_DOCKERCONFIG
           value: /usr/tnf/config/preflight/preflight_dockerconfig.json
         - name: CERTSUITE_CONFIGURATION_PATH
-          value: /usr/tnf/config/tnf_config.yaml
+          value: /usr/tnf/config/certsuite_config.yaml

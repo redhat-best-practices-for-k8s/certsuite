@@ -51,7 +51,7 @@ jobs:
       CERTSUITE_IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite
       TEST_CERTSUITE_IMAGE_TAG: unstable
       DOCKER_CONFIG_DIR: '/home/labuser4/.docker'
-      CERTSUITE_CONFIG_DIR: '/home/labuser4/tnf_config'
+      CERTSUITE_CONFIG_DIR: '/home/labuser4/certsuite_config'
       CERTSUITE_REPORT_DIR: '/home/labuser4/tnf_report'
 
     steps:
