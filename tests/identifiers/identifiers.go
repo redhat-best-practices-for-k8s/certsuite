@@ -725,7 +725,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity",
 		common.NetworkingTestKey,
-		`Checks that each workload Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`,                                                          //nolint:lll
+		`Checks that each workload Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the probe daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`,                                                          //nolint:lll
 		`Ensure that the workload is able to communicate via the Default OpenShift network. In some rare cases, workloads may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the redhat-best-practices-for-k8s.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`, //nolint:lll
 		`No exceptions - must be able to communicate on default network using IPv4`,
 		TestICMPv4ConnectivityIdentifierDocLink,
@@ -741,7 +741,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv6ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity",
 		common.NetworkingTestKey,
-		`Checks that each workload Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
+		`Checks that each workload Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the probe daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
 		ICMPv6ConnectivityRemediation,
 		NoDocumentedProcess,
 		TestICMPv6ConnectivityIdentifierDocLink,
@@ -757,7 +757,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv4ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each workload Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
+		`Checks that each workload Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the probe daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
 		ICMPv4ConnectivityMultusRemediation,
 		NoDocumentedProcess,
 		TestICMPv4ConnectivityMultusIdentifierDocLink,
@@ -773,7 +773,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv6ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each workload Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
+		`Checks that each workload Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the probe daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
 		ICMPv6ConnectivityMultusRemediation+` Not applicable if IPv6/MULTUS is not supported.`,
 		NoDocumentedProcess,
 		TestICMPv6ConnectivityMultusIdentifierDocLink,
@@ -789,7 +789,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestServiceDualStackIdentifier = AddCatalogEntry(
 		"dual-stack-service",
 		common.NetworkingTestKey,
-		`Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the debug daemonset.`,
+		`Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the probe daemonset.`,
 		TestServiceDualStackRemediation,
 		NoExceptionProcessForExtendedTests,
 		TestServiceDualStackIdentifierDocLink,

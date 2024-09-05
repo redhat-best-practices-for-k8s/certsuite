@@ -28,7 +28,7 @@
         "checkDiscoveredContainerCertificationStatus": false,
         "collectorAppEndPoint": "http://localhost:8080",
         "collectorAppPassword": "test-password",
-        "debugDaemonSetNamespace": "custom-debugpods-ns",
+        "probeDaemonSetNamespace": "custom-probepods-ns",
         "executedBy": "default-executed-by",
         "managedDeployments": [
           {
@@ -9737,7 +9737,7 @@
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ipv4-\u0026-ipv6",
-            "description": "Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the debug daemonset.",
+            "description": "Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the probe daemonset.",
             "exceptionProcess": "No exception needed for optional/extended tests.",
             "remediation": "Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer."
           },
@@ -9764,7 +9764,7 @@
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ipv4-\u0026-ipv6",
-            "description": "Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.",
+            "description": "Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the probe daemonset.",
             "exceptionProcess": "No exceptions - must be able to communicate on default network using IPv4",
             "remediation": "Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the redhat-best-practices-for-k8s.com/skip_connectivity_tests label to it. The label value is trivial, only its presence."
           },
@@ -9791,7 +9791,7 @@
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations",
-            "description": "Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset.",
+            "description": "Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the probe daemonset.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the redhat-best-practices-for-k8s.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if MULTUS is not supported."
           },
@@ -9818,7 +9818,7 @@
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ipv4-\u0026-ipv6",
-            "description": "Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.",
+            "description": "Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the probe daemonset.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the redhat-best-practices-for-k8s.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if IPv6 is not supported."
           },
@@ -9845,7 +9845,7 @@
           "capturedTestOutput": "",
           "catalogInfo": {
             "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations",
-            "description": "Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset.",
+            "description": "Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the probe daemonset.",
             "exceptionProcess": "There is no documented exception process for this.",
             "remediation": "Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the redhat-best-practices-for-k8s.com/skip_connectivity_tests label to it.The label value is trivial, only its presence. Not applicable if IPv6/MULTUS is not supported."
           },

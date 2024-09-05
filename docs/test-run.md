@@ -6,7 +6,7 @@ The Test Suite can be run using the Certsuite tool directly or through a contain
 To run the Test Suite direct use:
 
 ```shell
-./certsuite run -l <label-filter> -c <tnf-config> -k <kubeconfig> -o <output-dir> [<flags>]
+./certsuite run -l <label-filter> -c <certsuite-config> -k <kubeconfig> -o <output-dir> [<flags>]
 ```
 
 If the _kubeconfig_ is not provided the value of the `KUBECONFIG` environment variable will be taken by default.

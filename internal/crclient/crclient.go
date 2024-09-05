@@ -43,16 +43,16 @@ func (p *Process) String() string {
 	return fmt.Sprintf("cmd: %s, pid: %d, ppid: %d, pidNs: %d", p.Args, p.Pid, p.PPid, p.PidNs)
 }
 
-// Helper function to create the clientsholder.Context of the first container of the debug pod
+// Helper function to create the clientsholder.Context of the first container of the probe pod
 // that runs in the give node. This context is usually needed to run shell commands that get
 // information from a node where a pod/container under test is running.
-func GetNodeDebugPodContext(node string, env *provider.TestEnvironment) (clientsholder.Context, error) {
-	debugPod := env.DebugPods[node]
-	if debugPod == nil {
-		return clientsholder.Context{}, fmt.Errorf("debug pod not found on node %s", node)
+func GetNodeProbePodContext(node string, env *provider.TestEnvironment) (clientsholder.Context, error) {
+	probePod := env.ProbePods[node]
+	if probePod == nil {
+		return clientsholder.Context{}, fmt.Errorf("probe pod not found on node %s", node)
 	}
 
-	return clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name), nil
+	return clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name), nil
 }
 
 func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (int, error) {
@@ -85,9 +85,9 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 // To get the pid namespace of the container
 func GetContainerPidNamespace(testContainer *provider.Container, env *provider.TestEnvironment) (string, error) {
 	// Get the container pid
-	ocpContext, err := GetNodeDebugPodContext(testContainer.NodeName, env)
+	ocpContext, err := GetNodeProbePodContext(testContainer.NodeName, env)
 	if err != nil {
-		return "", fmt.Errorf("failed to get debug pod's context for container %s: %v", testContainer, err)
+		return "", fmt.Errorf("failed to get probe pod's context for container %s: %v", testContainer, err)
 	}
 
 	pid, err := GetPidFromContainer(testContainer, ocpContext)
@@ -118,9 +118,9 @@ func GetContainerProcesses(container *provider.Container, env *provider.TestEnvi
 func ExecCommandContainerNSEnter(command string,
 	aContainer *provider.Container) (outStr, errStr string, err error) {
 	env := provider.GetTestEnvironment()
-	ctx, err := GetNodeDebugPodContext(aContainer.NodeName, &env)
+	ctx, err := GetNodeProbePodContext(aContainer.NodeName, &env)
 	if err != nil {
-		return "", "", fmt.Errorf("failed to get debug pod's context for container %s: %v", aContainer, err)
+		return "", "", fmt.Errorf("failed to get probe pod's context for container %s: %v", aContainer, err)
 	}
 
 	ch := clientsholder.GetClientsHolder()
@@ -134,7 +134,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Add the container PID and the specific command to run with nsenter
 	nsenterCommand := "nsenter -t " + strconv.Itoa(containerPid) + " -n " + command
 
-	// Run the nsenter command on the debug pod
+	// Run the nsenter command on the probe pod
 	outStr, errStr, err = ch.ExecCommandContainer(ctx, nsenterCommand)
 	if err != nil {
 		return "", "", fmt.Errorf("cannot execute command: \" %s \"  on %s err:%s", command, aContainer, err)
@@ -146,14 +146,14 @@ func ExecCommandContainerNSEnter(command string,
 func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container) (p []*Process, err error) {
 	const command = "trap \"\" SIGURG ; ps -e -o pidns,pid,ppid,args"
 	env := provider.GetTestEnvironment()
-	ctx, err := GetNodeDebugPodContext(container.NodeName, &env)
+	ctx, err := GetNodeProbePodContext(container.NodeName, &env)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get debug pod's context for container %s: %v", container, err)
+		return nil, fmt.Errorf("failed to get probe pod's context for container %s: %v", container, err)
 	}
 
 	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ctx, command)
 	if err != nil || stderr != "" {
-		return nil, fmt.Errorf("command %q failed to run in debug pod=%s (node=%s): %v", command, ctx.GetPodName(), container.NodeName, err)
+		return nil, fmt.Errorf("command %q failed to run in probe pod=%s (node=%s): %v", command, ctx.GetPodName(), container.NodeName, err)
 	}
 
 	re := regexp.MustCompile(PsRegex)

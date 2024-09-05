@@ -35,7 +35,7 @@ const (
 	partnerName = "Partner name"
 	appPassword = "Application password"
 	// Settings
-	debugDaemonSet = "Debug DaemonSet namespace"
+	probeDaemonSet = "Probe DaemonSet namespace"
 )
 
 // Menu help
@@ -109,10 +109,10 @@ StatefulSets included in this list will skip any scaling operation check.
 Test cases affected: lifecycle-statefulset-scaling`
 	// Collector (TODO)
 	// Settings
-	debugDaemonSetHelp = `Set the namespace where the debug DaemonSet will be deployed.
+	probeDaemonSetHelp = `Set the namespace where the probe DaemonSet will be deployed.
 The namespace will be created in case it does not exist. If not set, the default namespace
 is "certsuite".
-This DaemonSet, called "certsuite-debug" is deployed and used internally by the Certification Suite
+This DaemonSet, called "certsuite-probe" is deployed and used internally by the Certification Suite
 to issue some shell commands that are needed in certain test cases. Some of these test cases might
 fail or be skipped in case it is not deployed correctly.`
 )
@@ -160,9 +160,9 @@ const (
 	nonScalableStatefulSetsExample = "statefulset-test-test/certsuite-test"
 	// Collector (TODO)
 	// Settings
-	debugDaemonSetPrompt  = "Enter the namespace in which de debug DaemonSet will be deployed."
-	debugDaemonSetSyntax  = "ds-namespace"
-	debugDaemonSetExample = "certsuite-cert"
+	probeDaemonSetPrompt  = "Enter the namespace in which de probe daemonset will be deployed."
+	probeDaemonSetSyntax  = "ds-namespace"
+	probeDaemonSetExample = "certsuite-probe"
 )
 
 // Internal constants

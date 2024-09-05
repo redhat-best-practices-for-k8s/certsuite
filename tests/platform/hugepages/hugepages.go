@@ -76,11 +76,11 @@ func hugepageSizeToInt(s string) int {
 	return num
 }
 
-func NewTester(node *provider.Node, debugPod *corev1.Pod, commander clientsholder.Command) (*Tester, error) {
+func NewTester(node *provider.Node, probePod *corev1.Pod, commander clientsholder.Command) (*Tester, error) {
 	tester := &Tester{
 		node:      node,
 		commander: commander,
-		context:   clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name),
+		context:   clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name),
 	}
 
 	log.Info("Getting node %s numa's hugepages values.", node.Data.Name)
@@ -209,7 +209,7 @@ func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
 
 // getNodeNumaHugePages gets the actual node's hugepages config based on /sys/devices/system/node/nodeX files.
 func (tester *Tester) getNodeNumaHugePages() (hugepages hugepagesByNuma, err error) {
-	// This command must run inside the node, so we'll need the node's context to run commands inside the debug daemonset pod.
+	// This command must run inside the node, so we'll need the node's context to run commands inside the probe daemonset pod.
 	stdout, stderr, err := tester.commander.ExecCommandContainer(tester.context, cmd)
 	log.Debug("getNodeNumaHugePages stdout: %s, stderr: %s", stdout, stderr)
 	if err != nil {

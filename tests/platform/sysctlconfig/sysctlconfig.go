@@ -52,12 +52,12 @@ func GetSysctlSettings(env *provider.TestEnvironment, nodeName string) (map[stri
 	)
 
 	o := clientsholder.GetClientsHolder()
-	ctx := clientsholder.NewContext(env.DebugPods[nodeName].Namespace, env.DebugPods[nodeName].Name, env.DebugPods[nodeName].Spec.Containers[0].Name)
+	ctx := clientsholder.NewContext(env.ProbePods[nodeName].Namespace, env.ProbePods[nodeName].Name, env.ProbePods[nodeName].Spec.Containers[0].Name)
 
 	outStr, errStr, err := o.ExecCommandContainer(ctx, sysctlCommand)
 	if err != nil || errStr != "" {
-		return nil, fmt.Errorf("failed to execute command %s in debug pod %s, err=%s, stderr=%s", sysctlCommand,
-			env.DebugPods[nodeName], err, errStr)
+		return nil, fmt.Errorf("failed to execute command %s in probe pod %s, err=%s, stderr=%s", sysctlCommand,
+			env.ProbePods[nodeName], err, errStr)
 	}
 
 	return parseSysctlSystemOutput(outStr), nil

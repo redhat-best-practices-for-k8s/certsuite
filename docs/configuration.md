@@ -199,15 +199,15 @@ skipScalingTestStatefulSetNames:
 
 ### Red Hat Best Practices Test Suite settings
 
-#### debugDaemonSetNamespace
+#### probeDaemonSetNamespace
 
 This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is _cnf-suite_.
 
 ``` { .yaml .annotate }
-debugDaemonSetNamespace: cnf-cert
+probeDaemonSetNamespace: cnf-cert
 ```
 
-This DaemonSet, called _tnf-debug_ is deployed and used internally by the Test Suite tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn't deployed correctly.
+This DaemonSet, called _certsuite-probe_ is deployed and used internally by the Test Suite tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn't deployed correctly.
 
 ### Other settings
 

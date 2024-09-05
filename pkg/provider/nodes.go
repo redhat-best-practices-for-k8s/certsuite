@@ -126,10 +126,10 @@ const (
 func (node *Node) IsHyperThreadNode(env *TestEnvironment) (bool, error) {
 	o := clientsholder.GetClientsHolder()
 	nodeName := node.Data.Name
-	ctx := clientsholder.NewContext(env.DebugPods[nodeName].Namespace, env.DebugPods[nodeName].Name, env.DebugPods[nodeName].Spec.Containers[0].Name)
+	ctx := clientsholder.NewContext(env.ProbePods[nodeName].Namespace, env.ProbePods[nodeName].Name, env.ProbePods[nodeName].Spec.Containers[0].Name)
 	cmdValue, errStr, err := o.ExecCommandContainer(ctx, isHyperThreadCommand)
 	if err != nil || errStr != "" {
-		return false, fmt.Errorf("cannot execute %s on debug pod %s, err=%s, stderr=%s", isHyperThreadCommand, env.DebugPods[nodeName], err, errStr)
+		return false, fmt.Errorf("cannot execute %s on probe pod %s, err=%s, stderr=%s", isHyperThreadCommand, env.ProbePods[nodeName], err, errStr)
 	}
 	re := regexp.MustCompile(`Thread\(s\) per core:\s+(\d+)`)
 	match := re.FindStringSubmatch(cmdValue)

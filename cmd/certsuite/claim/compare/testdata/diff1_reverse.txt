@@ -56,7 +56,7 @@ CONFIGURATIONS
 
 CNF Cert Suite Configuration: Differences
 FIELD                        CLAIM 1       CLAIM 2
-/debugDaemonSetNamespace     cnf-suite     custom-debugpods-ns
+/probeDaemonSetNamespace     cnf-suite     custom-probepods-ns
 
 CNF Cert Suite Configuration: Only in CLAIM 1
 /targetNameSpaces/1=test-ns

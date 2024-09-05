@@ -149,7 +149,7 @@ func (client *fakeK8sClient) ExecCommandContainer(_ clientsholder.Context, _ str
 
 func TestPositiveMachineConfigSystemdHugepages(t *testing.T) {
 	// helper pod, so the hugepages struct does not crash when accessing the debug container.
-	fakeDebugPod := &corev1.Pod{
+	fakeProbePod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns1"},
 		Spec:       corev1.PodSpec{Containers: []corev1.Container{{Name: "container1"}}},
 	}
@@ -305,7 +305,7 @@ func TestPositiveMachineConfigSystemdHugepages(t *testing.T) {
 				Data: &corev1.Node{ObjectMeta: metav1.ObjectMeta{Name: "node1", Namespace: "ns1"}},
 				Mc:   getMcFromUnits(tc.mcUnits),
 			},
-			fakeDebugPod,
+			fakeProbePod,
 			&client,
 		)
 
@@ -315,7 +315,7 @@ func TestPositiveMachineConfigSystemdHugepages(t *testing.T) {
 
 func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
 	// helper pod, so the hugepages struct does not crash when accessing the debug container.
-	fakeDebugPod := &corev1.Pod{
+	fakeProbePod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns1"},
 		Spec:       corev1.PodSpec{Containers: []corev1.Container{{Name: "container1"}}},
 	}
@@ -476,7 +476,7 @@ func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
 				Data: &corev1.Node{ObjectMeta: metav1.ObjectMeta{Name: "node1", Namespace: "ns1"}},
 				Mc:   getMcFromUnits(tc.mcUnits),
 			},
-			fakeDebugPod,
+			fakeProbePod,
 			&client,
 		)
 
@@ -486,7 +486,7 @@ func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
 
 func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 	// helper pod, so the hugepages test will not crash when accessing the debug container.
-	fakeDebugPod := &corev1.Pod{
+	fakeProbePod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns1"},
 		Spec:       corev1.PodSpec{Containers: []corev1.Container{{Name: "container1"}}},
 	}
@@ -598,7 +598,7 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 			&provider.Node{
 				Data: &corev1.Node{ObjectMeta: metav1.ObjectMeta{Name: "node1", Namespace: "ns1"}},
 				Mc:   getMcFromKernelArgs(tc.mcKernelArgs)},
-			fakeDebugPod,
+			fakeProbePod,
 			&client,
 		)
 
@@ -608,7 +608,7 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 
 func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 	// helper pod, so the hugepages test will not crash when accessing the debug container.
-	fakeDebugPod := &corev1.Pod{
+	fakeProbePod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns1"},
 		Spec:       corev1.PodSpec{Containers: []corev1.Container{{Name: "container1"}}},
 	}
@@ -695,7 +695,7 @@ func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 			&provider.Node{
 				Data: &corev1.Node{ObjectMeta: metav1.ObjectMeta{Name: "node1", Namespace: "ns1"}},
 				Mc:   getMcFromKernelArgs(tc.mcKernelArgs)},
-			fakeDebugPod,
+			fakeProbePod,
 			&client,
 		)
 
