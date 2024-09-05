@@ -162,7 +162,7 @@ const (
 	// Settings
 	probeDaemonSetPrompt  = "Enter the namespace in which de probe daemonset will be deployed."
 	probeDaemonSetSyntax  = "ds-namespace"
-	probeDaemonSetExample = "certsuite-cert"
+	probeDaemonSetExample = "certsuite-probe"
 )
 
 // Internal constants
