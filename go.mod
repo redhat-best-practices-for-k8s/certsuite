@@ -1,6 +1,6 @@
 module github.com/redhat-best-practices-for-k8s/certsuite
 
-go 1.22.6
+go 1.23.1
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.0
