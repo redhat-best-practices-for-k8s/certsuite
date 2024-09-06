@@ -34,7 +34,9 @@ runs:
       run: |
           df -h
           lsblk
-          sudo mkdir /mnt/docker-storage
+          if [ ! -d /mnt/docker-storage ]; then
+            sudo mkdir /mnt/docker-storage
+          fi
           sudo jq '.  +={"data-root" : "/mnt/docker-storage"}' < /etc/docker/daemon.json > /tmp/docker-daemon.json
           sudo cp /tmp/docker-daemon.json /etc/docker/daemon.json
           cat /etc/docker/daemon.json
