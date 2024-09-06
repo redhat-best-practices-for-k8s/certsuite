@@ -38,6 +38,26 @@ jobs:
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
 
+      # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
+      # This step needs to be done right after the partner repo's bootstrap scripts, as they
+      # overwrite the docker's daemon.json.
+      - name: Create docker/daemon.json if it does not exist
+        run: |
+          if [ ! -f /etc/docker/daemon.json ]; then
+            echo '{}' | sudo tee /etc/docker/daemon.json
+          fi
+
+      - name: Make docker to use /mnt (sdb) for storage
+        run: |
+          df -h
+          lsblk
+          sudo mkdir /mnt/docker-storage
+          sudo jq '.  +={"data-root" : "/mnt/docker-storage"}' < /etc/docker/daemon.json > /tmp/docker-daemon.json
+          sudo cp /tmp/docker-daemon.json /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
+          sudo systemctl restart docker
+          sudo ls -la /mnt/docker-storage
+
       - name: Build temporary image tag for this PR
         uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6.7.0
         with:
@@ -81,6 +101,28 @@ jobs:
       # Download the image from the artifact and load it into the docker daemon.
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+
+      # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
+      # This step needs to be done right after the partner repo's bootstrap scripts, as they
+      # overwrite the docker's daemon.json.
+      - name: Create docker/daemon.json if it does not exist
+        run: |
+          if [ ! -f /etc/docker/daemon.json ]; then
+            echo '{}' | sudo tee /etc/docker/daemon.json
+          fi
+
+      - name: Make docker to use /mnt (sdb) for storage
+        run: |
+          df -h
+          lsblk
+          if [ ! -d /mnt/docker-storage ]; then
+            sudo mkdir /mnt/docker-storage
+          fi
+          sudo jq '.  +={"data-root" : "/mnt/docker-storage"}' < /etc/docker/daemon.json > /tmp/docker-daemon.json
+          sudo cp /tmp/docker-daemon.json /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
+          sudo systemctl restart docker
+          sudo ls -la /mnt/docker-storage
 
       - name: Setup partner cluster
         uses: ./.github/actions/setup-partner-cluster
