@@ -17,25 +17,14 @@ import (
 	"google.golang.org/api/sheets/v4"
 )
 
+var stringToPointer = func(s string) *string { return &s }
+var conclusionSheetHeaders = []string{categoryConclusionsCol, workloadVersionConclusionsCol, ocpVersionConclusionsCol, workloadNameConclusionsCol, resultsConclusionsCol}
+
 var (
 	resultsFilePath string
 	rootFolderURL   string
 	ocpVersion      string
 )
-
-var workloadsResultsFolder *drive.File
-var stringToPointer = func(s string) *string { return &s }
-
-const (
-	categoryConclusionsCol        = "Category"
-	workloadVersionConclusionsCol = "Workload Version"
-	ocpVersionConclusionsCol      = "OCP Version"
-	workloadNameConclusionsCol    = "Workload Name"
-	resultsConclusionsCol         = "Results"
-	cellContantLimit              = 50000
-)
-
-var conclusionSheetHeaders = []string{categoryConclusionsCol, workloadVersionConclusionsCol, ocpVersionConclusionsCol, workloadNameConclusionsCol, resultsConclusionsCol}
 
 var (
 	uploadResultSpreadSheetCmd = &cobra.Command{
@@ -138,12 +127,22 @@ func prepareRecordsForSpreadSheet(records [][]string) []*sheets.RowData {
 	return rows
 }
 
+// createSingleWorkloadRawResultsSheet creates a new sheet with test case results of a single workload,
+// extracted from rawResultsSheets (which may contain the results of several workloads).
+// The sheet will use the same header columns as the rawResultsSheet, but will also add two extra columns:
+//   - "Owner/TechLead Conclusion": the partner/user is expected to add the name of the workload owner that should lead the fix
+//     of this test case result.
+//   - "Next Step Actions": the partner/user may use this column to add the follow-up actions to fix this test case result.
+//
+// Note: the caller of the function is responsible to check that the given rawResultsSheet data is not empty
 func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workloadName string) (*sheets.Sheet, error) {
-	// Initialize sheet with headers
+	// Initialize sheet with the two new column headers only.
 	filteredRows := []*sheets.RowData{{Values: []*sheets.CellData{
 		{UserEnteredValue: &sheets.ExtendedValue{StringValue: stringToPointer("Owner/TechLead Conclusion")}},
 		{UserEnteredValue: &sheets.ExtendedValue{StringValue: stringToPointer("Next Step Actions")}},
 	}}}
+
+	// Add existing column headers from the rawResultsSheet
 	filteredRows[0].Values = append(filteredRows[0].Values, rawResultsSheet.Data[0].RowData[0].Values...)
 
 	headers := getHeadersFromSheet(rawResultsSheet)
@@ -151,19 +150,20 @@ func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workload
 	if err != nil {
 		return nil, err
 	}
-	workloadIndex := indices[0]
+	workloadNameIndex := indices[0]
 
 	// add to sheet only rows of given workload name
 	for _, row := range rawResultsSheet.Data[0].RowData[1:] {
-		if len(row.Values) > workloadIndex {
-			curWorkloadName := *row.Values[workloadIndex].UserEnteredValue.StringValue
-			if curWorkloadName == workloadName {
-				// add empty values in 2 added columns
-				newRow := &sheets.RowData{
-					Values: append([]*sheets.CellData{{}, {}}, row.Values...),
-				}
-				filteredRows = append(filteredRows, newRow)
+		if len(row.Values) <= workloadNameIndex {
+			return nil, fmt.Errorf("workload %s not found in raw spreadsheet", workloadName)
+		}
+		curWorkloadName := *row.Values[workloadNameIndex].UserEnteredValue.StringValue
+		if curWorkloadName == workloadName {
+			// add empty values in 2 added columns
+			newRow := &sheets.RowData{
+				Values: append([]*sheets.CellData{{}, {}}, row.Values...),
 			}
+			filteredRows = append(filteredRows, newRow)
 		}
 	}
 
@@ -206,10 +206,21 @@ func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, dri
 	return workloadResultsSpreadsheet, nil
 }
 
+// createConclusionsSheet creates a new sheet with unique workloads data extracted from rawResultsSheets.
+// The sheet's columns include:
+// "Category" (Telco\Non-Telco workload), "Workload Version", "OCP Version", "Workload Name" and
+// "Results" containing a hyper link leading to the workload's raw results spreadsheet.
+//
 //nolint:funlen
-func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.Service, rawResultsSheet *sheets.Sheet) (*sheets.Sheet, error) {
-	headers := getHeadersFromSheet(rawResultsSheet)
-	colsIndices, err := getHeaderIndicesByColumnNames(headers, []string{"CNFName", "CNFType", "OperatorVersion"})
+func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.Service, rawResultsSheet *sheets.Sheet, mainResultsFolderID string) (*sheets.Sheet, error) {
+	workloadsFolderName := "Results Per Workload"
+	workloadsResultsFolder, err := createDriveFolder(driveService, workloadsFolderName, mainResultsFolderID)
+	if err != nil {
+		return nil, fmt.Errorf("unable to create workloads results folder: %v", err)
+	}
+
+	rawSheetHeaders := getHeadersFromSheet(rawResultsSheet)
+	colsIndices, err := getHeaderIndicesByColumnNames(rawSheetHeaders, []string{workloadNameRawResultsCol, workloadTypeRawResultsCol, operatorVersionRawResultsCol})
 	if err != nil {
 		return nil, err
 	}
@@ -221,40 +232,33 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 	// Initialize sheet with headers
 	conclusionsSheetRowsValues := []*sheets.CellData{}
 	for _, colHeader := range conclusionSheetHeaders {
-		headerCellData := &sheets.CellData{UserEnteredValue: &sheets.ExtendedValue{StringValue: stringToPointer(colHeader)}}
+		headerCellData := &sheets.CellData{UserEnteredValue: &sheets.ExtendedValue{StringValue: &colHeader}}
 		conclusionsSheetRowsValues = append(conclusionsSheetRowsValues, headerCellData)
 	}
 	conclusionsSheetRows := []*sheets.RowData{{Values: conclusionsSheetRowsValues}}
 
+	// If rawResultsSheet has now workloads data, return an error
+	if len(rawResultsSheet.Data[0].RowData) <= 1 {
+		return nil, fmt.Errorf("raw results has no workloads data")
+	}
+
 	// Extract unique values from the CNFName column and fill sheet
-	uniqueMap := make(map[string]bool)
+	uniqueWorkloadNames := make(map[string]bool)
 	for _, rawResultsSheetrow := range rawResultsSheet.Data[0].RowData[1:] {
 		workloadName := *rawResultsSheetrow.Values[workloadNameColIndex].UserEnteredValue.StringValue
 		// if workload has already been added to sheet, skip it
-		if uniqueMap[workloadName] {
+		if uniqueWorkloadNames[workloadName] {
 			continue
 		}
-		uniqueMap[workloadName] = true
+		uniqueWorkloadNames[workloadName] = true
 
 		curConsclusionRowValues := []*sheets.CellData{}
 		for _, colHeader := range conclusionSheetHeaders {
 			curCellData := &sheets.CellData{UserEnteredValue: &sheets.ExtendedValue{}}
 			var value string
 
-			switch colHeader {
-			case categoryConclusionsCol:
-				value = *rawResultsSheetrow.Values[workloadTypeColIndex].UserEnteredValue.StringValue
-
-			case workloadVersionConclusionsCol:
-				value = *rawResultsSheetrow.Values[operatorVersionColIndex].UserEnteredValue.StringValue
-
-			case ocpVersionConclusionsCol:
-				value = ocpVersion + " "
-
-			case workloadNameConclusionsCol:
-				value = workloadName
-
-			case resultsConclusionsCol:
+			// if col header is resultsConclusionsCol - set hyper link to single workload raw results, otherwise set string value of the cell
+			if colHeader == resultsConclusionsCol {
 				workloadResultsSpreadsheet, err := createSingleWorkloadRawResultsSpreadSheet(sheetsService, driveService, workloadsResultsFolder, rawResultsSheet, workloadName)
 				if err != nil {
 					return nil, fmt.Errorf("error has occurred while creating %s results file: %v", workloadName, err)
@@ -262,13 +266,24 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 
 				hyperlinkFormula := fmt.Sprintf("=HYPERLINK(%q, %q)", workloadResultsSpreadsheet.SpreadsheetUrl, "Results")
 				curCellData.UserEnteredValue.FormulaValue = &hyperlinkFormula
+			} else {
+				switch colHeader {
+				case categoryConclusionsCol:
+					value = *rawResultsSheetrow.Values[workloadTypeColIndex].UserEnteredValue.StringValue
 
-			default:
-				// use space for empty values to avoid cells overlapping
-				value = " "
-			}
+				case workloadVersionConclusionsCol:
+					value = *rawResultsSheetrow.Values[operatorVersionColIndex].UserEnteredValue.StringValue
 
-			if colHeader != resultsConclusionsCol {
+				case ocpVersionConclusionsCol:
+					value = ocpVersion + " "
+
+				case workloadNameConclusionsCol:
+					value = workloadName
+
+				default:
+					// use space for empty values to avoid cells overlapping
+					value = " "
+				}
 				curCellData.UserEnteredValue.StringValue = &value
 			}
 
@@ -323,18 +338,12 @@ func generateResultsSpreadSheet() {
 		log.Fatalf("Unable to create main results folder: %v", err)
 	}
 
-	workloadsFolderName := "Results Per Workload"
-	workloadsResultsFolder, err = createDriveFolder(driveService, workloadsFolderName, mainResultsFolder.Id)
-	if err != nil {
-		log.Fatalf("Unable to create workloads results folder: %v", err)
-	}
-
 	rawResultsSheet, err := createRawResultsSheet(resultsFilePath)
 	if err != nil {
 		log.Fatalf("Unable to create raw results sheet: %v", err)
 	}
 
-	conclusionSheet, err := createConclusionsSheet(sheetService, driveService, rawResultsSheet)
+	conclusionSheet, err := createConclusionsSheet(sheetService, driveService, rawResultsSheet, mainResultsFolder.Id)
 	if err != nil {
 		log.Fatalf("Unable to create conclusions sheet: %v", err)
 	}
