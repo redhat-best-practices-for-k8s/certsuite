@@ -27,10 +27,10 @@ jobs:
       - name: Execute `make update-rhcos-versions`
         run: make update-rhcos-versions
 
-      - name: Set up Go 1.22
+      - name: Set up Go 1.23
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
         with:
-          go-version: 1.22.6
+          go-version: 1.23.1
 
         # This prevents any failures due to the updated rhcos_versions_map file from
         # making it into the PR phase.
@@ -38,7 +38,7 @@ jobs:
         run: make test
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@4320041ed380b20e97d388d56a7fb4f9b8c20e79 # v7.0.0
+        uses: peter-evans/create-pull-request@8867c4aba1b742c39f8d0ba35429c2dfa4b6cb20 # v7.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.UPDATE_CERTIFIED_DB_TOKEN }}
         with:

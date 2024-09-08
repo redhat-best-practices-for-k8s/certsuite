@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.4-1181.1724035907@sha256:9e6a89ab2a9224712391c77fab2ab01009e387aff42854826427aaf18b98b1ff AS build
+FROM registry.access.redhat.com/ubi9/ubi:9.4-1214@sha256:9460515b85f2a75278f2043438583c1c377c44bf100178bb653a6c8658304ac7 AS build
 ENV CERTSUITE_DIR=/usr/certsuite
 ENV \
 	CERTSUITE_SRC_DIR=${CERTSUITE_DIR}/src \
@@ -27,19 +27,19 @@ ENV \
 ENV \
 	GO_DL_URL=https://golang.org/dl \
 	GOPATH=/root/go
-ENV GO_BIN_URL_x86_64=${GO_DL_URL}/go1.22.6.linux-amd64.tar.gz
-ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.22.6.linux-arm64.tar.gz
+ENV GO_BIN_URL_x86_64=${GO_DL_URL}/go1.23.1.linux-amd64.tar.gz
+ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.23.1.linux-arm64.tar.gz
 
 # Determine the CPU architecture and download the appropriate Go binary
 RUN \
 	if [ "$(uname -m)" = x86_64 ]; then \
 		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_x86_64} --quiet \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.22.6.linux-amd64.tar.gz; \
+		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.23.1.linux-amd64.tar.gz; \
 	elif [ "$(uname -m)" = aarch64 ]; then \
 		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_aarch64} --quiet \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.22.6.linux-arm64.tar.gz; \
+		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.23.1.linux-arm64.tar.gz; \
 	else \
 		echo "CPU architecture is not supported." && exit 1; \
 	fi
@@ -102,7 +102,7 @@ FROM quay.io/redhat-best-practices-for-k8s/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4-1194@sha256:104cf11d890aeb7dd5728b7d7732e175a0e4018f1bb00d2faebcc8f6bf29bd52
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4-1227@sha256:f182b500ff167918ca1010595311cf162464f3aa1cab755383d38be61b4d30aa
 
 ENV \
 	CERTSUITE_DIR=/usr/certsuite \

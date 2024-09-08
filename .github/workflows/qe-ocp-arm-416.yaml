@@ -18,7 +18,7 @@ env:
   CERTSUITE_IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite
   TEST_CERTSUITE_IMAGE_TAG: localtest
   DOCKER_CONFIG_DIR: '/home/labuser/.docker'
-  CERTSUITE_CONFIG_DIR: '/home/labuser/tnf_config'
+  CERTSUITE_CONFIG_DIR: '/home/labuser/certsuite_config'
   CERTSUITE_REPORT_DIR: '/home/labuser/tnf_report'
 
 jobs:
@@ -91,7 +91,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: certsuite-qe
-          ref: limit_procs
+          ref: main
 
       - name: Preemptively potential QE namespaces
         run: ./scripts/delete-namespaces.sh

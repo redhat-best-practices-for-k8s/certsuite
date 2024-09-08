@@ -16,7 +16,7 @@
 package autodiscover
 
 const (
-	debugHelperPodsLabelName      = "redhat-best-practices-for-k8s.com/app"
-	debugHelperPodsLabelValue     = "tnf-debug"
+	probeHelperPodsLabelName      = "redhat-best-practices-for-k8s.com/app"
+	probeHelperPodsLabelValue     = "certsuite-probe"
 	csvNameWithNamespaceFormatStr = "%s, ns=%s"
 )

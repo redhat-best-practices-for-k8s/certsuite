@@ -62,5 +62,5 @@ See more about this variable [here](https://github.com/redhat-openshift-ecosyste
 `CERTSUITE_ALLOW_PREFLIGHT_INSECURE` (default: false) is required set to `true` if you are running
 against a private container registry that has self-signed certificates.
 
-Note that you can also specify the debug pod image to use with `SUPPORT_IMAGE`
+Note that you can also specify the probe pod image to use with `SUPPORT_IMAGE`
 environment variable, default to `certsuite-probe:v0.0.7`.

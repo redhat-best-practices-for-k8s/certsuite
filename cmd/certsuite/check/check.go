@@ -9,7 +9,7 @@ import (
 var (
 	checkCmd = &cobra.Command{
 		Use:   "check",
-		Short: "check the status of workload resources or artifacts.",
+		Short: "check the status of certsuite resources or artifacts.",
 	}
 )
 

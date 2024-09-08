@@ -16,7 +16,7 @@ import (
 
 const longHelp = `Compares sections of both claim files and the differences are shown in a table per section.
 This tool can be helpful when the result of some test cases is different between two (consecutive) runs, as it shows
-configuration differences in both the CNF Cert Suite config and the cluster nodes that could be the root cause for
+configuration differences in both the Cert Suite config and the cluster nodes that could be the root cause for
 some of the test cases results discrepancy.
 
 All the compared sections, except the test cases results are compared blindly, traversing the whole json tree and
@@ -148,7 +148,7 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	tcsDiffReport := testcases.GetDiffReport(claimFile1Data.Claim.Results, claimFile2Data.Claim.Results)
 	fmt.Println(tcsDiffReport)
 
-	// Show CNF Certification Suite configuration differences.
+	// Show  Certification Suite configuration differences.
 	claim1Configurations := &claimFile1Data.Claim.Configurations
 	claim2Configurations := &claimFile2Data.Claim.Configurations
 	configurationsDiffReport := configurations.GetDiffReport(claim1Configurations, claim2Configurations)

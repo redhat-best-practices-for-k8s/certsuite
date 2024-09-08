@@ -756,12 +756,12 @@ func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnviron
 			check.LogInfo("Skipping \"istio-proxy\" container")
 			continue
 		}
-		debugPod := env.DebugPods[cut.NodeName]
-		if debugPod == nil {
+		probePod := env.ProbePods[cut.NodeName]
+		if probePod == nil {
 			check.LogError("Debug pod not found for node %q", cut.NodeName)
 			return
 		}
-		ocpContext := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+		ocpContext := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
 			check.LogError("Could not get PID for Container %q, error: %v", cut, err)

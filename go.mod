@@ -1,10 +1,10 @@
 module github.com/redhat-best-practices-for-k8s/certsuite
 
-go 1.22.6
+go 1.23.1
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.0
-	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.46
+	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.47
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
@@ -176,7 +176,7 @@ require (
 	golang.org/x/exp v0.0.0-20240808152545-0cdaa3abc0fa // indirect
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.24.0 // indirect
+	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
 	golang.org/x/time v0.6.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
@@ -221,12 +221,12 @@ require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.1
 	github.com/manifoldco/promptui v0.9.0
-	github.com/redhat-best-practices-for-k8s/oct v0.0.20
+	github.com/redhat-best-practices-for-k8s/oct v0.0.21
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.33
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240812211034-2f51d732179a
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/oauth2 v0.22.0
-	golang.org/x/term v0.23.0
+	golang.org/x/term v0.24.0
 	google.golang.org/api v0.193.0
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.30.3

@@ -36,6 +36,7 @@ import (
 	"k8s.io/client-go/scale"
 
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
+	apiserverscheme "github.com/openshift/client-go/apiserver/clientset/versioned"
 	ocpMachine "github.com/openshift/client-go/machineconfiguration/clientset/versioned"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -70,6 +71,7 @@ type ClientsHolder struct {
 	KubeConfig           []byte
 	ready                bool
 	GroupResources       []*metav1.APIResourceList
+	ApiserverClient      apiserverscheme.Interface
 }
 
 var clientsHolder = ClientsHolder{}
@@ -328,6 +330,11 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.CNCFNetworkingClient, err = cncfNetworkAttachmentv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate CNCF networking client")
+	}
+
+	clientsHolder.ApiserverClient, err = apiserverscheme.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate apiserverscheme: %w", err)
 	}
 
 	clientsHolder.ready = true

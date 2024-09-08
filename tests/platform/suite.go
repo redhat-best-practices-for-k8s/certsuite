@@ -219,9 +219,9 @@ func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) 
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		check.LogInfo("Testing Container %q", cut)
-		debugPod := env.DebugPods[cut.NodeName]
+		probePod := env.ProbePods[cut.NodeName]
 
-		ctxt := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+		ctxt := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 		fsDiffTester := cnffsdiff.NewFsDiffTester(check, clientsholder.GetClientsHolder(), ctxt, env.OpenshiftVersion)
 		fsDiffTester.RunTest(cut.UID)
 		switch fsDiffTester.GetResults() {
@@ -269,7 +269,7 @@ func testTainted(check *checksdb.Check, env *provider.TestEnvironment) {
 		allowListedModules[module.Module] = true
 	}
 
-	// Loop through the debug pods that are tied to each node.
+	// Loop through the probe pods that are tied to each node.
 	for _, n := range env.Nodes {
 		nodeName := n.Data.Name
 		check.LogInfo("Testing node %q", nodeName)
@@ -280,7 +280,7 @@ func testTainted(check *checksdb.Check, env *provider.TestEnvironment) {
 			continue
 		}
 
-		dp := env.DebugPods[nodeName]
+		dp := env.ProbePods[nodeName]
 
 		ocpContext := clientsholder.NewContext(dp.Namespace, dp.Name, dp.Spec.Containers[0].Name)
 		tf := nodetainted.NewNodeTaintedTester(&ocpContext, nodeName)
@@ -412,22 +412,22 @@ func testIsSELinuxEnforcing(check *checksdb.Check, env *provider.TestEnvironment
 	o := clientsholder.GetClientsHolder()
 	nodesFailed := 0
 	nodesError := 0
-	for _, debugPod := range env.DebugPods {
-		ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+	for _, probePod := range env.ProbePods {
+		ctx := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
 		if err != nil || errStr != "" {
-			check.LogError("Could not execute command %q in Debug Pod %q, errStr: %q, err: %v", getenforceCommand, debugPod, errStr, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(debugPod.Namespace, debugPod.Name, "Failed to execute command", false))
+			check.LogError("Could not execute command %q in Probe Pod %q, errStr: %q, err: %v", getenforceCommand, probePod, errStr, err)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(probePod.Namespace, probePod.Name, "Failed to execute command", false))
 			nodesError++
 			continue
 		}
 		if outStr != enforcingString {
-			check.LogError("Node %q is not running SELinux, %s command returned: %s", debugPod.Spec.NodeName, getenforceCommand, outStr)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(debugPod.Spec.NodeName, "SELinux is not enforced", false))
+			check.LogError("Node %q is not running SELinux, %s command returned: %s", probePod.Spec.NodeName, getenforceCommand, outStr)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(probePod.Spec.NodeName, "SELinux is not enforced", false))
 			nodesFailed++
 		} else {
-			check.LogInfo("Node %q is running SELinux", debugPod.Spec.NodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(debugPod.Spec.NodeName, "SELinux is enforced", true))
+			check.LogInfo("Node %q is running SELinux", probePod.Spec.NodeName)
+			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(probePod.Spec.NodeName, "SELinux is enforced", true))
 		}
 	}
 
@@ -447,14 +447,14 @@ func testHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
 			continue
 		}
 
-		debugPod, exist := env.DebugPods[nodeName]
+		probePod, exist := env.ProbePods[nodeName]
 		if !exist {
-			check.LogError("Could not find a Debug Pod in node %q.", nodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "tnf debug pod not found", false))
+			check.LogError("Could not find a Probe Pod in node %q.", nodeName)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "tnf probe pod not found", false))
 			continue
 		}
 
-		hpTester, err := hugepages.NewTester(&node, debugPod, clientsholder.GetClientsHolder())
+		hpTester, err := hugepages.NewTester(&node, probePod, clientsholder.GetClientsHolder())
 		if err != nil {
 			check.LogError("Unable to get node hugepages tester for node %q, err: %v", nodeName, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Unable to get node hugepages tester", false))
@@ -488,11 +488,11 @@ func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironmen
 		if err != nil {
 			check.LogError("Node %q failed the boot params check", cut.NodeName)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false).
-				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
+				AddField(testhelper.ProbePodName, env.ProbePods[cut.NodeName].Name))
 		} else {
 			check.LogInfo("Node %q passed the boot params check", cut.NodeName)
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true).
-				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
+				AddField(testhelper.ProbePodName, env.ProbePods[cut.NodeName].Name))
 		}
 	}
 
@@ -510,10 +510,10 @@ func testSysctlConfigs(check *checksdb.Check, env *provider.TestEnvironment) {
 			continue
 		}
 		alreadyCheckedNodes[cut.NodeName] = true
-		debugPod := env.DebugPods[cut.NodeName]
-		if debugPod == nil {
-			check.LogError("Debug Pod not found for node %q", cut.NodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "tnf debug pod not found", false))
+		probePod := env.ProbePods[cut.NodeName]
+		if probePod == nil {
+			check.LogError("Probe Pod not found for node %q", cut.NodeName)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "tnf probe pod not found", false))
 			continue
 		}
 

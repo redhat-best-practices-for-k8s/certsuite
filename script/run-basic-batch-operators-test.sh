@@ -12,8 +12,8 @@ INDEX_FILE=index2.html
 
 # INPUTS
 
-# tnf_config.yaml template file path
-CONFIG_YAML_TEMPLATE="$(pwd)"/tnf_config.yml.template
+# certsuite_config.yaml template file path
+CONFIG_YAML_TEMPLATE="$(pwd)"/certsuite_config.yml.template
 
 # CatalogSource.yaml template file path
 CATALOG_SOURCE_TEMPLATE="$(pwd)"/CatalogSource.yaml.template
@@ -364,9 +364,9 @@ report_failure() {
 		# Add error message
 		echo "Results for: <b>$package_name</b>, "'<span style="color: red;">'"$message"'</span>'
 
-		# Add tnf_config link
-		echo ", tnf_config: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+		# Add certsuite_config link
+		echo ", certsuite_config: "
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/certsuite_config.yml">'"link"'</a>'
 
 		# New line
 		echo "<br>"
@@ -584,9 +584,9 @@ while IFS=, read -r package_name catalog_index; do
 		echo_color "$RED" "Error, creating report dir failed"
 	fi
 
-	config_yaml="$report_dir"/tnf_config.yml
+	config_yaml="$report_dir"/certsuite_config.yml
 
-	# Change the target_name_space in tnf_config file
+	# Change the target_name_space in certsuite_config file
 	sed "s/\$ns/$ns/" "$CONFIG_YAML_TEMPLATE" >"$config_yaml"
 
 	# Wait for the CSV to appear
@@ -618,7 +618,7 @@ while IFS=, read -r package_name catalog_index; do
 	mkdir -p "$config_dir"
 	cp "$KUBECONFIG" "$config_dir"/kubeconfig
 	cp "$DOCKER_CONFIG" "$config_dir"/dockerconfig
-	cp "$config_yaml" "$config_dir"/tnf_config.yaml
+	cp "$config_yaml" "$config_dir"/certsuite_config.yaml
 
 	docker run --rm --network host \
 		-v "$config_dir":/usr/tnf/config:Z \
@@ -627,7 +627,7 @@ while IFS=, read -r package_name catalog_index; do
 		certsuite run \
 		--kubeconfig=/usr/tnf/config/kubeconfig \
 		--preflight-dockerconfig=/usr/tnf/config/dockerconfig \
-		--config-file=/usr/tnf/config/tnf_config.yaml \
+		--config-file=/usr/tnf/config/certsuite_config.yaml \
 		--output-dir=/usr/tnf/output \
 		--label-filter=all >>"$LOG_FILE_PATH" 2>&1 || {
 		report_failure "$status" "$ns" "$package_name" "CNF suite exited with errors"
@@ -681,9 +681,9 @@ while IFS=, read -r package_name catalog_index; do
 		echo ", log: "
 		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/certsuite.log">'"link"'</a>'
 
-		# Add tnf_config link
-		echo ", tnf_config: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+		# Add certsuite_config link
+		echo ", certsuite_config: "
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/certsuite_config.yml">'"link"'</a>'
 
 		# new line
 		echo "<br>"

@@ -145,7 +145,7 @@ func filterDPDKRunningPods(pods []*Pod) []*Pod {
 		findCommand := fmt.Sprintf("%s '%s'", findDeviceSubCommand, pod.MultusPCIs[0])
 		outStr, errStr, err := o.ExecCommandContainer(ctx, findCommand)
 		if err != nil || errStr != "" {
-			log.Error("Failed to execute command %s in debug %s, errStr: %s, err: %v", findCommand, pod.String(), errStr, err)
+			log.Error("Failed to execute command %s in probe %s, errStr: %s, err: %v", findCommand, pod.String(), errStr, err)
 			continue
 		}
 		if strings.Contains(outStr, dpdkDriver) {

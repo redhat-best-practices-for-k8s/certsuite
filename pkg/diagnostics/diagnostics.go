@@ -58,11 +58,11 @@ func GetCniPlugins() (out map[string][]interface{}) {
 	env := provider.GetTestEnvironment()
 	o := clientsholder.GetClientsHolder()
 	out = make(map[string][]interface{})
-	for _, debugPod := range env.DebugPods {
-		ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+	for _, probePod := range env.ProbePods {
+		ctx := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 		outStr, errStr, err := o.ExecCommandContainer(ctx, cniPluginsCommand)
 		if err != nil || errStr != "" {
-			log.Error("Failed to execute command %s in debug pod %s", cniPluginsCommand, debugPod.String())
+			log.Error("Failed to execute command %s in probe pod %s", cniPluginsCommand, probePod.String())
 			continue
 		}
 		decoded := []interface{}{}
@@ -71,7 +71,7 @@ func GetCniPlugins() (out map[string][]interface{}) {
 			log.Error("could not decode json file because of: %s", err)
 			continue
 		}
-		out[debugPod.Spec.NodeName] = decoded
+		out[probePod.Spec.NodeName] = decoded
 	}
 	return out
 }
@@ -81,40 +81,40 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 	env := provider.GetTestEnvironment()
 	o := clientsholder.GetClientsHolder()
 	out = make(map[string]NodeHwInfo)
-	for _, debugPod := range env.DebugPods {
+	for _, probePod := range env.ProbePods {
 		hw := NodeHwInfo{}
-		lscpu, err := getHWJsonOutput(debugPod, o, lscpuCommand)
+		lscpu, err := getHWJsonOutput(probePod, o, lscpuCommand)
 		if err != nil {
-			log.Error("problem getting lscpu for node %s", debugPod.Spec.NodeName)
+			log.Error("problem getting lscpu for node %s", probePod.Spec.NodeName)
 		} else {
 			var ok bool
 			temp, ok := lscpu.(map[string]interface{})
 			if !ok {
-				log.Error("problem casting lscpu field for node %s, lscpu=%v", debugPod.Spec.NodeName, lscpu)
+				log.Error("problem casting lscpu field for node %s, lscpu=%v", probePod.Spec.NodeName, lscpu)
 			} else {
 				hw.Lscpu = temp["lscpu"]
 			}
 		}
-		hw.IPconfig, err = getHWJsonOutput(debugPod, o, ipCommand)
+		hw.IPconfig, err = getHWJsonOutput(probePod, o, ipCommand)
 		if err != nil {
-			log.Error("problem getting ip config for node %s", debugPod.Spec.NodeName)
+			log.Error("problem getting ip config for node %s", probePod.Spec.NodeName)
 		}
-		hw.Lsblk, err = getHWJsonOutput(debugPod, o, lsblkCommand)
+		hw.Lsblk, err = getHWJsonOutput(probePod, o, lsblkCommand)
 		if err != nil {
-			log.Error("problem getting lsblk for node %s", debugPod.Spec.NodeName)
+			log.Error("problem getting lsblk for node %s", probePod.Spec.NodeName)
 		}
-		hw.Lspci, err = getHWTextOutput(debugPod, o, lspciCommand)
+		hw.Lspci, err = getHWTextOutput(probePod, o, lspciCommand)
 		if err != nil {
-			log.Error("problem getting lspci for node %s", debugPod.Spec.NodeName)
+			log.Error("problem getting lspci for node %s", probePod.Spec.NodeName)
 		}
-		out[debugPod.Spec.NodeName] = hw
+		out[probePod.Spec.NodeName] = hw
 	}
 	return out
 }
 
-// getHWJsonOutput performs a query via debug pod and returns the JSON blob
-func getHWJsonOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) (out interface{}, err error) {
-	ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+// getHWJsonOutput performs a query via probe pod and returns the JSON blob
+func getHWJsonOutput(probePod *corev1.Pod, o clientsholder.Command, cmd string) (out interface{}, err error) {
+	ctx := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {
 		return out, fmt.Errorf("command %s failed with error err: %v, stderr: %s", cmd, err, errStr)
@@ -127,8 +127,8 @@ func getHWJsonOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) 
 }
 
 // getHWTextOutput performs a query via debug and returns plaintext lines
-func getHWTextOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) (out []string, err error) {
-	ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+func getHWTextOutput(probePod *corev1.Pod, o clientsholder.Command, cmd string) (out []string, err error) {
+	ctx := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {
 		return out, fmt.Errorf("command %s failed with error err: %v, stderr: %s", lspciCommand, err, errStr)

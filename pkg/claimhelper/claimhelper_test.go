@@ -211,7 +211,7 @@ func TestMarshalClaimOutput(t *testing.T) {
 				EndTime:   "2023-12-20 14:51:34 -0600 MST",
 			},
 			Versions: &claim.Versions{
-				Tnf: "1.0.0",
+				CertSuite: "1.0.0",
 			},
 			Results: map[string]claim.Result{
 				"test-case1": {
@@ -230,7 +230,7 @@ func TestMarshalClaimOutput(t *testing.T) {
 
 	// Check if the output is a valid JSON
 	//nolint:lll
-	assert.Contains(t, string(output), "{\n  \"claim\": {\n    \"configurations\": null,\n    \"metadata\": {\n      \"endTime\": \"2023-12-20 14:51:34 -0600 MST\",\n      \"startTime\": \"2023-12-20 14:51:33 -0600 MST\"\n    },\n    \"nodes\": null,\n    \"results\": {\n      \"test-case1\": {\n        \"capturedTestOutput\": \"\",\n        \"catalogInfo\": null,\n        \"categoryClassification\": null,\n        \"checkDetails\": \"\",\n        \"duration\": 0,\n        \"failureLineContent\": \"\",\n        \"failureLocation\": \"\",\n        \"skipReason\": \"\",\n        \"startTime\": \"\",\n        \"state\": \"failed\",\n        \"testID\": {\n          \"id\": \"test-case1\",\n          \"suite\": \"test-suite1\",\n          \"tags\": \"\"\n        }\n      }\n    },\n    \"versions\": {\n      \"claimFormat\": \"\",\n      \"k8s\": \"\",\n      \"ocClient\": \"\",\n      \"ocp\": \"\",\n      \"tnf\": \"1.0.0\",\n      \"tnfGitCommit\": \"\"\n    }\n  }\n}")
+	assert.Contains(t, string(output), "{\n  \"claim\": {\n    \"configurations\": null,\n    \"metadata\": {\n      \"endTime\": \"2023-12-20 14:51:34 -0600 MST\",\n      \"startTime\": \"2023-12-20 14:51:33 -0600 MST\"\n    },\n    \"nodes\": null,\n    \"results\": {\n      \"test-case1\": {\n        \"capturedTestOutput\": \"\",\n        \"catalogInfo\": null,\n        \"categoryClassification\": null,\n        \"checkDetails\": \"\",\n        \"duration\": 0,\n        \"failureLineContent\": \"\",\n        \"failureLocation\": \"\",\n        \"skipReason\": \"\",\n        \"startTime\": \"\",\n        \"state\": \"failed\",\n        \"testID\": {\n          \"id\": \"test-case1\",\n          \"suite\": \"test-suite1\",\n          \"tags\": \"\"\n        }\n      }\n    },\n    \"versions\": {\n      \"certSuite\": \"1.0.0\",\n      \"certSuiteGitCommit\": \"\",\n      \"claimFormat\": \"\",\n      \"k8s\": \"\",\n      \"ocClient\": \"\",\n      \"ocp\": \"\"\n    }\n  }\n}")
 }
 
 func TestWriteClaimOutput(t *testing.T) {
@@ -241,7 +241,7 @@ func TestWriteClaimOutput(t *testing.T) {
 				EndTime:   "2023-12-20 14:51:34 -0600 MST",
 			},
 			Versions: &claim.Versions{
-				Tnf: "1.0.0",
+				CertSuite: "1.0.0",
 			},
 			Results: map[string]claim.Result{
 				"test-case1": {
@@ -266,7 +266,7 @@ func TestWriteClaimOutput(t *testing.T) {
 
 	// Check if the output is a valid JSON
 	//nolint:lll
-	assert.Contains(t, string(output), "{\n  \"claim\": {\n    \"configurations\": null,\n    \"metadata\": {\n      \"endTime\": \"2023-12-20 14:51:34 -0600 MST\",\n      \"startTime\": \"2023-12-20 14:51:33 -0600 MST\"\n    },\n    \"nodes\": null,\n    \"results\": {\n      \"test-case1\": {\n        \"capturedTestOutput\": \"\",\n        \"catalogInfo\": null,\n        \"categoryClassification\": null,\n        \"checkDetails\": \"\",\n        \"duration\": 0,\n        \"failureLineContent\": \"\",\n        \"failureLocation\": \"\",\n        \"skipReason\": \"\",\n        \"startTime\": \"\",\n        \"state\": \"failed\",\n        \"testID\": {\n          \"id\": \"test-case1\",\n          \"suite\": \"test-suite1\",\n          \"tags\": \"\"\n        }\n      }\n    },\n    \"versions\": {\n      \"claimFormat\": \"\",\n      \"k8s\": \"\",\n      \"ocClient\": \"\",\n      \"ocp\": \"\",\n      \"tnf\": \"1.0.0\",\n      \"tnfGitCommit\": \"\"\n    }\n  }\n}")
+	assert.Contains(t, string(output), "{\n  \"claim\": {\n    \"configurations\": null,\n    \"metadata\": {\n      \"endTime\": \"2023-12-20 14:51:34 -0600 MST\",\n      \"startTime\": \"2023-12-20 14:51:33 -0600 MST\"\n    },\n    \"nodes\": null,\n    \"results\": {\n      \"test-case1\": {\n        \"capturedTestOutput\": \"\",\n        \"catalogInfo\": null,\n        \"categoryClassification\": null,\n        \"checkDetails\": \"\",\n        \"duration\": 0,\n        \"failureLineContent\": \"\",\n        \"failureLocation\": \"\",\n        \"skipReason\": \"\",\n        \"startTime\": \"\",\n        \"state\": \"failed\",\n        \"testID\": {\n          \"id\": \"test-case1\",\n          \"suite\": \"test-suite1\",\n          \"tags\": \"\"\n        }\n      }\n    },\n    \"versions\": {\n      \"certSuite\": \"1.0.0\",\n      \"certSuiteGitCommit\": \"\",\n      \"claimFormat\": \"\",\n      \"k8s\": \"\",\n      \"ocClient\": \"\",\n      \"ocp\": \"\"\n    }\n  }\n}")
 
 	// Assert the file permissions are 0644
 	fileInfo, err := os.Stat(outputFile)
@@ -282,7 +282,7 @@ func TestReadClaimFile(t *testing.T) {
 				EndTime:   "2023-12-20 14:51:34 -0600 MST",
 			},
 			Versions: &claim.Versions{
-				Tnf: "1.0.0",
+				CertSuite: "1.0.0",
 			},
 			Results: map[string]claim.Result{
 				"test-case1": {
