@@ -9,5 +9,5 @@ const (
 	workloadNameRawResultsCol     = "CNFName"
 	workloadTypeRawResultsCol     = "CNFType"
 	operatorVersionRawResultsCol  = "OperatorVersion"
-	cellContantLimit              = 50000
+	cellContentLimit              = 50000
 )

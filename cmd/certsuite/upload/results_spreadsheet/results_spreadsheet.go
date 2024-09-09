@@ -108,8 +108,8 @@ func prepareRecordsForSpreadSheet(records [][]string) []*sheets.RowData {
 		for _, col := range row {
 			var val string
 			// cell content cannot exceed 50,000 letters.
-			if len(col) > cellContantLimit {
-				col = col[:cellContantLimit]
+			if len(col) > cellContentLimit {
+				col = col[:cellContentLimit]
 			}
 			// use space for empty values to avoid cells overlapping
 			if col == "" {
@@ -255,10 +255,21 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 		curConsclusionRowValues := []*sheets.CellData{}
 		for _, colHeader := range conclusionSheetHeaders {
 			curCellData := &sheets.CellData{UserEnteredValue: &sheets.ExtendedValue{}}
-			var value string
 
-			// if col header is resultsConclusionsCol - set hyper link to single workload raw results, otherwise set string value of the cell
-			if colHeader == resultsConclusionsCol {
+			switch colHeader {
+			case categoryConclusionsCol:
+				curCellData.UserEnteredValue.StringValue = rawResultsSheetrow.Values[workloadTypeColIndex].UserEnteredValue.StringValue
+
+			case workloadVersionConclusionsCol:
+				curCellData.UserEnteredValue.StringValue = rawResultsSheetrow.Values[operatorVersionColIndex].UserEnteredValue.StringValue
+
+			case ocpVersionConclusionsCol:
+				curCellData.UserEnteredValue.StringValue = stringToPointer(ocpVersion + " ")
+
+			case workloadNameConclusionsCol:
+				curCellData.UserEnteredValue.StringValue = &workloadName
+
+			case resultsConclusionsCol:
 				workloadResultsSpreadsheet, err := createSingleWorkloadRawResultsSpreadSheet(sheetsService, driveService, workloadsResultsFolder, rawResultsSheet, workloadName)
 				if err != nil {
 					return nil, fmt.Errorf("error has occurred while creating %s results file: %v", workloadName, err)
@@ -266,25 +277,10 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 
 				hyperlinkFormula := fmt.Sprintf("=HYPERLINK(%q, %q)", workloadResultsSpreadsheet.SpreadsheetUrl, "Results")
 				curCellData.UserEnteredValue.FormulaValue = &hyperlinkFormula
-			} else {
-				switch colHeader {
-				case categoryConclusionsCol:
-					value = *rawResultsSheetrow.Values[workloadTypeColIndex].UserEnteredValue.StringValue
 
-				case workloadVersionConclusionsCol:
-					value = *rawResultsSheetrow.Values[operatorVersionColIndex].UserEnteredValue.StringValue
-
-				case ocpVersionConclusionsCol:
-					value = ocpVersion + " "
-
-				case workloadNameConclusionsCol:
-					value = workloadName
-
-				default:
-					// use space for empty values to avoid cells overlapping
-					value = " "
-				}
-				curCellData.UserEnteredValue.StringValue = &value
+			default:
+				// use space for empty values to avoid cells overlapping
+				curCellData.UserEnteredValue.StringValue = stringToPointer(" ")
 			}
 
 			curConsclusionRowValues = append(curConsclusionRowValues, curCellData)
