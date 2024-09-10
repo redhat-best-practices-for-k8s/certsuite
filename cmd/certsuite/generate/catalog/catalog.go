@@ -27,7 +27,6 @@ import (
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	plibContainer "github.com/redhat-openshift-ecosystem/openshift-preflight/container"
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
-	"github.com/sirupsen/logrus"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -138,7 +137,7 @@ func addPreflightTestsToCatalog() {
 	// Create artifacts handler
 	artifactsWriter, err := artifacts.NewMapWriter()
 	if err != nil {
-		logrus.Errorf("error creating artifact, failed to add preflight tests to catalog")
+		log.Error("error creating artifact, failed to add preflight tests to catalog")
 		return
 	}
 	ctx := artifacts.ContextWithWriter(context.TODO(), artifactsWriter)
@@ -148,11 +147,11 @@ func addPreflightTestsToCatalog() {
 	checkContainer := plibContainer.NewCheck(dummy, optsContainer...)
 	_, checksOperator, err := checkOperator.List(ctx)
 	if err != nil {
-		logrus.Errorf("error getting preflight operator tests.")
+		log.Error("error getting preflight operator tests.")
 	}
 	_, checksContainer, err := checkContainer.List(ctx)
 	if err != nil {
-		logrus.Errorf("error getting preflight container tests.")
+		log.Error("error getting preflight container tests.")
 	}
 
 	allChecks := checksOperator
