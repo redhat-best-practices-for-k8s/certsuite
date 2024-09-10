@@ -24,6 +24,7 @@ var (
 	resultsFilePath string
 	rootFolderURL   string
 	ocpVersion      string
+	credentials     string
 )
 
 var (
@@ -40,6 +41,7 @@ func NewCommand() *cobra.Command {
 	uploadResultSpreadSheetCmd.Flags().StringVarP(&resultsFilePath, "results-file", "f", "", "Required: path to results file")
 	uploadResultSpreadSheetCmd.Flags().StringVarP(&rootFolderURL, "dest-url", "d", "", "Required: Destination drive folder's URL")
 	uploadResultSpreadSheetCmd.Flags().StringVarP(&ocpVersion, "version", "v", "", "Optional: OCP Version")
+	uploadResultSpreadSheetCmd.Flags().StringVarP(&credentials, "credentials", "c", "credentials.json", "Optional: Google credentials file path, default path: credentials.json")
 
 	err := uploadResultSpreadSheetCmd.MarkFlagRequired("results-file")
 	if err != nil {
@@ -73,7 +75,7 @@ func readCSV(fp string) ([][]string, error) {
 
 func createSheetsAndDriveServices() (sheetService *sheets.Service, driveService *drive.Service, err error) {
 	ctx := context.Background()
-	b, err := os.ReadFile("cmd/certsuite/upload/results_spreadsheet/credentials.json")
+	b, err := os.ReadFile(credentials)
 	if err != nil {
 		return nil, nil, fmt.Errorf("unable to read client secret file: %v", err)
 	}
