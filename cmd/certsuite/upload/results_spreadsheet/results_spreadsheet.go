@@ -315,7 +315,7 @@ func createRawResultsSheet(fp string) (*sheets.Sheet, error) {
 		Data: []*sheets.GridData{{RowData: rows}},
 	}
 
-	return rawResultsSheet, err
+	return rawResultsSheet, nil
 }
 
 func generateResultsSpreadSheet() {

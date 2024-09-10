@@ -162,9 +162,5 @@ func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *shee
 	_, err = srv.Spreadsheets.BatchUpdate(spreadsheet.SpreadsheetId, &sheets.BatchUpdateSpreadsheetRequest{
 		Requests: requests,
 	}).Do()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
