@@ -74,7 +74,7 @@ func (b *BaseImageInfo) runCommand(cmd string) (string, error) {
 		return "", err
 	}
 	if outerr != "" {
-		log.Error("error when running baseimage command, err: %v", outerr)
+		log.Error("Error when running baseimage command, err: %v", outerr)
 		return "", errors.New(outerr)
 	}
 	return output, nil

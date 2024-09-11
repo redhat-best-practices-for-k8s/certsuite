@@ -70,7 +70,7 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 		log.Debug("Looking for CRs from CRD: %s api version:%s group:%s plural:%s", aCrd.Name, version.Name, aCrd.Spec.Group, aCrd.Spec.Names.Plural)
 		crs, err := oc.DynamicClient.Resource(gvr).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			log.Error("error getting %s: %v\n", aCrd.Name, err)
+			log.Error("Error getting %s: %v\n", aCrd.Name, err)
 			return crdNamespaces, err
 		}
 		crdNamespaces = make(map[string][]string)

@@ -137,7 +137,7 @@ func addPreflightTestsToCatalog() {
 	// Create artifacts handler
 	artifactsWriter, err := artifacts.NewMapWriter()
 	if err != nil {
-		log.Error("error creating artifact, failed to add preflight tests to catalog")
+		log.Error("Error creating artifact, failed to add preflight tests to catalog: %v", err)
 		return
 	}
 	ctx := artifacts.ContextWithWriter(context.TODO(), artifactsWriter)
@@ -147,11 +147,11 @@ func addPreflightTestsToCatalog() {
 	checkContainer := plibContainer.NewCheck(dummy, optsContainer...)
 	_, checksOperator, err := checkOperator.List(ctx)
 	if err != nil {
-		log.Error("error getting preflight operator tests.")
+		log.Error("Error getting preflight operator tests: %v", err)
 	}
 	_, checksContainer, err := checkContainer.List(ctx)
 	if err != nil {
-		log.Error("error getting preflight container tests.")
+		log.Error("Error getting preflight container tests: %v", err)
 	}
 
 	allChecks := checksOperator

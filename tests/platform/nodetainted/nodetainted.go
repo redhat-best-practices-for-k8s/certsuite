@@ -41,7 +41,7 @@ var runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
 		return "", err
 	}
 	if outerr != "" {
-		log.Error("error when running nodetainted command err=%v", outerr)
+		log.Error("Error when running nodetainted command err=%v", outerr)
 		return "", errors.New(outerr)
 	}
 	return output, nil
