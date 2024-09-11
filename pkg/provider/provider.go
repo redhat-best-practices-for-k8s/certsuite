@@ -323,7 +323,8 @@ func buildTestEnvironment() { //nolint:funlen
 	env.CollectorAppPassword = data.CollectorAppPassword
 	env.CollectorAppEndpoint = data.CollectorAppEndpoint
 
-	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
+	operators := createOperators(data.Csvs, data.AllSubscriptions,
+		data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators
 	log.Info("Operators found: %d", len(env.Operators))
 	for _, pod := range env.Pods {
