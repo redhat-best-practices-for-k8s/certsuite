@@ -103,6 +103,9 @@ jobs:
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
+      - name: Cleanup self-hosted runner images
+        run: docker image prune -f
+      
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         env:
