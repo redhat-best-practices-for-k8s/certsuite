@@ -309,13 +309,6 @@ jobs:
         env:
           IMAGE_TAG: ${CERTSUITE_IMAGE_TAG}
 
-      # Prepare collector to be used when running smoke tests
-      - name: Check out `Collector`
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-        with:
-          repository: redhat-best-practices-for-k8s/collector
-          path: collector
-
       # Clean up unused container image layers. We need to filter out a possible error return code
       # from docker with "|| true" as some images might still be used by running kind containers and
       # will not be removed.
@@ -332,29 +325,6 @@ jobs:
           cp /home/runner/.docker/config $CERTSUITE_CONFIG_DIR/dockerconfig
           cp config/*.yml $CERTSUITE_CONFIG_DIR
         shell: bash
-
-      - name: Get Collector's CI credentials
-        run: |
-          echo "collector_ciuser=ciuser_${{ github.run_id }}" >> $GITHUB_OUTPUT
-          echo "collector_cipassword=cipassword" >> $GITHUB_OUTPUT
-        id: set_collector_ci_creds
-
-      - name: Update Collector's CI credentials and Print username
-        run: |
-          echo Collector CI username: ${{ steps.set_collector_ci_creds.outputs.collector_ciuser }}
-          echo "COLLECTOR_CIUSER=${{ steps.set_collector_ci_creds.outputs.collector_ciuser }}" >> $GITHUB_ENV
-          echo "COLLECTOR_CIPASSWORD=${{ steps.set_collector_ci_creds.outputs.collector_cipassword }}" >> $GITHUB_ENV
-
-      - name: Ensure COLLECTOR_CIUSER and COLLECTOR_CIPASSWORD are set
-        run: '[[ -n "$COLLECTOR_CIUSER" ]] && [[ -n "$COLLECTOR_CIPASSWORD" ]]'
-
-      - name: Modify Certsuite config with CI collector credentials
-        run: |
-          sed -i\
-            -e '/executedBy/s/""/"CI"/g' \
-            -e '/partnerName/s/""/"${{ env.COLLECTOR_CIUSER }}"/g' \
-            -e '/collectorAppPassword/s/""/"${{ env.COLLECTOR_CIPASSWORD }}"/g' \
-            $CERTSUITE_CONFIG_DIR/certsuite_config.yml
 
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: |
@@ -385,22 +355,6 @@ jobs:
             --config-file=/usr/certsuite/config/certsuite_config.yml \
             --kubeconfig=/usr/certsuite/config/kubeconfig \
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
-
-      # - name: Run sanity check on collector
-      #   id: collector_sanity_check
-      #   uses: ./collector/.github/actions/run-sanity-check
-      #   with:
-      #     working_directory: collector
-      #     collector_username: ${COLLECTOR_CIUSER}
-      #     collector_password: ${COLLECTOR_CIPASSWORD}
-      #   continue-on-error: true
-
-      # - name: Send chat msg to dev team if collector's sanity check failed.
-      #   if: ${{ steps.collector_sanity_check.outcome == 'failure' }}
-      #   uses: ./.github/actions/slack-webhook-sender
-      #   with:
-      #     message: 'Collector sanity check has failed'
-      #     slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
 
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
