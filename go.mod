@@ -225,7 +225,7 @@ require (
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.34
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240812211034-2f51d732179a
 	github.com/robert-nix/ansihtml v1.0.1
-	golang.org/x/oauth2 v0.22.0
+	golang.org/x/oauth2 v0.23.0
 	golang.org/x/term v0.24.0
 	google.golang.org/api v0.193.0
 	gopkg.in/yaml.v3 v3.0.1
