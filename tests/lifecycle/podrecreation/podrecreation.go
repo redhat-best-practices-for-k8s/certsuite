@@ -90,7 +90,7 @@ func CountPodsWithDelete(pods []*provider.Pod, nodeName, mode string) (count int
 			}
 			err := deletePod(put.Pod, mode, &wg)
 			if err != nil {
-				log.Error("error deleting %s", put)
+				log.Error("Error deleting %s", put)
 			}
 		}
 	}
@@ -124,7 +124,7 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 		GracePeriodSeconds: &gracePeriodSeconds,
 	})
 	if err != nil {
-		log.Error("error deleting %s err: %v", pod.String(), err)
+		log.Error("Error deleting %s err: %v", pod.String(), err)
 		return err
 	}
 	if mode == DeleteBackground {

@@ -281,7 +281,7 @@ func MarshalConfigurations() (configurations []byte, err error) {
 	config := provider.GetTestEnvironment()
 	configurations, err = j.Marshal(config)
 	if err != nil {
-		log.Error("error converting configurations to JSON: %v", err)
+		log.Error("Error converting configurations to JSON: %v", err)
 		return configurations, err
 	}
 	return configurations, nil
