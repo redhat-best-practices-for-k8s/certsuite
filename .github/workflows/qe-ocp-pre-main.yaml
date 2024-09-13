@@ -21,6 +21,7 @@ jobs:
   # Build the image used for testing first, then pass the reference to the QE tests.
   # This saves time and resources by not building the image in each QE suite.
   build-image-for-qe:
+    if: github.event.pull_request.user.login!='dependabot[bot]'
     runs-on: ubuntu-22.04
     steps:
       - name: Check out code
@@ -49,7 +50,7 @@ jobs:
   qe-ocp-testing:
     runs-on: qe-ocp-416
     needs: build-image-for-qe
-    if: needs.build-image-for-qe.result == 'success'
+    if: needs.build-image-for-qe.result == 'success' && github.event.pull_request.user.login!='dependabot[bot]'
     strategy:
       fail-fast: false
       matrix: 
