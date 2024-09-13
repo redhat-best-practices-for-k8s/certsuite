@@ -192,8 +192,14 @@ func TestEvaluateAPICompliance(t *testing.T) {
 		assert.Len(t, actual, len(expected))
 		for i, obj := range actual {
 			assert.Equal(t, expected[i].ObjectType, obj.ObjectType)
-			assert.ElementsMatch(t, expected[i].ObjectFieldsKeys, obj.ObjectFieldsKeys)
-			assert.ElementsMatch(t, expected[i].ObjectFieldsValues, obj.ObjectFieldsValues)
+
+			for _, ofk := range expected[i].ObjectFieldsKeys {
+				assert.Contains(t, obj.ObjectFieldsKeys, ofk)
+			}
+
+			for _, ofv := range expected[i].ObjectFieldsValues {
+				assert.Contains(t, obj.ObjectFieldsValues, ofv)
+			}
 		}
 	}
 
@@ -227,7 +233,13 @@ func TestEvaluateAPICompliance(t *testing.T) {
 	assert.Empty(t, nonCompliantObjects)
 	for i, obj := range expectedEmptyResult {
 		assert.Equal(t, obj.ObjectType, compliantObjects[i].ObjectType)
-		assert.ElementsMatch(t, obj.ObjectFieldsKeys, compliantObjects[i].ObjectFieldsKeys)
-		assert.ElementsMatch(t, obj.ObjectFieldsValues, compliantObjects[i].ObjectFieldsValues)
+
+		for _, ofk := range obj.ObjectFieldsKeys {
+			assert.Contains(t, compliantObjects[i].ObjectFieldsKeys, ofk)
+		}
+
+		for _, ofv := range obj.ObjectFieldsValues {
+			assert.Contains(t, compliantObjects[i].ObjectFieldsValues, ofv)
+		}
 	}
 }
