@@ -1,8 +1,8 @@
 name: OCP ARM64 4.16 QE Testing
 
 on:
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:

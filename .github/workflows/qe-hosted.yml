@@ -1,8 +1,8 @@
 name: QE Testing (Ubuntu-hosted)
 
 on:
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
