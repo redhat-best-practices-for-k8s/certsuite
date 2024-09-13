@@ -101,7 +101,8 @@ var (
 	TestIsolatedCPUPoolSchedulingPolicy               claim.Identifier
 	TestRtAppNoExecProbes                             claim.Identifier
 	TestRestartOnRebootLabelOnPodsUsingSRIOV          claim.Identifier
-	TestSecConNonRootUserIdentifier                   claim.Identifier
+	TestSecConNonRootUserIDIdentifier                 claim.Identifier
+	TestSecConRunAsNonRootIdentifier                  claim.Identifier
 	TestSecContextIdentifier                          claim.Identifier
 	TestSecConPrivilegeEscalation                     claim.Identifier
 	TestContainerHostPort                             claim.Identifier
@@ -122,7 +123,7 @@ var (
 	TestHelmIsCertifiedIdentifier                     claim.Identifier
 	TestOperatorIsInstalledViaOLMIdentifier           claim.Identifier
 	TestOperatorHasSemanticVersioningIdentifier       claim.Identifier
-	TestOperatorReadOnlyFilesystem                    claim.Identifier
+	TestSecConReadOnlyFilesystem                      claim.Identifier
 	TestOperatorAutomountTokens                       claim.Identifier
 	TestOperatorRunAsNonRoot                          claim.Identifier
 	TestOperatorRunAsUserID                           claim.Identifier
@@ -579,8 +580,8 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagFarEdge)
 
-	TestSecConNonRootUserIdentifier = AddCatalogEntry(
-		"security-context-non-root-user-check",
+	TestSecConNonRootUserIDIdentifier = AddCatalogEntry(
+		"security-context-non-root-user-id-check",
 		common.AccessControlTestKey,
 		`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).`,
 		SecConNonRootUserRemediation,
@@ -592,6 +593,38 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Telco:    Mandatory,
 			NonTelco: Mandatory,
 			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestSecConRunAsNonRootIdentifier = AddCatalogEntry(
+		"security-context-run-as-non-root-user-check",
+		common.AccessControlTestKey,
+		`Checks the security context runAsNonRoot parameter in pods and containers to make sure it is not set to false. Pods and containers should not be able to run as root..`,
+		SecConRunAsNonRootUserRemediation,
+		SecConNonRootUserExceptionProcess,
+		TestSecConNonRootUserIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestSecConReadOnlyFilesystem = AddCatalogEntry(
+		"security-context-read-only-file-system",
+		common.AccessControlTestKey,
+		`Checks the security context readOnlyFileSystem in containers is enabled. Containers should not try modify its own filesystem.`,
+		SecConNonRootUserExceptionProcess,
+		NoExceptions,
+		TestSecContextIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
@@ -932,70 +965,6 @@ that Node's kernel may not have the same hacks.'`,
 			Telco:    Mandatory,
 			NonTelco: Mandatory,
 			Extended: Mandatory,
-		},
-		TagCommon)
-
-	TestOperatorRunAsUserID = AddCatalogEntry(
-		"run-as-user-id",
-		common.OperatorTestKey,
-		`Tests that checks the user id of the pods ensure it is not 0.`,
-		OperatorRunAsUserID,
-		NoExceptions,
-		TestOperatorRunAsUserIDDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
-			Extended: Mandatory,
-		},
-		TagCommon)
-
-	TestOperatorRunAsNonRoot = AddCatalogEntry(
-		"run-as-non-root",
-		common.OperatorTestKey,
-		`Tests that checks the pods ensure they are run as non root.`,
-		OperatorRunAsNonRoot,
-		NoExceptions,
-		TestOperatorRunAsNonRootDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
-			Extended: Mandatory,
-		},
-		TagCommon)
-
-	TestOperatorAutomountTokens = AddCatalogEntry(
-		"automount-tokens",
-		common.OperatorTestKey,
-		`Tests that check that the pods disable the automount service account token."`,
-		OperatorAutomountTokens,
-		NoExceptions,
-		TestOperatorAutomountTokensDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
-			Extended: Mandatory,
-		},
-		TagCommon)
-
-	TestOperatorReadOnlyFilesystem = AddCatalogEntry(
-		"read-only-file-system",
-		common.OperatorTestKey,
-		`Tests that check that the pods have the read-only root filesystem setting enabled.`,
-		OperatorReadOnlyFilesystem,
-		NoExceptions,
-		TestOperatorReadOnlyFilesystemDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
-			NonTelco: Optional,
-			Extended: Optional,
 		},
 		TagCommon)
 

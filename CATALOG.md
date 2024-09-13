@@ -7,19 +7,19 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 113
+### Total test cases: 112
 
 ### Total suites: 10
 
 |Suite|Tests per suite|
 |---|---|
-|access-control|27|
+|access-control|29|
 |affiliated-certification|4|
 |lifecycle|18|
 |manageability|2|
 |networking|11|
-|observability|4|
-|operator|11|
+|observability|5|
+|operator|7|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 66
+### Non-Telco specific tests only: 65
 
 |Mandatory|Optional|
 |---|---|
-|44|22|
+|42|23|
 
 ### Telco specific tests only: 27
 
@@ -374,11 +374,11 @@ Tags|extended,access-control
 |Non-Telco|Optional|
 |Telco|Optional|
 
-#### access-control-security-context-non-root-user-check
+#### access-control-security-context-non-root-user-id-check
 
 Property|Description
 ---|---
-Unique ID|access-control-security-context-non-root-user-check
+Unique ID|access-control-security-context-non-root-user-id-check
 Description|Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).
 Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
@@ -399,6 +399,38 @@ Description|Checks if privileged escalation is enabled (AllowPrivilegeEscalation
 Suggested Remediation|Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
 Exception Process|No exceptions
+Tags|common,access-control
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### access-control-security-context-read-only-file-system
+
+Property|Description
+---|---
+Unique ID|access-control-security-context-read-only-file-system
+Description|Checks the security context readOnlyFileSystem in containers is enabled. Containers should not try modify its own filesystem.
+Suggested Remediation|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
+Exception Process|No exceptions
+Tags|common,access-control
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### access-control-security-context-run-as-non-root-user-check
+
+Property|Description
+---|---
+Unique ID|access-control-security-context-run-as-non-root-user-check
+Description|Checks the security context runAsNonRoot parameter in pods and containers to make sure it is not set to false. Pods and containers should not be able to run as root..
+Suggested Remediation|Set the the pod and containers "runAsNonRoot" to true.
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
+Exception Process|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -1056,6 +1088,22 @@ Tags|extended,networking
 
 ### observability
 
+#### observability-compatibility-with-next-ocp-release
+
+Property|Description
+---|---
+Unique ID|observability-compatibility-with-next-ocp-release
+Description|Checks to ensure if the APIs the workload uses are compatible with the next OCP version
+Suggested Remediation|Ensure the APIs the workload uses are compatible with the next OCP version
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-to-be-removed-apis
+Exception Process|No exceptions
+Tags|common,observability
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
 #### observability-container-logging
 
 Property|Description
@@ -1121,22 +1169,6 @@ Tags|telco,observability
 |Telco|Mandatory|
 
 ### operator
-
-#### operator-automount-tokens
-
-Property|Description
----|---
-Unique ID|operator-automount-tokens
-Description|Tests that check that the pods disable the automount service account token."
-Suggested Remediation|Ensure that the pods have the automount service account token disabled.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|No exceptions
-Tags|common,operator
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
 
 #### operator-crd-openapi-schema
 
@@ -1209,54 +1241,6 @@ Property|Description
 Unique ID|operator-install-status-succeeded
 Description|Ensures that the target workload operators report "Succeeded" as their installation status.
 Suggested Remediation|Ensure all the workload's operators have been successfully installed by OLM.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|No exceptions
-Tags|common,operator
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
-
-#### operator-read-only-file-system
-
-Property|Description
----|---
-Unique ID|operator-read-only-file-system
-Description|Tests that check that the pods have the read-only root filesystem setting enabled.
-Suggested Remediation|Ensure that the pods have the read-only root filesystem setting enabled.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|No exceptions
-Tags|common,operator
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
-|Non-Telco|Optional|
-|Telco|Optional|
-
-#### operator-run-as-non-root
-
-Property|Description
----|---
-Unique ID|operator-run-as-non-root
-Description|Tests that checks the pods ensure they are run as non root.
-Suggested Remediation|Ensure that the pods are running as non root.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|No exceptions
-Tags|common,operator
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
-
-#### operator-run-as-user-id
-
-Property|Description
----|---
-Unique ID|operator-run-as-user-id
-Description|Tests that checks the user id of the pods ensure it is not 0.
-Suggested Remediation|Ensure that the user ID of the pods is not 0.
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator

@@ -54,6 +54,8 @@ var (
 		"istio-",
 		"aspenmesh-",
 	}
+
+	knownContainersToSkip = map[string]bool{"kube-rbac-proxy": true}
 )
 
 var (
@@ -116,10 +118,17 @@ func LoadChecks() {
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSecConNonRootUserIDIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
-			testSecConRootUser(c, &env)
+			testSecConRootUserID(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSecConRunAsNonRootIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testSecConRunAsNonRoot(c, &env)
 			return nil
 		}))
 
@@ -127,6 +136,13 @@ func LoadChecks() {
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSecConPrivilegeEscalation(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSecConReadOnlyFilesystem)).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testSecConReadOnlyFilesystem(c, &env)
 			return nil
 		}))
 
@@ -335,8 +351,8 @@ func testBpfCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testSecConRootUser verifies that the container is not running as root
-func testSecConRootUser(check *checksdb.Check, env *provider.TestEnvironment) {
+// testSecConRootUserID verifies that the container is not running as root
+func testSecConRootUserID(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
@@ -349,9 +365,14 @@ func testSecConRootUser(check *checksdb.Check, env *provider.TestEnvironment) {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User not detected (RunAsUser uid=0)", true))
 		}
 
-		for idx := range put.Spec.Containers {
-			cut := &(put.Spec.Containers[idx])
+		for _, cut := range put.Containers {
 			check.LogInfo("Testing Container %q", cut)
+			if knownContainersToSkip[cut.Name] {
+				check.LogInfo("Skipping container %q in Pod %q", cut.Name, put.Name)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, cut.Name, "Container is allowed to run as root", true))
+				continue
+			}
+
 			// Check the container level RunAsUser parameter
 			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
 				if *(cut.SecurityContext.RunAsUser) == 0 {
@@ -361,6 +382,43 @@ func testSecConRootUser(check *checksdb.Check, env *provider.TestEnvironment) {
 					check.LogInfo("Non-root user detected (RunAsUser uid=0) in Container %q (%q)", cut, put)
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User not detected (RunAsUser uid=0)", true))
 				}
+			}
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+// testSecConRunAsNonRoot verifies that containers are not allowed to run as root.
+func testSecConRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q in namespace %q", put.Name, put.Namespace)
+		if put.IsRunAsNonRoot() {
+			check.LogInfo("Pod %q is running as non-root", put.Name)
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running as non-root", true))
+		} else {
+			check.LogError("Pod %q is running as root", put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running as root", false))
+		}
+
+		// We are looking through both the containers and the pods separately to make compliant and non-compliant objects.
+		for _, cut := range put.Containers {
+			check.LogInfo("Testing Container %q", cut)
+			if knownContainersToSkip[cut.Name] {
+				check.LogInfo("Skipping container %q in Pod %q", cut.Name, put.Name)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(cut.Namespace, cut.Name, "Container is allowed to run as root", true))
+				continue
+			}
+
+			if cut.IsContainerRunAsNonRoot() {
+				check.LogInfo("Container %q in Pod %q is running as non-root", cut.Name, put.Name)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(cut.Namespace, cut.Name, "Container is running as non-root", true))
+			} else {
+				check.LogError("Container %q in Pod %q is running as root", cut.Name, put.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Container is running as root", false))
 			}
 		}
 	}
@@ -389,6 +447,27 @@ func testSecConPrivilegeEscalation(check *checksdb.Check, env *provider.TestEnvi
 		}
 	}
 
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+// testSecConReadOnlyFilesystem verifies that the container has a readonly file system access.
+func testSecConReadOnlyFilesystem(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, pod := range env.Pods {
+		check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
+		for _, cut := range pod.Containers {
+			check.LogInfo("Testing Container %q in Pod %q", cut.Name, pod.Name)
+			if cut.IsReadOnlyRootFilesystem(check.GetLogger()) {
+				check.LogInfo("Container %q in Pod %q has a read-only root filesystem.", cut.Name, pod.Name)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Container has a read-only root filesystem", true))
+			} else {
+				check.LogError("Container %q in Pod %q does not have a read-only root filesystem.", cut.Name, pod.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Container does not have a read-only root filesystem", false))
+			}
+		}
+	}
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
