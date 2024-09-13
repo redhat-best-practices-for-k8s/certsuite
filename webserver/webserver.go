@@ -27,7 +27,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/robert-nix/ansihtml"
 
-	yaml "gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v3"
 )
 
 type webServerContextKey string
