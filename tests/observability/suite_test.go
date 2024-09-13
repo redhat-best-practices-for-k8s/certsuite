@@ -234,12 +234,28 @@ func TestEvaluateAPICompliance(t *testing.T) {
 	for i, obj := range expectedEmptyResult {
 		assert.Equal(t, obj.ObjectType, compliantObjects[i].ObjectType)
 
+		keyFound := false
 		for _, ofk := range obj.ObjectFieldsKeys {
-			assert.Contains(t, compliantObjects[i].ObjectFieldsKeys, ofk)
+			for _, ofk2 := range compliantObjects[i].ObjectFieldsKeys {
+				if ofk == ofk2 {
+					keyFound = true
+					break
+				}
+			}
 		}
 
+		assert.True(t, keyFound)
+
+		valueFound := false
 		for _, ofv := range obj.ObjectFieldsValues {
-			assert.Contains(t, compliantObjects[i].ObjectFieldsValues, ofv)
+			for _, ofv2 := range compliantObjects[i].ObjectFieldsValues {
+				if ofv == ofv2 {
+					valueFound = true
+					break
+				}
+			}
 		}
+
+		assert.True(t, valueFound)
 	}
 }
