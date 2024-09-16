@@ -234,7 +234,9 @@ jobs:
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
-        run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir=certsuite-out --log-level="${SMOKE_TESTS_LOG_LEVEL}"
+        run: |
+          oc get csv -n tnf --show-labels
+          ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir=certsuite-out --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
