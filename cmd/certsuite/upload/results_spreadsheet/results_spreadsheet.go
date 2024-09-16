@@ -73,7 +73,7 @@ func readCSV(fp string) ([][]string, error) {
 	return records, nil
 }
 
-func createSheetsAndDriveServices() (sheetService *sheets.Service, driveService *drive.Service, err error) {
+func CreateSheetsAndDriveServices() (sheetService *sheets.Service, driveService *drive.Service, err error) {
 	ctx := context.Background()
 	b, err := os.ReadFile(credentials)
 	if err != nil {
@@ -321,7 +321,7 @@ func createRawResultsSheet(fp string) (*sheets.Sheet, error) {
 }
 
 func generateResultsSpreadSheet() {
-	sheetService, driveService, err := createSheetsAndDriveServices()
+	sheetService, driveService, err := CreateSheetsAndDriveServices()
 	if err != nil {
 		log.Fatalf("Unable to create services: %v", err)
 	}
