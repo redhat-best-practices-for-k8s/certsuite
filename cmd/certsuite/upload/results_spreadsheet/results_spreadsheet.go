@@ -58,6 +58,14 @@ func NewCommand() *cobra.Command {
 	return uploadResultSpreadSheetCmd
 }
 
+func SetCredentials(credenitalsPath string) {
+	credentials = credenitalsPath
+}
+
+func GetCredentials() string {
+	return credentials
+}
+
 func readCSV(fp string) ([][]string, error) {
 	file, err := os.Open(fp)
 	if err != nil {
