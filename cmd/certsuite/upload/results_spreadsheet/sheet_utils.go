@@ -14,7 +14,7 @@ func getHeadersFromSheet(sheet *sheets.Sheet) []string {
 	return headers
 }
 
-func getHeadersFromValueRange(sheetsValues *sheets.ValueRange) []string {
+func GetHeadersFromValueRange(sheetsValues *sheets.ValueRange) []string {
 	headers := []string{}
 	for _, val := range sheetsValues.Values[0] {
 		headers = append(headers, fmt.Sprint(val))
@@ -22,7 +22,7 @@ func getHeadersFromValueRange(sheetsValues *sheets.ValueRange) []string {
 	return headers
 }
 
-func getHeaderIndicesByColumnNames(headers, names []string) ([]int, error) {
+func GetHeaderIndicesByColumnNames(headers, names []string) ([]int, error) {
 	indices := []int{}
 	for _, name := range names {
 		found := false
@@ -40,7 +40,7 @@ func getHeaderIndicesByColumnNames(headers, names []string) ([]int, error) {
 	return indices, nil
 }
 
-func getSheetIDByName(spreadsheet *sheets.Spreadsheet, name string) (int64, error) {
+func GetSheetIDByName(spreadsheet *sheets.Spreadsheet, name string) (int64, error) {
 	for _, sheet := range spreadsheet.Sheets {
 		if sheet.Properties.Title == name {
 			return sheet.Properties.SheetId, nil
@@ -75,13 +75,13 @@ func addDescendingSortFilterToSheet(srv *sheets.Service, spreadsheet *sheets.Spr
 	if err != nil {
 		return fmt.Errorf("unable to retrieve sheet %s values: %v", sheetName, err)
 	}
-	headers := getHeadersFromValueRange(sheetsValues)
-	indices, err := getHeaderIndicesByColumnNames(headers, []string{colName})
+	headers := GetHeadersFromValueRange(sheetsValues)
+	indices, err := GetHeaderIndicesByColumnNames(headers, []string{colName})
 	if err != nil {
 		return nil
 	}
 
-	sheetID, err := getSheetIDByName(spreadsheet, sheetName)
+	sheetID, err := GetSheetIDByName(spreadsheet, sheetName)
 	if err != nil {
 		return fmt.Errorf("unable to retrieve sheet %s id: %v", sheetName, err)
 	}
@@ -117,8 +117,8 @@ func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *shee
 	if err != nil {
 		return fmt.Errorf("unable to retrieve sheet %s values: %v", sheetName, err)
 	}
-	headers := getHeadersFromValueRange(sheetsValues)
-	indices, err := getHeaderIndicesByColumnNames(headers, []string{"State", "Mandatory/Optional"})
+	headers := GetHeadersFromValueRange(sheetsValues)
+	indices, err := GetHeaderIndicesByColumnNames(headers, []string{"State", "Mandatory/Optional"})
 	if err != nil {
 		return nil
 	}
@@ -126,7 +126,7 @@ func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *shee
 	stateColIndex := indices[0]
 	isMandatoryColIndex := indices[1]
 
-	sheetID, err := getSheetIDByName(spreadsheet, sheetName)
+	sheetID, err := GetSheetIDByName(spreadsheet, sheetName)
 	if err != nil {
 		return fmt.Errorf("unable to retrieve sheet %s id: %v", sheetName, err)
 	}

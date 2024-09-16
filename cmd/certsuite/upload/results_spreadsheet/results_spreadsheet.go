@@ -148,7 +148,7 @@ func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workload
 	filteredRows[0].Values = append(filteredRows[0].Values, rawResultsSheet.Data[0].RowData[0].Values...)
 
 	headers := getHeadersFromSheet(rawResultsSheet)
-	indices, err := getHeaderIndicesByColumnNames(headers, []string{"CNFName"})
+	indices, err := GetHeaderIndicesByColumnNames(headers, []string{"CNFName"})
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +222,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 	}
 
 	rawSheetHeaders := getHeadersFromSheet(rawResultsSheet)
-	colsIndices, err := getHeaderIndicesByColumnNames(rawSheetHeaders, []string{workloadNameRawResultsCol, workloadTypeRawResultsCol, operatorVersionRawResultsCol})
+	colsIndices, err := GetHeaderIndicesByColumnNames(rawSheetHeaders, []string{workloadNameRawResultsCol, workloadTypeRawResultsCol, operatorVersionRawResultsCol})
 	if err != nil {
 		return nil, err
 	}
