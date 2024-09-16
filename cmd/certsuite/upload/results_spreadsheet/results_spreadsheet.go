@@ -73,7 +73,7 @@ func readCSV(fp string) ([][]string, error) {
 	return records, nil
 }
 
-func createSheetsAndDriveServices() (sheetService *sheets.Service, driveService *drive.Service, err error) {
+func CreateSheetsAndDriveServices() (sheetService *sheets.Service, driveService *drive.Service, err error) {
 	ctx := context.Background()
 	b, err := os.ReadFile(credentials)
 	if err != nil {
@@ -148,7 +148,7 @@ func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workload
 	filteredRows[0].Values = append(filteredRows[0].Values, rawResultsSheet.Data[0].RowData[0].Values...)
 
 	headers := getHeadersFromSheet(rawResultsSheet)
-	indices, err := getHeaderIndicesByColumnNames(headers, []string{"CNFName"})
+	indices, err := GetHeaderIndicesByColumnNames(headers, []string{"CNFName"})
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +222,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 	}
 
 	rawSheetHeaders := getHeadersFromSheet(rawResultsSheet)
-	colsIndices, err := getHeaderIndicesByColumnNames(rawSheetHeaders, []string{workloadNameRawResultsCol, workloadTypeRawResultsCol, operatorVersionRawResultsCol})
+	colsIndices, err := GetHeaderIndicesByColumnNames(rawSheetHeaders, []string{workloadNameRawResultsCol, workloadTypeRawResultsCol, operatorVersionRawResultsCol})
 	if err != nil {
 		return nil, err
 	}
@@ -321,7 +321,7 @@ func createRawResultsSheet(fp string) (*sheets.Sheet, error) {
 }
 
 func generateResultsSpreadSheet() {
-	sheetService, driveService, err := createSheetsAndDriveServices()
+	sheetService, driveService, err := CreateSheetsAndDriveServices()
 	if err != nil {
 		log.Fatalf("Unable to create services: %v", err)
 	}
