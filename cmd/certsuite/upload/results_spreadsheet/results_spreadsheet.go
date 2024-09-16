@@ -58,14 +58,6 @@ func NewCommand() *cobra.Command {
 	return uploadResultSpreadSheetCmd
 }
 
-func SetCredentials(credentialsPath string) {
-	credentials = credentialsPath
-}
-
-func GetCredentials() string {
-	return credentials
-}
-
 func readCSV(fp string) ([][]string, error) {
 	file, err := os.Open(fp)
 	if err != nil {
@@ -81,7 +73,7 @@ func readCSV(fp string) ([][]string, error) {
 	return records, nil
 }
 
-func CreateSheetsAndDriveServices() (sheetService *sheets.Service, driveService *drive.Service, err error) {
+func CreateSheetsAndDriveServices(credentials string) (sheetService *sheets.Service, driveService *drive.Service, err error) {
 	ctx := context.Background()
 	b, err := os.ReadFile(credentials)
 	if err != nil {
@@ -329,7 +321,7 @@ func createRawResultsSheet(fp string) (*sheets.Sheet, error) {
 }
 
 func generateResultsSpreadSheet() {
-	sheetService, driveService, err := CreateSheetsAndDriveServices()
+	sheetService, driveService, err := CreateSheetsAndDriveServices(credentials)
 	if err != nil {
 		log.Fatalf("Unable to create services: %v", err)
 	}
