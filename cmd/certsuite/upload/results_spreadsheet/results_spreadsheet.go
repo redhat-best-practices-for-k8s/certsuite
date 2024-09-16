@@ -58,8 +58,8 @@ func NewCommand() *cobra.Command {
 	return uploadResultSpreadSheetCmd
 }
 
-func SetCredentials(credenitalsPath string) {
-	credentials = credenitalsPath
+func SetCredentials(credentialsPath string) {
+	credentials = credentialsPath
 }
 
 func GetCredentials() string {
