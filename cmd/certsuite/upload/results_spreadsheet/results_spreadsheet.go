@@ -18,7 +18,7 @@ import (
 )
 
 var stringToPointer = func(s string) *string { return &s }
-var conclusionSheetHeaders = []string{categoryConclusionsCol, workloadVersionConclusionsCol, ocpVersionConclusionsCol, workloadNameConclusionsCol, resultsConclusionsCol}
+var conclusionSheetHeaders = []string{categoryConclusionsCol, workloadVersionConclusionsCol, ocpVersionConclusionsCol, WorkloadNameConclusionsCol, resultsConclusionsCol}
 
 var (
 	resultsFilePath string
@@ -268,7 +268,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 			case ocpVersionConclusionsCol:
 				curCellData.UserEnteredValue.StringValue = stringToPointer(ocpVersion + " ")
 
-			case workloadNameConclusionsCol:
+			case WorkloadNameConclusionsCol:
 				curCellData.UserEnteredValue.StringValue = &workloadName
 
 			case resultsConclusionsCol:
@@ -292,7 +292,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 
 	conclusionSheet := &sheets.Sheet{
 		Properties: &sheets.SheetProperties{
-			Title:          "conclusions",
+			Title:          ConclusionSheetName,
 			GridProperties: &sheets.GridProperties{FrozenRowCount: 1},
 		},
 		Data: []*sheets.GridData{{RowData: conclusionsSheetRows}},
@@ -311,7 +311,7 @@ func createRawResultsSheet(fp string) (*sheets.Sheet, error) {
 
 	rawResultsSheet := &sheets.Sheet{
 		Properties: &sheets.SheetProperties{
-			Title:          "raw results",
+			Title:          RawResultsSheetName,
 			GridProperties: &sheets.GridProperties{FrozenRowCount: 1},
 		},
 		Data: []*sheets.GridData{{RowData: rows}},
