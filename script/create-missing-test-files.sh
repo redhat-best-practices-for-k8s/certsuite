@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-for folder in cnf-certification-test internal pkg; do
+for folder in certsuite internal pkg; do
 	echo "./$folder"
 	find ./$folder -name "*.go" | grep -v "_test.go" | grep -v "_moq.go" | sed 's/.go//g' | xargs -I{} sh -c \
 		"

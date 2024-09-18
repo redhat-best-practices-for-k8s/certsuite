@@ -20,7 +20,7 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 REGISTRY_LOCAL?=localhost
 REGISTRY?=quay.io
 CERTSUITE_IMAGE_NAME?=redhat-best-practices-for-k8s/certsuite
-CERTSUITE_IMAGE_NAME_LEGACY?=testnetworkfunction/cnf-certification-test
+CERTSUITE_IMAGE_NAME_LEGACY?=testnetworkfunction/certsuite
 IMAGE_TAG?=localtest
 .PHONY: all clean test build
 .PHONY: \
@@ -69,9 +69,9 @@ build-darwin-arm64: results-html
 
 # Cleans up auto-generated and report files
 clean:
-	go clean && rm -f all-releases.txt cover.out claim.json cnf-certification-test/claim.json \
-		cnf-certification-test/claimjson.js cnf-certification-test/cnf-certification-tests_junit.xml \
-		cnf-certification-test/results.html jsontest-cli latest-release-tag.txt \
+	go clean && rm -f all-releases.txt cover.out claim.json certsuite/claim.json \
+		certsuite/claimjson.js certsuite/certsuites_junit.xml \
+		certsuite/results.html jsontest-cli latest-release-tag.txt \
 		release-tag.txt test-out.json certsuite
 
 # Runs configured linters

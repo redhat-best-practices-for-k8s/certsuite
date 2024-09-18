@@ -110,7 +110,7 @@ To enable this, set:
 --create-xml-junit-file true
 ```
 
-This will create a file named `cnf-certification-test/cnf-certification-tests_junit.xml`.
+This will create a file named `certsuite/certsuite-tests_junit.xml`.
 
 #### Enable running container against OpenShift Local
 

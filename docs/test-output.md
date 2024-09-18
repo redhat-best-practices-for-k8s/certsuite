@@ -31,7 +31,7 @@ go run cmd/tools/cmd/main.go claim-add --claimfile=claim.json
 
 ```json
  "results": {
- "cnf-certification-tests_junit": {
+ "certsuite-tests_junit": {
  "testsuite": {
  "-errors": "0",
  "-failures": "2",
@@ -61,7 +61,7 @@ The "20230620-110654" sample prefix means "June-20th 2023, 11:06:54"
 This is the content of the tar.gz file:
 
 * claim.json
-* cnf-certification-tests_junit.xml (Only if enabled via flag)
+* certsuite-tests_junit.xml (Only if enabled via flag)
 * claimjson.js
 * classification.js
 * results.html
