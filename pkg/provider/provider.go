@@ -27,6 +27,7 @@ import (
 	"encoding/json"
 
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
+	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -98,18 +99,21 @@ type TestEnvironment struct { // rename this with testTarget
 	Crds      []*apiextv1.CustomResourceDefinition `json:"testCrds"`
 	AllCrds   []*apiextv1.CustomResourceDefinition
 
-	HorizontalScaler       []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Services               []*corev1.Service                    `json:"testServices"`
-	Nodes                  map[string]Node                      `json:"-"`
-	K8sVersion             string                               `json:"-"`
-	OpenshiftVersion       string                               `json:"-"`
-	OCPStatus              string                               `json:"-"`
-	HelmChartReleases      []*release.Release                   `json:"testHelmChartReleases"`
-	ResourceQuotas         []corev1.ResourceQuota
-	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
-	NetworkPolicies        []networkingv1.NetworkPolicy
-	AllInstallPlans        []*olmv1Alpha.InstallPlan   `json:"-"`
-	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"-"`
+	HorizontalScaler     []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Services             []*corev1.Service                    `json:"testServices"`
+	Nodes                map[string]Node                      `json:"-"`
+	K8sVersion           string                               `json:"-"`
+	OpenshiftVersion     string                               `json:"-"`
+	OCPStatus            string                               `json:"-"`
+	HelmChartReleases    []*release.Release                   `json:"testHelmChartReleases"`
+	ResourceQuotas       []corev1.ResourceQuota
+	PodDisruptionBudgets []policyv1.PodDisruptionBudget
+	NetworkPolicies      []networkingv1.NetworkPolicy
+	AllInstallPlans      []*olmv1Alpha.InstallPlan   `json:"AllInstallPlans"`
+	AllSubscriptions     []olmv1Alpha.Subscription   `json:"AllSubscriptions"`
+	AllCatalogSources    []*olmv1Alpha.CatalogSource `json:"-"`
+	OperatorGroups       []*olmv1.OperatorGroup      `json:"OperatorGroups"`
+
 	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
@@ -228,6 +232,11 @@ func buildTestEnvironment() { //nolint:funlen
 	env.Config = config
 	env.Crds = data.Crds
 	env.AllInstallPlans = data.AllInstallPlans
+	env.OperatorGroups, err = GetAllOperatorGroups()
+	if err != nil {
+		log.Fatal("Cannot get OperatorGroups: %v", err)
+	}
+	env.AllSubscriptions = data.AllSubscriptions
 	env.AllCatalogSources = data.AllCatalogSources
 	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)

@@ -28,6 +28,7 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/go-logr/stdr"
+	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
@@ -316,4 +317,25 @@ func getOperatorTargetNamespaces(namespace string) ([]string, error) {
 	}
 
 	return list.Items[0].Spec.TargetNamespaces, nil
+}
+
+func GetAllOperatorGroups() ([]*olmv1.OperatorGroup, error) {
+	client := clientsholder.GetClientsHolder()
+
+	list, err := client.OlmClient.OperatorsV1().OperatorGroups("").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	if len(list.Items) == 0 {
+		return nil, errors.New("no OperatorGroup found")
+	}
+
+	// Collect all OperatorGroup pointers
+	var operatorGroups []*olmv1.OperatorGroup
+	for i := range list.Items {
+		operatorGroups = append(operatorGroups, &list.Items[i])
+	}
+
+	return operatorGroups, nil
 }
