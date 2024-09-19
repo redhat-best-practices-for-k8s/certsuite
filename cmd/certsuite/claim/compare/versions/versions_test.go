@@ -78,43 +78,43 @@ func TestCompare(t *testing.T) {
 					},
 				},
 			}},
-		}, /*
-			{
-				name: "non matching versions 2",
-				args: args{
-					claim1Versions: &officialClaimScheme.Versions{
-						ClaimFormat:        "1",
-						K8s:                "22AAA",
-						OcClient:           "333",
-						Ocp:                "4444",
-						CertSuite:          "55555",
-						CertSuiteGitCommit: "666666",
+		},
+		{
+			name: "non matching versions 2",
+			args: args{
+				claim1Versions: &officialClaimScheme.Versions{
+					ClaimFormat:        "1",
+					K8s:                "22AAA",
+					OcClient:           "333",
+					Ocp:                "4444",
+					CertSuite:          "55555",
+					CertSuiteGitCommit: "666666",
+				},
+				claim2Versions: &officialClaimScheme.Versions{
+					ClaimFormat:        "1",
+					K8s:                "22",
+					OcClient:           "333",
+					Ocp:                "4444",
+					CertSuite:          "55555BBBB",
+					CertSuiteGitCommit: "666666",
+				},
+			},
+			want: &DiffReport{Diffs: &diff.Diffs{
+				Name: "VERSIONS",
+				Fields: []diff.FieldDiff{
+					{
+						FieldPath:   "/certSuite",
+						Claim1Value: "55555",
+						Claim2Value: "55555BBBB",
 					},
-					claim2Versions: &officialClaimScheme.Versions{
-						ClaimFormat:        "1",
-						K8s:                "22",
-						OcClient:           "333",
-						Ocp:                "4444",
-						CertSuite:          "55555BBBB",
-						CertSuiteGitCommit: "666666",
+					{
+						FieldPath:   "/k8s",
+						Claim1Value: "22AAA",
+						Claim2Value: "22",
 					},
 				},
-				want: &DiffReport{Diffs: &diff.Diffs{
-					Name: "VERSIONS",
-					Fields: []diff.FieldDiff{
-						{
-							FieldPath:   "/k8s",
-							Claim1Value: "22AAA",
-							Claim2Value: "22",
-						},
-						{
-							FieldPath:   "/certSuite",
-							Claim1Value: "55555",
-							Claim2Value: "55555BBBB",
-						},
-					},
-				}},
-			},*/
+			}},
+		},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {

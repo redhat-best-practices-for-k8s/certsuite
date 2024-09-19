@@ -1,6 +1,13 @@
 package compare
 
-/*
+import (
+	"io"
+	"os"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
 func Test_claimCompareFilesfunc(t *testing.T) {
 	testCases := []struct {
 		name               string
@@ -93,4 +100,3 @@ func Test_claimCompareFilesfunc(t *testing.T) {
 		})
 	}
 }
-*/

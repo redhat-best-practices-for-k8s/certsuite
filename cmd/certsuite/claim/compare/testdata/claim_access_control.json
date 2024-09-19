@@ -28,7 +28,7 @@
         "checkDiscoveredContainerCertificationStatus": false,
         "collectorAppEndPoint": "http://localhost:8080",
         "collectorAppPassword": "test-password",
-        "probeDaemonSetNamespace": "custom-probepods-ns",
+        "probeDaemonSetNamespace": "different-probepods-ns",
         "executedBy": "default-executed-by",
         "managedDeployments": [
           {
