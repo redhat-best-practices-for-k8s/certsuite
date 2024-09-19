@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	supportedClaimFormatVersion = "v0.4.0"
+	supportedClaimFormatVersion = "v0.5.0"
 )
 
 const (
