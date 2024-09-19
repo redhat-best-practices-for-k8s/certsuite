@@ -14,7 +14,6 @@ permissions:
 env:
   QE_REPO: redhat-best-practices-for-k8s/certsuite-qe
   CERTSUITE_IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite
-  CERTSUITE_IMAGE_NAME_LEGACY: quay.io/redhat-best-practices-for-k8s/redhat-best-practices-for-k8s-certsuite
   TEST_CERTSUITE_IMAGE_TAG: localtest
   CERTSUITE_CONFIG_DIR: '/tmp/certsuite_config'
   CERTSUITE_REPORT_DIR: '/tmp/certsuite_report'
@@ -65,7 +64,6 @@ jobs:
           file: ./Dockerfile
           tags: |
             ${{ env.CERTSUITE_IMAGE_NAME }}:${{ env.TEST_CERTSUITE_IMAGE_TAG }}
-            ${{ env.CERTSUITE_IMAGE_NAME_LEGACY }}:${{ env.TEST_CERTSUITE_IMAGE_TAG }}
           outputs: type=docker,dest=/tmp/testimage.tar
       
       - name: Store image as artifact

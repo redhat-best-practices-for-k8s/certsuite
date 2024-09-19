@@ -50,7 +50,7 @@ func LoadChecksDB(labelsExpr string) {
 }
 
 const (
-	junitXMLOutputFileName = "cnf-certification-tests_junit.xml"
+	junitXMLOutputFileName = "certsuite-tests_junit.xml"
 	claimFileName          = "claim.json"
 	collectorAppURL        = "http://claims-collector.cnf-certifications.sysdeseng.com"
 	timeoutDefaultvalue    = 24 * time.Hour

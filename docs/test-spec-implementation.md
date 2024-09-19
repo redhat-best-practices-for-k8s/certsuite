@@ -5,7 +5,7 @@ This section explains the implementation of some test cases so that users can ha
 
 ## [lifecycle-deployment-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-deployment-scaling) and [lifecycle-statefulset-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-statefulset-scaling)
 
-For each discovered deployment in the [target namespaces](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/cnf-certification-test/certsuite_config.yml#L1), the test case will try to modify its replica count to check whether pod's can be correctly removed and re-deployed in the cluster.
+For each discovered deployment in the [target namespaces](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/certsuite_config.yml#L1), the test case will try to modify its replica count to check whether pod's can be correctly removed and re-deployed in the cluster.
 
 <!-- markdownlint-disable MD033 -->
 <img src="../assets/images/tests-flow-charts/lifecycle-deployment-scaling.png"></img>
@@ -19,7 +19,7 @@ As depicted in the image, the way to modify the number of replicas varies depend
 
 ## [lifecycle-crd-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-crd-scaling)
 
-During the program's startup, an autodiscovery phase is performed where all the CRDs and their existing CRs in the [target namespaces](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/cnf-certification-test/certsuite_config.yml#L1) are stored to be tested later. Only CRs whose CRD's suffix matches at least one of the [targetCrdFilters](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/d2b718753f438ec8f33ed8bca5ac60ecf71ef599/cnf-certification-test/certsuite_config.yml#L8) and has an [scale subresource](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource) will be selected as test targets.
+During the program's startup, an autodiscovery phase is performed where all the CRDs and their existing CRs in the [target namespaces](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/certsuite_config.yml#L1) are stored to be tested later. Only CRs whose CRD's suffix matches at least one of the [targetCrdFilters](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/certsuite_config.yml#L9) and has an [scale subresource](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource) will be selected as test targets.
 
 For every CR under test, a similar approach to the scaling of deployments and statefulsets is done.
 
