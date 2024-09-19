@@ -3,8 +3,8 @@ package nodes
 import (
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/diff"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare/diff"
 )
 
 // The UT checks the node role summary and the node differences table only.

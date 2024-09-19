@@ -3,7 +3,7 @@
 
 The Red Hat Best Practices Test Suite for Kubernetes uses a YAML configuration file to certify a specific workload. This file specifies the workload's resources to be certified, as well as any exceptions or other general configuration options.
 
-By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml) of the Config File. For a description of each config option see the section [Config File options](#config-file-options).
+By default a file named _certsuite_config.yml_ will be used. Here's an [example](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/certsuite_config.yml) of the Config File. For a description of each config option see the section [Config File options](#config-file-options).
 
 ## Config Generator
 
@@ -38,7 +38,7 @@ These options allow configuring the workload resources to be verified. Only the 
 !!! note
 
     Using the number of labels to determine how to get the resources under test.<br> 
-    If there are labels defined, we get the list of pods, statefulsets, deployments, csvs, by fetching the resources matching the labels. Otherwise, if the labels are not defined, we only test the resources that are in the namespaces under test (defined in tnf_config.yml).
+    If there are labels defined, we get the list of pods, statefulsets, deployments, csvs, by fetching the resources matching the labels. Otherwise, if the labels are not defined, we only test the resources that are in the namespaces under test (defined in certsuite_config.yml).
 
 #### targetNameSpaces
 
@@ -59,7 +59,7 @@ The labels that each Pod of the workload under test must have to be verified by 
 
 ``` { .yaml .annotate }
 podsUnderTestLabels:
-  - "test-network-function.com/generic: target"
+  - "redhat-best-practices-for-k8s.com/generic: target"
 ```
 
 #### operatorsUnderTestLabels
@@ -70,7 +70,7 @@ If a new label is used for this purpose make sure it is added to the workload op
 
 ``` { .yaml .annotate }
 operatorsUnderTestLabels:
-  - "test-network-function.com/operator: target" 
+  - "redhat-best-practices-for-k8s.com/operator: target" 
 ```
 
 #### targetCrdFilters
@@ -107,7 +107,7 @@ The test suite has the ability to create the JUNit XML File output containing th
 To enable this, set:
 
 ```shell
-export TNF_ENABLE_XML_CREATION=true
+--create-xml-junit-file true
 ```
 
 This will create a file named `cnf-certification-test/cnf-certification-tests_junit.xml`.
@@ -117,7 +117,7 @@ This will create a file named `cnf-certification-test/cnf-certification-tests_ju
 While running the test suite as a container, you can enable the container to be able to reach the local CRC instance by setting:
 
 ```shell
-export TNF_ENABLE_CRC_TESTING=true
+export CERTSUITE_ENABLE_CRC_TESTING=true
 ```
 
 This utilizes the `--add-host` flag in Docker to be able to point `api.crc.testing` to the host gateway.
@@ -199,15 +199,15 @@ skipScalingTestStatefulSetNames:
 
 ### Red Hat Best Practices Test Suite settings
 
-#### debugDaemonSetNamespace
+#### probeDaemonSetNamespace
 
 This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is _cnf-suite_.
 
 ``` { .yaml .annotate }
-debugDaemonSetNamespace: cnf-cert
+probeDaemonSetNamespace: cnf-cert
 ```
 
-This DaemonSet, called _tnf-debug_ is deployed and used internally by the Test Suite tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn't deployed correctly.
+This DaemonSet, called _certsuite-probe_ is deployed and used internally by the Test Suite tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn't deployed correctly.
 
 ### Other settings
 
@@ -222,9 +222,9 @@ The autodiscovery mechanism will attempt to identify the default network device 
 
 - The _k8s.v1.cni.cncf.io/networks-status_ annotation is checked and the _interface_ from the first entry found with _“default”=true_ is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
 
-The label _test-network-function.com/skip_connectivity_tests_ excludes Pods from all connectivity tests.
+The label _redhat-best-practices-for-k8s.com/skip_connectivity_tests_ excludes Pods from all connectivity tests.
 
-The label _test-network-function.com/skip_multus_connectivity_tests_ excludes Pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on the default interface are still run.
+The label _redhat-best-practices-for-k8s.com/skip_multus_connectivity_tests_ excludes Pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on the default interface are still run.
 
 #### Affinity requirements
 

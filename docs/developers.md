@@ -16,7 +16,7 @@ To test the newly added test / existing tests locally, follow the steps
 - Also, skip intrusive tests
 
 ```shell
-export TNF_NON_INTRUSIVE_ONLY=true
+export CERTSUITE_NON_INTRUSIVE_ONLY=true
 ```
 
 - Set K8s config of the cluster where test pods are running
@@ -42,3 +42,14 @@ Depends-On: <url of the PR>
 ```
 
 and the dependent PR will automatically be extracted and injected in your change during the GitHub Action CI jobs and the DCI jobs.
+
+# Linters for the Codebase
+
+- [`checkmake`](https://github.com/mrtazz/checkmake)
+- [`golangci-lint`](https://github.com/golangci/golangci-lint)
+- [`hadolint`](https://github.com/hadolint/hadolint)
+- [`markdownlint`](https://github.com/igorshubovych/markdownlint-cli)
+- [`shellcheck`](https://github.com/koalaman/shellcheck)
+- [`shfmt`](https://github.com/mvdan/sh)
+- [`typos`](https://github.com/crate-ci/typos)
+- [`yamllint`](https://github.com/adrienverge/yamllint)

@@ -30,11 +30,11 @@ import (
 	"github.com/go-logr/stdr"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -148,7 +148,7 @@ func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Al
 }
 
 func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
-	subscriptions []olmv1Alpha.Subscription,
+	allSubscriptions []olmv1Alpha.Subscription,
 	allInstallPlans []*olmv1Alpha.InstallPlan,
 	allCatalogSources []*olmv1Alpha.CatalogSource,
 	succeededRequired,
@@ -180,7 +180,7 @@ func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 		op.PackageFromCsvName = packageAndVersion[0]
 		op.Version = csv.Spec.Version.String()
 		// Get at least one subscription and update the Operator object with it.
-		if getAtLeastOneSubscription(op, csv, subscriptions) {
+		if getAtLeastOneSubscription(op, csv, allSubscriptions) {
 			targetNamespaces, err := getOperatorTargetNamespaces(op.SubscriptionNamespace)
 			if err != nil {
 				log.Error("Failed to get target namespaces for operator %s: %v", csv.Name, err)
@@ -307,7 +307,8 @@ func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPl
 func getOperatorTargetNamespaces(namespace string) ([]string, error) {
 	client := clientsholder.GetClientsHolder()
 
-	list, err := client.OlmClient.OperatorsV1().OperatorGroups(namespace).List(context.TODO(), metav1.ListOptions{})
+	list, err := client.OlmClient.OperatorsV1().OperatorGroups(namespace).List(
+		context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}

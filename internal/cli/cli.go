@@ -27,11 +27,11 @@ const (
 // the font Standard by Glenn Chappell & Ian Chai 3/93.
 const banner = `
 
-   ____  _____  ____  _____  ____   _   _  ___  _____  _____          ____     _
-  / ___|| ____||  _ \|_   _|/ ___| | | | ||_ _||_   _|| ____| __   __| ___|   / |
- | |    |  _|  | |_) | | |  \___ \ | | | | | |   | |  |  _|   \ \ / /|___ \   | |
- | |___ | |___ |  _ <  | |   ___) || |_| | | |   | |  | |___   \ V /  ___) |_ | |
-  \____||_____||_| \_\ |_|  |____/  \___/ |___|  |_|  |_____|   \_/  |____/(_)|_|
+   ____  _____  ____  _____  ____   _   _  ___  _____  _____          ____     _____
+  / ___|| ____||  _ \|_   _|/ ___| | | | ||_ _||_   _|| ____| __   __| ___|   |___ /
+ | |    |  _|  | |_) | | |  \___ \ | | | | | |   | |  |  _|   \ \ / /|___ \     |_ \
+ | |___ | |___ |  _ <  | |   ___) || |_| | | |   | |  | |___   \ V /  ___) |_  ___) |
+  \____||_____||_| \_\ |_|  |____/  \___/ |___|  |_|  |_____|   \_/  |____/(_)|____/
 
 
 
@@ -159,16 +159,6 @@ func PrintResultsTable(results map[string][]int) {
 	fmt.Printf("\n")
 }
 
-func PrintChecksList(checkIDs []string) {
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("|                   TEST CASE SELECTION                    |")
-	fmt.Println("------------------------------------------------------------")
-	for _, checkID := range checkIDs {
-		fmt.Printf("| %-56s |\n", checkID)
-	}
-	fmt.Println("------------------------------------------------------------")
-}
-
 func stopCheckLineGoroutine() {
 	if stopChan == nil {
 		// This may happen for checks that were skipped if no compliant nor non-compliant objects found.
@@ -224,4 +214,43 @@ func PrintCheckErrored(checkName string) {
 	stopCheckLineGoroutine()
 
 	fmt.Print(ClearLineCode + "[ " + CheckResultTagError + " ] " + checkName + "\n")
+}
+
+func WrapLines(text string, maxWidth int) []string {
+	lines := strings.Split(text, "\n")
+	wrappedLines := make([]string, 0, len(lines))
+	for _, line := range lines {
+		if len(line) <= maxWidth {
+			wrappedLines = append(wrappedLines, line)
+			continue
+		}
+
+		// Break lines longer than maxWidth
+		words := strings.Fields(line)
+		currentLine := words[0]
+		for _, word := range words[1:] {
+			if len(currentLine)+len(word)+1 <= maxWidth {
+				currentLine += " " + word
+			} else {
+				wrappedLines = append(wrappedLines, currentLine)
+				currentLine = word
+			}
+		}
+
+		wrappedLines = append(wrappedLines, currentLine)
+	}
+
+	return wrappedLines
+}
+
+func LineAlignLeft(s string, w int) string {
+	return fmt.Sprintf("%[1]*s", -w, s)
+}
+
+func LineAlignCenter(s string, w int) string {
+	return fmt.Sprintf("%[1]*s", -w, fmt.Sprintf("%[1]*s", (w+len(s))/2, s)) //nolint:mnd // magic number
+}
+
+func LineColor(s, color string) string {
+	return color + s + Reset
 }

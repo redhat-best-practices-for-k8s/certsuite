@@ -2,7 +2,7 @@ VERSIONS: Differences
 FIELD             CLAIM 1                                      CLAIM 2
 /k8s              v1.26.4+c343423                              v1.26.3+b404935
 /ocp              4.13.1                                       4.13.0
-/tnfGitCommit     1b968e53b79fd8e81e48b761c3efd7a808d4567e     20641f745f65aaba24d9f5105f6dee531f67fc37
+/certSuiteGitCommit     1b968e53b79fd8e81e48b761c3efd7a808d4567e     20641f745f65aaba24d9f5105f6dee531f67fc37
 
 VERSIONS: Only in CLAIM 1
 <none>
@@ -54,14 +54,14 @@ observability-termination-policy                            failed    skipped
 CONFIGURATIONS
 --------------
 
-CNF Cert Suite Configuration: Differences
+Cert Suite Configuration: Differences
 FIELD                        CLAIM 1                 CLAIM 2
-/debugDaemonSetNamespace     custom-debugpods-ns     cnf-suite
+/probeDaemonSetNamespace     custom-probepods-ns     cnf-suite
 
-CNF Cert Suite Configuration: Only in CLAIM 1
+Cert Suite Configuration: Only in CLAIM 1
 <none>
 
-CNF Cert Suite Configuration: Only in CLAIM 2
+Cert Suite Configuration: Only in CLAIM 2
 /targetNameSpaces/1=test-ns
 
 Cluster abnormal events count

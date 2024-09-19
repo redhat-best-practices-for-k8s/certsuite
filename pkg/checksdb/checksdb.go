@@ -10,11 +10,12 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/internal/cli"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/labels"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 )
 
 var (
@@ -23,7 +24,7 @@ var (
 
 	resultsDB = map[string]claim.Result{}
 
-	labelsExprEvaluator LabelsExprEvaluator
+	labelsExprEvaluator labels.LabelsExprEvaluator
 )
 
 type AbortPanicMsg string
@@ -137,14 +138,14 @@ func recordCheckResult(check *Check) {
 }
 
 // GetReconciledResults is a function added to aggregate a Claim's results.  Due to the limitations of
-// test-network-function-claim's Go Client, results are generalized to map[string]interface{}.
-func GetReconciledResults() map[string]interface{} {
-	resultMap := make(map[string]interface{})
+// certsuite-claim's Go Client, results are generalized to map[string]interface{}.
+func GetReconciledResults() map[string]claim.Result {
+	resultMap := make(map[string]claim.Result)
 	//nolint:gocritic
 	for key, val := range resultsDB {
 		// initializes the result map, if necessary
 		if _, ok := resultMap[key]; !ok {
-			resultMap[key] = make([]claim.Result, 0)
+			resultMap[key] = claim.Result{}
 		}
 
 		resultMap[key] = val
@@ -252,7 +253,7 @@ func InitLabelsExprEvaluator(labelsFilter string) error {
 		labelsFilter = strings.Join(allTags, ",")
 	}
 
-	eval, err := newLabelsExprEvaluator(labelsFilter)
+	eval, err := labels.NewLabelsExprEvaluator(labelsFilter)
 	if err != nil {
 		return fmt.Errorf("could not create a label evaluator, err: %v", err)
 	}

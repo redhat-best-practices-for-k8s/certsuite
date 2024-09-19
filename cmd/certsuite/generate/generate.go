@@ -1,11 +1,11 @@
 package generate
 
 import (
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/catalog"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/feedback"
+	qecoverage "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/qe_coverage"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/generate/catalog"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/generate/config"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/generate/feedback"
-	qecoverage "github.com/test-network-function/cnf-certification-test/cmd/certsuite/generate/qe_coverage"
 )
 
 var (

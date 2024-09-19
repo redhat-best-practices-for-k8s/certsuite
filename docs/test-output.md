@@ -61,7 +61,7 @@ The "20230620-110654" sample prefix means "June-20th 2023, 11:06:54"
 This is the content of the tar.gz file:
 
 * claim.json
-* cnf-certification-tests_junit.xml (Only if enabled via `TNF_ENABLE_XML_CREATION` environment variable)
+* cnf-certification-tests_junit.xml (Only if enabled via flag)
 * claimjson.js
 * classification.js
 * results.html
@@ -75,7 +75,7 @@ This file serves two different purposes:
 
 A standalone HTML page is available to decode the results.
 For more details, see:
-https://github.com/test-network-function/parser
+https://github.com/redhat-best-practices-for-k8s/parser
 
 ## Compare claim files from two different Test Suite runs
 

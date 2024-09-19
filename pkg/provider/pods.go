@@ -23,9 +23,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/podhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
+
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -41,6 +42,7 @@ const (
 
 type Pod struct {
 	*corev1.Pod
+	AllServiceAccountsMap   *map[string]*corev1.ServiceAccount
 	Containers              []*Container
 	MultusNetworkInterfaces map[string]CniNetworkInterface
 	MultusPCIs              []string
@@ -206,10 +208,7 @@ func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
 
 func (p *Pod) HasNodeSelector() bool {
 	// Checks whether or not the pod has a nodeSelector or a NodeName supplied
-	if p.Spec.NodeSelector == nil || len(p.Spec.NodeSelector) == 0 {
-		return false
-	}
-	return true
+	return len(p.Spec.NodeSelector) != 0
 }
 
 func (p *Pod) IsRuntimeClassNameSpecified() bool {
@@ -243,7 +242,7 @@ func getCNCFNetworksNamesFromPodAnnotation(networksAnnotation string) []string {
 	networkNames := []string{}
 
 	// Let's start trying to unmarshal a json array of objects.
-	// We won't care about bad-formatted/invalid annotation value. If that's the case,
+	// We will not care about bad-formatted/invalid annotation value. If that's the case,
 	// the pod wouldn't have been deployed or wouldn't be in running state.
 	if err := json.Unmarshal([]byte(networksAnnotation), &networkObjects); err == nil {
 		for _, network := range networkObjects {
@@ -404,7 +403,31 @@ func (p *Pod) IsRunAsUserID(uid int64) bool {
 	return *p.Pod.Spec.SecurityContext.RunAsUser == uid
 }
 
+func (p *Pod) IsRunAsNonRoot() bool {
+	// Check pod-level security context
+	if p.Pod.Spec.SecurityContext != nil && p.Pod.Spec.SecurityContext.RunAsNonRoot != nil {
+		return *p.Pod.Spec.SecurityContext.RunAsNonRoot
+	}
+
+	// If neither container-level nor pod-level security context is set, fail
+	return false
+}
+
 // Get the list of top owners of pods
 func (p *Pod) GetTopOwner() (topOwners map[string]podhelper.TopOwner, err error) {
 	return podhelper.GetPodTopOwner(p.Namespace, p.OwnerReferences)
+}
+
+// AutomountServiceAccountSetOnSA checks if the AutomountServiceAccountToken field is set on the pod's ServiceAccount.
+// Returns:
+//   - A boolean pointer indicating whether the AutomountServiceAccountToken field is set.
+//   - An error if any occurred during the operation.
+func (p *Pod) IsAutomountServiceAccountSetOnSA() (isSet *bool, err error) {
+	if p.AllServiceAccountsMap == nil {
+		return isSet, fmt.Errorf("AllServiceAccountsMap is not initialized for pod with ns: %s and name %s", p.Namespace, p.Name)
+	}
+	if _, ok := (*p.AllServiceAccountsMap)[p.Namespace+p.Spec.ServiceAccountName]; !ok {
+		return isSet, fmt.Errorf("could not find a service account with ns: %s and name %s", p.Namespace, p.Spec.ServiceAccountName)
+	}
+	return (*p.AllServiceAccountsMap)[p.Namespace+p.Spec.ServiceAccountName].AutomountServiceAccountToken, nil
 }

@@ -27,13 +27,15 @@ import (
 	"os"
 	"time"
 
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 
-	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
-	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/versions"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/diagnostics"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/labels"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 )
 
 const (
@@ -108,6 +110,12 @@ type ClaimBuilder struct {
 }
 
 func NewClaimBuilder() (*ClaimBuilder, error) {
+	if os.Getenv("UNIT_TEST") == "true" {
+		return &ClaimBuilder{
+			claimRoot: CreateClaimRoot(),
+		}, nil
+	}
+
 	log.Debug("Creating claim file builder.")
 	configurations, err := MarshalConfigurations()
 	if err != nil {
@@ -122,12 +130,12 @@ func NewClaimBuilder() (*ClaimBuilder, error) {
 	root.Claim.Configurations = claimConfigurations
 	root.Claim.Nodes = GenerateNodes()
 	root.Claim.Versions = &claim.Versions{
-		Tnf:          versions.GitDisplayRelease,
-		TnfGitCommit: versions.GitCommit,
-		OcClient:     diagnostics.GetVersionOcClient(),
-		Ocp:          diagnostics.GetVersionOcp(),
-		K8s:          diagnostics.GetVersionK8s(),
-		ClaimFormat:  versions.ClaimFormatVersion,
+		CertSuite:          versions.GitDisplayRelease,
+		CertSuiteGitCommit: versions.GitCommit,
+		OcClient:           diagnostics.GetVersionOcClient(),
+		Ocp:                diagnostics.GetVersionOcp(),
+		K8s:                diagnostics.GetVersionK8s(),
+		ClaimFormat:        versions.ClaimFormatVersion,
 	}
 
 	return &ClaimBuilder{
@@ -156,9 +164,8 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 
 	// Collector all of the Test IDs
 	allTestIDs := []string{}
-	for _, result := range c.Results {
-		typedResult := result.(claim.Result)
-		allTestIDs = append(allTestIDs, typedResult.TestID.Id)
+	for testID := range c.Results {
+		allTestIDs = append(allTestIDs, c.Results[testID].TestID.Id)
 	}
 
 	// Sort the test IDs
@@ -170,18 +177,16 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 
 	// Count all of the failed tests in the suite
 	failedTests := 0
-	for _, result := range c.Results {
-		typedResult := result.(claim.Result)
-		if typedResult.State == TestStateFailed {
+	for testID := range c.Results {
+		if c.Results[testID].State == TestStateFailed {
 			failedTests++
 		}
 	}
 
 	// Count all of the skipped tests in the suite
 	skippedTests := 0
-	for _, result := range c.Results {
-		typedResult := result.(claim.Result)
-		if typedResult.State == TestStateSkipped {
+	for testID := range c.Results {
+		if c.Results[testID].State == TestStateSkipped {
 			skippedTests++
 		}
 	}
@@ -207,20 +212,17 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 	// <testcase>
 	// Loop through all of the sorted test IDs
 	for _, testID := range allTestIDs {
-		// Type the result
-		typedResult := c.Results[testID].(claim.Result)
-
 		testCase := TestCase{}
 		testCase.Name = testID
 		testCase.Classname = TestSuiteName
-		testCase.Status = typedResult.State
+		testCase.Status = c.Results[testID].State
 
 		// Clean the time strings to remove the " m=" suffix
-		start, err := time.Parse(DateTimeFormatDirective, strings.Split(typedResult.StartTime, " m=")[0])
+		start, err := time.Parse(DateTimeFormatDirective, strings.Split(c.Results[testID].StartTime, " m=")[0])
 		if err != nil {
 			log.Error("Failed to parse start time: %v", err)
 		}
-		end, err := time.Parse(DateTimeFormatDirective, strings.Split(typedResult.EndTime, " m=")[0])
+		end, err := time.Parse(DateTimeFormatDirective, strings.Split(c.Results[testID].EndTime, " m=")[0])
 		if err != nil {
 			log.Error("Failed to parse end time: %v", err)
 		}
@@ -232,7 +234,7 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 		// Populate the skipped message if the test case was skipped
 		if testCase.Status == TestStateSkipped {
 			testCase.Skipped = &SkippedMessage{}
-			testCase.Skipped.Text = typedResult.SkipReason
+			testCase.Skipped.Text = c.Results[testID].SkipReason
 		} else {
 			testCase.Skipped = nil
 		}
@@ -240,7 +242,7 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 		// Populate the failure message if the test case failed
 		if testCase.Status == TestStateFailed {
 			testCase.Failure = &FailureMessage{}
-			testCase.Failure.Text = typedResult.CheckDetails
+			testCase.Failure.Text = c.Results[testID].CheckDetails
 		} else {
 			testCase.Failure = nil
 		}
@@ -279,7 +281,7 @@ func MarshalConfigurations() (configurations []byte, err error) {
 	config := provider.GetTestEnvironment()
 	configurations, err = j.Marshal(config)
 	if err != nil {
-		log.Error("error converting configurations to JSON: %v", err)
+		log.Error("Error converting configurations to JSON: %v", err)
 		return configurations, err
 	}
 	return configurations, nil
@@ -308,11 +310,7 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	if err != nil {
 		log.Error("ReadFile failed with err: %v", err)
 	}
-	path, err := os.Getwd()
-	if err != nil {
-		log.Error("Getwd failed with err: %v", err)
-	}
-	log.Info("Reading claim file at path: %s", path)
+	log.Info("Reading claim file at path: %s", claimFileName)
 	return data, nil
 }
 
@@ -346,6 +344,7 @@ func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 
 // WriteClaimOutput writes the output payload to the claim file.  In the event of an error, this method fatally fails.
 func WriteClaimOutput(claimOutputFile string, payload []byte) {
+	log.Info("Writing claim data to %s", claimOutputFile)
 	err := os.WriteFile(claimOutputFile, payload, claimFilePermissions)
 	if err != nil {
 		log.Fatal("Error writing claim data:\n%s", string(payload))
@@ -368,7 +367,7 @@ func GenerateNodes() map[string]interface{} {
 }
 
 // CreateClaimRoot creates the claim based on the model created in
-// https://github.com/test-network-function/cnf-certification-test-claim.
+// https://github.com/redhat-best-practices-for-k8s/certsuite-claim.
 func CreateClaimRoot() *claim.Root {
 	// Initialize the claim with the start time.
 	startTime := time.Now()
@@ -379,4 +378,34 @@ func CreateClaimRoot() *claim.Root {
 			},
 		},
 	}
+}
+
+func SanitizeClaimFile(claimFileName, labelsFilter string) (string, error) {
+	log.Info("Sanitizing claim file %s", claimFileName)
+	data, err := ReadClaimFile(claimFileName)
+	if err != nil {
+		log.Error("ReadClaimFile failed with err: %v", err)
+		return "", err
+	}
+	var aRoot claim.Root
+	UnmarshalClaim(data, &aRoot)
+
+	// Remove the results that do not match the labels filter
+	for testID := range aRoot.Claim.Results {
+		evaluator, err := labels.NewLabelsExprEvaluator(labelsFilter)
+		if err != nil {
+			log.Error("Failed to create labels expression evaluator: %v", err)
+			return "", err
+		}
+
+		_, gatheredLabels := identifiers.GetTestIDAndLabels(*aRoot.Claim.Results[testID].TestID)
+
+		if !evaluator.Eval(gatheredLabels) {
+			log.Info("Removing test ID: %s from the claim", testID)
+			delete(aRoot.Claim.Results, testID)
+		}
+	}
+
+	WriteClaimOutput(claimFileName, MarshalClaimOutput(&aRoot))
+	return claimFileName, nil
 }

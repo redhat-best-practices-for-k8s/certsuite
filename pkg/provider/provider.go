@@ -29,12 +29,12 @@ import (
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+	k8sPrivilegedDs "github.com/redhat-best-practices-for-k8s/privileged-daemonset"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	k8sPrivilegedDs "github.com/test-network-function/privileged-daemonset"
 	"helm.sh/helm/v3/pkg/release"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -51,11 +51,11 @@ import (
 const (
 	AffinityRequiredKey              = "AffinityRequired"
 	containerName                    = "container-00"
-	DaemonSetName                    = "tnf-debug"
-	debugPodsTimeout                 = 5 * time.Minute
+	DaemonSetName                    = "certsuite-probe"
+	probePodsTimeout                 = 5 * time.Minute
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/network-status"
-	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
-	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
+	skipConnectivityTestsLabel       = "redhat-best-practices-for-k8s.com/skip_connectivity_tests"
+	skipMultusConnectivityTestsLabel = "redhat-best-practices-for-k8s.com/skip_multus_connectivity_tests"
 	rhcosName                        = "Red Hat Enterprise Linux CoreOS"
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
@@ -74,7 +74,7 @@ type TestEnvironment struct { // rename this with testTarget
 
 	// Pod Groupings
 	Pods            []*Pod                 `json:"testPods"`
-	DebugPods       map[string]*corev1.Pod // map from nodename to debugPod
+	ProbePods       map[string]*corev1.Pod // map from nodename to probePod
 	AllPods         []*Pod                 `json:"AllPods"`
 	CSVToPodListMap map[string][]*Pod      `json:"CSVToPodListMap"`
 
@@ -94,26 +94,28 @@ type TestEnvironment struct { // rename this with testTarget
 	RoleBindings           []rbacv1.RoleBinding
 	Roles                  []rbacv1.Role
 
-	Config    configuration.TestConfiguration
-	variables configuration.TestParameters
-	Crds      []*apiextv1.CustomResourceDefinition `json:"testCrds"`
-	AllCrds   []*apiextv1.CustomResourceDefinition
+	Config  configuration.TestConfiguration
+	params  configuration.TestParameters
+	Crds    []*apiextv1.CustomResourceDefinition `json:"testCrds"`
+	AllCrds []*apiextv1.CustomResourceDefinition
 
-	HorizontalScaler     []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Services             []*corev1.Service                    `json:"testServices"`
-	Nodes                map[string]Node                      `json:"-"`
-	K8sVersion           string                               `json:"-"`
-	OpenshiftVersion     string                               `json:"-"`
-	OCPStatus            string                               `json:"-"`
-	HelmChartReleases    []*release.Release                   `json:"testHelmChartReleases"`
-	ResourceQuotas       []corev1.ResourceQuota
-	PodDisruptionBudgets []policyv1.PodDisruptionBudget
-	NetworkPolicies      []networkingv1.NetworkPolicy
-	AllInstallPlans      []*olmv1Alpha.InstallPlan   `json:"AllInstallPlans"`
-	AllSubscriptions     []olmv1Alpha.Subscription   `json:"AllSubscriptions"`
-	AllCatalogSources    []*olmv1Alpha.CatalogSource `json:"-"`
-	OperatorGroups       []*olmv1.OperatorGroup      `json:"OperatorGroups"`
-
+	HorizontalScaler       []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Services               []*corev1.Service                    `json:"testServices"`
+	ServiceAccounts        []*corev1.ServiceAccount             `json:"testServiceAccounts"`
+	AllServiceAccounts     []*corev1.ServiceAccount             `json:"AllServiceAccounts"`
+	AllServiceAccountsMap  map[string]*corev1.ServiceAccount
+	Nodes                  map[string]Node    `json:"-"`
+	K8sVersion             string             `json:"-"`
+	OpenshiftVersion       string             `json:"-"`
+	OCPStatus              string             `json:"-"`
+	HelmChartReleases      []*release.Release `json:"testHelmChartReleases"`
+	ResourceQuotas         []corev1.ResourceQuota
+	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
+	NetworkPolicies        []networkingv1.NetworkPolicy
+	AllInstallPlans        []*olmv1Alpha.InstallPlan   `json:"AllInstallPlans"`
+	AllSubscriptions       []olmv1Alpha.Subscription   `json:"AllSubscriptions"`
+	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"-"`
+	OperatorGroups         []*olmv1.OperatorGroup      `json:"OperatorGroups"`
 	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
@@ -182,26 +184,26 @@ var (
 func deployDaemonSet(namespace string) error {
 	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
 
-	dsImage := env.variables.TnfPartnerRepo + "/" + env.variables.SupportImage
+	dsImage := env.params.CertSuiteProbeImage
 	if k8sPrivilegedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
 		return nil
 	}
 
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = DaemonSetName
-	matchLabels["test-network-function.com/app"] = DaemonSetName
-	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout,
+	matchLabels["redhat-best-practices-for-k8s.com/app"] = DaemonSetName
+	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, probePodsTimeout,
 		configuration.GetTestParameters().DaemonsetCPUReq,
 		configuration.GetTestParameters().DaemonsetCPULim,
 		configuration.GetTestParameters().DaemonsetMemReq,
 		configuration.GetTestParameters().DaemonsetMemLim,
 	)
 	if err != nil {
-		return fmt.Errorf("could not deploy tnf daemonset, err=%v", err)
+		return fmt.Errorf("could not deploy certsuite daemonset, err=%v", err)
 	}
-	err = k8sPrivilegedDs.WaitDaemonsetReady(namespace, DaemonSetName, debugPodsTimeout)
+	err = k8sPrivilegedDs.WaitDaemonsetReady(namespace, DaemonSetName, probePodsTimeout)
 	if err != nil {
-		return fmt.Errorf("timed out waiting for tnf daemonset, err=%v", err)
+		return fmt.Errorf("timed out waiting for certsuite daemonset, err=%v", err)
 	}
 
 	return nil
@@ -211,18 +213,18 @@ func buildTestEnvironment() { //nolint:funlen
 	start := time.Now()
 	env = TestEnvironment{}
 
-	env.variables = *configuration.GetTestParameters()
-	config, err := configuration.LoadConfiguration(env.variables.ConfigurationPath)
+	env.params = *configuration.GetTestParameters()
+	config, err := configuration.LoadConfiguration(env.params.ConfigFile)
 	if err != nil {
 		log.Fatal("Cannot load configuration file: %v", err)
 	}
 	log.Debug("CERTSUITE configuration: %+v", config)
 
-	// Wait for the debug pods to be ready before the autodiscovery starts.
-	if err := deployDaemonSet(config.DebugDaemonSetNamespace); err != nil {
+	// Wait for the probe pods to be ready before the autodiscovery starts.
+	if err := deployDaemonSet(config.ProbeDaemonSetNamespace); err != nil {
 		log.Error("The TNF daemonset could not be deployed, err: %v", err)
 		// Because of this failure, we are only able to run a certain amount of tests that do not rely
-		// on the existence of the daemonset debug pods.
+		// on the existence of the daemonset probe pods.
 		env.DaemonsetFailedToSpawn = true
 	}
 
@@ -249,9 +251,19 @@ func buildTestEnvironment() { //nolint:funlen
 		aEvent := NewEvent(&data.AbnormalEvents[i])
 		env.AbnormalEvents = append(env.AbnormalEvents, &aEvent)
 	}
+	// Service accounts
+	env.ServiceAccounts = data.ServiceAccounts
+	env.AllServiceAccounts = data.AllServiceAccounts
+	env.AllServiceAccountsMap = make(map[string]*corev1.ServiceAccount)
+	for i := 0; i < len(data.AllServiceAccounts); i++ {
+		mapIndex := data.AllServiceAccounts[i].ObjectMeta.Namespace + data.AllServiceAccounts[i].ObjectMeta.Name
+		env.AllServiceAccountsMap[mapIndex] = data.AllServiceAccounts[i]
+	}
+	// Pods
 	pods := data.Pods
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
+		aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
 		env.Pods = append(env.Pods, &aNewPod)
 		// Note: 'getPodContainers' is returning a filtered list of Container objects.
 		env.Containers = append(env.Containers, getPodContainers(&pods[i], true)...)
@@ -259,12 +271,13 @@ func buildTestEnvironment() { //nolint:funlen
 	pods = data.AllPods
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
+		aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
 		env.AllPods = append(env.AllPods, &aNewPod)
 	}
-	env.DebugPods = make(map[string]*corev1.Pod)
-	for i := 0; i < len(data.DebugPods); i++ {
-		nodeName := data.DebugPods[i].Spec.NodeName
-		env.DebugPods[nodeName] = &data.DebugPods[i]
+	env.ProbePods = make(map[string]*corev1.Pod)
+	for i := 0; i < len(data.ProbePods); i++ {
+		nodeName := data.ProbePods[i].Spec.NodeName
+		env.ProbePods[nodeName] = &data.ProbePods[i]
 	}
 
 	env.CSVToPodListMap = make(map[string][]*Pod)
@@ -272,6 +285,7 @@ func buildTestEnvironment() { //nolint:funlen
 		var pods []*Pod
 		for i := 0; i < len(podList); i++ {
 			aNewPod := NewPod(podList[i])
+			aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
 			pods = append(pods, &aNewPod)
 		}
 		env.CSVToPodListMap[k] = pods
@@ -317,7 +331,8 @@ func buildTestEnvironment() { //nolint:funlen
 	env.CollectorAppPassword = data.CollectorAppPassword
 	env.CollectorAppEndpoint = data.CollectorAppEndpoint
 
-	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
+	operators := createOperators(data.Csvs, data.AllSubscriptions,
+		data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators
 	log.Info("Operators found: %d", len(env.Operators))
 	for _, pod := range env.Pods {
@@ -505,19 +520,19 @@ func (env *TestEnvironment) SetNeedsRefresh() {
 }
 
 func (env *TestEnvironment) IsIntrusive() bool {
-	return !env.variables.NonIntrusiveOnly
+	return !env.params.NonIntrusiveOnly
 }
 
 func (env *TestEnvironment) IsPreflightInsecureAllowed() bool {
-	return env.variables.AllowPreflightInsecure
+	return env.params.AllowPreflightInsecure
 }
 
 func (env *TestEnvironment) GetDockerConfigFile() string {
-	return env.variables.PfltDockerconfig
+	return env.params.PfltDockerconfig
 }
 
 func (env *TestEnvironment) GetOfflineDBPath() string {
-	return env.variables.OfflineDB
+	return env.params.OfflineDB
 }
 
 func (env *TestEnvironment) GetWorkerCount() int {

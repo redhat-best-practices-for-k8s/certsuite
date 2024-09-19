@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.4-1123@sha256:d98fdae16212df566150ac975cab860cd8d2cb1b322ed9966d09a13e219112e9 AS build
+FROM registry.access.redhat.com/ubi9/ubi:9.4-1214.1725849297@sha256:7575b6e3cc492f856daf8c43f30692d8f5fcd5b7077806dba4bac436ad0a84e8 AS build
 ENV CERTSUITE_DIR=/usr/certsuite
 ENV \
 	CERTSUITE_SRC_DIR=${CERTSUITE_DIR}/src \
@@ -27,19 +27,19 @@ ENV \
 ENV \
 	GO_DL_URL=https://golang.org/dl \
 	GOPATH=/root/go
-ENV GO_BIN_URL_x86_64=${GO_DL_URL}/go1.22.4.linux-amd64.tar.gz
-ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.22.4.linux-arm64.tar.gz
+ENV GO_BIN_URL_x86_64=${GO_DL_URL}/go1.23.1.linux-amd64.tar.gz
+ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.23.1.linux-arm64.tar.gz
 
 # Determine the CPU architecture and download the appropriate Go binary
 RUN \
 	if [ "$(uname -m)" = x86_64 ]; then \
 		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_x86_64} --quiet \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.22.4.linux-amd64.tar.gz; \
+		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.23.1.linux-amd64.tar.gz; \
 	elif [ "$(uname -m)" = aarch64 ]; then \
 		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_aarch64} --quiet \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.22.4.linux-arm64.tar.gz; \
+		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.23.1.linux-arm64.tar.gz; \
 	else \
 		echo "CPU architecture is not supported." && exit 1; \
 	fi
@@ -47,7 +47,7 @@ ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
 # Download operator-sdk binary
 ENV \
-	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.35.0 \
+	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.37.0 \
 	OSDK_BIN=/usr/local/osdk/bin
 
 RUN \
@@ -98,11 +98,11 @@ RUN \
 
 # Using latest is prone to errors.
 # hadolint ignore=DL3007
-FROM quay.io/testnetworkfunction/oct:latest AS db
+FROM quay.io/redhat-best-practices-for-k8s/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4-1134@sha256:a7d837b00520a32502ada85ae339e33510cdfdbc8d2ddf460cc838e12ec5fa5a
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.4-1227.1725849298@sha256:1b6d711648229a1c987f39cfdfccaebe2bd92d0b5d8caa5dbaa5234a9278a0b2
 
 ENV \
 	CERTSUITE_DIR=/usr/certsuite \

@@ -19,7 +19,7 @@ package autodiscover
 import (
 	"context"
 
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

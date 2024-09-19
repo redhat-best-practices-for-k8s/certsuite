@@ -1,0 +1,42 @@
+targetNameSpaces:
+  - name: tnf
+podsUnderTestLabels:
+  - "redhat-best-practices-for-k8s.com/generic: target"
+operatorsUnderTestLabels:
+  - "redhat-best-practices-for-k8s.com/operator:target"
+  - "redhat-best-practices-for-k8s.com/operator1:new"
+  - "cnf/test:cr-scale-operator"
+targetCrdFilters:
+  - nameSuffix: "group1.test.com"
+    scalable: false
+  - nameSuffix: "redhat-best-practices-for-k8s.com"
+    scalable: false
+  - nameSuffix: "memcacheds.cache.example.com"
+    scalable: true
+managedDeployments:
+  - name: memcached-sample
+managedStatefulsets:
+  - name: memcached-sample
+acceptedKernelTaints:
+  - module: vboxsf
+  - module: vboxguest
+skipScalingTestDeployments:
+  - name: deployment1
+    namespace: tnf
+skipScalingTestStatefulsets:
+  - name: statefulset1
+    namespace: tnf
+skipHelmChartList:
+  - name: coredns
+validProtocolNames:
+  - "http3"
+  - "sctp"
+servicesignorelist:
+  - "hazelcast-platform-controller-manager-service"
+  - "hazelcast-platform-webhook-service"
+  - "new-pro-controller-manager-metrics-service"
+  - "mysql"
+executedBy: ""
+partnerName: ""
+collectorAppPassword: ""
+collectorAppEndpoint: "http://claims-collector.cnf-certifications.sysdeseng.com"

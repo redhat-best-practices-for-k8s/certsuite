@@ -26,7 +26,7 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/go-logr/stdr"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	corev1 "k8s.io/api/core/v1"
 
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
@@ -184,4 +184,19 @@ func (c *Container) HasExecProbes() bool {
 
 func (c *Container) IsTagEmpty() bool {
 	return c.ContainerImageIdentifier.Tag == ""
+}
+
+func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool {
+	logger.Info("Testing Container %q", c)
+	if c.Container.SecurityContext == nil || c.Container.SecurityContext.ReadOnlyRootFilesystem == nil {
+		return false
+	}
+	return *c.Container.SecurityContext.ReadOnlyRootFilesystem
+}
+
+func (c *Container) IsContainerRunAsNonRoot() bool {
+	if c.SecurityContext != nil && c.SecurityContext.RunAsNonRoot != nil {
+		return *c.SecurityContext.RunAsNonRoot
+	}
+	return false
 }

@@ -5,7 +5,7 @@ cnf-certification-test/certsuite.log
 .idea
 vendor
 *.test
-test-network-function_junit.xml
+redhat-best-practices-for-k8s_junit.xml
 cover.out
 cover.out.tmp
 cnf-certification-test/cnf-certification-tests_junit.xml
@@ -17,7 +17,7 @@ validation_junit.xml
 jsontest-cli
 test-out.json
 cnf-certification-test/results.html
-test-network-function
+redhat-best-practices-for-k8s
 cnf-certification-test/claimjson.js
 
 temp/
@@ -25,3 +25,6 @@ temp/
 /all-releases.txt
 /latest-release-tag.txt
 /release-tag.txt
+
+credentials.json
+token.json

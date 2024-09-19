@@ -17,7 +17,7 @@
 package provider
 
 import (
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func AreResourcesIdentical(p *Pod) bool {

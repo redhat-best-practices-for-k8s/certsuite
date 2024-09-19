@@ -203,7 +203,7 @@ func generateTemplateFile(resultsDB map[string]string) error {
 
 func NewCommand() *cobra.Command {
 	checkResultsCmd.PersistentFlags().String("template", "expected_results.yaml", "reference YAML template with the expected results")
-	checkResultsCmd.PersistentFlags().String("log-file", "cnf-certification-test/certsuite.log", "log file of the CERTSUITE execution")
+	checkResultsCmd.PersistentFlags().String("log-file", "certsuite.log", "log file of the Certsuite execution")
 	checkResultsCmd.PersistentFlags().Bool("generate-template", false, "generate a reference YAML template from the log file")
 
 	checkResultsCmd.MarkFlagsMutuallyExclusive("template", "generate-template")

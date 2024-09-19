@@ -20,8 +20,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 func TestCreateLabels(t *testing.T) {
@@ -35,17 +35,17 @@ func TestCreateLabels(t *testing.T) {
 	}{
 		{
 			name:             "ok",
-			args:             args{labelStrings: []string{"test-network-function.com/generic: target"}},
-			wantLabelObjects: []labelObject{{LabelKey: "test-network-function.com/generic", LabelValue: "target"}},
+			args:             args{labelStrings: []string{"redhat-best-practices-for-k8s.com/generic: target"}},
+			wantLabelObjects: []labelObject{{LabelKey: "redhat-best-practices-for-k8s.com/generic", LabelValue: "target"}},
 		},
 		{
 			name:             "ok1",
-			args:             args{labelStrings: []string{"test-network-function.com/generic   : 1"}},
-			wantLabelObjects: []labelObject{{LabelKey: "test-network-function.com/generic", LabelValue: "1"}},
+			args:             args{labelStrings: []string{"redhat-best-practices-for-k8s.com/generic   : 1"}},
+			wantLabelObjects: []labelObject{{LabelKey: "redhat-best-practices-for-k8s.com/generic", LabelValue: "1"}},
 		},
 		{
 			name: "nok",
-			args: args{labelStrings: []string{"test-network-function.com/generic= target"}},
+			args: args{labelStrings: []string{"redhat-best-practices-for-k8s.com/generic= target"}},
 		},
 	}
 	for _, tt := range tests {

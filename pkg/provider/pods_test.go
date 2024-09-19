@@ -21,9 +21,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	v1 "k8s.io/apimachinery/pkg/api/resource"
@@ -516,4 +516,60 @@ func TestIsRunAsUserID(t *testing.T) {
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expectedOutput, tc.testPod.IsRunAsUserID(tc.testUID))
 	}
+}
+
+func TestIsRunAsNonRoot(t *testing.T) {
+	tests := []struct {
+		name     string
+		pod      *Pod
+		expected bool
+	}{
+		{
+			name: "All containers and pod set to run as non-root",
+			pod: &Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						Containers: []corev1.Container{
+							{
+								SecurityContext: &corev1.SecurityContext{
+									RunAsNonRoot: boolPtr(true),
+								},
+							},
+						},
+						SecurityContext: &corev1.PodSecurityContext{
+							RunAsNonRoot: boolPtr(true),
+						},
+					},
+				},
+			},
+			expected: true,
+		},
+		{
+			name: "No containers, pod set to run as non-root",
+			pod: &Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						SecurityContext: &corev1.PodSecurityContext{
+							RunAsNonRoot: boolPtr(true),
+						},
+					},
+				},
+			},
+			expected: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := tt.pod.IsRunAsNonRoot()
+			if result != tt.expected {
+				t.Errorf("expected %v, got %v", tt.expected, result)
+			}
+		})
+	}
+}
+
+// Helper function to get a pointer to a bool value
+func boolPtr(b bool) *bool {
+	return &b
 }

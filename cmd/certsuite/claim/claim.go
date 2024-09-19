@@ -1,9 +1,9 @@
 package claim
 
 import (
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/compare"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/claim/show"
 )
 
 var (

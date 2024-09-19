@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/tools/remotecommand"
 	"k8s.io/kubectl/pkg/scheme"
@@ -39,6 +39,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 	commandStr := []string{"sh", "-c", command}
 	var buffOut bytes.Buffer
 	var buffErr bytes.Buffer
+
 	log.Debug(fmt.Sprintf("execute command on ns=%s, pod=%s container=%s, cmd: %s", ctx.GetNamespace(), ctx.GetPodName(), ctx.GetContainerName(), strings.Join(commandStr, " ")))
 	req := clientsholder.K8sClient.CoreV1().RESTClient().
 		Post().

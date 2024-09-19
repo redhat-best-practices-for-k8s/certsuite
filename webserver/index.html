@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNF Certification Test</title>
+  <link rel="shortcut icon" type="image/svg+xml" sizes="any" href="https://ux.redhat.com/assets/logo-red-hat.svg">
+  <link rel="stylesheet"
+    href="https://ux.redhat.com/assets/packages/@rhds/elements/elements/rh-table/rh-table-lightdom.css">
+
+  <link rel="stylesheet"
+    href="https://ux.redhat.com/assets/packages/@rhds/elements/elements/rh-footer/rh-footer-lightdom.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+    integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+  <script type="importmap">
+      {
+        "imports": {
+          "@rhds/elements/": "https://ga.jspm.io/npm:@rhds/elements@1.2.0/elements/",
+          "@rhds/elements/lib/": "https://ga.jspm.io/npm:@rhds/elements@1.2.0/elements/lib/",
+          "@patternfly/elements/": "https://ga.jspm.io/npm:@patternfly/elements@2.4.0/"
+        },
+        "scopes": {
+          "https://ga.jspm.io/": {
+            "@lit/reactive-element": "https://ga.jspm.io/npm:@lit/reactive-element@1.6.3/reactive-element.js",
+            "@lit/reactive-element/decorators/": "https://ga.jspm.io/npm:@lit/reactive-element@1.6.3/decorators/",
+            "@patternfly/elements/": "https://ga.jspm.io/npm:@patternfly/elements@2.4.0/",
+            "@patternfly/pfe-core": "https://ga.jspm.io/npm:@patternfly/pfe-core@2.4.1/core.js",
+            "@patternfly/pfe-core/": "https://ga.jspm.io/npm:@patternfly/pfe-core@2.4.1/",
+            "@rhds/tokens/media.js": "https://ga.jspm.io/npm:@rhds/tokens@1.1.2/js/media.js",
+            "lit": "https://ga.jspm.io/npm:lit@2.8.0/index.js",
+            "lit-element/lit-element.js": "https://ga.jspm.io/npm:lit-element@3.3.3/lit-element.js",
+            "lit-html": "https://ga.jspm.io/npm:lit-html@2.8.0/lit-html.js",
+            "lit-html/": "https://ga.jspm.io/npm:lit-html@2.8.0/",
+            "lit/": "https://ga.jspm.io/npm:lit@2.8.0/",
+            "tslib": "https://ga.jspm.io/npm:tslib@2.6.2/tslib.es6.mjs"
+          },
+          "https://ga.jspm.io/npm:@patternfly/elements@2.4.0/": {
+            "lit": "https://ga.jspm.io/npm:lit@2.6.1/index.js",
+            "lit/": "https://ga.jspm.io/npm:lit@2.6.1/"
+          }
+        }
+      }
+    </script>
+
+  <style>
+    /* Add some basic styling */
+    html,
+    body {
+      font-family: var(--rh-font-family-body-text, RedHatText, "Red Hat Text", "Noto Sans Arabic", "Noto Sans Hebrew", Helvetica, Arial, sans-serif);
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
+      display: grid;
+    }
+
+    header {
+      height: var(--rh-length-5xl, 80px);
+      background: var(--rh-color-surface-darkest, #151515);
+      color: var(--rh-color-text-primary-on-dark, #ffffff);
+      padding-inline: var(--rh-space-xl, 24px);
+      display: flex;
+      align-items: center;
+      gap: var(--rh-space-xl, 24px);
+    }
+
+    .labeltest {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
+      /* Add some margin for spacing */
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: var(--rh-font-family-heading, RedHatDisplay, "Red Hat Display", "Noto Sans Arabic", "Noto Sans Hebrew", "Noto Sans JP", "Noto Sans KR", "Noto Sans Malayalam", "Noto Sans SC", "Noto Sans TC", "Noto Sans Thai", Helvetica, Arial, sans-serif);
+    }
+
+    h1 {
+      font-size: var(--rh-font-size-heading-2xl, 3rem);
+      margin: 0;
+    }
+
+    main {
+      margin: var(--rh-space-xl, 24px);
+      display: flex;
+      gap: var(--rh-space-lg, 16px);
+      justify-content: space-between;
+      flex-flow: row wrap;
+    }
+
+    form {
+      display: contents;
+    }
+
+    #show-logs::part(button) {
+      margin-inline-start: auto;
+    }
+
+    fieldset {
+      display: grid;
+      flex: 1 1 100%;
+      margin-bottom: 20px;
+      /* Add space between fieldsets */
+      padding: 10px;
+    }
+
+    .form-container {
+      height: 1200px;
+      /* Set the desired height */
+      overflow: auto;
+      /* Add scrollbar when content overflows */
+      border: 1px solid #ccc;
+      /* Optional: add a border for visibility */
+      flex: 1 1 100%;
+    }
+
+    .add {
+      margin-left: auto;
+      cursor: pointer;
+      font-weight: var(--rh-font-weight-heading-bold, 500);
+    }
+
+    .remove {
+      margin-left: auto;
+      cursor: pointer;
+      font-weight: var(--rh-font-weight-heading-bold, 500);
+    }
+
+    label {
+      font-weight: var(--rh-font-weight-heading-bold, 700);
+      margin-block-end: var(--rh-space-sm, 6px);
+    }
+
+    rh-dialog::part(footer) {
+      padding-block-start: var(--rh-space-lg, 16px);
+    }
+
+    rh-footer-universal {
+      margin-block-start: auto;
+    }
+
+    main,
+    :not(:defined) {
+      opacity: var(--main-opacity, 1);
+      transition: opacity 200ms ease;
+    }
+
+    h4 input[type="checkbox"] {
+      display: inline-block;
+    }
+
+    h4 label {
+      display: inline-block;
+      margin-left: 8px;
+      /* Adjust margin as needed */
+    }
+  </style>
+
+  <script type="module">
+    await Promise.all(['rh-button', 'pf-text-input'].map(x => customElements.whenDefined(x)));
+    document.body.style.removeProperty('--main-opacity');
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
+  <script src="./classification.js"></script>
+
+  <script type="module">
+    // import design system element definitions,
+    // which auto-register their tagnames once executed
+    import '@rhds/elements/rh-button/rh-button.js';
+    import '@rhds/elements/rh-dialog/rh-dialog.js';
+    import '@rhds/elements/rh-footer/rh-footer-universal.js';
+    import '@patternfly/elements/pf-text-input/pf-text-input.js';
+    import '@rhds/elements/rh-table/rh-table.js';
+    import '@rhds/elements/rh-blockquote/rh-blockquote.js';
+    import '@rhds/elements/rh-accordion/rh-accordion.js';
+    import '@rhds/elements/rh-tabs/rh-tabs.js';
+    import '@rhds/elements/rh-cta/rh-cta.js';
+
+
+    // set up interactive elements
+    // use dynamic import to improve page load times
+    document.getElementById('logs').addEventListener('open', () => import('./logs.js'));
+    document.getElementById('form').addEventListener('submit', async function (event) {
+      // prevent page from redirecting to form endpoint.
+      // consider using a multi-page architecture instead.
+      event.preventDefault();
+      const { submit } = await import('./submit.js');
+      // submit the form
+      const { heading, message, state } = await submit(event.target);
+      // display the result
+      const { toast } = await import('./toast.js');
+      await toast({ heading, message, state, timeout: 20_000 });
+    });
+    document.getElementById('show-logs').addEventListener('click', async function (event) {
+      await import('./logs.js')
+    });
+  </script>
+  <script inline src="index.js"></script>
+</head>
+
+<body style="--main-opacity:0;">
+  <header>
+    <img alt="Red Hat" src="https://static.redhat.com/libs/redhat/brand-assets/2/corp/logo--on-dark.svg" width="100"
+      height="30">
+  </header>
+
+  <main>
+    <h1>CNF Certification Test</h1>
+    <form id="form">
+      <!-- see https://ux.redhat.com/patterns/form/ for design guidelines-->
+
+      <fieldset>
+        <legend>Environment Configuration</legend>
+        <label for="kubeConfigPath">Path of KubeConfig file:</label>
+        <input id="kubeConfigPath" name="kubeConfigPath" required type="file"></input>
+      </fieldset>
+      <h9 class="labeltest" for="tnfFile">Upload TNF Configuration File:</h9>
+      <input type="file" id="tnfFile">
+      <div class="form-container">
+        <fieldset id="TNF-Configuration">
+          <legend>TNF Configuration</legend>
+          <label for="targetNameSpaces">Target Namespaces</label>
+          <span class="fa add" id="targetNameSpacesadd"> Add NameSpace </span>
+          <span class="fa remove" id="targetNameSpacesremove">Remove NameSpace</span>
+          <br>
+          <label for="podsUnderTestLabels">podsUnderTestLabels:</label>
+          <span class="fa add" id="podsUnderTestLabelsadd"> Add podsUnderTestLabels </span><br>
+          <span class="fa remove" id="podsUnderTestLabelsremove"> Remove podsUnderTestLabels </span>
+
+          <br>
+          <label for="operatorsUnderTestLabels">operatorsUnderTestLabels:</label>
+          <span class="fa add" id="operatorsUnderTestLabelsadd"> Add operatorsUnderTestLabels </span><br>
+          <span class="fa remove" id="operatorsUnderTestLabelsremove"> Remove operatorsUnderTestLabels </span>
+
+          <label for="targetCrdFilters">targetCrdFilters:</label>
+          <span class="fa add" id="targetCrdFiltersadd"> Add targetCrdFilters </span><br>
+          <span class="fa remove" id="targetCrdFiltersremove"> Remove targetCrdFilters </span>
+
+          <label for="managedDeployments">managedDeployments:</label>
+          <span class="fa add" id="managedDeploymentsadd"> Add managedDeployments </span><br>
+          <span class="fa remove" id="managedDeploymentsremove"> Remove managedDeployments </span>
+
+
+          <label for="managedStatefulsets">managedStatefulsets:</label>
+          <span class="fa add" id="managedStatefulsetsadd"> Add managedStatefulsets </span><br>
+          <span class="fa remove" id="managedStatefulsetsremove"> Remove managedStatefulsets </span>
+
+          <label for="acceptedKernelTaints">acceptedKernelTaints:</label>
+          <span class="fa add" id="acceptedKernelTaintsadd"> Add acceptedKernelTaints </span><br>
+          <span class="fa remove" id="acceptedKernelTaintsremove"> Remove acceptedKernelTaints </span>
+
+          <label for="skipHelmChartList">skipHelmChartList:</label>
+          <span class="fa add" id="skipHelmChartListadd"> Add skipHelmChartList </span><br>
+          <span class="fa remove" id="skipHelmChartListremove"> Remove skipHelmChartList </span>
+
+
+          <label for="skipScalingTestDeployments">skipScalingTestDeployments:</label>
+          <span class="fa add" id="skipScalingTestDeploymentsadd"> Add skipScalingTestDeployments </span><br>
+          <span class="fa remove" id="skipScalingTestDeploymentsremove"> Remove skipScalingTestDeployments </span>
+
+          <label for="skipScalingTestStatefulsets">skipScalingTestStatefulsets:</label>
+          <span class="fa add" id="skipScalingTestStatefulsetsadd"> Add skipScalingTestStatefulsets </span><br>
+          <span class="fa remove" id="skipScalingTestStatefulsetsremove"> Remove skipScalingTestStatefulsets </span>
+
+          <label for="servicesignorelist">servicesignorelist:</label>
+          <span class="fa add" id="servicesignorelistadd"> Add servicesignorelist </span><br>
+          <span class="fa remove" id="servicesignorelistremove"> Remove servicesignorelist </span>
+
+          <label for="executedBy">executedBy:</label>
+          <pf-text-input id="executedBy" name="executedBy"></pf-text-input>
+          <label for="PartnerName">PartnerName:</label>
+          <pf-text-input id="PartnerName" name="PartnerName"></pf-text-input>
+          <label for="CollectorAppEndPoint">CollectorAppEndPoint:</label>
+          <pf-text-input id="CollectorAppEndPoint" name="CollectorAppEndPoint"></pf-text-input>
+          <label for="CollectorAppPassword">CollectorAppPassword:</label>
+          <pf-text-input id="CollectorAppPassword" name="CollectorAppPassword"></pf-text-input>
+
+          <label for="ValidProtocolNames">ValidProtocolNames:</label>
+          <span class="fa add" id="ValidProtocolNamesadd"> Add ValidProtocolNames </span><br>
+          <span class="fa remove" id="ValidProtocolNamesremove"> Remove ValidProtocolNames </span>
+
+          <label for="ProbeDaemonSetNamespace">ProbeDaemonSetNamespace:</label>
+          <pf-text-input id="ProbeDaemonSetNamespace" name="ProbeDaemonSetNamespace"></pf-text-input>
+
+        </fieldset>
+      </div>
+      <fieldset>
+        <legend>Select a Test</legend>
+
+        <legend id="selectComboBox"> Selcet a Test Tag <select name="class" id="selectScenarioComboBox" onchange="   
+            updateCheckbox('lifecycle')
+            updateCheckbox('manageability')
+            updateCheckbox('affiliated-certification')
+            updateCheckbox('operator')
+            updateCheckbox('access-control')
+            updateCheckbox('platform-alteration')
+            updateCheckbox('networking')
+            updateCheckbox('performance')
+            updateCheckbox('observability')">
+
+            <option value="all"> All</option>
+            <option value="none"> None</option>
+            <option value="faredge"> Far-Edge</option>
+            <option value="telco"> Telco</option>
+            <option value="nontelco"> Non-Telco</option>
+            <option value="extended"> Extended</option>
+
+
+          </select>
+          <select name="class" id="selectOpt" onchange="        
+          updateCheckbox('lifecycle')
+          updateCheckbox('manageability')
+          updateCheckbox('affiliated-certification')
+          updateCheckbox('operator')
+          updateCheckbox('access-control')
+          updateCheckbox('platform-alteration')
+          updateCheckbox('networking')
+          updateCheckbox('performance')
+          updateCheckbox('observability')" hidden>
+            <option value="Mandatory"> Mandatory</option>
+            <option value="Optional"> Optional</option>
+
+          </select>
+
+        </legend>
+        <br>
+        <rh-tabs>
+          <h3 id="all-count">All Selected Tests: 0</h3>
+          <rh-tab slot="tab" onclick="show('lifecycle')"> Lifecycle</rh-tab>
+          <rh-tab-panel>
+            <h4 id="lifecycle-count">Selected Lifecycle Tests: 0</h4>
+            <input type="checkbox" value="lifecycle" name="selectedOptionstest" id="lifecycle"
+              onclick="performToggle('lifecycle')"><label for="lifecycle">Select/UnSelect All Lifecycle</label>
+
+            <rh-table>
+
+              <table class="table" id="lifecycle-table">
+
+              </table>
+            </rh-table>
+          </rh-tab-panel>
+
+          <rh-tab slot="tab" onclick="show('manageability')">Manageability</rh-tab>
+          <rh-tab-panel>
+            <h4 id="manageability-count">Selected Manageability Tests: 0</h4>
+            <input type="checkbox" value="manageability" name="selectedOptionstest" id="manageability"
+              onclick="performToggle('manageability')"> <label for="manageability">Select/UnSelect All
+              Manageability</label>
+
+            <rh-table>
+              <table class="table" id="manageability-table" hidden>
+              </table>
+            </rh-table>
+          </rh-tab-panel>
+
+          <rh-tab slot="tab" onclick="show('affiliated-certification')">Certification</rh-tab>
+          <rh-tab-panel>
+            <h4 id="affiliated-certification-count">Selected Certification Tests: 0</h4>
+
+            <input type="checkbox" value="affiliated-certification" name="selectedOptionstest"
+              id="affiliated-certification" onclick="performToggle('affiliated-certification')"> <label
+              for="affiliated-certification">Select/UnSelect All Certification</label>
+            <rh-table>
+              <table class="table" id="affiliated-certification-table" hidden>
+              </table>
+            </rh-table>
+          </rh-tab-panel>
+
+          <rh-tab slot="tab" onclick="show('operator')">Operator</rh-tab>
+          <rh-tab-panel>
+            <h4 id="operator-count">Selected Operator Tests: 0 </h4>
+            <input type="checkbox" value="operator" name="selectedOptionstest" id="operator" checked
+              onclick="performToggle('operator')"> <label for="operator">Select/UnSelect All Operator</label>
+            <rh-table>
+              <table class="table" id="operator-table" hidden>
+              </table>
+            </rh-table>
+          </rh-tab-panel>
+
+
+          <rh-tab slot="tab" onclick="show('access-control')">Access Control </rh-tab>
+          <rh-tab-panel>
+            <h4 id="access-control-count">Selected Access Control Tests: 0</h4>
+
+            <input type="checkbox" value="access-control" name="selectedOptionstest" id="access-control"
+              onclick="performToggle('access-control')"> <label for="operator">Select/UnSelect All Access
+              Control</label>
+            <rh-table>
+              <table class="table" id="access-control-table" hidden>
+              </table>
+            </rh-table>
+          </rh-tab-panel>
+
+          <rh-tab slot="tab" onclick="show('platform-alteration')">Platform Alteration</rh-tab>
+          <rh-tab-panel>
+            <h4 id="platform-alteration-count">Selected Platform Alteration Tests: 0</h4>
+
+            <input type="checkbox" value="platform-alteration" name="selectedOptionstest" id="platform-alteration"
+              onclick="performToggle('platform-alteration')"> <label for="platform-alteration">Select/UnSelect All
+              Platform Alteration</label>
+            <rh-table>
+              <table class="table" id="platform-alteration-table" hidden>
+              </table>
+            </rh-table>
+          </rh-tab-panel>
+          <rh-tab slot="tab" onclick="show('networking')">Networking</rh-tab>
+          <rh-tab-panel>
+            <h4 id="networking-count">Selected Networking Tests: 0</h4>
+
+            <input type="checkbox" value="networking" name="selectedOptionstest" id="networking"
+              onclick="performToggle('networking')"> <label for="networking">Select/UnSelect All Networking</label>
+            <rh-table>
+              <table class="table" id="networking-table" hidden>
+              </table>
+            </rh-table>
+          </rh-tab-panel>
+          <rh-tab slot="tab" onclick="show('performance')">Performance</rh-tab>
+          <rh-tab-panel>
+            <h4 id="performance-count">Selected Performance Tests: 0</h4>
+
+            <input type="checkbox" value="performance" name="selectedOptionstest" id="performance"
+              onclick="performToggle('performance')"> <label for="performance">Select/UnSelect All Performance</label>
+            <rh-table>
+              <table class="table" id="performance-table" hidden>
+              </table>
+            </rh-table>
+          </rh-tab-panel>
+          <rh-tab slot="tab" onclick="show('observability')">Observability</rh-tab>
+          <rh-tab-panel>
+            <h4 id="observability-count">Selected Observability Tests: 0</h4>
+
+            <input type="checkbox" value="observability" name="selectedOptionstest" id="observability"
+              onclick="performToggle('observability')"> <label for="observability">Select/UnSelect All
+              Observability</label>
+            <rh-table>
+              <table class="table" id="observability-table" hidden>
+              </table>
+            </rh-table>
+          </rh-tab-panel>
+        </rh-tabs>
+
+      </fieldset>
+      <rh-button type="submit" name="submit">Run Certification Test</rh-button>
+    </form>
+    <rh-button id="show-logs" type="button" variant="secondary">Show Log</rh-button>
+  </main>
+
+  <rh-dialog id="logs" trigger="show-logs">
+    <h2>Logs</h2>
+    <rh-code-block>No Logs Found</rh-code-block>
+    <rh-button slot="footer" onclick="this.closest('rh-dialog').close();">Close</rh-button>
+  </rh-dialog>
+
+  <!-- Universal Footer -->
+  <rh-footer-universal>
+    <h3 slot="links-primary" data-analytics-text="Red Hat legal and privacy links" hidden>Red Hat legal and privacy
+      links</h3>
+    <ul slot="links-primary" data-analytics-region="page-footer-bottom-primary">
+      <li><a href="https://redhat.com/en/about/company" data-analytics-category="Footer|Corporate"
+          data-analytics-text="About Red Hat">About Red Hat</a></li>
+      <li><a href="https://redhat.com/en/jobs" data-analytics-category="Footer|Corporate"
+          data-analytics-text="Jobs">Jobs</a></li>
+      <li><a href="https://redhat.com/en/events" data-analytics-category="Footer|Corporate"
+          data-analytics-text="Events">Events</a></li>
+      <li><a href="https://redhat.com/en/about/office-locations" data-analytics-category="Footer|Corporate"
+          data-analytics-text="Locations">Locations</a></li>
+      <li><a href="https://redhat.com/en/contact" data-analytics-category="Footer|Corporate"
+          data-analytics-text="Contact Red Hat">Contact Red Hat</a></li>
+      <li><a href="https://redhat.com/en/blog" data-analytics-category="Footer|Corporate"
+          data-analytics-text="Red Hat Blog">Red Hat Blog</a></li>
+      <li><a href="https://redhat.com/en/about/our-culture/diversity-equity-inclusion"
+          data-analytics-category="Footer|Corporate" data-analytics-text="Diversity equity and inclusion">Diversity,
+          equity, and inclusion</a></li>
+      <li><a href="https://coolstuff.redhat.com/" data-analytics-category="Footer|Corporate"
+          data-analytics-text="Cool Stuff Store">Cool Stuff Store</a></li>
+      <li><a href="https://www.redhat.com/en/summit" data-analytics-category="Footer|Corporate"
+          data-analytics-text="Red Hat Summit">Red Hat Summit</a></li>
+    </ul>
+    <rh-footer-copyright slot="links-secondary">© 2022 Red Hat, Inc.</rh-footer-copyright>
+    <h3 slot="links-secondary" data-analytics-text="Red Hat legal and privacy links" hidden>Red Hat legal and privacy
+      links</h3>
+    <ul slot="links-secondary" data-analytics-region="page-footer-bottom-secondary">
+      <li><a href="https://redhat.com/en/about/privacy-policy"
+          data-analytics-category="Footer|Red Hat legal and privacy links"
+          data-analytics-text="Privacy statement">Privacy statement</a></li>
+      <li><a href="https://redhat.com/en/about/terms-use"
+          data-analytics-category="Footer|Red Hat legal and privacy links" data-analytics-text="Terms of use">Terms of
+          use</a></li>
+      <li><a href="https://redhat.com/en/about/all-policies-guidelines"
+          data-analytics-category="Footer|Red Hat legal and privacy links"
+          data-analytics-text="All policies and guidelines">All policies and guidelines</a></li>
+      <li><a href="https://redhat.com/en/about/digital-accessibility"
+          data-analytics-category="Footer|Red Hat legal and privacy links" data-analytics-text="Digital accessibility"
+          class="active">Digital accessibility</a></li>
+      <!-- If your website supports trustarc include this item to add Cookie Preferences to your site. -->
+      <!-- <li><span id="teconsent"> </span></li> -->
+    </ul>
+  </rh-footer-universal>
+</body>
+
+</html

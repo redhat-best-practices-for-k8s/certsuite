@@ -22,11 +22,11 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/crclient"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/crclient"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
 )
 

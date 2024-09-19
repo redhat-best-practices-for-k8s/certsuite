@@ -26,20 +26,20 @@ To skip intrusive tests which may disrupt cluster operations, issue the
 following:
 
 ```shell
-export TNF_NON_INTRUSIVE_ONLY=true
+export CERTSUITE_NON_INTRUSIVE_ONLY=true
 ```
 
 The intrusive test cases are:
 
-- [lifecycle-deployment-scaling](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-deployment-scaling)
-- [lifecycle-statefulset-scaling](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-statefulset-scaling)
-- [lifecycle-crd-scaling](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-crd-scaling)
-- [lifecycle-pod-recreation](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#lifecycle-pod-recreation)
+- [lifecycle-deployment-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-deployment-scaling)
+- [lifecycle-statefulset-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-statefulset-scaling)
+- [lifecycle-crd-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-crd-scaling)
+- [lifecycle-pod-recreation](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-pod-recreation)
 
 Likewise, to enable intrusive tests, set the following:
 
 ```shell
-export TNF_NON_INTRUSIVE_ONLY=false
+export CERTSUITE_NON_INTRUSIVE_ONLY=false
 ```
 
 Intrusive tests are enabled by default.
@@ -59,20 +59,8 @@ When running as a standalone binary, the environment variables are consumed dire
 
 See more about this variable [here](https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md).
 
-`TNF_ALLOW_PREFLIGHT_INSECURE` (default: false) is required set to `true` if you are running
+`CERTSUITE_ALLOW_PREFLIGHT_INSECURE` (default: false) is required set to `true` if you are running
 against a private container registry that has self-signed certificates.
 
-## Disconnected environment
-
-In a disconnected environment, only specific versions of images are mirrored to
-the local repo. For those environments, the partner pod image
-`quay.io/testnetworkfunction/cnf-test-partner` and debug pod image
-`quay.io/testnetworkfunction/debug-partner` should be mirrored and
-`TNF_PARTNER_REPO` should be set to the local repo, e.g.:
-
-```shell
-export TNF_PARTNER_REPO=registry.dfwt5g.lab:5000/testnetworkfunction
-```
-
-Note that you can also specify the debug pod image to use with `SUPPORT_IMAGE`
-environment variable, default to `debug-partner:5.1.2`.
+Note that you can also specify the probe pod image to use with `SUPPORT_IMAGE`
+environment variable, default to `certsuite-probe:v0.0.9`.

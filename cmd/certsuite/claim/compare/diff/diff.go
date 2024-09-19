@@ -152,7 +152,7 @@ func Compare(objectName string, claim1Object, claim2Object interface{}, filters 
 	}
 
 	// Fields that appear in both claim files have been already checked,
-	// so we only need to search fields in claim2 that won't exist in claim 1.
+	// so we only need to search fields in claim2 that will not exist in claim 1.
 	for _, claim2Field := range claim2Fields {
 		if _, exist := claim1FieldsMap[claim2Field.Path]; !exist {
 			fieldAndValue := fmt.Sprintf("%s=%v", claim2Field.Path, claim2Field.Value)

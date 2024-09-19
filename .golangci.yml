@@ -4,8 +4,6 @@ linters-settings:
   funlen:
     lines: 60
     statements: 45
-  gci:
-    local-prefixes: github.com/golangci/golangci-lint
   goconst:
     min-len: 4
     min-occurrences: 2
@@ -20,22 +18,17 @@ linters-settings:
       - whyNoLint
   gocyclo:
     min-complexity: 20
-  goimports:
-    local-prefixes: github.com/golangci/golangci-lint
   mnd:
     settings:
       mnd:
         # do not include the "operation" and "assign"
         checks: argument,case,condition,return
   govet:
-    check-shadowing: true
-    settings:
-      printf:
-        funcs:
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
+    disable:
+      - printf
+  gosec:
+    excludes: 
+      - G115
   lll:
     line-length: 250
   maligned:
@@ -56,7 +49,7 @@ linters:
     - dogsled
     - errcheck
     - exhaustive
-    - exportloopref
+    - copyloopvar
     - funlen
     - goconst
     - gocritic
@@ -96,8 +89,7 @@ linters:
   # - noctx
   # - prealloc
   # - revive
-  # - exportloopref
-  # - structcheck
+  # - copyloopvar
   # - testpackage
   # - wsl
 issues:
@@ -135,6 +127,6 @@ issues:
 # golangci.com configuration
 # https://github.com/golangci/golangci/wiki/Configuration
 service:
-  golangci-lint-version: 1.58.x # use the fixed version to not introduce new linters unexpectedly
+  golangci-lint-version: 1.60.x # use the fixed version to not introduce new linters unexpectedly
   prepare:
     - echo "here I can run custom commands, but no preparation needed for this repo"

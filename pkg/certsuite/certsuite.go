@@ -2,38 +2,34 @@ package certsuite
 
 import (
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/manageability"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-	"github.com/test-network-function/cnf-certification-test/internal/cli"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
-	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/collector"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/flags"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/versions"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/results"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/collector"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/certification"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/manageability"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/observability"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/performance"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
 )
 
-var timeout time.Duration
-
-func LoadChecksDB(labelsExpr string) {
+func LoadInternalChecksDB() {
 	accesscontrol.LoadChecks()
 	certification.LoadChecks()
 	lifecycle.LoadChecks()
@@ -43,6 +39,10 @@ func LoadChecksDB(labelsExpr string) {
 	performance.LoadChecks()
 	platform.LoadChecks()
 	operator.LoadChecks()
+}
+
+func LoadChecksDB(labelsExpr string) {
+	LoadInternalChecksDB()
 
 	if preflight.ShouldRun(labelsExpr) {
 		preflight.LoadChecks()
@@ -51,7 +51,10 @@ func LoadChecksDB(labelsExpr string) {
 
 const (
 	junitXMLOutputFileName = "cnf-certification-tests_junit.xml"
+	claimFileName          = "claim.json"
 	collectorAppURL        = "http://claims-collector.cnf-certifications.sysdeseng.com"
+	timeoutDefaultvalue    = 24 * time.Hour
+	noLabelsFilterExpr     = "none"
 )
 
 func getK8sClientsConfigFileNames() []string {
@@ -61,8 +64,9 @@ func getK8sClientsConfigFileNames() []string {
 		// Add the kubeconfig path
 		fileNames = append(fileNames, params.Kubeconfig)
 	}
-	if params.Home != "" {
-		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
+	homeDir := os.Getenv("HOME")
+	if homeDir != "" {
+		kubeConfigFilePath := filepath.Join(homeDir, ".kube", "config")
 		// Check if the kubeconfig path exists
 		if _, err := os.Stat(kubeConfigFilePath); err == nil {
 			log.Info("kubeconfig path %s is present", kubeConfigFilePath)
@@ -76,91 +80,43 @@ func getK8sClientsConfigFileNames() []string {
 	return fileNames
 }
 
-func processFlags() error {
-	// Check if the output directory exists and, if not, create it
-	outputDir := *flags.OutputDir
-	if _, err := os.Stat(outputDir); os.IsNotExist(err) {
-		var dirPerm fs.FileMode = 0o755        // default permissions for a directory
-		err := os.MkdirAll(outputDir, dirPerm) //nolint:govet // err shadowing intended
-		if err != nil {
-			return fmt.Errorf("could not create directory %q, err: %v", outputDir, err)
-		}
-	} else if err != nil {
-		return fmt.Errorf("could not check directory %q, err: %v", outputDir, err)
-	}
+func Startup() {
+	testParams := configuration.GetTestParameters()
 
 	// Create an evaluator to filter test cases with labels
-	if err := checksdb.InitLabelsExprEvaluator(*flags.LabelsFlag); err != nil {
-		return fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
-	}
-
-	// Diagnostic functions will run when no labels are provided.
-	if *flags.LabelsFlag == flags.NoLabelsExpr {
-		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched")
-	}
-
-	t, err := time.ParseDuration(*flags.TimeoutFlag)
-	if err != nil {
-		log.Error("Failed to parse timeout flag %q, err: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
-		timeout = flags.TimeoutFlagDefaultvalue
-	} else {
-		timeout = t
-	}
-
-	return nil
-}
-
-func Startup(initFlags func(interface{}), arg interface{}) {
-	err := configuration.LoadEnvironmentVariables()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v\n", err)
+	if err := checksdb.InitLabelsExprEvaluator(testParams.LabelsFilter); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to initialize a test case label evaluator, err: %v", err)
 		os.Exit(1)
 	}
 
-	initFlags(arg)
-
-	err = processFlags()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error while processing flags: %v", err)
-		os.Exit(1)
-	}
-
-	logLevel := configuration.GetTestParameters().LogLevel
-	err = log.CreateGlobalLogFile(*flags.OutputDir, logLevel)
-	if err != nil {
+	if err := log.CreateGlobalLogFile(testParams.OutputDir, testParams.LogLevel); err != nil {
 		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Set clientsholder singleton with the filenames from the env vars.
-	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-	LoadChecksDB(*flags.LabelsFlag)
-
-	// If the list flag is passed, print the checks filtered with --labels and leave
-	if *flags.ListFlag {
-		checksIDs, err := checksdb.FilterCheckIDs()
-		if err != nil {
-			log.Fatal("Could not list test cases, err: %v", err)
-		} else {
-			cli.PrintChecksList(checksIDs)
-			os.Exit(0)
-		}
+	// Diagnostic functions will run when no labels are provided.
+	if testParams.LabelsFilter == noLabelsFilterExpr {
+		log.Warn("The Best Practices Test Suite will run in diagnostic mode so no test case will be launched")
 	}
 
-	log.Info("TNF Version: %v", versions.GitVersion())
-	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
-	log.Info("Labels filter: %v", *flags.LabelsFlag)
-	log.Info("Log level: %s", strings.ToUpper(logLevel))
+	// Set clientsholder singleton with the filenames from the env vars.
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+	LoadChecksDB(testParams.LabelsFilter)
 
-	log.Debug("Test environment variables: %#v", *configuration.GetTestParameters())
+	log.Info("Certsuite Version: %v", versions.GitVersion())
+	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
+	log.Info("Labels filter: %v", testParams.LabelsFilter)
+	log.Info("Log level: %s", strings.ToUpper(testParams.LogLevel))
+
+	log.Debug("Test parameters: %#v", *configuration.GetTestParameters())
 
 	cli.PrintBanner()
 
-	fmt.Printf("CERTSUITE version: %s\n", versions.GitVersion())
+	fmt.Printf("Certsuite version: %s\n", versions.GitVersion())
 	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
-	fmt.Printf("Checks filter: %s\n", *flags.LabelsFlag)
-	fmt.Printf("Output folder: %s\n", *flags.OutputDir)
-	fmt.Printf("Log file: %s (level=%s)\n", log.LogFileName, logLevel)
+	fmt.Printf("Checks filter: %s\n", testParams.LabelsFilter)
+	fmt.Printf("Output folder: %s\n", testParams.OutputDir)
+	fmt.Printf("Log file: %s (level=%s)\n", log.LogFileName, testParams.LogLevel)
 	fmt.Printf("\n")
 }
 
@@ -174,6 +130,8 @@ func Shutdown() {
 
 //nolint:funlen
 func Run(labelsFilter, outputFolder string) error {
+	testParams := configuration.GetTestParameters()
+
 	fmt.Println("Running discovery of CNF target resources...")
 	fmt.Print("\n")
 
@@ -184,11 +142,11 @@ func Run(labelsFilter, outputFolder string) error {
 		log.Fatal("Failed to get claim builder: %v", err)
 	}
 
-	claimOutputFile := filepath.Join(outputFolder, results.ClaimFileName)
+	claimOutputFile := filepath.Join(outputFolder, claimFileName)
 
-	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, timeout)
+	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, testParams.Timeout)
 	startTime := time.Now()
-	failedCtr, err := checksdb.RunChecks(timeout)
+	failedCtr, err := checksdb.RunChecks(testParams.Timeout)
 	if err != nil {
 		log.Error("%v", err)
 	}
@@ -209,11 +167,19 @@ func Run(labelsFilter, outputFolder string) error {
 		claimBuilder.ToJUnitXML(junitOutputFileName, startTime, endTime)
 	}
 
+	if configuration.GetTestParameters().SanitizeClaim {
+		claimOutputFile, err = claimhelper.SanitizeClaimFile(claimOutputFile, configuration.GetTestParameters().LabelsFilter)
+		if err != nil {
+			log.Error("Failed to sanitize claim file: %v", err)
+		}
+	}
+
 	// Send claim file to the collector if specified by env var
 	if configuration.GetTestParameters().EnableDataCollection {
 		if env.CollectorAppEndpoint == "" {
 			env.CollectorAppEndpoint = collectorAppURL
 		}
+
 		err = collector.SendClaimFileToCollector(env.CollectorAppEndpoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
 		if err != nil {
 			log.Error("Failed to send post request to the collector: %v", err)
@@ -222,12 +188,12 @@ func Run(labelsFilter, outputFolder string) error {
 
 	// Create HTML artifacts for the web results viewer/parser.
 	resultsOutputDir := outputFolder
-	webFilePaths, err := results.CreateResultsWebFiles(resultsOutputDir)
+	webFilePaths, err := results.CreateResultsWebFiles(resultsOutputDir, claimFileName)
 	if err != nil {
 		log.Error("Failed to create results web files: %v", err)
 	}
 
-	allArtifactsFilePaths := []string{filepath.Join(outputFolder, results.ClaimFileName)}
+	allArtifactsFilePaths := []string{filepath.Join(outputFolder, claimFileName)}
 
 	// Add all the web artifacts file paths.
 	allArtifactsFilePaths = append(allArtifactsFilePaths, webFilePaths...)

@@ -22,8 +22,8 @@ import (
 	"testing"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -782,20 +782,20 @@ func Test_buildContainerImageSource(t *testing.T) {
 	}{
 		{name: "image has tag and registry",
 			args: args{
-				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner:latest",
-				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+				urlImage:   "quay.io/redhat-best-practices-for-k8s/cnf-test-partner:latest",
+				urlImageID: "quay.io/redhat-best-practices-for-k8s/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
 			wantSource: ContainerImageIdentifier{
 				Registry:   "quay.io",
-				Repository: "testnetworkfunction/cnf-test-partner",
+				Repository: "redhat-best-practices-for-k8s/cnf-test-partner",
 				Tag:        "latest",
 				Digest:     "sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
 		},
 		{name: "digest in image and imageID do not match and no tag",
 			args: args{
-				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b96465665465465a2d0d811168667a919345",
-				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+				urlImage:   "quay.io/redhat-best-practices-for-k8s/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b96465665465465a2d0d811168667a919345",
+				urlImageID: "quay.io/redhat-best-practices-for-k8s/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
 			wantSource: ContainerImageIdentifier{
 				Registry:   "",
@@ -1148,31 +1148,31 @@ func TestSetNeedsRefresh(t *testing.T) {
 
 func TestIsIntrusive(t *testing.T) {
 	env := &TestEnvironment{}
-	env.variables.NonIntrusiveOnly = true
+	env.params.NonIntrusiveOnly = true
 	assert.False(t, env.IsIntrusive())
 
-	env.variables.NonIntrusiveOnly = false
+	env.params.NonIntrusiveOnly = false
 	assert.True(t, env.IsIntrusive())
 }
 
 func TestIsPreflightInsecureAllowed(t *testing.T) {
 	env := &TestEnvironment{}
-	env.variables.AllowPreflightInsecure = true
+	env.params.AllowPreflightInsecure = true
 	assert.True(t, env.IsPreflightInsecureAllowed())
 
-	env.variables.AllowPreflightInsecure = false
+	env.params.AllowPreflightInsecure = false
 	assert.False(t, env.IsPreflightInsecureAllowed())
 }
 
 func TestGetDockerConfigFile(t *testing.T) {
 	env := &TestEnvironment{}
-	env.variables.PfltDockerconfig = "/tmp/config.json"
+	env.params.PfltDockerconfig = "/tmp/config.json"
 	assert.Equal(t, "/tmp/config.json", env.GetDockerConfigFile())
 }
 
 func TestGetOfflineDBPath(t *testing.T) {
 	env := &TestEnvironment{}
-	env.variables.OfflineDB = "/tmp/offline.db"
+	env.params.OfflineDB = "/tmp/offline.db"
 	assert.Equal(t, "/tmp/offline.db", env.GetOfflineDBPath())
 }
 

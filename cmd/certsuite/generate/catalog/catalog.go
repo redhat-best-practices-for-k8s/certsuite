@@ -27,13 +27,12 @@ import (
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	plibContainer "github.com/redhat-openshift-ecosystem/openshift-preflight/container"
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
-	"github.com/sirupsen/logrus"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/arrayhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 
 	"github.com/spf13/cobra"
 )
@@ -84,7 +83,7 @@ func emitTextFromFile(filename string) error {
 }
 
 // createPrintableCatalogFromIdentifiers creates an structured catalogue.
-// Decompose claim.Identifier urls like http://test-network-function.com/testcases/SuiteName/TestName
+// Decompose claim.Identifier urls like http://redhat-best-practices-for-k8s.com/testcases/SuiteName/TestName
 // to get SuiteNames and TestNames and build a "more printable" catalogue in the way of:
 //
 //	{
@@ -138,7 +137,7 @@ func addPreflightTestsToCatalog() {
 	// Create artifacts handler
 	artifactsWriter, err := artifacts.NewMapWriter()
 	if err != nil {
-		logrus.Errorf("error creating artifact, failed to add preflight tests to catalog")
+		log.Error("Error creating artifact, failed to add preflight tests to catalog: %v", err)
 		return
 	}
 	ctx := artifacts.ContextWithWriter(context.TODO(), artifactsWriter)
@@ -148,11 +147,11 @@ func addPreflightTestsToCatalog() {
 	checkContainer := plibContainer.NewCheck(dummy, optsContainer...)
 	_, checksOperator, err := checkOperator.List(ctx)
 	if err != nil {
-		logrus.Errorf("error getting preflight operator tests.")
+		log.Error("Error getting preflight operator tests: %v", err)
 	}
 	_, checksContainer, err := checkContainer.List(ctx)
 	if err != nil {
-		logrus.Errorf("error getting preflight container tests.")
+		log.Error("Error getting preflight container tests: %v", err)
 	}
 
 	allChecks := checksOperator

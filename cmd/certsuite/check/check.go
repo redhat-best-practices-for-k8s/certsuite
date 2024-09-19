@@ -1,15 +1,15 @@
 package check
 
 import (
+	imagecert "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/check/image_cert_status"
+	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/check/results"
 	"github.com/spf13/cobra"
-	imagecert "github.com/test-network-function/cnf-certification-test/cmd/certsuite/check/image_cert_status"
-	"github.com/test-network-function/cnf-certification-test/cmd/certsuite/check/results"
 )
 
 var (
 	checkCmd = &cobra.Command{
 		Use:   "check",
-		Short: "check the status of workload resources or artifacts.",
+		Short: "check the status of certsuite resources or artifacts.",
 	}
 )
 

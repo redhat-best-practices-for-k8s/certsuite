@@ -21,11 +21,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/crclient"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/crclient"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 const (
@@ -122,16 +122,16 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 
 	command := fmt.Sprintf("chrt -p %d", pid)
 	env := provider.GetTestEnvironment()
-	ctx, err := crclient.GetNodeDebugPodContext(testContainer.NodeName, &env)
+	ctx, err := crclient.GetNodeProbePodContext(testContainer.NodeName, &env)
 	if err != nil {
-		return "", 0, fmt.Errorf("failed to get debug pod's context for container %s: %v", testContainer, err)
+		return "", 0, fmt.Errorf("failed to get probe pod's context for container %s: %v", testContainer, err)
 	}
 
 	ch := clientsholder.GetClientsHolder()
 
 	stdout, stderr, err := ch.ExecCommandContainer(ctx, command)
 	if err != nil || stderr != "" {
-		return schedulePolicy, InvalidPriority, fmt.Errorf("command %q failed to run in debug pod %s (node %s): %v (stderr: %v)",
+		return schedulePolicy, InvalidPriority, fmt.Errorf("command %q failed to run in probe pod %s (node %s): %v (stderr: %v)",
 			command, ctx.GetPodName(), testContainer.NodeName, err, stderr)
 	}
 

@@ -10,8 +10,8 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"gopkg.in/yaml.v3"
 )
 
@@ -25,17 +25,17 @@ func NewCommand() *cobra.Command {
 }
 
 var (
-	// generateConfiCmd is a helper tool to generate a CNF config YAML file
+	// generateConfiCmd is a helper tool to generate a Cert Suiteconfig YAML file
 	generateConfigCmd = &cobra.Command{
 		Use:   "config",
-		Short: "Generates a CNF config YAML file with user input.",
+		Short: "Generates a Cert Suite config YAML file with user input.",
 		Run: func(cmd *cobra.Command, args []string) {
 			generateConfig()
 		},
 	}
 )
 
-var tnfConfig = configuration.TestConfiguration{}
+var certsuiteConfig = configuration.TestConfiguration{}
 
 var templates = &promptui.SelectTemplates{
 	Label:    "{{ . }}",
@@ -73,9 +73,9 @@ func generateConfig() {
 		case create:
 			createConfiguration()
 		case show:
-			showConfiguration(&tnfConfig)
+			showConfiguration(&certsuiteConfig)
 		case save:
-			saveConfiguration(&tnfConfig)
+			saveConfiguration(&certsuiteConfig)
 		case quit:
 			exit = true
 		}
@@ -84,7 +84,7 @@ func generateConfig() {
 
 func createConfiguration() {
 	createMenu := []configOption{
-		{Option: cnfResources, Help: cnfResourcesHelp},
+		{Option: certSuiteResources, Help: certSuiteResourcesHelp},
 		{Option: exceptions, Help: exceptionsdHelp},
 		// {Option: collector, Help: collectordHelp},
 		{Option: settings, Help: settingsHelp},
@@ -107,8 +107,8 @@ func createConfiguration() {
 			return
 		}
 		switch createMenu[i].Option {
-		case cnfResources:
-			createCnfResourcesConfiguration()
+		case certSuiteResources:
+			createCertSuiteResourcesConfiguration()
 		case exceptions:
 			createExceptionsConfiguration()
 		// case collector:
@@ -127,7 +127,7 @@ func showConfiguration(config *configuration.TestConfiguration) {
 		log.Printf("could not marshal the YAML file, err: %v", err)
 		return
 	}
-	fmt.Println("================= CNF CONFIGURATION =================")
+	fmt.Println("================= Cert Suite CONFIGURATION =================")
 	fmt.Println(string(configYaml))
 	fmt.Println("=====================================================")
 }
@@ -140,7 +140,7 @@ func saveConfiguration(config *configuration.TestConfiguration) {
 	}
 
 	saveConfigPrompt := promptui.Prompt{
-		Label:   "CNF config file",
+		Label:   "Cert Suite config file",
 		Default: defaultConfigFileName,
 	}
 
@@ -159,8 +159,8 @@ func saveConfiguration(config *configuration.TestConfiguration) {
 	fmt.Println(color.GreenString("Configuration saved"))
 }
 
-func createCnfResourcesConfiguration() {
-	cnfResourcesOptions := []configOption{
+func createCertSuiteResourcesConfiguration() {
+	certSuiteResourcesOptions := []configOption{
 		{Option: namespaces, Help: namespacesHelp},
 		{Option: pods, Help: podLabelsHelp},
 		{Option: operators, Help: operatorLabelsHelp},
@@ -169,29 +169,29 @@ func createCnfResourcesConfiguration() {
 		{Option: managedStatefulSets, Help: managedStatefulSetsHelp},
 		{Option: previousMenu, Help: backHelp},
 	}
-	cnfResourcesSearcher := func(input string, index int) bool {
-		basicOption := cnfResourcesOptions[index]
+	certSuiteResourcesSearcher := func(input string, index int) bool {
+		basicOption := certSuiteResourcesOptions[index]
 		name := strings.ReplaceAll(strings.ToLower(basicOption.Option), " ", "")
 		input = strings.ReplaceAll(strings.ToLower(input), " ", "")
 
 		return strings.Contains(name, input)
 	}
-	cnfResourcesPrompt := promptui.Select{
+	certSuiteResourcesPrompt := promptui.Select{
 		Label:        "",
-		Items:        cnfResourcesOptions,
+		Items:        certSuiteResourcesOptions,
 		Templates:    templates,
 		Size:         7,
-		Searcher:     cnfResourcesSearcher,
+		Searcher:     certSuiteResourcesSearcher,
 		HideSelected: true,
 	}
 	var exit bool
 	for !exit {
-		i, _, err := cnfResourcesPrompt.Run()
+		i, _, err := certSuiteResourcesPrompt.Run()
 		if err != nil {
 			log.Printf("Prompt failed %v\n", err)
 			return
 		}
-		switch cnfResourcesOptions[i].Option {
+		switch certSuiteResourcesOptions[i].Option {
 		case namespaces:
 			loadNamespaces(getAnswer(namespacePrompt, namespaceSyntax, namespaceExample))
 		case pods:
@@ -309,7 +309,7 @@ func createCollectorConfiguration() {
 
 func createSettingsConfiguration() {
 	settingsOptions := []configOption{
-		{Option: debugDaemonSet, Help: debugDaemonSetHelp},
+		{Option: probeDaemonSet, Help: probeDaemonSetHelp},
 		{Option: previousMenu, Help: backHelp},
 	}
 	settingsPrompt := promptui.Select{
@@ -327,8 +327,8 @@ func createSettingsConfiguration() {
 			return
 		}
 		switch settingsOptions[i].Option {
-		case debugDaemonSet:
-			loadDebugDaemonSetNamespace(getAnswer(debugDaemonSetPrompt, debugDaemonSetSyntax, debugDaemonSetExample))
+		case probeDaemonSet:
+			loadProbeDaemonSetNamespace(getAnswer(probeDaemonSetPrompt, probeDaemonSetSyntax, probeDaemonSetExample))
 		case previousMenu:
 			exit = true
 		}
@@ -359,25 +359,25 @@ func getAnswer(prompt, syntax, example string) []string {
 }
 
 func loadNamespaces(namespaces []string) {
-	tnfConfig.TargetNameSpaces = nil
+	certsuiteConfig.TargetNameSpaces = nil
 	for _, namespace := range namespaces {
-		tnfNamespace := configuration.Namespace{Name: namespace}
-		tnfConfig.TargetNameSpaces = append(tnfConfig.TargetNameSpaces, tnfNamespace)
+		certsuiteNamespace := configuration.Namespace{Name: namespace}
+		certsuiteConfig.TargetNameSpaces = append(certsuiteConfig.TargetNameSpaces, certsuiteNamespace)
 	}
 }
 
 func loadPodLabels(podLabels []string) {
-	tnfConfig.PodsUnderTestLabels = nil
-	tnfConfig.PodsUnderTestLabels = podLabels
+	certsuiteConfig.PodsUnderTestLabels = nil
+	certsuiteConfig.PodsUnderTestLabels = podLabels
 }
 
 func loadOperatorLabels(operatorLabels []string) {
-	tnfConfig.OperatorsUnderTestLabels = nil
-	tnfConfig.OperatorsUnderTestLabels = operatorLabels
+	certsuiteConfig.OperatorsUnderTestLabels = nil
+	certsuiteConfig.OperatorsUnderTestLabels = operatorLabels
 }
 
 func loadCRDfilters(crdFilters []string) {
-	tnfConfig.CrdFilters = nil
+	certsuiteConfig.CrdFilters = nil
 	for _, crdFilterStr := range crdFilters {
 		crdFilter := strings.Split(crdFilterStr, "/")
 		crdFilterName := crdFilter[0]
@@ -386,55 +386,55 @@ func loadCRDfilters(crdFilters []string) {
 			log.Printf("could not parse CRD filter, err: %v", err)
 			return
 		}
-		tnfCrdFilter := configuration.CrdFilter{NameSuffix: crdFilterName, Scalable: crdFilterScalable}
-		tnfConfig.CrdFilters = append(tnfConfig.CrdFilters, tnfCrdFilter)
+		certsuiteCrdFilter := configuration.CrdFilter{NameSuffix: crdFilterName, Scalable: crdFilterScalable}
+		certsuiteConfig.CrdFilters = append(certsuiteConfig.CrdFilters, certsuiteCrdFilter)
 	}
 }
 
 func loadManagedDeployments(deployments []string) {
-	tnfConfig.ManagedDeployments = nil
+	certsuiteConfig.ManagedDeployments = nil
 	for _, deployment := range deployments {
-		tnfManagedDeployment := configuration.ManagedDeploymentsStatefulsets{Name: deployment}
-		tnfConfig.ManagedDeployments = append(tnfConfig.ManagedDeployments, tnfManagedDeployment)
+		certsuiteManagedDeployment := configuration.ManagedDeploymentsStatefulsets{Name: deployment}
+		certsuiteConfig.ManagedDeployments = append(certsuiteConfig.ManagedDeployments, certsuiteManagedDeployment)
 	}
 }
 
 func loadManagedStatefulSets(statefulSets []string) {
-	tnfConfig.ManagedStatefulsets = nil
+	certsuiteConfig.ManagedStatefulsets = nil
 	for _, statefulSet := range statefulSets {
-		tnfManagedStatefulSet := configuration.ManagedDeploymentsStatefulsets{Name: statefulSet}
-		tnfConfig.ManagedStatefulsets = append(tnfConfig.ManagedStatefulsets, tnfManagedStatefulSet)
+		certsuiteManagedStatefulSet := configuration.ManagedDeploymentsStatefulsets{Name: statefulSet}
+		certsuiteConfig.ManagedStatefulsets = append(certsuiteConfig.ManagedStatefulsets, certsuiteManagedStatefulSet)
 	}
 }
 
 func loadAcceptedKernelTaints(taints []string) {
-	tnfConfig.AcceptedKernelTaints = nil
+	certsuiteConfig.AcceptedKernelTaints = nil
 	for _, taint := range taints {
-		tnfKernelTaint := configuration.AcceptedKernelTaintsInfo{Module: taint}
-		tnfConfig.AcceptedKernelTaints = append(tnfConfig.AcceptedKernelTaints, tnfKernelTaint)
+		certsuiteKernelTaint := configuration.AcceptedKernelTaintsInfo{Module: taint}
+		certsuiteConfig.AcceptedKernelTaints = append(certsuiteConfig.AcceptedKernelTaints, certsuiteKernelTaint)
 	}
 }
 
 func loadHelmCharts(helmCharts []string) {
-	tnfConfig.SkipHelmChartList = nil
+	certsuiteConfig.SkipHelmChartList = nil
 	for _, chart := range helmCharts {
-		tnfHelmChart := configuration.SkipHelmChartList{Name: chart}
-		tnfConfig.SkipHelmChartList = append(tnfConfig.SkipHelmChartList, tnfHelmChart)
+		certsuiteHelmChart := configuration.SkipHelmChartList{Name: chart}
+		certsuiteConfig.SkipHelmChartList = append(certsuiteConfig.SkipHelmChartList, certsuiteHelmChart)
 	}
 }
 
 func loadProtocolNames(protocolNames []string) {
-	tnfConfig.ValidProtocolNames = nil
-	tnfConfig.ValidProtocolNames = protocolNames
+	certsuiteConfig.ValidProtocolNames = nil
+	certsuiteConfig.ValidProtocolNames = protocolNames
 }
 
 func loadServices(services []string) {
-	tnfConfig.ServicesIgnoreList = nil
-	tnfConfig.ServicesIgnoreList = services
+	certsuiteConfig.ServicesIgnoreList = nil
+	certsuiteConfig.ServicesIgnoreList = services
 }
 
 func loadNonScalableDeployments(nonScalableDeployments []string) {
-	tnfConfig.SkipScalingTestDeployments = nil
+	certsuiteConfig.SkipScalingTestDeployments = nil
 	for _, nonScalableDeploymentStr := range nonScalableDeployments {
 		nonScalableDeployment := strings.Split(nonScalableDeploymentStr, "/")
 		const nonScalableDeploymentsFields = 2
@@ -444,14 +444,14 @@ func loadNonScalableDeployments(nonScalableDeployments []string) {
 		}
 		nonScalableDeploymentName := nonScalableDeployment[0]
 		nonScalableDeploymentNamespace := nonScalableDeployment[1]
-		tnfNonScalableDeployment := configuration.SkipScalingTestDeploymentsInfo{Name: nonScalableDeploymentName,
+		certsuiteNonScalableDeployment := configuration.SkipScalingTestDeploymentsInfo{Name: nonScalableDeploymentName,
 			Namespace: nonScalableDeploymentNamespace}
-		tnfConfig.SkipScalingTestDeployments = append(tnfConfig.SkipScalingTestDeployments, tnfNonScalableDeployment)
+		certsuiteConfig.SkipScalingTestDeployments = append(certsuiteConfig.SkipScalingTestDeployments, certsuiteNonScalableDeployment)
 	}
 }
 
 func loadNonScalableStatefulSets(nonScalableStatefulSets []string) {
-	tnfConfig.SkipScalingTestStatefulSets = nil
+	certsuiteConfig.SkipScalingTestStatefulSets = nil
 	for _, nonScalableStatefulSetStr := range nonScalableStatefulSets {
 		nonScalableStatefulSet := strings.Split(nonScalableStatefulSetStr, "/")
 		const nonScalableStatefulSetFields = 2
@@ -461,12 +461,12 @@ func loadNonScalableStatefulSets(nonScalableStatefulSets []string) {
 		}
 		nonScalableStatefulSetName := nonScalableStatefulSet[0]
 		nonScalableStatefulSetNamespace := nonScalableStatefulSet[1]
-		tnfNonScalableStatefulSet := configuration.SkipScalingTestStatefulSetsInfo{Name: nonScalableStatefulSetName,
+		certsuiteNonScalableStatefulSet := configuration.SkipScalingTestStatefulSetsInfo{Name: nonScalableStatefulSetName,
 			Namespace: nonScalableStatefulSetNamespace}
-		tnfConfig.SkipScalingTestStatefulSets = append(tnfConfig.SkipScalingTestStatefulSets, tnfNonScalableStatefulSet)
+		certsuiteConfig.SkipScalingTestStatefulSets = append(certsuiteConfig.SkipScalingTestStatefulSets, certsuiteNonScalableStatefulSet)
 	}
 }
 
-func loadDebugDaemonSetNamespace(namespace []string) {
-	tnfConfig.DebugDaemonSetNamespace = namespace[0]
+func loadProbeDaemonSetNamespace(namespace []string) {
+	certsuiteConfig.ProbeDaemonSetNamespace = namespace[0]
 }

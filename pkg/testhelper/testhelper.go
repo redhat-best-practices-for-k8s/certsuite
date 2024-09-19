@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 const (
@@ -151,7 +151,7 @@ const (
 	SysctlKey                       = "Sysctl Key"
 	SysctlValue                     = "Sysctl Value"
 	OSImage                         = "OS Image"
-	DebugPodName                    = "Debug Pod Name"
+	ProbePodName                    = "Probe Pod Name"
 
 	// ICMP tests
 	NetworkName              = "Network Name"

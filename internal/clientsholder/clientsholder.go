@@ -24,7 +24,7 @@ import (
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 
 	apiextv1c "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
@@ -36,6 +36,7 @@ import (
 	"k8s.io/client-go/scale"
 
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
+	apiserverscheme "github.com/openshift/client-go/apiserver/clientset/versioned"
 	ocpMachine "github.com/openshift/client-go/machineconfiguration/clientset/versioned"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -70,6 +71,7 @@ type ClientsHolder struct {
 	KubeConfig           []byte
 	ready                bool
 	GroupResources       []*metav1.APIResourceList
+	ApiserverClient      apiserverscheme.Interface
 }
 
 var clientsHolder = ClientsHolder{}
@@ -157,9 +159,6 @@ func ClearTestClientsHolder() {
 func GetClientsHolder(filenames ...string) *ClientsHolder {
 	if clientsHolder.ready {
 		return &clientsHolder
-	}
-	if len(filenames) == 0 {
-		log.Fatal("Please provide a valid Kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config")
 	}
 	clientsHolder, err := newClientsHolder(filenames...)
 	if err != nil {
@@ -331,6 +330,11 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.CNCFNetworkingClient, err = cncfNetworkAttachmentv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate CNCF networking client")
+	}
+
+	clientsHolder.ApiserverClient, err = apiserverscheme.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate apiserverscheme: %w", err)
 	}
 
 	clientsHolder.ready = true

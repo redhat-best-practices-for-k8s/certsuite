@@ -6,7 +6,7 @@ The Test Suite can be run using the Certsuite tool directly or through a contain
 To run the Test Suite direct use:
 
 ```shell
-./certsuite run -l <label-filter> -c <tnf-config> -k <kubeconfig> -o <output-dir> [<flags>]
+./certsuite run -l <label-filter> -c <certsuite-config> -k <kubeconfig> -o <output-dir> [<flags>]
 ```
 
 If the _kubeconfig_ is not provided the value of the `KUBECONFIG` environment variable will be taken by default.
@@ -62,7 +62,7 @@ The following is a non-exhaustive list of the most common flags that the `certsu
 
 * `-k, --kubeconfig`: Path to the Kubeconfig file of the target cluster.
 
-* `-c, --config-file`: Path to the `tnf_config.yml` file.
+* `-c, --config-file`: Path to the `certsuite_config.yml` file.
 
 * `--preflight-dockerconfig`: Path to the Dockerconfig file to be used by the Preflight test suite
 
@@ -70,7 +70,7 @@ The following is a non-exhaustive list of the most common flags that the `certsu
 
 !!! note
 
-    See the [OCT tool](https://github.com/test-network-function/oct) for more information on how to create this DB.
+    See the [OCT tool](https://github.com/redhat-best-practices-for-k8s/oct) for more information on how to create this DB.
 
 ## Using the container image
 
@@ -78,13 +78,13 @@ The only prerequisite for running the Test Suite in container mode is having Doc
 
 ### Pull the test image
 
-The test image is available at this [repository](https://quay.io/repository/testnetworkfunction/cnf-certification-test) and can be pulled using:
+The test image is available at this [repository](https://quay.io/repository/redhat-best-practices-for-k8s/certsuite) and can be pulled using:
 
 ```shell
-docker pull quay.io/testnetworkfunction/cnf-certification-test:<image-tag>
+docker pull quay.io/redhat-best-practices-for-k8s/certsuite:<image-tag>
 ```
 
-The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository or any existing version number such as `v5.1.0`.
+The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository or any existing version number such as `v5.2.1`.
 
 ### Launch the Test Suite
 
@@ -92,7 +92,7 @@ The Test Suite requires 3 files that must be provided to the test container:
 
 * The _Kubeconfig_ for the target cluster.
 * The _Dockerconfig_ of the local Docker installation (only for the Preflight test suite).
-* The `tnf_config.yml`.
+* The `certsuite_config.yml`.
 
 To reduce the number of shared volumes with the test container in the example below those files are copied into a folder called "config". Also, another folder to contain the output files called "results" has been created. The files saved in the output directory after the test run are:
 
@@ -101,16 +101,14 @@ To reduce the number of shared volumes with the test container in the example be
 * A `.tar.gz` file with the above two files and an additional `results.html` file to visualize the results in a website.
 
 ```shell
-docker run --rm --network host 
-  -v <path-to-local-dir>/config:/usr/certsuite/config:Z
-  -v <path-to-local-dir>/results:/usr/certsuite/results:Z
-  
-  quay.io/testnetworkfunction/cnf-certification-test:latest
-  
-  certsuite run
-  --kubeconfig=/usr/certsuite/config/kubeconfig
-  --preflight-dockerconfig=/usr/certsuite/config/dockerconfig
-  --config-file=/usr/certsuite/config/tnf_config.yml
-  --output-dir=/usr/certsuite/results
+docker run --rm --network host \
+  -v <path-to-local-dir>/config:/usr/certsuite/config:Z \
+  -v <path-to-local-dir>/results:/usr/certsuite/results:Z \
+  quay.io/redhat-best-practices-for-k8s/certsuite:latest \
+  certsuite run \
+  --kubeconfig=/usr/certsuite/config/kubeconfig \
+  --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
+  --config-file=/usr/certsuite/config/certsuite_config.yml \
+  --output-dir=/usr/certsuite/results \
   --label-filter=all
 ```

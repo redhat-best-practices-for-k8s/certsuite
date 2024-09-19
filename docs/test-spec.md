@@ -36,7 +36,7 @@ Suite|Test Spec Description|Minimum OpenShift Version
 
 !!! info
 
-    Please refer [CATALOG.md](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md) for more details.
+    Please refer [CATALOG.md](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md) for more details.
 
 ### Workload-specific tests
 

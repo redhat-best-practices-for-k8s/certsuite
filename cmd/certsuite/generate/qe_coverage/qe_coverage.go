@@ -5,9 +5,9 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 const (

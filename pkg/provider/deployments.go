@@ -19,7 +19,7 @@ package provider
 import (
 	"fmt"
 
-	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
 	appsv1 "k8s.io/api/apps/v1"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 )

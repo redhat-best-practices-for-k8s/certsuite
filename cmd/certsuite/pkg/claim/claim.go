@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/Masterminds/semver/v3"
-	officialClaimScheme "github.com/test-network-function/test-network-function-claim/pkg/claim"
+	officialClaimScheme "github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 )
 
 const (
@@ -81,16 +81,6 @@ type Schema struct {
 		Configurations `json:"configurations"`
 
 		Nodes Nodes `json:"nodes"`
-
-		RawResults struct {
-			Cnfcertificationtest struct {
-				Testsuites struct {
-					Testsuite struct {
-						Testcase []TestCaseRawResult `json:"testcase"`
-					} `json:"testsuite"`
-				} `json:"testsuites"`
-			} `json:"cnf-certification-test"`
-		} `json:"rawResults"`
 
 		Results  TestSuiteResults             `json:"results"`
 		Versions officialClaimScheme.Versions `json:"versions"`

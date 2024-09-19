@@ -1,7 +1,7 @@
 ---
 site_name: Red Hat Best Practices Test Suite for Kubernetes
 repo_name: GitHub
-repo_url: https://github.com/test-network-function/cnf-certification-test/
+repo_url: https://github.com/redhat-best-practices-for-k8s/certsuite/
 theme:
   name: material
   features:
@@ -77,3 +77,4 @@ nav:
       - Workload Developers: "workload-developers.md"
   - Reference:
       - reference.md
+  - Data Collection: "data-collection.md"

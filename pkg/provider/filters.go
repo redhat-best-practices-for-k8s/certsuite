@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 // GetGuaranteedPodsWithExclusiveCPUs returns a slice of Pod objects that are guaranteed to have exclusive CPUs.
@@ -145,7 +145,7 @@ func filterDPDKRunningPods(pods []*Pod) []*Pod {
 		findCommand := fmt.Sprintf("%s '%s'", findDeviceSubCommand, pod.MultusPCIs[0])
 		outStr, errStr, err := o.ExecCommandContainer(ctx, findCommand)
 		if err != nil || errStr != "" {
-			log.Error("Failed to execute command %s in debug %s, errStr: %s, err: %v", findCommand, pod.String(), errStr, err)
+			log.Error("Failed to execute command %s in probe %s, errStr: %s, err: %v", findCommand, pod.String(), errStr, err)
 			continue
 		}
 		if strings.Contains(outStr, dpdkDriver) {

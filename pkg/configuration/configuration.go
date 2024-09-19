@@ -16,8 +16,10 @@
 
 package configuration
 
+import "time"
+
 const (
-	defaultDebugDaemonSetNamespace = "cnf-suite"
+	defaultProbeDaemonSetNamespace = "cnf-suite"
 )
 
 type SkipHelmChartList struct {
@@ -84,7 +86,7 @@ type TestConfiguration struct {
 	SkipScalingTestStatefulSets []SkipScalingTestStatefulSetsInfo `yaml:"skipScalingTestStatefulSets,omitempty" json:"skipScalingTestStatefulSets,omitempty"`
 	ValidProtocolNames          []string                          `yaml:"validProtocolNames,omitempty" json:"validProtocolNames,omitempty"`
 	ServicesIgnoreList          []string                          `yaml:"servicesignorelist,omitempty" json:"servicesignorelist,omitempty"`
-	DebugDaemonSetNamespace     string                            `yaml:"debugDaemonSetNamespace,omitempty" json:"debugDaemonSetNamespace,omitempty"`
+	ProbeDaemonSetNamespace     string                            `yaml:"probeDaemonSetNamespace,omitempty" json:"probeDaemonSetNamespace,omitempty"`
 	// Collector's parameters
 	ExecutedBy           string `yaml:"executedBy,omitempty" json:"executedBy,omitempty"`
 	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`
@@ -93,22 +95,26 @@ type TestConfiguration struct {
 }
 
 type TestParameters struct {
-	Home                          string `envconfig:"home"`
-	Kubeconfig                    string `envconfig:"kubeconfig"`
-	ConfigurationPath             string `split_words:"true" default:"tnf_config.yml"`
-	NonIntrusiveOnly              bool   `split_words:"true"`
-	LogLevel                      string `default:"debug" split_words:"true"`
-	OfflineDB                     string `split_words:"true"`
-	AllowPreflightInsecure        bool   `split_words:"true"`
-	PfltDockerconfig              string `split_words:"true" envconfig:"PFLT_DOCKERCONFIG"`
-	IncludeWebFilesInOutputFolder bool   `split_words:"true" default:"false"`
-	OmitArtifactsZipFile          bool   `split_words:"true" default:"false"`
-	EnableDataCollection          bool   `split_words:"true" envconfig:"ENABLE_DATA_COLLECTION" default:"false"`
-	EnableXMLCreation             bool   `split_words:"true" envconfig:"TNF_ENABLE_XML_CREATION" default:"false"`
-	DaemonsetCPUReq               string `default:"100m" split_words:"true"`
-	DaemonsetCPULim               string `default:"100m" split_words:"true"`
-	DaemonsetMemReq               string `default:"100M" split_words:"true"`
-	DaemonsetMemLim               string `default:"100M" split_words:"true"`
-	TnfPartnerRepo                string `split_words:"true" default:"quay.io/testnetworkfunction"`
-	SupportImage                  string `split_words:"true" default:"debug-partner:5.1.2"`
+	Kubeconfig                    string
+	ConfigFile                    string
+	PfltDockerconfig              string
+	OutputDir                     string
+	LabelsFilter                  string
+	LogLevel                      string
+	OfflineDB                     string
+	DaemonsetCPUReq               string
+	DaemonsetCPULim               string
+	DaemonsetMemReq               string
+	DaemonsetMemLim               string
+	SanitizeClaim                 bool
+	CertSuiteImageRepo            string
+	CertSuiteProbeImage           string
+	NonIntrusiveOnly              bool
+	AllowPreflightInsecure        bool
+	IncludeWebFilesInOutputFolder bool
+	OmitArtifactsZipFile          bool
+	EnableDataCollection          bool
+	EnableXMLCreation             bool
+	ServerMode                    bool
+	Timeout                       time.Duration
 }

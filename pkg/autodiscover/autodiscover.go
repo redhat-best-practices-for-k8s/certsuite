@@ -27,11 +27,11 @@ import (
 	configv1 "github.com/openshift/api/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/podhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/compatibility"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -50,7 +50,7 @@ const (
 	NonOpenshiftClusterVersion = "0.0.0"
 	tnfCsvTargetLabelName      = "operator"
 	tnfCsvTargetLabelValue     = ""
-	tnfLabelPrefix             = "test-network-function.com"
+	tnfLabelPrefix             = "redhat-best-practices-for-k8s.com"
 	labelTemplate              = "%s/%s"
 )
 
@@ -58,7 +58,7 @@ type DiscoveredTestData struct {
 	Env                    configuration.TestParameters
 	Pods                   []corev1.Pod
 	AllPods                []corev1.Pod
-	DebugPods              []corev1.Pod
+	ProbePods              []corev1.Pod
 	CSVToPodListMap        map[string][]*corev1.Pod
 	ResourceQuotaItems     []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
@@ -80,6 +80,8 @@ type DiscoveredTestData struct {
 	RoleBindings           []rbacv1.RoleBinding // Contains all rolebindings from all namespaces
 	Roles                  []rbacv1.Role        // Contains all roles from all namespaces
 	Services               []*corev1.Service
+	ServiceAccounts        []*corev1.ServiceAccount
+	AllServiceAccounts     []*corev1.ServiceAccount
 	Hpas                   []*scalingv1.HorizontalPodAutoscaler
 	Subscriptions          []olmv1Alpha.Subscription
 	AllSubscriptions       []olmv1Alpha.Subscription
@@ -158,9 +160,9 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
 	data.Pods, data.AllPods = findPodsByLabels(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
-	debugLabels := []labelObject{{LabelKey: debugHelperPodsLabelName, LabelValue: debugHelperPodsLabelValue}}
-	debugNS := []string{config.DebugDaemonSetNamespace}
-	data.DebugPods, _ = findPodsByLabels(oc.K8sClient.CoreV1(), debugLabels, debugNS)
+	probeLabels := []labelObject{{LabelKey: probeHelperPodsLabelName, LabelValue: probeHelperPodsLabelValue}}
+	probeNS := []string{config.ProbeDaemonSetNamespace}
+	data.ProbePods, _ = findPodsByLabels(oc.K8sClient.CoreV1(), probeLabels, probeNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
 		log.Fatal("Cannot get resource quotas, err: %v", err)
@@ -177,7 +179,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	// Get cluster crds
 	data.AllCrds, err = getClusterCrdNames()
 	if err != nil {
-		log.Fatal("Cannot get cluster CRD anmes, err: %v", err)
+		log.Fatal("Cannot get cluster CRD names, err: %v", err)
 	}
 	data.Crds = FindTestCrdNames(data.AllCrds, config.CrdFilters)
 
@@ -250,7 +252,14 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	if err != nil {
 		log.Fatal("Cannot get list of services, err: %v", err)
 	}
-
+	data.ServiceAccounts, err = getServiceAccounts(oc.K8sClient.CoreV1(), data.Namespaces)
+	if err != nil {
+		log.Fatal("Cannot get list of service accounts under test, err: %v", err)
+	}
+	data.AllServiceAccounts, err = getServiceAccounts(oc.K8sClient.CoreV1(), []string{metav1.NamespaceAll})
+	if err != nil {
+		log.Fatal("Cannot get list of all service accounts, err: %v", err)
+	}
 	data.ExecutedBy = config.ExecutedBy
 	data.PartnerName = config.PartnerName
 	data.CollectorAppPassword = config.CollectorAppPassword
