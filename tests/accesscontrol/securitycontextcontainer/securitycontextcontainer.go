@@ -493,10 +493,17 @@ func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) boo
 		result = false
 		log.Debug("PrivilegedContainer = %s but expected <= %s - NOK", containerSCC.PrivilegedContainer, refCategory.PrivilegedContainer)
 	}
-	// ReadOnlyRootFilesystem is true if the ReadOnlyRootFilesystem field is set to true, false otherwise.
-	if refCategory.ReadOnlyRootFilesystem >= containerSCC.ReadOnlyRootFilesystem {
-		log.Debug("ReadOnlyRootFilesystem = %s - OK", containerSCC.ReadOnlyRootFilesystem)
-	} else {
+
+	// From the SecurityContextConstraint CRD spec:
+	// description: ReadOnlyRootFilesystem when set to true will force containers
+	// to run with a read only root file system.  If the container specifically
+	// requests to run with a non-read only root file system the SCC should
+	// deny the pod. If set to false the container may run with a read only
+	// root file system if it wishes but it will not be forced to.
+	// type: boolean
+	if refCategory.ReadOnlyRootFilesystem == NOK {
+		log.Debug("ReadOnlyRootFilesystem = %s - OK (not enforced by SCC)", containerSCC.ReadOnlyRootFilesystem)
+	} else if containerSCC.ReadOnlyRootFilesystem != OK {
 		result = false
 		log.Debug("ReadOnlyRootFilesystem = %s but expected <= %s - NOK", containerSCC.ReadOnlyRootFilesystem, refCategory.ReadOnlyRootFilesystem)
 	}
