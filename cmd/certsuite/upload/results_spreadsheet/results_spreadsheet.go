@@ -18,7 +18,7 @@ import (
 )
 
 var stringToPointer = func(s string) *string { return &s }
-var conclusionSheetHeaders = []string{categoryConclusionsCol, workloadVersionConclusionsCol, ocpVersionConclusionsCol, WorkloadNameConclusionsCol, resultsConclusionsCol}
+var conclusionSheetHeaders = []string{categoryConclusionsCol, workloadVersionConclusionsCol, ocpVersionConclusionsCol, WorkloadNameConclusionsCol, ResultsConclusionsCol}
 
 var (
 	resultsFilePath string
@@ -140,14 +140,14 @@ func prepareRecordsForSpreadSheet(records [][]string) []*sheets.RowData {
 func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workloadName string) (*sheets.Sheet, error) {
 	// Initialize sheet with the two new column headers only.
 	filteredRows := []*sheets.RowData{{Values: []*sheets.CellData{
-		{UserEnteredValue: &sheets.ExtendedValue{StringValue: stringToPointer("Owner/TechLead Conclusion")}},
-		{UserEnteredValue: &sheets.ExtendedValue{StringValue: stringToPointer("Next Step Actions")}},
+		{UserEnteredValue: &sheets.ExtendedValue{StringValue: stringToPointer(conclusionIndividualSingleWorkloadSheetCol)}},
+		{UserEnteredValue: &sheets.ExtendedValue{StringValue: stringToPointer(nextStepAIIfFailSingleWorkloadSheetCol)}},
 	}}}
 
 	// Add existing column headers from the rawResultsSheet
 	filteredRows[0].Values = append(filteredRows[0].Values, rawResultsSheet.Data[0].RowData[0].Values...)
 
-	headers := getHeadersFromSheet(rawResultsSheet)
+	headers := GetHeadersFromSheet(rawResultsSheet)
 	indices, err := GetHeaderIndicesByColumnNames(headers, []string{"CNFName"})
 	if err != nil {
 		return nil, err
@@ -221,7 +221,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 		return nil, fmt.Errorf("unable to create workloads results folder: %v", err)
 	}
 
-	rawSheetHeaders := getHeadersFromSheet(rawResultsSheet)
+	rawSheetHeaders := GetHeadersFromSheet(rawResultsSheet)
 	colsIndices, err := GetHeaderIndicesByColumnNames(rawSheetHeaders, []string{workloadNameRawResultsCol, workloadTypeRawResultsCol, operatorVersionRawResultsCol})
 	if err != nil {
 		return nil, err
@@ -271,7 +271,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 			case WorkloadNameConclusionsCol:
 				curCellData.UserEnteredValue.StringValue = &workloadName
 
-			case resultsConclusionsCol:
+			case ResultsConclusionsCol:
 				workloadResultsSpreadsheet, err := createSingleWorkloadRawResultsSpreadSheet(sheetsService, driveService, workloadsResultsFolder, rawResultsSheet, workloadName)
 				if err != nil {
 					return nil, fmt.Errorf("error has occurred while creating %s results file: %v", workloadName, err)
