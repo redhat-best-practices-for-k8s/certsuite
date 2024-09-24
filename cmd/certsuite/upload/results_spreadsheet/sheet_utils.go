@@ -6,7 +6,7 @@ import (
 	"google.golang.org/api/sheets/v4"
 )
 
-func getHeadersFromSheet(sheet *sheets.Sheet) []string {
+func GetHeadersFromSheet(sheet *sheets.Sheet) []string {
 	headers := []string{}
 	for _, val := range sheet.Data[0].RowData[0].Values {
 		headers = append(headers, *val.UserEnteredValue.StringValue)
