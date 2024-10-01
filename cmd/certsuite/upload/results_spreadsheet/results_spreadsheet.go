@@ -85,6 +85,8 @@ func CreateSheetsAndDriveServices(credentials string) (sheetService *sheets.Serv
 	if err != nil {
 		return nil, nil, fmt.Errorf("unable to parse client secret file to config: %v", err)
 	}
+	config.RedirectURL = "http://localhost:8085"
+
 	client, err := getClient(config)
 	if err != nil {
 		return nil, nil, fmt.Errorf("unable to get client: %v", err)
@@ -321,10 +323,12 @@ func createRawResultsSheet(fp string) (*sheets.Sheet, error) {
 }
 
 func generateResultsSpreadSheet() {
+	log.Print("Starting authentication process.")
 	sheetService, driveService, err := CreateSheetsAndDriveServices(credentials)
 	if err != nil {
 		log.Fatalf("Unable to create services: %v", err)
 	}
+	log.Println("Authentication has succeeded, generating results spreadsheet...")
 
 	rootFolderID, err := extractFolderIDFromURL(rootFolderURL)
 	if err != nil {
@@ -370,5 +374,5 @@ func generateResultsSpreadSheet() {
 		log.Fatalf("Unable to apply filter to the spread sheet: %v", err)
 	}
 
-	fmt.Printf("Results spreadsheet was created successfully: %s\n", spreadsheet.SpreadsheetUrl)
+	log.Printf("Results spreadsheet was created successfully: %s\n", spreadsheet.SpreadsheetUrl)
 }

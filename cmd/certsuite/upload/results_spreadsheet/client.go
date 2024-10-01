@@ -4,13 +4,59 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"net/url"
 	"os"
+	"os/exec"
+	"runtime"
+	"strings"
+	"sync"
+	"time"
 
 	"golang.org/x/oauth2"
 )
 
-const tokenPermissions = 0o600
+const (
+	tokenPermissions   = 0o600
+	readHeadersTimeout = 10 * time.Second
+)
+
+var authCode string
+var ctxShutdown, cancel = context.WithCancel(context.Background())
+
+// OpenBrowser opens up the provided URL in a browser
+func OpenBrowser(u string) error {
+	if _, err := url.ParseRequestURI(u); err != nil {
+		return err
+	}
+
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case "linux", "openbsd":
+		cmd = exec.Command("xdg-open", u)
+	case "darwin":
+		cmd = exec.Command("open", u)
+	case "windows":
+		r := strings.NewReplacer("&", "^&")
+		cmd = exec.Command("cmd", "/c", "start", r.Replace(u))
+	}
+	if cmd != nil {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err := cmd.Start()
+		if err != nil {
+			return err
+		}
+		err = cmd.Wait()
+		if err != nil {
+			return err
+		}
+		return nil
+	} else {
+		return fmt.Errorf("unsupported platform")
+	}
+}
 
 // Retrieve a token, saves the token, then returns the generated client.
 func getClient(config *oauth2.Config) (*http.Client, error) {
@@ -20,6 +66,7 @@ func getClient(config *oauth2.Config) (*http.Client, error) {
 	tokFile := "token.json"
 	tok, err := tokenFromFile(tokFile)
 	if err != nil {
+		log.Println("Auth token not found, retrieving token from web.")
 		tok, err = getTokenFromWeb(config)
 		if err != nil {
 			return nil, err
@@ -33,20 +80,57 @@ func getClient(config *oauth2.Config) (*http.Client, error) {
 
 // Request a token from the web, then returns the retrieved token.
 func getTokenFromWeb(config *oauth2.Config) (*oauth2.Token, error) {
-	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
-	fmt.Printf("Go to the following link in your browser then type the "+
-		"authorization code: \n%v\n", authURL)
+	authDone := &sync.WaitGroup{}
+	authDone.Add(1)
 
-	var authCode string
-	if _, err := fmt.Scan(&authCode); err != nil {
-		return nil, fmt.Errorf("unable to read authorization code: %v", err)
+	startAuthServer(config.RedirectURL, authDone)
+	if err := OpenBrowser(config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)); err != nil {
+		return nil, fmt.Errorf("failed to open browser for authentication: %v", err)
 	}
+
+	authDone.Wait()
 
 	tok, err := config.Exchange(context.TODO(), authCode)
 	if err != nil {
 		return nil, fmt.Errorf("unable to retrieve token from web: %v", err)
 	}
+
 	return tok, nil
+}
+
+// startAuthServer starts a local service waiting for an authcode needed to continue authentication.
+func startAuthServer(serverURL string, wg *sync.WaitGroup) {
+	server := &http.Server{
+		Addr:              strings.TrimPrefix(serverURL, "http://"),
+		ReadHeaderTimeout: readHeadersTimeout,
+	}
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		select {
+		case <-ctxShutdown.Done():
+			return
+		default:
+		}
+
+		authCode = r.URL.Query().Get("code")
+		if authCode == "" {
+			log.Fatalf("Auth code has not been provided")
+			return
+		}
+
+		cancel()
+		err := server.Shutdown(context.Background())
+		if err != nil {
+			log.Fatalf("Error has accured while shuting down the auth server: %v", err)
+		}
+	})
+
+	go func() {
+		defer wg.Done()
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Error starting server: %v", err)
+		}
+	}()
 }
 
 // Retrieves a token from a local file.
@@ -63,7 +147,7 @@ func tokenFromFile(file string) (*oauth2.Token, error) {
 
 // Saves a token to a file path.
 func saveToken(path string, token *oauth2.Token) error {
-	fmt.Printf("Saving credential file to: %s\n", path)
+	log.Printf("Saving credential file to: %s\n", path)
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, tokenPermissions)
 	if err != nil {
 		return fmt.Errorf("unable to cache oauth token: %v", err)
