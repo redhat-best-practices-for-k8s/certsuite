@@ -1,5 +1,6 @@
 package cli
 
+
 import (
 	"fmt"
 	"os"
@@ -123,7 +124,9 @@ func printRunningCheckLine(checkName string, startTime time.Time, logLine string
 	maxAvailableWidth := getTerminalWidth() - len(line) - lineLength
 	if logLine != "" && maxAvailableWidth > minColsNeededForLogLine {
 		// Append a cropped log line only if it makes sense due to the available space on the right.
-		line += "   " + cropLogLine(logLine, maxAvailableWidth)
+		// Ensure sensitive information is not logged
+		sanitizedLogLine := sanitizeLogLine(logLine)
+		line += "   " + cropLogLine(sanitizedLogLine, maxAvailableWidth)
 	}
 
 	fmt.Print(ClearLineCode + line)
