@@ -17,7 +17,7 @@
 package netcommons
 
 import (
-	"reflect"
+	"slices"
 	"sort"
 	"testing"
 
@@ -101,7 +101,7 @@ func TestFilterIPListByIPVersion(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := FilterIPListByIPVersion(tt.args.ipList, tt.args.aIPVersion); !reflect.DeepEqual(got, tt.want) {
+			if got := FilterIPListByIPVersion(tt.args.ipList, tt.args.aIPVersion); !slices.Equal(got, tt.want) {
 				t.Errorf("FilterIPListByIPVersion() = %v, want %v", got, tt.want)
 			}
 		})

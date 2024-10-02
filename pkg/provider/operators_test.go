@@ -17,7 +17,7 @@
 package provider
 
 import (
-	"reflect"
+	"slices"
 	"testing"
 
 	"github.com/operator-framework/api/pkg/lib/version"
@@ -399,7 +399,7 @@ func Test_getSummaryAllOperators(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotSummary := getSummaryAllOperators(tt.args.operators); !reflect.DeepEqual(gotSummary, tt.wantSummary) {
+			if gotSummary := getSummaryAllOperators(tt.args.operators); !slices.Equal(gotSummary, tt.wantSummary) {
 				t.Errorf("getSummaryAllOperators() = %v, want %v", gotSummary, tt.wantSummary)
 			}
 		})

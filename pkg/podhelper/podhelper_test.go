@@ -1,7 +1,7 @@
 package podhelper
 
 import (
-	"reflect"
+	"maps"
 	"testing"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -84,7 +84,7 @@ func Test_followOwnerReferences(t *testing.T) {
 			if err := followOwnerReferences(resourceList, client, gotResults, tt.args.namespace, tt.args.ownerRefs); (err != nil) != tt.wantErr {
 				t.Errorf("followOwnerReferences() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			if !reflect.DeepEqual(gotResults, tt.args.topOwners) {
+			if !maps.Equal(gotResults, tt.args.topOwners) {
 				t.Errorf("followOwnerReferences() = %v, want %v", gotResults, tt.args.topOwners)
 			}
 		})

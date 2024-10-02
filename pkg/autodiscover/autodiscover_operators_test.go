@@ -3,7 +3,7 @@
 package autodiscover
 
 import (
-	"reflect"
+	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -51,6 +51,6 @@ func TestGetAllNamespaces(t *testing.T) {
 		clientSet := fake.NewSimpleClientset(testRuntimeObjects...)
 		namespaces, err := getAllNamespaces(clientSet.CoreV1())
 		assert.Nil(t, err)
-		assert.True(t, reflect.DeepEqual(tc.expectedNamespaces, namespaces))
+		assert.True(t, slices.Equal(tc.expectedNamespaces, namespaces))
 	}
 }

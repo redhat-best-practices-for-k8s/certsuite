@@ -1,7 +1,9 @@
 package testcases
 
 import (
+	"maps"
 	"reflect"
+	"slices"
 	"testing"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
@@ -78,7 +80,7 @@ func TestGetTestCasesResultsMap(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.description, func(t *testing.T) {
 			resultsMap := getTestCasesResultsMap(tc.results)
-			assert.True(t, reflect.DeepEqual(tc.expectedTestCasesResultsMap, resultsMap))
+			assert.True(t, maps.Equal(tc.expectedTestCasesResultsMap, resultsMap))
 		})
 	}
 }
@@ -137,7 +139,7 @@ func TestGetMergedTestCasesNames(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.description, func(t *testing.T) {
 			tcMergedNamesList := getMergedTestCasesNames(tc.claim1Results, tc.claim2Results)
-			assert.True(t, reflect.DeepEqual(tc.expectedMergedTcNames, tcMergedNamesList))
+			assert.True(t, slices.Equal(tc.expectedMergedTcNames, tcMergedNamesList))
 		})
 	}
 }
