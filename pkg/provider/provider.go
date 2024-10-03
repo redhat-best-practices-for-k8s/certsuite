@@ -296,7 +296,12 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 
 	// Add operator pods to list of normal pods to test.
-	env.Pods = append(env.Pods, csvPods...)
+	addOperatorPodsToTestPods(csvPods, &env)
+
+	// Add operator pods' containers to the list.
+	for _, pod := range csvPods {
+		env.Containers = append(env.Containers, getPodContainers(pod.Pod, true)...)
+	}
 
 	log.Info("Found pods in %d csvs", len(env.CSVToPodListMap))
 
