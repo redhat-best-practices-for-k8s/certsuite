@@ -18,7 +18,7 @@ package catalog
 
 import (
 	"errors"
-	"reflect"
+	"slices"
 	"sort"
 	"testing"
 
@@ -82,6 +82,6 @@ func TestGetSuitesFromIdentifiers(t *testing.T) {
 		sort.Strings(tc.expectedSuites)
 		results := GetSuitesFromIdentifiers(tc.testKeys)
 		sort.Strings(results)
-		assert.True(t, reflect.DeepEqual(tc.expectedSuites, results))
+		assert.True(t, slices.Equal(tc.expectedSuites, results))
 	}
 }

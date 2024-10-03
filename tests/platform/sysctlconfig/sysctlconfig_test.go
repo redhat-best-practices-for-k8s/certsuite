@@ -17,7 +17,7 @@
 package sysctlconfig
 
 import (
-	"reflect"
+	"maps"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -59,6 +59,6 @@ func TestParseSysctlSystemOutput(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		assert.True(t, reflect.DeepEqual(parseSysctlSystemOutput(tc.sysctlOutput), tc.expectedResult))
+		assert.True(t, maps.Equal(parseSysctlSystemOutput(tc.sysctlOutput), tc.expectedResult))
 	}
 }

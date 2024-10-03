@@ -5,7 +5,7 @@ package securitycontextcontainer
 
 import (
 	"fmt"
-	"reflect"
+	"slices"
 	"sort"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -236,7 +236,7 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 		sort.Strings(sliceDropCapabilities)
 		sort.Strings(requiredDropCapabilities)
 
-		if stringhelper.SubSlice(sliceDropCapabilities, requiredDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
+		if stringhelper.SubSlice(sliceDropCapabilities, requiredDropCapabilities) || slices.Equal(sliceDropCapabilities, dropAll) {
 			containerSCC.RequiredDropCapabilitiesPresent = OK
 		}
 		//nolint:gocritic

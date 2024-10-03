@@ -18,7 +18,7 @@ package podsets
 
 import (
 	"fmt"
-	"reflect"
+	"maps"
 	"testing"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
@@ -178,7 +178,7 @@ func TestGetPodSetNodes(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := GetAllNodesForAllPodSets(provider.ConvertArrayPods(tt.args.pods)); !reflect.DeepEqual(got, tt.want) {
+			if got := GetAllNodesForAllPodSets(provider.ConvertArrayPods(tt.args.pods)); !maps.Equal(got, tt.want) {
 				t.Errorf("GetAllNodesForAllPodSets() = %v, want %v", got, tt.want)
 			}
 		})
