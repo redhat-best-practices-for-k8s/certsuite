@@ -18,7 +18,6 @@ package operatingsystem
 
 import (
 	"errors"
-	"maps"
 	"os"
 	"testing"
 
@@ -62,7 +61,7 @@ func TestGetRHCOSMappedVersionsFromFile(t *testing.T) {
 		} else {
 			result, err := GetRHCOSMappedVersions(string(file))
 			assert.Nil(t, err)
-			assert.True(t, maps.Equal(tc.expectedOutput, result))
+			assert.Equal(t, tc.expectedOutput, result)
 		}
 	}
 }

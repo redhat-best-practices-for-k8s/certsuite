@@ -17,8 +17,6 @@
 package arrayhelper
 
 import (
-	"maps"
-	"slices"
 	"sort"
 	"strings"
 	"testing"
@@ -84,7 +82,7 @@ func TestArgListToMap(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		assert.True(t, maps.Equal(tc.expectedMap, ArgListToMap(tc.argList)))
+		assert.Equal(t, tc.expectedMap, ArgListToMap(tc.argList))
 	}
 }
 
@@ -111,6 +109,6 @@ func TestUnique(t *testing.T) {
 		sort.Strings(tc.expectedSlice)
 		results := Unique(tc.testSlice)
 		sort.Strings(results)
-		assert.True(t, slices.Equal(tc.expectedSlice, results))
+		assert.Equal(t, tc.expectedSlice, results)
 	}
 }
