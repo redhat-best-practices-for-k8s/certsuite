@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.0
-	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.49
+	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.50
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
