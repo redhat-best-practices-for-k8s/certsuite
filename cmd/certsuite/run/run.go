@@ -39,7 +39,7 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().Bool("include-web-files", false, "Save web files in the configured output folder")
 	runCmd.PersistentFlags().Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
 	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
-	runCmd.PersistentFlags().String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.9", "Certsuite probe image")
+	runCmd.PersistentFlags().String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.10", "Certsuite probe image")
 	runCmd.PersistentFlags().String("daemonset-cpu-req", "100m", "CPU request for the probe daemonset container")
 	runCmd.PersistentFlags().String("daemonset-cpu-lim", "100m", "CPU limit for the probe daemonset container")
 	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the probe daemonset container")
