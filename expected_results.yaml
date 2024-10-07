@@ -27,8 +27,6 @@ testCases:
     - access-control-sys-nice-realtime-capability
     - affiliated-certification-operator-is-certified
     - lifecycle-affinity-required-pods
-    - lifecycle-container-poststart
-    - lifecycle-container-prestop
     - lifecycle-crd-scaling
     - lifecycle-deployment-scaling
     - lifecycle-image-pull-policy
@@ -40,9 +38,6 @@ testCases:
     - lifecycle-pod-scheduling
     - lifecycle-pod-toleration-bypass
     - lifecycle-readiness-probe
-    - lifecycle-startup-probe
-    - manageability-container-port-name-format
-    - manageability-containers-image-tag
     - networking-dual-stack-service
     - networking-icmpv4-connectivity
     - networking-icmpv4-connectivity-multus
@@ -54,7 +49,6 @@ testCases:
     - observability-container-logging
     - observability-crd-status
     - observability-pod-disruption-budget
-    - observability-termination-policy
     - observability-compatibility-with-next-ocp-release
     - operator-crd-openapi-schema
     - operator-crd-versioning
@@ -77,6 +71,12 @@ testCases:
     - access-control-pod-automount-service-account-token         # hazelcast pod has SA token automounted
     - networking-network-policy-deny-all                         # hazelcast pod does not have deny-all network policy
     - networking-undeclared-container-ports-usage                # hazelcast pod does not declare ports 8080 and 8081
+    - observability-termination-policy                           # hazelcast pod uses terminationMessagePolicy
+    - lifecycle-container-prestop                                # hazelcast pod doesn't define this hook
+    - lifecycle-container-poststart                              # hazelcast pod doesn't define this hook
+    - lifecycle-startup-probe                                    # hazelcast pod doesn't define this probe
+    - manageability-container-port-name-format                   # hazelcast declares not allowed port name "webhook-server".
+    - manageability-containers-image-tag                         # hazelcast container not using image tag.
   skip:
     - access-control-sys-ptrace-capability
     - affiliated-certification-helm-version
