@@ -89,7 +89,7 @@ jobs:
           repository: ${{ env.QE_REPO }}
           path: certsuite-qe
           # Reference temporarily changed to point to QE PR#952.
-          ref: pull/952/head
+          ref: access_control_and_operator_updates
 
       - name: Preemptively potential QE namespaces
         run: ./scripts/delete-namespaces.sh
