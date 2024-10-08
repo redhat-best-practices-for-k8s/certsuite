@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 112
+### Total test cases: 113
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |manageability|2|
 |networking|11|
 |observability|5|
-|operator|7|
+|operator|8|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 65
+### Non-Telco specific tests only: 66
 
 |Mandatory|Optional|
 |---|---|
-|42|23|
+|42|24|
 
 ### Telco specific tests only: 27
 
@@ -1249,6 +1249,22 @@ Tags|common,operator
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+#### operator-pods-no-hugepages
+
+Property|Description
+---|---
+Unique ID|operator-pods-no-hugepages
+Description|Tests that check that the pods do not have hugepages enabled.
+Suggested Remediation|Ensure that the pods are not using hugepages
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### operator-semantic-versioning
 
