@@ -95,7 +95,7 @@ func LoadChecks() {
 		}))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorPodsNoHugepages)).
-		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env), testhelper.GetNoOperatorPodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorPodsNoHugepages(c, &env)
 			return nil

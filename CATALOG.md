@@ -1255,7 +1255,7 @@ Tags|common,operator
 Property|Description
 ---|---
 Unique ID|operator-pods-no-hugepages
-Description|Tests that check that the pods do not have hugepages enabled.
+Description|Tests that the pods do not have hugepages enabled.
 Suggested Remediation|Ensure that the pods are not using hugepages
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
 Exception Process|No exceptions

@@ -647,6 +647,16 @@ func GetNoOperatorsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	}
 }
 
+func GetNoOperatorPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.CSVToPodListMap) == 0 {
+			return true, "no operator pods found"
+		}
+
+		return false, ""
+	}
+}
+
 func GetNoOperatorCrdsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Crds) == 0 {

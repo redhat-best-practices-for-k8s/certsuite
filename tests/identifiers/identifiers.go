@@ -1020,7 +1020,7 @@ that Node's kernel may not have the same hacks.'`,
 	TestOperatorPodsNoHugepages = AddCatalogEntry(
 		"pods-no-hugepages",
 		common.OperatorTestKey,
-		`Tests that check that the pods do not have hugepages enabled.`,
+		`Tests that the pods do not have hugepages enabled.`,
 		OperatorPodsNoHugepagesRemediation,
 		NoExceptions,
 		TestOperatorPodsNoHugepagesDocLink,
