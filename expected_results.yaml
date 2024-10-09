@@ -74,6 +74,7 @@ testCases:
     - operator-read-only-file-system
     - operator-run-as-non-root
     - operator-automount-tokens
+    - operator-olm-skip-range
   skip:
     - access-control-sys-ptrace-capability
     - affiliated-certification-helm-version

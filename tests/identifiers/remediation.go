@@ -91,6 +91,8 @@ const (
 
 	OperatorReadOnlyFilesystem = `Ensure that the pods have the read-only root filesystem setting enabled.`
 
+	OperatorOlmSkipRangeRemediation = `Ensure that the Operator has a valid OLM skip range.`
+
 	OperatorCrdVersioningRemediation = `Ensure that the Operator CRD has a valid version.`
 
 	OperatorSingleCrdOwnerRemediation = `Ensure that a CRD is owned by only one Operator`

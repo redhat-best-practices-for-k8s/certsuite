@@ -123,6 +123,13 @@ func LoadChecks() {
 			testOperatorContainersReadOnlyFilesystem(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorOlmSkipRange)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorOlmSkipRange(c, &env)
+			return nil
+		}))
 }
 
 // This function check if the Operator CRD version follows K8s versioning
@@ -463,4 +470,25 @@ func testOperatorContainersReadOnlyFilesystem(check *checksdb.Check, env *provid
 		}
 		check.SetResult(compliantObjects, nonCompliantObjects)
 	}
+}
+
+func testOperatorOlmSkipRange(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for i := range env.Operators {
+		operator := env.Operators[i]
+		check.LogInfo("Testing Operator %q", operator)
+
+		if operator.Csv.Annotations["olm.skipRange"] == "" {
+			check.LogError("OLM skipRange not found for Operator %q", operator)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "OLM skipRange not found for operator", false))
+		} else {
+			check.LogInfo("OLM skipRange %q found for Operator %q", operator.Csv.Annotations["olm.skipRange"], operator)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "OLM skipRange found for operator", true).
+				AddField("olm.SkipRange", operator.Csv.Annotations["olm.skipRange"]))
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }

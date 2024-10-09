@@ -123,6 +123,7 @@ var (
 	TestOperatorIsInstalledViaOLMIdentifier           claim.Identifier
 	TestOperatorHasSemanticVersioningIdentifier       claim.Identifier
 	TestOperatorReadOnlyFilesystem                    claim.Identifier
+	TestOperatorOlmSkipRange                          claim.Identifier
 	TestOperatorAutomountTokens                       claim.Identifier
 	TestOperatorRunAsNonRoot                          claim.Identifier
 	TestOperatorRunAsUserID                           claim.Identifier
@@ -991,6 +992,22 @@ that Node's kernel may not have the same hacks.'`,
 		NoExceptions,
 		TestOperatorReadOnlyFilesystemDocLink,
 		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
+		},
+		TagCommon)
+
+	TestOperatorOlmSkipRange = AddCatalogEntry(
+		"olm-skip-range",
+		common.OperatorTestKey,
+		`Test that checks the operator has a valid olm skip range.`,
+		OperatorOlmSkipRangeRemediation,
+		NoExceptions,
+		TestOperatorOlmSkipRangeDocLink,
+		false,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,
