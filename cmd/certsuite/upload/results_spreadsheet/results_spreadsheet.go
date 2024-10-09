@@ -190,6 +190,8 @@ func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, dri
 		return nil, err
 	}
 
+	log.Printf("%s workload's results sheet has been created.\n", workloadName)
+
 	return workloadResultsSpreadsheet, nil
 }
 
@@ -321,15 +323,19 @@ func generateResultsSpreadSheet() {
 		log.Fatalf("Unable to create main results folder: %v", err)
 	}
 
+	log.Printf("Generating raw results sheet...")
 	rawResultsSheet, err := createRawResultsSheet(resultsFilePath)
 	if err != nil {
 		log.Fatalf("Unable to create raw results sheet: %v", err)
 	}
+	log.Printf("Raw results sheet has been generated.")
 
+	log.Printf("Generating conclusion sheet...")
 	conclusionSheet, err := createConclusionsSheet(sheetService, driveService, rawResultsSheet, mainResultsFolder.Id)
 	if err != nil {
 		log.Fatalf("Unable to create conclusions sheet: %v", err)
 	}
+	log.Printf("Conclusion sheet has been generated.")
 
 	spreadsheet := &sheets.Spreadsheet{
 		Properties: &sheets.SpreadsheetProperties{
