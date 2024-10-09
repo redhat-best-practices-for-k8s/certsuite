@@ -186,7 +186,7 @@ func (category CategoryID) String() string {
 
 // GetContainerSCC is update the containerSCC according capability of container(cut)
 // Returns:
-//   - ContainerSCC: struct that updated according continer(cut)
+//   - ContainerSCC: struct that updated according container(cut)
 //
 //nolint:gocritic
 func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) ContainerSCC {
