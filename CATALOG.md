@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 113
+### Total test cases: 114
 
 ### Total suites: 10
 
@@ -18,7 +18,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |lifecycle|18|
 |manageability|2|
 |networking|11|
-|observability|4|
+|observability|5|
 |operator|11|
 |performance|6|
 |platform-alteration|13|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 66
+### Non-Telco specific tests only: 67
 
 |Mandatory|Optional|
 |---|---|
-|44|22|
+|44|23|
 
 ### Telco specific tests only: 27
 
@@ -1055,6 +1055,22 @@ Tags|extended,networking
 |Telco|Optional|
 
 ### observability
+
+#### observability-compatibility-with-next-ocp-release
+
+Property|Description
+---|---
+Unique ID|observability-compatibility-with-next-ocp-release
+Description|Checks to ensure if the APIs the workload uses are compatible with the next OCP version
+Suggested Remediation|Ensure the APIs the workload uses are compatible with the next OCP version
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-to-be-removed-apis
+Exception Process|No exceptions
+Tags|common,observability
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### observability-container-logging
 
