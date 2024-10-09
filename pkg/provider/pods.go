@@ -48,6 +48,7 @@ type Pod struct {
 	MultusPCIs              []string
 	SkipNetTests            bool
 	SkipMultusNetTests      bool
+	IsOperator              bool
 }
 
 func NewPod(aPod *corev1.Pod) (out Pod) {

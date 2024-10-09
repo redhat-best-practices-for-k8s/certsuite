@@ -36,6 +36,7 @@ import (
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 )
 
 type Operator struct {
@@ -339,4 +340,30 @@ func GetAllOperatorGroups() ([]*olmv1.OperatorGroup, error) {
 	}
 
 	return operatorGroups, nil
+}
+
+func addOperatorPodsToTestPods(operatorPods []*Pod, env *TestEnvironment) {
+	// Helper map to filter pods that have been already added
+	testPodsMap := map[types.NamespacedName]*Pod{}
+	for _, testPod := range env.Pods {
+		testPodsMap[types.NamespacedName{Namespace: testPod.Namespace, Name: testPod.Name}] = testPod
+	}
+
+	// Now check that the operator pod doesn't exist yet. If it exists, make sure it's flagged as operator pod.
+	for _, operatorPod := range operatorPods {
+		operatorPodKey := types.NamespacedName{Namespace: operatorPod.Namespace, Name: operatorPod.Name}
+		if pod, found := testPodsMap[operatorPodKey]; found {
+			log.Info("Operator pod %v already discovered.", operatorPodKey)
+
+			// Make sure it's flagged as operator pod.
+			pod.IsOperator = true
+		} else {
+			log.Info("Operator pod %v added to test pod list", operatorPodKey)
+			// Append pod to the test pod list.
+			env.Pods = append(env.Pods, operatorPod)
+
+			// Update the helper map.
+			testPodsMap[operatorPodKey] = operatorPod
+		}
+	}
 }
