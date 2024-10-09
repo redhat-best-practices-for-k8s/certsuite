@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 113
+### Total test cases: 114
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |manageability|2|
 |networking|11|
 |observability|5|
-|operator|8|
+|operator|9|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 66
+### Non-Telco specific tests only: 67
 
 |Mandatory|Optional|
 |---|---|
-|42|24|
+|42|25|
 
 ### Telco specific tests only: 27
 
@@ -1249,6 +1249,22 @@ Tags|common,operator
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+#### operator-olm-skip-range
+
+Property|Description
+---|---
+Unique ID|operator-olm-skip-range
+Description|Test that checks the operator has a valid olm skip range.
+Suggested Remediation|Ensure that the Operator has a valid OLM skip range.
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### operator-pods-no-hugepages
 
