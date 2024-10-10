@@ -114,6 +114,7 @@ const (
 	TestOperatorRunAsNonRootDocLink                     = DocOperatorRequirement
 	TestOperatorAutomountTokensDocLink                  = DocOperatorRequirement
 	TestOperatorReadOnlyFilesystemDocLink               = DocOperatorRequirement
+	TestOperatorOlmSkipRangeDocLink                     = DocOperatorRequirement
 
 	// Observability Test Suite
 	TestLoggingIdentifierDocLink                            = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-logging"
