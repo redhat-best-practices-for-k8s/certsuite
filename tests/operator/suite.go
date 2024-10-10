@@ -123,6 +123,13 @@ func LoadChecks() {
 			testOperatorContainersReadOnlyFilesystem(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorPodsNoHugepages)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env), testhelper.GetNoOperatorPodsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorPodsNoHugepages(c, &env)
+			return nil
+		}))
 }
 
 // This function check if the Operator CRD version follows K8s versioning
@@ -459,6 +466,27 @@ func testOperatorContainersReadOnlyFilesystem(check *checksdb.Check, env *provid
 					check.LogError("Container %q in Pod %q does not have a read-only root filesystem.", cut.Name, pod.Name)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Container does not have a read-only root filesystem", false))
 				}
+			}
+		}
+		check.SetResult(compliantObjects, nonCompliantObjects)
+	}
+}
+
+func testOperatorPodsNoHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for csv, pods := range env.CSVToPodListMap {
+		CsvResult := SplitCsv(csv)
+		check.LogInfo("Name of csv: %q in namespaces: %q", CsvResult.NameCsv, CsvResult.Namespace)
+		for _, pod := range pods {
+			check.LogInfo("Testing Pod %q in namespace %q", pod.Name, pod.Namespace)
+			if pod.HasHugepages() {
+				check.LogError("Pod %q in namespace %q has hugepages", pod.Name, pod.Namespace)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod has hugepages", false))
+			} else {
+				check.LogInfo("Pod %q in namespace %q has no hugepages", pod.Name, pod.Namespace)
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod has no hugepages", true))
 			}
 		}
 		check.SetResult(compliantObjects, nonCompliantObjects)
