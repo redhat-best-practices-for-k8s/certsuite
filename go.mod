@@ -21,7 +21,7 @@ require (
 	github.com/operator-framework/api v0.27.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
-	helm.sh/helm/v3 v3.16.1
+	helm.sh/helm/v3 v3.16.2
 	k8s.io/api v0.31.1
 	k8s.io/apimachinery v0.31.1
 	k8s.io/klog/v2 v2.130.1 // indirect
@@ -175,6 +175,7 @@ require (
 	golang.org/x/crypto v0.28.0 // indirect
 	golang.org/x/exp v0.0.0-20240808152545-0cdaa3abc0fa // indirect
 	golang.org/x/net v0.30.0 // indirect
+	golang.org/x/oauth2 v0.23.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
 	golang.org/x/text v0.19.0 // indirect
@@ -225,7 +226,6 @@ require (
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.37
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241002153745-3b562bb54a88
 	github.com/robert-nix/ansihtml v1.0.1
-	golang.org/x/oauth2 v0.23.0
 	golang.org/x/term v0.25.0
 	google.golang.org/api v0.199.0
 	k8s.io/kubectl v0.31.1
