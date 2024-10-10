@@ -308,7 +308,7 @@ func TestGetSRIOVNetworksNamesFromCNCFNetworks(t *testing.T) {
 	}
 }
 
-func TestIssNetworkAttachmentDefinitionConfigTypeSRIOV(t *testing.T) {
+func TestIsNetworkAttachmentDefinitionConfigTypeSRIOV(t *testing.T) {
 	testCases := []struct {
 		networkAttachmentDefinition string
 		expectedNadTypeSriov        bool
