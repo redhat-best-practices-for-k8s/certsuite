@@ -266,6 +266,61 @@ func getCNCFNetworksNamesFromPodAnnotation(networksAnnotation string) []string {
 	return networkNames
 }
 
+// isNetworkAttachmentDefinitionSRIOVConfigMTUSet is a helper function to check whether a CNI config
+// string has any config for MTU for SRIOV configs only
+
+/*
+	{
+		"cniVersion": "0.4.0",
+		"name": "vlan-100",
+		"plugins": [
+			{
+				"type": "sriov",
+				"master": "ext0",
+				"mtu": 1500,
+				"vlanId": 100,
+				"linkInContainer": true,
+				"ipam": {"type": "whereabouts", "ipRanges": [{"range": "1.1.1.0/24"}]}
+			}
+		]
+	}
+*/
+func isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nadConfig string) (bool, error) {
+	const (
+		typeSriov = "sriov"
+	)
+
+	type CNIConfig struct {
+		CniVersion string  `json:"cniVersion"`
+		Name       string  `json:"name"`
+		Type       *string `json:"type,omitempty"`
+		Plugins    *[]struct {
+			Type string `json:"type"`
+			MTU  int    `json:"mtu"`
+		} `json:"plugins,omitempty"`
+	}
+
+	cniConfig := CNIConfig{}
+	if err := json.Unmarshal([]byte(nadConfig), &cniConfig); err != nil {
+		return false, fmt.Errorf("failed to unmarshal cni config %s: %v", nadConfig, err)
+	}
+
+	if cniConfig.Plugins == nil {
+		return false, fmt.Errorf("invalid multi-plugins cni config: %s", nadConfig)
+	}
+
+	log.Debug("CNI plugins: %+v", *cniConfig.Plugins)
+	for i := range *cniConfig.Plugins {
+		plugin := (*cniConfig.Plugins)[i]
+		if plugin.Type == typeSriov && plugin.MTU > 0 {
+			return true, nil
+		}
+	}
+
+	// No sriov plugin type found.
+	return false, nil
+}
+
 // isNetworkAttachmentDefinitionConfigTypeSRIOV is a helper function to check whether a CNI
 // config string has any config for sriov plugin.
 // CNI config has two modes: single CNI plugin, or multi-plugins:
@@ -376,8 +431,50 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 	return false, nil
 }
 
+// IsUsingSRIOVWithMTU returns true if any of the pod's interfaces is a sriov one with MTU set.
+func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
+	const (
+		cncfNetworksAnnotation = "k8s.v1.cni.cncf.io/networks"
+	)
+
+	cncfNetworks, exist := p.Annotations[cncfNetworksAnnotation]
+	if !exist {
+		return false, nil
+	}
+
+	// Get all CNCF network names
+	cncfNetworkNames := getCNCFNetworksNamesFromPodAnnotation(cncfNetworks)
+
+	// For each CNCF network, get its network attachment definition and check
+	// whether its config's type is "sriov"
+	oc := clientsholder.GetClientsHolder()
+
+	for _, networkName := range cncfNetworkNames {
+		log.Debug("%s: Reviewing network-attachment definition %q", p, networkName)
+		nad, err := oc.CNCFNetworkingClient.NetworkAttachmentDefinitions(
+			p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
+		if err != nil {
+			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
+		}
+
+		isSRIOV, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nad.Spec.Config)
+		if err != nil {
+			return false, fmt.Errorf("failed to know if network-attachment %s is sriov with MTU: %v",
+				networkName, err)
+		}
+
+		log.Debug("%s: NAD config: %s", p, nad.Spec.Config)
+		if isSRIOV {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
 //nolint:gocritic
-func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding, logger *log.Logger) (bool, string, error) {
+func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding,
+	logger *log.Logger) (bool, string, error) {
 	// This function accepts a list of clusterRoleBindings and checks to see if the pod's service account is
 	// tied to any of them.  If it is, then it returns true, otherwise it returns false.
 	logger.Info("Pod %q is using service account %q", p, p.Pod.Spec.ServiceAccountName)
@@ -387,7 +484,8 @@ func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRole
 	// role bindings.
 	for crbIndex := range clusterRoleBindings {
 		for _, subject := range clusterRoleBindings[crbIndex].Subjects {
-			if subject.Kind == rbacv1.ServiceAccountKind && subject.Name == p.Pod.Spec.ServiceAccountName && subject.Namespace == p.Pod.Namespace {
+			if subject.Kind == rbacv1.ServiceAccountKind &&
+				subject.Name == p.Pod.Spec.ServiceAccountName && subject.Namespace == p.Pod.Namespace {
 				logger.Error("Pod %q has service account %q that is tied to cluster role binding %q", p.Pod.Name, p.Pod.Spec.ServiceAccountName, clusterRoleBindings[crbIndex].Name)
 				return true, clusterRoleBindings[crbIndex].RoleRef.Name, nil
 			}

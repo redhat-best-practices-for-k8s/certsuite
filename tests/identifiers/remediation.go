@@ -196,6 +196,8 @@ const (
 
 	SRIOVPodsRestartOnRebootLabelRemediation = `Ensure that the label restart-on-reboot exists on pods that use SRIOV network interfaces.`
 
+	SRIOVNetworkAttachmentDefinitionMTURemediation = `Ensure that the MTU of the SR-IOV network attachment definition is set explicitly.`
+
 	HelmVersionV3Remediation = `Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller.`
 
 	ContainerIsCertifiedDigestRemediation = "Ensure that your container has passed the Red Hat Container Certification Program (CCP)."
