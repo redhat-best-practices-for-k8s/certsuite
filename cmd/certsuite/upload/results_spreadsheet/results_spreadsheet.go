@@ -11,7 +11,6 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"golang.org/x/oauth2/google"
 	"google.golang.org/api/drive/v3"
 	"google.golang.org/api/option"
 	"google.golang.org/api/sheets/v4"
@@ -75,29 +74,15 @@ func readCSV(fp string) ([][]string, error) {
 
 func CreateSheetsAndDriveServices(credentials string) (sheetService *sheets.Service, driveService *drive.Service, err error) {
 	ctx := context.Background()
-	b, err := os.ReadFile(credentials)
+
+	sheetSrv, err := sheets.NewService(ctx, option.WithCredentialsFile(credentials))
 	if err != nil {
-		return nil, nil, fmt.Errorf("unable to read client secret file: %v", err)
+		return nil, nil, fmt.Errorf("unable to retrieve Sheets service: %v", err)
 	}
 
-	// If modifying these scopes, delete your previously saved token.json.
-	config, err := google.ConfigFromJSON(b, sheets.SpreadsheetsScope, drive.DriveScope)
+	driveSrv, err := drive.NewService(ctx, option.WithCredentialsFile(credentials))
 	if err != nil {
-		return nil, nil, fmt.Errorf("unable to parse client secret file to config: %v", err)
-	}
-	client, err := getClient(config)
-	if err != nil {
-		return nil, nil, fmt.Errorf("unable to get client: %v", err)
-	}
-
-	sheetSrv, err := sheets.NewService(ctx, option.WithHTTPClient(client))
-	if err != nil {
-		return nil, nil, fmt.Errorf("unable to retrieve Sheets client: %v", err)
-	}
-
-	driveSrv, err := drive.NewService(ctx, option.WithHTTPClient(client))
-	if err != nil {
-		return nil, nil, fmt.Errorf("unable to retrieve Drive client: %v", err)
+		return nil, nil, fmt.Errorf("unable to retrieve Drive service: %v", err)
 	}
 
 	return sheetSrv, driveSrv, nil
@@ -204,6 +189,8 @@ func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, dri
 	if err := MoveSpreadSheetToFolder(driveService, folder, workloadResultsSpreadsheet); err != nil {
 		return nil, err
 	}
+
+	log.Printf("%s workload's results sheet has been created.\n", workloadName)
 
 	return workloadResultsSpreadsheet, nil
 }
@@ -336,15 +323,19 @@ func generateResultsSpreadSheet() {
 		log.Fatalf("Unable to create main results folder: %v", err)
 	}
 
+	log.Printf("Generating raw results sheet...")
 	rawResultsSheet, err := createRawResultsSheet(resultsFilePath)
 	if err != nil {
 		log.Fatalf("Unable to create raw results sheet: %v", err)
 	}
+	log.Printf("Raw results sheet has been generated.")
 
+	log.Printf("Generating conclusion sheet...")
 	conclusionSheet, err := createConclusionsSheet(sheetService, driveService, rawResultsSheet, mainResultsFolder.Id)
 	if err != nil {
 		log.Fatalf("Unable to create conclusions sheet: %v", err)
 	}
+	log.Printf("Conclusion sheet has been generated.")
 
 	spreadsheet := &sheets.Spreadsheet{
 		Properties: &sheets.SpreadsheetProperties{

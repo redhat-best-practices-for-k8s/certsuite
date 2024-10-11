@@ -5,7 +5,7 @@ package securitycontextcontainer
 
 import (
 	"fmt"
-	"reflect"
+	"slices"
 	"sort"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -186,7 +186,7 @@ func (category CategoryID) String() string {
 
 // GetContainerSCC is update the containerSCC according capability of container(cut)
 // Returns:
-//   - ContainerSCC: struct that updated according continer(cut)
+//   - ContainerSCC: struct that updated according container(cut)
 //
 //nolint:gocritic
 func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) ContainerSCC {
@@ -236,7 +236,7 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 		sort.Strings(sliceDropCapabilities)
 		sort.Strings(requiredDropCapabilities)
 
-		if stringhelper.SubSlice(sliceDropCapabilities, requiredDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
+		if stringhelper.SubSlice(sliceDropCapabilities, requiredDropCapabilities) || slices.Equal(sliceDropCapabilities, dropAll) {
 			containerSCC.RequiredDropCapabilitiesPresent = OK
 		}
 		//nolint:gocritic

@@ -19,7 +19,6 @@ package operatingsystem
 import (
 	"errors"
 	"os"
-	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -62,7 +61,7 @@ func TestGetRHCOSMappedVersionsFromFile(t *testing.T) {
 		} else {
 			result, err := GetRHCOSMappedVersions(string(file))
 			assert.Nil(t, err)
-			assert.True(t, reflect.DeepEqual(tc.expectedOutput, result))
+			assert.Equal(t, tc.expectedOutput, result)
 		}
 	}
 }

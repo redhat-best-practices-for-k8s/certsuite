@@ -1,7 +1,6 @@
 package testcases
 
 import (
-	"reflect"
 	"testing"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
@@ -78,7 +77,7 @@ func TestGetTestCasesResultsMap(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.description, func(t *testing.T) {
 			resultsMap := getTestCasesResultsMap(tc.results)
-			assert.True(t, reflect.DeepEqual(tc.expectedTestCasesResultsMap, resultsMap))
+			assert.Equal(t, tc.expectedTestCasesResultsMap, resultsMap)
 		})
 	}
 }
@@ -137,7 +136,7 @@ func TestGetMergedTestCasesNames(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.description, func(t *testing.T) {
 			tcMergedNamesList := getMergedTestCasesNames(tc.claim1Results, tc.claim2Results)
-			assert.True(t, reflect.DeepEqual(tc.expectedMergedTcNames, tcMergedNamesList))
+			assert.Equal(t, tc.expectedMergedTcNames, tcMergedNamesList)
 		})
 	}
 }
@@ -302,7 +301,7 @@ func TestGetDiffReport(t *testing.T) {
 
 			// Check test case results differences
 			t.Logf("diffs: %+v", diffReport.TestCases)
-			assert.True(t, reflect.DeepEqual(tc.expectedDiffReport.TestCases, diffReport.TestCases))
+			assert.Equal(t, tc.expectedDiffReport.TestCases, diffReport.TestCases)
 
 			// Check count
 			assert.Equal(t, tc.expectedDiffReport.DifferentTestCasesResults, diffReport.DifferentTestCasesResults)

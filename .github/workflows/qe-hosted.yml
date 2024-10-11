@@ -30,12 +30,12 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Check out code
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
         with:
           ref: ${{ github.sha }}
 
       - name: Setup docker buildx
-        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
 
       # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
       # This step needs to be done right after the partner repo's bootstrap scripts, as they
@@ -67,7 +67,7 @@ jobs:
           outputs: type=docker,dest=/tmp/testimage.tar
       
       - name: Store image as artifact
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: testimage
           path: /tmp/testimage.tar
@@ -89,7 +89,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
         with:
           ref: ${{ github.sha }}
 
@@ -98,7 +98,7 @@ jobs:
 
       # Download the image from the artifact and load it into the docker daemon.
       - name: Setup docker buildx
-        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
 
       # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
       # This step needs to be done right after the partner repo's bootstrap scripts, as they
@@ -142,7 +142,7 @@ jobs:
         timeout-minutes: 10
 
       - name: Clone the QE repository
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
         with:
           repository: ${{ env.QE_REPO }}
           path: certsuite-qe
