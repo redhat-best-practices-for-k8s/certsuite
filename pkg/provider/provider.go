@@ -265,8 +265,6 @@ func buildTestEnvironment() { //nolint:funlen
 		aNewPod := NewPod(&pods[i])
 		aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
 		env.Pods = append(env.Pods, &aNewPod)
-		// Note: 'getPodContainers' is returning a filtered list of Container objects.
-		env.Containers = append(env.Containers, getPodContainers(&pods[i], true)...)
 	}
 	pods = data.AllPods
 	for i := 0; i < len(pods); i++ {
@@ -299,7 +297,8 @@ func buildTestEnvironment() { //nolint:funlen
 	addOperatorPodsToTestPods(csvPods, &env)
 
 	// Add operator pods' containers to the list.
-	for _, pod := range csvPods {
+	for _, pod := range env.Pods {
+		// Note: 'getPodContainers' is returning a filtered list of Container objects.
 		env.Containers = append(env.Containers, getPodContainers(pod.Pod, true)...)
 	}
 
