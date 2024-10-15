@@ -146,7 +146,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: certsuite-qe
-          ref: access_control_and_operator_updates
+          ref: main
 
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
