@@ -26,6 +26,8 @@ const (
 
 	SecConNonRootUserRemediation = `Change the pod and containers "runAsUser" uid to something other than root(0)`
 
+	SecConRunAsNonRootUserRemediation = `Set the the pod and containers "runAsNonRoot" to true.`
+
 	SecConRemediation = `Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`
 
 	UnalteredBaseImageRemediation = `Ensure that Container applications do not modify the Container Base Image. In particular, ensure that the following directories are not modified: 1) /var/lib/rpm 2) /var/lib/dpkg 3) /bin 4) /sbin 5) /lib 6) /lib64 7) /usr/bin 8) /usr/sbin 9) /usr/lib 10) /usr/lib64 Ensure that all required binaries are built directly into the container image, and are not installed post startup.`
@@ -42,6 +44,8 @@ const (
 	BpfCapabilityRemediation = `Remove the following capability from the container/pod definitions: BPF`
 
 	SecConPrivilegeRemediation = `Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).`
+
+	SecConReadOnlyFilesystem = `Ensure that the pods have the read-only root filesystem setting enabled.`
 
 	ContainerHostPortRemediation = `Remove hostPort configuration from the container. Workloads should avoid accessing host resources - containers should not configure HostPort.`
 
@@ -88,8 +92,6 @@ const (
 	OperatorRunAsNonRoot = `Ensure that the pods are running as non root.`
 
 	OperatorAutomountTokens = `Ensure that the pods have the automount service account token disabled.`
-
-	OperatorReadOnlyFilesystem = `Ensure that the pods have the read-only root filesystem setting enabled.`
 
 	OperatorCrdVersioningRemediation = `Ensure that the Operator CRD has a valid version.`
 

@@ -265,8 +265,6 @@ func buildTestEnvironment() { //nolint:funlen
 		aNewPod := NewPod(&pods[i])
 		aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
 		env.Pods = append(env.Pods, &aNewPod)
-		// Note: 'getPodContainers' is returning a filtered list of Container objects.
-		env.Containers = append(env.Containers, getPodContainers(&pods[i], true)...)
 	}
 	pods = data.AllPods
 	for i := 0; i < len(pods); i++ {
@@ -280,16 +278,31 @@ func buildTestEnvironment() { //nolint:funlen
 		env.ProbePods[nodeName] = &data.ProbePods[i]
 	}
 
+	csvPods := []*Pod{}
 	env.CSVToPodListMap = make(map[string][]*Pod)
-	for k, podList := range data.CSVToPodListMap {
+	for csv, podList := range data.CSVToPodListMap {
 		var pods []*Pod
 		for i := 0; i < len(podList); i++ {
 			aNewPod := NewPod(podList[i])
 			aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
+			aNewPod.IsOperator = true
 			pods = append(pods, &aNewPod)
+			log.Info("CSV: %v, Operator Pod: %v/%v", csv, podList[i].Namespace, podList[i].Name)
 		}
-		env.CSVToPodListMap[k] = pods
+		env.CSVToPodListMap[csv.String()] = pods
+		csvPods = append(csvPods, pods...)
 	}
+
+	// Add operator pods to list of normal pods to test.
+	addOperatorPodsToTestPods(csvPods, &env)
+
+	// Add operator pods' containers to the list.
+	for _, pod := range env.Pods {
+		// Note: 'getPodContainers' is returning a filtered list of Container objects.
+		env.Containers = append(env.Containers, getPodContainers(pod.Pod, true)...)
+	}
+
+	log.Info("Found pods in %d csvs", len(env.CSVToPodListMap))
 
 	env.OCPStatus = data.OCPStatus
 	env.K8sVersion = data.K8sVersion

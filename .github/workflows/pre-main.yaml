@@ -236,6 +236,9 @@ jobs:
       - name: 'Test: Run test suites'
         run: ./certsuite run --label-filter="${SMOKE_TESTS_LABELS_FILTER}" --output-dir=certsuite-out --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
+      - name: 'Show failed test cases and the non compliant objects'
+        run: ./certsuite claim show failures -c certsuite-out/claim.json
+
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         if: always()
