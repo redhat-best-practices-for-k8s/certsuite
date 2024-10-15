@@ -975,7 +975,7 @@ that Node's kernel may not have the same hacks.'`,
 		common.OperatorTestKey,
 		`Test that checks the operator has a valid olm skip range.`,
 		OperatorOlmSkipRangeRemediation,
-		NoExceptions,
+		OperatorSkipRangeExceptionProcess,
 		TestOperatorOlmSkipRangeDocLink,
 		false,
 		map[string]string{

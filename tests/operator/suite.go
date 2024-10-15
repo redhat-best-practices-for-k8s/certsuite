@@ -39,6 +39,7 @@ var (
 	}
 )
 
+//nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.OperatorTestKey)
 
