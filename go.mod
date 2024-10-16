@@ -166,7 +166,7 @@ require (
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.28.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.28.0 // indirect
 	go.opentelemetry.io/otel/metric v1.29.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.28.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.29.0 // indirect
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.3.1 // indirect
 	go.starlark.net v0.0.0-20231121155337-90ade8b19d09 // indirect
@@ -227,7 +227,7 @@ require (
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241002153745-3b562bb54a88
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.25.0
-	google.golang.org/api v0.200.0
+	google.golang.org/api v0.201.0
 	k8s.io/kubectl v0.31.1
 )
 
