@@ -130,6 +130,7 @@ var (
 	TestOperatorCrdVersioningIdentifier               claim.Identifier
 	TestOperatorCrdSchemaIdentifier                   claim.Identifier
 	TestOperatorSingleCrdOwnerIdentifier              claim.Identifier
+	TestOperatorPodsNoHugepages                       claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
@@ -1013,6 +1014,22 @@ that Node's kernel may not have the same hacks.'`,
 			Telco:    Mandatory,
 			NonTelco: Mandatory,
 			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorPodsNoHugepages = AddCatalogEntry(
+		"pods-no-hugepages",
+		common.OperatorTestKey,
+		`Tests that the pods do not have hugepages enabled.`,
+		OperatorPodsNoHugepagesRemediation,
+		NoExceptions,
+		TestOperatorPodsNoHugepagesDocLink,
+		false,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
