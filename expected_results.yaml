@@ -78,6 +78,7 @@ testCases:
     - lifecycle-startup-probe                                    # hazelcast pod doesn't define this probe
     - manageability-container-port-name-format                   # hazelcast declares not allowed port name "webhook-server".
     - manageability-containers-image-tag                         # hazelcast container not using image tag.
+    - operator-olm-skip-range                                    # hazelcast operator does not have a skip range
   skip:
     - access-control-sys-ptrace-capability
     - affiliated-certification-helm-version

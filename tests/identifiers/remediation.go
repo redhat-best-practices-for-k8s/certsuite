@@ -95,6 +95,8 @@ const (
 
 	OperatorCrdVersioningRemediation = `Ensure that the Operator CRD has a valid version.`
 
+	OperatorOlmSkipRangeRemediation = `Ensure that the Operator has a valid OLM skip range. If the operator does not have another version to "skip", then ignore the result of this test.`
+
 	OperatorSingleCrdOwnerRemediation = `Ensure that a CRD is owned by only one Operator`
 
 	OperatorPodsNoHugepagesRemediation = `Ensure that the pods are not using hugepages`
