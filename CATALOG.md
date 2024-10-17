@@ -17,7 +17,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |affiliated-certification|4|
 |lifecycle|18|
 |manageability|2|
-|networking|11|
+|networking|12|
 |observability|5|
 |operator|9|
 |performance|6|
@@ -30,11 +30,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |9|3|
 
-### Far-Edge specific tests only: 8
+### Far-Edge specific tests only: 9
 
 |Mandatory|Optional|
 |---|---|
-|7|1|
+|8|1|
 
 ### Non-Telco specific tests only: 67
 
@@ -1004,6 +1004,22 @@ Tags|telco,networking
 |Extended|Mandatory|
 |Far-Edge|Mandatory|
 |Non-Telco|Optional|
+|Telco|Mandatory|
+
+#### networking-network-attachment-definition-sriov-mtu
+
+Property|Description
+---|---
+Unique ID|networking-network-attachment-definition-sriov-mtu
+Description|Ensures that MTU values are set correctly in NetworkAttachmentDefinitions for SRIOV network interfaces.
+Suggested Remediation|Ensure that the MTU of the SR-IOV network attachment definition is set explicitly.
+Best Practice Reference|No Doc Link - Far Edge
+Exception Process|There is no documented exception process for this.
+Tags|faredge,networking
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
 |Telco|Mandatory|
 
 #### networking-network-policy-deny-all

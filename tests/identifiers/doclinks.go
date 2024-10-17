@@ -8,18 +8,19 @@ const (
 	NoDocLink         = "No Doc Link"
 
 	// Networking Suite
-	TestICMPv4ConnectivityIdentifierDocLink         = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ipv4-&-ipv6"
-	TestNetworkPolicyDenyAllIdentifierDocLink       = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-vrfs-aka-routing-instances"
-	TestReservedExtendedPartnerPortsDocLink         = NoDocLinkExtended
-	TestDpdkCPUPinningExecProbeDocLink              = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cpu-manager-pinning"
-	TestRestartOnRebootLabelOnPodsUsingSRIOVDocLink = NoDocLinkFarEdge
-	TestLimitedUseOfExecProbesIdentifierDocLink     = NoDocLinkFarEdge
-	TestICMPv6ConnectivityIdentifierDocLink         = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ipv4-&-ipv6"
-	TestICMPv4ConnectivityMultusIdentifierDocLink   = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"
-	TestICMPv6ConnectivityMultusIdentifierDocLink   = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"
-	TestServiceDualStackIdentifierDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ipv4-&-ipv6"
-	TestUndeclaredContainerPortsUsageDocLink        = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-requirements-cnf-reqs"
-	TestOCPReservedPortsUsageDocLink                = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ports-reserved-by-openshift"
+	TestICMPv4ConnectivityIdentifierDocLink             = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ipv4-&-ipv6"
+	TestNetworkPolicyDenyAllIdentifierDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-vrfs-aka-routing-instances"
+	TestReservedExtendedPartnerPortsDocLink             = NoDocLinkExtended
+	TestDpdkCPUPinningExecProbeDocLink                  = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cpu-manager-pinning"
+	TestRestartOnRebootLabelOnPodsUsingSRIOVDocLink     = NoDocLinkFarEdge
+	TestNetworkAttachmentDefinitionSRIOVUsingMTUDocLink = NoDocLinkFarEdge
+	TestLimitedUseOfExecProbesIdentifierDocLink         = NoDocLinkFarEdge
+	TestICMPv6ConnectivityIdentifierDocLink             = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ipv4-&-ipv6"
+	TestICMPv4ConnectivityMultusIdentifierDocLink       = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"
+	TestICMPv6ConnectivityMultusIdentifierDocLink       = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"
+	TestServiceDualStackIdentifierDocLink               = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ipv4-&-ipv6"
+	TestUndeclaredContainerPortsUsageDocLink            = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-requirements-cnf-reqs"
+	TestOCPReservedPortsUsageDocLink                    = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-ports-reserved-by-openshift"
 
 	// Access Control Suite
 	Test1337UIDIdentifierDocLink                             = NoDocLinkExtended

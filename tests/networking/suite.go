@@ -153,6 +153,19 @@ func LoadChecks() {
 			testRestartOnRebootLabelOnPodsUsingSriov(c, sriovPods)
 			return nil
 		}))
+
+	// SRIOV MTU test case
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(
+		identifiers.TestNetworkAttachmentDefinitionSRIOVUsingMTU)).
+		WithSkipCheckFn(testhelper.GetNoSRIOVPodsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			sriovPods, err := env.GetPodsUsingSRIOV()
+			if err != nil {
+				return fmt.Errorf("failure getting pods using SRIOV: %v", err)
+			}
+			testNetworkAttachmentDefinitionSRIOVUsingMTU(c, sriovPods)
+			return nil
+		}))
 }
 
 func testExecProbDenyAtCPUPinning(check *checksdb.Check, dpdkPods []*provider.Pod) {
@@ -405,6 +418,30 @@ func testRestartOnRebootLabelOnPodsUsingSriov(check *checksdb.Check, sriovPods [
 
 		check.LogInfo("Pod %q uses SRIOV and the %q label is set to true", pod, restartOnRebootLabel)
 		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, fmt.Sprintf("Pod uses SRIOV and the label %s is set to true", restartOnRebootLabel), true))
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testNetworkAttachmentDefinitionSRIOVUsingMTU(check *checksdb.Check, sriovPods []*provider.Pod) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, pod := range sriovPods {
+		result, err := pod.IsUsingSRIOVWithMTU()
+		if err != nil {
+			check.LogError("Failed to check if pod %q uses SRIOV with MTU, err: %v", pod, err)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Failed to check if pod uses SRIOV with MTU", false))
+			continue
+		}
+
+		if result {
+			check.LogInfo("Pod %q uses SRIOV with MTU", pod)
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod uses SRIOV with MTU", true))
+		} else {
+			check.LogError("Pod %q uses SRIOV but the MTU is not set explicitly", pod)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod uses SRIOV but the MTU is not set explicitly", false))
+		}
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)

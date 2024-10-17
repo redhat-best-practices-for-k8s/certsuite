@@ -89,6 +89,7 @@ testCases:
     - networking-dpdk-cpu-pinning-exec-probe
     - networking-icmpv6-connectivity
     - networking-restart-on-reboot-sriov-pod
+    - networking-network-attachment-definition-sriov-mtu
     - performance-exclusive-cpu-pool-rt-scheduling-policy
     - performance-isolated-cpu-pool-rt-scheduling-policy
     - performance-rt-apps-no-exec-probes

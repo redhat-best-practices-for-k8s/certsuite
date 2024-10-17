@@ -573,3 +573,35 @@ func TestIsRunAsNonRoot(t *testing.T) {
 func boolPtr(b bool) *bool {
 	return &b
 }
+
+func TestIsNetworkAttachmentDefinitionSRIOVConfigMTUSet(t *testing.T) {
+	testCases := []struct {
+		networkAttachmentDefinition string
+		expectedResult              bool
+		expectedErrorMsg            string
+	}{
+		// Single plugin mode:
+		{
+			networkAttachmentDefinition: "",
+			expectedErrorMsg:            "failed to unmarshal cni config : unexpected end of JSON input",
+			expectedResult:              false,
+		},
+		{
+			networkAttachmentDefinition: `{"cniVersion":"0.4.0","name":"vlan-100","plugins":[{"type":"vlan","master":"ext0","mtu":1500,"vlanId":100,"linkInContainer":true,"ipam":{"type":"whereabouts","ipRanges":[{"range":"1.1.1.0/24"}]}}]}`,
+			expectedResult:              false,
+		},
+		{
+			networkAttachmentDefinition: `{"cniVersion":"0.4.0","name":"vlan-100","plugins":[{"type":"sriov","master":"ext0","mtu":1500,"vlanId":100,"linkInContainer":true,"ipam":{"type":"whereabouts","ipRanges":[{"range":"1.1.1.0/24"}]}}]}`,
+			expectedResult:              true,
+		},
+	}
+
+	for _, testCase := range testCases {
+		isMTUSet, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(testCase.networkAttachmentDefinition)
+		if err != nil {
+			assert.Equal(t, testCase.expectedErrorMsg, err.Error())
+		}
+
+		assert.Equal(t, testCase.expectedResult, isMTUSet)
+	}
+}

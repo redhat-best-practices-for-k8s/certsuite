@@ -103,6 +103,7 @@ var (
 	TestRestartOnRebootLabelOnPodsUsingSRIOV          claim.Identifier
 	TestSecConNonRootUserIDIdentifier                 claim.Identifier
 	TestSecConRunAsNonRootIdentifier                  claim.Identifier
+	TestNetworkAttachmentDefinitionSRIOVUsingMTU      claim.Identifier
 	TestSecContextIdentifier                          claim.Identifier
 	TestSecConPrivilegeEscalation                     claim.Identifier
 	TestContainerHostPort                             claim.Identifier
@@ -578,6 +579,22 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			FarEdge:  Mandatory,
 			Telco:    Optional,
 			NonTelco: Optional,
+			Extended: Mandatory,
+		},
+		TagFarEdge)
+
+	TestNetworkAttachmentDefinitionSRIOVUsingMTU = AddCatalogEntry(
+		"network-attachment-definition-sriov-mtu",
+		common.NetworkingTestKey,
+		`Ensures that MTU values are set correctly in NetworkAttachmentDefinitions for SRIOV network interfaces.`,
+		SRIOVNetworkAttachmentDefinitionMTURemediation,
+		NoDocumentedProcess,
+		TestNetworkAttachmentDefinitionSRIOVUsingMTUDocLink,
+		false,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
 		TagFarEdge)
