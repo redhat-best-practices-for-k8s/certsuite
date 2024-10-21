@@ -222,7 +222,7 @@ require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
 	github.com/manifoldco/promptui v0.9.0
-	github.com/redhat-best-practices-for-k8s/oct v0.0.25
+	github.com/redhat-best-practices-for-k8s/oct v0.0.26
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.38
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241002153745-3b562bb54a88
 	github.com/robert-nix/ansihtml v1.0.1
