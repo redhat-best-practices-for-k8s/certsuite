@@ -18,7 +18,9 @@ package autodiscover
 
 import (
 	"context"
+	"strings"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
@@ -30,4 +32,22 @@ func getResourceQuotas(oc corev1client.CoreV1Interface) ([]corev1.ResourceQuota,
 		return nil, err
 	}
 	return rql.Items, nil
+}
+
+func DoesAPIResourceExist(client *clientsholder.ClientsHolder, incomingResource string) bool {
+	return doesAPIResourceExist(client.GroupResources, incomingResource)
+}
+
+func doesAPIResourceExist(groupResources []*metav1.APIResourceList, incomingResource string) bool {
+	// check if the resource exists
+	for _, res := range groupResources {
+		//nolint:gocritic
+		for _, apiResources := range res.APIResources {
+			if strings.Contains(apiResources.Name, incomingResource) {
+				return true
+			}
+		}
+	}
+
+	return false
 }
