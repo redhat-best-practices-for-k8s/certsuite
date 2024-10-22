@@ -17,11 +17,13 @@
 package provider
 
 import (
+	"context"
 	"errors"
 	"reflect"
 	"strings"
 	"testing"
 
+	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/stretchr/testify/assert"
@@ -306,6 +308,208 @@ func TestGetSRIOVNetworksNamesFromCNCFNetworks(t *testing.T) {
 	for _, tc := range testCases {
 		netNames := getCNCFNetworksNamesFromPodAnnotation(tc.networksAnnotation)
 		assert.Equal(t, tc.expectedNetworkNames, netNames)
+	}
+}
+
+func TestIsUsingSRIOVWithMTU(t *testing.T) {
+	// Generate a pod with corresponding SriovNetwork and SriovNetworkNodePolicy resources
+	testCases := []struct {
+		testPod                          Pod
+		testNetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
+		expectedError                    error
+		expectedOutput                   bool
+	}{
+		{ // Test Case #1 - Pod annotation contains MTU field, return true
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Annotations: map[string]string{
+							"k8s.v1.cni.cncf.io/networks": "net1",
+						},
+						Name:      "test-pod",
+						Namespace: "test-namespace",
+					},
+				},
+			},
+			testNetworkAttachmentDefinitions: []nadClient.NetworkAttachmentDefinition{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "net1",
+						Namespace: "test-namespace",
+					},
+					Spec: nadClient.NetworkAttachmentDefinitionSpec{
+						Config: `{"cniVersion":"0.4.0","name":"vlan-100","plugins":[{"type":"sriov","master":"ext0","mtu":1500,"vlanId":100,"linkInContainer":true,"ipam":{"type":"whereabouts","ipRanges":[{"range":"1.1.1.0/24"}]}}]}`,
+					},
+				},
+			},
+			expectedError:  nil,
+			expectedOutput: true,
+		},
+		{ // Test Case #2 - Pod has network-status annotation with MTU field, return true
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Annotations: map[string]string{
+							"k8s.v1.cni.cncf.io/network-status": `[{"name": "net1", "interface": "net2", "mac": "40:04:0f:f1:89:02", "mtu": 9000, "dns": {}, "device-info": {"type": "pci", "version": "1.1.0", "pci": {"pci-address": "0000:37:0b.6"}}}]`,
+							"k8s.v1.cni.cncf.io/networks":       "net1",
+						},
+						Name:      "test-pod",
+						Namespace: "test-namespace",
+					},
+				},
+			},
+			testNetworkAttachmentDefinitions: []nadClient.NetworkAttachmentDefinition{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "net1",
+						Namespace: "test-namespace",
+					},
+					Spec: nadClient.NetworkAttachmentDefinitionSpec{
+						Config: `{"cniVersion":"0.4.0","name":"sample-namespace/net1","plugins":[{"type":"sriov","master":"ext0","vlanId":100,"linkInContainer":true,"ipam":{"type":"sriov","ipRanges":[{"range":"1.1.1.0/24"}]}}]}`,
+					},
+				},
+			},
+			expectedError:  nil,
+			expectedOutput: true,
+		},
+		{ // Test Case #3 - No MTU field set in either the pod annotation or the network-status annotation, return false
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Annotations: map[string]string{
+							"k8s.v1.cni.cncf.io/networks": "net1",
+						},
+						Name:      "test-pod",
+						Namespace: "test-namespace",
+					},
+				},
+			},
+			testNetworkAttachmentDefinitions: []nadClient.NetworkAttachmentDefinition{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "net1",
+						Namespace: "test-namespace",
+					},
+
+					Spec: nadClient.NetworkAttachmentDefinitionSpec{
+						Config: `{"cniVersion":"0.4.0","name":"sample-namespace/net1","plugins":[{"type":"notapplicable","master":"ext0","vlanId":100,"linkInContainer":true,"ipam":{"type":"notapplicable","ipRanges":[{"range":"1.1.1.0/24"}]}}]}`,
+					},
+				},
+			},
+			expectedError:  nil,
+			expectedOutput: false,
+		},
+		{ // Test Case #4 - Pod annotation "networks" name and NAD name do not match, return false and error about missing NAD
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Annotations: map[string]string{
+							"k8s.v1.cni.cncf.io/networks": "net2",
+						},
+						Name:      "test-pod",
+						Namespace: "test-namespace",
+					},
+				},
+			},
+			testNetworkAttachmentDefinitions: []nadClient.NetworkAttachmentDefinition{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "net1",
+						Namespace: "test-namespace",
+					},
+					Spec: nadClient.NetworkAttachmentDefinitionSpec{
+						Config: `{"cniVersion":"0.4.0","name":"vlan-100","plugins":[{"type":"sriov","master":"ext0","mtu":1500,"vlanId":100,"linkInContainer":true,"ipam":{"type":"whereabouts","ipRanges":[{"range":"1.1.1.0/24"}]}}]}`,
+					},
+				},
+			},
+			expectedError:  errors.New("failed to get NetworkAttachment net2: network-attachment-definitions.k8s.cni.cncf.io \"net2\" not found"),
+			expectedOutput: false,
+		},
+	}
+
+	defer clientsholder.ClearTestClientsHolder()
+
+	for _, testCase := range testCases {
+		// Temporarily set the clientsHolder to the test clientsHolder
+		oc := clientsholder.GetTestClientsHolder(nil)
+
+		// Create the NetworkAttachmentDefinition resources
+		_, createErr := oc.CNCFNetworkingClient.K8sCniCncfIoV1().
+			NetworkAttachmentDefinitions(testCase.testNetworkAttachmentDefinitions[0].Namespace).
+			Create(context.TODO(), &testCase.testNetworkAttachmentDefinitions[0], metav1.CreateOptions{})
+		assert.Nil(t, createErr)
+
+		isUsingSRIOVWithMTU, err := testCase.testPod.IsUsingSRIOVWithMTU()
+		assert.Equal(t, testCase.expectedError, err)
+		assert.Equal(t, testCase.expectedOutput, isUsingSRIOVWithMTU)
+	}
+}
+
+func TestNetworkStatusUsesMTU(t *testing.T) {
+	testCases := []struct {
+		testNetworkStatus string
+		testNadName       string
+		expectedOutput    bool
+	}{
+		{ // Test Case #1 - MTU is set, NAD name and networkStatus name match, return true
+			testNetworkStatus: `[{
+  "name": "example-cnf/intel-numa0-net4",
+  "interface": "net2",
+  "mac": "40:04:0f:f1:89:02",
+  "mtu": 9000,
+  "dns": {},
+  "device-info": {
+    "type": "pci",
+    "version": "1.1.0",
+    "pci": {
+      "pci-address": "0000:37:0b.6"
+    }
+  }
+}]`,
+			testNadName:    "intel-numa0-net4",
+			expectedOutput: true,
+		},
+		{ // Test Case #2 - MTU is set, NAD name and networkStatus name do not match, return false
+			testNetworkStatus: `[{
+  "name": "example-cnf/intel-numa0-net4",
+  "interface": "net2",
+  "mac": "40:04:0f:f1:89:02",
+  "mtu": 9000,
+  "dns": {},
+  "device-info": {
+    "type": "pci",
+    "version": "1.1.0",
+    "pci": {
+      "pci-address": "0000:37:0b.6"
+    }
+  }
+}]`,
+			testNadName:    "intel-numa0-net5",
+			expectedOutput: false,
+		},
+		{ // Test Case #3 - MTU is not set, return false
+			testNetworkStatus: `[{
+				"name": "example-cnf/intel-numa0-net4",
+				"interface": "net2",
+				"mac": "40:04:0f:f1:89:02",
+				"dns": {},
+				"device-info": {
+					"type": "pci",
+					"version": "1.1.0",
+					"pci": {
+						"pci-address": "0000:37:0b.6"
+					}
+				}
+			}]`,
+			testNadName:    "intel-numa0-net4",
+			expectedOutput: false,
+		},
+	}
+
+	for _, testCase := range testCases {
+		result, err := networkStatusUsesMTU(testCase.testNetworkStatus, testCase.testNadName)
+		assert.Nil(t, err)
+		assert.Equal(t, testCase.expectedOutput, result)
 	}
 }
 

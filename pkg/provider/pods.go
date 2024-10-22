@@ -52,6 +52,22 @@ type Pod struct {
 	IsOperand               bool
 }
 
+type NetworkStatus struct {
+	Name      string `json:"name"`
+	Interface string `json:"interface"`
+	Mac       string `json:"mac"`
+	Mtu       int    `json:"mtu"`
+	DNS       struct {
+	} `json:"dns"`
+	DeviceInfo struct {
+		Type    string `json:"type"`
+		Version string `json:"version"`
+		Pci     struct {
+			PciAddress string `json:"pci-address"`
+		} `json:"pci"`
+	} `json:"device-info"`
+}
+
 func NewPod(aPod *corev1.Pod) (out Pod) {
 	var err error
 	out.Pod = aPod
@@ -413,7 +429,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 
 	for _, networkName := range cncfNetworkNames {
 		log.Debug("%s: Reviewing network-attachment definition %q", p, networkName)
-		nad, err := oc.CNCFNetworkingClient.NetworkAttachmentDefinitions(p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
+		nad, err := oc.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
 		if err != nil {
 			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
 		}
@@ -448,28 +464,68 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 
 	// For each CNCF network, get its network attachment definition and check
 	// whether its config's type is "sriov"
+
 	oc := clientsholder.GetClientsHolder()
+
+	// Steps:
+	// 1. Compare the network name with the NAD name and check if the MTU is set.
+	// 2. If the MTU is not set in the NAD config, we should double-check the network-status annotation.
+	//    The network status (if the NAD name matches) could possibly have the MTU set.
 
 	for _, networkName := range cncfNetworkNames {
 		log.Debug("%s: Reviewing network-attachment definition %q", p, networkName)
-		nad, err := oc.CNCFNetworkingClient.NetworkAttachmentDefinitions(
+		nad, err := oc.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(
 			p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
 		if err != nil {
 			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
 		}
 
-		isSRIOV, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nad.Spec.Config)
+		isSRIOVwithMTU, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nad.Spec.Config)
 		if err != nil {
 			return false, fmt.Errorf("failed to know if network-attachment %s is sriov with MTU: %v",
 				networkName, err)
 		}
 
 		log.Debug("%s: NAD config: %s", p, nad.Spec.Config)
-		if isSRIOV {
+		if isSRIOVwithMTU {
 			return true, nil
+		} else {
+			// If the NAD is defined and the MTU value is not found, let's check
+			// the network-status annotation to see if the MTU is set there and matches
+			// the NAD name.
+
+			// Get the network-status annotation (if any)
+			networkStatuses, exist := p.Annotations[CniNetworksStatusKey]
+			if !exist {
+				return false, nil
+			}
+
+			return networkStatusUsesMTU(networkStatuses, nad.Name)
 		}
 	}
 
+	return false, nil
+}
+
+func networkStatusUsesMTU(networkStatus, nadName string) (bool, error) {
+	networkStatuses := []NetworkStatus{}
+	if err := json.Unmarshal([]byte(networkStatus), &networkStatuses); err != nil {
+		log.Error("Failed to unmarshal network-status annotation: %v", err)
+		return false, err
+	}
+
+	networkStatusMap := make(map[string]NetworkStatus)
+
+	for _, ns := range networkStatuses {
+		networkStatusMap[ns.Name] = ns
+	}
+
+	for _, ns := range networkStatusMap {
+		// Check if the NAD name is found in the network-status annotation
+		if strings.Contains(ns.Name, nadName) && ns.Mtu > 0 {
+			return true, nil
+		}
+	}
 	return false, nil
 }
 

@@ -25,6 +25,8 @@ import (
 	"strings"
 	"time"
 
+	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
+	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/api/v1"
 	configv1 "github.com/openshift/api/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -58,52 +60,55 @@ const (
 )
 
 type DiscoveredTestData struct {
-	Env                    configuration.TestParameters
-	Pods                   []corev1.Pod
-	AllPods                []corev1.Pod
-	ProbePods              []corev1.Pod
-	CSVToPodListMap        map[types.NamespacedName][]*corev1.Pod
-	OperandPods            []*corev1.Pod
-	ResourceQuotaItems     []corev1.ResourceQuota
-	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
-	NetworkPolicies        []networkingv1.NetworkPolicy
-	Crds                   []*apiextv1.CustomResourceDefinition
-	Namespaces             []string
-	AllNamespaces          []string
-	AbnormalEvents         []corev1.Event
-	Csvs                   []*olmv1Alpha.ClusterServiceVersion
-	AllCrds                []*apiextv1.CustomResourceDefinition
-	AllCsvs                []*olmv1Alpha.ClusterServiceVersion
-	AllInstallPlans        []*olmv1Alpha.InstallPlan
-	AllCatalogSources      []*olmv1Alpha.CatalogSource
-	AllPackageManifests    []*olmPkgv1.PackageManifest
-	Deployments            []appsv1.Deployment
-	StatefulSet            []appsv1.StatefulSet
-	PersistentVolumes      []corev1.PersistentVolume
-	PersistentVolumeClaims []corev1.PersistentVolumeClaim
-	ClusterRoleBindings    []rbacv1.ClusterRoleBinding
-	RoleBindings           []rbacv1.RoleBinding // Contains all rolebindings from all namespaces
-	Roles                  []rbacv1.Role        // Contains all roles from all namespaces
-	Services               []*corev1.Service
-	ServiceAccounts        []*corev1.ServiceAccount
-	AllServiceAccounts     []*corev1.ServiceAccount
-	Hpas                   []*scalingv1.HorizontalPodAutoscaler
-	Subscriptions          []olmv1Alpha.Subscription
-	AllSubscriptions       []olmv1Alpha.Subscription
-	HelmChartReleases      map[string][]*release.Release
-	K8sVersion             string
-	OpenshiftVersion       string
-	OCPStatus              string
-	Nodes                  *corev1.NodeList
-	IstioServiceMeshFound  bool
-	ValidProtocolNames     []string
-	StorageClasses         []storagev1.StorageClass
-	ServicesIgnoreList     []string
-	ScaleCrUnderTest       []ScaleObject
-	ExecutedBy             string
-	PartnerName            string
-	CollectorAppPassword   string
-	CollectorAppEndpoint   string
+	Env                          configuration.TestParameters
+	Pods                         []corev1.Pod
+	AllPods                      []corev1.Pod
+	ProbePods                    []corev1.Pod
+	CSVToPodListMap              map[types.NamespacedName][]*corev1.Pod
+	OperandPods                  []*corev1.Pod
+	ResourceQuotaItems           []corev1.ResourceQuota
+	PodDisruptionBudgets         []policyv1.PodDisruptionBudget
+	NetworkPolicies              []networkingv1.NetworkPolicy
+	Crds                         []*apiextv1.CustomResourceDefinition
+	Namespaces                   []string
+	AllNamespaces                []string
+	AbnormalEvents               []corev1.Event
+	Csvs                         []*olmv1Alpha.ClusterServiceVersion
+	AllCrds                      []*apiextv1.CustomResourceDefinition
+	AllCsvs                      []*olmv1Alpha.ClusterServiceVersion
+	AllInstallPlans              []*olmv1Alpha.InstallPlan
+	AllCatalogSources            []*olmv1Alpha.CatalogSource
+	AllPackageManifests          []*olmPkgv1.PackageManifest
+	SriovNetworks                []sriovNetworkOp.SriovNetwork
+	SriovNetworkNodePolicies     []sriovNetworkOp.SriovNetworkNodePolicy
+	NetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
+	Deployments                  []appsv1.Deployment
+	StatefulSet                  []appsv1.StatefulSet
+	PersistentVolumes            []corev1.PersistentVolume
+	PersistentVolumeClaims       []corev1.PersistentVolumeClaim
+	ClusterRoleBindings          []rbacv1.ClusterRoleBinding
+	RoleBindings                 []rbacv1.RoleBinding // Contains all rolebindings from all namespaces
+	Roles                        []rbacv1.Role        // Contains all roles from all namespaces
+	Services                     []*corev1.Service
+	ServiceAccounts              []*corev1.ServiceAccount
+	AllServiceAccounts           []*corev1.ServiceAccount
+	Hpas                         []*scalingv1.HorizontalPodAutoscaler
+	Subscriptions                []olmv1Alpha.Subscription
+	AllSubscriptions             []olmv1Alpha.Subscription
+	HelmChartReleases            map[string][]*release.Release
+	K8sVersion                   string
+	OpenshiftVersion             string
+	OCPStatus                    string
+	Nodes                        *corev1.NodeList
+	IstioServiceMeshFound        bool
+	ValidProtocolNames           []string
+	StorageClasses               []storagev1.StorageClass
+	ServicesIgnoreList           []string
+	ScaleCrUnderTest             []ScaleObject
+	ExecutedBy                   string
+	PartnerName                  string
+	CollectorAppPassword         string
+	CollectorAppEndpoint         string
 }
 
 type labelObject struct {
@@ -277,12 +282,89 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	if err != nil {
 		log.Fatal("Cannot get list of all service accounts, err: %v", err)
 	}
+
+	data.SriovNetworks, err = getSriovNetworks(oc, data.Namespaces)
+	if err != nil {
+		log.Fatal("Cannot get list of sriov networks, err: %v", err)
+	}
+
+	data.SriovNetworkNodePolicies, err = getSriovNetworkNodePolicies(oc, data.Namespaces)
+	if err != nil {
+		log.Fatal("Cannot get list of sriov network node policies, err: %v", err)
+	}
+
+	data.NetworkAttachmentDefinitions, err = getNetworkAttachmentDefinitions(oc, data.Namespaces)
+	if err != nil {
+		log.Fatal("Cannot get list of network attachment definitions, err: %v", err)
+	}
+
 	data.ExecutedBy = config.ExecutedBy
 	data.PartnerName = config.PartnerName
 	data.CollectorAppPassword = config.CollectorAppPassword
 	data.CollectorAppEndpoint = config.CollectorAppEndpoint
 
 	return data
+}
+
+func getNetworkAttachmentDefinitions(client *clientsholder.ClientsHolder, namespaces []string) ([]nadClient.NetworkAttachmentDefinition, error) {
+	var nadList []nadClient.NetworkAttachmentDefinition
+
+	// Check if the network-attachment-definitions resource exists
+	if !DoesAPIResourceExist(client, "network-attachment-definitions") {
+		return nadList, nil
+	}
+
+	for _, ns := range namespaces {
+		nad, err := client.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(ns).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			return nil, err
+		}
+
+		// Append the list of networkAttachmentDefinitions to the nadList slice
+		nadList = append(nadList, nad.Items...)
+	}
+
+	return nadList, nil
+}
+
+func getSriovNetworks(client *clientsholder.ClientsHolder, namespaces []string) (sriovNetworks []sriovNetworkOp.SriovNetwork, err error) {
+	var sriovNetworkList []sriovNetworkOp.SriovNetwork
+
+	// Check if the sriovnetworks resource exists
+	if !DoesAPIResourceExist(client, "sriovnetworks") {
+		return sriovNetworkList, nil
+	}
+
+	for _, ns := range namespaces {
+		snl, err := client.SriovNetworkingClient.SriovNetworks(ns).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			return nil, err
+		}
+
+		// Append the list of sriovNetworks to the sriovNetworks slice
+		sriovNetworkList = append(sriovNetworkList, snl.Items...)
+	}
+	return sriovNetworkList, nil
+}
+
+func getSriovNetworkNodePolicies(client *clientsholder.ClientsHolder, namespaces []string) (sriovNetworkNodePolicies []sriovNetworkOp.SriovNetworkNodePolicy, err error) {
+	var sriovNetworkNodePolicyList []sriovNetworkOp.SriovNetworkNodePolicy
+
+	// Check if the sriovnetworknodepolicies resource exists
+	if !DoesAPIResourceExist(client, "sriovnetworknodepolicies") {
+		return sriovNetworkNodePolicyList, nil
+	}
+
+	for _, ns := range namespaces {
+		snnp, err := client.SriovNetworkingClient.SriovNetworkNodePolicies(ns).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			return nil, err
+		}
+
+		// Append the list of sriovNetworkNodePolicies to the sriovNetworkNodePolicies slice
+		sriovNetworkNodePolicyList = append(sriovNetworkNodePolicyList, snnp.Items...)
+	}
+	return sriovNetworkNodePolicyList, nil
 }
 
 func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {
