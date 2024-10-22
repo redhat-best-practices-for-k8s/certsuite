@@ -26,6 +26,8 @@ import (
 
 	"encoding/json"
 
+	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
+	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/api/v1"
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -99,33 +101,36 @@ type TestEnvironment struct { // rename this with testTarget
 	Crds    []*apiextv1.CustomResourceDefinition `json:"testCrds"`
 	AllCrds []*apiextv1.CustomResourceDefinition
 
-	HorizontalScaler       []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Services               []*corev1.Service                    `json:"testServices"`
-	ServiceAccounts        []*corev1.ServiceAccount             `json:"testServiceAccounts"`
-	AllServiceAccounts     []*corev1.ServiceAccount             `json:"AllServiceAccounts"`
-	AllServiceAccountsMap  map[string]*corev1.ServiceAccount
-	Nodes                  map[string]Node    `json:"-"`
-	K8sVersion             string             `json:"-"`
-	OpenshiftVersion       string             `json:"-"`
-	OCPStatus              string             `json:"-"`
-	HelmChartReleases      []*release.Release `json:"testHelmChartReleases"`
-	ResourceQuotas         []corev1.ResourceQuota
-	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
-	NetworkPolicies        []networkingv1.NetworkPolicy
-	AllInstallPlans        []*olmv1Alpha.InstallPlan   `json:"AllInstallPlans"`
-	AllSubscriptions       []olmv1Alpha.Subscription   `json:"AllSubscriptions"`
-	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"-"`
-	OperatorGroups         []*olmv1.OperatorGroup      `json:"OperatorGroups"`
-	IstioServiceMeshFound  bool
-	ValidProtocolNames     []string
-	DaemonsetFailedToSpawn bool
-	ScaleCrUnderTest       []ScaleObject
-	StorageClassList       []storagev1.StorageClass
-	ExecutedBy             string
-	PartnerName            string
-	CollectorAppPassword   string
-	CollectorAppEndpoint   string
-	SkipPreflight          bool
+	HorizontalScaler             []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Services                     []*corev1.Service                    `json:"testServices"`
+	ServiceAccounts              []*corev1.ServiceAccount             `json:"testServiceAccounts"`
+	AllServiceAccounts           []*corev1.ServiceAccount             `json:"AllServiceAccounts"`
+	AllServiceAccountsMap        map[string]*corev1.ServiceAccount
+	Nodes                        map[string]Node    `json:"-"`
+	K8sVersion                   string             `json:"-"`
+	OpenshiftVersion             string             `json:"-"`
+	OCPStatus                    string             `json:"-"`
+	HelmChartReleases            []*release.Release `json:"testHelmChartReleases"`
+	ResourceQuotas               []corev1.ResourceQuota
+	PodDisruptionBudgets         []policyv1.PodDisruptionBudget
+	NetworkPolicies              []networkingv1.NetworkPolicy
+	AllInstallPlans              []*olmv1Alpha.InstallPlan   `json:"AllInstallPlans"`
+	AllSubscriptions             []olmv1Alpha.Subscription   `json:"AllSubscriptions"`
+	AllCatalogSources            []*olmv1Alpha.CatalogSource `json:"-"`
+	OperatorGroups               []*olmv1.OperatorGroup      `json:"OperatorGroups"`
+	SriovNetworks                []sriovNetworkOp.SriovNetwork
+	SriovNetworkNodePolicies     []sriovNetworkOp.SriovNetworkNodePolicy
+	NetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
+	IstioServiceMeshFound        bool
+	ValidProtocolNames           []string
+	DaemonsetFailedToSpawn       bool
+	ScaleCrUnderTest             []ScaleObject
+	StorageClassList             []storagev1.StorageClass
+	ExecutedBy                   string
+	PartnerName                  string
+	CollectorAppPassword         string
+	CollectorAppEndpoint         string
+	SkipPreflight                bool
 }
 
 type MachineConfig struct {
@@ -343,6 +348,11 @@ func buildTestEnvironment() { //nolint:funlen
 	env.PartnerName = data.PartnerName
 	env.CollectorAppPassword = data.CollectorAppPassword
 	env.CollectorAppEndpoint = data.CollectorAppEndpoint
+
+	// SR-IOV
+	env.SriovNetworks = data.SriovNetworks
+	env.SriovNetworkNodePolicies = data.SriovNetworkNodePolicies
+	env.NetworkAttachmentDefinitions = data.NetworkAttachmentDefinitions
 
 	operators := createOperators(data.Csvs, data.AllSubscriptions,
 		data.AllInstallPlans, data.AllCatalogSources, false, true)

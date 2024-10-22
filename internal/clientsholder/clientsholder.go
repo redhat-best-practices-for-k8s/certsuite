@@ -36,6 +36,7 @@ import (
 	"k8s.io/client-go/scale"
 
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
+	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/pkg/client/clientset/versioned/typed/sriovnetwork/v1"
 	apiserverscheme "github.com/openshift/client-go/apiserver/clientset/versioned"
 	ocpMachine "github.com/openshift/client-go/machineconfiguration/clientset/versioned"
 	appsv1 "k8s.io/api/apps/v1"
@@ -58,20 +59,22 @@ const (
 )
 
 type ClientsHolder struct {
-	RestConfig           *rest.Config
-	DynamicClient        dynamic.Interface
-	ScalingClient        scale.ScalesGetter
-	APIExtClient         apiextv1.Interface
-	OlmClient            olmClient.Interface
-	OcpClient            clientconfigv1.ConfigV1Interface
-	K8sClient            kubernetes.Interface
-	K8sNetworkingClient  networkingv1.NetworkingV1Interface
-	CNCFNetworkingClient cncfNetworkAttachmentv1.K8sCniCncfIoV1Interface
-	MachineCfg           ocpMachine.Interface
-	KubeConfig           []byte
-	ready                bool
-	GroupResources       []*metav1.APIResourceList
-	ApiserverClient      apiserverscheme.Interface
+	RestConfig            *rest.Config
+	DynamicClient         dynamic.Interface
+	ScalingClient         scale.ScalesGetter
+	APIExtClient          apiextv1.Interface
+	OlmClient             olmClient.Interface
+	OcpClient             clientconfigv1.ConfigV1Interface
+	K8sClient             kubernetes.Interface
+	K8sNetworkingClient   networkingv1.NetworkingV1Interface
+	CNCFNetworkingClient  cncfNetworkAttachmentv1.K8sCniCncfIoV1Interface
+	SriovNetworkingClient sriovNetworkOp.SriovnetworkV1Interface
+	DiscoveryClient       discovery.DiscoveryInterface
+	MachineCfg            ocpMachine.Interface
+	KubeConfig            []byte
+	ready                 bool
+	GroupResources        []*metav1.APIResourceList
+	ApiserverClient       apiserverscheme.Interface
 }
 
 var clientsHolder = ClientsHolder{}
@@ -129,6 +132,8 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
 		case *scalingv1.HorizontalPodAutoscaler:
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *storagev1.StorageClass:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *metav1.APIResourceList:
 			k8sClientObjects = append(k8sClientObjects, v)
 
 		// K8s Extension Client Objects
@@ -335,6 +340,11 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.ApiserverClient, err = apiserverscheme.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate apiserverscheme: %w", err)
+	}
+
+	clientsHolder.SriovNetworkingClient, err = sriovNetworkOp.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate sriov networking client: %w", err)
 	}
 
 	clientsHolder.ready = true

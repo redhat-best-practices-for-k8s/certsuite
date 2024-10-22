@@ -23,6 +23,7 @@ import (
 	"strconv"
 	"strings"
 
+	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
@@ -432,7 +433,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 }
 
 // IsUsingSRIOVWithMTU returns true if any of the pod's interfaces is a sriov one with MTU set.
-func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
+func (p *Pod) IsUsingSRIOVWithMTU(env *TestEnvironment) (bool, error) {
 	const (
 		cncfNetworksAnnotation = "k8s.v1.cni.cncf.io/networks"
 	)
@@ -447,25 +448,38 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 
 	// For each CNCF network, get its network attachment definition and check
 	// whether its config's type is "sriov"
-	oc := clientsholder.GetClientsHolder()
 
 	for _, networkName := range cncfNetworkNames {
 		log.Debug("%s: Reviewing network-attachment definition %q", p, networkName)
-		nad, err := oc.CNCFNetworkingClient.NetworkAttachmentDefinitions(
-			p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
-		if err != nil {
-			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
+
+		var foundNad nadClient.NetworkAttachmentDefinition
+
+		//nolint: gocritic
+		for _, nad := range env.NetworkAttachmentDefinitions {
+			isSRIOV, err := isNetworkAttachmentDefinitionConfigTypeSRIOV(foundNad.Spec.Config)
+			if err != nil {
+				return false, fmt.Errorf("failed to know if network-attachment %s is sriov: %v", networkName, err)
+			}
+
+			if isSRIOV && nad.Name == networkName && p.Namespace == nad.Namespace {
+				foundNad = nad
+				break
+			}
 		}
 
-		isSRIOV, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nad.Spec.Config)
-		if err != nil {
-			return false, fmt.Errorf("failed to know if network-attachment %s is sriov with MTU: %v",
-				networkName, err)
-		}
-
-		log.Debug("%s: NAD config: %s", p, nad.Spec.Config)
-		if isSRIOV {
-			return true, nil
+		// Look through all the sriov networks in the environment to find the one that matches the network attachment
+		//nolint: gocritic
+		for _, sriovNetwork := range env.SriovNetworks {
+			if sriovNetwork.Name == foundNad.Name && p.Namespace == foundNad.Namespace && p.Namespace == sriovNetwork.Namespace {
+				//nolint: gocritic
+				for _, nodePolicy := range env.SriovNetworkNodePolicies {
+					if nodePolicy.Spec.ResourceName == sriovNetwork.Spec.ResourceName {
+						if nodePolicy.Spec.Mtu != 0 {
+							return true, nil
+						}
+					}
+				}
+			}
 		}
 	}
 
