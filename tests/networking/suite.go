@@ -163,7 +163,7 @@ func LoadChecks() {
 			if err != nil {
 				return fmt.Errorf("failure getting pods using SRIOV: %v", err)
 			}
-			testNetworkAttachmentDefinitionSRIOVUsingMTU(c, sriovPods)
+			testNetworkAttachmentDefinitionSRIOVUsingMTU(c, sriovPods, &env)
 			return nil
 		}))
 }
@@ -423,12 +423,12 @@ func testRestartOnRebootLabelOnPodsUsingSriov(check *checksdb.Check, sriovPods [
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testNetworkAttachmentDefinitionSRIOVUsingMTU(check *checksdb.Check, sriovPods []*provider.Pod) {
+func testNetworkAttachmentDefinitionSRIOVUsingMTU(check *checksdb.Check, sriovPods []*provider.Pod, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, pod := range sriovPods {
-		result, err := pod.IsUsingSRIOVWithMTU()
+		result, err := pod.IsUsingSRIOVWithMTU(env)
 		if err != nil {
 			check.LogError("Failed to check if pod %q uses SRIOV with MTU, err: %v", pod, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Failed to check if pod uses SRIOV with MTU", false))
