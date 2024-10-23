@@ -12,7 +12,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-require k8s.io/client-go v0.31.1
+require k8s.io/client-go v0.31.2
 
 require (
 	github.com/mittwald/go-helm-client v0.12.14
@@ -22,8 +22,8 @@ require (
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.16.2
-	k8s.io/api v0.31.1
-	k8s.io/apimachinery v0.31.1
+	k8s.io/api v0.31.2
+	k8s.io/apimachinery v0.31.2
 	k8s.io/klog/v2 v2.130.1 // indirect
 )
 
