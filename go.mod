@@ -23,7 +23,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.16.2
 	k8s.io/api v0.31.1
-	k8s.io/apimachinery v0.31.1
+	k8s.io/apimachinery v0.31.2
 	k8s.io/klog/v2 v2.130.1 // indirect
 )
 
