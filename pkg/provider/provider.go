@@ -240,7 +240,7 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 	env.AllSubscriptions = data.AllSubscriptions
 	env.AllCatalogSources = data.AllCatalogSources
-	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false)
+	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.AllCrds = data.AllCrds
 	env.Namespaces = data.Namespaces

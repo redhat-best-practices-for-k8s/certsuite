@@ -58,6 +58,7 @@ testCases:
     - operator-semantic-versioning
     - operator-single-crd-owner
     - operator-pods-no-hugepages
+    - operator-multiple-same-operators
     - performance-exclusive-cpu-pool
     - performance-max-resources-exec-probes
     - performance-shared-cpu-pool-non-rt-scheduling-policy       # hazelcast pod meets requirements

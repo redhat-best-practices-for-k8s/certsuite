@@ -108,6 +108,13 @@ func LoadChecks() {
 			testOperatorOlmSkipRange(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestMultipleSameOperatorsIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testMultipleSameOperators(c, &env)
+			return nil
+		}))
 }
 
 // This function check if the Operator CRD version follows K8s versioning
@@ -371,5 +378,53 @@ func testOperatorOlmSkipRange(check *checksdb.Check, env *provider.TestEnvironme
 				AddField("olm.SkipRange", operator.Csv.Annotations["olm.skipRange"]))
 		}
 	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testMultipleSameOperators(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	// Ensure the CSV name is unique and not installed more than once.
+	// CSV Names are unique and OLM installs them with name.version format.
+	// So, we can check if the CSV name is installed more than once.
+
+	check.LogInfo("Checking if the operator is installed more than once")
+
+	for _, op := range env.AllOperators {
+		check.LogDebug("Checking operator %q", op.Name)
+		check.LogDebug("Number of operators to check %s against: %d", op.Name, len(env.AllOperators))
+		for _, op2 := range env.AllOperators {
+			check.LogDebug("Comparing operator %q with operator %q", op.Name, op2.Name)
+
+			// Retrieve the version from each CSV
+			csv1Version := op.Csv.Spec.Version.String()
+			csv2Version := op2.Csv.Spec.Version.String()
+
+			log.Debug("CSV1 Version: %s", csv1Version)
+			log.Debug("CSV2 Version: %s", csv2Version)
+
+			// Strip the version from the CSV name by removing the suffix (which should be the version)
+			csv1Name := strings.TrimSuffix(op.Csv.Name, ".v"+csv1Version)
+			csv2Name := strings.TrimSuffix(op2.Csv.Name, ".v"+csv2Version)
+
+			check.LogDebug("Comparing CSV names %q and %q", csv1Name, csv2Name)
+
+			// The CSV name should be the same, but the version should be different
+			// if the operator is installed more than once.
+			if op.Csv != nil && op2.Csv != nil &&
+				csv1Name == csv2Name &&
+				csv1Version != csv2Version {
+				check.LogError("Operator %q is installed more than once", op.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(
+					op.Namespace, op.Name, "Operator is installed more than once", false))
+				break
+			}
+		}
+
+		compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(
+			op.Namespace, op.Name, "Operator is installed only once", true))
+	}
+
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }

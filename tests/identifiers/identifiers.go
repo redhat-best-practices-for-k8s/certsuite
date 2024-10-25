@@ -133,6 +133,7 @@ var (
 	TestOperatorCrdSchemaIdentifier                   claim.Identifier
 	TestOperatorSingleCrdOwnerIdentifier              claim.Identifier
 	TestOperatorPodsNoHugepages                       claim.Identifier
+	TestMultipleSameOperatorsIdentifier               claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
@@ -1064,6 +1065,22 @@ that Node's kernel may not have the same hacks.'`,
 			Telco:    Optional,
 			NonTelco: Optional,
 			Extended: Optional,
+		},
+		TagCommon)
+
+	TestMultipleSameOperatorsIdentifier = AddCatalogEntry(
+		"multiple-same-operators",
+		common.OperatorTestKey,
+		`Tests whether multiple instances of the same Operator CSV are installed.`,
+		MultipleSameOperatorsRemediation,
+		NoExceptions,
+		TestMultipleSameOperatorsIdentifierDocLink,
+		false,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
