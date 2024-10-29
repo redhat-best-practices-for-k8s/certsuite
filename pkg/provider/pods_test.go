@@ -24,6 +24,7 @@ import (
 	"testing"
 
 	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
+	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/api/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/stretchr/testify/assert"
@@ -439,9 +440,136 @@ func TestIsUsingSRIOVWithMTU(t *testing.T) {
 			Create(context.TODO(), &testCase.testNetworkAttachmentDefinitions[0], metav1.CreateOptions{})
 		assert.Nil(t, createErr)
 
+		// NOTE:
+		// This test case is not able to test the SriovNetworkNodePolicy check for MTU.
+		// This is because there is no 'fake' client for the SriovNetworkNodePolicy resource(s).
+		// In the future, we might be able to add testing for this but there is no way to spoof it as of right now.
+
 		isUsingSRIOVWithMTU, err := testCase.testPod.IsUsingSRIOVWithMTU()
 		assert.Equal(t, testCase.expectedError, err)
 		assert.Equal(t, testCase.expectedOutput, isUsingSRIOVWithMTU)
+	}
+}
+
+func TestSriovNetworkUsesMTU(t *testing.T) {
+	testCases := []struct {
+		testSriovNetwork             []sriovNetworkOp.SriovNetwork
+		testSriovNetworkNodePolicies []sriovNetworkOp.SriovNetworkNodePolicy
+		testNadName                  string
+		expectedOutput               bool
+	}{
+		{ // Test Case #1 - Happy path, MTU is set, return true
+			testSriovNetwork: []sriovNetworkOp.SriovNetwork{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "nad-name-1",
+						Namespace: "test-namespace",
+					},
+					Spec: sriovNetworkOp.SriovNetworkSpec{
+						ResourceName: "sriov-network-test1",
+					},
+				},
+			},
+			testSriovNetworkNodePolicies: []sriovNetworkOp.SriovNetworkNodePolicy{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "sriov-network-node-policy",
+						Namespace: "test-namespace",
+					},
+					Spec: sriovNetworkOp.SriovNetworkNodePolicySpec{
+						ResourceName: "sriov-network-test1",
+						Mtu:          9000,
+					},
+				},
+			},
+			testNadName:    "nad-name-1",
+			expectedOutput: true,
+		},
+		{ // Test Case #2 - MTU is not set, return false
+			testSriovNetwork: []sriovNetworkOp.SriovNetwork{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "nad-name-1",
+						Namespace: "test-namespace",
+					},
+					Spec: sriovNetworkOp.SriovNetworkSpec{
+						ResourceName: "sriov-network-test1",
+					},
+				},
+			},
+			testSriovNetworkNodePolicies: []sriovNetworkOp.SriovNetworkNodePolicy{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "sriov-network-node-policy",
+						Namespace: "test-namespace",
+					},
+					Spec: sriovNetworkOp.SriovNetworkNodePolicySpec{
+						ResourceName: "sriov-network-test1",
+						// Mtu:          9000,
+					},
+				},
+			},
+			testNadName:    "nad-name-1",
+			expectedOutput: false,
+		},
+		{ // Test Case #3 - NAD name does not match, return false
+			testSriovNetwork: []sriovNetworkOp.SriovNetwork{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "nad-name-1",
+						Namespace: "test-namespace",
+					},
+					Spec: sriovNetworkOp.SriovNetworkSpec{
+						ResourceName: "sriov-network-test1",
+					},
+				},
+			},
+			testSriovNetworkNodePolicies: []sriovNetworkOp.SriovNetworkNodePolicy{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "sriov-network-node-policy",
+						Namespace: "test-namespace",
+					},
+					Spec: sriovNetworkOp.SriovNetworkNodePolicySpec{
+						ResourceName: "sriov-network-test1",
+						Mtu:          9000,
+					},
+				},
+			},
+			testNadName:    "nad-name-2", // NAD name does not match
+			expectedOutput: false,
+		},
+		{ // Test Case #4 - NAD name matches, but no SriovNetworkNodePolicy found, return false
+			testSriovNetwork: []sriovNetworkOp.SriovNetwork{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "nad-name-1",
+						Namespace: "test-namespace",
+					},
+					Spec: sriovNetworkOp.SriovNetworkSpec{
+						ResourceName: "sriov-network-test1",
+					},
+				},
+			},
+			testSriovNetworkNodePolicies: []sriovNetworkOp.SriovNetworkNodePolicy{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "sriov-network-node-policy",
+						Namespace: "test-namespace",
+					},
+					Spec: sriovNetworkOp.SriovNetworkNodePolicySpec{
+						ResourceName: "sriov-network-test2", // ResourceName does not match
+						Mtu:          9000,
+					},
+				},
+			},
+			testNadName:    "nad-name-1",
+			expectedOutput: false,
+		},
+	}
+
+	for _, testCase := range testCases {
+		assert.Equal(t, testCase.expectedOutput, sriovNetworkUsesMTU(testCase.testSriovNetwork, testCase.testSriovNetworkNodePolicies, testCase.testNadName))
 	}
 }
 
