@@ -488,8 +488,7 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 		// Check the NAD config to see if the MTU is set
 		isSRIOVwithMTU, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nad.Spec.Config)
 		if err != nil {
-			log.Error("Failed to know if network-attachment %s is sriov with MTU: %v", networkName, err)
-			return false, nil
+			log.Warn("Failed to know if network-attachment %s is sriov with MTU: %v", networkName, err)
 		}
 
 		log.Debug("%s: NAD config: %s", p, nad.Spec.Config)
@@ -504,8 +503,7 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 		if networkStatuses, exist := p.Annotations[CniNetworksStatusKey]; exist {
 			networkStatusResult, err := networkStatusUsesMTU(networkStatuses, nad.Name)
 			if err != nil {
-				log.Error("Failed to know if network-status %s is sriov with MTU: %v", networkName, err)
-				return false, nil
+				log.Warn("Failed to know if network-status %s is sriov with MTU: %v", networkName, err)
 			}
 
 			if networkStatusResult {
