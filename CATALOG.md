@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 114
+### Total test cases: 116
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |manageability|2|
 |networking|12|
 |observability|5|
-|operator|9|
+|operator|10|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |8|1|
 
-### Non-Telco specific tests only: 67
+### Non-Telco specific tests only: 68
 
 |Mandatory|Optional|
 |---|---|
-|42|25|
+|43|25|
 
 ### Telco specific tests only: 27
 
@@ -1266,15 +1266,31 @@ Tags|common,operator
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
 
+#### operator-multiple-same-operators
+
+Property|Description
+---|---
+Unique ID|operator-multiple-same-operators
+Description|Tests whether multiple instances of the same Operator CSV are installed.
+Suggested Remediation|Ensure that only one Operator of the same type is installed in the cluster.
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
 #### operator-olm-skip-range
 
 Property|Description
 ---|---
 Unique ID|operator-olm-skip-range
 Description|Test that checks the operator has a valid olm skip range.
-Suggested Remediation|Ensure that the Operator has a valid OLM skip range.
+Suggested Remediation|Ensure that the Operator has a valid OLM skip range. If the operator does not have another version to "skip", then ignore the result of this test.
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|No exceptions
+Exception Process|If there is not a version of the operator that needs to be skipped, then an exception will be granted.
 Tags|common,operator
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
