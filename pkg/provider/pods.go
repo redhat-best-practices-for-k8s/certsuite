@@ -488,7 +488,7 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 		// Check the NAD config to see if the MTU is set
 		isSRIOVwithMTU, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nad.Spec.Config)
 		if err != nil {
-			log.Warn("Failed to know if network-attachment %s is sriov with MTU: %v", networkName, err)
+			log.Warn("Failed to know if network-attachment %s is using SRIOV with MTU: %v", networkName, err)
 		}
 
 		log.Debug("%s: NAD config: %s", p, nad.Spec.Config)
@@ -501,6 +501,7 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 
 		// Get the network-status annotation (if any)
 		if networkStatuses, exist := p.Annotations[CniNetworksStatusKey]; exist {
+			log.Info("Network-status annotation found: %s", networkStatuses)
 			networkStatusResult, err := networkStatusUsesMTU(networkStatuses, nad.Name)
 			if err != nil {
 				log.Warn("Failed to know if network-status %s is sriov with MTU: %v", networkName, err)
@@ -513,6 +514,8 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 
 		// If the network-status annotation is not set, let's check the SriovNetwork/SriovNetworkNodePolicy CRs
 		// to see if the MTU is set there.
+		log.Debug("Number of SriovNetworks: %d", len(env.SriovNetworks))
+		log.Debug("Number of SriovNetworkNodePolicies: %d", len(env.SriovNetworkNodePolicies))
 		if sriovNetworkUsesMTU(env.SriovNetworks, env.SriovNetworkNodePolicies, nad.Name) {
 			return true, nil
 		}
@@ -524,9 +527,12 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 func sriovNetworkUsesMTU(sriovNetworks []sriovNetworkOp.SriovNetwork, sriovNetworkNodePolicies []sriovNetworkOp.SriovNetworkNodePolicy, nadName string) bool {
 	//nolint:gocritic
 	for _, sriovNetwork := range sriovNetworks {
+		log.Debug("Checking SriovNetwork %s", sriovNetwork.Name)
 		if sriovNetwork.Name == nadName {
+			log.Debug("SriovNetwork %s found to match the NAD name %s", sriovNetwork.Name, nadName)
 			//nolint:gocritic
 			for _, nodePolicy := range sriovNetworkNodePolicies {
+				log.Debug("Checking SriovNetworkNodePolicy %v", nodePolicy)
 				if nodePolicy.Namespace == sriovNetwork.Namespace && nodePolicy.Spec.ResourceName == sriovNetwork.Spec.ResourceName {
 					if nodePolicy.Spec.Mtu > 0 {
 						return true
