@@ -66,7 +66,6 @@ testCases:
     - platform-alteration-tainted-node-kernel
   fail:
     - affiliated-certification-container-is-certified-digest     # test container image is not certified
-
   skip:
     - access-control-sys-ptrace-capability
     - affiliated-certification-helm-version
@@ -87,6 +86,7 @@ testCases:
     - operator-single-crd-owner
     - operator-pods-no-hugepages
     - operator-multiple-same-operators
+    - operator-catalogsource-bundle-count
     - performance-exclusive-cpu-pool-rt-scheduling-policy
     - performance-isolated-cpu-pool-rt-scheduling-policy
     - performance-shared-cpu-pool-non-rt-scheduling-policy

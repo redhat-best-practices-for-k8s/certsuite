@@ -19,6 +19,7 @@ package testhelper
 import (
 	"testing"
 
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/stretchr/testify/assert"
 	appsv1 "k8s.io/api/apps/v1"
@@ -369,6 +370,49 @@ func TestNewDeploymentReportObject(t *testing.T) {
 
 	for _, testCase := range testCases {
 		reportObj := NewDeploymentReportObject(testCase.testNamespace, testCase.testDeployment, testCase.testReason, testCase.testIsCompliant)
+
+		assert.Equal(t, testCase.expectedOutput.ObjectType, reportObj.ObjectType)
+		for _, reportKey := range reportObj.ObjectFieldsKeys {
+			assert.Contains(t, testCase.expectedOutput.ObjectFieldsKeys, reportKey)
+		}
+
+		for _, reportValue := range reportObj.ObjectFieldsValues {
+			assert.Contains(t, testCase.expectedOutput.ObjectFieldsValues, reportValue)
+		}
+	}
+}
+
+func TestNewCatalogSourceReportObject(t *testing.T) {
+	testCases := []struct {
+		testNamespace     string
+		testCatalogSource string
+		testReason        string
+		testIsCompliant   bool
+		expectedOutput    *ReportObject
+	}{
+		{
+			testNamespace:     "testNamespace",
+			testCatalogSource: "testCatalogSource",
+			testReason:        "testReason",
+			testIsCompliant:   true,
+			expectedOutput: &ReportObject{
+				ObjectType: CatalogSourceType,
+				ObjectFieldsKeys: []string{
+					Name,
+					Namespace,
+					ReasonForCompliance,
+				},
+				ObjectFieldsValues: []string{
+					"testNamespace",
+					"testCatalogSource",
+					"testReason",
+				},
+			},
+		},
+	}
+
+	for _, testCase := range testCases {
+		reportObj := NewCatalogSourceReportObject(testCase.testNamespace, testCase.testCatalogSource, testCase.testReason, testCase.testIsCompliant)
 
 		assert.Equal(t, testCase.expectedOutput.ObjectType, reportObj.ObjectType)
 		for _, reportKey := range reportObj.ObjectFieldsKeys {
@@ -1237,5 +1281,27 @@ func TestFailureReasonOutEqual(t *testing.T) {
 
 	for _, testCase := range testCases {
 		assert.Equal(t, testCase.expectedResult, testCase.testFailureReasonOut1.Equal(testCase.testFailureReasonOut2))
+	}
+}
+
+func TestGetNoCatalogSourcesSkipFn(t *testing.T) {
+	testCases := []struct {
+		testEnv        *provider.TestEnvironment
+		expectedResult bool
+	}{
+		{testEnv: &provider.TestEnvironment{AllCatalogSources: nil}, expectedResult: true},
+		{testEnv: &provider.TestEnvironment{AllCatalogSources: []*v1alpha1.CatalogSource{
+			{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test1",
+				},
+			},
+		}}, expectedResult: false},
+	}
+
+	for _, testCase := range testCases {
+		testFunc := GetNoCatalogSourcesSkipFn(testCase.testEnv)
+		result, _ := testFunc()
+		assert.Equal(t, testCase.expectedResult, result)
 	}
 }
