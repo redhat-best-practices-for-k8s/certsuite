@@ -17,15 +17,18 @@
 package operator
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/catalogsource"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/phasecheck"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 )
@@ -113,6 +116,13 @@ func LoadChecks() {
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testMultipleSameOperators(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCatalogSourceBundleCountIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoCatalogSourcesSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorCatalogSourceBundleCount(c, &env)
 			return nil
 		}))
 }
@@ -434,6 +444,81 @@ func testMultipleSameOperators(check *checksdb.Check, env *provider.TestEnvironm
 
 		compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(
 			op.Namespace, op.Name, "Operator is installed only once", true))
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+//nolint:funlen
+func testOperatorCatalogSourceBundleCount(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	const (
+		bundleCountLimit = 1000
+	)
+
+	bundleCountLimitStr := strconv.Itoa(bundleCountLimit)
+
+	// Loop through all labeled operators and check if they have more than 1000 referenced images.
+	var catalogsAlreadyReported []string
+	for _, op := range env.Operators {
+		catalogSourceCheckComplete := false
+		check.LogInfo("Checking bundle count for operator %q", op.Csv.Name)
+
+		cvi := GetCsvVersion(op.Csv.Name)
+
+		// Search through packagemanifests to match the name of the CSV.
+		for _, pm := range env.AllPackageManifests {
+			// Skip all package manifests that do not match the name of the CSV.
+			if pm.Name != cvi.Name {
+				continue
+			}
+
+			// Skip package manifests based on channel entries.
+			if catalogsource.SkipPMBasedOnChannel(pm.Status.Channels, op.Csv.Name) {
+				log.Debug("Skipping package manifest %q based on channel", pm.Name)
+				continue
+			}
+
+			// Search through all catalog sources to match the name and namespace of the package manifest.
+			for _, catalogSource := range env.AllCatalogSources {
+				if catalogSource.Name != pm.Status.CatalogSource || catalogSource.Namespace != pm.Status.CatalogSourceNamespace {
+					log.Debug("Skipping catalog source %q based on name or namespace", catalogSource.Name)
+					continue
+				}
+
+				// If the catalog source has already been reported, skip it.
+				if stringhelper.StringInSlice(catalogsAlreadyReported, catalogSource.Name+"."+catalogSource.Namespace, false) {
+					log.Debug("Skipping catalog source %q based on already reported", catalogSource.Name)
+					continue
+				}
+
+				log.Debug("Found matching catalog source %q for operator %q", catalogSource.Name, op.Csv.Name)
+
+				// The name and namespace match.  Lookup the bundle count.
+				bundleCount := provider.GetCatalogSourceBundleCount(env, catalogSource)
+
+				if bundleCount > bundleCountLimit {
+					check.LogError("CatalogSource %q has more than "+bundleCountLimitStr+" ("+strconv.Itoa(bundleCount)+") referenced images", catalogSource.Name)
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCatalogSourceReportObject(catalogSource.Namespace, catalogSource.Name, "CatalogSource has more than "+bundleCountLimitStr+" referenced images", false))
+				} else {
+					check.LogInfo("CatalogSource %q has less than "+bundleCountLimitStr+" ("+strconv.Itoa(bundleCount)+") referenced images", catalogSource.Name)
+					compliantObjects = append(compliantObjects, testhelper.NewCatalogSourceReportObject(catalogSource.Namespace, catalogSource.Name, "CatalogSource has less than "+bundleCountLimitStr+" referenced images", true))
+				}
+
+				log.Debug("Adding catalog source %q to list of already reported", catalogSource.Name)
+				catalogsAlreadyReported = append(catalogsAlreadyReported, catalogSource.Name+"."+catalogSource.Namespace)
+				// Signal that the catalog source check is complete.
+				catalogSourceCheckComplete = true
+				break
+			}
+
+			// If the catalog source check is complete, break out of the loop.
+			if catalogSourceCheckComplete {
+				break
+			}
+		}
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)

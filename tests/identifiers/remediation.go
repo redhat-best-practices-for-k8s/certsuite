@@ -99,6 +99,8 @@ const (
 
 	OperatorPodsNoHugepagesRemediation = `Ensure that the pods are not using hugepages`
 
+	OperatorCatalogSourceBundleCountRemediation = `Ensure that the Operator's catalog source has a valid bundle count less than 1000.`
+
 	MultipleSameOperatorsRemediation = `Ensure that only one Operator of the same type is installed in the cluster.`
 
 	PodNodeSelectorAndAffinityBestPracticesRemediation = `In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which workloads require specialized hardware specific to a particular class of Node.`

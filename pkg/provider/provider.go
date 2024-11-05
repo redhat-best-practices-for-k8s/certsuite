@@ -261,6 +261,7 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 		aEvent := NewEvent(&data.AbnormalEvents[i])
 		env.AbnormalEvents = append(env.AbnormalEvents, &aEvent)
 	}
+
 	// Service accounts
 	env.ServiceAccounts = data.ServiceAccounts
 	env.AllServiceAccounts = data.AllServiceAccounts

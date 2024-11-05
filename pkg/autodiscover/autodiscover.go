@@ -169,7 +169,10 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	}
 	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
 	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
+	log.Info("Collected %d catalog sources during autodiscovery", len(data.AllCatalogSources))
+
 	data.AllPackageManifests = getAllPackageManifests(oc.OlmPkgClient)
+
 	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
 	data.Pods, data.AllPods = findPodsByLabels(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
