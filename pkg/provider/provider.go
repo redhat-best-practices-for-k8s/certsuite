@@ -112,10 +112,11 @@ type TestEnvironment struct { // rename this with testTarget
 	ResourceQuotas         []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
 	NetworkPolicies        []networkingv1.NetworkPolicy
-	AllInstallPlans        []*olmv1Alpha.InstallPlan   `json:"AllInstallPlans"`
-	AllSubscriptions       []olmv1Alpha.Subscription   `json:"AllSubscriptions"`
-	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"-"`
-	OperatorGroups         []*olmv1.OperatorGroup      `json:"OperatorGroups"`
+	AllInstallPlans        []*olmv1Alpha.InstallPlan       `json:"AllInstallPlans"`
+	AllSubscriptions       []olmv1Alpha.Subscription       `json:"AllSubscriptions"`
+	AllCatalogSources      []*olmv1Alpha.CatalogSource     `json:"AllCatalogSources"`
+	AllPackageManifests    []*autodiscover.PackageManifest `json:"AllPackageManifests"`
+	OperatorGroups         []*olmv1.OperatorGroup          `json:"OperatorGroups"`
 	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
@@ -240,7 +241,8 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 	env.AllSubscriptions = data.AllSubscriptions
 	env.AllCatalogSources = data.AllCatalogSources
-	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
+	env.AllPackageManifests = data.AllPackageManifests
+	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllPackageManifests, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.AllCrds = data.AllCrds
 	env.Namespaces = data.Namespaces
@@ -344,7 +346,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.CollectorAppPassword = data.CollectorAppPassword
 	env.CollectorAppEndpoint = data.CollectorAppEndpoint
 
-	operators := createOperators(data.Csvs, data.AllSubscriptions,
+	operators := createOperators(data.Csvs, data.AllSubscriptions, data.AllPackageManifests,
 		data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators
 	log.Info("Operators found: %d", len(env.Operators))

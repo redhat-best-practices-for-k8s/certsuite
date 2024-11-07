@@ -73,6 +73,7 @@ type DiscoveredTestData struct {
 	AllCsvs                []*olmv1Alpha.ClusterServiceVersion
 	AllInstallPlans        []*olmv1Alpha.InstallPlan
 	AllCatalogSources      []*olmv1Alpha.CatalogSource
+	AllPackageManifests    []*PackageManifest
 	Deployments            []appsv1.Deployment
 	StatefulSet            []appsv1.StatefulSet
 	PersistentVolumes      []corev1.PersistentVolume
@@ -158,6 +159,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	}
 	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
 	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
+	data.AllPackageManifests = getAllPackageManifests(oc.DynamicClient)
 	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
 	data.Pods, data.AllPods = findPodsByLabels(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)

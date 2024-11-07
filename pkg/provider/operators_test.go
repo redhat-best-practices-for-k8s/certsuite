@@ -24,6 +24,7 @@ import (
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
 	"github.com/stretchr/testify/assert"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -296,7 +297,8 @@ func TestCreateOperators(t *testing.T) {
 		_ = clientsholder.GetTestClientsHolder(nil)
 		clientsholder.SetupFakeOlmClient(runtimeObjects)
 
-		ops := createOperators(tc.csvs, tc.subscriptions, tc.installPlan, tc.catalogSource, false, true)
+		emptyManifests := []*autodiscover.PackageManifest{}
+		ops := createOperators(tc.csvs, tc.subscriptions, emptyManifests, tc.installPlan, tc.catalogSource, false, true)
 		assert.Equal(t, tc.expectedOperators, ops)
 	}
 }

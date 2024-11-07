@@ -134,7 +134,7 @@ func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironme
 	}
 	for _, operator := range operatorsUnderTest {
 		check.LogInfo("Testing Operator %q", operator)
-		isCertified := validator.IsOperatorCertified(operator.Name, ocpMinorVersion, operator.Channel)
+		isCertified := validator.IsOperatorCertified(operator.Name, ocpMinorVersion)
 		if !isCertified {
 			check.LogError("Operator %q (channel %q) failed to be certified for OpenShift %s", operator.Name, operator.Channel, ocpMinorVersion)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator failed to be certified for OpenShift", false).
