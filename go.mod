@@ -28,7 +28,7 @@ require (
 )
 
 require (
-	cloud.google.com/go/auth v0.10.0 // indirect
+	cloud.google.com/go/auth v0.10.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.5 // indirect
 	cloud.google.com/go/compute/metadata v0.5.2 // indirect
 	dario.cat/mergo v1.0.1 // indirect
@@ -227,7 +227,7 @@ require (
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241021175030-e64988a27024
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.25.0
-	google.golang.org/api v0.204.0
+	google.golang.org/api v0.205.0
 	k8s.io/kubectl v0.31.2
 )
 
