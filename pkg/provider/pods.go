@@ -514,9 +514,9 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 
 		// If the network-status annotation is not set, let's check the SriovNetwork/SriovNetworkNodePolicy CRs
 		// to see if the MTU is set there.
-		log.Debug("Number of SriovNetworks: %d", len(env.SriovNetworks))
-		log.Debug("Number of SriovNetworkNodePolicies: %d", len(env.SriovNetworkNodePolicies))
-		if sriovNetworkUsesMTU(env.SriovNetworks, env.SriovNetworkNodePolicies, nad.Name) {
+		log.Debug("Number of SriovNetworks: %d", len(env.AllSriovNetworks))
+		log.Debug("Number of SriovNetworkNodePolicies: %d", len(env.AllSriovNetworkNodePolicies))
+		if sriovNetworkUsesMTU(env.AllSriovNetworks, env.AllSriovNetworkNodePolicies, nad.Name) {
 			return true, nil
 		}
 	}

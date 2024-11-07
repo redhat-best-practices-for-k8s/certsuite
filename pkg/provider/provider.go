@@ -121,7 +121,9 @@ type TestEnvironment struct { // rename this with testTarget
 	AllPackageManifests          []*olmpkgv1.PackageManifest `json:"AllPackageManifests"`
 	OperatorGroups               []*olmv1.OperatorGroup      `json:"OperatorGroups"`
 	SriovNetworks                []sriovNetworkOp.SriovNetwork
+	AllSriovNetworks             []sriovNetworkOp.SriovNetwork
 	SriovNetworkNodePolicies     []sriovNetworkOp.SriovNetworkNodePolicy
+	AllSriovNetworkNodePolicies  []sriovNetworkOp.SriovNetworkNodePolicy
 	NetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
 	IstioServiceMeshFound        bool
 	ValidProtocolNames           []string
@@ -369,6 +371,8 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	// SR-IOV
 	env.SriovNetworks = data.SriovNetworks
 	env.SriovNetworkNodePolicies = data.SriovNetworkNodePolicies
+	env.AllSriovNetworks = data.AllSriovNetworks
+	env.AllSriovNetworkNodePolicies = data.AllSriovNetworkNodePolicies
 	env.NetworkAttachmentDefinitions = data.NetworkAttachmentDefinitions
 	for _, pod := range env.Pods {
 		isCreatedByDeploymentConfig, err := pod.CreatedByDeploymentConfig()

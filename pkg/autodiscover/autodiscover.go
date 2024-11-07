@@ -81,6 +81,8 @@ type DiscoveredTestData struct {
 	AllPackageManifests          []*olmPkgv1.PackageManifest
 	SriovNetworks                []sriovNetworkOp.SriovNetwork
 	SriovNetworkNodePolicies     []sriovNetworkOp.SriovNetworkNodePolicy
+	AllSriovNetworks             []sriovNetworkOp.SriovNetwork
+	AllSriovNetworkNodePolicies  []sriovNetworkOp.SriovNetworkNodePolicy
 	NetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
 	Deployments                  []appsv1.Deployment
 	StatefulSet                  []appsv1.StatefulSet
@@ -289,6 +291,16 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	}
 
 	data.SriovNetworkNodePolicies, err = getSriovNetworkNodePolicies(oc, data.Namespaces)
+	if err != nil {
+		log.Fatal("Cannot get list of sriov network node policies, err: %v", err)
+	}
+
+	data.AllSriovNetworks, err = getSriovNetworks(oc, data.AllNamespaces)
+	if err != nil {
+		log.Fatal("Cannot get list of sriov networks, err: %v", err)
+	}
+
+	data.AllSriovNetworkNodePolicies, err = getSriovNetworkNodePolicies(oc, data.AllNamespaces)
 	if err != nil {
 		log.Fatal("Cannot get list of sriov network node policies, err: %v", err)
 	}
