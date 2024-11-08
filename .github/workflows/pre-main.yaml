@@ -239,30 +239,11 @@ jobs:
       - name: 'Show failed test cases and the non compliant objects'
         run: ./certsuite claim show failures -c certsuite-out/claim.json
 
-      - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
-        if: always()
-        with:
-          name: smoke-tests
-          path: |
-            certsuite-out/*.tar.gz
-
       - name: Check the smoke test results against the expected results template
         run: ./certsuite check results --log-file="certsuite-out/certsuite.log"
 
       - name: 'Test: Run preflight specific test suite'
         run: ./certsuite run --label-filter=preflight --log-level="${SMOKE_TESTS_LOG_LEVEL}"
-
-      - name: Upload preflight smoke test results as an artifact
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
-        if: always()
-        with:
-          name: preflight-smoke-tests
-          path: |
-            certsuite-out/*.tar.gz
-
-      - name: Remove tarball(s) to save disk space
-        run: rm -f certsuite-out/*.tar.gz
 
   smoke-tests-container:
     name: Run Container Smoke Tests
@@ -358,17 +339,6 @@ jobs:
             --config-file=/usr/certsuite/config/certsuite_config.yml \
             --kubeconfig=/usr/certsuite/config/kubeconfig \
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
-
-      - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
-        if: always()
-        with:
-          name: smoke-tests-container
-          path: |
-            ${CERTSUITE_OUTPUT_DIR}/*.tar.gz
-
-      - name: Remove tarball(s) to save disk space.
-        run: rm -f ${CERTSUITE_OUTPUT_DIR}/*.tar.gz
 
       - name: Build the Certsuite tool
         run: make build-certsuite-tool
