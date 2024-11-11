@@ -249,9 +249,10 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 	trueVal := true
 	falseVal := false
 	tests := []struct {
-		name      string
-		container Container
-		expected  bool
+		name       string
+		container  Container
+		podDefault bool
+		expected   bool
 	}{
 		{
 			name: "Container set to run as non-root",
@@ -262,7 +263,8 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 					},
 				},
 			},
-			expected: true,
+			podDefault: false,
+			expected:   true,
 		},
 		{
 			name: "Container set to not run as non-root",
@@ -273,13 +275,26 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 					},
 				},
 			},
-			expected: false,
+			podDefault: true,
+			expected:   false,
+		},
+		{
+			name: "Container set to not run as non-root",
+			container: Container{
+				Container: &corev1.Container{
+					SecurityContext: &corev1.SecurityContext{
+						RunAsNonRoot: nil,
+					},
+				},
+			},
+			podDefault: false,
+			expected:   false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := tt.container.IsContainerRunAsNonRoot()
+			result := tt.container.IsContainerRunAsNonRoot(tt.podDefault)
 			if result != tt.expected {
 				t.Errorf("expected %v, got %v", tt.expected, result)
 			}

@@ -396,33 +396,19 @@ func testSecConRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvironment
 
 	for _, put := range env.Pods {
 		check.LogInfo("Testing Pod %q in namespace %q", put.Name, put.Namespace)
-		if put.IsRunAsNonRoot() {
+		nonCompliantContainers := put.GetRunAsNonRootFalseContainers(knownContainersToSkip)
+		if len(nonCompliantContainers) == 0 {
 			check.LogInfo("Pod %q is running as non-root", put.Name)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running as non-root", true))
 		} else {
-			check.LogError("Pod %q is running as root", put.Name)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running as root", false))
-		}
-
-		// We are looking through both the containers and the pods separately to make compliant and non-compliant objects.
-		for _, cut := range put.Containers {
-			check.LogInfo("Testing Container %q", cut)
-			if knownContainersToSkip[cut.Name] {
-				check.LogInfo("Skipping container %q in Pod %q", cut.Name, put.Name)
-				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(cut.Namespace, cut.Name, "Container is allowed to run as root", true))
-				continue
-			}
-
-			if cut.IsContainerRunAsNonRoot() {
-				check.LogInfo("Container %q in Pod %q is running as non-root", cut.Name, put.Name)
-				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(cut.Namespace, cut.Name, "Container is running as non-root", true))
-			} else {
-				check.LogError("Container %q in Pod %q is running as root", cut.Name, put.Name)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Container is running as root", false))
+			check.LogError("Pod %q might be running as root", put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod might be running as root", false))
+			for _, cut := range nonCompliantContainers {
+				check.LogError("Container %q in Pod %q might be running as root", cut.Name, put.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Container might be running as root", false))
 			}
 		}
 	}
-
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 

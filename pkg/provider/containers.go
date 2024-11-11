@@ -194,9 +194,9 @@ func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool {
 	return *c.Container.SecurityContext.ReadOnlyRootFilesystem
 }
 
-func (c *Container) IsContainerRunAsNonRoot() bool {
+func (c *Container) IsContainerRunAsNonRoot(podRunAsNonRoot bool) bool {
 	if c.SecurityContext != nil && c.SecurityContext.RunAsNonRoot != nil {
 		return *c.SecurityContext.RunAsNonRoot
 	}
-	return false
+	return podRunAsNonRoot
 }

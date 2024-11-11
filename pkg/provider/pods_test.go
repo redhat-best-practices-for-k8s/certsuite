@@ -529,15 +529,99 @@ func TestIsRunAsNonRoot(t *testing.T) {
 			pod: &Pod{
 				Pod: &corev1.Pod{
 					Spec: corev1.PodSpec{
+						SecurityContext: &corev1.PodSecurityContext{
+							RunAsNonRoot: boolPtr(true),
+						},
+					},
+				},
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(true),
+							},
+						},
+					},
+				},
+			},
+			expected: true,
+		},
+		{
+			name: "One container with RunAsNonRoot set to false",
+			pod: &Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
 						Containers: []corev1.Container{
 							{
 								SecurityContext: &corev1.SecurityContext{
 									RunAsNonRoot: boolPtr(true),
 								},
 							},
+							{
+								SecurityContext: &corev1.SecurityContext{
+									RunAsNonRoot: boolPtr(false),
+								},
+							},
 						},
 						SecurityContext: &corev1.PodSecurityContext{
 							RunAsNonRoot: boolPtr(true),
+						},
+					},
+				},
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(true),
+							},
+						},
+					},
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(false),
+							},
+						},
+					},
+				},
+			},
+			expected: false,
+		},
+		{
+			name: "One container with RunAsNonRoot non set (nil)",
+			pod: &Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						Containers: []corev1.Container{
+							{
+								SecurityContext: &corev1.SecurityContext{
+									RunAsNonRoot: boolPtr(true),
+								},
+							},
+							{
+								SecurityContext: &corev1.SecurityContext{
+									RunAsNonRoot: nil,
+								},
+							},
+						},
+						SecurityContext: &corev1.PodSecurityContext{
+							RunAsNonRoot: boolPtr(true),
+						},
+					},
+				},
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(true),
+							},
+						},
+					},
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: nil,
+							},
 						},
 					},
 				},
@@ -561,8 +645,8 @@ func TestIsRunAsNonRoot(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := tt.pod.IsRunAsNonRoot()
-			if result != tt.expected {
+			result := tt.pod.GetRunAsNonRootFalseContainers(map[string]bool{})
+			if (len(result) == 0) != tt.expected {
 				t.Errorf("expected %v, got %v", tt.expected, result)
 			}
 		})
