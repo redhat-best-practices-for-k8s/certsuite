@@ -177,7 +177,7 @@ require (
 	golang.org/x/net v0.30.0 // indirect
 	golang.org/x/oauth2 v0.23.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
+	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/text v0.19.0 // indirect
 	golang.org/x/time v0.7.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
@@ -226,7 +226,7 @@ require (
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.39
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241021175030-e64988a27024
 	github.com/robert-nix/ansihtml v1.0.1
-	golang.org/x/term v0.25.0
+	golang.org/x/term v0.26.0
 	google.golang.org/api v0.205.0
 	k8s.io/kubectl v0.31.2
 )
