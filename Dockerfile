@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.4-1214.1729773476@sha256:ee0b908e958a1822afc57e5d386d1ea128eebe492cb2e01b6903ee19c133ea75 AS build
+FROM registry.access.redhat.com/ubi9/ubi:9.5@sha256:5ae30df1cf22d3f805b031eaf88218f6e084049cb30a8d22361f2a4f13eaa511 AS build
 ENV CERTSUITE_DIR=/usr/certsuite
 ENV \
 	CERTSUITE_SRC_DIR=${CERTSUITE_DIR}/src \
