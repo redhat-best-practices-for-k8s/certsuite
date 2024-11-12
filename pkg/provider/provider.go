@@ -29,6 +29,7 @@ import (
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	olmpkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
@@ -114,7 +115,8 @@ type TestEnvironment struct { // rename this with testTarget
 	NetworkPolicies        []networkingv1.NetworkPolicy
 	AllInstallPlans        []*olmv1Alpha.InstallPlan   `json:"AllInstallPlans"`
 	AllSubscriptions       []olmv1Alpha.Subscription   `json:"AllSubscriptions"`
-	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"-"`
+	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"AllCatalogSources"`
+	AllPackageManifests    []*olmpkgv1.PackageManifest `json:"AllPackageManifests"`
 	OperatorGroups         []*olmv1.OperatorGroup      `json:"OperatorGroups"`
 	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
@@ -240,7 +242,8 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 	env.AllSubscriptions = data.AllSubscriptions
 	env.AllCatalogSources = data.AllCatalogSources
-	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
+	env.AllPackageManifests = data.AllPackageManifests
+	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllPackageManifests, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.AllCrds = data.AllCrds
 	env.Namespaces = data.Namespaces
@@ -344,7 +347,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.CollectorAppPassword = data.CollectorAppPassword
 	env.CollectorAppEndpoint = data.CollectorAppEndpoint
 
-	operators := createOperators(data.Csvs, data.AllSubscriptions,
+	operators := createOperators(data.Csvs, data.AllSubscriptions, data.AllPackageManifests,
 		data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators
 	log.Info("Operators found: %d", len(env.Operators))

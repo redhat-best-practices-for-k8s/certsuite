@@ -38,6 +38,7 @@ import (
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
 	apiserverscheme "github.com/openshift/client-go/apiserver/clientset/versioned"
 	ocpMachine "github.com/openshift/client-go/machineconfiguration/clientset/versioned"
+	olmpkgclient "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/client/clientset/versioned/typed/operators/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -63,6 +64,7 @@ type ClientsHolder struct {
 	ScalingClient        scale.ScalesGetter
 	APIExtClient         apiextv1.Interface
 	OlmClient            olmClient.Interface
+	OlmPkgClient         olmpkgclient.OperatorsV1Interface
 	OcpClient            clientconfigv1.ConfigV1Interface
 	K8sClient            kubernetes.Interface
 	K8sNetworkingClient  networkingv1.NetworkingV1Interface
@@ -284,6 +286,10 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 		return nil, fmt.Errorf("cannot instantiate apiextv1: %s", err)
 	}
 	clientsHolder.OlmClient, err = olmClient.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate olm clientset: %s", err)
+	}
+	clientsHolder.OlmPkgClient, err = olmpkgclient.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate olm clientset: %s", err)
 	}

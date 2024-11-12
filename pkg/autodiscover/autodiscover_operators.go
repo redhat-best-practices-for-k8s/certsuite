@@ -25,6 +25,9 @@ import (
 	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+
+	olmpkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
+	olmpkgclient "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/client/clientset/versioned/typed/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -199,6 +202,19 @@ func getAllCatalogSources(olmClient clientOlm.Interface) (out []*olmv1Alpha.Cata
 	}
 	for index := range catalogSourcesList.Items {
 		out = append(out, &catalogSourcesList.Items[index])
+	}
+	return out
+}
+
+// getAllPackageManifests is a helper function to get the all the PackageManifests in a cluster.
+func getAllPackageManifests(olmPkgClient olmpkgclient.OperatorsV1Interface) (out []*olmpkgv1.PackageManifest) {
+	packageManifestsList, err := olmPkgClient.PackageManifests("").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Error("Unable get Package Manifests in cluster, err: %v", err)
+		return out
+	}
+	for index := range packageManifestsList.Items {
+		out = append(out, &packageManifestsList.Items[index])
 	}
 	return out
 }

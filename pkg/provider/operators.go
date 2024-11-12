@@ -30,6 +30,7 @@ import (
 	"github.com/go-logr/stdr"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	olmpkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
@@ -150,6 +151,7 @@ func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Al
 
 func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 	allSubscriptions []olmv1Alpha.Subscription,
+	allPackageManifests []*olmpkgv1.PackageManifest,
 	allInstallPlans []*olmv1Alpha.InstallPlan,
 	allCatalogSources []*olmv1Alpha.CatalogSource,
 	succeededRequired,
@@ -181,7 +183,7 @@ func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 		op.PackageFromCsvName = packageAndVersion[0]
 		op.Version = csv.Spec.Version.String()
 		// Get at least one subscription and update the Operator object with it.
-		if getAtLeastOneSubscription(op, csv, allSubscriptions) {
+		if getAtLeastOneSubscription(op, csv, allSubscriptions, allPackageManifests) {
 			targetNamespaces, err := getOperatorTargetNamespaces(op.SubscriptionNamespace)
 			if err != nil {
 				log.Error("Failed to get target namespaces for operator %s: %v", csv.Name, err)
@@ -200,7 +202,7 @@ func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 	return operators
 }
 
-func getAtLeastOneSubscription(op *Operator, csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) (atLeastOneSubscription bool) {
+func getAtLeastOneSubscription(op *Operator, csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription, packageManifests []*olmpkgv1.PackageManifest) (atLeastOneSubscription bool) {
 	atLeastOneSubscription = false
 	for s := range subscriptions {
 		subscription := &subscriptions[s]
@@ -214,9 +216,30 @@ func getAtLeastOneSubscription(op *Operator, csv *olmv1Alpha.ClusterServiceVersi
 		op.Org = subscription.Spec.CatalogSource
 		op.Channel = subscription.Spec.Channel
 		atLeastOneSubscription = true
+
+		// If the channel is not present in the subscription, get the default channel from the package manifest
+		if op.Channel == "" {
+			aPackageManifest := getPackageManifestWithSubscription(subscription, packageManifests)
+			if aPackageManifest != nil {
+				op.Channel = aPackageManifest.Status.DefaultChannel
+			} else {
+				log.Error("Could not determine the default channel, this operator will always fail certification")
+			}
+		}
 		break
 	}
 	return atLeastOneSubscription
+}
+
+func getPackageManifestWithSubscription(subscription *olmv1Alpha.Subscription, packageManifests []*olmpkgv1.PackageManifest) *olmpkgv1.PackageManifest {
+	for index := range packageManifests {
+		if packageManifests[index].Status.PackageName == subscription.Spec.Package &&
+			packageManifests[index].Namespace == subscription.Spec.CatalogSourceNamespace &&
+			packageManifests[index].Status.CatalogSource == subscription.Spec.CatalogSource {
+			return packageManifests[index]
+		}
+	}
+	return nil
 }
 
 func getAtLeastOneCsv(csv *olmv1Alpha.ClusterServiceVersion, installPlan *olmv1Alpha.InstallPlan) (atLeastOneCsv bool) {
