@@ -30,9 +30,9 @@ import (
 	"github.com/go-logr/stdr"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	olmpkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
@@ -151,7 +151,7 @@ func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Al
 
 func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 	allSubscriptions []olmv1Alpha.Subscription,
-	allPackageManifests []*autodiscover.PackageManifest,
+	allPackageManifests []*olmpkgv1.PackageManifest,
 	allInstallPlans []*olmv1Alpha.InstallPlan,
 	allCatalogSources []*olmv1Alpha.CatalogSource,
 	succeededRequired,
@@ -202,7 +202,7 @@ func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 	return operators
 }
 
-func getAtLeastOneSubscription(op *Operator, csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription, packageManifests []*autodiscover.PackageManifest) (atLeastOneSubscription bool) {
+func getAtLeastOneSubscription(op *Operator, csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription, packageManifests []*olmpkgv1.PackageManifest) (atLeastOneSubscription bool) {
 	atLeastOneSubscription = false
 	for s := range subscriptions {
 		subscription := &subscriptions[s]
@@ -231,10 +231,10 @@ func getAtLeastOneSubscription(op *Operator, csv *olmv1Alpha.ClusterServiceVersi
 	return atLeastOneSubscription
 }
 
-func getPackageManifestWithSubscription(subscription *olmv1Alpha.Subscription, packageManifests []*autodiscover.PackageManifest) *autodiscover.PackageManifest {
+func getPackageManifestWithSubscription(subscription *olmv1Alpha.Subscription, packageManifests []*olmpkgv1.PackageManifest) *olmpkgv1.PackageManifest {
 	for index := range packageManifests {
 		if packageManifests[index].Status.PackageName == subscription.Spec.Package &&
-			packageManifests[index].Metadata.Namespace == subscription.Spec.CatalogSourceNamespace &&
+			packageManifests[index].Namespace == subscription.Spec.CatalogSourceNamespace &&
 			packageManifests[index].Status.CatalogSource == subscription.Spec.CatalogSource {
 			return packageManifests[index]
 		}

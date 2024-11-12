@@ -19,7 +19,6 @@ package autodiscover
 import (
 	"context"
 	"fmt"
-	"time"
 
 	helmclient "github.com/mittwald/go-helm-client"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -27,13 +26,12 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 
+	olmpkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
+	olmpkgclient "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/client/clientset/versioned/typed/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/client-go/dynamic"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
@@ -43,34 +41,6 @@ const (
 	istioNamespace      = "istio-system"
 	istioDeploymentName = "istiod"
 )
-
-type PackageManifest struct {
-	APIVersion string `json:"apiVersion"`
-	Kind       string `json:"kind"`
-	Metadata   struct {
-		CreationTimestamp time.Time         `json:"creationTimestamp"`
-		Labels            map[string]string `json:"labels"`
-		Name              string            `json:"name"`
-		Namespace         string            `json:"namespace"`
-	} `json:"metadata"`
-	Spec struct {
-	} `json:"spec"`
-	Status struct {
-		CatalogSource            string `json:"catalogSource"`
-		CatalogSourceDisplayName string `json:"catalogSourceDisplayName"`
-		CatalogSourceNamespace   string `json:"catalogSourceNamespace"`
-		CatalogSourcePublisher   string `json:"catalogSourcePublisher"`
-		Channels                 []struct {
-			CurrentCSV string `json:"currentCSV"`
-			Name       string `json:"name"`
-		} `json:"channels"`
-		DefaultChannel string `json:"defaultChannel"`
-		PackageName    string `json:"packageName"`
-		Provider       struct {
-			Name string `json:"name"`
-		} `json:"provider"`
-	} `json:"status"`
-}
 
 func isIstioServiceMeshInstalled(appClient appv1client.AppsV1Interface, allNs []string) bool {
 	// The Istio namespace must be present
@@ -237,25 +207,14 @@ func getAllCatalogSources(olmClient clientOlm.Interface) (out []*olmv1Alpha.Cata
 }
 
 // getAllPackageManifests is a helper function to get the all the PackageManifests in a cluster.
-func getAllPackageManifests(dynamicClient dynamic.Interface) (out []*PackageManifest) {
-	gvr := schema.GroupVersionResource{
-		Group:    "packages.operators.coreos.com",
-		Version:  "v1",
-		Resource: "packagemanifests",
-	}
-	// Query the package manifest for the operator
-	pkgManifest, err := dynamicClient.Resource(gvr).Namespace("").List(context.TODO(), metav1.ListOptions{})
+func getAllPackageManifests(olmPkgClient olmpkgclient.OperatorsV1Interface) (out []*olmpkgv1.PackageManifest) {
+	packageManifestsList, err := olmPkgClient.PackageManifests("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Error("Unable get PackageManifests in cluster, err: %v", err)
+		log.Error("Unable get Package Manifests in cluster, err: %v", err)
 		return out
 	}
-	for _, item := range pkgManifest.Items {
-		var manifest PackageManifest
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(item.Object, &manifest); err != nil {
-			log.Error("Failed to convert to PackageManifestWithNs: %v", err)
-		}
-
-		out = append(out, &manifest)
+	for index := range packageManifestsList.Items {
+		out = append(out, &packageManifestsList.Items[index])
 	}
 	return out
 }

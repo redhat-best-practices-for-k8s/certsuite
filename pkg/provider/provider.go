@@ -29,6 +29,7 @@ import (
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	olmpkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
@@ -112,11 +113,11 @@ type TestEnvironment struct { // rename this with testTarget
 	ResourceQuotas         []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
 	NetworkPolicies        []networkingv1.NetworkPolicy
-	AllInstallPlans        []*olmv1Alpha.InstallPlan       `json:"AllInstallPlans"`
-	AllSubscriptions       []olmv1Alpha.Subscription       `json:"AllSubscriptions"`
-	AllCatalogSources      []*olmv1Alpha.CatalogSource     `json:"AllCatalogSources"`
-	AllPackageManifests    []*autodiscover.PackageManifest `json:"AllPackageManifests"`
-	OperatorGroups         []*olmv1.OperatorGroup          `json:"OperatorGroups"`
+	AllInstallPlans        []*olmv1Alpha.InstallPlan   `json:"AllInstallPlans"`
+	AllSubscriptions       []olmv1Alpha.Subscription   `json:"AllSubscriptions"`
+	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"AllCatalogSources"`
+	AllPackageManifests    []*olmpkgv1.PackageManifest `json:"AllPackageManifests"`
+	OperatorGroups         []*olmv1.OperatorGroup      `json:"OperatorGroups"`
 	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
