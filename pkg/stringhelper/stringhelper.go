@@ -17,6 +17,7 @@
 package stringhelper
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -64,4 +65,11 @@ func RemoveEmptyStrings(s []string) []string {
 		}
 	}
 	return r
+}
+
+func BoolToString(b *bool) string {
+	if b == nil {
+		return "nil"
+	}
+	return fmt.Sprintf("%t", *b)
 }

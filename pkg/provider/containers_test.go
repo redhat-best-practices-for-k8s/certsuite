@@ -249,10 +249,11 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 	trueVal := true
 	falseVal := false
 	tests := []struct {
-		name       string
-		container  Container
-		podDefault bool
-		expected   bool
+		name           string
+		container      Container
+		podDefault     *bool
+		expected       bool
+		expectedReason string
 	}{
 		{
 			name: "Container set to run as non-root",
@@ -263,8 +264,9 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 					},
 				},
 			},
-			podDefault: false,
-			expected:   true,
+			podDefault:     &falseVal,
+			expected:       true,
+			expectedReason: "RunAsNonRoot is set to true at the container level, overriding a false value defined at pod level.",
 		},
 		{
 			name: "Container set to not run as non-root",
@@ -275,8 +277,9 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 					},
 				},
 			},
-			podDefault: true,
-			expected:   false,
+			podDefault:     &trueVal,
+			expected:       false,
+			expectedReason: "RunAsNonRoot is set to false at the container level, overriding a true value defined at pod level.",
 		},
 		{
 			name: "Container set to not run as non-root",
@@ -287,16 +290,33 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 					},
 				},
 			},
-			podDefault: false,
-			expected:   false,
+			podDefault:     &falseVal,
+			expected:       false,
+			expectedReason: "RunAsNonRoot is set to nil at container level and inheriting a false value from the pod level RunAsNonRoot setting.",
+		},
+		{
+			name: "nil at pod and true at container",
+			container: Container{
+				Container: &corev1.Container{
+					SecurityContext: &corev1.SecurityContext{
+						RunAsNonRoot: &trueVal,
+					},
+				},
+			},
+			podDefault:     nil,
+			expected:       true,
+			expectedReason: "RunAsNonRoot is set to true at the container level, overriding a nil value defined at pod level.",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := tt.container.IsContainerRunAsNonRoot(tt.podDefault)
+			result, reason := tt.container.IsContainerRunAsNonRoot(tt.podDefault)
 			if result != tt.expected {
 				t.Errorf("expected %v, got %v", tt.expected, result)
+			}
+			if reason != tt.expectedReason {
+				t.Errorf("expectedReason %v, got %v", tt.expectedReason, reason)
 			}
 		})
 	}

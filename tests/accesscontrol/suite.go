@@ -396,16 +396,17 @@ func testSecConRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvironment
 
 	for _, put := range env.Pods {
 		check.LogInfo("Testing Pod %q in namespace %q", put.Name, put.Namespace)
-		nonCompliantContainers := put.GetRunAsNonRootFalseContainers(knownContainersToSkip)
+		nonCompliantContainers, nonComplianceReason := put.GetRunAsNonRootFalseContainers(knownContainersToSkip)
 		if len(nonCompliantContainers) == 0 {
 			check.LogInfo("Pod %q is configured with RunAsNonRoot SCC parameter set to true for all of its containers", put.Name)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is configured with RunAsNonRoot SCC parameter set to true for all of its containers", true))
 		} else {
 			check.LogError("Pod %q is configured with RunAsNonRoot SCC parameter set to false for some of its containers", put.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is configured with RunAsNonRoot SCC parameter set to false for some of its containers", false))
-			for _, cut := range nonCompliantContainers {
-				check.LogError("Container %q in Pod %q is configured with RunAsNonRoot SCC parameter set to false", cut.Name, put.Name)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Container is configured with RunAsNonRoot SCC parameter set to false", false))
+			for index := range nonCompliantContainers {
+				check.LogError("In Container %q of Pod %q, %s", nonCompliantContainers[index].Name, put.Name, nonComplianceReason[index])
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
+					nonCompliantContainers[index].Name, fmt.Sprintf("In Container %q of Pod %q, %s", nonCompliantContainers[index].Name, put.Name, nonComplianceReason[index]), false))
 			}
 		}
 	}

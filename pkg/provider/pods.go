@@ -507,12 +507,12 @@ func (p *Pod) IsRunAsUserID(uid int64) bool {
 // for the container configuration, if it is not present.
 // The RunAsNonRoot parameter is checked next at the container level.
 // See: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
-func (p *Pod) GetRunAsNonRootFalseContainers(knownContainersToSkip map[string]bool) (nonCompliantContainers []*Container) {
+func (p *Pod) GetRunAsNonRootFalseContainers(knownContainersToSkip map[string]bool) (nonCompliantContainers []*Container, nonComplianceReason []string) {
 	// Check pod-level security context this will be set by default for containers
 	// If not already configured at the container level
-	podRunAsNonRoot := false
+	var podRunAsNonRoot *bool
 	if p.Pod.Spec.SecurityContext != nil && p.Pod.Spec.SecurityContext.RunAsNonRoot != nil {
-		podRunAsNonRoot = *p.Pod.Spec.SecurityContext.RunAsNonRoot
+		podRunAsNonRoot = p.Pod.Spec.SecurityContext.RunAsNonRoot
 	}
 	// Check each container for the RunAsNonRoot parameter.
 	// If it is not present, the pod value applies
@@ -520,12 +520,13 @@ func (p *Pod) GetRunAsNonRootFalseContainers(knownContainersToSkip map[string]bo
 		if knownContainersToSkip[cut.Name] {
 			continue
 		}
-		if !cut.IsContainerRunAsNonRoot(podRunAsNonRoot) {
+		if isRunAsNonRoot, reason := cut.IsContainerRunAsNonRoot(podRunAsNonRoot); !isRunAsNonRoot {
 			// found a container with RunAsNonRoot set to false
 			nonCompliantContainers = append(nonCompliantContainers, cut)
+			nonComplianceReason = append(nonComplianceReason, reason)
 		}
 	}
-	return nonCompliantContainers
+	return nonCompliantContainers, nonComplianceReason
 }
 
 // Get the list of top owners of pods
