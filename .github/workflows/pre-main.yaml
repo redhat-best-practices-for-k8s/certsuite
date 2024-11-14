@@ -250,6 +250,9 @@ jobs:
       - name: Check the smoke test results against the expected results template
         run: ./certsuite check results --log-file="certsuite-out/certsuite.log"
 
+      - name: Print the certsuite.log
+        run: cat certsuite-out/certsuite.log
+
       - name: 'Test: Run preflight specific test suite'
         run: ./certsuite run --label-filter=preflight --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
@@ -375,6 +378,9 @@ jobs:
 
       - name: Check the smoke test results against the expected results template
         run: ./certsuite check results --log-file="${CERTSUITE_OUTPUT_DIR}"/certsuite.log
+
+      - name: Print the certsuite.log
+        run: cat "${CERTSUITE_OUTPUT_DIR}"/certsuite.log
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a Certsuite container with the certsuite command'
         run: |

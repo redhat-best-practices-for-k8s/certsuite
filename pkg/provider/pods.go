@@ -451,8 +451,6 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 }
 
 // IsUsingSRIOVWithMTU returns true if any of the pod's interfaces is a sriov one with MTU set.
-//
-//nolint:funlen
 func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 	const (
 		cncfNetworksAnnotation = "k8s.v1.cni.cncf.io/networks"
@@ -470,46 +468,12 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 	// whether its config's type is "sriov"
 
 	oc := clientsholder.GetClientsHolder()
-
-	// Steps:
-	// 1. Compare the network name with the NAD name and check if the MTU is set.
-	// 2. If the MTU is not set in the NAD config, we should double-check the network-status annotation.
-	//    The network status (if the NAD name matches) could possibly have the MTU set.
-	// 3. If neither of the above steps is true, then check the SriovNetwork/SriovNetworkNodePolicy CRs
-
 	for _, networkName := range cncfNetworkNames {
 		log.Debug("%s: Reviewing network-attachment definition %q", p, networkName)
 		nad, err := oc.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(
 			p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
 		if err != nil {
 			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
-		}
-
-		// Check the NAD config to see if the MTU is set
-		isSRIOVwithMTU, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nad.Spec.Config)
-		if err != nil {
-			log.Warn("Failed to know if network-attachment %s is using SRIOV with MTU: %v", networkName, err)
-		}
-
-		log.Debug("%s: NAD config: %s", p, nad.Spec.Config)
-		if isSRIOVwithMTU {
-			return true, nil
-		}
-		// If the NAD is defined and the MTU value is not found, let's check
-		// the network-status annotation to see if the MTU is set there and matches
-		// the NAD name.
-
-		// Get the network-status annotation (if any)
-		if networkStatuses, exist := p.Annotations[CniNetworksStatusKey]; exist {
-			log.Info("Network-status annotation found: %s", networkStatuses)
-			networkStatusResult, err := networkStatusUsesMTU(networkStatuses, nad.Name)
-			if err != nil {
-				log.Warn("Failed to know if network-status %s is sriov with MTU: %v", networkName, err)
-			}
-
-			if networkStatusResult {
-				return true, nil
-			}
 		}
 
 		// If the network-status annotation is not set, let's check the SriovNetwork/SriovNetworkNodePolicy CRs
@@ -525,16 +489,14 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 }
 
 func sriovNetworkUsesMTU(sriovNetworks []sriovNetworkOp.SriovNetwork, sriovNetworkNodePolicies []sriovNetworkOp.SriovNetworkNodePolicy, nadName string) bool {
-	//nolint:gocritic
-	for _, sriovNetwork := range sriovNetworks {
-		log.Debug("Checking SriovNetwork %s", sriovNetwork.Name)
-		if sriovNetwork.Name == nadName {
-			log.Debug("SriovNetwork %s found to match the NAD name %s", sriovNetwork.Name, nadName)
-			//nolint:gocritic
-			for _, nodePolicy := range sriovNetworkNodePolicies {
+	for sn := range sriovNetworks {
+		log.Debug("Checking SriovNetwork %s", sriovNetworks[sn].Name)
+		if sriovNetworks[sn].Name == nadName {
+			log.Debug("SriovNetwork %s found to match the NAD name %s", sriovNetworks[sn].Name, nadName)
+			for nodePolicy := range sriovNetworkNodePolicies {
 				log.Debug("Checking SriovNetworkNodePolicy %v", nodePolicy)
-				if nodePolicy.Namespace == sriovNetwork.Namespace && nodePolicy.Spec.ResourceName == sriovNetwork.Spec.ResourceName {
-					if nodePolicy.Spec.Mtu > 0 {
+				if sriovNetworkNodePolicies[nodePolicy].Namespace == sriovNetworks[sn].Namespace && sriovNetworkNodePolicies[nodePolicy].Spec.ResourceName == sriovNetworks[sn].Spec.ResourceName {
+					if sriovNetworkNodePolicies[nodePolicy].Spec.Mtu > 0 {
 						return true
 					}
 				}
