@@ -55,7 +55,8 @@ type Operator struct {
 	Version               string                                `yaml:"version" json:"version"`
 	Channel               string                                `yaml:"channel" json:"channel"`
 	PackageFromCsvName    string                                `yaml:"packagefromcsvname" json:"packagefromcsvname"`
-	PreflightResults      PreflightResultsDB
+	PreflightResults      PreflightResultsDB                    `yaml:"operandPods" json:"operandPods"`
+	OperandPods           map[string]*Pod
 }
 
 type CsvInstallPlan struct {
@@ -365,28 +366,50 @@ func GetAllOperatorGroups() ([]*olmv1.OperatorGroup, error) {
 	return operatorGroups, nil
 }
 
-func addOperatorPodsToTestPods(operatorPods []*Pod, env *TestEnvironment) {
+func searchPodInSlice(name, namespace string, pods []*Pod) *Pod {
 	// Helper map to filter pods that have been already added
-	testPodsMap := map[types.NamespacedName]*Pod{}
-	for _, testPod := range env.Pods {
-		testPodsMap[types.NamespacedName{Namespace: testPod.Namespace, Name: testPod.Name}] = testPod
+	podsMap := map[types.NamespacedName]*Pod{}
+	for _, testPod := range pods {
+		podsMap[types.NamespacedName{Namespace: testPod.Namespace, Name: testPod.Name}] = testPod
 	}
 
-	// Now check that the operator pod doesn't exist yet. If it exists, make sure it's flagged as operator pod.
-	for _, operatorPod := range operatorPods {
-		operatorPodKey := types.NamespacedName{Namespace: operatorPod.Namespace, Name: operatorPod.Name}
-		if pod, found := testPodsMap[operatorPodKey]; found {
-			log.Info("Operator pod %v already discovered.", operatorPodKey)
+	// Search by namespace+name key
+	podKey := types.NamespacedName{Namespace: namespace, Name: name}
+	if pod, found := podsMap[podKey]; found {
+		return pod
+	}
 
+	return nil
+}
+
+func addOperatorPodsToTestPods(operatorPods []*Pod, env *TestEnvironment) {
+	for _, operatorPod := range operatorPods {
+		// Check whether the pod was already discovered
+		testPod := searchPodInSlice(operatorPod.Name, operatorPod.Namespace, env.Pods)
+		if testPod != nil {
+			log.Info("Operator pod %v/%v already discovered.", testPod.Namespace, testPod.Name)
 			// Make sure it's flagged as operator pod.
-			pod.IsOperator = true
+			testPod.IsOperator = true
 		} else {
-			log.Info("Operator pod %v added to test pod list", operatorPodKey)
+			log.Info("Operator pod %v/%v added to test pod list", operatorPod.Namespace, operatorPod.Name)
 			// Append pod to the test pod list.
 			env.Pods = append(env.Pods, operatorPod)
+		}
+	}
+}
 
-			// Update the helper map.
-			testPodsMap[operatorPodKey] = operatorPod
+func addOperandPodsToTestPods(operandPods []*Pod, env *TestEnvironment) {
+	for _, operandPod := range operandPods {
+		// Check whether the pod was already discovered
+		testPod := searchPodInSlice(operandPod.Name, operandPod.Namespace, env.Pods)
+		if testPod != nil {
+			log.Info("Operand pod %v/%v already discovered.", testPod.Namespace, testPod.Name)
+			// Make sure it's flagged as operand pod.
+			testPod.IsOperand = true
+		} else {
+			log.Info("Operand pod %v/%v added to test pod list", operandPod.Namespace, operandPod.Name)
+			// Append pod to the test pod list.
+			env.Pods = append(env.Pods, operandPod)
 		}
 	}
 }

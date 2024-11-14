@@ -49,6 +49,7 @@ type Pod struct {
 	SkipNetTests            bool
 	SkipMultusNetTests      bool
 	IsOperator              bool
+	IsOperand               bool
 }
 
 func NewPod(aPod *corev1.Pod) (out Pod) {
