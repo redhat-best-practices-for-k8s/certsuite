@@ -18,6 +18,7 @@ package provider
 
 import (
 	"errors"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -520,12 +521,34 @@ func TestIsRunAsUserID(t *testing.T) {
 
 func TestIsRunAsNonRoot(t *testing.T) {
 	tests := []struct {
-		name     string
-		pod      *Pod
-		expected bool
+		name                       string
+		pod                        *Pod
+		wantNonCompliantContainers []*Container
+		wantNonComplianceReason    []string
 	}{
 		{
 			name: "All containers and pod set to run as non-root",
+			pod: &Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						SecurityContext: &corev1.PodSecurityContext{
+							RunAsNonRoot: boolPtr(true),
+						},
+					},
+				},
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(true),
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "One container with RunAsNonRoot set to false",
 			pod: &Pod{
 				Pod: &corev1.Pod{
 					Spec: corev1.PodSpec{
@@ -535,14 +558,138 @@ func TestIsRunAsNonRoot(t *testing.T) {
 									RunAsNonRoot: boolPtr(true),
 								},
 							},
+							{
+								SecurityContext: &corev1.SecurityContext{
+									RunAsNonRoot: boolPtr(false),
+								},
+							},
 						},
 						SecurityContext: &corev1.PodSecurityContext{
 							RunAsNonRoot: boolPtr(true),
 						},
 					},
 				},
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(true),
+							},
+						},
+					},
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(false),
+							},
+						},
+					},
+				},
 			},
-			expected: true,
+			wantNonCompliantContainers: []*Container{
+				{
+					Container: &corev1.Container{
+						SecurityContext: &corev1.SecurityContext{
+							RunAsNonRoot: boolPtr(false),
+						},
+					},
+				},
+			},
+			wantNonComplianceReason: []string{
+				"RunAsNonRoot is set to false at the container level, overriding a true value defined at pod level.",
+			},
+		},
+		{
+			name: "One container with RunAsNonRoot set to false, nil in pod",
+			pod: &Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						Containers: []corev1.Container{
+							{
+								SecurityContext: &corev1.SecurityContext{
+									RunAsNonRoot: boolPtr(true),
+								},
+							},
+							{
+								SecurityContext: &corev1.SecurityContext{
+									RunAsNonRoot: boolPtr(false),
+								},
+							},
+						},
+						SecurityContext: &corev1.PodSecurityContext{
+							RunAsNonRoot: nil,
+						},
+					},
+				},
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(true),
+							},
+						},
+					},
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(false),
+							},
+						},
+					},
+				},
+			},
+			wantNonCompliantContainers: []*Container{
+				{
+					Container: &corev1.Container{
+						SecurityContext: &corev1.SecurityContext{
+							RunAsNonRoot: boolPtr(false),
+						},
+					},
+				},
+			},
+			wantNonComplianceReason: []string{
+				"RunAsNonRoot is set to false at the container level, overriding a nil value defined at pod level.",
+			},
+		},
+		{
+			name: "One container with RunAsNonRoot non set (nil)",
+			pod: &Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						Containers: []corev1.Container{
+							{
+								SecurityContext: &corev1.SecurityContext{
+									RunAsNonRoot: boolPtr(true),
+								},
+							},
+							{
+								SecurityContext: &corev1.SecurityContext{
+									RunAsNonRoot: nil,
+								},
+							},
+						},
+						SecurityContext: &corev1.PodSecurityContext{
+							RunAsNonRoot: boolPtr(true),
+						},
+					},
+				},
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: boolPtr(true),
+							},
+						},
+					},
+					{
+						Container: &corev1.Container{
+							SecurityContext: &corev1.SecurityContext{
+								RunAsNonRoot: nil,
+							},
+						},
+					},
+				},
+			},
 		},
 		{
 			name: "No containers, pod set to run as non-root",
@@ -555,15 +702,17 @@ func TestIsRunAsNonRoot(t *testing.T) {
 					},
 				},
 			},
-			expected: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := tt.pod.IsRunAsNonRoot()
-			if result != tt.expected {
-				t.Errorf("expected %v, got %v", tt.expected, result)
+			gotNonCompliantContainers, gotNonComplianceReason := tt.pod.GetRunAsNonRootFalseContainers(map[string]bool{})
+			if !reflect.DeepEqual(gotNonCompliantContainers, tt.wantNonCompliantContainers) {
+				t.Errorf("Pod.GetRunAsNonRootFalseContainers() gotNonCompliantContainers = %v, want %v", gotNonCompliantContainers, tt.wantNonCompliantContainers)
+			}
+			if !reflect.DeepEqual(gotNonComplianceReason, tt.wantNonComplianceReason) {
+				t.Errorf("Pod.GetRunAsNonRootFalseContainers() gotNonComplianceReason = %v, want %v", gotNonComplianceReason, tt.wantNonComplianceReason)
 			}
 		})
 	}

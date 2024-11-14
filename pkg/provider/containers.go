@@ -27,6 +27,7 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/go-logr/stdr"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 	corev1 "k8s.io/api/core/v1"
 
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
@@ -194,9 +195,12 @@ func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool {
 	return *c.Container.SecurityContext.ReadOnlyRootFilesystem
 }
 
-func (c *Container) IsContainerRunAsNonRoot() bool {
+func (c *Container) IsContainerRunAsNonRoot(podRunAsNonRoot *bool) (isContainerRunAsNonRoot bool, reason string) {
 	if c.SecurityContext != nil && c.SecurityContext.RunAsNonRoot != nil {
-		return *c.SecurityContext.RunAsNonRoot
+		return *c.SecurityContext.RunAsNonRoot, fmt.Sprintf("RunAsNonRoot is set to %t at the container level, overriding a %v value defined at pod level.", *c.SecurityContext.RunAsNonRoot, stringhelper.BoolToString(podRunAsNonRoot))
 	}
-	return false
+	if podRunAsNonRoot != nil {
+		return *podRunAsNonRoot, fmt.Sprintf("RunAsNonRoot is set to nil at container level and inheriting a %t value from the pod level RunAsNonRoot setting.", *podRunAsNonRoot)
+	}
+	return false, "RunAsNonRoot set to nil at pod and container level"
 }
