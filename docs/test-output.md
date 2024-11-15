@@ -35,7 +35,7 @@ go run cmd/tools/cmd/main.go claim-add --claimfile=claim.json
  "testsuite": {
  "-errors": "0",
  "-failures": "2",
- "-name": "CNF Certification Test Suite",
+ "-name": "CertSuite Certification Test Suite",
  "-tests": "14",
  ...
 ```
