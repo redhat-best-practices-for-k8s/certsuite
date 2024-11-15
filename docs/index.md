@@ -30,7 +30,7 @@ The purpose of the tests and the framework is to test the interaction of the wor
 
 There are 3 building blocks in the above framework.
 
-* the `CNF` represents the workload to be certified. The Test Suite identifies the resources (containers/pods/operators etc) belonging to the workload via labels or static data entries in the Config File
+* the `CertSuite` represents the workload to be certified. The Test Suite identifies the resources (containers/pods/operators etc) belonging to the workload via labels or static data entries in the Config File
 
 * the `Certification container/exec` is the Test Suite running on the platform or in a container. The executable verifies the workload under test configuration and its interactions with OpenShift
 

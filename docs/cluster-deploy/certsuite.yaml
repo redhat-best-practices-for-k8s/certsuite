@@ -39,7 +39,7 @@ metadata:
 data:
   certsuite_config.yaml: |
     targetNameSpaces:
-      - name: tnf
+      - name: certsuite
     podsUnderTestLabels:
       - "redhat-best-practices-for-k8s.com/generic: target"
     # deprecated operator label ("redhat-best-practices-for-k8s.com/operator:"") still configured by default, no need to add it here
@@ -71,10 +71,10 @@ data:
       - module: vboxguest
     skipScalingTestDeployments:
       - name: deployment1
-        namespace: tnf
+        namespace: certsuite
     skipScalingTestStatefulsets:
       - name: statefulset1
-        namespace: tnf
+        namespace: certsuite
     skipHelmChartList:
       - name: coredns
     validProtocolNames:
@@ -127,12 +127,12 @@ spec:
       args:
         - "-c"
         - |
-          ./run-cnf-suites.sh -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' ; sleep inf
+          ./certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' ; sleep inf
       volumeMounts:
         - name: config-volume
-          mountPath: /usr/tnf/config
+          mountPath: /usr/certsuite/config
         - name: preflight-dockerconfig
-          mountPath: /usr/tnf/config/preflight
+          mountPath: /usr/certsuite/config/preflight
       env:
         - name: CERTSUITE_NON_INTRUSIVE_ONLY
           value: "true"
@@ -141,6 +141,6 @@ spec:
         - name: CERTSUITE_LOG_LEVEL
           value: trace
         - name: PFLT_DOCKERCONFIG
-          value: /usr/tnf/config/preflight/preflight_dockerconfig.json
+          value: /usr/certsuite/config/preflight/preflight_dockerconfig.json
         - name: CERTSUITE_CONFIGURATION_PATH
-          value: /usr/tnf/config/certsuite_config.yaml
+          value: /usr/certsuite/config/certsuite_config.yaml

@@ -46,7 +46,7 @@ The namespaces in which the workload under test will be deployed.
 
 ``` { .yaml .annotate }
 targetNameSpaces:
-  - name: tnf
+  - name: certsuite
 ```
 
 #### podsUnderTestLabels
@@ -79,13 +79,13 @@ The CRD name suffix used to filter the workload's CRDs among all the CRDs presen
 
 ``` { .yaml .annotate }
 targetCrdFilters:
- - nameSuffix: "group1.tnf.com"
+ - nameSuffix: "group1.certsuite.com"
    scalable: false
  - nameSuffix: "anydomain.com"
    scalable: true
 ```
 
-With the config show above, all CRD names in the cluster whose names have the suffix _group1.tnf.com_ or _anydomain.com_ ( e.g. _crd1.group1.tnf.com_ or _mycrd.mygroup.anydomain.com_) will be tested.
+With the config show above, all CRD names in the cluster whose names have the suffix _group1.certsuite.com_ or _anydomain.com_ ( e.g. _crd1.group1.certsuite.com_ or _mycrd.mygroup.anydomain.com_) will be tested.
 
 #### managedDeployments / managedStatefulSets
 
@@ -191,17 +191,17 @@ Test cases affected: _lifecycle-deployment-scaling_, _lifecycle-statefulset-scal
 ``` { .yaml .annotate }
 skipScalingTestDeployments:
   - name: deployment1
-    namespace: tnf
+    namespace: certsuite
 skipScalingTestStatefulSetNames:
   - name: statefulset1
-    namespace: tnf
+    namespace: certsuite
 ```
 
 ### Red Hat Best Practices Test Suite settings
 
 #### probeDaemonSetNamespace
 
-This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is _cnf-suite_.
+This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is _certsuite_.
 
 ``` { .yaml .annotate }
 probeDaemonSetNamespace: cnf-cert
