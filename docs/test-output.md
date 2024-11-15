@@ -54,7 +54,7 @@ The test suite also saves a copy of the execution logs at [test output directory
 
 After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them. The file has a UTC date-time prefix and looks like this:
 
-20230620-110654-cnf-test-results.tar.gz
+20230620-110654-certsuite-test-results.tar.gz
 
 The "20230620-110654" sample prefix means "June-20th 2023, 11:06:54"
 
@@ -79,7 +79,7 @@ https://github.com/redhat-best-practices-for-k8s/parser
 
 ## Compare claim files from two different Test Suite runs
 
-Partners can use the `tnf claim compare` tool in order to compare two claim files. The differences are shown in a table per section.
+Partners can use the `certsuite claim compare` tool in order to compare two claim files. The differences are shown in a table per section.
 This tool can be helpful when the result of some test cases is different between two (consecutive) runs, as it shows
 configuration differences in both the Test Suite config and the cluster nodes that could be the root cause for
 some of the test cases results discrepancy.
@@ -149,7 +149,7 @@ CNIs: Only in CLAIM 2
 
 ### How to build the certsuite tool
 
-The _certsuite_ tool is located in the repo's `cmd/tnf` folder. In order to compile it, just run:
+The _certsuite_ tool is located in the repo's `cmd/certsuite` folder. In order to compile it, just run:
 
 ```console
 make build-certsuite-tool
@@ -176,7 +176,7 @@ During the second run, there was a test case that failed. Let's simulate it modi
 #### Different cluster configurations
 
 First, let's simulate that the second run took place in a cluster with a different OCP version. As we store the OCP version in the claim file (section claim.versions), we can also modify it manually.
-The versions section comparison appears at the very beginning of the `tnf claim compare` output:
+The versions section comparison appears at the very beginning of the `certsuite claim compare` output:
 
 <!-- markdownlint-disable MD033 -->
 <object type="image/svg+xml" data="../assets/images/claim-compare-versions.svg" width="100%" height=auto></object>

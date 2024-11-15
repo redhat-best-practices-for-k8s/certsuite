@@ -58,7 +58,7 @@ patches:
       - op: replace
         path: /spec/containers/0/args/1
         value: |
-          ./run-cnf-suites.sh -l 'preflight' ; sleep inf
+          ./certsuite run -l 'preflight' ; sleep inf
   - target:
       version: v1
       kind: Pod
