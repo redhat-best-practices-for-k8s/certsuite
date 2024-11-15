@@ -34,9 +34,8 @@ type DiffReport struct {
 func getTestCasesResultsMap(testSuiteResults claim.TestSuiteResults) map[string]string {
 	testCaseResults := map[string]string{}
 
-	//nolint:gocritic
-	for _, testCase := range testSuiteResults {
-		testCaseResults[testCase.TestID.ID] = testCase.State
+	for testCase := range testSuiteResults {
+		testCaseResults[testSuiteResults[testCase].TestID.ID] = testSuiteResults[testCase].State
 	}
 
 	return testCaseResults
