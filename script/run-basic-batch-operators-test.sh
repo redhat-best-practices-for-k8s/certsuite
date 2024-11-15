@@ -117,7 +117,7 @@ wait_delete_namespace() {
 with_retry() {
 	local \
 		max_retries=$1 \
-		timeout=$2 \
+		interval_sec=$2 \
 		retries=0 \
 		status=0 \
 		stderr='' \
@@ -171,7 +171,7 @@ with_retry() {
 		} >>"$LOG_FILE_PATH"
 
 		echo_color "$GREY" "Retry $retries/$max_retries: Waiting for a few seconds before the next attempt..."
-		sleep "$timeout"
+		sleep "$interval_sec"
 	done
 	echo_color "$GREY" "Maximum retries reached."
 	return 1
@@ -329,6 +329,14 @@ force_delete_namespace_if_present() {
 		return 0
 	fi
 
+	# If a namespace with this name does not exist, all is good, exit
+	if ! oc get namespace "$a_namespace"; then
+		return 0
+	fi
+
+	# Remove finalizers
+	remove_all_finalizers "$a_namespace" "namespace" "" || true
+
 	# Delete namespace
 	oc delete namespace "$a_namespace" --wait=false || true
 	with_retry 2 0 oc wait namespace "$a_namespace" --for=delete --timeout=5s || true
@@ -425,6 +433,36 @@ wait_pods_ok() {
 		echo_color "$BLUE" "Waiting for necessary pods to be created and reach running state..."
 		sleep 5
 	done
+}
+
+remove_all_finalizers() {
+	local resource_name=$1
+	local resource_type=$2
+	local namespace=$3
+
+	echo "Removing finalizers from $resource_type/$resource_name..."
+
+	if [ "$resource_type" == "namespace" ]; then
+		# For namespaces, do not use the namespace argument
+		if oc get "$resource_type" "$resource_name" -o json |
+			jq 'del(.metadata.finalizers)' |
+			oc apply -f -; then
+			echo "Successfully removed finalizers from $resource_type/$resource_name."
+		else
+			echo "Failed to remove finalizers from $resource_type/$resource_name."
+			return 1
+		fi
+	else
+		# For other resource types, include the namespace argument
+		if oc get "$resource_type" "$resource_name" -n "$namespace" -o json |
+			jq 'del(.metadata.finalizers)' |
+			oc apply -f -; then
+			echo "Successfully removed finalizers from $resource_type/$resource_name."
+		else
+			echo "Failed to remove finalizers from $resource_type/$resource_name."
+			return 1
+		fi
+	fi
 }
 
 # Main
@@ -611,7 +649,24 @@ while IFS=, read -r package_name catalog_index; do
 		oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
 	} >>"$LOG_FILE_PATH" 2>&1
 
-	# run certsuite container
+	# Get latest certsuite container image
+	echo_color "$BLUE" "Get latest certsuite executable from image: ${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}"
+	{
+		podman pull "${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}" || true
+		podman run --replace -d --name temp-container "${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}" || true
+		# sleep for a while to allow the container to come up and exit
+		sleep 2
+		podman cp temp-container:/usr/certsuite/certsuite . || true
+		podman rm -f temp-container || true
+	} >>"$LOG_FILE_PATH" 2>&1
+
+	if [ ! -f "./certsuite" ]; then
+		echo_color "$RED" "Could not download latest certsuite executable, continue"
+		report_failure "$status" "$ns" "$package_name" "Could not download latest certsuite, skipping test"
+		continue
+	fi
+
+	# Run certsuite container
 	echo_color "$BLUE" "run CNF suite"
 
 	config_dir="$(pwd)"/config
@@ -620,15 +675,11 @@ while IFS=, read -r package_name catalog_index; do
 	cp "$DOCKER_CONFIG" "$config_dir"/dockerconfig
 	cp "$config_yaml" "$config_dir"/certsuite_config.yaml
 
-	docker run --rm --network host \
-		-v "$config_dir":/usr/tnf/config:Z \
-		-v "$report_dir":/usr/tnf/output:Z \
-		${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
-		certsuite run \
-		--kubeconfig=/usr/tnf/config/kubeconfig \
-		--preflight-dockerconfig=/usr/tnf/config/dockerconfig \
-		--config-file=/usr/tnf/config/certsuite_config.yaml \
-		--output-dir=/usr/tnf/output \
+	./certsuite run \
+		--kubeconfig="$config_dir"/kubeconfig \
+		--preflight-dockerconfig="$config_dir"/dockerconfig \
+		--config-file="$config_dir"/certsuite_config.yaml \
+		--output-dir="$report_dir" \
 		--label-filter=all >>"$LOG_FILE_PATH" 2>&1 || {
 		report_failure "$status" "$ns" "$package_name" "CNF suite exited with errors"
 		continue
