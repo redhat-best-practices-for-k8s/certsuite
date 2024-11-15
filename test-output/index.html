@@ -1204,7 +1204,7 @@
 <p>The test suite also saves a copy of the execution logs at [test output directory]/certsuite.log</p>
 <h2 id="results-artifacts-zip-file">Results artifacts zip file<a class="headerlink" href="#results-artifacts-zip-file" title="Permanent link">&para;</a></h2>
 <p>After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them. The file has a UTC date-time prefix and looks like this:</p>
-<p>20230620-110654-cnf-test-results.tar.gz</p>
+<p>20230620-110654-certsuite-test-results.tar.gz</p>
 <p>The &ldquo;20230620-110654&rdquo; sample prefix means &ldquo;June-20th 2023, 11:06:54&rdquo;</p>
 <p>This is the content of the tar.gz file:</p>
 <ul>
@@ -1224,7 +1224,7 @@
 For more details, see:
 <a href="https://github.com/redhat-best-practices-for-k8s/parser">https://github.com/redhat-best-practices-for-k8s/parser</a></p>
 <h2 id="compare-claim-files-from-two-different-test-suite-runs">Compare claim files from two different Test Suite runs<a class="headerlink" href="#compare-claim-files-from-two-different-test-suite-runs" title="Permanent link">&para;</a></h2>
-<p>Partners can use the <code>tnf claim compare</code> tool in order to compare two claim files. The differences are shown in a table per section.
+<p>Partners can use the <code>certsuite claim compare</code> tool in order to compare two claim files. The differences are shown in a table per section.
 This tool can be helpful when the result of some test cases is different between two (consecutive) runs, as it shows
 configuration differences in both the Test Suite config and the cluster nodes that could be the root cause for
 some of the test cases results discrepancy.</p>
@@ -1282,7 +1282,7 @@ Also, the plugin has another &ldquo;newFakeFlag&rdquo; config flag in claim 2 th
 <li>claim.nodes.nodeSummary</li>
 </ul>
 <h3 id="how-to-build-the-certsuite-tool">How to build the certsuite tool<a class="headerlink" href="#how-to-build-the-certsuite-tool" title="Permanent link">&para;</a></h3>
-<p>The <em>certsuite</em> tool is located in the repo&rsquo;s <code>cmd/tnf</code> folder. In order to compile it, just run:</p>
+<p>The <em>certsuite</em> tool is located in the repo&rsquo;s <code>cmd/certsuite</code> folder. In order to compile it, just run:</p>
 <div class="highlight"><pre><span></span><code><span class="go">make build-certsuite-tool</span>
 </code></pre></div>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
@@ -1300,7 +1300,7 @@ Also, the plugin has another &ldquo;newFakeFlag&rdquo; config flag in claim 2 th
 
 <h4 id="different-cluster-configurations">Different cluster configurations<a class="headerlink" href="#different-cluster-configurations" title="Permanent link">&para;</a></h4>
 <p>First, let&rsquo;s simulate that the second run took place in a cluster with a different OCP version. As we store the OCP version in the claim file (section claim.versions), we can also modify it manually.
-The versions section comparison appears at the very beginning of the <code>tnf claim compare</code> output:</p>
+The versions section comparison appears at the very beginning of the <code>certsuite claim compare</code> output:</p>
 <!-- markdownlint-disable MD033 -->
 <object type="image/svg+xml" data="../assets/images/claim-compare-versions.svg" width="100%" height=auto></object>
 <!-- markdownlint-disable MD033 -->

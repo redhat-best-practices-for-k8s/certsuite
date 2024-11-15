@@ -1452,7 +1452,7 @@ If there are labels defined, we get the list of pods, statefulsets, deployments,
 <h4 id="targetnamespaces">targetNameSpaces<a class="headerlink" href="#targetnamespaces" title="Permanent link">&para;</a></h4>
 <p>The namespaces in which the workload under test will be deployed.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetNameSpaces</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tnf</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">certsuite</span>
 </code></pre></div>
 <h4 id="podsundertestlabels">podsUnderTestLabels<a class="headerlink" href="#podsundertestlabels" title="Permanent link">&para;</a></h4>
 <p>The labels that each Pod of the workload under test must have to be verified by the Test Suite.</p>
@@ -1472,12 +1472,12 @@ If there are labels defined, we get the list of pods, statefulsets, deployments,
 <h4 id="targetcrdfilters">targetCrdFilters<a class="headerlink" href="#targetcrdfilters" title="Permanent link">&para;</a></h4>
 <p>The CRD name suffix used to filter the workload&rsquo;s CRDs among all the CRDs present in the cluster. For each CRD it can also be specified if it&rsquo;s scalable or not in order to avoid some lifecycle test cases.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetCrdFilters</span><span class="p">:</span>
-<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;group1.tnf.com&quot;</span>
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;group1.certsuite.com&quot;</span>
 <span class="w">   </span><span class="nt">scalable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;anydomain.com&quot;</span>
 <span class="w">   </span><span class="nt">scalable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>With the config show above, all CRD names in the cluster whose names have the suffix <em>group1.tnf.com</em> or <em>anydomain.com</em> ( e.g. <em>crd1.group1.tnf.com</em> or <em>mycrd.mygroup.anydomain.com</em>) will be tested.</p>
+<p>With the config show above, all CRD names in the cluster whose names have the suffix <em>group1.certsuite.com</em> or <em>anydomain.com</em> ( e.g. <em>crd1.group1.certsuite.com</em> or <em>mycrd.mygroup.anydomain.com</em>) will be tested.</p>
 <h4 id="manageddeployments-managedstatefulsets">managedDeployments / managedStatefulSets<a class="headerlink" href="#manageddeployments-managedstatefulsets" title="Permanent link">&para;</a></h4>
 <p>The Deployments/StatefulSets managed by a Custom Resource whose scaling is controlled using the &ldquo;scale&rdquo; subresource of the CR.</p>
 <p>The CRD defining that CR should be included in the CRD filters with the scalable property set to true. If so, the test case <em>lifecycle-{deployment/statefulset}-scaling</em> will be skipped, otherwise it will fail.</p>
@@ -1536,14 +1536,14 @@ If there are labels defined, we get the list of pods, statefulsets, deployments,
 <p>Test cases affected: <em>lifecycle-deployment-scaling</em>, <em>lifecycle-statefulset-scaling</em>.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">skipScalingTestDeployments</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deployment1</span>
-<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tnf</span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">certsuite</span>
 <span class="nt">skipScalingTestStatefulSetNames</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statefulset1</span>
-<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tnf</span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">certsuite</span>
 </code></pre></div>
 <h3 id="red-hat-best-practices-test-suite-settings">Red Hat Best Practices Test Suite settings<a class="headerlink" href="#red-hat-best-practices-test-suite-settings" title="Permanent link">&para;</a></h3>
 <h4 id="probedaemonsetnamespace">probeDaemonSetNamespace<a class="headerlink" href="#probedaemonsetnamespace" title="Permanent link">&para;</a></h4>
-<p>This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is <em>cnf-suite</em>.</p>
+<p>This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is <em>certsuite</em>.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">probeDaemonSetNamespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cnf-cert</span>
 </code></pre></div>
 <p>This DaemonSet, called <em>certsuite-probe</em> is deployed and used internally by the Test Suite tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>

@@ -24,7 +24,7 @@ resources:
 #       - op: replace
 #         path: /spec/containers/0/args/1
 #         value: |
-#           ./run-cnf-suites.sh -l 'preflight' ; sleep inf
+#           ./certsuite.sh -l 'preflight' ; sleep inf
 
 # Uncomment the next lines (patches) in order to allow intrusive TCs to run.
 # patches:
