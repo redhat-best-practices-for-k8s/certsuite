@@ -141,14 +141,13 @@ func recordCheckResult(check *Check) {
 // certsuite-claim's Go Client, results are generalized to map[string]interface{}.
 func GetReconciledResults() map[string]claim.Result {
 	resultMap := make(map[string]claim.Result)
-	//nolint:gocritic
-	for key, val := range resultsDB {
+	for key := range resultsDB {
 		// initializes the result map, if necessary
 		if _, ok := resultMap[key]; !ok {
 			resultMap[key] = claim.Result{}
 		}
 
-		resultMap[key] = val
+		resultMap[key] = resultsDB[key]
 	}
 	return resultMap
 }
@@ -223,9 +222,8 @@ func GetTotalTests() int {
 
 func GetTestsCountByState(state string) int {
 	count := 0
-	//nolint:gocritic
-	for _, results := range resultsDB {
-		if results.State == state {
+	for r := range resultsDB {
+		if resultsDB[r].State == state {
 			count++
 		}
 	}
