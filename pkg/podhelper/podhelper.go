@@ -65,9 +65,12 @@ func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient
 		// if no owner references, we have reached the top record it
 		if len(ownerReferences) == 0 {
 			topOwners[ownerRef.Name] = TopOwner{APIVersion: ownerRef.APIVersion, Kind: ownerRef.Kind, Name: ownerRef.Name, Namespace: namespace}
-			return nil
-		} else {
-			return followOwnerReferences(resourceList, dynamicClient, topOwners, namespace, ownerReferences)
+			continue
+		}
+
+		err = followOwnerReferences(resourceList, dynamicClient, topOwners, namespace, ownerReferences)
+		if err != nil {
+			return err
 		}
 	}
 
