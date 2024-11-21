@@ -231,7 +231,7 @@ require (
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241021175030-e64988a27024
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.26.0
-	google.golang.org/api v0.207.0
+	google.golang.org/api v0.208.0
 	k8s.io/kubectl v0.31.2
 )
 
