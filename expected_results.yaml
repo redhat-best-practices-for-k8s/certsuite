@@ -59,9 +59,9 @@ testCases:
     - observability-compatibility-with-next-ocp-release
     - observability-termination-policy
     - operator-crd-versioning
+    - operator-crd-openapi-schema
     - performance-exclusive-cpu-pool
     - performance-max-resources-exec-probes
-    - performance-shared-cpu-pool-non-rt-scheduling-policy       # hazelcast pod meets requirements
     - platform-alteration-isredhat-release
     - platform-alteration-tainted-node-kernel
   fail:
@@ -83,13 +83,13 @@ testCases:
     - operator-install-status-no-privileges
     - operator-install-status-succeeded
     - operator-olm-skip-range
-    - operator-crd-openapi-schema
     - operator-semantic-versioning
     - operator-single-crd-owner
     - operator-pods-no-hugepages
     - operator-multiple-same-operators
     - performance-exclusive-cpu-pool-rt-scheduling-policy
     - performance-isolated-cpu-pool-rt-scheduling-policy
+    - performance-shared-cpu-pool-non-rt-scheduling-policy
     - performance-rt-apps-no-exec-probes
     - platform-alteration-base-image
     - platform-alteration-boot-params
