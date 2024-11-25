@@ -20,6 +20,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"path"
 	"regexp"
 	"strings"
 	"time"
@@ -378,7 +379,6 @@ func getOperandPodsFromTestCsvs(testCsvs []*olmv1Alpha.ClusterServiceVersion, po
 	// First, iterate on each testCsv to fill the helper crds map.
 	for _, csv := range testCsvs {
 		ownedCrds := csv.Spec.CustomResourceDefinitions.Owned
-
 		if len(ownedCrds) == 0 {
 			continue
 		}
@@ -388,11 +388,13 @@ func getOperandPodsFromTestCsvs(testCsvs []*olmv1Alpha.ClusterServiceVersion, po
 
 			_, group, found := strings.Cut(crd.Name, ".")
 			if !found {
-				return nil, fmt.Errorf("failed to parse resources and group form crd name %q", crd.Name)
+				return nil, fmt.Errorf("failed to parse resources and group from crd name %q", crd.Name)
 			}
 
 			log.Info("CSV %q owns crd %v", csv.Name, crd.Kind+"/"+group+"/"+crd.Version)
-			crds[crd.Kind+"/"+group+"/"+crd.Version] = csv
+
+			crdPath := path.Join(crd.Kind, group, crd.Version)
+			crds[crdPath] = csv
 		}
 	}
 
@@ -407,16 +409,16 @@ func getOperandPodsFromTestCsvs(testCsvs []*olmv1Alpha.ClusterServiceVersion, po
 		}
 
 		for _, owner := range owners {
-			versionedCrd := owner.Kind + "/" + owner.APIVersion
+			versionedCrdPath := path.Join(owner.Kind, owner.APIVersion)
 
 			var csv *olmv1Alpha.ClusterServiceVersion
-			if csv = crds[versionedCrd]; csv == nil {
+			if csv = crds[versionedCrdPath]; csv == nil {
 				// The owner is not a CR or it's not a CR owned by any operator under test
 				continue
 			}
 
 			log.Info("Pod %v/%v has owner CR %s of CRD %q (CSV %v)", pod.Namespace, pod.Name,
-				owner.Name, versionedCrd, csv.Name)
+				owner.Name, versionedCrdPath, csv.Name)
 
 			operandPods = append(operandPods, pod)
 			break
