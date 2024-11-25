@@ -32,8 +32,6 @@ validProtocolNames:
   - "http3"
   - "sctp"
 servicesignorelist:
-  - "hazelcast-platform-controller-manager-service"
-  - "hazelcast-platform-webhook-service"
   - "new-pro-controller-manager-metrics-service"
   - "mysql"
 executedBy: ""
