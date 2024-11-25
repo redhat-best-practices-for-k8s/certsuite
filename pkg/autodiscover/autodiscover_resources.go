@@ -41,9 +41,9 @@ func DoesAPIResourceExist(client *clientsholder.ClientsHolder, incomingResource 
 func doesAPIResourceExist(groupResources []*metav1.APIResourceList, incomingResource string) bool {
 	// check if the resource exists
 	for _, res := range groupResources {
-		//nolint:gocritic
-		for _, apiResources := range res.APIResources {
-			if strings.Contains(apiResources.Name, incomingResource) {
+		for i := range res.APIResources {
+			apiResource := &res.APIResources[i]
+			if strings.Contains(apiResource.Name, incomingResource) {
 				return true
 			}
 		}

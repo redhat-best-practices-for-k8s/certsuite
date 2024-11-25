@@ -54,22 +54,6 @@ type Pod struct {
 	IsOperand               bool
 }
 
-type NetworkStatus struct {
-	Name      string `json:"name"`
-	Interface string `json:"interface"`
-	Mac       string `json:"mac"`
-	Mtu       int    `json:"mtu"`
-	DNS       struct {
-	} `json:"dns"`
-	DeviceInfo struct {
-		Type    string `json:"type"`
-		Version string `json:"version"`
-		Pci     struct {
-			PciAddress string `json:"pci-address"`
-		} `json:"pci"`
-	} `json:"device-info"`
-}
-
 func NewPod(aPod *corev1.Pod) (out Pod) {
 	var err error
 	out.Pod = aPod
@@ -504,28 +488,6 @@ func sriovNetworkUsesMTU(sriovNetworks []sriovNetworkOp.SriovNetwork, sriovNetwo
 		}
 	}
 	return false
-}
-
-func networkStatusUsesMTU(networkStatus, nadName string) (bool, error) {
-	networkStatuses := []NetworkStatus{}
-	if err := json.Unmarshal([]byte(networkStatus), &networkStatuses); err != nil {
-		log.Error("Failed to unmarshal network-status annotation: %v", err)
-		return false, err
-	}
-
-	networkStatusMap := make(map[string]NetworkStatus)
-
-	for _, ns := range networkStatuses {
-		networkStatusMap[ns.Name] = ns
-	}
-
-	for _, ns := range networkStatusMap {
-		// Check if the NAD name is found in the network-status annotation
-		if strings.Contains(ns.Name, nadName) && ns.Mtu > 0 {
-			return true, nil
-		}
-	}
-	return false, nil
 }
 
 //nolint:gocritic
