@@ -227,7 +227,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
 	github.com/manifoldco/promptui v0.9.0
 	github.com/redhat-best-practices-for-k8s/oct v0.0.28
-	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.39
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.40
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241021175030-e64988a27024
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.26.0
