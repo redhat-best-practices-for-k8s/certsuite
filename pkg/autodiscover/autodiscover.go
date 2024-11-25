@@ -321,14 +321,9 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 func getNetworkAttachmentDefinitions(client *clientsholder.ClientsHolder, namespaces []string) ([]nadClient.NetworkAttachmentDefinition, error) {
 	var nadList []nadClient.NetworkAttachmentDefinition
 
-	// Check if the network-attachment-definitions resource exists
-	if !DoesAPIResourceExist(client, "network-attachment-definitions") {
-		return nadList, nil
-	}
-
 	for _, ns := range namespaces {
 		nad, err := client.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(ns).List(context.TODO(), metav1.ListOptions{})
-		if err != nil {
+		if err != nil && !kerrors.IsNotFound(err) {
 			return nil, err
 		}
 
@@ -342,14 +337,9 @@ func getNetworkAttachmentDefinitions(client *clientsholder.ClientsHolder, namesp
 func getSriovNetworks(client *clientsholder.ClientsHolder, namespaces []string) (sriovNetworks []sriovNetworkOp.SriovNetwork, err error) {
 	var sriovNetworkList []sriovNetworkOp.SriovNetwork
 
-	// Check if the sriovnetworks resource exists
-	if !DoesAPIResourceExist(client, "sriovnetworks") {
-		return sriovNetworkList, nil
-	}
-
 	for _, ns := range namespaces {
 		snl, err := client.SriovNetworkingClient.SriovNetworks(ns).List(context.TODO(), metav1.ListOptions{})
-		if err != nil {
+		if err != nil && !kerrors.IsNotFound(err) {
 			return nil, err
 		}
 
@@ -362,14 +352,9 @@ func getSriovNetworks(client *clientsholder.ClientsHolder, namespaces []string) 
 func getSriovNetworkNodePolicies(client *clientsholder.ClientsHolder, namespaces []string) (sriovNetworkNodePolicies []sriovNetworkOp.SriovNetworkNodePolicy, err error) {
 	var sriovNetworkNodePolicyList []sriovNetworkOp.SriovNetworkNodePolicy
 
-	// Check if the sriovnetworknodepolicies resource exists
-	if !DoesAPIResourceExist(client, "sriovnetworknodepolicies") {
-		return sriovNetworkNodePolicyList, nil
-	}
-
 	for _, ns := range namespaces {
 		snnp, err := client.SriovNetworkingClient.SriovNetworkNodePolicies(ns).List(context.TODO(), metav1.ListOptions{})
-		if err != nil {
+		if err != nil && !kerrors.IsNotFound(err) {
 			return nil, err
 		}
 
