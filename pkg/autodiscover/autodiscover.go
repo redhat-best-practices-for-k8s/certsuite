@@ -20,6 +20,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"path"
 	"regexp"
 	"strings"
 	"time"
@@ -62,6 +63,7 @@ type DiscoveredTestData struct {
 	AllPods                []corev1.Pod
 	ProbePods              []corev1.Pod
 	CSVToPodListMap        map[types.NamespacedName][]*corev1.Pod
+	OperandPods            []*corev1.Pod
 	ResourceQuotaItems     []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
 	NetworkPolicies        []networkingv1.NetworkPolicy
@@ -133,7 +135,7 @@ func createLabels(labelStrings []string) (labelObjects []labelObject) {
 
 // DoAutoDiscover finds objects under test
 //
-//nolint:funlen
+//nolint:funlen,gocyclo
 func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData {
 	oc := clientsholder.GetClientsHolder()
 
@@ -196,6 +198,17 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.CSVToPodListMap, err = getOperatorCsvPods(data.Csvs)
 	if err != nil {
 		log.Fatal("Failed to get the operator pods, err: %v", err)
+	}
+
+	// Best effort mode autodiscovery for operand (running-only) pods.
+	pods, _ := findPodsByLabels(oc.K8sClient.CoreV1(), nil, data.Namespaces)
+	if err != nil {
+		log.Fatal("Failed to get running pods, err: %v", err)
+	}
+
+	data.OperandPods, err = getOperandPodsFromTestCsvs(data.Csvs, pods)
+	if err != nil {
+		log.Fatal("Failed to get operand pods, err: %v", err)
 	}
 
 	openshiftVersion, err := getOpenshiftVersion(oc.OcpClient)
@@ -354,4 +367,63 @@ func getPodsOwnedByCsv(csvName, operatorNamespace string, client *clientsholder.
 		}
 	}
 	return managedPods, nil
+}
+
+// getOperandPodsFromTestCsvs returns a subset of pods whose owner CRs are managed by any of the testCsvs.
+func getOperandPodsFromTestCsvs(testCsvs []*olmv1Alpha.ClusterServiceVersion, pods []corev1.Pod) ([]*corev1.Pod, error) {
+	// Helper var to store all the managed crds from the operators under test
+	// They map key is "Kind.group/version" or "Kind.APIversion", which should be the same.
+	//   e.g.: "Subscription.operators.coreos.com/v1alpha1"
+	crds := map[string]*olmv1Alpha.ClusterServiceVersion{}
+
+	// First, iterate on each testCsv to fill the helper crds map.
+	for _, csv := range testCsvs {
+		ownedCrds := csv.Spec.CustomResourceDefinitions.Owned
+		if len(ownedCrds) == 0 {
+			continue
+		}
+
+		for i := range ownedCrds {
+			crd := &ownedCrds[i]
+
+			_, group, found := strings.Cut(crd.Name, ".")
+			if !found {
+				return nil, fmt.Errorf("failed to parse resources and group from crd name %q", crd.Name)
+			}
+
+			log.Info("CSV %q owns crd %v", csv.Name, crd.Kind+"/"+group+"/"+crd.Version)
+
+			crdPath := path.Join(crd.Kind, group, crd.Version)
+			crds[crdPath] = csv
+		}
+	}
+
+	// Now, iterate on every pod in the list to check whether they're owned by any of the CRs that
+	// the csvs are managing.
+	operandPods := []*corev1.Pod{}
+	for i := range pods {
+		pod := &pods[i]
+		owners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get top owners of pod %v/%v: %v", pod.Namespace, pod.Name, err)
+		}
+
+		for _, owner := range owners {
+			versionedCrdPath := path.Join(owner.Kind, owner.APIVersion)
+
+			var csv *olmv1Alpha.ClusterServiceVersion
+			if csv = crds[versionedCrdPath]; csv == nil {
+				// The owner is not a CR or it's not a CR owned by any operator under test
+				continue
+			}
+
+			log.Info("Pod %v/%v has owner CR %s of CRD %q (CSV %v)", pod.Namespace, pod.Name,
+				owner.Name, versionedCrdPath, csv.Name)
+
+			operandPods = append(operandPods, pod)
+			break
+		}
+	}
+
+	return operandPods, nil
 }

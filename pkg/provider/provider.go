@@ -211,7 +211,7 @@ func deployDaemonSet(namespace string) error {
 	return nil
 }
 
-func buildTestEnvironment() { //nolint:funlen
+func buildTestEnvironment() { //nolint:funlen,gocyclo
 	start := time.Now()
 	env = TestEnvironment{}
 
@@ -299,6 +299,16 @@ func buildTestEnvironment() { //nolint:funlen
 	// Add operator pods to list of normal pods to test.
 	addOperatorPodsToTestPods(csvPods, &env)
 
+	// Best effort mode autodiscovery for operand pods.
+	operandPods := []*Pod{}
+	for _, pod := range data.OperandPods {
+		aNewPod := NewPod(pod)
+		aNewPod.AllServiceAccountsMap = &env.AllServiceAccountsMap
+		aNewPod.IsOperand = true
+		operandPods = append(operandPods, &aNewPod)
+	}
+
+	addOperandPodsToTestPods(operandPods, &env)
 	// Add operator pods' containers to the list.
 	for _, pod := range env.Pods {
 		// Note: 'getPodContainers' is returning a filtered list of Container objects.
@@ -362,6 +372,7 @@ func buildTestEnvironment() { //nolint:funlen
 			log.Warn("Pod %q has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
 		}
 	}
+
 	log.Info("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
 }
 
