@@ -71,6 +71,22 @@ func TestStringInSlice(t *testing.T) {
 			containsFeature: false, // Note: Turn 'off' the contains check
 			expected:        false,
 		},
+		{
+			testSlice: []string{
+				"oneapple",
+			},
+			testString:      "apple",
+			containsFeature: false, // Note: Turn 'off' the contains check
+			expected:        false,
+		},
+		{
+			testSlice: []string{
+				"apples",
+			},
+			testString:      "twoapples",
+			containsFeature: false, // Note: Turn 'off' the contains check
+			expected:        false,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -122,6 +138,14 @@ func TestStringInSlice_other(t *testing.T) {
 				"outoftree: Y",
 			},
 			testString:      "intree:",
+			containsFeature: false, // Note: Turn 'off' the contains check
+			expected:        false,
+		},
+		{
+			testSlice: []otherString{
+				"intreeintreeintree",
+			},
+			testString:      "intree",
 			containsFeature: false, // Note: Turn 'off' the contains check
 			expected:        false,
 		},

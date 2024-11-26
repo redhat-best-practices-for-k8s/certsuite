@@ -1,11 +1,13 @@
 targetNameSpaces:
   - name: tnf
+  - name: certsuite-operator
 podsUnderTestLabels:
   - "redhat-best-practices-for-k8s.com/generic: target"
 operatorsUnderTestLabels:
   - "redhat-best-practices-for-k8s.com/operator:target"
   - "redhat-best-practices-for-k8s.com/operator1:new"
   - "cnf/test:cr-scale-operator"
+  - "operators.coreos.com/rh-best-practices-for-k8s-certsuite-operator.certsuite-operator:"
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
     scalable: false

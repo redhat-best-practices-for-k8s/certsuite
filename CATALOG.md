@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 116
+### Total test cases: 117
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |manageability|2|
 |networking|12|
 |observability|5|
-|operator|10|
+|operator|11|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |8|1|
 
-### Non-Telco specific tests only: 68
+### Non-Telco specific tests only: 69
 
 |Mandatory|Optional|
 |---|---|
-|43|25|
+|44|25|
 
 ### Telco specific tests only: 27
 
@@ -1337,6 +1337,22 @@ Property|Description
 Unique ID|operator-single-crd-owner
 Description|Tests whether a CRD is owned by a single Operator.
 Suggested Remediation|Ensure that a CRD is owned by only one Operator
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### operator-valid-installation-tenant-namespace
+
+Property|Description
+---|---
+Unique ID|operator-valid-installation-tenant-namespace
+Description|Tests whether operator installation is valid in tenant namespace.
+Suggested Remediation|Ensure that operator with install mode SingleNamespace only is installed in the tenant namespace.
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator

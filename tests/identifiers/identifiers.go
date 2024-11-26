@@ -134,6 +134,7 @@ var (
 	TestOperatorSingleCrdOwnerIdentifier              claim.Identifier
 	TestOperatorPodsNoHugepages                       claim.Identifier
 	TestMultipleSameOperatorsIdentifier               claim.Identifier
+	TestOperatorInstallationInTenantNamespace         claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
@@ -964,6 +965,22 @@ that Node's kernel may not have the same hacks.'`,
 		NoExceptions,
 		TestOperatorIsInstalledViaOLMIdentifierDocLink,
 		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorInstallationInTenantNamespace = AddCatalogEntry(
+		"valid-installation-tenant-namespace",
+		common.OperatorTestKey,
+		`Tests whether operator installation is valid in tenant namespace.`,
+		OperatorInstallationInTenantNamespaceRemediation,
+		NoExceptions,
+		TestOperatorInstallationInTenantNamespaceDocLink,
+		false,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
