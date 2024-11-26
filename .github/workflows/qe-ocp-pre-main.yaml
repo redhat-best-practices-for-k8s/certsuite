@@ -3,6 +3,8 @@ name: OCP Pre-Main Testing
 on:
   pull_request:
     branches: [ main ]
+  label:
+    types: [deleted]
 
 permissions:
   contents: read
