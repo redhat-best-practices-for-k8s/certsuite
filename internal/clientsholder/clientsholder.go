@@ -35,7 +35,10 @@ import (
 	"k8s.io/client-go/restmapper"
 	"k8s.io/client-go/scale"
 
-	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
+	cncfV1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
+	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned"
+	cncfNetworkAttachmentFake "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/fake"
+	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/pkg/client/clientset/versioned/typed/sriovnetwork/v1"
 	apiserverscheme "github.com/openshift/client-go/apiserver/clientset/versioned"
 	ocpMachine "github.com/openshift/client-go/machineconfiguration/clientset/versioned"
 	olmpkgclient "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/client/clientset/versioned/typed/operators/v1"
@@ -59,21 +62,23 @@ const (
 )
 
 type ClientsHolder struct {
-	RestConfig           *rest.Config
-	DynamicClient        dynamic.Interface
-	ScalingClient        scale.ScalesGetter
-	APIExtClient         apiextv1.Interface
-	OlmClient            olmClient.Interface
-	OlmPkgClient         olmpkgclient.OperatorsV1Interface
-	OcpClient            clientconfigv1.ConfigV1Interface
-	K8sClient            kubernetes.Interface
-	K8sNetworkingClient  networkingv1.NetworkingV1Interface
-	CNCFNetworkingClient cncfNetworkAttachmentv1.K8sCniCncfIoV1Interface
-	MachineCfg           ocpMachine.Interface
-	KubeConfig           []byte
-	ready                bool
-	GroupResources       []*metav1.APIResourceList
-	ApiserverClient      apiserverscheme.Interface
+	RestConfig            *rest.Config
+	DynamicClient         dynamic.Interface
+	ScalingClient         scale.ScalesGetter
+	APIExtClient          apiextv1.Interface
+	OlmClient             olmClient.Interface
+	OlmPkgClient          olmpkgclient.OperatorsV1Interface
+	OcpClient             clientconfigv1.ConfigV1Interface
+	K8sClient             kubernetes.Interface
+	K8sNetworkingClient   networkingv1.NetworkingV1Interface
+	CNCFNetworkingClient  cncfNetworkAttachmentv1.Interface
+	SriovNetworkingClient sriovNetworkOp.SriovnetworkV1Interface
+	DiscoveryClient       discovery.DiscoveryInterface
+	MachineCfg            ocpMachine.Interface
+	KubeConfig            []byte
+	ready                 bool
+	GroupResources        []*metav1.APIResourceList
+	ApiserverClient       apiserverscheme.Interface
 }
 
 var clientsHolder = ClientsHolder{}
@@ -88,11 +93,14 @@ func SetupFakeOlmClient(olmMockObjects []runtime.Object) {
 // Only pure k8s interfaces will be available. The runtime objects must be pure k8s ones.
 // For other (OLM, )
 // runtime mocking objects loading, use the proper clientset mocking function.
+//
+//nolint:funlen,gocyclo
 func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
 	// Build slices of different objects depending on what client
 	// is supposed to expect them.
 	var k8sClientObjects []runtime.Object
 	var k8sExtClientObjects []runtime.Object
+	var k8sPlumbingObjects []runtime.Object
 
 	for _, v := range k8sMockObjects {
 		// Based on what type of object is, populate certain object slices
@@ -132,16 +140,23 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *storagev1.StorageClass:
 			k8sClientObjects = append(k8sClientObjects, v)
+		case *metav1.APIResourceList:
+			k8sClientObjects = append(k8sClientObjects, v)
 
 		// K8s Extension Client Objects
 		case *apiextv1c.CustomResourceDefinition:
 			k8sExtClientObjects = append(k8sExtClientObjects, v)
+
+		// K8sNetworkPlumbing Client Objects
+		case *cncfV1.NetworkAttachmentDefinition:
+			k8sPlumbingObjects = append(k8sPlumbingObjects, v)
 		}
 	}
 
 	// Add the objects to their corresponding API Clients
 	clientsHolder.K8sClient = k8sFakeClient.NewSimpleClientset(k8sClientObjects...)
 	clientsHolder.APIExtClient = apiextv1fake.NewSimpleClientset(k8sExtClientObjects...)
+	clientsHolder.CNCFNetworkingClient = cncfNetworkAttachmentFake.NewSimpleClientset(k8sPlumbingObjects...)
 
 	clientsHolder.ready = true
 	return &clientsHolder
@@ -341,6 +356,11 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.ApiserverClient, err = apiserverscheme.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate apiserverscheme: %w", err)
+	}
+
+	clientsHolder.SriovNetworkingClient, err = sriovNetworkOp.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate sriov networking client: %w", err)
 	}
 
 	clientsHolder.ready = true
