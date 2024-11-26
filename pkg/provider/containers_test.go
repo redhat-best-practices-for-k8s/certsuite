@@ -207,7 +207,7 @@ func TestIsTagEmpty(t *testing.T) {
 	}
 }
 
-func TestIsreadOnlyRootFilessystem(t *testing.T) {
+func TestIsreadOnlyRootFilesystem(t *testing.T) {
 	trueVal := true
 	falseVal := false
 	testCases := []struct {
