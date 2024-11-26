@@ -21,12 +21,16 @@ testCases:
     - access-control-requests-and-limits
     - access-control-security-context-non-root-user-id-check
     - access-control-security-context-privilege-escalation
+    - access-control-security-context-read-only-file-system
+    - access-control-security-context-run-as-non-root-user-check
+    - access-control-security-context
     - access-control-service-type
     - access-control-ssh-daemons
     - access-control-sys-admin-capability-check
     - access-control-sys-nice-realtime-capability
-    - affiliated-certification-operator-is-certified
     - lifecycle-affinity-required-pods
+    - lifecycle-container-prestop
+    - lifecycle-container-poststart
     - lifecycle-crd-scaling
     - lifecycle-deployment-scaling
     - lifecycle-image-pull-policy
@@ -38,6 +42,9 @@ testCases:
     - lifecycle-pod-scheduling
     - lifecycle-pod-toleration-bypass
     - lifecycle-readiness-probe
+    - lifecycle-startup-probe
+    - manageability-container-port-name-format
+    - manageability-containers-image-tag
     - networking-dual-stack-service
     - networking-icmpv4-connectivity
     - networking-icmpv4-connectivity-multus
@@ -50,40 +57,21 @@ testCases:
     - observability-crd-status
     - observability-pod-disruption-budget
     - observability-compatibility-with-next-ocp-release
-    - operator-crd-openapi-schema
+    - observability-termination-policy
     - operator-crd-versioning
-    - operator-install-source
-    - operator-install-status-no-privileges
-    - operator-install-status-succeeded
-    - operator-semantic-versioning
-    - operator-single-crd-owner
-    - operator-pods-no-hugepages
-    - operator-multiple-same-operators
+    - operator-crd-openapi-schema
     - performance-exclusive-cpu-pool
     - performance-max-resources-exec-probes
-    - performance-shared-cpu-pool-non-rt-scheduling-policy       # hazelcast pod meets requirements
     - platform-alteration-isredhat-release
     - platform-alteration-tainted-node-kernel
   fail:
     - affiliated-certification-container-is-certified-digest     # test container image is not certified
-    - access-control-security-context                            # hazelcast pod does not meet the security context requirements
-    - access-control-security-context-run-as-non-root-user-check # hazelcast pod does not meet the security context requirements
-    - access-control-security-context-read-only-file-system      # hazelcast pod does not meet the security context requirements
-    - access-control-pod-role-bindings                           # hazelcast pod has role bindings outside installation ns
-    - access-control-pod-automount-service-account-token         # hazelcast pod has SA token automounted
-    - networking-network-policy-deny-all                         # hazelcast pod does not have deny-all network policy
-    - networking-undeclared-container-ports-usage                # hazelcast pod does not declare ports 8080 and 8081
-    - observability-termination-policy                           # hazelcast pod uses terminationMessagePolicy
-    - lifecycle-container-prestop                                # hazelcast pod doesn't define this hook
-    - lifecycle-container-poststart                              # hazelcast pod doesn't define this hook
-    - lifecycle-startup-probe                                    # hazelcast pod doesn't define this probe
-    - manageability-container-port-name-format                   # hazelcast declares not allowed port name "webhook-server".
-    - manageability-containers-image-tag                         # hazelcast container not using image tag.
-    - operator-olm-skip-range                                    # hazelcast operator does not have a skip range
+
   skip:
     - access-control-sys-ptrace-capability
     - affiliated-certification-helm-version
     - affiliated-certification-helmchart-is-certified
+    - affiliated-certification-operator-is-certified
     - lifecycle-cpu-isolation
     - lifecycle-statefulset-scaling
     - lifecycle-storage-provisioner
@@ -91,8 +79,17 @@ testCases:
     - networking-icmpv6-connectivity
     - networking-restart-on-reboot-sriov-pod
     - networking-network-attachment-definition-sriov-mtu
+    - operator-install-source
+    - operator-install-status-no-privileges
+    - operator-install-status-succeeded
+    - operator-olm-skip-range
+    - operator-semantic-versioning
+    - operator-single-crd-owner
+    - operator-pods-no-hugepages
+    - operator-multiple-same-operators
     - performance-exclusive-cpu-pool-rt-scheduling-policy
     - performance-isolated-cpu-pool-rt-scheduling-policy
+    - performance-shared-cpu-pool-non-rt-scheduling-policy
     - performance-rt-apps-no-exec-probes
     - platform-alteration-base-image
     - platform-alteration-boot-params
