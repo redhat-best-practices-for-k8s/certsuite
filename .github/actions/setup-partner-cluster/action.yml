@@ -14,7 +14,6 @@ runs:
       with:
         repository: redhat-best-practices-for-k8s/certsuite-sample-workload
         path: certsuite-sample-workload
-        ref: remove_hazelcast_installation
 
     - name: Check if /etc/docker/daemon.json exists and if not, create it.
       shell: bash
@@ -22,7 +21,7 @@ runs:
         if [ ! -f /etc/docker/daemon.json ]; then
           echo '{}' | sudo tee /etc/docker/daemon.json
         fi
-      
+
     - name: Bootstrap cluster and docker
       uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
       with:
