@@ -3,6 +3,8 @@ name: OCP ARM64 4.16 QE Testing
 on:
   pull_request:
     branches: [ main ]
+  label:
+    types: [deleted]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
@@ -23,7 +25,7 @@ env:
 
 jobs:
   build-arm-image-for-qe:
-    if: github.event.pull_request.user.login!='dependabot[bot]'
+    if: github.event.pull_request.user.login!='dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'self-hosted-disable')
     runs-on: qe-ocp-arm1
     steps:
       - name: Check out code
@@ -53,7 +55,7 @@ jobs:
   qe-ocp-arm-testing:
     runs-on: qe-ocp-arm1
     needs: build-arm-image-for-qe
-    if: needs.build-arm-image-for-qe.result == 'success' && github.event.pull_request.user.login!='dependabot[bot]'
+    if: needs.build-arm-image-for-qe.result == 'success' && github.event.pull_request.user.login!='dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'self-hosted-disable')
     strategy:
       fail-fast: false
       matrix: 
