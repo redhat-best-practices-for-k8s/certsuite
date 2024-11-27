@@ -128,7 +128,6 @@ var (
 	TestOperatorOlmSkipRange                          claim.Identifier
 	TestOperatorAutomountTokens                       claim.Identifier
 	TestOperatorRunAsNonRoot                          claim.Identifier
-	TestOperatorRunAsUserID                           claim.Identifier
 	TestOperatorCrdVersioningIdentifier               claim.Identifier
 	TestOperatorCrdSchemaIdentifier                   claim.Identifier
 	TestOperatorSingleCrdOwnerIdentifier              claim.Identifier
