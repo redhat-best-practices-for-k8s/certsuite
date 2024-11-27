@@ -23,7 +23,6 @@ package operator
 import (
 	"strings"
 
-	operatorsv1 "github.com/operator-framework/api/pkg/operators/v1"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 )
@@ -52,27 +51,20 @@ func SplitCsv(csv string) CsvResult {
 	return result
 }
 
-func isInstallModeSingleNamespace(installModes []v1alpha1.InstallMode) bool {
+func hasOperatorInstallModeSingleNamespace(installModes []v1alpha1.InstallMode) bool {
 	for i := 0; i < len(installModes); i++ {
-		if installModes[i].Type == v1alpha1.InstallModeTypeSingleNamespace {
+		if installModes[i].Type == v1alpha1.InstallModeTypeSingleNamespace && installModes[i].Supported {
 			return true
 		}
 	}
 	return false
 }
 
-func findOperatorGroup(name, namespace string, groups []*operatorsv1.OperatorGroup) *operatorsv1.OperatorGroup {
-	for _, group := range groups {
-		if group.Name == name && group.Namespace == namespace {
-			return group
-		}
+func checkOperatorInstallationCompliance(operatorNamespace, csvNamespace string, targetNamespaces []string, isSingleNamespaceInstallModeSupported bool) bool {
+	// operators with single namespace are installed in the tenant namespace
+	if isSingleNamespaceInstallModeSupported {
+		return len(targetNamespaces) == 1 && strings.Compare(operatorNamespace, targetNamespaces[0]) != 0
 	}
-	return nil
-}
-
-func checkOperatorInstallationCompliance(opGroupTargetNamespaces []string, operatorNamespace string, targetNamespaces []string, isSingleNamespaceInstallMode bool) bool {
-	if isSingleNamespaceInstallMode {
-		return len(opGroupTargetNamespaces) == 1 && len(targetNamespaces) == 1 && opGroupTargetNamespaces[0] == targetNamespaces[0]
-	}
-	return stringhelper.StringInSlice(opGroupTargetNamespaces, operatorNamespace, false) // false in the function arg indicates equals check
+	// operators are not installed in tenant namespaces
+	return !stringhelper.StringInSlice(targetNamespaces, csvNamespace, false)
 }

@@ -17,7 +17,6 @@
 package operator
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
@@ -133,53 +132,42 @@ Checks :
 
  2. Operators that are SingleNamespace must have CRs in only tenant namespace
 */
-func testOperatorInstallationInTenantNamespace(check *checksdb.Check,
-	env *provider.TestEnvironment) {
+func testOperatorInstallationInTenantNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.LogInfo("Starting testInstalledSingleNamespaceOperatorInTenanttNamespace")
+
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
+
+	check.LogInfo("Total operators found %d ", len(env.Operators))
 
 	for _, operator := range env.Operators {
 		check.LogInfo("Checking operator %s in namespace %s ", operator.Name, operator.Namespace)
 
 		csv := operator.Csv
+		isSingleNamespaceInstallModeSupported := hasOperatorInstallModeSingleNamespace(csv.Spec.InstallModes)
 
+		csvNamespace := csv.Namespace
 		operatorNamespace := csv.Annotations["olm.operatorNamespace"]
-		targetNamespacesStr := csv.Annotations["olm.targetNamespaces"]
-		operatorTargetNamespaces := strings.Split(targetNamespacesStr, ",")
-		operatorGroup := findOperatorGroup(csv.Annotations["olm.operatorGroup"], operator.Namespace, env.OperatorGroups)
+		targetNamespaces := operator.TargetNamespaces
 
-		check.LogInfo("operatorNamespace %s, targetNamespaces %v, operatorGroup %s", operatorNamespace,
-			operatorTargetNamespaces, operatorGroup.Name)
-
-		isSingleNamespaceInstallMode := isInstallModeSingleNamespace(csv.Spec.InstallModes)
+		check.LogInfo("operatorNamespace=%s, csvNamespace=%s, targetNamespaces=%v, singleNamespace=%v", operatorNamespace,
+			csvNamespace, targetNamespaces, isSingleNamespaceInstallModeSupported)
 		isCompliant := checkOperatorInstallationCompliance(
-			operatorGroup.Spec.TargetNamespaces,
-			operatorNamespace,
-			operatorTargetNamespaces,
-			isSingleNamespaceInstallMode,
+			operatorNamespace, csvNamespace, targetNamespaces,
+			isSingleNamespaceInstallModeSupported,
 		)
+		check.LogInfo("Operator is installation Compliant %v", isCompliant)
 
-		message := "Operator with %s is %sinstalled in tenant namespace "
-		mode := "SingleNamespace InstallMode"
-		if !isSingleNamespaceInstallMode {
-			mode = "no SingleNamespace InstallMode"
-		}
-		status := "not "
 		if isCompliant {
-			status = ""
-			msg := fmt.Sprintf(message, mode, status)
-			check.LogInfo(msg)
+			check.LogInfo("Operator %s has valid installation in tenant namespace %s ", operator.Name, targetNamespaces[0])
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
-				msg, true).AddField(testhelper.OperatorName, operator.Name))
+				"Operator has valid installation in tenant namespace ", true).AddField(testhelper.OperatorName, operator.Name))
 		} else {
-			msg := fmt.Sprintf(message, mode, status)
-			check.LogInfo(msg)
+			check.LogInfo("Operator %s has invalid installation in tenant namespace ", operator.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
-				msg, false).AddField(testhelper.OperatorName, operator.Name))
+				"Operator has invalid installation in tenant namespace ", false).AddField(testhelper.OperatorName, operator.Name))
 		}
 	}
-
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
