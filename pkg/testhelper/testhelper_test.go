@@ -1104,3 +1104,138 @@ func TestGetNoOperatorsSkipFn(t *testing.T) {
 		assert.Equal(t, testCase.expectedResult, result)
 	}
 }
+
+func TestFailureReasonOutTestString(t *testing.T) {
+	testCases := []struct {
+		testFailureReasonOut FailureReasonOut
+		expectedResult       string
+	}{
+		{
+			testFailureReasonOut: FailureReasonOut{
+				CompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject1",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+				NonCompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject2",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+			},
+			//nolint:lll
+			expectedResult: `testhelper.FailureReasonOut{CompliantObjectsOut: []*testhelper.ReportObject{&testhelper.ReportObject{ObjectType:"testObject1", ObjectFieldsKeys:[]string{"key1", "key2"}, ObjectFieldsValues:[]string{"value1", "value2"}},},NonCompliantObjectsOut: []*testhelper.ReportObject{&testhelper.ReportObject{ObjectType:"testObject2", ObjectFieldsKeys:[]string{"key1", "key2"}, ObjectFieldsValues:[]string{"value1", "value2"}},},}`,
+		},
+	}
+
+	for _, testCase := range testCases {
+		assert.Equal(t, testCase.expectedResult, FailureReasonOutTestString(testCase.testFailureReasonOut))
+	}
+}
+
+func TestReportObjectTestString(t *testing.T) {
+	testCases := []struct {
+		testReportObject ReportObject
+		expectedResult   string
+	}{
+		{
+			testReportObject: ReportObject{
+				ObjectType:         "testObject",
+				ObjectFieldsKeys:   []string{"key1", "key2"},
+				ObjectFieldsValues: []string{"value1", "value2"},
+			},
+			expectedResult: `[]testhelper.ReportObject{testhelper.ReportObject{ObjectType:"testObject", ObjectFieldsKeys:[]string{"key1", "key2"}, ObjectFieldsValues:[]string{"value1", "value2"}},}`,
+		},
+	}
+
+	for _, testCase := range testCases {
+		assert.Equal(t, testCase.expectedResult, ReportObjectTestString([]*ReportObject{&testCase.testReportObject}))
+	}
+}
+
+func TestFailureReasonOutEqual(t *testing.T) {
+	testCases := []struct {
+		testFailureReasonOut1 FailureReasonOut
+		testFailureReasonOut2 FailureReasonOut
+		expectedResult        bool
+	}{
+		{ // Test Case #1 - Equal
+			testFailureReasonOut1: FailureReasonOut{
+				CompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject1",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+				NonCompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject2",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+			},
+			testFailureReasonOut2: FailureReasonOut{
+				CompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject1",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+				NonCompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject2",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+			},
+			expectedResult: true,
+		},
+		{ // Test Case #2 - Not Equal
+			testFailureReasonOut1: FailureReasonOut{
+				CompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject1",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+				NonCompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject2",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+			},
+			testFailureReasonOut2: FailureReasonOut{
+				CompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject1",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+				NonCompliantObjectsOut: []*ReportObject{
+					{
+						ObjectType:         "testObject3",
+						ObjectFieldsKeys:   []string{"key1", "key2"},
+						ObjectFieldsValues: []string{"value1", "value2"},
+					},
+				},
+			},
+			expectedResult: false,
+		},
+	}
+
+	for _, testCase := range testCases {
+		assert.Equal(t, testCase.expectedResult, testCase.testFailureReasonOut1.Equal(testCase.testFailureReasonOut2))
+	}
+}
