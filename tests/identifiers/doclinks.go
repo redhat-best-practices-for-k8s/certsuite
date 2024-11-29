@@ -111,7 +111,6 @@ const (
 	TestOperatorCrdSchemaIdentifierDocLink              = DocOperatorRequirement
 	TestOperatorCrdVersioningIdentifierDocLink          = DocOperatorRequirement
 	TestOperatorSingleCrdOwnerIdentifierDocLink         = DocOperatorRequirement
-	TestOperatorRunAsUserIDDocLink                      = DocOperatorRequirement
 	TestOperatorRunAsNonRootDocLink                     = DocOperatorRequirement
 	TestOperatorAutomountTokensDocLink                  = DocOperatorRequirement
 	TestOperatorReadOnlyFilesystemDocLink               = DocOperatorRequirement
