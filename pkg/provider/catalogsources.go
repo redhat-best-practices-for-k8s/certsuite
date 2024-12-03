@@ -2,8 +2,8 @@ package provider
 
 import (
 	"strconv"
+	"strings"
 
-	"github.com/Masterminds/semver"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -23,15 +23,15 @@ func GetCatalogSourceBundleCount(env *TestEnvironment, cs *olmv1Alpha.CatalogSou
 	// Check if the cluster is running an OCP version <= 4.12
 	if env.OpenshiftVersion != "" {
 		log.Info("Cluster is determined to be running Openshift version %q.", env.OpenshiftVersion)
-		version, err := semver.NewVersion(env.OpenshiftVersion)
-		if err != nil {
-			log.Error("Failed to parse Openshift version %q.", env.OpenshiftVersion)
-			return 0
-		}
+		// version, err := semver.NewVersion(env.OpenshiftVersion)
+		// if err != nil {
+		// 	log.Error("Failed to parse Openshift version %q.", env.OpenshiftVersion)
+		// 	return 0
+		// }
 
-		if version.Major() < ocpMajorVersion || (version.Major() == ocpMajorVersion && version.Minor() <= ocpMinorVersion) {
-			return getCatalogSourceBundleCountFromProbeContainer(env, cs)
-		}
+		// if version.Major() < ocpMajorVersion || (version.Major() == ocpMajorVersion && version.Minor() <= ocpMinorVersion) {
+		return getCatalogSourceBundleCountFromProbeContainer(env, cs)
+		// }
 
 		// If we didn't find the bundle count via the probe container, we can attempt to use the package manifests
 	}
@@ -48,11 +48,13 @@ func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olm
 	o := clientsholder.GetClientsHolder()
 
 	// Find the kubernetes service associated with the catalog source
-	for _, svc := range env.Services {
+	for _, svc := range env.AllServices {
 		// Skip if the service is not associated with the catalog source
 		if svc.Spec.Selector["olm.catalogSource"] != cs.Name {
 			continue
 		}
+
+		log.Info("Found service %q associated with catalog source %q.", svc.Name, cs.Name)
 
 		// Use a probe pod to get the bundle count
 		for _, probePod := range env.ProbePods {
@@ -64,6 +66,10 @@ func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olm
 				continue
 			}
 
+			// Sanitize the command output
+			cmdValue = strings.TrimSpace(cmdValue)
+			cmdValue = strings.Trim(cmdValue, "\"")
+
 			// Parse the command output
 			bundleCount, err := strconv.Atoi(cmdValue)
 			if err != nil {
@@ -72,11 +78,13 @@ func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olm
 			}
 
 			// Try each probe pod until we get a valid bundle count (which should only be 1 probe pod)
+			log.Info("Found bundle count via grpcurl %d for catalog source %q.", bundleCount, cs.Name)
 			return bundleCount
 		}
 	}
 
-	return 0
+	log.Warn("Warning: No services found associated with catalog source %q.", cs.Name)
+	return -1
 }
 
 func getCatalogSourceBundleCountFromPackageManifests(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int {
