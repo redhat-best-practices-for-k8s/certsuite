@@ -104,6 +104,7 @@ type TestEnvironment struct { // rename this with testTarget
 
 	HorizontalScaler             []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Services                     []*corev1.Service                    `json:"testServices"`
+	AllServices                  []*corev1.Service                    `json:"testAllServices"`
 	ServiceAccounts              []*corev1.ServiceAccount             `json:"testServiceAccounts"`
 	AllServiceAccounts           []*corev1.ServiceAccount             `json:"AllServiceAccounts"`
 	AllServiceAccountsMap        map[string]*corev1.ServiceAccount
@@ -335,6 +336,7 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	env.RoleBindings = data.RoleBindings
 	env.Roles = data.Roles
 	env.Services = data.Services
+	env.AllServices = data.AllServices
 	env.NetworkPolicies = data.NetworkPolicies
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {

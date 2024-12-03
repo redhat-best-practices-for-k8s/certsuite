@@ -2,6 +2,7 @@ package provider
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/Masterminds/semver"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -48,11 +49,13 @@ func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olm
 	o := clientsholder.GetClientsHolder()
 
 	// Find the kubernetes service associated with the catalog source
-	for _, svc := range env.Services {
+	for _, svc := range env.AllServices {
 		// Skip if the service is not associated with the catalog source
 		if svc.Spec.Selector["olm.catalogSource"] != cs.Name {
 			continue
 		}
+
+		log.Info("Found service %q associated with catalog source %q.", svc.Name, cs.Name)
 
 		// Use a probe pod to get the bundle count
 		for _, probePod := range env.ProbePods {
@@ -64,6 +67,10 @@ func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olm
 				continue
 			}
 
+			// Sanitize the command output
+			cmdValue = strings.TrimSpace(cmdValue)
+			cmdValue = strings.Trim(cmdValue, "\"")
+
 			// Parse the command output
 			bundleCount, err := strconv.Atoi(cmdValue)
 			if err != nil {
@@ -72,11 +79,13 @@ func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olm
 			}
 
 			// Try each probe pod until we get a valid bundle count (which should only be 1 probe pod)
+			log.Info("Found bundle count via grpcurl %d for catalog source %q.", bundleCount, cs.Name)
 			return bundleCount
 		}
 	}
 
-	return 0
+	log.Warn("Warning: No services found associated with catalog source %q.", cs.Name)
+	return -1
 }
 
 func getCatalogSourceBundleCountFromPackageManifests(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int {
