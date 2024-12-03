@@ -92,6 +92,7 @@ type DiscoveredTestData struct {
 	RoleBindings                 []rbacv1.RoleBinding // Contains all rolebindings from all namespaces
 	Roles                        []rbacv1.Role        // Contains all roles from all namespaces
 	Services                     []*corev1.Service
+	AllServices                  []*corev1.Service
 	ServiceAccounts              []*corev1.ServiceAccount
 	AllServiceAccounts           []*corev1.ServiceAccount
 	Hpas                         []*scalingv1.HorizontalPodAutoscaler
@@ -278,6 +279,10 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces, data.ServicesIgnoreList)
 	if err != nil {
 		log.Fatal("Cannot get list of services, err: %v", err)
+	}
+	data.AllServices, err = getServices(oc.K8sClient.CoreV1(), data.AllNamespaces, data.ServicesIgnoreList)
+	if err != nil {
+		log.Fatal("Cannot get list of all services, err: %v", err)
 	}
 	data.ServiceAccounts, err = getServiceAccounts(oc.K8sClient.CoreV1(), data.Namespaces)
 	if err != nil {

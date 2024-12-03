@@ -28,11 +28,6 @@ type CsvResult struct {
 	Namespace string
 }
 
-type CsvNameVersion struct {
-	Name    string
-	Version string
-}
-
 // splitCsv splits the input string to extract namecsv and namespace.
 func SplitCsv(csv string) CsvResult {
 	// Split by comma to separate components

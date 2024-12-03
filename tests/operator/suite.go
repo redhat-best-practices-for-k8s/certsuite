@@ -492,12 +492,17 @@ func testOperatorCatalogSourceBundleCount(check *checksdb.Check, env *provider.T
 				// The name and namespace match.  Lookup the bundle count.
 				bundleCount := provider.GetCatalogSourceBundleCount(env, catalogSource)
 
-				if bundleCount > bundleCountLimit {
-					check.LogError("CatalogSource %q has more than "+bundleCountLimitStr+" ("+strconv.Itoa(bundleCount)+") referenced images", catalogSource.Name)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCatalogSourceReportObject(catalogSource.Namespace, catalogSource.Name, "CatalogSource has more than "+bundleCountLimitStr+" referenced images", false))
+				if bundleCount == -1 {
+					check.LogError("Failed to get bundle count for CatalogSource %q", catalogSource.Name)
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCatalogSourceReportObject(catalogSource.Namespace, catalogSource.Name, "Failed to get bundle count", false))
 				} else {
-					check.LogInfo("CatalogSource %q has less than "+bundleCountLimitStr+" ("+strconv.Itoa(bundleCount)+") referenced images", catalogSource.Name)
-					compliantObjects = append(compliantObjects, testhelper.NewCatalogSourceReportObject(catalogSource.Namespace, catalogSource.Name, "CatalogSource has less than "+bundleCountLimitStr+" referenced images", true))
+					if bundleCount > bundleCountLimit {
+						check.LogError("CatalogSource %q has more than "+bundleCountLimitStr+" ("+strconv.Itoa(bundleCount)+") referenced images", catalogSource.Name)
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCatalogSourceReportObject(catalogSource.Namespace, catalogSource.Name, "CatalogSource has more than "+bundleCountLimitStr+" referenced images", false))
+					} else {
+						check.LogInfo("CatalogSource %q has less than "+bundleCountLimitStr+" ("+strconv.Itoa(bundleCount)+") referenced images", catalogSource.Name)
+						compliantObjects = append(compliantObjects, testhelper.NewCatalogSourceReportObject(catalogSource.Namespace, catalogSource.Name, "CatalogSource has less than "+bundleCountLimitStr+" referenced images", true))
+					}
 				}
 
 				log.Debug("Adding catalog source %q to list of already reported", catalogSource.Name)
