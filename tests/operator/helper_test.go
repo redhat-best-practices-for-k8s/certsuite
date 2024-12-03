@@ -22,8 +22,6 @@ package operator
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestSplitCsv(t *testing.T) {
@@ -69,29 +67,5 @@ func TestSplitCsv(t *testing.T) {
 				t.Errorf("splitCsv(%q) got namespace %q, want %q", tt.input, result.Namespace, tt.expectedNs)
 			}
 		})
-	}
-}
-
-func TestGetCsvVersion(t *testing.T) {
-	testCases := []struct {
-		input       string
-		expectedCsv CsvNameVersion
-	}{
-		{
-			input:       "example-operator.v1.0.0",
-			expectedCsv: CsvNameVersion{Name: "example-operator", Version: "1.0.0"},
-		},
-		{
-			input:       "another-operator.v2.3.1",
-			expectedCsv: CsvNameVersion{Name: "another-operator", Version: "2.3.1"},
-		},
-		{
-			input:       "no-version",
-			expectedCsv: CsvNameVersion{Name: "no-version", Version: ""},
-		},
-	}
-
-	for _, testCase := range testCases {
-		assert.Equal(t, testCase.expectedCsv, GetCsvVersion(testCase.input))
 	}
 }

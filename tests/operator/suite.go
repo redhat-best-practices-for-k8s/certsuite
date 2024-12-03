@@ -466,15 +466,8 @@ func testOperatorCatalogSourceBundleCount(check *checksdb.Check, env *provider.T
 		catalogSourceCheckComplete := false
 		check.LogInfo("Checking bundle count for operator %q", op.Csv.Name)
 
-		cvi := GetCsvVersion(op.Csv.Name)
-
 		// Search through packagemanifests to match the name of the CSV.
 		for _, pm := range env.AllPackageManifests {
-			// Skip all package manifests that do not match the name of the CSV.
-			if pm.Name != cvi.Name {
-				continue
-			}
-
 			// Skip package manifests based on channel entries.
 			if catalogsource.SkipPMBasedOnChannel(pm.Status.Channels, op.Csv.Name) {
 				log.Debug("Skipping package manifest %q based on channel", pm.Name)

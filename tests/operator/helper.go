@@ -50,17 +50,3 @@ func SplitCsv(csv string) CsvResult {
 	}
 	return result
 }
-
-func GetCsvVersion(csvName string) CsvNameVersion {
-	// Split by comma to separate components
-	// example-operator.v1.0.0 -> example-operator, v1.0.0
-	parts := strings.Split(csvName, ".v")
-	var result CsvNameVersion
-
-	result.Name = parts[0]
-
-	if len(parts) > 1 {
-		result.Version = parts[1]
-	}
-	return result
-}
