@@ -20,7 +20,12 @@ Package operator provides CNFCERT tests used to validate operator CNF facets.
 
 package operator
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+)
 
 // CsvResult holds the results of the splitCsv function.
 type CsvResult struct {
@@ -44,4 +49,22 @@ func SplitCsv(csv string) CsvResult {
 		}
 	}
 	return result
+}
+
+func hasOperatorInstallModeSingleNamespace(installModes []v1alpha1.InstallMode) bool {
+	for i := 0; i < len(installModes); i++ {
+		if installModes[i].Type == v1alpha1.InstallModeTypeSingleNamespace && installModes[i].Supported {
+			return true
+		}
+	}
+	return false
+}
+
+func checkOperatorInstallationCompliance(operatorNamespace, csvNamespace string, targetNamespaces []string, isSingleNamespaceInstallModeSupported bool) bool {
+	// operators with single namespace are installed in the tenant namespace
+	if isSingleNamespaceInstallModeSupported {
+		return len(targetNamespaces) == 1 && strings.Compare(operatorNamespace, targetNamespaces[0]) != 0
+	}
+	// operators are not installed in tenant namespaces
+	return !stringhelper.StringInSlice(targetNamespaces, csvNamespace, false)
 }

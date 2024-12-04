@@ -107,6 +107,7 @@ const (
 	TestOperatorNoPrivilegesDocLink                     = DocOperatorRequirement
 	TestOperatorIsCertifiedIdentifierDocLink            = DocOperatorRequirement
 	TestOperatorIsInstalledViaOLMIdentifierDocLink      = DocOperatorRequirement
+	TestOperatorInstallationInTenantNamespaceDocLink    = DocOperatorRequirement
 	TestOperatorHasSemanticVersioningIdentifierDocLink  = DocOperatorRequirement
 	TestOperatorCrdSchemaIdentifierDocLink              = DocOperatorRequirement
 	TestOperatorCrdVersioningIdentifierDocLink          = DocOperatorRequirement
