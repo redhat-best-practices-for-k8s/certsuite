@@ -20,6 +20,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Masterminds/semver"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/catalogsource"
@@ -456,7 +457,31 @@ func testOperatorCatalogSourceBundleCount(check *checksdb.Check, env *provider.T
 
 	const (
 		bundleCountLimit = 1000
+
+		// If the OCP version is <= 4.12, we need to use the probe container to get the bundle count.
+		// This means we cannot use the package manifests to skip based on channel.
+		ocpMajorVersion = 4
+		ocpMinorVersion = 12
 	)
+
+	ocp412Skip := false
+	// Check if the cluster is running an OCP version <= 4.12
+	if env.OpenshiftVersion != "" {
+		log.Info("Cluster is determined to be running Openshift version %q.", env.OpenshiftVersion)
+		version, err := semver.NewVersion(env.OpenshiftVersion)
+		if err != nil {
+			log.Error("Failed to parse Openshift version %q.", env.OpenshiftVersion)
+			check.LogError("Failed to parse Openshift version %q.", env.OpenshiftVersion)
+			return
+		}
+
+		if version.Major() < ocpMajorVersion || (version.Major() == ocpMajorVersion && version.Minor() <= ocpMinorVersion) {
+			log.Info("Cluster is running an OCP version <= 4.12.")
+			ocp412Skip = true
+		} else {
+			log.Info("Cluster is running an OCP version > 4.12.")
+		}
+	}
 
 	bundleCountLimitStr := strconv.Itoa(bundleCountLimit)
 
@@ -469,7 +494,8 @@ func testOperatorCatalogSourceBundleCount(check *checksdb.Check, env *provider.T
 		// Search through packagemanifests to match the name of the CSV.
 		for _, pm := range env.AllPackageManifests {
 			// Skip package manifests based on channel entries.
-			if catalogsource.SkipPMBasedOnChannel(pm.Status.Channels, op.Csv.Name) {
+			// Note: This only works for OCP versions > 4.12 due to channel entries existence.
+			if !ocp412Skip && catalogsource.SkipPMBasedOnChannel(pm.Status.Channels, op.Csv.Name) {
 				log.Debug("Skipping package manifest %q based on channel", pm.Name)
 				continue
 			}
