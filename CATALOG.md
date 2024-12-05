@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 116
+### Total test cases: 117
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |manageability|2|
 |networking|12|
 |observability|5|
-|operator|10|
+|operator|11|
 |performance|6|
 |platform-alteration|13|
 |preflight|17|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |8|1|
 
-### Non-Telco specific tests only: 68
+### Non-Telco specific tests only: 69
 
 |Mandatory|Optional|
 |---|---|
-|43|25|
+|44|25|
 
 ### Telco specific tests only: 27
 
@@ -1185,6 +1185,22 @@ Tags|telco,observability
 |Telco|Mandatory|
 
 ### operator
+
+#### operator-catalogsource-bundle-count
+
+Property|Description
+---|---
+Unique ID|operator-catalogsource-bundle-count
+Description|Tests operator catalog source bundle count is less than 1000
+Suggested Remediation|Ensure that the Operator's catalog source has a valid bundle count less than 1000.
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
 
 #### operator-crd-openapi-schema
 

@@ -133,6 +133,7 @@ var (
 	TestOperatorSingleCrdOwnerIdentifier              claim.Identifier
 	TestOperatorPodsNoHugepages                       claim.Identifier
 	TestMultipleSameOperatorsIdentifier               claim.Identifier
+	TestOperatorCatalogSourceBundleCountIdentifier    claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
@@ -1064,6 +1065,22 @@ that Node's kernel may not have the same hacks.'`,
 			Telco:    Optional,
 			NonTelco: Optional,
 			Extended: Optional,
+		},
+		TagCommon)
+
+	TestOperatorCatalogSourceBundleCountIdentifier = AddCatalogEntry(
+		"catalogsource-bundle-count",
+		common.OperatorTestKey,
+		`Tests operator catalog source bundle count is less than 1000`,
+		OperatorCatalogSourceBundleCountRemediation,
+		NoExceptions,
+		TestOperatorCatalogSourceBundleCountIdentifierDocLink,
+		false,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
