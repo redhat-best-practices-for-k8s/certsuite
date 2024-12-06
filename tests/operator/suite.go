@@ -101,6 +101,7 @@ func LoadChecks() {
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorPodsNoHugepages)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env), testhelper.GetNoOperatorPodsSkipFn(&env)).
+		SetDisabled(). // Remove in the next release.
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorPodsNoHugepages(c, &env)
 			return nil
@@ -108,6 +109,7 @@ func LoadChecks() {
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorOlmSkipRange)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		SetDisabled(). // Remove in the next release.
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorOlmSkipRange(c, &env)
 			return nil
@@ -115,6 +117,7 @@ func LoadChecks() {
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestMultipleSameOperatorsIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		SetDisabled(). // Remove in the next release.
 		WithCheckFn(func(c *checksdb.Check) error {
 			testMultipleSameOperators(c, &env)
 			return nil
@@ -122,6 +125,7 @@ func LoadChecks() {
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCatalogSourceBundleCountIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoCatalogSourcesSkipFn(&env)).
+		SetDisabled(). // Remove in the next release.
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorCatalogSourceBundleCount(c, &env)
 			return nil

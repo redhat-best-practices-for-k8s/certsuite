@@ -56,6 +56,8 @@ type Check struct {
 	Timeout            time.Duration
 	Error              error
 	abortChan          chan string
+
+	enabled bool
 }
 
 func NewCheck(id string, labels []string) *Check {
@@ -64,10 +66,17 @@ func NewCheck(id string, labels []string) *Check {
 		Labels:     labels,
 		Result:     CheckResultPassed,
 		logArchive: &strings.Builder{},
+		enabled:    true,
 	}
 
 	check.logger = log.GetMultiLogger(check.logArchive, cli.CliCheckLogSniffer).With("check", check.ID)
 
+	return check
+}
+
+// SetDisabled disables the check.
+func (check *Check) SetDisabled() *Check {
+	check.enabled = false
 	return check
 }
 

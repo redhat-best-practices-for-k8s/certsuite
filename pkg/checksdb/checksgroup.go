@@ -250,6 +250,11 @@ func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
 		return false, []string{}
 	}
 
+	// If the check is disabled, skip it.
+	if !check.enabled {
+		return true, []string{"check is disabled in this release"}
+	}
+
 	return false, []string{}
 }
 
