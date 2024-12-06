@@ -128,7 +128,7 @@ func Shutdown() {
 	}
 }
 
-//nolint:funlen
+//nolint:funlen,gocyclo
 func Run(labelsFilter, outputFolder string) error {
 	testParams := configuration.GetTestParameters()
 
@@ -201,11 +201,46 @@ func Run(labelsFilter, outputFolder string) error {
 	// Add the log file path
 	allArtifactsFilePaths = append(allArtifactsFilePaths, filepath.Join(outputFolder, log.LogFileName))
 
+	// Red Hat Connect API key and project ID are required to send the tar.gz to Red Hat Connect.
+	sendToConnectAPI := false
+	if env.ConnectAPIKey != "" && env.ConnectProjectID != "" {
+		log.Info("Sending results to Red Hat Connect API with API key %s and project ID %s", env.ConnectAPIKey, env.ConnectProjectID)
+		sendToConnectAPI = true
+	} else {
+		log.Info("Red Hat Connect API key and project ID are not set. Results will not be sent to Red Hat Connect.")
+	}
+
 	// tar.gz file creation with results and html artifacts, unless omitted by env var.
-	if !configuration.GetTestParameters().OmitArtifactsZipFile {
-		err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
+	if !configuration.GetTestParameters().OmitArtifactsZipFile || sendToConnectAPI {
+		zipFile, err := results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
 		if err != nil {
 			log.Fatal("Failed to compress results artifacts: %v", err)
+		}
+
+		if sendToConnectAPI {
+			log.Debug("Get CertificationID from the Red Hat Connect API")
+			certificationID, err := results.GetCertIDFromConnectAPI(
+				env.ConnectAPIKey, env.ConnectProjectID, env.ConnectAPIProxyURL, env.ConnectAPIProxyPort)
+			if err != nil {
+				log.Fatal("Failed to get CertificationID from Red Hat Connect: %v", err)
+			}
+
+			log.Debug("Sending ZIP file %s to Red Hat Connect", zipFile)
+			err = results.SendResultsToConnectAPI(zipFile,
+				env.ConnectAPIKey, certificationID, env.ConnectAPIProxyURL, env.ConnectAPIProxyPort)
+			if err != nil {
+				log.Fatal("Failed to send results to Red Hat Connect: %v", err)
+			}
+
+			log.Info("Results successfully sent to Red Hat Connect with CertificationID %s", certificationID)
+		}
+
+		if !configuration.GetTestParameters().OmitArtifactsZipFile {
+			// delete the zip as the user does not want it.
+			err = os.Remove(zipFile)
+			if err != nil {
+				log.Fatal("Failed to remove zip file %s: %v", zipFile, err)
+			}
 		}
 	}
 
