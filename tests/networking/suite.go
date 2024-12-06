@@ -158,7 +158,6 @@ func LoadChecks() {
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(
 		identifiers.TestNetworkAttachmentDefinitionSRIOVUsingMTU)).
 		WithSkipCheckFn(testhelper.GetNoSRIOVPodsSkipFn(&env)).
-		SetDisabled(). // Remove in the next release.
 		WithCheckFn(func(c *checksdb.Check) error {
 			sriovPods, err := env.GetPodsUsingSRIOV()
 			if err != nil {

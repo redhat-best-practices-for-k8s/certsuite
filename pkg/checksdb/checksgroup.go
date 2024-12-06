@@ -3,11 +3,13 @@ package checksdb
 import (
 	"errors"
 	"fmt"
+	"os"
 	"runtime/debug"
 	"strings"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 )
 
 const (
@@ -76,7 +78,11 @@ func (group *ChecksGroup) Add(check *Check) {
 	dbLock.Lock()
 	defer dbLock.Unlock()
 
-	group.checks = append(group.checks, check)
+	// Only add the check to the group if its not "waiting-for-release" or if the REDHAT_CI env var is set.
+	if !stringhelper.StringInSlice(check.Labels, "waiting-for-release", false) ||
+		os.Getenv("REDHAT_CI") == "true" {
+		group.checks = append(group.checks, check)
+	}
 }
 
 func skipCheck(check *Check, reason string) {
@@ -248,11 +254,6 @@ func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
 			return true, reasons
 		}
 		return false, []string{}
-	}
-
-	// If the check is disabled, skip it.
-	if !check.enabled {
-		return true, []string{"check is disabled in this release"}
 	}
 
 	return false, []string{}

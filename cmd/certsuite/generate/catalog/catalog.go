@@ -251,6 +251,11 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 
 			// Every paragraph starts with a new line.
 
+			// Skip the test if it has the "waiting-for-release" tag.
+			if strings.Contains(tags, "waiting-for-release") {
+				continue
+			}
+
 			outString += fmt.Sprintf("\n#### %s\n\n", k.testName)
 			outString += "Property|Description\n"
 			outString += "---|---\n"

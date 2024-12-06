@@ -18,6 +18,7 @@ env:
   DOCKER_CONFIG_DIR: '/home/labuser3/.docker'
   CERTSUITE_CONFIG_DIR: '/home/labuser3/certsuite_config'
   CERTSUITE_REPORT_DIR: '/home/labuser3/tnf_report'
+  REDHAT_CI: true
 
 jobs:
   # Build the image used for testing first, then pass the reference to the QE tests.

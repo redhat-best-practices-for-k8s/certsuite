@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |8|1|
 
-### Non-Telco specific tests only: 69
+### Non-Telco specific tests only: 65
 
 |Mandatory|Optional|
 |---|---|
-|44|25|
+|42|23|
 
 ### Telco specific tests only: 27
 
@@ -1006,22 +1006,6 @@ Tags|telco,networking
 |Non-Telco|Optional|
 |Telco|Mandatory|
 
-#### networking-network-attachment-definition-sriov-mtu
-
-Property|Description
----|---
-Unique ID|networking-network-attachment-definition-sriov-mtu
-Description|Ensures that MTU values are set correctly in NetworkAttachmentDefinitions for SRIOV network interfaces.
-Suggested Remediation|Ensure that the MTU of the SR-IOV network attachment definition is set explicitly.
-Best Practice Reference|No Doc Link - Far Edge
-Exception Process|There is no documented exception process for this.
-Tags|faredge,networking
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
-
 #### networking-network-policy-deny-all
 
 Property|Description
@@ -1186,22 +1170,6 @@ Tags|telco,observability
 
 ### operator
 
-#### operator-catalogsource-bundle-count
-
-Property|Description
----|---
-Unique ID|operator-catalogsource-bundle-count
-Description|Tests operator catalog source bundle count is less than 1000
-Suggested Remediation|Ensure that the Operator's catalog source has a valid bundle count less than 1000.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|No exceptions
-Tags|common,operator
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
-
 #### operator-crd-openapi-schema
 
 Property|Description
@@ -1281,54 +1249,6 @@ Tags|common,operator
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
-
-#### operator-multiple-same-operators
-
-Property|Description
----|---
-Unique ID|operator-multiple-same-operators
-Description|Tests whether multiple instances of the same Operator CSV are installed.
-Suggested Remediation|Ensure that only one Operator of the same type is installed in the cluster.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|No exceptions
-Tags|common,operator
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
-
-#### operator-olm-skip-range
-
-Property|Description
----|---
-Unique ID|operator-olm-skip-range
-Description|Test that checks the operator has a valid olm skip range.
-Suggested Remediation|Ensure that the Operator has a valid OLM skip range. If the operator does not have another version to "skip", then ignore the result of this test.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|If there is not a version of the operator that needs to be skipped, then an exception will be granted.
-Tags|common,operator
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
-|Non-Telco|Optional|
-|Telco|Optional|
-
-#### operator-pods-no-hugepages
-
-Property|Description
----|---
-Unique ID|operator-pods-no-hugepages
-Description|Tests that the pods do not have hugepages enabled.
-Suggested Remediation|Ensure that the pods are not using hugepages
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|No exceptions
-Tags|common,operator
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
-|Non-Telco|Optional|
-|Telco|Optional|
 
 #### operator-semantic-versioning
 

@@ -35,17 +35,18 @@ for instance the Performance Addon Operator (PAO) or istio.`
 )
 
 const (
-	TagCommon    = "common"
-	TagExtended  = "extended"
-	TagTelco     = "telco"
-	TagFarEdge   = "faredge"
-	FarEdge      = "FarEdge"
-	Telco        = "Telco"
-	NonTelco     = "NonTelco"
-	Extended     = "Extended"
-	Optional     = "Optional"
-	Mandatory    = "Mandatory"
-	TagPreflight = "preflight"
+	TagCommon            = "common"
+	TagExtended          = "extended"
+	TagTelco             = "telco"
+	TagFarEdge           = "faredge"
+	FarEdge              = "FarEdge"
+	Telco                = "Telco"
+	NonTelco             = "NonTelco"
+	Extended             = "Extended"
+	Optional             = "Optional"
+	Mandatory            = "Mandatory"
+	TagPreflight         = "preflight"
+	TagWaitingForRelease = "waiting-for-release"
 )
 
 const (
@@ -598,7 +599,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagFarEdge)
+		TagFarEdge, TagWaitingForRelease)
 
 	TestSecConNonRootUserIDIdentifier = AddCatalogEntry(
 		"security-context-non-root-user-id-check",
@@ -1002,7 +1003,7 @@ that Node's kernel may not have the same hacks.'`,
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon)
+		TagCommon, TagWaitingForRelease)
 
 	TestOperatorCrdVersioningIdentifier = AddCatalogEntry(
 		"crd-versioning",
@@ -1066,7 +1067,7 @@ that Node's kernel may not have the same hacks.'`,
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon)
+		TagCommon, TagWaitingForRelease)
 
 	TestOperatorCatalogSourceBundleCountIdentifier = AddCatalogEntry(
 		"catalogsource-bundle-count",
@@ -1082,7 +1083,7 @@ that Node's kernel may not have the same hacks.'`,
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagCommon)
+		TagCommon, TagWaitingForRelease)
 
 	TestMultipleSameOperatorsIdentifier = AddCatalogEntry(
 		"multiple-same-operators",
@@ -1098,7 +1099,7 @@ that Node's kernel may not have the same hacks.'`,
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagCommon)
+		TagCommon, TagWaitingForRelease)
 
 	TestPodNodeSelectorAndAffinityBestPractices = AddCatalogEntry(
 		"pod-scheduling",

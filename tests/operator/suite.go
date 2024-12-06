@@ -101,7 +101,6 @@ func LoadChecks() {
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorPodsNoHugepages)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env), testhelper.GetNoOperatorPodsSkipFn(&env)).
-		SetDisabled(). // Remove in the next release.
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorPodsNoHugepages(c, &env)
 			return nil
@@ -109,7 +108,6 @@ func LoadChecks() {
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorOlmSkipRange)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
-		SetDisabled(). // Remove in the next release.
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorOlmSkipRange(c, &env)
 			return nil
@@ -117,7 +115,6 @@ func LoadChecks() {
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestMultipleSameOperatorsIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
-		SetDisabled(). // Remove in the next release.
 		WithCheckFn(func(c *checksdb.Check) error {
 			testMultipleSameOperators(c, &env)
 			return nil
@@ -125,7 +122,6 @@ func LoadChecks() {
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCatalogSourceBundleCountIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoCatalogSourcesSkipFn(&env)).
-		SetDisabled(). // Remove in the next release.
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOperatorCatalogSourceBundleCount(c, &env)
 			return nil
@@ -470,7 +466,7 @@ func testOperatorCatalogSourceBundleCount(check *checksdb.Check, env *provider.T
 
 	ocp412Skip := false
 	// Check if the cluster is running an OCP version <= 4.12
-	if env.OpenshiftVersion != "" {
+	if env.OpenshiftVersion != "" && env.OpenshiftVersion != "0.0.0" {
 		log.Info("Cluster is determined to be running Openshift version %q.", env.OpenshiftVersion)
 		version, err := semver.NewVersion(env.OpenshiftVersion)
 		if err != nil {
