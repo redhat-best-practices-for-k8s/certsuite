@@ -28,6 +28,7 @@ env:
   TERM: xterm-color
   CM_BIN: /usr/local/bin/checkmake
   CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
+  REDHAT_CI: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}

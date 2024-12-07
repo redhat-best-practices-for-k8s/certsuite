@@ -13,6 +13,7 @@ permissions:
 
 env:
   QE_REPO: redhat-best-practices-for-k8s/certsuite-qe
+  REDHAT_CI: true
 
 jobs:
   pull-unstable-image:

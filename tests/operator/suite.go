@@ -466,7 +466,7 @@ func testOperatorCatalogSourceBundleCount(check *checksdb.Check, env *provider.T
 
 	ocp412Skip := false
 	// Check if the cluster is running an OCP version <= 4.12
-	if env.OpenshiftVersion != "" {
+	if env.OpenshiftVersion != "" && env.OpenshiftVersion != "0.0.0" {
 		log.Info("Cluster is determined to be running Openshift version %q.", env.OpenshiftVersion)
 		version, err := semver.NewVersion(env.OpenshiftVersion)
 		if err != nil {

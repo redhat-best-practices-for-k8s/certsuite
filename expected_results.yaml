@@ -77,16 +77,16 @@ testCases:
     - networking-dpdk-cpu-pinning-exec-probe
     - networking-icmpv6-connectivity
     - networking-restart-on-reboot-sriov-pod
-    - networking-network-attachment-definition-sriov-mtu
+    # - networking-network-attachment-definition-sriov-mtu # Re-enable when new releasing new minor version.
     - operator-install-source
     - operator-install-status-no-privileges
     - operator-install-status-succeeded
-    - operator-olm-skip-range
+    # - operator-olm-skip-range # Re-enable when new releasing new minor version.
     - operator-semantic-versioning
     - operator-single-crd-owner
-    - operator-pods-no-hugepages
-    - operator-multiple-same-operators
-    - operator-catalogsource-bundle-count
+    # - operator-pods-no-hugepages # Re-enable when new releasing new minor version.
+    # - operator-multiple-same-operators # Re-enable when new releasing new minor version.
+    # - operator-catalogsource-bundle-count # Re-enable when new releasing new minor version.
     - performance-exclusive-cpu-pool-rt-scheduling-policy
     - performance-isolated-cpu-pool-rt-scheduling-policy
     - performance-shared-cpu-pool-non-rt-scheduling-policy

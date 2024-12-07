@@ -22,6 +22,7 @@ env:
   DOCKER_CONFIG_DIR: '/home/labuser/.docker'
   CERTSUITE_CONFIG_DIR: '/home/labuser/certsuite_config'
   CERTSUITE_REPORT_DIR: '/home/labuser/tnf_report'
+  REDHAT_CI: true
 
 jobs:
   build-arm-image-for-qe:
