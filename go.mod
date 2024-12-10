@@ -15,7 +15,7 @@ require (
 require k8s.io/client-go v0.31.3
 
 require (
-	github.com/mittwald/go-helm-client v0.12.14
+	github.com/mittwald/go-helm-client v0.12.15
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/client-go v0.0.0-20241001162912-da6d55e4611f
 	github.com/operator-framework/api v0.27.0
