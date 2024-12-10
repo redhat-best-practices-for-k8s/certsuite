@@ -20,6 +20,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"k8s.io/utils/ptr"
 )
 
 type otherString string
@@ -187,5 +188,50 @@ func TestSubSlice(t *testing.T) {
 
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expectedOutput, SubSlice(tc.testSliceA, tc.testSliceB))
+	}
+}
+
+func TestPointerToString(t *testing.T) {
+	const wantNil = "nil"
+
+	var want string
+
+	// pointer to bool
+	var boolPointer *bool
+	want = wantNil
+	if got := PointerToString(boolPointer); got != want {
+		t.Errorf("PointerToString() = %v, want %v", got, want)
+	}
+
+	boolPointer = ptr.To(true)
+	want = "true"
+	if got := PointerToString(boolPointer); got != want {
+		t.Errorf("PointerToString() = %v, want %v", got, want)
+	}
+
+	// pointer to number
+	var numPointer *int64
+	want = wantNil
+	if got := PointerToString(numPointer); got != want {
+		t.Errorf("PointerToString() = %v, want %v", got, want)
+	}
+
+	numPointer = ptr.To(int64(1984))
+	want = "1984"
+	if got := PointerToString(numPointer); got != want {
+		t.Errorf("PointerToString() = %v, want %v", got, want)
+	}
+
+	// pointer to string
+	var stringPointer *string
+	want = "nil"
+	if got := PointerToString(stringPointer); got != want {
+		t.Errorf("PointerToString() = %v, want %v", got, want)
+	}
+
+	stringPointer = ptr.To("hello, world!")
+	want = "hello, world!"
+	if got := PointerToString(stringPointer); got != want {
+		t.Errorf("PointerToString() = %v, want %v", got, want)
 	}
 }
