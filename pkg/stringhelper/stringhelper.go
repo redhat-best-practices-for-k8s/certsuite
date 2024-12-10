@@ -67,9 +67,35 @@ func RemoveEmptyStrings(s []string) []string {
 	return r
 }
 
-func BoolToString(b *bool) string {
-	if b == nil {
+// PointerToString returns the default string representation of the value pointer by p, mainly
+// used in log traces to print k8s resources' pointer fields.
+// If p is a nil pointer, no matter the type, it will return the string "nil".
+//
+// # Example 1
+//
+//	var b* bool
+//	PointerToString(b) -> returns "nil"
+//
+// # Example 2
+//
+//	b := true
+//	bTrue := &b
+//	PointerToString(bTrue) -> returns "true"
+//
+// # Example 3
+//
+//	var num *int
+//	PointerToString(num) -> returns "nil"
+//
+// # Example 4
+//
+//	num := 1984
+//	num1984 := &num
+//	PointerToString(num1984) -> returns "1984"
+func PointerToString[T any](p *T) string {
+	if p == nil {
 		return "nil"
+	} else {
+		return fmt.Sprint(*p)
 	}
-	return fmt.Sprintf("%t", *b)
 }

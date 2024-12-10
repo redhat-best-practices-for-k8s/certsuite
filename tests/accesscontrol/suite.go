@@ -355,37 +355,23 @@ func testBpfCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 func testSecConRootUserID(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
+
 	for _, put := range env.Pods {
-		check.LogInfo("Testing Pod %q", put)
-		if put.IsRunAsUserID(0) {
-			check.LogError("Root user detected (RunAsUser uid=0) in Pod %q", put)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User detected (RunAsUser uid=0)", false))
+		check.LogInfo("Testing Pod %q in namespace %q", put.Name, put.Namespace)
+		nonCompliantContainers, nonComplianceReason := put.GetRunAsNonRootUserIDContainers(knownContainersToSkip)
+		if len(nonCompliantContainers) == 0 {
+			check.LogInfo("Pod %q is configured with RunAsUser SCC parameter different than 0 for all of its containers", put.Name)
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is configured with RunAsUser SCC parameter different than 0 for all of its containers", true))
 		} else {
-			check.LogInfo("Non-root user detected in Pod %q", put)
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User not detected (RunAsUser uid=0)", true))
-		}
-
-		for _, cut := range put.Containers {
-			check.LogInfo("Testing Container %q", cut)
-			if knownContainersToSkip[cut.Name] {
-				check.LogInfo("Skipping container %q in Pod %q", cut.Name, put.Name)
-				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, cut.Name, "Container is allowed to run as root", true))
-				continue
-			}
-
-			// Check the container level RunAsUser parameter
-			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
-				if *(cut.SecurityContext.RunAsUser) == 0 {
-					check.LogError("Root user detected (RunAsUser uid=0) in Container %q (%q)", cut.Name, put)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User detected (RunAsUser uid=0)", false))
-				} else {
-					check.LogInfo("Non-root user detected (RunAsUser uid=0) in Container %q (%q)", cut, put)
-					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User not detected (RunAsUser uid=0)", true))
-				}
+			check.LogError("Pod %q is configured with RunAsUser SCC parameter equal to 0 for some of its containers", put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is configured with RunAsNonRoot SCC parameter set to false for some of its containers", false))
+			for index := range nonCompliantContainers {
+				check.LogError("In Container %q of Pod %q, %s", nonCompliantContainers[index].Name, put.Name, nonComplianceReason[index])
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
+					nonCompliantContainers[index].Name, fmt.Sprintf("In Container %q of Pod %q, %s", nonCompliantContainers[index].Name, put.Name, nonComplianceReason[index]), false))
 			}
 		}
 	}
-
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
