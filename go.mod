@@ -22,8 +22,8 @@ require (
 	github.com/operator-framework/operator-lifecycle-manager v0.30.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.16.3
-	k8s.io/api v0.31.3
-	k8s.io/apimachinery v0.31.3
+	k8s.io/api v0.31.4
+	k8s.io/apimachinery v0.31.4
 	k8s.io/klog/v2 v2.130.1 // indirect
 )
 
