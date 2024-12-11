@@ -213,7 +213,7 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/apiserver v0.31.4 // indirect
-	k8s.io/cli-runtime v0.31.3 // indirect
+	k8s.io/cli-runtime v0.31.4 // indirect
 	k8s.io/component-base v0.31.4 // indirect
 	k8s.io/kube-aggregator v0.31.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20241009091222-67ed5848f094 // indirect
@@ -253,7 +253,7 @@ require (
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.27.0
 	google.golang.org/api v0.210.0
-	k8s.io/kubectl v0.31.3
+	k8s.io/kubectl v0.31.4
 )
 
 replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241021175030-e64988a27024
