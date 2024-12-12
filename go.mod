@@ -248,7 +248,7 @@ require (
 	github.com/k8snetworkplumbingwg/sriov-network-operator v1.4.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/redhat-best-practices-for-k8s/oct v0.0.28
-	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.41
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.42
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241021175030-e64988a27024
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.27.0
