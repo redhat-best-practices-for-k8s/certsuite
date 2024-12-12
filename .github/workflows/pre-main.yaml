@@ -58,7 +58,7 @@ jobs:
         uses: ./.github/actions/install-yaml-dep
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@3f0a220b74074edace48e46f7bacc29e5ef555c2 # main
+        uses: depends-on/depends-on-action@ce4047f663174688ea42a21fac1b1007d97b79bb # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -133,7 +133,7 @@ jobs:
         uses: ./.github/actions/install-yaml-dep
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@3f0a220b74074edace48e46f7bacc29e5ef555c2 # main
+        uses: depends-on/depends-on-action@ce4047f663174688ea42a21fac1b1007d97b79bb # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -203,7 +203,7 @@ jobs:
         uses: ./.github/actions/install-yaml-dep
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@3f0a220b74074edace48e46f7bacc29e5ef555c2 # main
+        uses: depends-on/depends-on-action@ce4047f663174688ea42a21fac1b1007d97b79bb # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -302,7 +302,7 @@ jobs:
           make-command: 'install'
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@3f0a220b74074edace48e46f7bacc29e5ef555c2 # main
+        uses: depends-on/depends-on-action@ce4047f663174688ea42a21fac1b1007d97b79bb # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -493,7 +493,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Check all dependent Pull Requests are merged
-        uses: depends-on/depends-on-action@3f0a220b74074edace48e46f7bacc29e5ef555c2 # main
+        uses: depends-on/depends-on-action@ce4047f663174688ea42a21fac1b1007d97b79bb # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           check-unmerged-pr: true
