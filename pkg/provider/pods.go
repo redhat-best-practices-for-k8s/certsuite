@@ -547,6 +547,33 @@ func (p *Pod) GetRunAsNonRootFalseContainers(knownContainersToSkip map[string]bo
 	return nonCompliantContainers, nonComplianceReason
 }
 
+// Returns the list of containers that have the RunAsUser SCC parameter set to 0 (root)
+// The RunAsUser parameter is checked first at the pod level and acts as a default value
+// for the container configuration, if it is not present.
+// The RunAsUser parameter is checked next at the container level.
+// See: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+func (p *Pod) GetRunAsNonRootUserIDContainers(knownContainersToSkip map[string]bool) (nonCompliantContainers []*Container, nonComplianceReason []string) {
+	// Check pod-level security context this will be set by default for containers
+	// If not already configured at the container level
+	var podRunAsUserID *int64
+	if p.Pod.Spec.SecurityContext != nil && p.Pod.Spec.SecurityContext.RunAsUser != nil {
+		podRunAsUserID = p.Pod.Spec.SecurityContext.RunAsUser
+	}
+	// Check each container for the RunAsUser parameter.
+	// If it is not present, the pod value applies
+	for _, cut := range p.Containers {
+		if knownContainersToSkip[cut.Name] {
+			continue
+		}
+		if isRunAsNonRootUserID, reason := cut.IsContainerRunAsNonRootUserID(podRunAsUserID); !isRunAsNonRootUserID {
+			// found a container with RunAsNonRoot set to false
+			nonCompliantContainers = append(nonCompliantContainers, cut)
+			nonComplianceReason = append(nonComplianceReason, reason)
+		}
+	}
+	return nonCompliantContainers, nonComplianceReason
+}
+
 // Get the list of top owners of pods
 func (p *Pod) GetTopOwner() (topOwners map[string]podhelper.TopOwner, err error) {
 	return podhelper.GetPodTopOwner(p.Namespace, p.OwnerReferences)
