@@ -532,18 +532,40 @@ func (p *Pod) GetRunAsNonRootFalseContainers(knownContainersToSkip map[string]bo
 	if p.Pod.Spec.SecurityContext != nil && p.Pod.Spec.SecurityContext.RunAsNonRoot != nil {
 		podRunAsNonRoot = p.Pod.Spec.SecurityContext.RunAsNonRoot
 	}
+
+	var podRunAsUserID *int64
+	if p.Pod.Spec.SecurityContext != nil && p.Pod.Spec.SecurityContext.RunAsUser != nil {
+		podRunAsUserID = p.Pod.Spec.SecurityContext.RunAsUser
+	}
+
 	// Check each container for the RunAsNonRoot parameter.
 	// If it is not present, the pod value applies
 	for _, cut := range p.Containers {
 		if knownContainersToSkip[cut.Name] {
 			continue
 		}
-		if isRunAsNonRoot, reason := cut.IsContainerRunAsNonRoot(podRunAsNonRoot); !isRunAsNonRoot {
-			// found a container with RunAsNonRoot set to false
-			nonCompliantContainers = append(nonCompliantContainers, cut)
-			nonComplianceReason = append(nonComplianceReason, reason)
+
+		isRunAsNonRoot, isRunAsNonRootReason := cut.IsContainerRunAsNonRoot(podRunAsNonRoot)
+		isRunAsNonRootUserID, isRunAsNonRootUserIDReason := cut.IsContainerRunAsNonRootUserID(podRunAsUserID)
+
+		if isRunAsNonRoot || isRunAsNonRootUserID {
+			continue
 		}
+
+		nonCompliantReason := ""
+		switch {
+		case !isRunAsNonRoot && !isRunAsNonRootUserID:
+			nonCompliantReason = isRunAsNonRootReason + ", " + isRunAsNonRootUserIDReason
+		case !isRunAsNonRoot:
+			nonCompliantReason = isRunAsNonRootReason
+		case !isRunAsNonRootUserID:
+			nonCompliantReason = isRunAsNonRootUserIDReason
+		}
+
+		nonCompliantContainers = append(nonCompliantContainers, cut)
+		nonComplianceReason = append(nonComplianceReason, nonCompliantReason)
 	}
+
 	return nonCompliantContainers, nonComplianceReason
 }
 
