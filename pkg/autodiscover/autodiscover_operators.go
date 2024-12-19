@@ -81,6 +81,14 @@ func findOperatorsMatchingAtLeastOneLabel(olmClient clientOlm.Interface, labels 
 }
 
 func findOperatorsByLabels(olmClient clientOlm.Interface, labels []labelObject, namespaces []configuration.Namespace) (csvs []*olmv1Alpha.ClusterServiceVersion) {
+	const nsAnnotation = "olm.operatorNamespace"
+
+	// Helper namespaces map to do quick search of the operator's controller namespace.
+	namespacesMap := map[string]bool{}
+	for _, ns := range namespaces {
+		namespacesMap[ns.Name] = true
+	}
+
 	csvs = []*olmv1Alpha.ClusterServiceVersion{}
 	var csvList *olmv1Alpha.ClusterServiceVersionList
 	for _, ns := range namespaces {
@@ -97,7 +105,18 @@ func findOperatorsByLabels(olmClient clientOlm.Interface, labels []labelObject, 
 			}
 		}
 		for i := range csvList.Items {
-			csvs = append(csvs, &csvList.Items[i])
+			csv := &csvList.Items[i]
+
+			// Filter out CSV if operator's controller pod/s is/are not running in any configured/test namespace.
+			controllerNamespace, found := csv.Annotations[nsAnnotation]
+			if !found {
+				log.Error("Failed to get ns annotation %q from csv %v/%v", nsAnnotation, csv.Namespace, csv.Name)
+				continue
+			}
+
+			if namespacesMap[controllerNamespace] {
+				csvs = append(csvs, csv)
+			}
 		}
 	}
 	for i := range csvs {
