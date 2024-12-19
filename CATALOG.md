@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 117
+### Total test cases: 118
 
 ### Total suites: 10
 
@@ -22,7 +22,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |operator|11|
 |performance|6|
 |platform-alteration|13|
-|preflight|17|
+|preflight|18|
 
 ### Extended specific tests only: 12
 
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |8|1|
 
-### Non-Telco specific tests only: 69
+### Non-Telco specific tests only: 70
 
 |Mandatory|Optional|
 |---|---|
-|44|25|
+|44|26|
 
 ### Telco specific tests only: 27
 
@@ -1800,13 +1800,29 @@ Tags|common,preflight
 |Non-Telco|Optional|
 |Telco|Optional|
 
+#### preflight-HasProhibitedContainerName
+
+Property|Description
+---|---
+Unique ID|preflight-HasProhibitedContainerName
+Description|Checking if the container-name violates Red Hat trademark.
+Suggested Remediation|Update container-name ie (quay.io/repo-name/container-name) to not violate Red Hat trademark.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
 #### preflight-HasRequiredLabel
 
 Property|Description
 ---|---
 Unique ID|preflight-HasRequiredLabel
-Description|Checking if the required labels (name, vendor, version, release, summary, description) are present in the container metadata.
-Suggested Remediation|Add the following labels to your Dockerfile or Containerfile: name, vendor, version, release, summary, description
+Description|Checking if the required labels (name, vendor, version, release, summary, description, maintainer) are present in the container metadata and that they do not violate Red Hat trademark.
+Suggested Remediation|Add the following labels to your Dockerfile or Containerfile: name, vendor, version, release, summary, description, maintainer and validate that they do not violate Red Hat trademark.
 Best Practice Reference|No Doc Link
 Exception Process|There is no documented exception process for this.
 Tags|common,preflight

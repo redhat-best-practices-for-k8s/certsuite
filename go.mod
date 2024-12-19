@@ -143,7 +143,7 @@ require (
 	github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
-	github.com/onsi/gomega v1.35.1 // indirect
+	github.com/onsi/gomega v1.36.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.0 // indirect
 	github.com/openshift/library-go v0.0.0-20231020125025-211b32f1a1f2 // indirect
@@ -218,7 +218,7 @@ require (
 	modernc.org/sqlite v1.28.0 // indirect
 	oras.land/oras-go v1.2.5 // indirect
 	sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.31.0 // indirect
-	sigs.k8s.io/controller-runtime v0.19.0 // indirect
+	sigs.k8s.io/controller-runtime v0.19.3 // indirect
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
 	sigs.k8s.io/kube-storage-version-migrator v0.0.6-0.20230721195810-5c8923c5ff96 // indirect
 	sigs.k8s.io/kustomize/api v0.18.0 // indirect
@@ -243,7 +243,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/redhat-best-practices-for-k8s/oct v0.0.29
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.43
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241021175030-e64988a27024
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241211152839-f787b66d23c7
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.27.0
 	google.golang.org/api v0.213.0
@@ -251,6 +251,6 @@ require (
 	k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241021175030-e64988a27024
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241211152839-f787b66d23c7
 
 replace github.com/openshift/api => github.com/openshift/api v0.0.0-20241024191314-684b2b1679ba
