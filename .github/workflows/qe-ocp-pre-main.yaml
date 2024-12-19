@@ -90,7 +90,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: certsuite-qe
-          ref: main
+          ref: fix_install_source_tc
 
       - name: Preemptively potential QE namespaces
         run: ./scripts/delete-namespaces.sh
