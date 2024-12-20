@@ -67,7 +67,7 @@ jobs:
           outputs: type=docker,dest=/tmp/testimage.tar
       
       - name: Store image as artifact
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4.5.0
         with:
           name: testimage
           path: /tmp/testimage.tar
@@ -149,7 +149,7 @@ jobs:
           ref: main
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@89053954da4995d50120bb9dae99502395c6206c # main
+        uses: depends-on/depends-on-action@77e67971a155b35424508ada365790c47286fd0f # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
