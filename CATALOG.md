@@ -374,6 +374,22 @@ Tags|extended,access-control
 |Non-Telco|Optional|
 |Telco|Optional|
 
+#### access-control-security-context-non-root-user-id-check
+
+Property|Description
+---|---
+Unique ID|access-control-security-context-non-root-user-id-check
+Description|Checks securityContext's runAsNonRoot and runAsUser fields at pod and container level to make sure containers are not run as root.
+Suggested Remediation|Set the securityContext.runAsNonRoot field to true either at pod or container level. Alternatively, set a non-zero value to securityContext.runAsUser field either at pod or container level.
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
+Exception Process|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.
+Tags|common,access-control
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
 #### access-control-security-context-privilege-escalation
 
 Property|Description
@@ -405,22 +421,6 @@ Tags|common,access-control
 |Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
-
-#### access-control-security-context-run-as-non-root-user-check
-
-Property|Description
----|---
-Unique ID|access-control-security-context-run-as-non-root-user-check
-Description|Checks securityContext's runAsNonRoot and runAsUser fields at pod and container level to make sure containers are not run as root.
-Suggested Remediation|Set the securityContext.runAsNonRoot field to true either at pod or container level. Alternatively, set a non-zero value to securityContext.runAsUser field either at pod or container level.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
-Exception Process|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.
-Tags|common,access-control
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
 
 #### access-control-service-type
 

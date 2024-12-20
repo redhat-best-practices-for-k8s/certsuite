@@ -102,7 +102,6 @@ var (
 	TestRtAppNoExecProbes                             claim.Identifier
 	TestRestartOnRebootLabelOnPodsUsingSRIOV          claim.Identifier
 	TestSecConNonRootUserIDIdentifier                 claim.Identifier
-	TestSecConRunAsNonRootIdentifier                  claim.Identifier
 	TestNetworkAttachmentDefinitionSRIOVUsingMTU      claim.Identifier
 	TestSecContextIdentifier                          claim.Identifier
 	TestSecConPrivilegeEscalation                     claim.Identifier
@@ -600,8 +599,8 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagFarEdge)
 
-	TestSecConRunAsNonRootIdentifier = AddCatalogEntry(
-		"security-context-run-as-non-root-user-check",
+	TestSecConNonRootUserIDIdentifier = AddCatalogEntry(
+		"security-context-non-root-user-id-check",
 		common.AccessControlTestKey,
 		`Checks securityContext's runAsNonRoot and runAsUser fields at pod and container level to make sure containers are not run as root.`,
 		SecConRunAsNonRootUserRemediation,

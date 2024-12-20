@@ -90,7 +90,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: certsuite-qe
-          ref: rename_access_control_test
+          ref: main
 
       - name: Preemptively potential QE namespaces
         run: ./scripts/delete-namespaces.sh
