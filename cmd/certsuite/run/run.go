@@ -45,6 +45,10 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the probe daemonset container")
 	runCmd.PersistentFlags().String("daemonset-mem-lim", "100M", "Memory limit for the probe daemonset container")
 	runCmd.PersistentFlags().Bool("sanitize-claim", false, "Sanitize the claim.json file before sending it to the collector")
+	runCmd.PersistentFlags().String("connect-api-key", "", "API Key for Red Hat Connect portal")
+	runCmd.PersistentFlags().String("connect-project-id", "", "Project ID for Red Hat Connect portal")
+	runCmd.PersistentFlags().String("connect-api-proxy-url", "", "Proxy URL for Red Hat Connect API")
+	runCmd.PersistentFlags().String("connect-api-proxy-port", "", "Proxy port for Red Hat Connect API")
 
 	return runCmd
 }
@@ -73,6 +77,10 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams.DaemonsetMemReq, _ = cmd.Flags().GetString("daemonset-mem-req")
 	testParams.DaemonsetMemLim, _ = cmd.Flags().GetString("daemonset-mem-lim")
 	testParams.SanitizeClaim, _ = cmd.Flags().GetBool("sanitize-claim")
+	testParams.ConnectAPIKey, _ = cmd.Flags().GetString("connect-api-key")
+	testParams.ConnectProjectID, _ = cmd.Flags().GetString("connect-project-id")
+	testParams.ConnectAPIProxyURL, _ = cmd.Flags().GetString("connect-api-proxy-url")
+	testParams.ConnectAPIProxyPort, _ = cmd.Flags().GetString("connect-api-proxy-port")
 	timeoutStr, _ := cmd.Flags().GetString("timeout")
 
 	// Check if the output directory exists and, if not, create it

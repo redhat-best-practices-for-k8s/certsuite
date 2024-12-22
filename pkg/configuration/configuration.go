@@ -92,6 +92,10 @@ type TestConfiguration struct {
 	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`
 	CollectorAppPassword string `yaml:"collectorAppPassword,omitempty" json:"collectorAppPassword,omitempty"`
 	CollectorAppEndpoint string `yaml:"collectorAppEndpoint,omitempty" json:"collectorAppEndpoint,omitempty"`
+	ConnectAPIKey        string `yaml:"connectAPIKey,omitempty" json:"connectAPIKey,omitempty"`
+	ConnectProjectID     string `yaml:"connectProjectID,omitempty" json:"connectProjectID,omitempty"`
+	ConnectAPIProxyURL   string `yaml:"connectAPIProxyURL,omitempty" json:"connectAPIProxyURL,omitempty"`
+	ConnectAPIProxyPort  string `yaml:"connectAPIProxyPort,omitempty" json:"connectAPIProxyPort,omitempty"`
 }
 
 type TestParameters struct {
@@ -117,4 +121,8 @@ type TestParameters struct {
 	EnableXMLCreation             bool
 	ServerMode                    bool
 	Timeout                       time.Duration
+	ConnectAPIKey                 string
+	ConnectProjectID              string
+	ConnectAPIProxyURL            string
+	ConnectAPIProxyPort           string
 }
