@@ -719,7 +719,7 @@ func TestIsRunAsNonRoot(t *testing.T) {
 				},
 			},
 			wantNonComplianceReason: []string{
-				"RunAsNonRoot is set to false at the container level, overriding a true value defined at pod level.",
+				"RunAsNonRoot is set to false at the container level, overriding a true value defined at pod level, RunAsUser is set to nil at pod and container level",
 			},
 		},
 		{
@@ -771,7 +771,7 @@ func TestIsRunAsNonRoot(t *testing.T) {
 				},
 			},
 			wantNonComplianceReason: []string{
-				"RunAsNonRoot is set to false at the container level, overriding a nil value defined at pod level.",
+				"RunAsNonRoot is set to false at the container level, overriding a nil value defined at pod level, RunAsUser is set to nil at pod and container level",
 			},
 		},
 		{

@@ -7,13 +7,13 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 118
+### Total test cases: 117
 
 ### Total suites: 10
 
 |Suite|Tests per suite|
 |---|---|
-|access-control|29|
+|access-control|28|
 |affiliated-certification|4|
 |lifecycle|18|
 |manageability|2|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |8|1|
 
-### Non-Telco specific tests only: 70
+### Non-Telco specific tests only: 69
 
 |Mandatory|Optional|
 |---|---|
-|44|26|
+|43|26|
 
 ### Telco specific tests only: 27
 
@@ -379,8 +379,8 @@ Tags|extended,access-control
 Property|Description
 ---|---
 Unique ID|access-control-security-context-non-root-user-id-check
-Description|Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).
-Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
+Description|Checks securityContext's runAsNonRoot and runAsUser fields at pod and container level to make sure containers are not run as root.
+Suggested Remediation|Set the securityContext.runAsNonRoot field to true either at pod or container level. Alternatively, set a non-zero value to securityContext.runAsUser field either at pod or container level.
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
 Exception Process|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.
 Tags|common,access-control
@@ -421,22 +421,6 @@ Tags|common,access-control
 |Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
-
-#### access-control-security-context-run-as-non-root-user-check
-
-Property|Description
----|---
-Unique ID|access-control-security-context-run-as-non-root-user-check
-Description|Checks the security context runAsNonRoot parameter in pods and containers to make sure it is not set to false. Pods and containers should not be able to run as root..
-Suggested Remediation|Set the the pod and containers "runAsNonRoot" to true.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
-Exception Process|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.
-Tags|common,access-control
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
 
 #### access-control-service-type
 

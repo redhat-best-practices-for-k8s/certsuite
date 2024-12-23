@@ -266,7 +266,7 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 			},
 			podDefault:     &falseVal,
 			expected:       true,
-			expectedReason: "RunAsNonRoot is set to true at the container level, overriding a false value defined at pod level.",
+			expectedReason: "RunAsNonRoot is set to true at the container level, overriding a false value defined at pod level",
 		},
 		{
 			name: "Container set to not run as non-root",
@@ -279,7 +279,7 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 			},
 			podDefault:     &trueVal,
 			expected:       false,
-			expectedReason: "RunAsNonRoot is set to false at the container level, overriding a true value defined at pod level.",
+			expectedReason: "RunAsNonRoot is set to false at the container level, overriding a true value defined at pod level",
 		},
 		{
 			name: "Container set to not run as non-root",
@@ -292,7 +292,7 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 			},
 			podDefault:     &falseVal,
 			expected:       false,
-			expectedReason: "RunAsNonRoot is set to nil at container level and inheriting a false value from the pod level RunAsNonRoot setting.",
+			expectedReason: "RunAsNonRoot is set to nil at container level and inheriting a false value from the pod level RunAsNonRoot setting",
 		},
 		{
 			name: "nil at pod and true at container",
@@ -305,7 +305,7 @@ func TestIsContainerRunAsNonRoot(t *testing.T) {
 			},
 			podDefault:     nil,
 			expected:       true,
-			expectedReason: "RunAsNonRoot is set to true at the container level, overriding a nil value defined at pod level.",
+			expectedReason: "RunAsNonRoot is set to true at the container level, overriding a nil value defined at pod level",
 		},
 	}
 
