@@ -577,8 +577,6 @@ func testPodServiceAccount(check *checksdb.Check, env *provider.TestEnvironment)
 }
 
 // testPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross non-CNF namespaces
-//
-//nolint:funlen
 func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject

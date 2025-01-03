@@ -328,7 +328,6 @@ func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment)
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-//nolint:funlen
 func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
