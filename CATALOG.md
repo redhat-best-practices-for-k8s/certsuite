@@ -13,7 +13,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 |Suite|Tests per suite|
 |---|---|
-|access-control|29|
+|access-control|28|
 |affiliated-certification|4|
 |lifecycle|18|
 |manageability|2|
@@ -22,7 +22,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |operator|11|
 |performance|6|
 |platform-alteration|13|
-|preflight|17|
+|preflight|18|
 
 ### Extended specific tests only: 12
 
@@ -379,8 +379,8 @@ Tags|extended,access-control
 Property|Description
 ---|---
 Unique ID|access-control-security-context-non-root-user-id-check
-Description|Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).
-Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
+Description|Checks securityContext's runAsNonRoot and runAsUser fields at pod and container level to make sure containers are not run as root.
+Suggested Remediation|Set the securityContext.runAsNonRoot field to true either at pod or container level. Alternatively, set a non-zero value to securityContext.runAsUser field either at pod or container level.
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
 Exception Process|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.
 Tags|common,access-control
@@ -421,22 +421,6 @@ Tags|common,access-control
 |Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
-
-#### access-control-security-context-run-as-non-root-user-check
-
-Property|Description
----|---
-Unique ID|access-control-security-context-run-as-non-root-user-check
-Description|Checks the security context runAsNonRoot parameter in pods and containers to make sure it is not set to false. Pods and containers should not be able to run as root..
-Suggested Remediation|Set the the pod and containers "runAsNonRoot" to true.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-security
-Exception Process|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.
-Tags|common,access-control
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
 
 #### access-control-service-type
 
@@ -1186,6 +1170,22 @@ Tags|telco,observability
 
 ### operator
 
+#### operator-catalogsource-bundle-count
+
+Property|Description
+---|---
+Unique ID|operator-catalogsource-bundle-count
+Description|Tests operator catalog source bundle count is less than 1000
+Suggested Remediation|Ensure that the Operator's catalog source has a valid bundle count less than 1000.
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
 #### operator-crd-openapi-schema
 
 Property|Description
@@ -1800,13 +1800,29 @@ Tags|common,preflight
 |Non-Telco|Optional|
 |Telco|Optional|
 
+#### preflight-HasProhibitedContainerName
+
+Property|Description
+---|---
+Unique ID|preflight-HasProhibitedContainerName
+Description|Checking if the container-name violates Red Hat trademark.
+Suggested Remediation|Update container-name ie (quay.io/repo-name/container-name) to not violate Red Hat trademark.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
 #### preflight-HasRequiredLabel
 
 Property|Description
 ---|---
 Unique ID|preflight-HasRequiredLabel
-Description|Checking if the required labels (name, vendor, version, release, summary, description) are present in the container metadata.
-Suggested Remediation|Add the following labels to your Dockerfile or Containerfile: name, vendor, version, release, summary, description
+Description|Checking if the required labels (name, vendor, version, release, summary, description, maintainer) are present in the container metadata and that they do not violate Red Hat trademark.
+Suggested Remediation|Add the following labels to your Dockerfile or Containerfile: name, vendor, version, release, summary, description, maintainer and validate that they do not violate Red Hat trademark.
 Best Practice Reference|No Doc Link
 Exception Process|There is no documented exception process for this.
 Tags|common,preflight

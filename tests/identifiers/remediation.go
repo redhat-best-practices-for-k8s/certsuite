@@ -26,7 +26,7 @@ const (
 
 	SecConNonRootUserRemediation = `Change the pod and containers "runAsUser" uid to something other than root(0)`
 
-	SecConRunAsNonRootUserRemediation = `Set the the pod and containers "runAsNonRoot" to true.`
+	SecConRunAsNonRootUserRemediation = `Set the securityContext.runAsNonRoot field to true either at pod or container level. Alternatively, set a non-zero value to securityContext.runAsUser field either at pod or container level.`
 
 	SecConRemediation = `Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`
 
@@ -87,8 +87,6 @@ const (
 
 	OperatorCrdSchemaIdentifierRemediation = `Ensure that the Operator CRD is defined with OpenAPI spec.`
 
-	OperatorRunAsUserID = `Ensure that the user ID of the pods is not 0.`
-
 	OperatorRunAsNonRoot = `Ensure that the pods are running as non root.`
 
 	OperatorAutomountTokens = `Ensure that the pods have the automount service account token disabled.`
@@ -100,6 +98,8 @@ const (
 	OperatorSingleCrdOwnerRemediation = `Ensure that a CRD is owned by only one Operator`
 
 	OperatorPodsNoHugepagesRemediation = `Ensure that the pods are not using hugepages`
+
+	OperatorCatalogSourceBundleCountRemediation = `Ensure that the Operator's catalog source has a valid bundle count less than 1000.`
 
 	MultipleSameOperatorsRemediation = `Ensure that only one Operator of the same type is installed in the cluster.`
 

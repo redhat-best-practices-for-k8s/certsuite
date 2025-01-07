@@ -102,7 +102,6 @@ var (
 	TestRtAppNoExecProbes                             claim.Identifier
 	TestRestartOnRebootLabelOnPodsUsingSRIOV          claim.Identifier
 	TestSecConNonRootUserIDIdentifier                 claim.Identifier
-	TestSecConRunAsNonRootIdentifier                  claim.Identifier
 	TestNetworkAttachmentDefinitionSRIOVUsingMTU      claim.Identifier
 	TestSecContextIdentifier                          claim.Identifier
 	TestSecConPrivilegeEscalation                     claim.Identifier
@@ -128,13 +127,13 @@ var (
 	TestOperatorOlmSkipRange                          claim.Identifier
 	TestOperatorAutomountTokens                       claim.Identifier
 	TestOperatorRunAsNonRoot                          claim.Identifier
-	TestOperatorRunAsUserID                           claim.Identifier
 	TestOperatorCrdVersioningIdentifier               claim.Identifier
 	TestOperatorCrdSchemaIdentifier                   claim.Identifier
 	TestOperatorSingleCrdOwnerIdentifier              claim.Identifier
 	TestOperatorPodsNoHugepages                       claim.Identifier
 	TestMultipleSameOperatorsIdentifier               claim.Identifier
 	TestOperatorInstallationInTenantNamespace         claim.Identifier
+	TestOperatorCatalogSourceBundleCountIdentifier    claim.Identifier
 	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
 	TestPodHighAvailabilityBestPractices              claim.Identifier
 	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
@@ -604,23 +603,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestSecConNonRootUserIDIdentifier = AddCatalogEntry(
 		"security-context-non-root-user-id-check",
 		common.AccessControlTestKey,
-		`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).`,
-		SecConNonRootUserRemediation,
-		SecConNonRootUserExceptionProcess,
-		TestSecConNonRootUserIdentifierDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
-			Extended: Mandatory,
-		},
-		TagCommon)
-
-	TestSecConRunAsNonRootIdentifier = AddCatalogEntry(
-		"security-context-run-as-non-root-user-check",
-		common.AccessControlTestKey,
-		`Checks the security context runAsNonRoot parameter in pods and containers to make sure it is not set to false. Pods and containers should not be able to run as root..`,
+		`Checks securityContext's runAsNonRoot and runAsUser fields at pod and container level to make sure containers are not run as root.`,
 		SecConRunAsNonRootUserRemediation,
 		SecConNonRootUserExceptionProcess,
 		TestSecConNonRootUserIdentifierDocLink,
@@ -1082,6 +1065,22 @@ that Node's kernel may not have the same hacks.'`,
 			Telco:    Optional,
 			NonTelco: Optional,
 			Extended: Optional,
+		},
+		TagCommon)
+
+	TestOperatorCatalogSourceBundleCountIdentifier = AddCatalogEntry(
+		"catalogsource-bundle-count",
+		common.OperatorTestKey,
+		`Tests operator catalog source bundle count is less than 1000`,
+		OperatorCatalogSourceBundleCountRemediation,
+		NoExceptions,
+		TestOperatorCatalogSourceBundleCountIdentifierDocLink,
+		false,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 

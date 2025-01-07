@@ -197,10 +197,26 @@ func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool {
 
 func (c *Container) IsContainerRunAsNonRoot(podRunAsNonRoot *bool) (isContainerRunAsNonRoot bool, reason string) {
 	if c.SecurityContext != nil && c.SecurityContext.RunAsNonRoot != nil {
-		return *c.SecurityContext.RunAsNonRoot, fmt.Sprintf("RunAsNonRoot is set to %t at the container level, overriding a %v value defined at pod level.", *c.SecurityContext.RunAsNonRoot, stringhelper.BoolToString(podRunAsNonRoot))
+		return *c.SecurityContext.RunAsNonRoot, fmt.Sprintf("RunAsNonRoot is set to %t at the container level, overriding a %v value defined at pod level",
+			*c.SecurityContext.RunAsNonRoot, stringhelper.PointerToString(podRunAsNonRoot))
 	}
+
 	if podRunAsNonRoot != nil {
-		return *podRunAsNonRoot, fmt.Sprintf("RunAsNonRoot is set to nil at container level and inheriting a %t value from the pod level RunAsNonRoot setting.", *podRunAsNonRoot)
+		return *podRunAsNonRoot, fmt.Sprintf("RunAsNonRoot is set to nil at container level and inheriting a %t value from the pod level RunAsNonRoot setting", *podRunAsNonRoot)
 	}
-	return false, "RunAsNonRoot set to nil at pod and container level"
+
+	return false, "RunAsNonRoot is set to nil at pod and container level"
+}
+
+func (c *Container) IsContainerRunAsNonRootUserID(podRunAsNonRootUserID *int64) (isContainerRunAsNonRootUserID bool, reason string) {
+	if c.SecurityContext != nil && c.SecurityContext.RunAsUser != nil {
+		return *c.SecurityContext.RunAsUser != 0, fmt.Sprintf("RunAsUser is set to %v at the container level, overriding a %s value defined at pod level",
+			*c.SecurityContext.RunAsUser, stringhelper.PointerToString(podRunAsNonRootUserID))
+	}
+
+	if podRunAsNonRootUserID != nil {
+		return *podRunAsNonRootUserID != 0, fmt.Sprintf("RunAsUser is set to nil at container level and inheriting a %v value from the pod level RunAsUser setting", *podRunAsNonRootUserID)
+	}
+
+	return false, "RunAsUser is set to nil at pod and container level"
 }

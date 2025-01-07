@@ -189,6 +189,7 @@ const (
 	HelmType                     = "Helm"
 	OperatorType                 = "Operator"
 	ContainerType                = "Container"
+	CatalogSourceType            = "Catalog Source"
 	ContainerImageType           = "Container Image"
 	NodeType                     = "Node"
 	OCPClusterType               = "OCP Cluster"
@@ -306,6 +307,16 @@ func NewOperatorReportObject(aNamespace, aOperatorName, aReason string, isCompli
 	out = NewReportObject(aReason, OperatorType, isCompliant)
 	out.AddField(Namespace, aNamespace)
 	out.AddField(Name, aOperatorName)
+	return out
+}
+
+// NewCatalogSourceReportObject creates a new ReportObject for a catalog source.
+// It takes the namespace, catalog source name, reason, and compliance status as input parameters.
+// It returns the created ReportObject.
+func NewCatalogSourceReportObject(aNamespace, aCatalogSourceName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, CatalogSourceType, isCompliant)
+	out.AddField(Namespace, aNamespace)
+	out.AddField(Name, aCatalogSourceName)
 	return out
 }
 
@@ -633,6 +644,15 @@ func GetNoHugepagesPodsSkipFn(env *provider.TestEnvironment) func() (bool, strin
 	return func() (bool, string) {
 		if len(env.GetHugepagesPods()) == 0 {
 			return true, "no pods requesting hugepages found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoCatalogSourcesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.AllCatalogSources) == 0 {
+			return true, "no catalog sources found"
 		}
 		return false, ""
 	}

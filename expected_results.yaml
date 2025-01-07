@@ -22,7 +22,6 @@ testCases:
     - access-control-security-context-non-root-user-id-check
     - access-control-security-context-privilege-escalation
     - access-control-security-context-read-only-file-system
-    - access-control-security-context-run-as-non-root-user-check
     - access-control-security-context
     - access-control-service-type
     - access-control-ssh-daemons
@@ -74,7 +73,6 @@ testCases:
     - platform-alteration-tainted-node-kernel
   fail:
     - affiliated-certification-container-is-certified-digest     # test container image is not certified
-
   skip:
     - access-control-sys-ptrace-capability
     - affiliated-certification-helm-version
@@ -95,6 +93,7 @@ testCases:
     - operator-single-crd-owner
     - operator-pods-no-hugepages
     - operator-multiple-same-operators
+    - operator-catalogsource-bundle-count
     - performance-exclusive-cpu-pool-rt-scheduling-policy
     - performance-isolated-cpu-pool-rt-scheduling-policy
     - performance-shared-cpu-pool-non-rt-scheduling-policy

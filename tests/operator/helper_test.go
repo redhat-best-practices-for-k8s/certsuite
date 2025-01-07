@@ -20,7 +20,9 @@ Package operator provides CNFCERT tests used to validate operator CNF facets.
 
 package operator
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestSplitCsv(t *testing.T) {
 	tests := []struct {

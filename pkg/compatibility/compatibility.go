@@ -1,4 +1,4 @@
-// Copyright (C) 2022-2023 Red Hat, Inc.
+// Copyright (C) 2022-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ type VersionInfo struct {
 }
 
 var (
-	ocpBetaVersions   = []string{"4.13", "4.14", "4.15", "4.16", "4.17"}
+	ocpBetaVersions   = []string{"4.13", "4.14", "4.15", "4.16", "4.17", "4.18"}
 	ocpLifeCycleDates = map[string]VersionInfo{
 		// TODO: Adjust all of these periodically to make sure they are up to date with the lifecycle
 		// update documentation.
