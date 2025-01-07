@@ -120,6 +120,13 @@ func LoadChecks() {
 			return nil
 		}))
 
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCatalogSourceBundleCountIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoCatalogSourcesSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorCatalogSourceBundleCount(c, &env)
+			return nil
+		}))
+
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorInstallationInTenantNamespace)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
@@ -128,55 +135,40 @@ func LoadChecks() {
 		}))
 }
 
-/*
-Checks :
-
-	Operators with SingleNamespaced install mode should only be installed in the tenant dedicated operator namespace
-*/
+// This function checks if SingleNamespaced Operators should only be installed in the tenant dedicated operator namespace
 func testOperatorInstallationInTenantNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.LogInfo("Starting testInstalledSingleNamespaceOperatorInTenanttNamespace")
 
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
-	check.LogInfo("Total operators found %d ", len(env.Operators))
+	singleNamespacedOperators := filterSingleNamespacedOperatorUnderTest(env.Operators)
 
-	for _, operator := range env.Operators {
+	for _, operator := range singleNamespacedOperators {
+		operatorNamespace := operator.Namespace
+
 		check.LogInfo("Checking operator %s in namespace %s ", operator.Name, operator.Namespace)
 
-		csv := operator.Csv
-		isSingleNamespaceInstallModeSupported := hasOperatorInstallModeSingleNamespace(csv.Spec.InstallModes)
+		doesNamespaceContainsOnlyOperatorPods, err := checkIfNamespaceContainsOnlyOperatorPods(operatorNamespace)
 
-		// consider only operators whose InstallModyType is SingleNamespace and its operator group has only one targetNamespace
-		if isSingleNamespaceInstallModeSupported {
-			csvNamespace := csv.Namespace
-			operatorNamespace := csv.Annotations["olm.operatorNamespace"]
-			targetNamespaces := operator.TargetNamespaces
-
-			check.LogInfo("operatorNamespace=%s, csvNamespace=%s, targetNamespaces=%v, singleNamespace=%v", operatorNamespace,
-				csvNamespace, targetNamespaces, isSingleNamespaceInstallModeSupported)
-
-			isCompliant := checkOperatorInstallationCompliance(
-				operatorNamespace, csvNamespace, targetNamespaces,
-				isSingleNamespaceInstallModeSupported,
-			)
-			check.LogInfo("Operator is installation Compliant %v", isCompliant)
-
-			if isCompliant {
-				check.LogInfo("Operator %s has valid installation in tenant namespace %s ", operator.Name, targetNamespaces[0])
-				compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
-					"Operator has valid installation in tenant namespace ", true).AddField(testhelper.OperatorName, operator.Name))
-			} else {
-				check.LogInfo("Operator %s has invalid installation in tenant namespace ", operator.Name)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
-					"Operator has invalid installation in tenant namespace ", false).AddField(testhelper.OperatorName, operator.Name))
-			}
+		if err != nil {
+			check.LogError("Skipped - cannot proceed with operator %s", operator.Name)
+			continue
+		}
+		if doesNamespaceContainsOnlyOperatorPods {
+			check.LogInfo("Operator %s has valid installation in tenant namespace %s ", operator.Name, operatorNamespace)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"Operator has valid installation in tenant namespace ", true))
+		} else {
+			check.LogInfo("Operator %s has invalid installation in tenant namespace ", operator.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"Operator has invalid installation in tenant namespace ", false))
 		}
 	}
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// This function checks if the Operator CRD version follows K8s versioning
+// This function check if the Operator CRD version follows K8s versioning
 func testOperatorCrdVersioning(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.LogInfo("Starting testOperatorCrdVersioning")
 	var compliantObjects []*testhelper.ReportObject

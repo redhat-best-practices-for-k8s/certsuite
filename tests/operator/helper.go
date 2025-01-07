@@ -21,10 +21,17 @@ Package operator provides CNFCERT tests used to validate operator CNF facets.
 package operator
 
 import (
+	"context"
+	"fmt"
 	"strings"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // CsvResult holds the results of the splitCsv function.
@@ -60,11 +67,55 @@ func hasOperatorInstallModeSingleNamespace(installModes []v1alpha1.InstallMode) 
 	return false
 }
 
-func checkOperatorInstallationCompliance(operatorNamespace, csvNamespace string, targetNamespaces []string, isSingleNamespaceInstallModeSupported bool) bool {
-	// operators with single namespace are installed in the tenant namespace
-	if isSingleNamespaceInstallModeSupported {
-		return len(targetNamespaces) == 1 && strings.Compare(operatorNamespace, targetNamespaces[0]) != 0
+func filterSingleNamespacedOperatorUnderTest(operators []*provider.Operator) (singleNamespacedOperators []*provider.Operator) {
+	for _, operator := range operators {
+		if hasOperatorInstallModeSingleNamespace(operator.Csv.Spec.InstallModes) && len(operator.TargetNamespaces) == 1 {
+			singleNamespacedOperators = append(singleNamespacedOperators, operator)
+		}
 	}
-	// operators are not installed in tenant namespaces
-	return !stringhelper.StringInSlice(targetNamespaces, csvNamespace, false)
+	return singleNamespacedOperators
+}
+
+// This function checks if the namespace contains only valid operator pods
+func checkIfNamespaceContainsOnlyOperatorPods(namespace string) (isOperatorOnlyNamespace bool, err error) {
+	// Get all pods from the target namespace
+
+	podsList, err := clientsholder.GetClientsHolder().K8sClient.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return isOperatorOnlyNamespace, err
+	}
+	foundCsvs := make(map[string]bool)
+	foundOperatorPods := 0
+	for index := range podsList.Items {
+		// Get the top owners of the pod
+		pod := podsList.Items[index]
+		topOwners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
+		if err != nil {
+			return isOperatorOnlyNamespace, fmt.Errorf("could not get top owners of Pod %s (in namespace %s), err=%v", pod.Name, pod.Namespace, err)
+		}
+
+		// check if owner matches with the csv
+		for _, owner := range topOwners {
+			// The owner must be in the targetNamespace
+			if owner.Kind == v1alpha1.ClusterServiceVersionKind && owner.Namespace == namespace {
+				foundOperatorPods++
+				foundCsvs[owner.Name] = true
+				break
+			}
+		}
+	}
+
+	// Check if the found CSVs contain only valid operators under test
+	allOperatorsFoundInNamespaceAreValid := true
+	for _, operator := range env.Operators {
+		for foundCsv := range foundCsvs {
+			// Report an error only if an operator under test is found to be clusterwide
+			if operator.IsClusterWide && operator.Csv.Name == foundCsv {
+				allOperatorsFoundInNamespaceAreValid = false
+				break
+			}
+		}
+	}
+
+	return len(podsList.Items) == foundOperatorPods && allOperatorsFoundInNamespaceAreValid, nil
 }

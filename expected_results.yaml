@@ -66,7 +66,6 @@ testCases:
     - operator-single-crd-owner
     - operator-pods-no-hugepages
     - operator-multiple-same-operators
-    - operator-valid-installation-tenant-namespace
     - performance-exclusive-cpu-pool
     - performance-max-resources-exec-probes
     - platform-alteration-isredhat-release
@@ -94,6 +93,7 @@ testCases:
     - operator-pods-no-hugepages
     - operator-multiple-same-operators
     - operator-catalogsource-bundle-count
+    - operator-valid-installation-tenant-namespace
     - performance-exclusive-cpu-pool-rt-scheduling-policy
     - performance-isolated-cpu-pool-rt-scheduling-policy
     - performance-shared-cpu-pool-non-rt-scheduling-policy
