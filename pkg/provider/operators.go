@@ -36,6 +36,7 @@ import (
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
+	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 )
@@ -349,12 +350,18 @@ func GetAllOperatorGroups() ([]*olmv1.OperatorGroup, error) {
 	client := clientsholder.GetClientsHolder()
 
 	list, err := client.OlmClient.OperatorsV1().OperatorGroups("").List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
+	if err != nil && !k8serrors.IsNotFound(err) {
 		return nil, err
 	}
 
+	if k8serrors.IsNotFound(err) {
+		log.Warn("No OperatorGroup(s) found in the cluster")
+		return nil, nil
+	}
+
 	if len(list.Items) == 0 {
-		return nil, errors.New("no OperatorGroup found")
+		log.Warn("OperatorGroup API resource found but no OperatorGroup(s) found in the cluster")
+		return nil, nil
 	}
 
 	// Collect all OperatorGroup pointers
