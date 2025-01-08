@@ -126,6 +126,21 @@ func LoadChecks() {
 			testOperatorCatalogSourceBundleCount(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorCatalogSourceImagesSizeLimitIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoCatalogSourcesSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorCatalogSourceImagesSizeLimit(c, &env)
+			return nil
+		}))
+}
+
+func testOperatorCatalogSourceImagesSizeLimit(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testOperatorCrdVersioning")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // This function check if the Operator CRD version follows K8s versioning

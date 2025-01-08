@@ -116,6 +116,7 @@ const (
 	TestOperatorReadOnlyFilesystemDocLink                 = DocOperatorRequirement
 	TestOperatorPodsNoHugepagesDocLink                    = DocOperatorRequirement
 	TestOperatorCatalogSourceBundleCountIdentifierDocLink = DocOperatorRequirement
+	TestOperatorCatalogSourceImagesSizeLimitDocLink       = DocOperatorRequirement
 	TestOperatorOlmSkipRangeDocLink                       = DocOperatorRequirement
 	TestMultipleSameOperatorsIdentifierDocLink            = DocOperatorRequirement
 

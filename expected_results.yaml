@@ -77,6 +77,7 @@ testCases:
     - networking-icmpv6-connectivity
     - networking-restart-on-reboot-sriov-pod
     - networking-network-attachment-definition-sriov-mtu
+    - operator-catalog-size-less-than-200gb-limit
     - operator-install-source
     - operator-install-status-no-privileges
     - operator-install-status-succeeded

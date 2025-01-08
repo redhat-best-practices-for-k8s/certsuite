@@ -76,107 +76,108 @@ func AddCatalogEntry(testID, suiteName, description, remediation, exception, ref
 }
 
 var (
-	TestICMPv4ConnectivityIdentifier                  claim.Identifier
-	TestNetworkPolicyDenyAllIdentifier                claim.Identifier
-	Test1337UIDIdentifier                             claim.Identifier
-	TestContainerIsCertifiedDigestIdentifier          claim.Identifier
-	TestHelmVersionIdentifier                         claim.Identifier
-	TestPodHugePages2M                                claim.Identifier
-	TestPodHugePages1G                                claim.Identifier
-	TestHyperThreadEnable                             claim.Identifier
-	TestReservedExtendedPartnerPorts                  claim.Identifier
-	TestAffinityRequiredPods                          claim.Identifier
-	TestContainerPostStartIdentifier                  claim.Identifier
-	TestContainerPrestopIdentifier                    claim.Identifier
-	TestDpdkCPUPinningExecProbe                       claim.Identifier
-	TestSysAdminIdentifier                            claim.Identifier
-	TestNetAdminIdentifier                            claim.Identifier
-	TestNetRawIdentifier                              claim.Identifier
-	TestIpcLockIdentifier                             claim.Identifier
-	TestBpfIdentifier                                 claim.Identifier
-	TestStorageProvisioner                            claim.Identifier
-	TestExclusiveCPUPoolIdentifier                    claim.Identifier
-	TestSharedCPUPoolSchedulingPolicy                 claim.Identifier
-	TestExclusiveCPUPoolSchedulingPolicy              claim.Identifier
-	TestIsolatedCPUPoolSchedulingPolicy               claim.Identifier
-	TestRtAppNoExecProbes                             claim.Identifier
-	TestRestartOnRebootLabelOnPodsUsingSRIOV          claim.Identifier
-	TestSecConNonRootUserIDIdentifier                 claim.Identifier
-	TestNetworkAttachmentDefinitionSRIOVUsingMTU      claim.Identifier
-	TestSecContextIdentifier                          claim.Identifier
-	TestSecConPrivilegeEscalation                     claim.Identifier
-	TestContainerHostPort                             claim.Identifier
-	TestPodHostNetwork                                claim.Identifier
-	TestPodHostPath                                   claim.Identifier
-	TestPodHostIPC                                    claim.Identifier
-	TestPodHostPID                                    claim.Identifier
-	TestHugepagesNotManuallyManipulated               claim.Identifier
-	TestICMPv6ConnectivityIdentifier                  claim.Identifier
-	TestICMPv4ConnectivityMultusIdentifier            claim.Identifier
-	TestICMPv6ConnectivityMultusIdentifier            claim.Identifier
-	TestServiceDualStackIdentifier                    claim.Identifier
-	TestNamespaceBestPracticesIdentifier              claim.Identifier
-	TestNonTaintedNodeKernelsIdentifier               claim.Identifier
-	TestOperatorInstallStatusSucceededIdentifier      claim.Identifier
-	TestOperatorNoSCCAccess                           claim.Identifier
-	TestOperatorIsCertifiedIdentifier                 claim.Identifier
-	TestHelmIsCertifiedIdentifier                     claim.Identifier
-	TestOperatorIsInstalledViaOLMIdentifier           claim.Identifier
-	TestOperatorHasSemanticVersioningIdentifier       claim.Identifier
-	TestSecConReadOnlyFilesystem                      claim.Identifier
-	TestOperatorOlmSkipRange                          claim.Identifier
-	TestOperatorAutomountTokens                       claim.Identifier
-	TestOperatorRunAsNonRoot                          claim.Identifier
-	TestOperatorCrdVersioningIdentifier               claim.Identifier
-	TestOperatorCrdSchemaIdentifier                   claim.Identifier
-	TestOperatorSingleCrdOwnerIdentifier              claim.Identifier
-	TestOperatorPodsNoHugepages                       claim.Identifier
-	TestMultipleSameOperatorsIdentifier               claim.Identifier
-	TestOperatorCatalogSourceBundleCountIdentifier    claim.Identifier
-	TestPodNodeSelectorAndAffinityBestPractices       claim.Identifier
-	TestPodHighAvailabilityBestPractices              claim.Identifier
-	TestPodClusterRoleBindingsBestPracticesIdentifier claim.Identifier
-	TestPodDeploymentBestPracticesIdentifier          claim.Identifier
-	TestDeploymentScalingIdentifier                   claim.Identifier
-	TestStatefulSetScalingIdentifier                  claim.Identifier
-	TestImagePullPolicyIdentifier                     claim.Identifier
-	TestPodRecreationIdentifier                       claim.Identifier
-	TestPodRoleBindingsBestPracticesIdentifier        claim.Identifier
-	TestPodServiceAccountBestPracticesIdentifier      claim.Identifier
-	TestPodAutomountServiceAccountIdentifier          claim.Identifier
-	TestServicesDoNotUseNodeportsIdentifier           claim.Identifier
-	TestUnalteredBaseImageIdentifier                  claim.Identifier
-	TestUnalteredStartupBootParamsIdentifier          claim.Identifier
-	TestLoggingIdentifier                             claim.Identifier
-	TestTerminationMessagePolicyIdentifier            claim.Identifier
-	TestCrdsStatusSubresourceIdentifier               claim.Identifier
-	TestSysctlConfigsIdentifier                       claim.Identifier
-	TestServiceMeshIdentifier                         claim.Identifier
-	TestOCPLifecycleIdentifier                        claim.Identifier
-	TestNodeOperatingSystemIdentifier                 claim.Identifier
-	TestIsRedHatReleaseIdentifier                     claim.Identifier
-	TestIsSELinuxEnforcingIdentifier                  claim.Identifier
-	TestUndeclaredContainerPortsUsage                 claim.Identifier
-	TestOCPReservedPortsUsage                         claim.Identifier
-	TestLivenessProbeIdentifier                       claim.Identifier
-	TestReadinessProbeIdentifier                      claim.Identifier
-	TestStartupProbeIdentifier                        claim.Identifier
-	TestOneProcessPerContainerIdentifier              claim.Identifier
-	TestSYSNiceRealtimeCapabilityIdentifier           claim.Identifier
-	TestSysPtraceCapabilityIdentifier                 claim.Identifier
-	TestPodRequestsAndLimitsIdentifier                claim.Identifier
-	TestNamespaceResourceQuotaIdentifier              claim.Identifier
-	TestPodDisruptionBudgetIdentifier                 claim.Identifier
-	TestAPICompatibilityWithNextOCPReleaseIdentifier  claim.Identifier
-	TestPodTolerationBypassIdentifier                 claim.Identifier
-	TestPersistentVolumeReclaimPolicyIdentifier       claim.Identifier
-	TestContainersImageTag                            claim.Identifier
-	TestNoSSHDaemonsAllowedIdentifier                 claim.Identifier
-	TestCPUIsolationIdentifier                        claim.Identifier
-	TestContainerPortNameFormat                       claim.Identifier
-	TestCrdScalingIdentifier                          claim.Identifier
-	TestCrdRoleIdentifier                             claim.Identifier
-	TestLimitedUseOfExecProbesIdentifier              claim.Identifier
+	TestICMPv4ConnectivityIdentifier                   claim.Identifier
+	TestNetworkPolicyDenyAllIdentifier                 claim.Identifier
+	Test1337UIDIdentifier                              claim.Identifier
+	TestContainerIsCertifiedDigestIdentifier           claim.Identifier
+	TestHelmVersionIdentifier                          claim.Identifier
+	TestPodHugePages2M                                 claim.Identifier
+	TestPodHugePages1G                                 claim.Identifier
+	TestHyperThreadEnable                              claim.Identifier
+	TestReservedExtendedPartnerPorts                   claim.Identifier
+	TestAffinityRequiredPods                           claim.Identifier
+	TestContainerPostStartIdentifier                   claim.Identifier
+	TestContainerPrestopIdentifier                     claim.Identifier
+	TestDpdkCPUPinningExecProbe                        claim.Identifier
+	TestSysAdminIdentifier                             claim.Identifier
+	TestNetAdminIdentifier                             claim.Identifier
+	TestNetRawIdentifier                               claim.Identifier
+	TestIpcLockIdentifier                              claim.Identifier
+	TestBpfIdentifier                                  claim.Identifier
+	TestStorageProvisioner                             claim.Identifier
+	TestExclusiveCPUPoolIdentifier                     claim.Identifier
+	TestSharedCPUPoolSchedulingPolicy                  claim.Identifier
+	TestExclusiveCPUPoolSchedulingPolicy               claim.Identifier
+	TestIsolatedCPUPoolSchedulingPolicy                claim.Identifier
+	TestRtAppNoExecProbes                              claim.Identifier
+	TestRestartOnRebootLabelOnPodsUsingSRIOV           claim.Identifier
+	TestSecConNonRootUserIDIdentifier                  claim.Identifier
+	TestNetworkAttachmentDefinitionSRIOVUsingMTU       claim.Identifier
+	TestSecContextIdentifier                           claim.Identifier
+	TestSecConPrivilegeEscalation                      claim.Identifier
+	TestContainerHostPort                              claim.Identifier
+	TestPodHostNetwork                                 claim.Identifier
+	TestPodHostPath                                    claim.Identifier
+	TestPodHostIPC                                     claim.Identifier
+	TestPodHostPID                                     claim.Identifier
+	TestHugepagesNotManuallyManipulated                claim.Identifier
+	TestICMPv6ConnectivityIdentifier                   claim.Identifier
+	TestICMPv4ConnectivityMultusIdentifier             claim.Identifier
+	TestICMPv6ConnectivityMultusIdentifier             claim.Identifier
+	TestServiceDualStackIdentifier                     claim.Identifier
+	TestNamespaceBestPracticesIdentifier               claim.Identifier
+	TestNonTaintedNodeKernelsIdentifier                claim.Identifier
+	TestOperatorInstallStatusSucceededIdentifier       claim.Identifier
+	TestOperatorNoSCCAccess                            claim.Identifier
+	TestOperatorIsCertifiedIdentifier                  claim.Identifier
+	TestHelmIsCertifiedIdentifier                      claim.Identifier
+	TestOperatorIsInstalledViaOLMIdentifier            claim.Identifier
+	TestOperatorHasSemanticVersioningIdentifier        claim.Identifier
+	TestSecConReadOnlyFilesystem                       claim.Identifier
+	TestOperatorOlmSkipRange                           claim.Identifier
+	TestOperatorAutomountTokens                        claim.Identifier
+	TestOperatorRunAsNonRoot                           claim.Identifier
+	TestOperatorCrdVersioningIdentifier                claim.Identifier
+	TestOperatorCrdSchemaIdentifier                    claim.Identifier
+	TestOperatorSingleCrdOwnerIdentifier               claim.Identifier
+	TestOperatorPodsNoHugepages                        claim.Identifier
+	TestMultipleSameOperatorsIdentifier                claim.Identifier
+	TestOperatorCatalogSourceBundleCountIdentifier     claim.Identifier
+	TestOperatorCatalogSourceImagesSizeLimitIdentifier claim.Identifier
+	TestPodNodeSelectorAndAffinityBestPractices        claim.Identifier
+	TestPodHighAvailabilityBestPractices               claim.Identifier
+	TestPodClusterRoleBindingsBestPracticesIdentifier  claim.Identifier
+	TestPodDeploymentBestPracticesIdentifier           claim.Identifier
+	TestDeploymentScalingIdentifier                    claim.Identifier
+	TestStatefulSetScalingIdentifier                   claim.Identifier
+	TestImagePullPolicyIdentifier                      claim.Identifier
+	TestPodRecreationIdentifier                        claim.Identifier
+	TestPodRoleBindingsBestPracticesIdentifier         claim.Identifier
+	TestPodServiceAccountBestPracticesIdentifier       claim.Identifier
+	TestPodAutomountServiceAccountIdentifier           claim.Identifier
+	TestServicesDoNotUseNodeportsIdentifier            claim.Identifier
+	TestUnalteredBaseImageIdentifier                   claim.Identifier
+	TestUnalteredStartupBootParamsIdentifier           claim.Identifier
+	TestLoggingIdentifier                              claim.Identifier
+	TestTerminationMessagePolicyIdentifier             claim.Identifier
+	TestCrdsStatusSubresourceIdentifier                claim.Identifier
+	TestSysctlConfigsIdentifier                        claim.Identifier
+	TestServiceMeshIdentifier                          claim.Identifier
+	TestOCPLifecycleIdentifier                         claim.Identifier
+	TestNodeOperatingSystemIdentifier                  claim.Identifier
+	TestIsRedHatReleaseIdentifier                      claim.Identifier
+	TestIsSELinuxEnforcingIdentifier                   claim.Identifier
+	TestUndeclaredContainerPortsUsage                  claim.Identifier
+	TestOCPReservedPortsUsage                          claim.Identifier
+	TestLivenessProbeIdentifier                        claim.Identifier
+	TestReadinessProbeIdentifier                       claim.Identifier
+	TestStartupProbeIdentifier                         claim.Identifier
+	TestOneProcessPerContainerIdentifier               claim.Identifier
+	TestSYSNiceRealtimeCapabilityIdentifier            claim.Identifier
+	TestSysPtraceCapabilityIdentifier                  claim.Identifier
+	TestPodRequestsAndLimitsIdentifier                 claim.Identifier
+	TestNamespaceResourceQuotaIdentifier               claim.Identifier
+	TestPodDisruptionBudgetIdentifier                  claim.Identifier
+	TestAPICompatibilityWithNextOCPReleaseIdentifier   claim.Identifier
+	TestPodTolerationBypassIdentifier                  claim.Identifier
+	TestPersistentVolumeReclaimPolicyIdentifier        claim.Identifier
+	TestContainersImageTag                             claim.Identifier
+	TestNoSSHDaemonsAllowedIdentifier                  claim.Identifier
+	TestCPUIsolationIdentifier                         claim.Identifier
+	TestContainerPortNameFormat                        claim.Identifier
+	TestCrdScalingIdentifier                           claim.Identifier
+	TestCrdRoleIdentifier                              claim.Identifier
+	TestLimitedUseOfExecProbesIdentifier               claim.Identifier
 	// Chaos Testing
 	// TestPodDeleteIdentifier claim.Identifier
 )
@@ -1058,6 +1059,22 @@ that Node's kernel may not have the same hacks.'`,
 		OperatorCatalogSourceBundleCountRemediation,
 		NoExceptions,
 		TestOperatorCatalogSourceBundleCountIdentifierDocLink,
+		false,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestOperatorCatalogSourceImagesSizeLimitIdentifier = AddCatalogEntry(
+		"catalog-size-less-than-200gb-limit",
+		common.OperatorTestKey,
+		`Verifies that the size of operator catalog and all images required by operator catalog cannot exceed 200GB of storage for an application catalog.`,
+		OperatorCatalogSourceImagesSizeLimitRemediation,
+		NoExceptions,
+		TestOperatorCatalogSourceImagesSizeLimitDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
