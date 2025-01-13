@@ -163,16 +163,16 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	if err != nil {
 		log.Fatal("Cannot get namespaces, err: %v", err)
 	}
-	data.AllSubscriptions = findSubscriptions(oc.OlmClient, []string{""})
-	data.AllCsvs, err = getAllOperators(oc.OlmClient)
+	data.AllSubscriptions = findSubscriptions(oc.OlmClient.OperatorsV1alpha1(), []string{""})
+	data.AllCsvs, err = getAllOperators(oc.OlmClient.OperatorsV1alpha1())
 	if err != nil {
 		log.Error("Cannot get operators, err: %v", err)
 	}
-	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
-	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
+	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient.OperatorsV1alpha1())
+	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient.OperatorsV1alpha1())
 	log.Info("Collected %d catalog sources during autodiscovery", len(data.AllCatalogSources))
 
-	data.AllPackageManifests = getAllPackageManifests(oc.OlmPkgClient)
+	data.AllPackageManifests = getAllPackageManifests(oc.OlmPkgClient.PackageManifests(""))
 
 	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
 	data.Pods, data.AllPods = findPodsByLabels(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
@@ -201,8 +201,8 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Crds = FindTestCrdNames(data.AllCrds, config.CrdFilters)
 
 	data.ScaleCrUnderTest = GetScaleCrUnderTest(data.Namespaces, data.Crds)
-	data.Csvs = findOperatorsByLabels(oc.OlmClient, operatorsUnderTestLabelsObjects, config.TargetNameSpaces)
-	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
+	data.Csvs = findOperatorsByLabels(oc.OlmClient.OperatorsV1alpha1(), operatorsUnderTestLabelsObjects, config.TargetNameSpaces)
+	data.Subscriptions = findSubscriptions(oc.OlmClient.OperatorsV1alpha1(), data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
 
 	// Get all operator pods
