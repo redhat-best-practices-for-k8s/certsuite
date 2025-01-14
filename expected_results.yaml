@@ -88,12 +88,12 @@ testCases:
     - operator-install-status-no-privileges
     - operator-install-status-succeeded
     - operator-olm-skip-range
+    - operator-only-single-namespace-mode-allowed-in-tenant-namespaces
     - operator-semantic-versioning
     - operator-single-crd-owner
     - operator-pods-no-hugepages
     - operator-multiple-same-operators
     - operator-catalogsource-bundle-count
-    - operator-valid-installation-tenant-namespace
     - performance-exclusive-cpu-pool-rt-scheduling-policy
     - performance-isolated-cpu-pool-rt-scheduling-policy
     - performance-shared-cpu-pool-non-rt-scheduling-policy

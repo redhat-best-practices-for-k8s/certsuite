@@ -21,17 +21,12 @@ Package operator provides CNFCERT tests used to validate operator CNF facets.
 package operator
 
 import (
-	"context"
-	"fmt"
 	"strings"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
-
-	"github.com/operator-framework/api/pkg/operators/v1alpha1"
-
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 )
 
 // CsvResult holds the results of the splitCsv function.
@@ -58,64 +53,90 @@ func SplitCsv(csv string) CsvResult {
 	return result
 }
 
-func hasOperatorInstallModeSingleNamespace(installModes []v1alpha1.InstallMode) bool {
-	for i := 0; i < len(installModes); i++ {
-		if installModes[i].Type == v1alpha1.InstallModeTypeSingleNamespace && installModes[i].Supported {
+func getAllPodsBy(namespace string, allPods []*provider.Pod) (podsInNamespace []*provider.Pod) {
+	for i := range allPods {
+		pod := allPods[i]
+		if pod.Namespace == namespace {
+			podsInNamespace = append(podsInNamespace, pod)
+		}
+	}
+	return podsInNamespace
+}
+
+func getAllOperatorsBy(namespace string, operators []*provider.Operator) (operatorsInNamespace []*provider.Operator) {
+	for _, operator := range operators {
+		if operator.Csv.Namespace == namespace {
+			operatorsInNamespace = append(operatorsInNamespace, operator)
+		}
+	}
+	return operatorsInNamespace
+}
+
+func isSingleNamespacedOperator(operator *provider.Operator) bool {
+	return len(operator.TargetNamespaces) == 1 && operator.Namespace != operator.TargetNamespaces[0]
+}
+
+func isMultiNamespacedOperator(operator *provider.Operator) bool {
+	return len(operator.TargetNamespaces) > 1 && !stringhelper.StringInSlice(operator.TargetNamespaces, operator.Namespace, false)
+}
+
+func checkIfOperatorUnderTest(operator *provider.Operator) bool {
+	for _, testOperator := range env.Operators {
+		if testOperator.Name == operator.Name && testOperator.Namespace == operator.Namespace {
 			return true
 		}
 	}
+
 	return false
 }
 
-func filterSingleNamespacedOperatorUnderTest(operators []*provider.Operator) (singleNamespacedOperators []*provider.Operator) {
-	for _, operator := range operators {
-		if hasOperatorInstallModeSingleNamespace(operator.Csv.Spec.InstallModes) && len(operator.TargetNamespaces) == 1 {
-			singleNamespacedOperators = append(singleNamespacedOperators, operator)
+func checkValidOperatorInstallation(namespace string) (isDedicatedOperatorNamespace bool, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators []string) {
+	// 1. operator installation checks
+	for _, operator := range getAllOperatorsBy(namespace, env.AllOperators) {
+		if namespace == operator.Csv.Annotations["olm.operatorNamespace"] {
+			if checkIfOperatorUnderTest(operator) {
+				if isSingleNamespacedOperator(operator) || isMultiNamespacedOperator(operator) {
+					singleOrMultiNamespaceOperators = append(singleOrMultiNamespaceOperators, operator.Name)
+				} else {
+					nonSingleOrMultiNamespaceOperators = append(nonSingleOrMultiNamespaceOperators, operator.Name)
+				}
+			} else {
+				operatorsFoundButNotUnderTest = append(operatorsFoundButNotUnderTest, operator.Name)
+			}
+		} else {
+			csvsFoundButNotInOperatorInstallationNamespace = append(csvsFoundButNotInOperatorInstallationNamespace, operator.Name)
 		}
 	}
-	return singleNamespacedOperators
+	// 2. existing pods check
+	podsBelongingToNoOperators, err := findPodsNotBelongingToOperators(namespace)
+	if err != nil {
+		return false, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators
+	}
+
+	return len(podsBelongingToNoOperators) == 0 && len(singleOrMultiNamespaceOperators) != 0, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators
+
 }
 
-// This function checks if the namespace contains only valid operator pods
-func checkIfNamespaceContainsOnlyOperatorPods(namespace string) (isOperatorOnlyNamespace bool, err error) {
-	// Get all pods from the target namespace
-
-	podsList, err := clientsholder.GetClientsHolder().K8sClient.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		return isOperatorOnlyNamespace, err
-	}
-	foundCsvs := make(map[string]bool)
-	foundOperatorPods := 0
-	for index := range podsList.Items {
-		// Get the top owners of the pod
-		pod := podsList.Items[index]
+func findPodsNotBelongingToOperators(namespace string) (podsBelongingToNoOperators []string, err error) {
+	allPods := getAllPodsBy(namespace, env.AllPods)
+	for index := range allPods {
+		pod := allPods[index]
 		topOwners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
 		if err != nil {
-			return isOperatorOnlyNamespace, fmt.Errorf("could not get top owners of Pod %s (in namespace %s), err=%v", pod.Name, pod.Namespace, err)
+			return podsBelongingToNoOperators, err
 		}
 
-		// check if owner matches with the csv
+		validOwnerFound := false
 		for _, owner := range topOwners {
-			// The owner must be in the targetNamespace
 			if owner.Kind == v1alpha1.ClusterServiceVersionKind && owner.Namespace == namespace {
-				foundOperatorPods++
-				foundCsvs[owner.Name] = true
+				validOwnerFound = true
 				break
 			}
 		}
-	}
-
-	// Check if the found CSVs contain only valid operators under test
-	allOperatorsFoundInNamespaceAreValid := true
-	for _, operator := range env.Operators {
-		for foundCsv := range foundCsvs {
-			// Report an error only if an operator under test is found to be clusterwide
-			if operator.IsClusterWide && operator.Csv.Name == foundCsv {
-				allOperatorsFoundInNamespaceAreValid = false
-				break
-			}
+		if !validOwnerFound {
+			podsBelongingToNoOperators = append(podsBelongingToNoOperators, pod.Name)
 		}
 	}
 
-	return len(podsList.Items) == foundOperatorPods && allOperatorsFoundInNamespaceAreValid, nil
+	return podsBelongingToNoOperators, nil
 }

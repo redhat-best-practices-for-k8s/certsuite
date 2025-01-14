@@ -121,7 +121,6 @@ type ResponseData struct {
 	Message string `json:"message"`
 }
 
-//nolint:funlen
 func installReqHandlers() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Set the content type to "text/html".
