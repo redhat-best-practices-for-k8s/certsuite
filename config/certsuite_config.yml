@@ -1,15 +1,11 @@
 targetNameSpaces:
   - name: tnf
-  - name: certsuite-operator
-  - name: nginx-ops
-  - name: nginx-apps
 podsUnderTestLabels:
   - "redhat-best-practices-for-k8s.com/generic: target"
 operatorsUnderTestLabels:
   - "redhat-best-practices-for-k8s.com/operator:target"
   - "redhat-best-practices-for-k8s.com/operator1:new"
   - "cnf/test:cr-scale-operator"
-  - "operators.coreos.com/nginx-ingress-operator.nginx-ops:"
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
     scalable: false

@@ -219,6 +219,8 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 		}
 		if len(listeningPorts) == 0 {
 			check.LogInfo("None of the containers of %q have any listening port.", put)
+			compliantObjects = append(compliantObjects,
+				testhelper.NewPodReportObject(put.Namespace, put.Name, "None of the containers have any listening ports", true))
 			continue
 		}
 
@@ -328,7 +330,6 @@ func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment)
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-//nolint:funlen
 func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject

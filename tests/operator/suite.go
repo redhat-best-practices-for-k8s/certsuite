@@ -17,6 +17,7 @@
 package operator
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -127,42 +128,58 @@ func LoadChecks() {
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorInstallationInTenantNamespace)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSingleNamespacedOperatorInstallationInTenantNamespace)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
-			testOperatorInstallationInTenantNamespace(c, &env)
+			testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(c, &env)
 			return nil
 		}))
 }
 
 // This function checks if SingleNamespaced Operators should only be installed in the tenant dedicated operator namespace
-func testOperatorInstallationInTenantNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("Starting testInstalledSingleNamespaceOperatorInTenanttNamespace")
+func testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testInstalledSingleNamespaceOperatorInTenantNamespace")
 
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
-	singleNamespacedOperators := filterSingleNamespacedOperatorUnderTest(env.Operators)
+	operatorNamespaces := make(map[string]bool)
+	for _, operator := range env.Operators {
+		operatorNamespace := operator.Csv.Annotations["olm.operatorNamespace"]
+		operatorNamespaces[operatorNamespace] = true
+	}
 
-	for _, operator := range singleNamespacedOperators {
-		operatorNamespace := operator.Namespace
+	for operatorNamespace := range operatorNamespaces { // operator installed namespace
+		check.LogInfo("Checking if namespace %s contains only valid single/ multi namespaced operators", operatorNamespace)
 
-		check.LogInfo("Checking operator %s in namespace %s ", operator.Name, operator.Namespace)
+		isDedicatedOperatorNamespace, validInstalledOperators, invalidInstalledOperators, invalidNonInstalledOperators, unlabeledInstalledOperators, podsNotBelongingToOperators := checkValidOperatorInstallation(operatorNamespace)
 
-		doesNamespaceContainsOnlyOperatorPods, err := checkIfNamespaceContainsOnlyOperatorPods(operatorNamespace)
-
-		if err != nil {
-			check.LogError("Skipped - cannot proceed with operator %s", operator.Name)
-			continue
-		}
-		if doesNamespaceContainsOnlyOperatorPods {
-			check.LogInfo("Operator %s has valid installation in tenant namespace %s ", operator.Name, operatorNamespace)
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
-				"Operator has valid installation in tenant namespace ", true))
+		if isDedicatedOperatorNamespace {
+			msg := fmt.Sprintf("Namespace is dedicated to single/multi namespace operators %s ", strings.Join(validInstalledOperators, ", "))
+			check.LogInfo(msg)
+			compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, true, operatorNamespace))
 		} else {
-			check.LogInfo("Operator %s has invalid installation in tenant namespace ", operator.Name)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
-				"Operator has invalid installation in tenant namespace ", false))
+
+			msg := "Namespace is non-compliant operator namespace, containing non-operator, invalid installed or not installed operators "
+
+			nonCompliantNs := testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, false, operatorNamespace)
+
+			if len(invalidInstalledOperators) != 0 {
+				nonCompliantNs.AddField("Invalid installed operators (not single or multi namespaced) found ", strings.Join(invalidInstalledOperators, ", "))
+			}
+
+			if len(invalidNonInstalledOperators) != 0 {
+				nonCompliantNs.AddField("Invalid operators (installed in other namespace) found ", strings.Join(invalidNonInstalledOperators, ", "))
+			}
+
+			if len(unlabeledInstalledOperators) != 0 {
+				nonCompliantNs.AddField("Unlabeled installed operators found ", strings.Join(unlabeledInstalledOperators, ", "))
+			}
+
+			if len(podsNotBelongingToOperators) != 0 {
+				nonCompliantNs.AddField("Invalid non operator pods found ", strings.Join(podsNotBelongingToOperators, ", "))
+			}
+			nonCompliantObjects = append(nonCompliantObjects, nonCompliantNs)
 		}
 	}
 	check.SetResult(compliantObjects, nonCompliantObjects)
