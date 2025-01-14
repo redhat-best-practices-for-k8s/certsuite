@@ -102,24 +102,24 @@ const (
 	TestRtAppNoExecProbesDocLink                = NoDocLinkFarEdge
 
 	// Operator Test Suite
-	DocOperatorRequirement                                = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements"
-	TestOperatorInstallStatusSucceededIdentifierDocLink   = DocOperatorRequirement
-	TestOperatorNoPrivilegesDocLink                       = DocOperatorRequirement
-	TestOperatorIsCertifiedIdentifierDocLink              = DocOperatorRequirement
-	TestOperatorIsInstalledViaOLMIdentifierDocLink        = DocOperatorRequirement
-	TestOperatorInstallationInTenantNamespaceDocLink      = DocOperatorRequirement
-	TestOperatorHasSemanticVersioningIdentifierDocLink    = DocOperatorRequirement
-	TestOperatorCrdSchemaIdentifierDocLink                = DocOperatorRequirement
-	TestOperatorCrdVersioningIdentifierDocLink            = DocOperatorRequirement
-	TestOperatorSingleCrdOwnerIdentifierDocLink           = DocOperatorRequirement
-	TestOperatorRunAsUserIDDocLink                        = DocOperatorRequirement
-	TestOperatorRunAsNonRootDocLink                       = DocOperatorRequirement
-	TestOperatorAutomountTokensDocLink                    = DocOperatorRequirement
-	TestOperatorReadOnlyFilesystemDocLink                 = DocOperatorRequirement
-	TestOperatorPodsNoHugepagesDocLink                    = DocOperatorRequirement
-	TestOperatorCatalogSourceBundleCountIdentifierDocLink = DocOperatorRequirement
-	TestOperatorOlmSkipRangeDocLink                       = DocOperatorRequirement
-	TestMultipleSameOperatorsIdentifierDocLink            = DocOperatorRequirement
+	DocOperatorRequirement                                           = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements"
+	TestOperatorInstallStatusSucceededIdentifierDocLink              = DocOperatorRequirement
+	TestOperatorNoPrivilegesDocLink                                  = DocOperatorRequirement
+	TestOperatorIsCertifiedIdentifierDocLink                         = DocOperatorRequirement
+	TestOperatorIsInstalledViaOLMIdentifierDocLink                   = DocOperatorRequirement
+	TestSingleNamespacedOperatorInstallationInTenantNamespaceDocLink = DocOperatorRequirement
+	TestOperatorHasSemanticVersioningIdentifierDocLink               = DocOperatorRequirement
+	TestOperatorCrdSchemaIdentifierDocLink                           = DocOperatorRequirement
+	TestOperatorCrdVersioningIdentifierDocLink                       = DocOperatorRequirement
+	TestOperatorSingleCrdOwnerIdentifierDocLink                      = DocOperatorRequirement
+	TestOperatorRunAsUserIDDocLink                                   = DocOperatorRequirement
+	TestOperatorRunAsNonRootDocLink                                  = DocOperatorRequirement
+	TestOperatorAutomountTokensDocLink                               = DocOperatorRequirement
+	TestOperatorReadOnlyFilesystemDocLink                            = DocOperatorRequirement
+	TestOperatorPodsNoHugepagesDocLink                               = DocOperatorRequirement
+	TestOperatorCatalogSourceBundleCountIdentifierDocLink            = DocOperatorRequirement
+	TestOperatorOlmSkipRangeDocLink                                  = DocOperatorRequirement
+	TestMultipleSameOperatorsIdentifierDocLink                       = DocOperatorRequirement
 
 	// Observability Test Suite
 	TestLoggingIdentifierDocLink                            = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-logging"

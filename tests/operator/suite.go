@@ -17,6 +17,7 @@
 package operator
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -127,42 +128,50 @@ func LoadChecks() {
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorInstallationInTenantNamespace)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSingleNamespacedOperatorInstallationInTenantNamespace)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
-			testOperatorInstallationInTenantNamespace(c, &env)
+			testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(c, &env)
 			return nil
 		}))
 }
 
 // This function checks if SingleNamespaced Operators should only be installed in the tenant dedicated operator namespace
-func testOperatorInstallationInTenantNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("Starting testInstalledSingleNamespaceOperatorInTenanttNamespace")
+func testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testInstalledSingleNamespaceOperatorInTenantNamespace")
 
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
-	singleNamespacedOperators := filterSingleNamespacedOperatorUnderTest(env.Operators)
+	operatorNamespaces := make(map[string]bool)
+	for _, operator := range env.Operators {
+		operatorNamespace := operator.Csv.Annotations["olm.operatorNamespace"]
+		operatorNamespaces[operatorNamespace] = true
+	}
 
-	for _, operator := range singleNamespacedOperators {
-		operatorNamespace := operator.Namespace
-
-		check.LogInfo("Checking operator %s in namespace %s ", operator.Name, operator.Namespace)
-
-		doesNamespaceContainsOnlyOperatorPods, err := checkIfNamespaceContainsOnlyOperatorPods(operatorNamespace)
+	for operatorNamespace := range operatorNamespaces {
+		check.LogInfo("Checking if namespace %s is an operator namespace", operatorNamespace)
+		isValidSingleNamespacedOperatorInstallation, singleNamespacedCsvs, allNamespacedCsvs, podsBelongingToNoOperators, err := containsValidSingleNamespacedOperatorIn(operatorNamespace)
 
 		if err != nil {
-			check.LogError("Skipped - cannot proceed with operator %s", operator.Name)
+			check.LogError("Skipped - cannot proceed with operator namespace %s", operatorNamespace)
 			continue
 		}
-		if doesNamespaceContainsOnlyOperatorPods {
-			check.LogInfo("Operator %s has valid installation in tenant namespace %s ", operator.Name, operatorNamespace)
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
-				"Operator has valid installation in tenant namespace ", true))
+
+		var installedSingleNamespacedOperators string
+		if len(singleNamespacedCsvs) != 0 {
+			installedSingleNamespacedOperators = strings.Join(singleNamespacedCsvs, ", ")
+		}
+
+		if isValidSingleNamespacedOperatorInstallation {
+			msg := fmt.Sprintf("Namespace is dedicated to single namespace operators %s ", installedSingleNamespacedOperators)
+			check.LogInfo(msg)
+			compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, true, operatorNamespace))
 		} else {
-			check.LogInfo("Operator %s has invalid installation in tenant namespace ", operator.Name)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
-				"Operator has invalid installation in tenant namespace ", false))
+			nonCompliantMsg := generateNonCompliantMessage(installedSingleNamespacedOperators, allNamespacedCsvs, podsBelongingToNoOperators)
+			check.LogInfo(nonCompliantMsg)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject(
+				nonCompliantMsg, testhelper.Namespace, false, operatorNamespace))
 		}
 	}
 	check.SetResult(compliantObjects, nonCompliantObjects)
