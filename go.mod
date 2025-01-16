@@ -208,8 +208,8 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/apiserver v0.32.0 // indirect
-	k8s.io/cli-runtime v0.32.0 // indirect
-	k8s.io/component-base v0.32.0 // indirect
+	k8s.io/cli-runtime v0.32.1 // indirect
+	k8s.io/component-base v0.32.1 // indirect
 	k8s.io/kube-aggregator v0.31.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20241105132330-32ad38e42d3f // indirect
 	modernc.org/libc v1.37.6 // indirect
@@ -247,7 +247,7 @@ require (
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.28.0
 	google.golang.org/api v0.217.0
-	k8s.io/kubectl v0.32.0
+	k8s.io/kubectl v0.32.1
 	k8s.io/utils v0.0.0-20241210054802-24370beab758
 )
 
