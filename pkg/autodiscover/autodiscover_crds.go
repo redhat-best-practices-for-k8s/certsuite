@@ -52,6 +52,15 @@ func FindTestCrdNames(clusterCrds []*apiextv1.CustomResourceDefinition, crdFilte
 		log.Error("Cluster does not have any CRDs")
 		return []*apiextv1.CustomResourceDefinition{}
 	}
+
+	log.Debug("-------------------------------------------------")
+	log.Debug("Comparing %d CRDs with %d filters\n", len(clusterCrds), len(crdFilters))
+	log.Debug("Filtering CRDs based on the following filters:")
+	for _, crdFilter := range crdFilters {
+		log.Debug("  - %s", crdFilter.NameSuffix)
+	}
+	log.Debug("-------------------------------------------------")
+
 	for _, crd := range clusterCrds {
 		for _, crdFilter := range crdFilters {
 			if strings.HasSuffix(crd.Name, crdFilter.NameSuffix) {
@@ -60,5 +69,11 @@ func FindTestCrdNames(clusterCrds []*apiextv1.CustomResourceDefinition, crdFilte
 			}
 		}
 	}
+
+	log.Debug("Found %d CRDs matching the filters", len(targetCrds))
+	for _, crd := range targetCrds {
+		log.Debug("  - %s", crd.Name)
+	}
+	log.Debug("-------------------------------------------------")
 	return targetCrds
 }
