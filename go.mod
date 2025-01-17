@@ -207,7 +207,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	k8s.io/apiserver v0.32.0 // indirect
+	k8s.io/apiserver v0.32.1 // indirect
 	k8s.io/cli-runtime v0.32.1 // indirect
 	k8s.io/component-base v0.32.1 // indirect
 	k8s.io/kube-aggregator v0.31.1 // indirect
@@ -229,7 +229,7 @@ require (
 
 require (
 	github.com/hashicorp/go-version v1.7.0
-	k8s.io/apiextensions-apiserver v0.32.0
+	k8s.io/apiextensions-apiserver v0.32.1
 )
 
 require (
