@@ -22,13 +22,6 @@ const (
 	// tarGz file prefix layout format: YearMonthDay-HourMinSec
 	tarGzFileNamePrefixLayout = "20060102-150405"
 	tarGzFileNameSuffix       = "cnf-test-results.tar.gz"
-
-	// Connect API Information
-	// certIDURL     = "https://access.qa.redhat.com/hydra/cwe/rest/v1.0/projects/certifications"
-	// connectAPIURL = "https://access.qa.redhat.com/hydra/cwe/rest/v1.0/attachments/upload"
-
-	certIDURL     = "https://access.redhat.com/hydra/cwe/rest/v1.0/projects/certifications"
-	connectAPIURL = "https://access.redhat.com/hydra/cwe/rest/v1.0/attachments/upload"
 )
 
 func generateZipFileName() string {
@@ -131,7 +124,7 @@ type CertIDResponse struct {
 }
 
 // GetCertIDFromConnectAPI gets the certification ID from the Red Hat Connect API
-func GetCertIDFromConnectAPI(apiKey, projectID, proxyURL, proxyPort string) (string, error) {
+func GetCertIDFromConnectAPI(apiKey, projectID, connectAPIBaseURL, proxyURL, proxyPort string) (string, error) {
 	log.Info("Getting certification ID from Red Hat Connect API")
 
 	// sanitize the incoming variables, remove the double quotes if any
@@ -139,12 +132,16 @@ func GetCertIDFromConnectAPI(apiKey, projectID, proxyURL, proxyPort string) (str
 	projectID = strings.ReplaceAll(projectID, "\"", "")
 	proxyURL = strings.ReplaceAll(proxyURL, "\"", "")
 	proxyPort = strings.ReplaceAll(proxyPort, "\"", "")
+	connectAPIBaseURL = strings.ReplaceAll(connectAPIBaseURL, "\"", "")
 
 	// remove quotes from projectID
 	projectIDJSON := fmt.Sprintf(`{ "projectId": %q }`, projectID)
 
 	// Convert JSON to bytes
 	projectIDJSONBytes := []byte(projectIDJSON)
+
+	// Create the URL
+	certIDURL := fmt.Sprintf("%s/projects/certifications", connectAPIBaseURL)
 
 	// Create a new request
 	req, err := http.NewRequest("POST", certIDURL, bytes.NewBuffer(projectIDJSONBytes))
@@ -199,7 +196,7 @@ type UploadResult struct {
 // SendResultsToConnectAPI sends the results to the Red Hat Connect API
 //
 //nolint:funlen
-func SendResultsToConnectAPI(zipFile, apiKey, certID, proxyURL, proxyPort string) error {
+func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, proxyPort string) error {
 	log.Info("Sending results to Red Hat Connect")
 
 	// sanitize the incoming variables, remove the double quotes if any
@@ -207,6 +204,7 @@ func SendResultsToConnectAPI(zipFile, apiKey, certID, proxyURL, proxyPort string
 	certID = strings.ReplaceAll(certID, "\"", "")
 	proxyURL = strings.ReplaceAll(proxyURL, "\"", "")
 	proxyPort = strings.ReplaceAll(proxyPort, "\"", "")
+	connectBaseURL = strings.ReplaceAll(connectBaseURL, "\"", "")
 
 	var buffer bytes.Buffer
 
@@ -249,6 +247,9 @@ func SendResultsToConnectAPI(zipFile, apiKey, certID, proxyURL, proxyPort string
 	}
 
 	w.Close()
+
+	// Create the URL
+	connectAPIURL := fmt.Sprintf("%s/attachments/upload", connectBaseURL)
 
 	// Create a new request
 	req, err := http.NewRequest("POST", connectAPIURL, &buffer)

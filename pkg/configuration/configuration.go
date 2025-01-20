@@ -94,6 +94,7 @@ type TestConfiguration struct {
 	CollectorAppEndpoint string `yaml:"collectorAppEndpoint,omitempty" json:"collectorAppEndpoint,omitempty"`
 	ConnectAPIKey        string `yaml:"connectAPIKey,omitempty" json:"connectAPIKey,omitempty"`
 	ConnectProjectID     string `yaml:"connectProjectID,omitempty" json:"connectProjectID,omitempty"`
+	ConnectAPIBaseURL    string `yaml:"connectAPIBaseURL,omitempty" json:"connectAPIBaseURL,omitempty"`
 	ConnectAPIProxyURL   string `yaml:"connectAPIProxyURL,omitempty" json:"connectAPIProxyURL,omitempty"`
 	ConnectAPIProxyPort  string `yaml:"connectAPIProxyPort,omitempty" json:"connectAPIProxyPort,omitempty"`
 }
@@ -123,6 +124,7 @@ type TestParameters struct {
 	Timeout                       time.Duration
 	ConnectAPIKey                 string
 	ConnectProjectID              string
+	ConnectAPIBaseURL             string
 	ConnectAPIProxyURL            string
 	ConnectAPIProxyPort           string
 }

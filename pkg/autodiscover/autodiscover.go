@@ -114,6 +114,7 @@ type DiscoveredTestData struct {
 	CollectorAppEndpoint         string
 	ConnectAPIKey                string
 	ConnectProjectID             string
+	ConnectAPIBaseURL            string
 	ConnectAPIProxyURL           string
 	ConnectAPIProxyPort          string
 }
@@ -327,6 +328,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.CollectorAppPassword = config.CollectorAppPassword
 	data.CollectorAppEndpoint = config.CollectorAppEndpoint
 	data.ConnectAPIKey = config.ConnectAPIKey
+	data.ConnectAPIBaseURL = config.ConnectAPIBaseURL
 	data.ConnectProjectID = config.ConnectProjectID
 	data.ConnectAPIProxyURL = config.ConnectAPIProxyURL
 	data.ConnectAPIProxyPort = config.ConnectAPIProxyPort
