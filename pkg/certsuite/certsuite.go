@@ -229,9 +229,13 @@ func Run(labelsFilter, outputFolder string) error {
 				log.Fatal("Failed to get CertificationID from Red Hat Connect: %v", err)
 			}
 
+			if certificationID == "" {
+				log.Fatal("Failed to get CertificationID from Red Hat Connect")
+			}
+
 			log.Debug("Sending ZIP file %s to Red Hat Connect", zipFile)
 			err = results.SendResultsToConnectAPI(zipFile,
-				env.ConnectAPIKey, certificationID, env.Config.ConnectAPIBaseURL, env.ConnectAPIProxyURL, env.ConnectAPIProxyPort)
+				env.ConnectAPIKey, env.Config.ConnectAPIBaseURL, certificationID, env.ConnectAPIProxyURL, env.ConnectAPIProxyPort)
 			if err != nil {
 				log.Fatal("Failed to send results to Red Hat Connect: %v", err)
 			}

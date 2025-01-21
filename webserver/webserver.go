@@ -116,6 +116,11 @@ type RequestedData struct {
 	ExecutedBy                           []string `json:"executedBy"`
 	CollectorAppPassword                 []string `json:"CollectorAppPassword"`
 	PartnerName                          []string `json:"PartnerName"`
+	ConnectAPIKey                        []string `json:"connectAPIKey,omitempty"`
+	ConnectProjectID                     []string `json:"connectProjectID,omitempty"`
+	ConnectAPIBaseURL                    []string `json:"connectAPIBaseURL,omitempty"`
+	ConnectAPIProxyURL                   []string `json:"connectAPIProxyURL,omitempty"`
+	ConnectAPIProxyPort                  []string `json:"connectAPIProxyPort,omitempty"`
 }
 type ResponseData struct {
 	Message string `json:"message"`
@@ -401,6 +406,21 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	}
 	if len(data.ProbeDaemonSetNamespace) > 0 {
 		config.ProbeDaemonSetNamespace = data.ProbeDaemonSetNamespace[0]
+	}
+	if len(data.ConnectAPIKey) > 0 {
+		config.ConnectAPIKey = data.ConnectAPIKey[0]
+	}
+	if len(data.ConnectProjectID) > 0 {
+		config.ConnectProjectID = data.ConnectProjectID[0]
+	}
+	if len(data.ConnectAPIBaseURL) > 0 {
+		config.ConnectAPIBaseURL = data.ConnectAPIBaseURL[0]
+	}
+	if len(data.ConnectAPIProxyURL) > 0 {
+		config.ConnectAPIProxyURL = data.ConnectAPIProxyURL[0]
+	}
+	if len(data.ConnectAPIProxyPort) > 0 {
+		config.ConnectAPIProxyPort = data.ConnectAPIProxyPort[0]
 	}
 
 	// Serialize the modified config back to YAML format

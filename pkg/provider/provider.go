@@ -137,6 +137,7 @@ type TestEnvironment struct { // rename this with testTarget
 	CollectorAppEndpoint         string
 	ConnectAPIKey                string
 	ConnectProjectID             string
+	ConnectBaseURL               string
 	ConnectAPIProxyURL           string
 	ConnectAPIProxyPort          string
 	SkipPreflight                bool
@@ -374,6 +375,7 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	env.ConnectProjectID = data.ConnectProjectID
 	env.ConnectAPIProxyURL = data.ConnectAPIProxyURL
 	env.ConnectAPIProxyPort = data.ConnectAPIProxyPort
+	env.ConnectBaseURL = data.ConnectAPIBaseURL
 
 	operators := createOperators(data.Csvs, data.AllSubscriptions, data.AllPackageManifests,
 		data.AllInstallPlans, data.AllCatalogSources, false, true)
