@@ -112,6 +112,11 @@ type DiscoveredTestData struct {
 	PartnerName                  string
 	CollectorAppPassword         string
 	CollectorAppEndpoint         string
+	ConnectAPIKey                string
+	ConnectProjectID             string
+	ConnectAPIBaseURL            string
+	ConnectAPIProxyURL           string
+	ConnectAPIProxyPort          string
 }
 
 type labelObject struct {
@@ -322,6 +327,11 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.PartnerName = config.PartnerName
 	data.CollectorAppPassword = config.CollectorAppPassword
 	data.CollectorAppEndpoint = config.CollectorAppEndpoint
+	data.ConnectAPIKey = config.ConnectAPIConfig.APIKey
+	data.ConnectAPIBaseURL = config.ConnectAPIConfig.BaseURL
+	data.ConnectProjectID = config.ConnectAPIConfig.ProjectID
+	data.ConnectAPIProxyURL = config.ConnectAPIConfig.ProxyURL
+	data.ConnectAPIProxyPort = config.ConnectAPIConfig.ProxyPort
 
 	return data
 }
