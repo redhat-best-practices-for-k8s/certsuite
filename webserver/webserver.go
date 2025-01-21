@@ -116,11 +116,11 @@ type RequestedData struct {
 	ExecutedBy                           []string `json:"executedBy"`
 	CollectorAppPassword                 []string `json:"CollectorAppPassword"`
 	PartnerName                          []string `json:"PartnerName"`
-	ConnectAPIKey                        []string `json:"connectAPIKey,omitempty"`
-	ConnectProjectID                     []string `json:"connectProjectID,omitempty"`
-	ConnectAPIBaseURL                    []string `json:"connectAPIBaseURL,omitempty"`
-	ConnectAPIProxyURL                   []string `json:"connectAPIProxyURL,omitempty"`
-	ConnectAPIProxyPort                  []string `json:"connectAPIProxyPort,omitempty"`
+	ConnectAPIKey                        []string `json:"key,omitempty"`
+	ConnectProjectID                     []string `json:"projectID,omitempty"`
+	ConnectAPIBaseURL                    []string `json:"baseURL,omitempty"`
+	ConnectAPIProxyURL                   []string `json:"proxyURL,omitempty"`
+	ConnectAPIProxyPort                  []string `json:"proxyPort,omitempty"`
 }
 type ResponseData struct {
 	Message string `json:"message"`
@@ -323,7 +323,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//nolint:funlen
+//nolint:funlen,gocyclo
 func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	// Unmarshal the YAML data into a Config struct
 	var config configuration.TestConfiguration
@@ -408,19 +408,19 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 		config.ProbeDaemonSetNamespace = data.ProbeDaemonSetNamespace[0]
 	}
 	if len(data.ConnectAPIKey) > 0 {
-		config.ConnectAPIKey = data.ConnectAPIKey[0]
+		config.ConnectAPIConfig.APIKey = data.ConnectAPIKey[0]
 	}
 	if len(data.ConnectProjectID) > 0 {
-		config.ConnectProjectID = data.ConnectProjectID[0]
+		config.ConnectAPIConfig.ProjectID = data.ConnectProjectID[0]
 	}
 	if len(data.ConnectAPIBaseURL) > 0 {
-		config.ConnectAPIBaseURL = data.ConnectAPIBaseURL[0]
+		config.ConnectAPIConfig.BaseURL = data.ConnectAPIBaseURL[0]
 	}
 	if len(data.ConnectAPIProxyURL) > 0 {
-		config.ConnectAPIProxyURL = data.ConnectAPIProxyURL[0]
+		config.ConnectAPIConfig.ProxyURL = data.ConnectAPIProxyURL[0]
 	}
 	if len(data.ConnectAPIProxyPort) > 0 {
-		config.ConnectAPIProxyPort = data.ConnectAPIProxyPort[0]
+		config.ConnectAPIConfig.ProxyPort = data.ConnectAPIProxyPort[0]
 	}
 
 	// Serialize the modified config back to YAML format

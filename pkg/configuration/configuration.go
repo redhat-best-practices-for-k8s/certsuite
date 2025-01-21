@@ -64,6 +64,20 @@ type ManagedDeploymentsStatefulsets struct {
 	Name string `yaml:"name" json:"name"`
 }
 
+// ConnectAPIConfig contains the configuration for the Red Hat Connect API
+type ConnectAPIConfig struct {
+	// APIKey is the API key for the Red Hat Connect
+	APIKey string `yaml:"apiKey" json:"apiKey"`
+	// ProjectID is the project ID for the Red Hat Connect
+	ProjectID string `yaml:"projectID" json:"projectID"`
+	// BaseURL is the base URL for the Red Hat Connect API
+	BaseURL string `yaml:"baseURL" json:"baseURL"`
+	// ProxyURL is the proxy URL for the Red Hat Connect API
+	ProxyURL string `yaml:"proxyURL" json:"proxyURL"`
+	// ProxyPort is the proxy port for the Red Hat Connect API
+	ProxyPort string `yaml:"proxyPort" json:"proxyPort"`
+}
+
 // TestConfiguration provides test related configuration
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
@@ -92,11 +106,8 @@ type TestConfiguration struct {
 	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`
 	CollectorAppPassword string `yaml:"collectorAppPassword,omitempty" json:"collectorAppPassword,omitempty"`
 	CollectorAppEndpoint string `yaml:"collectorAppEndpoint,omitempty" json:"collectorAppEndpoint,omitempty"`
-	ConnectAPIKey        string `yaml:"connectAPIKey,omitempty" json:"connectAPIKey,omitempty"`
-	ConnectProjectID     string `yaml:"connectProjectID,omitempty" json:"connectProjectID,omitempty"`
-	ConnectAPIBaseURL    string `yaml:"connectAPIBaseURL,omitempty" json:"connectAPIBaseURL,omitempty"`
-	ConnectAPIProxyURL   string `yaml:"connectAPIProxyURL,omitempty" json:"connectAPIProxyURL,omitempty"`
-	ConnectAPIProxyPort  string `yaml:"connectAPIProxyPort,omitempty" json:"connectAPIProxyPort,omitempty"`
+	// ConnectAPIConfig contains the configuration for the Red Hat Connect API
+	ConnectAPIConfig ConnectAPIConfig `yaml:"connectAPIConfig,omitempty" json:"connectAPIConfig,omitempty"`
 }
 
 type TestParameters struct {

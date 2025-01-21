@@ -327,11 +327,11 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.PartnerName = config.PartnerName
 	data.CollectorAppPassword = config.CollectorAppPassword
 	data.CollectorAppEndpoint = config.CollectorAppEndpoint
-	data.ConnectAPIKey = config.ConnectAPIKey
-	data.ConnectAPIBaseURL = config.ConnectAPIBaseURL
-	data.ConnectProjectID = config.ConnectProjectID
-	data.ConnectAPIProxyURL = config.ConnectAPIProxyURL
-	data.ConnectAPIProxyPort = config.ConnectAPIProxyPort
+	data.ConnectAPIKey = config.ConnectAPIConfig.APIKey
+	data.ConnectAPIBaseURL = config.ConnectAPIConfig.BaseURL
+	data.ConnectProjectID = config.ConnectAPIConfig.ProjectID
+	data.ConnectAPIProxyURL = config.ConnectAPIConfig.ProxyURL
+	data.ConnectAPIProxyPort = config.ConnectAPIConfig.ProxyPort
 
 	return data
 }

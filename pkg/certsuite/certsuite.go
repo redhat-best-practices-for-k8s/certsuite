@@ -222,7 +222,7 @@ func Run(labelsFilter, outputFolder string) error {
 			certificationID, err := results.GetCertIDFromConnectAPI(
 				env.ConnectAPIKey,
 				env.ConnectProjectID,
-				env.Config.ConnectAPIBaseURL,
+				env.ConnectAPIBaseURL,
 				env.ConnectAPIProxyURL,
 				env.ConnectAPIProxyPort)
 			if err != nil {
@@ -235,7 +235,11 @@ func Run(labelsFilter, outputFolder string) error {
 
 			log.Debug("Sending ZIP file %s to Red Hat Connect", zipFile)
 			err = results.SendResultsToConnectAPI(zipFile,
-				env.ConnectAPIKey, env.Config.ConnectAPIBaseURL, certificationID, env.ConnectAPIProxyURL, env.ConnectAPIProxyPort)
+				env.ConnectAPIKey,
+				env.ConnectAPIBaseURL,
+				certificationID,
+				env.ConnectAPIProxyURL,
+				env.ConnectAPIProxyPort)
 			if err != nil {
 				log.Fatal("Failed to send results to Red Hat Connect: %v", err)
 			}
