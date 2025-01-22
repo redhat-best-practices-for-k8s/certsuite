@@ -423,7 +423,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: Build and push the unstable images for multi-arch
-        uses: docker/build-push-action@48aba3b46d1b1fec4febb7c5d0c644b249a11355 # v6.10.0
+        uses: docker/build-push-action@67a2d409c0a876cbe6b11854e3e25193efe4e62d # v6.12.0
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         with:
           context: .
@@ -466,7 +466,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN_K8S }}
 
       - name: Build and push the unstable images for multi-arch
-        uses: docker/build-push-action@48aba3b46d1b1fec4febb7c5d0c644b249a11355 # v6.10.0
+        uses: docker/build-push-action@67a2d409c0a876cbe6b11854e3e25193efe4e62d # v6.12.0
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         with:
           context: .
