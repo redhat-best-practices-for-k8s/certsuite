@@ -149,7 +149,7 @@ jobs:
           ref: main
 
       - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@77e67971a155b35424508ada365790c47286fd0f # main
+        uses: depends-on/depends-on-action@61cb3f4a0e2c8ae4b90c9448dc57c7ba9ca24c35 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
