@@ -111,7 +111,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-22.04, ubuntu-22.04-arm]
     env:
       SHELL: /bin/bash
 
@@ -173,7 +173,10 @@ jobs:
     name: Run Local Smoke Tests
     needs: precheck-images
     if: needs.precheck-images.result == 'success'
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-22.04-arm]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -271,7 +274,10 @@ jobs:
     name: Run Container Smoke Tests
     needs: precheck-images
     if: needs.precheck-images.result == 'success'
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-22.04-arm]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
