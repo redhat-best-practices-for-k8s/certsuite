@@ -67,7 +67,7 @@ type ClientsHolder struct {
 	ScalingClient         scale.ScalesGetter
 	APIExtClient          apiextv1.Interface
 	OlmClient             olmClient.Interface
-	OlmPkgClient          olmpkgclient.OperatorsV1Interface
+	OlmPkgClient          olmpkgclient.PackagesV1Interface
 	OcpClient             clientconfigv1.ConfigV1Interface
 	K8sClient             kubernetes.Interface
 	K8sNetworkingClient   networkingv1.NetworkingV1Interface
