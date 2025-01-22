@@ -46,7 +46,7 @@ GIT_COMMIT=$(shell script/create-version-files.sh)
 GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
 CLAIM_FORMAT_VERSION=$(shell script/get-claim-version.sh)
-GOLANGCI_VERSION=v1.63.3
+GOLANGCI_VERSION=v1.63.4
 LINKER_CERTSUITE_RELEASE_FLAGS=-X github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions.GitCommit=${GIT_COMMIT}
 LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions.GitRelease=${GIT_RELEASE}
 LINKER_CERTSUITE_RELEASE_FLAGS+= -X github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
