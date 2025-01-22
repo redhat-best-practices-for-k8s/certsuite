@@ -68,7 +68,7 @@ jobs:
           chmod +x $CM_BIN
 
       - name: Install Shfmt
-        uses: mfinelli/setup-shfmt@031e887e39d899d773a7e9b6dd6472c2c23ff50d # v3.0.1
+        uses: mfinelli/setup-shfmt@1a143389339b48c4b48ae3cdc058f3dbe336a701 # v3.0.2
 
       - name: Golangci-lint
         uses: golangci/golangci-lint-action@ec5d18412c0aeab7936cb16880d708ba2a64e1ae # v6.2.0
