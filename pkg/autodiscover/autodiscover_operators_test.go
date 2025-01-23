@@ -164,7 +164,7 @@ func TestGetAllPackageManifests(t *testing.T) {
 		}
 
 		client := fakeolmpkgv1.NewSimpleClientset(testRuntimeObjects...)
-		packageManifests := getAllPackageManifests(client.OperatorsV1().PackageManifests(""))
+		packageManifests := getAllPackageManifests(client.PackagesV1().PackageManifests(""))
 		assert.Equal(t, len(tc.testPackageManifests), len(packageManifests))
 		for i := range packageManifests {
 			assert.Equal(t, tc.testPackageManifests[i], packageManifests[i].Name)
