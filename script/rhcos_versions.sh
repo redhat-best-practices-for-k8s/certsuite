@@ -15,7 +15,7 @@ ALREADY_PROCESSED_VERSIONS=$(cat ./tests/platform/operatingsystem/files/rhcos_ve
 # Keep track of successful API query versions that come back missing.
 MISSING_VERSIONS=()
 
-rm -f ./tests/platform/operatingsystem/files/rhcos_version_map &>/dev/null
+# rm -f ./tests/platform/operatingsystem/files/rhcos_version_map &>/dev/null
 
 for i in "${CHANNELS[@]}"; do
 	echo "----"
