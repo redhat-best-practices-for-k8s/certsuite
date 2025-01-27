@@ -239,7 +239,7 @@ require (
 	github.com/go-logr/stdr v1.2.2
 	github.com/gorilla/websocket v1.5.3
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
-	github.com/k8snetworkplumbingwg/sriov-network-operator v1.4.0
+	github.com/k8snetworkplumbingwg/sriov-network-operator v1.5.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/redhat-best-practices-for-k8s/oct v0.0.31
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.45
