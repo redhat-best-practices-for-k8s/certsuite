@@ -95,7 +95,7 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/cel-go v0.22.1 // indirect
-	github.com/google/gnostic-models v0.6.8 // indirect
+	github.com/google/gnostic-models v0.6.9 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-containerregistry v0.20.2 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
@@ -126,7 +126,7 @@ require (
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
-	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/mailru/easyjson v0.9.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
@@ -202,7 +202,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20241209162323-e6fa225c2576 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250115164207-1a7da9e5054f // indirect
 	google.golang.org/grpc v1.69.4 // indirect
-	google.golang.org/protobuf v1.36.3 // indirect
+	google.golang.org/protobuf v1.36.4 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
@@ -211,7 +211,7 @@ require (
 	k8s.io/cli-runtime v0.32.1 // indirect
 	k8s.io/component-base v0.32.1 // indirect
 	k8s.io/kube-aggregator v0.32.0 // indirect
-	k8s.io/kube-openapi v0.0.0-20241105132330-32ad38e42d3f // indirect
+	k8s.io/kube-openapi v0.0.0-20241212222426-2c72e554b1e7 // indirect
 	modernc.org/libc v1.37.6 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
@@ -242,7 +242,7 @@ require (
 	github.com/k8snetworkplumbingwg/sriov-network-operator v1.5.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/redhat-best-practices-for-k8s/oct v0.0.31
-	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.45
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.46
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20241211152839-f787b66d23c7
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.28.0
