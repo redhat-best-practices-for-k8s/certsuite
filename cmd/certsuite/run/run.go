@@ -114,14 +114,13 @@ func runTestSuite(cmd *cobra.Command, _ []string) error {
 		log.Fatal("Failed to initialize the test parameters, err: %v", err)
 	}
 
-	certsuite.Startup()
-	defer certsuite.Shutdown()
-
 	testParams := configuration.GetTestParameters()
 	if testParams.ServerMode {
 		log.Info("Running Certification Suite in web server mode")
 		webserver.StartServer(testParams.OutputDir)
 	} else {
+		certsuite.Startup()
+		defer certsuite.Shutdown()
 		log.Info("Running Certification Suite in stand-alone mode")
 		err := certsuite.Run(testParams.LabelsFilter, testParams.OutputDir)
 		if err != nil {

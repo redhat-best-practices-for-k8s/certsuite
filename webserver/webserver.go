@@ -22,8 +22,8 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/arrayhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/robert-nix/ansihtml"
 
@@ -228,7 +228,6 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	log.SetLogger(log.GetMultiLogger(buf))
 
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
-	log.Info(jsonData)
 	var data RequestedData
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
 		fmt.Println("Error:", err)
@@ -269,7 +268,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	log.Info("Web Server kubeconfig file : %v (copied into %v)", fileHeader.Filename, kubeconfigTempFile.Name())
 	log.Info("Web Server Labels filter   : %v", flattenedOptions)
 
-	tnfConfig, err := os.ReadFile("certsuite_config.yml")
+	tnfConfig, err := os.ReadFile("config/certsuite_config.yml")
 	if err != nil {
 		log.Fatal("Error reading YAML file: %v", err) //nolint:gocritic // exitAfterDefer
 	}
@@ -278,18 +277,26 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the modified YAML data back to the file
 	var filePerm fs.FileMode = 0o644 // owner can read/write, group and others can only read
-	err = os.WriteFile("certsuite_config.yml", newData, filePerm)
+	err = os.WriteFile("config/certsuite_config.yml", newData, filePerm)
 	if err != nil {
 		log.Fatal("Error writing YAML file: %v", err)
 	}
-	_ = clientsholder.GetNewClientsHolder(kubeconfigTempFile.Name())
-
-	var env provider.TestEnvironment
-	env.SetNeedsRefresh()
-	env = provider.GetTestEnvironment()
-
 	labelsFilter := strings.Join(flattenedOptions, ",")
+
+	_ = clientsholder.GetNewClientsHolder(kubeconfigTempFile.Name())
+	certsuite.LoadChecksDB(labelsFilter)
+
 	outputFolder := r.Context().Value(outputFolderCtxKey).(string)
+
+	if err := checksdb.InitLabelsExprEvaluator(labelsFilter); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to initialize a test case label evaluator, err: %v", err)
+		os.Exit(1)
+	}
+
+	if err := log.CreateGlobalLogFile(outputFolder, "debug"); err != nil {
+		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v\n", err)
+		os.Exit(1)
+	}
 
 	log.Info("Running CNF Cert Suite (web-mode). Labels filter: %s, outputFolder: %s", labelsFilter, outputFolder)
 	err = certsuite.Run(labelsFilter, outputFolder)
