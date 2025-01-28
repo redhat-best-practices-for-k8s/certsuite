@@ -210,9 +210,11 @@ func Run(labelsFilter, outputFolder string) error {
 		log.Info("Red Hat Connect API key and project ID are not set. Results will not be sent to Red Hat Connect.")
 	}
 
+	var zipFile string
+
 	// tar.gz file creation with results and html artifacts, unless omitted by env var.
 	if !configuration.GetTestParameters().OmitArtifactsZipFile || sendToConnectAPI {
-		zipFile, err := results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
+		zipFile, err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
 		if err != nil {
 			log.Fatal("Failed to compress results artifacts: %v", err)
 		}
@@ -246,13 +248,13 @@ func Run(labelsFilter, outputFolder string) error {
 
 			log.Info("Results successfully sent to Red Hat Connect with CertificationID %s", certificationID)
 		}
+	}
 
-		if !configuration.GetTestParameters().OmitArtifactsZipFile {
-			// delete the zip as the user does not want it.
-			err = os.Remove(zipFile)
-			if err != nil {
-				log.Fatal("Failed to remove zip file %s: %v", zipFile, err)
-			}
+	if configuration.GetTestParameters().OmitArtifactsZipFile && zipFile != "" {
+		// delete the zip as the user does not want it.
+		err = os.Remove(zipFile)
+		if err != nil {
+			log.Fatal("Failed to remove zip file %s: %v", zipFile, err)
 		}
 	}
 
