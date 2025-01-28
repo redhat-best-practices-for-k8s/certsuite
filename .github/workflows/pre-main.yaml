@@ -402,7 +402,7 @@ jobs:
     name: Create manifest list for multi-arch image (legacy)
     needs: [unit-tests, smoke-tests-container]
     runs-on: ubuntu-22.04
-    if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
+    if: needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
     steps:
       - name: Check out code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -428,8 +428,8 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: true
+          platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x
+          push: false
           tags: |
             ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME_LEGACY }}:${{ env.CERTSUITE_IMAGE_TAG }}
       
@@ -445,7 +445,7 @@ jobs:
     name: Create manifest list for multi-arch image
     needs: [unit-tests, smoke-tests-container]
     runs-on: ubuntu-22.04
-    if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
+    if: needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
     steps:
       - name: Check out code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -471,8 +471,8 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: true
+          platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x
+          push: false
           tags: |
             ${{ env.REGISTRY }}/${{ env.CERTSUITE_IMAGE_NAME }}:${{ env.CERTSUITE_IMAGE_TAG }}
       
