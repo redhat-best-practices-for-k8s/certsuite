@@ -18,6 +18,11 @@ RUN \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
 	&& rm -rf /var/cache/yum
 
+# Set environment specific variables
+ENV \
+	OPERATOR_SDK_X86_FILENAME=operator-sdk_linux_amd64 \
+	OPERATOR_SDK_ARM_FILENAME=operator-sdk_linux_arm64
+
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
@@ -26,8 +31,6 @@ ENV GO_BIN_URL_x86_64=${GO_DL_URL}/go1.23.5.linux-amd64.tar.gz
 ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.23.5.linux-arm64.tar.gz
 
 # Determine the CPU architecture and download the appropriate Go binary
-# We only build our binaries on x86_64 and aarch64 platforms, so it is not necessary
-# to support other architectures.
 RUN \
 	if [ "$(uname -m)" = x86_64 ]; then \
 		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_x86_64} --quiet \
@@ -42,14 +45,6 @@ RUN \
 	fi
 ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
-
-# Set environment specific variables
-ENV \
-	OPERATOR_SDK_X86_FILENAME=operator-sdk_linux_amd64 \
-	OPERATOR_SDK_ARM_FILENAME=operator-sdk_linux_arm64 \
-	OPERATOR_SDK_PPC64LE_FILENAME=operator-sdk_linux_ppc64le \
-	OPERATOR_SDK_S390X_FILENAME=operator-sdk_linux_s390x
-
 # Download operator-sdk binary
 ENV \
 	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.39.1 \
@@ -58,45 +53,21 @@ ENV \
 RUN \
 	mkdir -p ${OSDK_BIN}
 
-ARG TARGETARCH
-ARG TARGETOS
-ARG TARGETPLATFORM
-
-RUN \
- # echo the architecture for debugging
- echo "TARGETARCH: $TARGETARCH" \
- && echo "TARGETOS: $TARGETOS" \
- && echo "TARGETPLATFORM: $TARGETPLATFORM"
-
 # hadolint ignore=DL4001
 RUN \
-	if [ "$TARGETARCH" = x86_64 ] || [ "$TARGETARCH" = amd64 ]; then \
+	if [ "$(uname -m)" = x86_64 ]; then \
 		curl \
 			--location \
 			--remote-name \
 			${OPERATOR_SDK_DL_URL}/${OPERATOR_SDK_X86_FILENAME} \
 			&& mv ${OPERATOR_SDK_X86_FILENAME} ${OSDK_BIN}/operator-sdk \
 			&& chmod +x ${OSDK_BIN}/operator-sdk; \
-	elif [ "$TARGETARCH" = aarch64 ] || [ "$TARGETARCH" = arm64 ]; then \
+	elif [ "$(uname -m)" = aarch64 ]; then \
 		curl \
 			--location \
 			--remote-name \
 			${OPERATOR_SDK_DL_URL}/${OPERATOR_SDK_ARM_FILENAME} \
 			&& mv ${OPERATOR_SDK_ARM_FILENAME} ${OSDK_BIN}/operator-sdk \
-			&& chmod +x ${OSDK_BIN}/operator-sdk; \
-	elif [ "$TARGETARCH" = ppc64le ]; then \
-		curl \
-			--location \
-			--remote-name \
-			${OPERATOR_SDK_DL_URL}/${OPERATOR_SDK_PPC64LE_FILENAME} \
-			&& mv ${OPERATOR_SDK_PPC64LE_FILENAME} ${OSDK_BIN}/operator-sdk \
-			&& chmod +x ${OSDK_BIN}/operator-sdk; \
-	elif [ "$TARGETARCH" = s390x ]; then \
-		curl \
-			--location \
-			--remote-name \
-			${OPERATOR_SDK_DL_URL}/${OPERATOR_SDK_S390X_FILENAME} \
-			&& mv ${OPERATOR_SDK_S390X_FILENAME} ${OSDK_BIN}/operator-sdk \
 			&& chmod +x ${OSDK_BIN}/operator-sdk; \
 	else \
 		echo "CPU architecture is not supported." && exit 1; \
@@ -107,17 +78,13 @@ COPY . ${CERTSUITE_SRC_DIR}
 WORKDIR ${CERTSUITE_SRC_DIR}
 
 # Build the certsuite binary
-RUN \
-	# Set the GOARCH and GOOS based on the TARGETPLATFORM
-	export GOARCH=$TARGETARCH \
-	&& export GOOS=$TARGETOS \
-	&& make build-certsuite-tool \
+RUN make build-certsuite-tool \
 	&& cp certsuite ${CERTSUITE_DIR}
 
 # Switch contexts back to the root CERTSUITE directory
 WORKDIR ${CERTSUITE_DIR}
 
-# Remove most of the build artifacts
+# Remove most of the build artefacts
 RUN \
 	dnf remove --assumeyes --disableplugin=subscription-manager gcc git wget \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
@@ -153,6 +120,7 @@ ENV \
 	CERTSUITE_OFFLINE_DB=/usr/offline-db \
 	OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
 COPY --from=db ${OCT_DB_PATH} ${CERTSUITE_OFFLINE_DB}
+
 
 ENV PATH="${OSDK_BIN}:${PATH}"
 WORKDIR ${CERTSUITE_DIR}

@@ -1,7 +1,7 @@
 # There are four main groups of operations provided by this Makefile: build,
 # clean, run and tasks.
 #
-# Build operations will create artifacts from code. This includes things such
+# Build operations will create artefacts from code. This includes things such
 # as binaries, mock files, or catalogs of CNF tests.
 #
 # Clean operations remove the results of the build tasks, or other files not
