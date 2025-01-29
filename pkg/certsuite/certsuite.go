@@ -204,7 +204,7 @@ func Run(labelsFilter, outputFolder string) error {
 	// Red Hat Connect API key and project ID are required to send the tar.gz to Red Hat Connect.
 	sendToConnectAPI := false
 	if env.ConnectAPIKey != "" && env.ConnectProjectID != "" {
-		log.Info("Sending results to Red Hat Connect API with API key %s and project ID %s", env.ConnectAPIKey, env.ConnectProjectID)
+		log.Info("Sending results to Red Hat Connect API for project ID %s", env.ConnectProjectID)
 		sendToConnectAPI = true
 	} else {
 		log.Info("Red Hat Connect API key and project ID are not set. Results will not be sent to Red Hat Connect.")
