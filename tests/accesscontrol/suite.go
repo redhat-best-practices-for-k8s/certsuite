@@ -822,7 +822,7 @@ func testSYSNiceRealtimeCapability(check *checksdb.Check, env *provider.TestEnvi
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not running on a realtime kernel enabled node", true))
 			continue
 		}
-		if !strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_NICE") {
+		if !isContainerCapabilitySet(cut.SecurityContext.Capabilities, "SYS_NICE") {
 			check.LogError("Container %q has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is running on a realtime kernel enabled node without SYS_NICE capability", false))
 		} else {
