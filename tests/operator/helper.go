@@ -20,7 +20,15 @@ Package operator provides CNFCERT tests used to validate operator CNF facets.
 
 package operator
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+)
 
 // CsvResult holds the results of the splitCsv function.
 type CsvResult struct {
@@ -44,4 +52,98 @@ func SplitCsv(csv string) CsvResult {
 		}
 	}
 	return result
+}
+
+func getAllPodsBy(namespace string) (podsInNamespace []*provider.Pod) {
+	for i := range env.AllPods {
+		pod := env.AllPods[i]
+		if pod.Namespace == namespace {
+			podsInNamespace = append(podsInNamespace, pod)
+		}
+	}
+	return podsInNamespace
+}
+
+func findOperatorsFromPods(namespace string, allPods []*provider.Pod) (foundCsvs map[string]bool, podsBelongingToNoOperators []string, err error) {
+	foundCsvs = make(map[string]bool)
+	for index := range allPods {
+		pod := allPods[index]
+		topOwners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
+		if err != nil {
+			return foundCsvs, podsBelongingToNoOperators, err
+		}
+
+		validOwnerFound := false
+		for _, owner := range topOwners {
+			if owner.Kind == v1alpha1.ClusterServiceVersionKind && owner.Namespace == namespace {
+				foundCsvs[owner.Name] = true
+				validOwnerFound = true
+				break
+			}
+		}
+		if !validOwnerFound {
+			podsBelongingToNoOperators = append(podsBelongingToNoOperators, pod.Name)
+		}
+	}
+	return foundCsvs, podsBelongingToNoOperators, nil
+}
+
+// This function checks if the namespace contains only valid single namespaced operator without any cluster wide operator and non-operator pods
+func containsValidSingleNamespacedOperatorIn(namespace string) (isOperatorOnlyNamespace bool, singleNamespacedCsvs, allNamespacedCsvs, podsBelongingToNoOperators []string, err error) {
+	allPods := getAllPodsBy(namespace)
+
+	foundCsvs, podsBelongingToNoOperators, err := findOperatorsFromPods(namespace, allPods)
+	if err != nil {
+		return false, singleNamespacedCsvs, allNamespacedCsvs, podsBelongingToNoOperators, err
+	}
+
+	allOperatorsFoundInNamespaceAreValid := true
+
+	for _, operator := range env.Operators {
+		for foundCsv := range foundCsvs {
+			if operator.Csv.Name != foundCsv {
+				continue
+			}
+
+			// Handle cluster-wide operators
+			if operator.IsClusterWide {
+				allOperatorsFoundInNamespaceAreValid = false
+				allNamespacedCsvs = append(allNamespacedCsvs, foundCsv)
+				break
+			}
+
+			if len(operator.TargetNamespaces) == 1 {
+				singleNamespacedCsvs = append(singleNamespacedCsvs, foundCsv)
+			}
+		}
+	}
+
+	if len(podsBelongingToNoOperators) == 0 && allOperatorsFoundInNamespaceAreValid {
+		return true, singleNamespacedCsvs, allNamespacedCsvs, podsBelongingToNoOperators, nil
+	} else {
+		return false, singleNamespacedCsvs, allNamespacedCsvs, podsBelongingToNoOperators, nil
+	}
+}
+
+func generateNonCompliantMessage(singleNamespacedOperators string, allNamespacedCsvs, podsBelongingToNoOperators []string) (nonCompliantMsg string) {
+	prefix := "Operator namespace"
+	if singleNamespacedOperators != "" {
+		prefix += " with single namespace operators (" + singleNamespacedOperators + ")"
+	}
+
+	var allNamespacedOperators string
+	if len(allNamespacedCsvs) != 0 { // cluster-wide operator
+		allNamespacedOperators = strings.Join(allNamespacedCsvs, ", ")
+		nonCompliantMsg = fmt.Sprintf("%s contains all-namespaced operators (%s) ", prefix, allNamespacedOperators)
+	}
+
+	if len(podsBelongingToNoOperators) != 0 {
+		suffix := fmt.Sprintf("contains some application pods (%s)", strings.Join(podsBelongingToNoOperators, ", "))
+		if nonCompliantMsg == "" {
+			nonCompliantMsg = fmt.Sprintf("%s %s", prefix, suffix)
+		} else {
+			nonCompliantMsg += fmt.Sprintf("and %s", suffix)
+		}
+	}
+	return nonCompliantMsg
 }

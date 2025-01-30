@@ -22,9 +22,9 @@ import (
 )
 
 // StringInSlice checks a slice for a given string.
-func StringInSlice[T ~string](s []T, str T, contains bool) bool {
+func StringInSlice[T ~string](s []T, str T, containsCheck bool) bool {
 	for _, v := range s {
-		if !contains {
+		if !containsCheck {
 			if strings.TrimSpace(string(v)) == string(str) {
 				return true
 			}

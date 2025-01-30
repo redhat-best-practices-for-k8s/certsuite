@@ -135,6 +135,7 @@ func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err erro
 	}
 	return allNs, nil
 }
+
 func getAllOperators(olmClient v1alpha1.OperatorsV1alpha1Interface) ([]*olmv1Alpha.ClusterServiceVersion, error) {
 	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 

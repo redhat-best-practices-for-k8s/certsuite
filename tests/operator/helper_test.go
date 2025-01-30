@@ -22,6 +22,8 @@ package operator
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSplitCsv(t *testing.T) {
@@ -67,5 +69,49 @@ func TestSplitCsv(t *testing.T) {
 				t.Errorf("splitCsv(%q) got namespace %q, want %q", tt.input, result.Namespace, tt.expectedNs)
 			}
 		})
+	}
+}
+
+func TestGenerateNonCompliantMessage(t *testing.T) {
+	testCases := []struct {
+		singleNamespacedOperators  string
+		allNamespacedCsvs          []string
+		podsBelongingToNoOperators []string
+		expectedMsg                string
+	}{
+		{
+			singleNamespacedOperators:  "s1,s2",
+			allNamespacedCsvs:          []string{"a1", "a2"},
+			podsBelongingToNoOperators: []string{"pod1", "pod2"},
+			expectedMsg:                "Operator namespace with single namespace operators (s1,s2) contains all-namespaced operators (a1, a2) and contains some application pods (pod1, pod2)",
+		},
+		{
+			singleNamespacedOperators:  "s1,s2",
+			allNamespacedCsvs:          []string{},
+			podsBelongingToNoOperators: []string{"pod1", "pod2"},
+			expectedMsg:                "Operator namespace with single namespace operators (s1,s2) contains some application pods (pod1, pod2)",
+		},
+		{
+			singleNamespacedOperators:  "s1,s2",
+			allNamespacedCsvs:          []string{},
+			podsBelongingToNoOperators: []string{},
+			expectedMsg:                "",
+		},
+		{
+			singleNamespacedOperators:  "s1,s2",
+			allNamespacedCsvs:          []string{},
+			podsBelongingToNoOperators: []string{"pod1", "pod2"},
+			expectedMsg:                "Operator namespace with single namespace operators (s1,s2) contains some application pods (pod1, pod2)",
+		},
+		{
+			singleNamespacedOperators:  "",
+			allNamespacedCsvs:          []string{},
+			podsBelongingToNoOperators: []string{"pod1", "pod2"},
+			expectedMsg:                "Operator namespace contains some application pods (pod1, pod2)",
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedMsg, generateNonCompliantMessage(tc.singleNamespacedOperators, tc.allNamespacedCsvs, tc.podsBelongingToNoOperators))
 	}
 }

@@ -17,6 +17,7 @@
 package operator
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -126,6 +127,54 @@ func LoadChecks() {
 			testOperatorCatalogSourceBundleCount(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSingleNamespacedOperatorInstallationInTenantNamespace)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(c, &env)
+			return nil
+		}))
+}
+
+// This function checks if SingleNamespaced Operators should only be installed in the tenant dedicated operator namespace
+func testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testInstalledSingleNamespaceOperatorInTenantNamespace")
+
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	operatorNamespaces := make(map[string]bool)
+	for _, operator := range env.Operators {
+		operatorNamespace := operator.Csv.Annotations["olm.operatorNamespace"]
+		operatorNamespaces[operatorNamespace] = true
+	}
+
+	for operatorNamespace := range operatorNamespaces {
+		check.LogInfo("Checking if namespace %s is an operator namespace", operatorNamespace)
+		isValidSingleNamespacedOperatorInstallation, singleNamespacedCsvs, allNamespacedCsvs, podsBelongingToNoOperators, err := containsValidSingleNamespacedOperatorIn(operatorNamespace)
+
+		if err != nil {
+			check.LogError("Skipped - cannot proceed with operator namespace %s", operatorNamespace)
+			continue
+		}
+
+		var installedSingleNamespacedOperators string
+		if len(singleNamespacedCsvs) != 0 {
+			installedSingleNamespacedOperators = strings.Join(singleNamespacedCsvs, ", ")
+		}
+
+		if isValidSingleNamespacedOperatorInstallation {
+			msg := fmt.Sprintf("Namespace is dedicated to single namespace operators %s ", installedSingleNamespacedOperators)
+			check.LogInfo(msg)
+			compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, true, operatorNamespace))
+		} else {
+			nonCompliantMsg := generateNonCompliantMessage(installedSingleNamespacedOperators, allNamespacedCsvs, podsBelongingToNoOperators)
+			check.LogInfo(nonCompliantMsg)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject(
+				nonCompliantMsg, testhelper.Namespace, false, operatorNamespace))
+		}
+	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // This function check if the Operator CRD version follows K8s versioning
