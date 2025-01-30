@@ -212,7 +212,7 @@ func deployDaemonSet(namespace string) error {
 		configuration.GetTestParameters().DaemonsetCPULim,
 		configuration.GetTestParameters().DaemonsetMemReq,
 		configuration.GetTestParameters().DaemonsetMemLim,
-		corev1.PullAlways,
+		corev1.PullIfNotPresent,
 	)
 	if err != nil {
 		return fmt.Errorf("could not deploy certsuite daemonset, err=%v", err)
