@@ -23,6 +23,7 @@ import (
 	"github.com/Masterminds/semver"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/access"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/catalogsource"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/phasecheck"
 
@@ -256,39 +257,9 @@ func testOperatorInstallationAccessToSCC(check *checksdb.Check, env *provider.Te
 		}
 
 		// Fails in case any cluster permission has a rule that refers to securitycontextconstraints.
-		badRuleFound := false
-		for permissionIndex := range clusterPermissions {
-			permission := &clusterPermissions[permissionIndex]
-			for ruleIndex := range permission.Rules {
-				rule := &permission.Rules[ruleIndex]
-
-				// Check whether the rule is for the security api group.
-				securityGroupFound := false
-				for _, group := range rule.APIGroups {
-					if group == "*" || group == "security.openshift.io" {
-						securityGroupFound = true
-						break
-					}
-				}
-
-				if !securityGroupFound {
-					continue
-				}
-
-				// Now check whether it grants some access to securitycontextconstraint resources.
-				for _, resource := range rule.Resources {
-					if resource == "*" || resource == "securitycontextconstraints" {
-						check.LogInfo("Operator %s has a rule (index %d) for service account %s to access cluster SCCs",
-							operator, ruleIndex, permission.ServiceAccountName)
-						// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
-						badRuleFound = true
-						break
-					}
-				}
-			}
-		}
-
-		if badRuleFound {
+		if access.PermissionsHaveBadRule(clusterPermissions) {
+			check.LogInfo("Operator %s has a rule for a service account to access cluster SCCs",
+				operator)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "One or more RBAC rules for Security Context Constraints found in CSV", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "No RBAC rules for Security Context Constraints found in CSV", true))
