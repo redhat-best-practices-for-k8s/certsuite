@@ -108,8 +108,6 @@ func Startup() {
 	log.Info("Labels filter: %v", testParams.LabelsFilter)
 	log.Info("Log level: %s", strings.ToUpper(testParams.LogLevel))
 
-	log.Debug("Test parameters: %#v", *configuration.GetTestParameters())
-
 	cli.PrintBanner()
 
 	fmt.Printf("Certsuite version: %s\n", versions.GitVersion())
@@ -200,6 +198,34 @@ func Run(labelsFilter, outputFolder string) error {
 
 	// Add the log file path
 	allArtifactsFilePaths = append(allArtifactsFilePaths, filepath.Join(outputFolder, log.LogFileName))
+
+	// Override the env vars if they are not set.
+	if env.ConnectAPIKey == "" {
+		env.ConnectAPIKey = configuration.GetTestParameters().ConnectAPIKey
+	}
+
+	if env.ConnectProjectID == "" {
+		env.ConnectProjectID = configuration.GetTestParameters().ConnectProjectID
+	}
+
+	if env.ConnectAPIBaseURL == "" {
+		env.ConnectAPIBaseURL = configuration.GetTestParameters().ConnectAPIBaseURL
+	}
+
+	// Default the base URL to the Red Hat Connect API if not set.
+	// This is if the config file does not have the base URL set and the cmd line
+	// does not have the base URL set.
+	if env.ConnectAPIBaseURL == "" {
+		env.ConnectAPIBaseURL = "https://access.redhat.com/hydra/cwe/rest/v1.0"
+	}
+
+	if env.ConnectAPIProxyURL == "" {
+		env.ConnectAPIProxyURL = configuration.GetTestParameters().ConnectAPIProxyURL
+	}
+
+	if env.ConnectAPIProxyPort == "" {
+		env.ConnectAPIProxyPort = configuration.GetTestParameters().ConnectAPIProxyPort
+	}
 
 	// Red Hat Connect API key and project ID are required to send the tar.gz to Red Hat Connect.
 	sendToConnectAPI := false
