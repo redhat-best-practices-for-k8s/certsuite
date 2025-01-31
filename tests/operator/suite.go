@@ -330,17 +330,17 @@ func testOperatorSingleCrdOwner(check *checksdb.Check, env *provider.TestEnviron
 		ownedCrds := operator.Csv.Spec.CustomResourceDefinitions.Owned
 
 		// Helper map to filter out different versions of the same CRD name.
-		uniqueOnwnedCrds := map[string]struct{}{}
+		uniqueOwnedCrds := map[string]struct{}{}
 		for j := range ownedCrds {
-			uniqueOnwnedCrds[ownedCrds[j].Name] = struct{}{}
+			uniqueOwnedCrds[ownedCrds[j].Name] = struct{}{}
 		}
 
 		// Now we can append the operator as CRD owner
-		for crdName := range uniqueOnwnedCrds {
+		for crdName := range uniqueOwnedCrds {
 			crdOwners[crdName] = append(crdOwners[crdName], operator.Name)
 		}
 
-		check.LogInfo("CRDs owned by operator %s: %+v", operator.Name, uniqueOnwnedCrds)
+		check.LogInfo("CRDs owned by operator %s: %+v", operator.Name, uniqueOwnedCrds)
 	}
 
 	// Flag those that are owned by more than one operator
