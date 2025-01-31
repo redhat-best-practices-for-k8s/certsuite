@@ -1,10 +1,13 @@
 package podhelper
 
 import (
+	"errors"
 	"maps"
 	"testing"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+	"github.com/stretchr/testify/assert"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 
@@ -132,4 +135,110 @@ func Test_followOwnerReferences(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSearchAPIResource(t *testing.T) {
+	testCases := []struct {
+		testKind         string
+		testAPIVersion   string
+		testResourceList []*metav1.APIResourceList
+		expectedError    error
+	}{
+		{ // Test Case #1 - APIResource found
+			testKind:       "ClusterServiceVersion",
+			testAPIVersion: "operators.coreos.com/v1alpha1",
+			testResourceList: []*metav1.APIResourceList{
+				{
+					GroupVersion: "operators.coreos.com/v1alpha1",
+					APIResources: []metav1.APIResource{
+						{
+							Name:       "clusterserviceversions",
+							Kind:       "ClusterServiceVersion",
+							Namespaced: true,
+						},
+					},
+				},
+			},
+			expectedError: nil,
+		},
+		{ // Test Case #2 - APIResource not found
+			testKind:       "ClusterServiceVersion",
+			testAPIVersion: "operators.coreos.com/v1alpha1",
+			testResourceList: []*metav1.APIResourceList{
+				{
+					GroupVersion: "operators.redhat-test.com/v1alpha1",
+					APIResources: []metav1.APIResource{
+						{
+							Name:       "clusterserviceversions",
+							Kind:       "ClusterServiceVersion",
+							Namespaced: true,
+						},
+					},
+				},
+			},
+			expectedError: errors.New("apiResource not found for kind=ClusterServiceVersion and APIVersion=operators.coreos.com/v1alpha1"),
+		},
+	}
+
+	for _, tc := range testCases {
+		resource, err := searchAPIResource(tc.testKind, tc.testAPIVersion, tc.testResourceList)
+		if tc.expectedError != nil {
+			assert.Equal(t, tc.expectedError, err)
+		} else {
+			assert.Nil(t, err)
+			assert.Equal(t, tc.testKind, resource.Kind)
+		}
+	}
+}
+
+func TestGetTopOwners(t *testing.T) {
+	generatePod := func(name, namespace string, ownerRefs []metav1.OwnerReference) *corev1.Pod {
+		return &corev1.Pod{
+			TypeMeta: metav1.TypeMeta{Kind: "Pod", APIVersion: "v1"},
+			ObjectMeta: metav1.ObjectMeta{
+				Name:            name,
+				Namespace:       namespace,
+				OwnerReferences: ownerRefs,
+			},
+		}
+	}
+
+	generateDeployment := func(name, namespace string, ownerRefs []metav1.OwnerReference) *appsv1.Deployment {
+		return &appsv1.Deployment{
+			TypeMeta: metav1.TypeMeta{Kind: "Deployment", APIVersion: "apps/v1"},
+			ObjectMeta: metav1.ObjectMeta{
+				Name:            name,
+				Namespace:       namespace,
+				OwnerReferences: ownerRefs,
+			},
+		}
+	}
+
+	testDeployment := generateDeployment("dep1", "ns1", []metav1.OwnerReference{})
+	testPod := generatePod("pod1", "ns1", []metav1.OwnerReference{{APIVersion: "apps/v1", Kind: "Deployment", Name: "dep1"}})
+
+	resourceList := []*metav1.APIResourceList{
+		{GroupVersion: "apps/v1", APIResources: []metav1.APIResource{{Name: "deployments", Kind: "Deployment", Namespaced: true}}},
+		{GroupVersion: "v1", APIResources: []metav1.APIResource{{Name: "pods", Kind: "Pod", Namespaced: true}}},
+	}
+
+	client := k8sDynamicFake.NewSimpleDynamicClient(k8sscheme.Scheme, testDeployment, testPod)
+
+	// Spoof the get functions
+	client.Fake.AddReactor("get", "Deployment", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+		return true, testDeployment, nil
+	})
+
+	client.Fake.AddReactor("get", "Pod", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+		return true, testPod, nil
+	})
+
+	// Set the test clients
+	clientsholder.SetTestK8sDynamicClientsHolder(client)
+	clientsholder.SetTestClientGroupResources(resourceList)
+
+	// Get the top owner for the pod which is a deployment
+	topOwners, err := GetPodTopOwner("ns1", testPod.OwnerReferences)
+	assert.Nil(t, err)
+	assert.Equal(t, map[string]TopOwner{"dep1": {APIVersion: "apps/v1", Namespace: "ns1", Kind: "Deployment", Name: "dep1"}}, topOwners)
 }
