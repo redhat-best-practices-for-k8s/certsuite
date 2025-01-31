@@ -22,7 +22,12 @@ type TopOwner struct {
 // Get the list of top owners of pods
 func GetPodTopOwner(podNamespace string, podOwnerReferences []metav1.OwnerReference) (topOwners map[string]TopOwner, err error) {
 	topOwners = make(map[string]TopOwner)
-	err = followOwnerReferences(clientsholder.GetClientsHolder().GroupResources, clientsholder.GetClientsHolder().DynamicClient, topOwners, podNamespace, podOwnerReferences)
+	err = followOwnerReferences(
+		clientsholder.GetClientsHolder().GroupResources,
+		clientsholder.GetClientsHolder().DynamicClient,
+		topOwners,
+		podNamespace,
+		podOwnerReferences)
 	if err != nil {
 		return topOwners, fmt.Errorf("could not get top owners, err: %v", err)
 	}
