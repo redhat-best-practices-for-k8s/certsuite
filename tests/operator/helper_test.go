@@ -22,6 +22,13 @@ package operator
 
 import (
 	"testing"
+
+	"github.com/blang/semver/v4"
+	opFrameworkVersion "github.com/operator-framework/api/pkg/lib/version"
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/stretchr/testify/assert"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestSplitCsv(t *testing.T) {
@@ -67,5 +74,59 @@ func TestSplitCsv(t *testing.T) {
 				t.Errorf("splitCsv(%q) got namespace %q, want %q", tt.input, result.Namespace, tt.expectedNs)
 			}
 		})
+	}
+}
+
+func TestOperatorInstalledMoreThanOnce(t *testing.T) {
+	generateOperator := func(name, csvName string, major, minor, patch int) *provider.Operator {
+		return &provider.Operator{
+			Name: name,
+			Csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: csvName,
+				},
+				Spec: v1alpha1.ClusterServiceVersionSpec{
+					Version: opFrameworkVersion.OperatorVersion{
+						Version: semver.Version{
+							Major: uint64(major),
+							Minor: uint64(minor),
+							Patch: uint64(patch),
+						},
+					},
+				},
+			},
+		}
+	}
+
+	testCases := []struct {
+		testOp1        *provider.Operator
+		testOp2        *provider.Operator
+		expectedOutput bool
+	}{
+		{ // Test Case #1 - Both operators are nil
+			testOp1:        nil,
+			testOp2:        nil,
+			expectedOutput: false,
+		},
+		{ // Test Case #2 - One operator is nil
+			testOp1:        &provider.Operator{},
+			testOp2:        nil,
+			expectedOutput: false,
+		},
+		{ // Test Case #3 - Both operators are different
+			testOp1:        generateOperator("test-operator-1", "test-operator-1.v1.0.0", 1, 0, 0),
+			testOp2:        generateOperator("test-operator-2", "test-operator-2.v1.0.0", 1, 0, 0),
+			expectedOutput: false,
+		},
+		{ // Test Case #4 - Both operators are the same but different versions.
+			// OLM does not allow the same operator to be installed more than once with the same version.
+			testOp1:        generateOperator("test-operator", "test-operator.v1.0.0", 1, 0, 0),
+			testOp2:        generateOperator("test-operator", "test-operator.v1.0.1", 1, 0, 1),
+			expectedOutput: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, OperatorInstalledMoreThanOnce(tc.testOp1, tc.testOp2))
 	}
 }

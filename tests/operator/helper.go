@@ -20,7 +20,12 @@ Package operator provides CNFCERT tests used to validate operator CNF facets.
 
 package operator
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+)
 
 // CsvResult holds the results of the splitCsv function.
 type CsvResult struct {
@@ -44,4 +49,37 @@ func SplitCsv(csv string) CsvResult {
 		}
 	}
 	return result
+}
+
+func OperatorInstalledMoreThanOnce(operator1, operator2 *provider.Operator) bool {
+	// Safeguard against nil operators (should not happen)
+	if operator1 == nil || operator2 == nil {
+		return false
+	}
+
+	log.Debug("Comparing operator %q with operator %q", operator1.Name, operator2.Name)
+
+	// Retrieve the version from each CSV
+	csv1Version := operator1.Csv.Spec.Version.String()
+	csv2Version := operator2.Csv.Spec.Version.String()
+
+	log.Debug("CSV1 Version: %s", csv1Version)
+	log.Debug("CSV2 Version: %s", csv2Version)
+
+	// Strip the version from the CSV name by removing the suffix (which should be the version)
+	csv1Name := strings.TrimSuffix(operator1.Csv.Name, ".v"+csv1Version)
+	csv2Name := strings.TrimSuffix(operator2.Csv.Name, ".v"+csv2Version)
+
+	log.Debug("Comparing CSV names %q and %q", csv1Name, csv2Name)
+
+	// The CSV name should be the same, but the version should be different
+	// if the operator is installed more than once.
+	if operator1.Csv != nil && operator2.Csv != nil &&
+		csv1Name == csv2Name &&
+		csv1Version != csv2Version {
+		log.Error("Operator %q is installed more than once", operator1.Name)
+		return true
+	}
+
+	return false
 }

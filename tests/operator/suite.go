@@ -416,27 +416,8 @@ func testMultipleSameOperators(check *checksdb.Check, env *provider.TestEnvironm
 		check.LogDebug("Checking operator %q", op.Name)
 		check.LogDebug("Number of operators to check %s against: %d", op.Name, len(env.AllOperators))
 		for _, op2 := range env.AllOperators {
-			check.LogDebug("Comparing operator %q with operator %q", op.Name, op2.Name)
-
-			// Retrieve the version from each CSV
-			csv1Version := op.Csv.Spec.Version.String()
-			csv2Version := op2.Csv.Spec.Version.String()
-
-			log.Debug("CSV1 Version: %s", csv1Version)
-			log.Debug("CSV2 Version: %s", csv2Version)
-
-			// Strip the version from the CSV name by removing the suffix (which should be the version)
-			csv1Name := strings.TrimSuffix(op.Csv.Name, ".v"+csv1Version)
-			csv2Name := strings.TrimSuffix(op2.Csv.Name, ".v"+csv2Version)
-
-			check.LogDebug("Comparing CSV names %q and %q", csv1Name, csv2Name)
-
-			// The CSV name should be the same, but the version should be different
-			// if the operator is installed more than once.
-			if op.Csv != nil && op2.Csv != nil &&
-				csv1Name == csv2Name &&
-				csv1Version != csv2Version {
-				check.LogError("Operator %q is installed more than once", op.Name)
+			// Check if the operator is installed more than once.
+			if OperatorInstalledMoreThanOnce(op, op2) {
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(
 					op.Namespace, op.Name, "Operator is installed more than once", false))
 				break
