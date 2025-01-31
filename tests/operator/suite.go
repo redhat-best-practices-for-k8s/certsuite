@@ -24,6 +24,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/catalogsource"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/openapi"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/phasecheck"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -169,21 +170,7 @@ func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnviron
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, crd := range env.Crds {
-		isCrdDefinedWithOpenAPI3Schema := false
-
-		for _, version := range crd.Spec.Versions {
-			crdSchema := version.Schema.String()
-
-			containsOpenAPIV3SchemaSubstr := strings.Contains(strings.ToLower(crdSchema),
-				strings.ToLower(testhelper.OpenAPIV3Schema))
-
-			if containsOpenAPIV3SchemaSubstr {
-				isCrdDefinedWithOpenAPI3Schema = true
-				break
-			}
-		}
-
-		if isCrdDefinedWithOpenAPI3Schema {
+		if openapi.IsCRDDefinedWithOpenAPI3Schema(crd) {
 			check.LogInfo("Operator CRD %s is defined with OpenAPIV3 schema ", crd.Name)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
 				"Operator CRD is defined with OpenAPIV3 schema ", true).AddField(testhelper.OpenAPIV3Schema, crd.Name))
