@@ -39,12 +39,17 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().Bool("include-web-files", false, "Save web files in the configured output folder")
 	runCmd.PersistentFlags().Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
 	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
-	runCmd.PersistentFlags().String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.11", "Certsuite probe image")
+	runCmd.PersistentFlags().String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.13", "Certsuite probe image")
 	runCmd.PersistentFlags().String("daemonset-cpu-req", "100m", "CPU request for the probe daemonset container")
 	runCmd.PersistentFlags().String("daemonset-cpu-lim", "100m", "CPU limit for the probe daemonset container")
 	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the probe daemonset container")
 	runCmd.PersistentFlags().String("daemonset-mem-lim", "100M", "Memory limit for the probe daemonset container")
 	runCmd.PersistentFlags().Bool("sanitize-claim", false, "Sanitize the claim.json file before sending it to the collector")
+	runCmd.PersistentFlags().String("connect-api-key", "", "API Key for Red Hat Connect portal")
+	runCmd.PersistentFlags().String("connect-project-id", "", "Project ID for Red Hat Connect portal")
+	runCmd.PersistentFlags().String("connect-api-base-url", "", "Base URL for Red Hat Connect API")
+	runCmd.PersistentFlags().String("connect-api-proxy-url", "", "Proxy URL for Red Hat Connect API")
+	runCmd.PersistentFlags().String("connect-api-proxy-port", "", "Proxy port for Red Hat Connect API")
 
 	return runCmd
 }
@@ -73,6 +78,11 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams.DaemonsetMemReq, _ = cmd.Flags().GetString("daemonset-mem-req")
 	testParams.DaemonsetMemLim, _ = cmd.Flags().GetString("daemonset-mem-lim")
 	testParams.SanitizeClaim, _ = cmd.Flags().GetBool("sanitize-claim")
+	testParams.ConnectAPIKey, _ = cmd.Flags().GetString("connect-api-key")
+	testParams.ConnectProjectID, _ = cmd.Flags().GetString("connect-project-id")
+	testParams.ConnectAPIBaseURL, _ = cmd.Flags().GetString("connect-api-base-url")
+	testParams.ConnectAPIProxyURL, _ = cmd.Flags().GetString("connect-api-proxy-url")
+	testParams.ConnectAPIProxyPort, _ = cmd.Flags().GetString("connect-api-proxy-port")
 	timeoutStr, _ := cmd.Flags().GetString("timeout")
 
 	// Check if the output directory exists and, if not, create it
@@ -104,14 +114,13 @@ func runTestSuite(cmd *cobra.Command, _ []string) error {
 		log.Fatal("Failed to initialize the test parameters, err: %v", err)
 	}
 
-	certsuite.Startup()
-	defer certsuite.Shutdown()
-
 	testParams := configuration.GetTestParameters()
 	if testParams.ServerMode {
 		log.Info("Running Certification Suite in web server mode")
 		webserver.StartServer(testParams.OutputDir)
 	} else {
+		certsuite.Startup()
+		defer certsuite.Shutdown()
 		log.Info("Running Certification Suite in stand-alone mode")
 		err := certsuite.Run(testParams.LabelsFilter, testParams.OutputDir)
 		if err != nil {

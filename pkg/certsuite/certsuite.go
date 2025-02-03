@@ -108,8 +108,6 @@ func Startup() {
 	log.Info("Labels filter: %v", testParams.LabelsFilter)
 	log.Info("Log level: %s", strings.ToUpper(testParams.LogLevel))
 
-	log.Debug("Test parameters: %#v", *configuration.GetTestParameters())
-
 	cli.PrintBanner()
 
 	fmt.Printf("Certsuite version: %s\n", versions.GitVersion())
@@ -128,7 +126,7 @@ func Shutdown() {
 	}
 }
 
-//nolint:funlen
+//nolint:funlen,gocyclo
 func Run(labelsFilter, outputFolder string) error {
 	testParams := configuration.GetTestParameters()
 
@@ -201,11 +199,88 @@ func Run(labelsFilter, outputFolder string) error {
 	// Add the log file path
 	allArtifactsFilePaths = append(allArtifactsFilePaths, filepath.Join(outputFolder, log.LogFileName))
 
+	// Override the env vars if they are not set.
+	if env.ConnectAPIKey == "" {
+		env.ConnectAPIKey = configuration.GetTestParameters().ConnectAPIKey
+	}
+
+	if env.ConnectProjectID == "" {
+		env.ConnectProjectID = configuration.GetTestParameters().ConnectProjectID
+	}
+
+	if env.ConnectAPIBaseURL == "" {
+		env.ConnectAPIBaseURL = configuration.GetTestParameters().ConnectAPIBaseURL
+	}
+
+	// Default the base URL to the Red Hat Connect API if not set.
+	// This is if the config file does not have the base URL set and the cmd line
+	// does not have the base URL set.
+	if env.ConnectAPIBaseURL == "" {
+		env.ConnectAPIBaseURL = "https://access.redhat.com/hydra/cwe/rest/v1.0"
+	}
+
+	if env.ConnectAPIProxyURL == "" {
+		env.ConnectAPIProxyURL = configuration.GetTestParameters().ConnectAPIProxyURL
+	}
+
+	if env.ConnectAPIProxyPort == "" {
+		env.ConnectAPIProxyPort = configuration.GetTestParameters().ConnectAPIProxyPort
+	}
+
+	// Red Hat Connect API key and project ID are required to send the tar.gz to Red Hat Connect.
+	sendToConnectAPI := false
+	if env.ConnectAPIKey != "" && env.ConnectProjectID != "" {
+		log.Info("Sending results to Red Hat Connect API for project ID %s", env.ConnectProjectID)
+		sendToConnectAPI = true
+	} else {
+		log.Info("Red Hat Connect API key and project ID are not set. Results will not be sent to Red Hat Connect.")
+	}
+
+	var zipFile string
+
 	// tar.gz file creation with results and html artifacts, unless omitted by env var.
-	if !configuration.GetTestParameters().OmitArtifactsZipFile {
-		err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
+	if !configuration.GetTestParameters().OmitArtifactsZipFile || sendToConnectAPI {
+		zipFile, err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
 		if err != nil {
 			log.Fatal("Failed to compress results artifacts: %v", err)
+		}
+
+		if sendToConnectAPI {
+			log.Debug("Get CertificationID from the Red Hat Connect API")
+			certificationID, err := results.GetCertIDFromConnectAPI(
+				env.ConnectAPIKey,
+				env.ConnectProjectID,
+				env.ConnectAPIBaseURL,
+				env.ConnectAPIProxyURL,
+				env.ConnectAPIProxyPort)
+			if err != nil {
+				log.Fatal("Failed to get CertificationID from Red Hat Connect: %v", err)
+			}
+
+			if certificationID == "" {
+				log.Fatal("Failed to get CertificationID from Red Hat Connect")
+			}
+
+			log.Debug("Sending ZIP file %s to Red Hat Connect", zipFile)
+			err = results.SendResultsToConnectAPI(zipFile,
+				env.ConnectAPIKey,
+				env.ConnectAPIBaseURL,
+				certificationID,
+				env.ConnectAPIProxyURL,
+				env.ConnectAPIProxyPort)
+			if err != nil {
+				log.Fatal("Failed to send results to Red Hat Connect: %v", err)
+			}
+
+			log.Info("Results successfully sent to Red Hat Connect with CertificationID %s", certificationID)
+		}
+	}
+
+	if configuration.GetTestParameters().OmitArtifactsZipFile && zipFile != "" {
+		// delete the zip as the user does not want it.
+		err = os.Remove(zipFile)
+		if err != nil {
+			log.Fatal("Failed to remove zip file %s: %v", zipFile, err)
 		}
 	}
 

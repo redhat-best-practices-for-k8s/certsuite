@@ -63,9 +63,9 @@ func getAllPodsBy(namespace string, allPods []*provider.Pod) (podsInNamespace []
 	return podsInNamespace
 }
 
-func getAllOperatorsBy(namespace string, operators []*provider.Operator) (operatorsInNamespace []*provider.Operator) {
-	for _, operator := range operators {
-		if operator.Csv.Namespace == namespace {
+func getAllOperatorsBy(namespace string, allOperators []*provider.Operator) (operatorsInNamespace []*provider.Operator) {
+	for _, operator := range allOperators {
+		if operator.Csv.Namespace == namespace || len(operator.TargetNamespaces) == 0 {
 			operatorsInNamespace = append(operatorsInNamespace, operator)
 		}
 	}
@@ -90,8 +90,10 @@ func checkIfOperatorUnderTest(operator *provider.Operator) bool {
 	return false
 }
 
-func checkValidOperatorInstallation(namespace string) (isDedicatedOperatorNamespace bool, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators []string) {
+func checkValidOperatorInstallation(namespace string) (isDedicatedOperatorNamespace bool, singleOrMultiNamespaceOperators,
+	nonSingleOrMultiNamespaceOperators, csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators []string, err error) {
 	// 1. operator installation checks
+
 	for _, operator := range getAllOperatorsBy(namespace, env.AllOperators) {
 		if namespace == operator.Csv.Annotations["olm.operatorNamespace"] {
 			if checkIfOperatorUnderTest(operator) {
@@ -107,13 +109,15 @@ func checkValidOperatorInstallation(namespace string) (isDedicatedOperatorNamesp
 			csvsFoundButNotInOperatorInstallationNamespace = append(csvsFoundButNotInOperatorInstallationNamespace, operator.Name)
 		}
 	}
+
 	// 2. existing pods check
 	podsBelongingToNoOperators, err := findPodsNotBelongingToOperators(namespace)
 	if err != nil {
-		return false, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators
+		return false, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators, err
 	}
 
-	return len(podsBelongingToNoOperators) == 0 && len(singleOrMultiNamespaceOperators) != 0, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators
+	return len(podsBelongingToNoOperators) == 0 && len(singleOrMultiNamespaceOperators) != 0, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators,
+		csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators, nil
 
 }
 

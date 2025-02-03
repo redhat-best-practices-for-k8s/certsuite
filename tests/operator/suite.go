@@ -152,7 +152,13 @@ func testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.
 	for operatorNamespace := range operatorNamespaces { // operator installed namespace
 		check.LogInfo("Checking if namespace %s contains only valid single/ multi namespaced operators", operatorNamespace)
 
-		isDedicatedOperatorNamespace, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators := checkValidOperatorInstallation(operatorNamespace)
+		isDedicatedOperatorNamespace, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators,
+			csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators, err := checkValidOperatorInstallation(operatorNamespace)
+
+		if err != nil {
+			check.LogError("Error %v found in checking namespace %s", err, operatorNamespace)
+			continue
+		}
 
 		if isDedicatedOperatorNamespace {
 			msg := fmt.Sprintf("Namespace is dedicated to single/multi namespace operators %s ", strings.Join(singleOrMultiNamespaceOperators, ", "))

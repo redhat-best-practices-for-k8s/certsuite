@@ -102,7 +102,7 @@ jobs:
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+          command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       - name: Cleanup self-hosted runner images
         run: docker image prune -f

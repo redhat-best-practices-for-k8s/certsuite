@@ -22,8 +22,8 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/arrayhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/robert-nix/ansihtml"
 
@@ -116,6 +116,11 @@ type RequestedData struct {
 	ExecutedBy                           []string `json:"executedBy"`
 	CollectorAppPassword                 []string `json:"CollectorAppPassword"`
 	PartnerName                          []string `json:"PartnerName"`
+	ConnectAPIKey                        []string `json:"key,omitempty"`
+	ConnectProjectID                     []string `json:"projectID,omitempty"`
+	ConnectAPIBaseURL                    []string `json:"baseURL,omitempty"`
+	ConnectAPIProxyURL                   []string `json:"proxyURL,omitempty"`
+	ConnectAPIProxyPort                  []string `json:"proxyPort,omitempty"`
 }
 type ResponseData struct {
 	Message string `json:"message"`
@@ -223,7 +228,6 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	log.SetLogger(log.GetMultiLogger(buf))
 
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
-	log.Info(jsonData)
 	var data RequestedData
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
 		fmt.Println("Error:", err)
@@ -264,7 +268,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	log.Info("Web Server kubeconfig file : %v (copied into %v)", fileHeader.Filename, kubeconfigTempFile.Name())
 	log.Info("Web Server Labels filter   : %v", flattenedOptions)
 
-	tnfConfig, err := os.ReadFile("certsuite_config.yml")
+	tnfConfig, err := os.ReadFile("config/certsuite_config.yml")
 	if err != nil {
 		log.Fatal("Error reading YAML file: %v", err) //nolint:gocritic // exitAfterDefer
 	}
@@ -273,18 +277,26 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the modified YAML data back to the file
 	var filePerm fs.FileMode = 0o644 // owner can read/write, group and others can only read
-	err = os.WriteFile("certsuite_config.yml", newData, filePerm)
+	err = os.WriteFile("config/certsuite_config.yml", newData, filePerm)
 	if err != nil {
 		log.Fatal("Error writing YAML file: %v", err)
 	}
-	_ = clientsholder.GetNewClientsHolder(kubeconfigTempFile.Name())
-
-	var env provider.TestEnvironment
-	env.SetNeedsRefresh()
-	env = provider.GetTestEnvironment()
-
 	labelsFilter := strings.Join(flattenedOptions, ",")
+
+	_ = clientsholder.GetNewClientsHolder(kubeconfigTempFile.Name())
+	certsuite.LoadChecksDB(labelsFilter)
+
 	outputFolder := r.Context().Value(outputFolderCtxKey).(string)
+
+	if err := checksdb.InitLabelsExprEvaluator(labelsFilter); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to initialize a test case label evaluator, err: %v", err)
+		os.Exit(1)
+	}
+
+	if err := log.CreateGlobalLogFile(outputFolder, "debug"); err != nil {
+		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v\n", err)
+		os.Exit(1)
+	}
 
 	log.Info("Running CNF Cert Suite (web-mode). Labels filter: %s, outputFolder: %s", labelsFilter, outputFolder)
 	err = certsuite.Run(labelsFilter, outputFolder)
@@ -318,7 +330,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//nolint:funlen
+//nolint:funlen,gocyclo
 func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	// Unmarshal the YAML data into a Config struct
 	var config configuration.TestConfiguration
@@ -401,6 +413,21 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	}
 	if len(data.ProbeDaemonSetNamespace) > 0 {
 		config.ProbeDaemonSetNamespace = data.ProbeDaemonSetNamespace[0]
+	}
+	if len(data.ConnectAPIKey) > 0 {
+		config.ConnectAPIConfig.APIKey = data.ConnectAPIKey[0]
+	}
+	if len(data.ConnectProjectID) > 0 {
+		config.ConnectAPIConfig.ProjectID = data.ConnectProjectID[0]
+	}
+	if len(data.ConnectAPIBaseURL) > 0 {
+		config.ConnectAPIConfig.BaseURL = data.ConnectAPIBaseURL[0]
+	}
+	if len(data.ConnectAPIProxyURL) > 0 {
+		config.ConnectAPIConfig.ProxyURL = data.ConnectAPIProxyURL[0]
+	}
+	if len(data.ConnectAPIProxyPort) > 0 {
+		config.ConnectAPIConfig.ProxyPort = data.ConnectAPIProxyPort[0]
 	}
 
 	// Serialize the modified config back to YAML format
