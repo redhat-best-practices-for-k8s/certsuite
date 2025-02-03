@@ -235,3 +235,41 @@ func TestPointerToString(t *testing.T) {
 		t.Errorf("PointerToString() = %v, want %v", got, want)
 	}
 }
+
+func TestHasAtLeastOneCommonElement(t *testing.T) {
+	testCases := []struct {
+		slice1   []string
+		slice2   []string
+		expected bool
+	}{
+		{
+			slice1:   []string{"one", "two", "three"},
+			slice2:   []string{"one", "two"},
+			expected: true,
+		},
+		{
+			slice1:   []string{"one", "two", "three"},
+			slice2:   []string{"four", "five"},
+			expected: false,
+		},
+		{
+			slice1:   []string{"one", "two", "three"},
+			slice2:   []string{"one", "two", "three"},
+			expected: true,
+		},
+		{
+			slice1:   []string{},
+			slice2:   []string{"one", "two", "three"},
+			expected: false,
+		},
+		{
+			slice1:   []string{"one", "two", "three"},
+			slice2:   []string{"two", "one"},
+			expected: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expected, HasAtLeastOneCommonElement(tc.slice1, tc.slice2))
+	}
+}
