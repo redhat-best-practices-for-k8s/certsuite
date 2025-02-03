@@ -19,17 +19,21 @@ package autodiscover
 import (
 	"context"
 	"fmt"
+	"path"
+	"strings"
 
 	helmclient "github.com/mittwald/go-helm-client"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/typed/operators/v1alpha1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
 
 	olmpkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	olmpkgclient "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/client/clientset/versioned/typed/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
@@ -135,6 +139,7 @@ func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err erro
 	}
 	return allNs, nil
 }
+
 func getAllOperators(olmClient v1alpha1.OperatorsV1alpha1Interface) ([]*olmv1Alpha.ClusterServiceVersion, error) {
 	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 
@@ -236,4 +241,63 @@ func getAllPackageManifests(olmPkgClient olmpkgclient.PackageManifestInterface) 
 		out = append(out, &packageManifestsList.Items[index])
 	}
 	return out
+}
+
+// getOperandPodsFromTestCsvs returns a subset of pods whose owner CRs are managed by any of the testCsvs.
+func getOperandPodsFromTestCsvs(testCsvs []*olmv1Alpha.ClusterServiceVersion, pods []corev1.Pod) ([]*corev1.Pod, error) {
+	// Helper var to store all the managed crds from the operators under test
+	// They map key is "Kind.group/version" or "Kind.APIversion", which should be the same.
+	//   e.g.: "Subscription.operators.coreos.com/v1alpha1"
+	crds := map[string]*olmv1Alpha.ClusterServiceVersion{}
+
+	// First, iterate on each testCsv to fill the helper crds map.
+	for _, csv := range testCsvs {
+		ownedCrds := csv.Spec.CustomResourceDefinitions.Owned
+		if len(ownedCrds) == 0 {
+			continue
+		}
+
+		for i := range ownedCrds {
+			crd := &ownedCrds[i]
+
+			_, group, found := strings.Cut(crd.Name, ".")
+			if !found {
+				return nil, fmt.Errorf("failed to parse resources and group from crd name %q", crd.Name)
+			}
+
+			log.Info("CSV %q owns crd %v", csv.Name, crd.Kind+"/"+group+"/"+crd.Version)
+
+			crdPath := path.Join(crd.Kind, group, crd.Version)
+			crds[crdPath] = csv
+		}
+	}
+
+	// Now, iterate on every pod in the list to check whether they're owned by any of the CRs that
+	// the csvs are managing.
+	operandPods := []*corev1.Pod{}
+	for i := range pods {
+		pod := &pods[i]
+		owners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get top owners of pod %v/%v: %v", pod.Namespace, pod.Name, err)
+		}
+
+		for _, owner := range owners {
+			versionedCrdPath := path.Join(owner.Kind, owner.APIVersion)
+
+			var csv *olmv1Alpha.ClusterServiceVersion
+			if csv = crds[versionedCrdPath]; csv == nil {
+				// The owner is not a CR or it's not a CR owned by any operator under test
+				continue
+			}
+
+			log.Info("Pod %v/%v has owner CR %s of CRD %q (CSV %v)", pod.Namespace, pod.Name,
+				owner.Name, versionedCrdPath, csv.Name)
+
+			operandPods = append(operandPods, pod)
+			break
+		}
+	}
+
+	return operandPods, nil
 }
