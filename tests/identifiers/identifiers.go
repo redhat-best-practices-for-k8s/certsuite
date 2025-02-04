@@ -959,8 +959,7 @@ that Node's kernel may not have the same hacks.'`,
 	TestSingleNamespacedOperatorInstallationInTenantNamespace = AddCatalogEntry(
 		"only-single-namespace-mode-allowed-in-tenant-namespaces",
 		common.OperatorTestKey,
-		`Verifies that only single-namespace operators are installed in a tenant-dedicated namespace. The test fails if this namespace contains any cluster-wide operator,
-		 operarnds of any other operator not installed in this namespace, or pods unrelated to any operator.`,
+		`Verifies that only single-namespace operators are installed in a tenant-dedicated namespace. The test fails if this namespace contains any cluster-wide operator, operands of any other operator not installed in this namespace, or pods unrelated to any operator.`, //nolint:lll
 		SingleNamespacedOperatorInstallationInTenantNamespaceRemediation,
 		NoExceptions,
 		TestSingleNamespacedOperatorInstallationInTenantNamespaceDocLink,

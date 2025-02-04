@@ -153,8 +153,14 @@ build-image-local:
 		-t ${REGISTRY}/${CERTSUITE_IMAGE_NAME_LEGACY}:${IMAGE_TAG} \
 		-f Dockerfile .
 
+# Acts differently depending on the host architecture
+# Mac vs Linux
 results-html:
-	curl -s -O --output-dir internal/results/html ${RESULTS_HTML_URL}
+	if [ "$(shell uname)" = "Darwin" ]; then \
+		curl -s -O --output-dir internal/results/html ${RESULTS_HTML_URL}; \
+	else \
+		curl -s -o internal/results/html/results.html ${RESULTS_HTML_URL}; \
+	fi
 
 check-results:
 	./certsuite check results

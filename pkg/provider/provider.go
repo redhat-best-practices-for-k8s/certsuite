@@ -91,6 +91,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Operators              []*Operator  `json:"testOperators"`
 	AllOperators           []*Operator  `json:"AllOperators"`
 	AllOperatorsSummary    []string     `json:"AllOperatorsSummary"`
+	AllCsvs                []*olmv1Alpha.ClusterServiceVersion
 	PersistentVolumes      []corev1.PersistentVolume
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
 	ClusterRoleBindings    []rbacv1.ClusterRoleBinding
@@ -258,6 +259,7 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	env.AllCatalogSources = data.AllCatalogSources
 	env.AllPackageManifests = data.AllPackageManifests
 	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllPackageManifests, data.AllInstallPlans, data.AllCatalogSources, false, true)
+	env.AllCsvs = data.AllCsvs
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.AllCrds = data.AllCrds
 	env.Namespaces = data.Namespaces

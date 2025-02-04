@@ -167,6 +167,15 @@ func SetTestK8sClientsHolder(k8sClient kubernetes.Interface) {
 	clientsHolder.ready = true
 }
 
+func SetTestK8sDynamicClientsHolder(dynamicClient dynamic.Interface) {
+	clientsHolder.DynamicClient = dynamicClient
+	clientsHolder.ready = true
+}
+
+func SetTestClientGroupResources(groupResources []*metav1.APIResourceList) {
+	clientsHolder.GroupResources = groupResources
+}
+
 func ClearTestClientsHolder() {
 	clientsHolder.K8sClient = nil
 	clientsHolder.ready = false

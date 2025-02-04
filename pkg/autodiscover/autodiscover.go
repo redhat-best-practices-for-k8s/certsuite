@@ -20,7 +20,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"path"
 	"regexp"
 	"strings"
 	"time"
@@ -336,52 +335,6 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	return data
 }
 
-func getNetworkAttachmentDefinitions(client *clientsholder.ClientsHolder, namespaces []string) ([]nadClient.NetworkAttachmentDefinition, error) {
-	var nadList []nadClient.NetworkAttachmentDefinition
-
-	for _, ns := range namespaces {
-		nad, err := client.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(ns).List(context.TODO(), metav1.ListOptions{})
-		if err != nil && !kerrors.IsNotFound(err) {
-			return nil, err
-		}
-
-		// Append the list of networkAttachmentDefinitions to the nadList slice
-		nadList = append(nadList, nad.Items...)
-	}
-
-	return nadList, nil
-}
-
-func getSriovNetworks(client *clientsholder.ClientsHolder, namespaces []string) (sriovNetworks []sriovNetworkOp.SriovNetwork, err error) {
-	var sriovNetworkList []sriovNetworkOp.SriovNetwork
-
-	for _, ns := range namespaces {
-		snl, err := client.SriovNetworkingClient.SriovNetworks(ns).List(context.TODO(), metav1.ListOptions{})
-		if err != nil && !kerrors.IsNotFound(err) {
-			return nil, err
-		}
-
-		// Append the list of sriovNetworks to the sriovNetworks slice
-		sriovNetworkList = append(sriovNetworkList, snl.Items...)
-	}
-	return sriovNetworkList, nil
-}
-
-func getSriovNetworkNodePolicies(client *clientsholder.ClientsHolder, namespaces []string) (sriovNetworkNodePolicies []sriovNetworkOp.SriovNetworkNodePolicy, err error) {
-	var sriovNetworkNodePolicyList []sriovNetworkOp.SriovNetworkNodePolicy
-
-	for _, ns := range namespaces {
-		snnp, err := client.SriovNetworkingClient.SriovNetworkNodePolicies(ns).List(context.TODO(), metav1.ListOptions{})
-		if err != nil && !kerrors.IsNotFound(err) {
-			return nil, err
-		}
-
-		// Append the list of sriovNetworkNodePolicies to the sriovNetworkNodePolicies slice
-		sriovNetworkNodePolicyList = append(sriovNetworkNodePolicyList, snnp.Items...)
-	}
-	return sriovNetworkNodePolicyList, nil
-}
-
 func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {
 	for _, ns := range namespaceList {
 		stringList = append(stringList, ns.Name)
@@ -464,63 +417,4 @@ func getPodsOwnedByCsv(csvName, operatorNamespace string, client *clientsholder.
 		}
 	}
 	return managedPods, nil
-}
-
-// getOperandPodsFromTestCsvs returns a subset of pods whose owner CRs are managed by any of the testCsvs.
-func getOperandPodsFromTestCsvs(testCsvs []*olmv1Alpha.ClusterServiceVersion, pods []corev1.Pod) ([]*corev1.Pod, error) {
-	// Helper var to store all the managed crds from the operators under test
-	// They map key is "Kind.group/version" or "Kind.APIversion", which should be the same.
-	//   e.g.: "Subscription.operators.coreos.com/v1alpha1"
-	crds := map[string]*olmv1Alpha.ClusterServiceVersion{}
-
-	// First, iterate on each testCsv to fill the helper crds map.
-	for _, csv := range testCsvs {
-		ownedCrds := csv.Spec.CustomResourceDefinitions.Owned
-		if len(ownedCrds) == 0 {
-			continue
-		}
-
-		for i := range ownedCrds {
-			crd := &ownedCrds[i]
-
-			_, group, found := strings.Cut(crd.Name, ".")
-			if !found {
-				return nil, fmt.Errorf("failed to parse resources and group from crd name %q", crd.Name)
-			}
-
-			log.Info("CSV %q owns crd %v", csv.Name, crd.Kind+"/"+group+"/"+crd.Version)
-
-			crdPath := path.Join(crd.Kind, group, crd.Version)
-			crds[crdPath] = csv
-		}
-	}
-
-	// Now, iterate on every pod in the list to check whether they're owned by any of the CRs that
-	// the csvs are managing.
-	operandPods := []*corev1.Pod{}
-	for i := range pods {
-		pod := &pods[i]
-		owners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get top owners of pod %v/%v: %v", pod.Namespace, pod.Name, err)
-		}
-
-		for _, owner := range owners {
-			versionedCrdPath := path.Join(owner.Kind, owner.APIVersion)
-
-			var csv *olmv1Alpha.ClusterServiceVersion
-			if csv = crds[versionedCrdPath]; csv == nil {
-				// The owner is not a CR or it's not a CR owned by any operator under test
-				continue
-			}
-
-			log.Info("Pod %v/%v has owner CR %s of CRD %q (CSV %v)", pod.Namespace, pod.Name,
-				owner.Name, versionedCrdPath, csv.Name)
-
-			operandPods = append(operandPods, pod)
-			break
-		}
-	}
-
-	return operandPods, nil
 }

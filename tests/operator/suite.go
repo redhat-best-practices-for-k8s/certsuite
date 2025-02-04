@@ -24,7 +24,9 @@ import (
 	"github.com/Masterminds/semver"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/access"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/catalogsource"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/openapi"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/phasecheck"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -136,9 +138,9 @@ func LoadChecks() {
 		}))
 }
 
-// This function checks if SingleNamespaced Operators should only be installed in the tenant dedicated operator namespace
+// This function checks if single/multi namespaced operators should only be installed in the tenant dedicated operator namespace
 func testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("Starting testInstalledSingleNamespaceOperatorInTenantNamespace")
+	check.LogInfo("Starting testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces")
 
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -146,49 +148,60 @@ func testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.
 	operatorNamespaces := make(map[string]bool)
 	for _, operator := range env.Operators {
 		operatorNamespace := operator.Csv.Annotations["olm.operatorNamespace"]
-		operatorNamespaces[operatorNamespace] = true
+		for _, namespace := range env.Namespaces {
+			if namespace == operatorNamespace {
+				operatorNamespaces[operatorNamespace] = true
+			}
+		}
 	}
 
 	for operatorNamespace := range operatorNamespaces { // operator installed namespace
 		check.LogInfo("Checking if namespace %s contains only valid single/ multi namespaced operators", operatorNamespace)
 
 		isDedicatedOperatorNamespace, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators,
-			csvsFoundButNotInOperatorInstallationNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators, err := checkValidOperatorInstallation(operatorNamespace)
+			csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators, err := checkValidOperatorInstallation(operatorNamespace)
+
+		check.LogInfo("isDedicatedOperatorNamespace=%t, singleOrMultiNamespaceOperators=%s, nonSingleOrMultiNamespaceOperators=%s, csvsTargetingNamespace=%s, operatorsFoundButNotUnderTest=%s, podsNotBelongingToOperators=%s", isDedicatedOperatorNamespace, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators) //nolint:lll
 
 		if err != nil {
-			check.LogError("Error %v found in checking namespace %s", err, operatorNamespace)
+			msg := fmt.Sprintf("Operator namespace %s check got error %v", operatorNamespace, err)
+			check.LogError(msg)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, false, operatorNamespace))
 			continue
 		}
 
 		if isDedicatedOperatorNamespace {
-			msg := fmt.Sprintf("Namespace is dedicated to single/multi namespace operators %s ", strings.Join(singleOrMultiNamespaceOperators, ", "))
-			check.LogInfo(msg)
+			var msg string
+			if len(singleOrMultiNamespaceOperators) == 0 {
+				msg = "Namespace contains no installed single/multi namespace operators"
+			} else {
+				msg = fmt.Sprintf("Namespace is dedicated to single/multi namespace operators (%s) ", strings.Join(singleOrMultiNamespaceOperators, ", "))
+			}
+
 			compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, true, operatorNamespace))
 		} else {
+			msg := "Operator namespace is not dedicated to single/multi operators because "
 
-			msg := "Namespace is non-compliant operator namespace, containing non-operator, invalid installed or not installed operators "
+			if len(nonSingleOrMultiNamespaceOperators) != 0 {
+				msg += "- operators are installed with an install mode different from single/multi (" + strings.Join(nonSingleOrMultiNamespaceOperators, ", ") + ")\n"
+			}
+
+			if len(csvsTargetingNamespace) != 0 {
+				msg += "- this namespace is the target namespace of other operators (" + strings.Join(csvsTargetingNamespace, ", ") + ")\n"
+			}
+			if len(operatorsFoundButNotUnderTest) != 0 {
+				msg += "- operators not under test found (" + strings.Join(operatorsFoundButNotUnderTest, ", ") + ")\n"
+			}
+			if len(podsNotBelongingToOperators) != 0 {
+				msg += "- invalid non operator pods found (" + strings.Join(podsNotBelongingToOperators, ", ") + ")"
+			}
 
 			nonCompliantNs := testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, false, operatorNamespace)
 
-			if len(nonSingleOrMultiNamespaceOperators) != 0 {
-				nonCompliantNs.AddField("Invalid installed operators (not single or multi namespaced) found ", strings.Join(nonSingleOrMultiNamespaceOperators, ", "))
-			}
-
-			if len(csvsFoundButNotInOperatorInstallationNamespace) != 0 {
-				nonCompliantNs.AddField("Invalid operators (installed in other namespace) found ", strings.Join(csvsFoundButNotInOperatorInstallationNamespace, ", "))
-			}
-
-			if len(operatorsFoundButNotUnderTest) != 0 {
-				nonCompliantNs.AddField("Operators not under test found ", strings.Join(operatorsFoundButNotUnderTest, ", "))
-			}
-
-			if len(podsNotBelongingToOperators) != 0 {
-				nonCompliantNs.AddField("Invalid non operator pods found ", strings.Join(podsNotBelongingToOperators, ", "))
-			}
 			nonCompliantObjects = append(nonCompliantObjects, nonCompliantNs)
 		}
+		check.SetResult(compliantObjects, nonCompliantObjects)
 	}
-	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // This function check if the Operator CRD version follows K8s versioning
@@ -232,21 +245,7 @@ func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnviron
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, crd := range env.Crds {
-		isCrdDefinedWithOpenAPI3Schema := false
-
-		for _, version := range crd.Spec.Versions {
-			crdSchema := version.Schema.String()
-
-			containsOpenAPIV3SchemaSubstr := strings.Contains(strings.ToLower(crdSchema),
-				strings.ToLower(testhelper.OpenAPIV3Schema))
-
-			if containsOpenAPIV3SchemaSubstr {
-				isCrdDefinedWithOpenAPI3Schema = true
-				break
-			}
-		}
-
-		if isCrdDefinedWithOpenAPI3Schema {
+		if openapi.IsCRDDefinedWithOpenAPI3Schema(crd) {
 			check.LogInfo("Operator CRD %s is defined with OpenAPIV3 schema ", crd.Name)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(crd.Namespace, crd.Name,
 				"Operator CRD is defined with OpenAPIV3 schema ", true).AddField(testhelper.OpenAPIV3Schema, crd.Name))
@@ -319,39 +318,9 @@ func testOperatorInstallationAccessToSCC(check *checksdb.Check, env *provider.Te
 		}
 
 		// Fails in case any cluster permission has a rule that refers to securitycontextconstraints.
-		badRuleFound := false
-		for permissionIndex := range clusterPermissions {
-			permission := &clusterPermissions[permissionIndex]
-			for ruleIndex := range permission.Rules {
-				rule := &permission.Rules[ruleIndex]
-
-				// Check whether the rule is for the security api group.
-				securityGroupFound := false
-				for _, group := range rule.APIGroups {
-					if group == "*" || group == "security.openshift.io" {
-						securityGroupFound = true
-						break
-					}
-				}
-
-				if !securityGroupFound {
-					continue
-				}
-
-				// Now check whether it grants some access to securitycontextconstraint resources.
-				for _, resource := range rule.Resources {
-					if resource == "*" || resource == "securitycontextconstraints" {
-						check.LogInfo("Operator %s has a rule (index %d) for service account %s to access cluster SCCs",
-							operator, ruleIndex, permission.ServiceAccountName)
-						// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
-						badRuleFound = true
-						break
-					}
-				}
-			}
-		}
-
-		if badRuleFound {
+		if access.PermissionsHaveBadRule(clusterPermissions) {
+			check.LogInfo("Operator %s has a rule for a service account to access cluster SCCs",
+				operator)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "One or more RBAC rules for Security Context Constraints found in CSV", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "No RBAC rules for Security Context Constraints found in CSV", true))
@@ -393,17 +362,17 @@ func testOperatorSingleCrdOwner(check *checksdb.Check, env *provider.TestEnviron
 		ownedCrds := operator.Csv.Spec.CustomResourceDefinitions.Owned
 
 		// Helper map to filter out different versions of the same CRD name.
-		uniqueOnwnedCrds := map[string]struct{}{}
+		uniqueOwnedCrds := map[string]struct{}{}
 		for j := range ownedCrds {
-			uniqueOnwnedCrds[ownedCrds[j].Name] = struct{}{}
+			uniqueOwnedCrds[ownedCrds[j].Name] = struct{}{}
 		}
 
 		// Now we can append the operator as CRD owner
-		for crdName := range uniqueOnwnedCrds {
+		for crdName := range uniqueOwnedCrds {
 			crdOwners[crdName] = append(crdOwners[crdName], operator.Name)
 		}
 
-		check.LogInfo("CRDs owned by operator %s: %+v", operator.Name, uniqueOnwnedCrds)
+		check.LogInfo("CRDs owned by operator %s: %+v", operator.Name, uniqueOwnedCrds)
 	}
 
 	// Flag those that are owned by more than one operator
@@ -479,27 +448,8 @@ func testMultipleSameOperators(check *checksdb.Check, env *provider.TestEnvironm
 		check.LogDebug("Checking operator %q", op.Name)
 		check.LogDebug("Number of operators to check %s against: %d", op.Name, len(env.AllOperators))
 		for _, op2 := range env.AllOperators {
-			check.LogDebug("Comparing operator %q with operator %q", op.Name, op2.Name)
-
-			// Retrieve the version from each CSV
-			csv1Version := op.Csv.Spec.Version.String()
-			csv2Version := op2.Csv.Spec.Version.String()
-
-			log.Debug("CSV1 Version: %s", csv1Version)
-			log.Debug("CSV2 Version: %s", csv2Version)
-
-			// Strip the version from the CSV name by removing the suffix (which should be the version)
-			csv1Name := strings.TrimSuffix(op.Csv.Name, ".v"+csv1Version)
-			csv2Name := strings.TrimSuffix(op2.Csv.Name, ".v"+csv2Version)
-
-			check.LogDebug("Comparing CSV names %q and %q", csv1Name, csv2Name)
-
-			// The CSV name should be the same, but the version should be different
-			// if the operator is installed more than once.
-			if op.Csv != nil && op2.Csv != nil &&
-				csv1Name == csv2Name &&
-				csv1Version != csv2Version {
-				check.LogError("Operator %q is installed more than once", op.Name)
+			// Check if the operator is installed more than once.
+			if OperatorInstalledMoreThanOnce(op, op2) {
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(
 					op.Namespace, op.Name, "Operator is installed more than once", false))
 				break
