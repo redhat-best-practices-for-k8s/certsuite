@@ -30,7 +30,7 @@ jobs:
       - name: Set up Go 1.23
         uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
-          go-version: 1.23.5
+          go-version: 1.23.6
 
         # This prevents any failures due to the updated rhcos_versions_map file from
         # making it into the PR phase.
