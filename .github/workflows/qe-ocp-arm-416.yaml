@@ -3,8 +3,11 @@ name: OCP ARM64 4.16 QE Testing
 on:
   pull_request:
     branches: [ main ]
-  label:
-    types: [deleted]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - unlabeled
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
