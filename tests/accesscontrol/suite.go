@@ -218,6 +218,7 @@ func LoadChecks() {
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSYSNiceRealtimeCapabilityIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithSkipCheckFn(testhelper.GetNoNodesWithRealtimeKernelSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSYSNiceRealtimeCapability(c, &env)
 			return nil

@@ -686,6 +686,21 @@ func GetNoOperatorCrdsSkipFn(env *provider.TestEnvironment) func() (bool, string
 	}
 }
 
+// The returned func returns true (skip) if there isn't any node using realtime kernel type.
+func GetNoNodesWithRealtimeKernelSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		for i := range env.Nodes {
+			node := env.Nodes[i]
+
+			if node.IsRTKernel() {
+				return false, ""
+			}
+		}
+
+		return true, "no nodes with realtime kernel type found"
+	}
+}
+
 func ResultObjectsToString(compliantObject, nonCompliantObject []*ReportObject) (string, error) {
 	reason := FailureReasonOut{
 		CompliantObjectsOut:    compliantObject,

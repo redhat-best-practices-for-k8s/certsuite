@@ -26,7 +26,6 @@ testCases:
     - access-control-service-type
     - access-control-ssh-daemons
     - access-control-sys-admin-capability-check
-    - access-control-sys-nice-realtime-capability
     - lifecycle-affinity-required-pods
     - lifecycle-container-prestop
     - lifecycle-container-poststart
@@ -67,6 +66,7 @@ testCases:
     - affiliated-certification-container-is-certified-digest     # test container image is not certified
   skip:
     - access-control-sys-ptrace-capability
+    - access-control-sys-nice-realtime-capability
     - affiliated-certification-helm-version
     - affiliated-certification-helmchart-is-certified
     - affiliated-certification-operator-is-certified
