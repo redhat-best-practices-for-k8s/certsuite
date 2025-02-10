@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 117
+### Total test cases: 118
 
 ### Total suites: 10
 
@@ -19,7 +19,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |manageability|2|
 |networking|12|
 |observability|5|
-|operator|11|
+|operator|12|
 |performance|6|
 |platform-alteration|13|
 |preflight|18|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |8|1|
 
-### Non-Telco specific tests only: 69
+### Non-Telco specific tests only: 70
 
 |Mandatory|Optional|
 |---|---|
-|43|26|
+|44|26|
 
 ### Telco specific tests only: 27
 
@@ -1297,6 +1297,22 @@ Tags|common,operator
 |Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
+
+#### operator-only-single-namespace-mode-allowed-in-tenant-namespaces
+
+Property|Description
+---|---
+Unique ID|operator-only-single-namespace-mode-allowed-in-tenant-namespaces
+Description|Verifies that only single-namespace operators are installed in a tenant-dedicated namespace. The test fails if this namespace contains any cluster-wide operator, operands of any other operator not installed in this namespace, or pods unrelated to any operator.
+Suggested Remediation|Ensure that operator with install mode SingleNamespace only is installed in the tenant namespace. Any other operator with install mode AllNamespace, cluster-wide operator or pods not belonging to any operator must not be present in this namespace.
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
 
 #### operator-pods-no-hugepages
 

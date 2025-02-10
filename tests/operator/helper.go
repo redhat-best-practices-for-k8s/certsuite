@@ -24,7 +24,11 @@ import (
 	"strings"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
 // CsvResult holds the results of the splitCsv function.
@@ -82,4 +86,110 @@ func OperatorInstalledMoreThanOnce(operator1, operator2 *provider.Operator) bool
 	}
 
 	return false
+}
+
+func getAllPodsBy(namespace string, allPods []*provider.Pod) (podsInNamespace []*provider.Pod) {
+	for i := range allPods {
+		pod := allPods[i]
+		if pod.Namespace == namespace {
+			podsInNamespace = append(podsInNamespace, pod)
+		}
+	}
+	return podsInNamespace
+}
+
+func getCsvsBy(namespace string, allCsvs []*v1alpha1.ClusterServiceVersion) (csvsInNamespace []*v1alpha1.ClusterServiceVersion) {
+	for _, csv := range allCsvs {
+		if csv.Namespace == namespace {
+			csvsInNamespace = append(csvsInNamespace, csv)
+		}
+	}
+	return csvsInNamespace
+}
+
+func isSingleNamespacedOperator(operatorNamespace string, targetNamespaces []string) bool {
+	return len(targetNamespaces) == 1 && operatorNamespace != targetNamespaces[0]
+}
+
+func isMultiNamespacedOperator(operatorNamespace string, targetNamespaces []string) bool {
+	return len(targetNamespaces) > 1 && !stringhelper.StringInSlice(targetNamespaces, operatorNamespace, false)
+}
+
+func checkIfCsvUnderTest(csv *v1alpha1.ClusterServiceVersion) bool {
+	for _, testOperator := range env.Operators {
+		if testOperator.Csv.Name == csv.Name {
+			return true
+		}
+	}
+	return false
+}
+
+func checkValidOperatorInstallation(namespace string) (isDedicatedOperatorNamespace bool, singleOrMultiNamespaceOperators,
+	nonSingleOrMultiNamespaceOperators, csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators []string, err error) {
+	// 1. operator installation checks
+	csvsInNamespace := getCsvsBy(namespace, env.AllCsvs)
+
+	for _, csv := range csvsInNamespace {
+		operatorNamespace := csv.Annotations["olm.operatorNamespace"]
+		targetNamespacesStr := csv.Annotations["olm.targetNamespaces"]
+
+		var targetNameSpaces []string
+		if targetNamespacesStr != "" {
+			targetNameSpaces = strings.Split(targetNamespacesStr, ",")
+		}
+
+		if namespace == operatorNamespace {
+			if checkIfCsvUnderTest(csv) {
+				isSingleOrMultiInstallation := isSingleNamespacedOperator(operatorNamespace, targetNameSpaces) || isMultiNamespacedOperator(operatorNamespace, targetNameSpaces)
+				if isSingleOrMultiInstallation {
+					singleOrMultiNamespaceOperators = append(singleOrMultiNamespaceOperators, csv.Name)
+				} else {
+					nonSingleOrMultiNamespaceOperators = append(nonSingleOrMultiNamespaceOperators, csv.Name)
+				}
+			} else {
+				operatorsFoundButNotUnderTest = append(operatorsFoundButNotUnderTest, csv.Name)
+			}
+		} else {
+			if len(targetNameSpaces) != 0 { // check for non-cluster wide operators
+				csvsTargetingNamespace = append(csvsTargetingNamespace, csv.Name)
+			}
+		}
+	}
+
+	// 2. non-operator pods check
+	podsNotBelongingToOperators, err = findPodsNotBelongingToOperators(namespace)
+	if err != nil {
+		return false, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators, err
+	}
+
+	var isValid bool
+	if len(singleOrMultiNamespaceOperators) > 0 {
+		isValid = len(nonSingleOrMultiNamespaceOperators) == 0 && len(csvsTargetingNamespace) == 0 && len(podsNotBelongingToOperators) == 0 && len(operatorsFoundButNotUnderTest) == 0
+	}
+
+	return isValid, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators, nil
+}
+
+func findPodsNotBelongingToOperators(namespace string) (podsBelongingToNoOperators []string, err error) {
+	allPods := getAllPodsBy(namespace, env.AllPods)
+	for index := range allPods {
+		pod := allPods[index]
+		topOwners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
+		if err != nil {
+			return podsBelongingToNoOperators, err
+		}
+
+		validOwnerFound := false
+		for _, owner := range topOwners {
+			if owner.Kind == v1alpha1.ClusterServiceVersionKind && owner.Namespace == namespace {
+				validOwnerFound = true
+				break
+			}
+		}
+		if !validOwnerFound {
+			podsBelongingToNoOperators = append(podsBelongingToNoOperators, pod.Name)
+		}
+	}
+
+	return podsBelongingToNoOperators, nil
 }

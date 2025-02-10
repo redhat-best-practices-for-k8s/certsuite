@@ -58,6 +58,13 @@ testCases:
     - observability-termination-policy
     - operator-crd-versioning
     - operator-crd-openapi-schema
+    - operator-install-source
+    - operator-install-status-no-privileges
+    - operator-install-status-succeeded
+    - operator-semantic-versioning
+    - operator-single-crd-owner
+    - operator-pods-no-hugepages
+    - operator-multiple-same-operators
     - performance-exclusive-cpu-pool
     - performance-max-resources-exec-probes
     - platform-alteration-isredhat-release
@@ -81,6 +88,7 @@ testCases:
     - operator-install-status-no-privileges
     - operator-install-status-succeeded
     - operator-olm-skip-range
+    - operator-only-single-namespace-mode-allowed-in-tenant-namespaces
     - operator-semantic-versioning
     - operator-single-crd-owner
     - operator-pods-no-hugepages

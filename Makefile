@@ -83,7 +83,7 @@ lint:
 	typos
 	markdownlint '**/*.md'
 	yamllint --no-warnings .
-	shellcheck --format=gcc ${BASH_SCRIPTS}
+	shellcheck --nocomments --format=gcc ${BASH_SCRIPTS}
 
 # Builds and runs unit tests
 test: coverage-qe

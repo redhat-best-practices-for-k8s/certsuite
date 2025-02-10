@@ -17,6 +17,7 @@
 package operator
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -128,6 +129,79 @@ func LoadChecks() {
 			testOperatorCatalogSourceBundleCount(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSingleNamespacedOperatorInstallationInTenantNamespace)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(c, &env)
+			return nil
+		}))
+}
+
+// This function checks if single/multi namespaced operators should only be installed in the tenant dedicated operator namespace
+func testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Starting testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces")
+
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	operatorNamespaces := make(map[string]bool)
+	for _, operator := range env.Operators {
+		operatorNamespace := operator.Csv.Annotations["olm.operatorNamespace"]
+		for _, namespace := range env.Namespaces {
+			if namespace == operatorNamespace {
+				operatorNamespaces[operatorNamespace] = true
+			}
+		}
+	}
+
+	for operatorNamespace := range operatorNamespaces { // operator installed namespace
+		check.LogInfo("Checking if namespace %s contains only valid single/ multi namespaced operators", operatorNamespace)
+
+		isDedicatedOperatorNamespace, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators,
+			csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators, err := checkValidOperatorInstallation(operatorNamespace)
+
+		check.LogInfo("isDedicatedOperatorNamespace=%t, singleOrMultiNamespaceOperators=%s, nonSingleOrMultiNamespaceOperators=%s, csvsTargetingNamespace=%s, operatorsFoundButNotUnderTest=%s, podsNotBelongingToOperators=%s", isDedicatedOperatorNamespace, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators) //nolint:lll
+
+		if err != nil {
+			msg := fmt.Sprintf("Operator namespace %s check got error %v", operatorNamespace, err)
+			check.LogError(msg)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, false, operatorNamespace))
+			continue
+		}
+
+		if isDedicatedOperatorNamespace {
+			var msg string
+			if len(singleOrMultiNamespaceOperators) == 0 {
+				msg = "Namespace contains no installed single/multi namespace operators"
+			} else {
+				msg = fmt.Sprintf("Namespace is dedicated to single/multi namespace operators (%s) ", strings.Join(singleOrMultiNamespaceOperators, ", "))
+			}
+
+			compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, true, operatorNamespace))
+		} else {
+			msg := "Operator namespace is not dedicated to single/multi operators because "
+
+			if len(nonSingleOrMultiNamespaceOperators) != 0 {
+				msg += "- operators are installed with an install mode different from single/multi (" + strings.Join(nonSingleOrMultiNamespaceOperators, ", ") + ")\n"
+			}
+
+			if len(csvsTargetingNamespace) != 0 {
+				msg += "- this namespace is the target namespace of other operators (" + strings.Join(csvsTargetingNamespace, ", ") + ")\n"
+			}
+			if len(operatorsFoundButNotUnderTest) != 0 {
+				msg += "- operators not under test found (" + strings.Join(operatorsFoundButNotUnderTest, ", ") + ")\n"
+			}
+			if len(podsNotBelongingToOperators) != 0 {
+				msg += "- invalid non operator pods found (" + strings.Join(podsNotBelongingToOperators, ", ") + ")"
+			}
+
+			nonCompliantNs := testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, false, operatorNamespace)
+
+			nonCompliantObjects = append(nonCompliantObjects, nonCompliantNs)
+		}
+		check.SetResult(compliantObjects, nonCompliantObjects)
+	}
 }
 
 // This function check if the Operator CRD version follows K8s versioning

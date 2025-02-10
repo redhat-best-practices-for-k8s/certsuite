@@ -16,6 +16,11 @@ linters-settings:
       - style
     disabled-checks:
       - whyNoLint
+    settings: 
+      tooManyResultsChecker:
+        # Maximum number of results.
+        # Default: 5
+        maxResults: 10
   gocyclo:
     min-complexity: 20
   mnd:
