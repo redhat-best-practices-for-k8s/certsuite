@@ -248,7 +248,7 @@ jobs:
         with:
           name: smoke-tests
           path: |
-            certsuite-out/*.tar.gz
+            certsuite-out-${{ matrix.os }}/*.tar.gz
 
       - name: Check the smoke test results against the expected results template
         run: ./certsuite check results --log-file="certsuite-out/certsuite.log"
@@ -265,7 +265,7 @@ jobs:
         with:
           name: preflight-smoke-tests
           path: |
-            certsuite-out/*.tar.gz
+            certsuite-out-${{ matrix.os }}/*.tar.gz
 
       - name: Remove tarball(s) to save disk space
         run: rm -f certsuite-out/*.tar.gz
