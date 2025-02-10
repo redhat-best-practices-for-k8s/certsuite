@@ -83,6 +83,7 @@ var (
 	TestHelmVersionIdentifier                                        claim.Identifier
 	TestPodHugePages2M                                               claim.Identifier
 	TestPodHugePages1G                                               claim.Identifier
+	TestClusterOperatorHealth                                        claim.Identifier
 	TestHyperThreadEnable                                            claim.Identifier
 	TestReservedExtendedPartnerPorts                                 claim.Identifier
 	TestAffinityRequiredPods                                         claim.Identifier
@@ -1449,6 +1450,22 @@ that Node's kernel may not have the same hacks.'`,
 			Telco:    Mandatory,
 			NonTelco: Mandatory,
 			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestClusterOperatorHealth = AddCatalogEntry(
+		"cluster-operator-health",
+		common.PlatformAlterationTestKey,
+		`Tests that all cluster operators are healthy.`,
+		ClusterOperatorHealthRemediation,
+		NoExceptions,
+		TestClusterOperatorHealthDocLink,
+		false,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 

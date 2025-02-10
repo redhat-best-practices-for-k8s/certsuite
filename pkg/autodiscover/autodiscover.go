@@ -78,6 +78,7 @@ type DiscoveredTestData struct {
 	AllInstallPlans              []*olmv1Alpha.InstallPlan
 	AllCatalogSources            []*olmv1Alpha.CatalogSource
 	AllPackageManifests          []*olmPkgv1.PackageManifest
+	ClusterOperators             []configv1.ClusterOperator
 	SriovNetworks                []sriovNetworkOp.SriovNetwork
 	SriovNetworkNodePolicies     []sriovNetworkOp.SriovNetworkNodePolicy
 	AllSriovNetworks             []sriovNetworkOp.SriovNetwork
@@ -208,6 +209,11 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Csvs = findOperatorsByLabels(oc.OlmClient.OperatorsV1alpha1(), operatorsUnderTestLabelsObjects, config.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient.OperatorsV1alpha1(), data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
+
+	data.ClusterOperators, err = findClusterOperators(oc.OcpClient.ClusterOperators())
+	if err != nil {
+		log.Fatal("Failed to get cluster operators, err: %v", err)
+	}
 
 	// Get all operator pods
 	data.CSVToPodListMap, err = getOperatorCsvPods(data.Csvs)

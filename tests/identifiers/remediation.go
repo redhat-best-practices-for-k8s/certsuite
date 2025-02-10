@@ -22,6 +22,8 @@ const (
 
 	IsRedHatReleaseRemediation = `Build a new container image that is based on UBI (Red Hat Universal Base Image).`
 
+	ClusterOperatorHealthRemediation = `Ensure each cluster operator is in an 'Available' state. If an operator is not in an 'Available' state, investigate the operator's logs and events to determine the cause of the failure.`
+
 	NodeOperatingSystemRemediation = `Please update your workers to a version that is supported by your version of OpenShift`
 
 	SecConNonRootUserRemediation = `Change the pod and containers "runAsUser" uid to something other than root(0)`
