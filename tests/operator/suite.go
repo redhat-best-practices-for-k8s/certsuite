@@ -130,16 +130,16 @@ func LoadChecks() {
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSingleNamespacedOperatorInstallationInTenantNamespace)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSingleOrMultiNamespacedOperatorInstallationInTenantNamespace)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
-			testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(c, &env)
+			testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces(c, &env)
 			return nil
 		}))
 }
 
 // This function checks if single/multi namespaced operators should only be installed in the tenant dedicated operator namespace
-func testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.Check, env *provider.TestEnvironment) {
+func testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.LogInfo("Starting testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces")
 
 	var compliantObjects []*testhelper.ReportObject

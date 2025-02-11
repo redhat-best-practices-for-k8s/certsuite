@@ -1298,22 +1298,6 @@ Tags|common,operator
 |Non-Telco|Optional|
 |Telco|Optional|
 
-#### operator-only-single-namespace-mode-allowed-in-tenant-namespaces
-
-Property|Description
----|---
-Unique ID|operator-only-single-namespace-mode-allowed-in-tenant-namespaces
-Description|Verifies that only single-namespace operators are installed in a tenant-dedicated namespace. The test fails if this namespace contains any cluster-wide operator, operands of any other operator not installed in this namespace, or pods unrelated to any operator.
-Suggested Remediation|Ensure that operator with install mode SingleNamespace only is installed in the tenant namespace. Any other operator with install mode AllNamespace, cluster-wide operator or pods not belonging to any operator must not be present in this namespace.
-Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
-Exception Process|No exceptions
-Tags|common,operator
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
-
 #### operator-pods-no-hugepages
 
 Property|Description
@@ -1353,6 +1337,22 @@ Property|Description
 Unique ID|operator-single-crd-owner
 Description|Tests whether a CRD is owned by a single Operator.
 Suggested Remediation|Ensure that a CRD is owned by only one Operator
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,operator
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### operator-single-or-multi-namespaced-allowed-in-tenant-namespaces
+
+Property|Description
+---|---
+Unique ID|operator-single-or-multi-namespaced-allowed-in-tenant-namespaces
+Description|Verifies that only single/multi namespaced operators are installed in a tenant-dedicated namespace. The test fails if this namespace contains any cluster-wide operator, operands of any other operator not installed in this namespace, or pods unrelated to any operator.
+Suggested Remediation|Ensure that operator with install mode SingleNamespaced or MultiNamespaced only is installed in the tenant namespace. Any other operator with install mode AllNamespace, cluster-wide operator or pods not belonging to any operator must not be present in this namespace.
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator
