@@ -88,7 +88,7 @@ testCases:
     - operator-install-status-no-privileges
     - operator-install-status-succeeded
     - operator-olm-skip-range
-    - operator-only-single-namespace-mode-allowed-in-tenant-namespaces
+    - operator-single-or-multi-namespaced-allowed-in-tenant-namespaces
     - operator-semantic-versioning
     - operator-single-crd-owner
     - operator-pods-no-hugepages
