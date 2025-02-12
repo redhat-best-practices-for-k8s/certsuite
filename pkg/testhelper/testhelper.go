@@ -439,7 +439,7 @@ func GetNoServicesUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, s
 func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if env.DaemonsetFailedToSpawn {
-			return true, "no daemonSets to check found"
+			return true, "probe daemonset failed to spawn. please check the logs."
 		}
 
 		return false, ""
