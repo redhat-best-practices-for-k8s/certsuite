@@ -72,6 +72,7 @@ const (
 	TestNodeOperatingSystemIdentifierDocLink = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-host-os"
 	TestIsRedHatReleaseIdentifierDocLink     = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-base-images"
 	TestIsSELinuxEnforcingIdentifierDocLink  = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-pod-security"
+	TestClusterOperatorHealthDocLink         = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements"
 
 	// Lifecycle Suite
 	TestAffinityRequiredPodsDocLink                    = "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-high-level-cnf-expectations"

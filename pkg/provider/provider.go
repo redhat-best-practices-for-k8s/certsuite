@@ -28,6 +28,7 @@ import (
 
 	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/api/v1"
+	configv1 "github.com/openshift/api/config/v1"
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -127,6 +128,7 @@ type TestEnvironment struct { // rename this with testTarget
 	SriovNetworkNodePolicies     []sriovNetworkOp.SriovNetworkNodePolicy
 	AllSriovNetworkNodePolicies  []sriovNetworkOp.SriovNetworkNodePolicy
 	NetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
+	ClusterOperators             []configv1.ClusterOperator
 	IstioServiceMeshFound        bool
 	ValidProtocolNames           []string
 	DaemonsetFailedToSpawn       bool
@@ -259,6 +261,7 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	env.AllCatalogSources = data.AllCatalogSources
 	env.AllPackageManifests = data.AllPackageManifests
 	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllPackageManifests, data.AllInstallPlans, data.AllCatalogSources, false, true)
+	env.ClusterOperators = data.ClusterOperators
 	env.AllCsvs = data.AllCsvs
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.AllCrds = data.AllCrds

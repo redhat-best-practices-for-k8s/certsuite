@@ -188,6 +188,7 @@ const (
 	PodType                      = "Pod"
 	HelmType                     = "Helm"
 	OperatorType                 = "Operator"
+	ClusterOperatorType          = "Cluster Operator"
 	ContainerType                = "Container"
 	CatalogSourceType            = "Catalog Source"
 	ContainerImageType           = "Container Image"
@@ -307,6 +308,12 @@ func NewOperatorReportObject(aNamespace, aOperatorName, aReason string, isCompli
 	out = NewReportObject(aReason, OperatorType, isCompliant)
 	out.AddField(Namespace, aNamespace)
 	out.AddField(Name, aOperatorName)
+	return out
+}
+
+func NewClusterOperatorReportObject(aClusterOperatorName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, ClusterOperatorType, isCompliant)
+	out.AddField(Name, aClusterOperatorName)
 	return out
 }
 

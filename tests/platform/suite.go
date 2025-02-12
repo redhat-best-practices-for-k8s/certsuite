@@ -30,6 +30,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/bootparams"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/clusteroperator"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/cnffsdiff"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/hugepages"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/isredhat"
@@ -161,6 +162,15 @@ func LoadChecks() {
 			testhelper.GetNoHugepagesPodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHugePagesSize(c, &env, provider.HugePages1Gi)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestClusterOperatorHealth)).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+		).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testClusterOperatorHealth(c, &env)
 			return nil
 		}))
 }
@@ -696,5 +706,27 @@ func testPodHugePagesSize(check *checksdb.Check, env *provider.TestEnvironment, 
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found to be running with a correct hugepages size", true))
 		}
 	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testClusterOperatorHealth(check *checksdb.Check, env *provider.TestEnvironment) {
+	// Checks the various ClusterOperator(s) to see if they are all in an 'Available' state.
+	// If they are not in an 'Available' state, the check will fail.
+	// Note: This check is only applicable to OCP clusters and is skipped for non-OCP clusters.
+
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	// Loop through the ClusterOperators and check their status.
+	for i := range env.ClusterOperators {
+		check.LogInfo("Testing ClusterOperator %q to ensure it is in an 'Available' state.", env.ClusterOperators[i].Name)
+
+		if clusteroperator.IsClusterOperatorAvailable(&env.ClusterOperators[i]) {
+			compliantObjects = append(compliantObjects, testhelper.NewClusterOperatorReportObject(env.ClusterOperators[i].Name, "ClusterOperator is in an 'Available' state", true))
+		} else {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewClusterOperatorReportObject(env.ClusterOperators[i].Name, "ClusterOperator is not in an 'Available' state", false))
+		}
+	}
+
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
