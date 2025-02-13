@@ -103,7 +103,7 @@ const (
 
 	MultipleSameOperatorsRemediation = `Ensure that only one Operator of the same type is installed in the cluster.`
 
-	SingleOrMultiNamespacedOperatorInstallationInTenantNamespaceRemediation = `Ensure that operator with install mode SingleNamespaced or MultiNamespaced only is installed in the tenant namespace. Any other operator with install mode AllNamespace, cluster-wide operator or pods not belonging to any operator must not be present in this namespace.`
+	SingleOrMultiNamespacedOperatorInstallationInTenantNamespaceRemediation = `Ensure that operator with install mode SingleNamespaced or MultiNamespaced only is installed in the tenant namespace. Any installed operator with different install mode (AllNamespaced or OwnNamespaced) or pods not belonging to any operator must not be present in this namespace.`
 
 	PodNodeSelectorAndAffinityBestPracticesRemediation = `In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which workloads require specialized hardware specific to a particular class of Node.`
 
