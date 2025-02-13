@@ -4,17 +4,22 @@ updates:
   - package-ecosystem: gomod
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+      prod-dependencies:
+        dependency-type: "production"
   - package-ecosystem: docker
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
 
   - package-ecosystem: docker
     directory: /.github/actions/documentation
     schedule:
-      interval: daily
+      interval: weekly
