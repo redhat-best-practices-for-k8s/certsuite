@@ -960,7 +960,7 @@ that Node's kernel may not have the same hacks.'`,
 	TestSingleOrMultiNamespacedOperatorInstallationInTenantNamespace = AddCatalogEntry(
 		"single-or-multi-namespaced-allowed-in-tenant-namespaces",
 		common.OperatorTestKey,
-		`Verifies that only single/multi namespaced operators are installed in a tenant-dedicated namespace. The test fails if this namespace contains any installed operator with Own/All-namespaced install mode, unlabeled operators, operands of any operator installed elswhere, or pods unrelated to any operator.`, //nolint:lll
+		`Verifies that only single/multi namespaced operators are installed in a tenant-dedicated namespace. The test fails if this namespace contains any installed operator with Own/All-namespaced install mode, unlabeled operators, operands of any operator installed elsewhere, or pods unrelated to any operator.`, //nolint:lll
 		SingleOrMultiNamespacedOperatorInstallationInTenantNamespaceRemediation,
 		NoExceptions,
 		TestSingleOrMultiNamespacedOperatorInstallationInTenantNamespaceDocLink,
