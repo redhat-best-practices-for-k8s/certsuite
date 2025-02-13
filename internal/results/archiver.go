@@ -19,7 +19,7 @@ const (
 )
 
 func generateZipFileName() string {
-	return fmt.Sprintf(time.Now().Format(tarGzFileNamePrefixLayout) + "-" + tarGzFileNameSuffix)
+	return time.Now().Format(tarGzFileNamePrefixLayout) + "-" + tarGzFileNameSuffix
 }
 
 // Helper function to get the tar file header from a file.

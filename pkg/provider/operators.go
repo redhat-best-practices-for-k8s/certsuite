@@ -119,7 +119,7 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	}
 
 	// Take all of the preflight logs and stick them into our log.
-	log.Info(logbytes.String())
+	log.Info("%s", logbytes.String())
 
 	e := os.RemoveAll("artifacts/")
 	if e != nil {

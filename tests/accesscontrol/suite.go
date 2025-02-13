@@ -752,7 +752,7 @@ func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironm
 		client := clientsholder.GetClientsHolder()
 		podPassed, newMsg := rbac.EvaluateAutomountTokens(client.K8sClient.CoreV1(), put)
 		if !podPassed {
-			check.LogError(newMsg)
+			check.LogError("%s", newMsg)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, newMsg, false))
 		} else {
 			check.LogInfo("Pod %q does not have automount service tokens set to true", put)

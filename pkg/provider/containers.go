@@ -81,10 +81,10 @@ func (c *Container) GetUID() (string, error) {
 		uid = split[len(split)-1]
 	}
 	if uid == "" {
-		log.Debug(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Name))
+		log.Debug("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Name)
 		return "", errors.New("cannot determine container UID")
 	}
-	log.Debug(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Name, uid))
+	log.Debug("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Name, uid)
 	return uid, nil
 }
 
@@ -137,7 +137,7 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]Preflight
 	}
 
 	// Take all of the Preflight logs and stick them into our log.
-	log.Info(logbytes.String())
+	log.Info("%s", logbytes.String())
 
 	// Store the Preflight test results into the container's PreflightResults var and into the cache.
 	resultsDB := GetPreflightResultsDB(&results)

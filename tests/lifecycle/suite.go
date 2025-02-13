@@ -582,7 +582,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	needsPostMortemInfo := true
 	defer func() {
 		if needsPostMortemInfo {
-			check.LogDebug(postmortem.Log())
+			check.LogDebug("%s", postmortem.Log())
 		}
 		// Since we are possible exiting early, we need to make sure we set the result at the end of the function.
 		check.SetResult(compliantObjects, nonCompliantObjects)
