@@ -13,10 +13,10 @@ runs:
         echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
       shell: bash
 
-    - name: Set up Go 1.23
+    - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: 1.23.6
+        go-version-file: go.mod
         cache: false
 
     - name: Disable default go problem matcher

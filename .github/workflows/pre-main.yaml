@@ -41,18 +41,18 @@ jobs:
       SHELL: /bin/bash
 
     steps:
-      - name: Set up Go 1.23
-        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
-        with:
-          go-version: 1.23.6
-
-      - name: Disable default go problem matcher
-        run: echo "::remove-matcher owner=go::"
-
       - name: Check out code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.sha }}
+
+      - name: Set up Go
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: go.mod
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
 
       - name: Install yaml dependency
         uses: ./.github/actions/install-yaml-dep
@@ -116,18 +116,18 @@ jobs:
       SHELL: /bin/bash
 
     steps:
-      - name: Set up Go 1.23
-        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
-        with:
-          go-version: 1.23.6
-
-      - name: Disable default go problem matcher
-        run: echo "::remove-matcher owner=go::"
-
       - name: Check out code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.sha }}
+
+      - name: Set up Go
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: go.mod
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
 
       - name: Install yaml dependency
         uses: ./.github/actions/install-yaml-dep
@@ -188,19 +188,18 @@ jobs:
           mkdir -p /home/runner/.docker
           touch ${PFLT_DOCKERCONFIG}
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
-
-      - name: Set up Go 1.23
-        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
-        with:
-          go-version: 1.23.6
-
-      - name: Disable default go problem matcher
-        run: echo "::remove-matcher owner=go::"
-
       - name: Check out code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.sha }}
+
+      - name: Set up Go
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: go.mod
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
 
       - name: Install yaml dependency
         uses: ./.github/actions/install-yaml-dep
@@ -290,17 +289,17 @@ jobs:
           touch ${PFLT_DOCKERCONFIG}
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
-      # needed by depends-on-action
-      - name: Set up Go 1.23
-        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
-        with:
-          go-version: 1.23.6
-
       # Perform smoke tests using a Certsuite container.
       - name: Check out code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.sha }}
+
+      # needed by depends-on-action
+      - name: Set up Go
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: go.mod
 
       - name: Setup partner cluster
         uses: ./.github/actions/setup-partner-cluster

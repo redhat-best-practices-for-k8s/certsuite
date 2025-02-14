@@ -165,7 +165,7 @@ func testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces(check *ch
 
 		if err != nil {
 			msg := fmt.Sprintf("Operator namespace %s check got error %v", operatorNamespace, err)
-			check.LogError(msg)
+			check.LogError("%s", msg)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject(msg, testhelper.Namespace, false, operatorNamespace))
 			continue
 		}

@@ -19,7 +19,6 @@ package clientsholder
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -40,7 +39,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 	var buffOut bytes.Buffer
 	var buffErr bytes.Buffer
 
-	log.Debug(fmt.Sprintf("execute command on ns=%s, pod=%s container=%s, cmd: %s", ctx.GetNamespace(), ctx.GetPodName(), ctx.GetContainerName(), strings.Join(commandStr, " ")))
+	log.Debug("execute command on ns=%s, pod=%s container=%s, cmd: %s", ctx.GetNamespace(), ctx.GetPodName(), ctx.GetContainerName(), strings.Join(commandStr, " "))
 	req := clientsholder.K8sClient.CoreV1().RESTClient().
 		Post().
 		Namespace(ctx.GetNamespace()).
