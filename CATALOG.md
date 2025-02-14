@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 118
+### Total test cases: 119
 
 ### Total suites: 10
 
@@ -21,7 +21,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |observability|5|
 |operator|12|
 |performance|6|
-|platform-alteration|13|
+|platform-alteration|14|
 |preflight|18|
 
 ### Extended specific tests only: 12
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|
 |8|1|
 
-### Non-Telco specific tests only: 70
+### Non-Telco specific tests only: 71
 
 |Mandatory|Optional|
 |---|---|
-|44|26|
+|44|27|
 
 ### Telco specific tests only: 27
 
@@ -1351,8 +1351,8 @@ Tags|common,operator
 Property|Description
 ---|---
 Unique ID|operator-single-or-multi-namespaced-allowed-in-tenant-namespaces
-Description|Verifies that only single/multi namespaced operators are installed in a tenant-dedicated namespace. The test fails if this namespace contains any cluster-wide operator, operands of any other operator not installed in this namespace, or pods unrelated to any operator.
-Suggested Remediation|Ensure that operator with install mode SingleNamespaced or MultiNamespaced only is installed in the tenant namespace. Any other operator with install mode AllNamespace, cluster-wide operator or pods not belonging to any operator must not be present in this namespace.
+Description|Verifies that only single/multi namespaced operators are installed in a tenant-dedicated namespace. The test fails if this namespace contains any installed operator with Own/All-namespaced install mode, unlabeled operators, operands of any operator installed elswhere, or pods unrelated to any operator.
+Suggested Remediation|Ensure that operator with install mode SingleNamespaced or MultiNamespaced only is installed in the tenant namespace. Any installed operator with different install mode (AllNamespaced or OwnNamespaced) or pods not belonging to any operator must not be present in this namespace.
 Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
 Exception Process|No exceptions
 Tags|common,operator
@@ -1493,6 +1493,22 @@ Tags|common,platform-alteration
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+#### platform-alteration-cluster-operator-health
+
+Property|Description
+---|---
+Unique ID|platform-alteration-cluster-operator-health
+Description|Tests that all cluster operators are healthy.
+Suggested Remediation|Ensure each cluster operator is in an 'Available' state. If an operator is not in an 'Available' state, investigate the operator's logs and events to determine the cause of the failure.
+Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-cnf-operator-requirements
+Exception Process|No exceptions
+Tags|common,platform-alteration
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### platform-alteration-hugepages-1g-only
 
