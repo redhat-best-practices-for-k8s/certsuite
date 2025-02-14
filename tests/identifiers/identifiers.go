@@ -966,12 +966,12 @@ that Node's kernel may not have the same hacks.'`,
 		TestSingleOrMultiNamespacedOperatorInstallationInTenantNamespaceDocLink,
 		false,
 		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon)
+		TagExtended)
 
 	TestOperatorHasSemanticVersioningIdentifier = AddCatalogEntry(
 		"semantic-versioning",
