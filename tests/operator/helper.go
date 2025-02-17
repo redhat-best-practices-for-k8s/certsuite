@@ -124,6 +124,20 @@ func checkIfCsvUnderTest(csv *v1alpha1.ClusterServiceVersion) bool {
 	return false
 }
 
+func isCsvInNamespaceClusterWide(csvName string, allCsvs []*v1alpha1.ClusterServiceVersion) bool {
+	isClusterWide := true
+	for _, eachCsv := range allCsvs {
+		if eachCsv.Name == csvName {
+			targetNamespaces := eachCsv.Annotations["olm.targetNamespaces"]
+			if targetNamespaces != "" {
+				isClusterWide = false
+				break
+			}
+		}
+	}
+	return isClusterWide
+}
+
 func checkValidOperatorInstallation(namespace string) (isDedicatedOperatorNamespace bool, singleOrMultiNamespaceOperators,
 	nonSingleOrMultiNamespaceOperators, csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators []string, err error) {
 	// 1. operator installation checks
@@ -150,7 +164,7 @@ func checkValidOperatorInstallation(namespace string) (isDedicatedOperatorNamesp
 				operatorsFoundButNotUnderTest = append(operatorsFoundButNotUnderTest, csv.Name)
 			}
 		} else {
-			if len(targetNameSpaces) != 0 { // check for non-cluster wide operators
+			if !isCsvInNamespaceClusterWide(csv.Name, env.AllCsvs) { // check for non-cluster wide operators
 				csvsTargetingNamespace = append(csvsTargetingNamespace, csv.Name)
 			}
 		}
