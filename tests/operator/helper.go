@@ -128,8 +128,8 @@ func isCsvInNamespaceClusterWide(csvName string, allCsvs []*v1alpha1.ClusterServ
 	isClusterWide := true
 	for _, eachCsv := range allCsvs {
 		if eachCsv.Name == csvName {
-			targetNamespaces := eachCsv.Annotations["olm.targetNamespaces"]
-			if targetNamespaces != "" {
+			targetNamespaces, exists := eachCsv.Annotations["olm.targetNamespaces"]
+			if exists && targetNamespaces != "" {
 				isClusterWide = false
 				break
 			}
