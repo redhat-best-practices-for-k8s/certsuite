@@ -133,7 +133,7 @@ func TestOperatorInstalledMoreThanOnce(t *testing.T) {
 
 func TestIsCsvInNamespaceClusterWide(t *testing.T) {
 	allCsvs := []*v1alpha1.ClusterServiceVersion{
-		&v1alpha1.ClusterServiceVersion{
+		{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       v1alpha1.ClusterServiceVersionKind,
 				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
@@ -147,7 +147,7 @@ func TestIsCsvInNamespaceClusterWide(t *testing.T) {
 				},
 			},
 		},
-		&v1alpha1.ClusterServiceVersion{
+		{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       v1alpha1.ClusterServiceVersionKind,
 				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
@@ -160,7 +160,7 @@ func TestIsCsvInNamespaceClusterWide(t *testing.T) {
 				},
 			},
 		},
-		&v1alpha1.ClusterServiceVersion{
+		{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       v1alpha1.ClusterServiceVersionKind,
 				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
@@ -173,7 +173,7 @@ func TestIsCsvInNamespaceClusterWide(t *testing.T) {
 				},
 			},
 		},
-		&v1alpha1.ClusterServiceVersion{
+		{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       v1alpha1.ClusterServiceVersionKind,
 				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
@@ -187,7 +187,7 @@ func TestIsCsvInNamespaceClusterWide(t *testing.T) {
 				},
 			},
 		},
-		&v1alpha1.ClusterServiceVersion{
+		{
 			TypeMeta: metav1.TypeMeta{
 				Kind:       v1alpha1.ClusterServiceVersionKind,
 				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
