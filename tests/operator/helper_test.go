@@ -130,3 +130,101 @@ func TestOperatorInstalledMoreThanOnce(t *testing.T) {
 		assert.Equal(t, tc.expectedOutput, OperatorInstalledMoreThanOnce(tc.testOp1, tc.testOp2))
 	}
 }
+
+func TestIsCsvInNamespaceClusterWide(t *testing.T) {
+	allCsvs := []*v1alpha1.ClusterServiceVersion{
+		{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1alpha1.ClusterServiceVersionKind,
+				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
+			},
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "a.1.0",
+				Namespace: "a",
+				Annotations: map[string]string{
+					"olm.targetNamespaces":  "",
+					"olm.operatorNamespace": "a",
+				},
+			},
+		},
+		{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1alpha1.ClusterServiceVersionKind,
+				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
+			},
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "a.1.0",
+				Namespace: "b",
+				Annotations: map[string]string{
+					"olm.operatorNamespace": "a",
+				},
+			},
+		},
+		{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1alpha1.ClusterServiceVersionKind,
+				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
+			},
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "a.1.0",
+				Namespace: "c",
+				Annotations: map[string]string{
+					"olm.operatorNamespace": "a",
+				},
+			},
+		},
+		{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1alpha1.ClusterServiceVersionKind,
+				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
+			},
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "b.1.0",
+				Namespace: "b",
+				Annotations: map[string]string{
+					"olm.targetNamespaces":  "c,d",
+					"olm.operatorNamespace": "b",
+				},
+			},
+		},
+		{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1alpha1.ClusterServiceVersionKind,
+				APIVersion: v1alpha1.ClusterServiceVersionAPIVersion,
+			},
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "b.1.0",
+				Namespace: "d",
+				Annotations: map[string]string{
+					"olm.operatorNamespace": "b",
+				},
+			},
+		},
+	}
+
+	testCases := []struct {
+		csvName        string
+		allCsvs        []*v1alpha1.ClusterServiceVersion
+		expectedOutput bool
+	}{
+		{
+			csvName:        "a.1.0",
+			allCsvs:        allCsvs,
+			expectedOutput: true,
+		},
+		{
+			csvName:        "b.1.0",
+			allCsvs:        allCsvs,
+			expectedOutput: false,
+		},
+		{
+			csvName:        "c.1.0",
+			allCsvs:        allCsvs,
+			expectedOutput: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, isCsvInNamespaceClusterWide(tc.csvName, allCsvs))
+	}
+}
