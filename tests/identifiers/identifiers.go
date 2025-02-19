@@ -964,7 +964,7 @@ that Node's kernel may not have the same hacks.'`,
 		SingleOrMultiNamespacedOperatorInstallationInTenantNamespaceRemediation,
 		NoExceptions,
 		TestSingleOrMultiNamespacedOperatorInstallationInTenantNamespaceDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,
