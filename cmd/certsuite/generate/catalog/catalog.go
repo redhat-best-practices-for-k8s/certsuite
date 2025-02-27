@@ -252,14 +252,14 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 			// Every paragraph starts with a new line.
 
 			outString += fmt.Sprintf("\n#### %s\n\n", k.testName)
-			outString += "Property|Description\n"
-			outString += "---|---\n"
-			outString += fmt.Sprintf("Unique ID|%s\n", k.identifier.Id)
-			outString += fmt.Sprintf("Description|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Description, "\n", " "))
-			outString += fmt.Sprintf("Suggested Remediation|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "))
-			outString += fmt.Sprintf("Best Practice Reference|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
-			outString += fmt.Sprintf("Exception Process|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
-			outString += fmt.Sprintf("Tags|%s\n", tags)
+			outString += "|Property|Description|\n"
+			outString += "|---|---|\n"
+			outString += fmt.Sprintf("|Unique ID|%s|\n", k.identifier.Id)
+			outString += fmt.Sprintf("|Description|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Description, "\n", " "))
+			outString += fmt.Sprintf("|Suggested Remediation|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "))
+			outString += fmt.Sprintf("|Best Practice Reference|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
+			outString += fmt.Sprintf("|Exception Process|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
+			outString += fmt.Sprintf("|Tags|%s|\n", tags)
 			outString += classificationString
 		}
 	}

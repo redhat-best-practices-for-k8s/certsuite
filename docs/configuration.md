@@ -23,11 +23,11 @@ To launch the Config Generator:
 
 Here's an example of how to use the tool:
 
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
 <object type="image/svg+xml" data="./assets/images/demo-config.svg">
 <img src="../assets/images/demo-config.svg">
 </object>
-<!-- markdownlint-enable MD033 -->
+<!-- markdownlint-enable MD033 MD045 -->
 
 ## Config File options
 

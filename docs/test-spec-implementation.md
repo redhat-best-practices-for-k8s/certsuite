@@ -7,9 +7,9 @@ This section explains the implementation of some test cases so that users can ha
 
 For each discovered deployment in the [target namespaces](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/certsuite_config.yml#L1), the test case will try to modify its replica count to check whether pod's can be correctly removed and re-deployed in the cluster.
 
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
 <img src="../assets/images/tests-flow-charts/lifecycle-deployment-scaling.png"></img>
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
 
 As depicted in the image, the way to modify the number of replicas varies depending on whether the deployment/statefulset's replica count is managed by an HPA, a CR or it's just a standalone resource.
 
@@ -23,6 +23,6 @@ During the program's startup, an autodiscovery phase is performed where all the 
 
 For every CR under test, a similar approach to the scaling of deployments and statefulsets is done.
 
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
 <img src="../assets/images/tests-flow-charts/lifecycle-crd-scaling.png"></img>
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
