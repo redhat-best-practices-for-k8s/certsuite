@@ -18,8 +18,17 @@ updates:
     directory: /
     schedule:
       interval: weekly
-
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+      prod-dependencies:
+        dependency-type: "production"
   - package-ecosystem: docker
     directory: /.github/actions/documentation
     schedule:
       interval: weekly
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+      prod-dependencies:
+        dependency-type: "production"
