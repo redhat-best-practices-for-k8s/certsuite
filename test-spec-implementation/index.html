@@ -1007,9 +1007,9 @@
 <p>This section explains the implementation of some test cases so that users can have a better idea on what the is code actually doing and, in some cases, which configuration fields are relevant to them.</p>
 <h2 id="lifecycle-deployment-scaling-and-lifecycle-statefulset-scaling"><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-deployment-scaling">lifecycle-deployment-scaling</a> and <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-statefulset-scaling">lifecycle-statefulset-scaling</a><a class="headerlink" href="#lifecycle-deployment-scaling-and-lifecycle-statefulset-scaling" title="Permanent link">&para;</a></h2>
 <p>For each discovered deployment in the <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/certsuite_config.yml#L1">target namespaces</a>, the test case will try to modify its replica count to check whether pod&rsquo;s can be correctly removed and re-deployed in the cluster.</p>
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
 <p><img src="../assets/images/tests-flow-charts/lifecycle-deployment-scaling.png"></img></p>
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
 
 <p>As depicted in the image, the way to modify the number of replicas varies depending on whether the deployment/statefulset&rsquo;s replica count is managed by an HPA, a CR or it&rsquo;s just a standalone resource.</p>
 <ul>
@@ -1020,9 +1020,9 @@
 <h2 id="lifecycle-crd-scaling"><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-crd-scaling">lifecycle-crd-scaling</a><a class="headerlink" href="#lifecycle-crd-scaling" title="Permanent link">&para;</a></h2>
 <p>During the program&rsquo;s startup, an autodiscovery phase is performed where all the CRDs and their existing CRs in the <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/certsuite_config.yml#L1">target namespaces</a> are stored to be tested later. Only CRs whose CRD&rsquo;s suffix matches at least one of the <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/config/certsuite_config.yml#L9">targetCrdFilters</a> and has an <a href="https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource">scale subresource</a> will be selected as test targets.</p>
 <p>For every CR under test, a similar approach to the scaling of deployments and statefulsets is done.</p>
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
 <p><img src="../assets/images/tests-flow-charts/lifecycle-crd-scaling.png"></img></p>
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
 
 
 
