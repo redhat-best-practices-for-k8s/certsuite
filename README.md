@@ -26,11 +26,11 @@ Please contact us in case the documentation is broken.
 
 ## Demo
 
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD045 -->
 <object type="image/svg+xml" data="docs/assets/images/demo-certsuite.svg">
 <img src="docs/assets/images/demo-certsuite.svg">
 </object>
-<!-- markdownlint-enable MD033 -->
+<!-- markdownlint-enable MD033 MD045 -->
 
 ## Target Audience
 
