@@ -88,7 +88,7 @@ jobs:
           sudo rm -rf ${{env.CERTSUITE_REPORT_DIR}}
 
       - name: Run the tests (against image)
-        uses: nick-fields/retry@c97818ca39074beaea45180dba704f92496a0082 # v3.0.1
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
         with:
           timeout_minutes: 60
           max_attempts: 3
@@ -98,7 +98,7 @@ jobs:
         run: make build-certsuite-tool
 
       - name: Run the tests (against binary)
-        uses: nick-fields/retry@c97818ca39074beaea45180dba704f92496a0082 # v3.0.1
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
         with:
           timeout_minutes: 60
           max_attempts: 3

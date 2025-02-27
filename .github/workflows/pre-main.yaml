@@ -89,7 +89,7 @@ jobs:
         run: shfmt -d script
 
       - name: Markdownlint
-        uses: nosborn/github-action-markdown-cli@9b5e871c11cc0649c5ac2526af22e23525fa344d # v3.3.0
+        uses: nosborn/github-action-markdown-cli@58bcfd1af530d87a13d51b76e6713b52602e3613 # v3.4.0
         with:
           files: .
 
@@ -242,7 +242,7 @@ jobs:
         run: ./certsuite claim show failures -c certsuite-out/claim.json
 
       - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: always()
         with:
           name: smoke-tests
@@ -259,7 +259,7 @@ jobs:
         run: ./certsuite run --label-filter=preflight --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload preflight smoke test results as an artifact
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: always()
         with:
           name: preflight-smoke-tests
@@ -312,7 +312,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the `certsuite` image
-        uses: nick-fields/retry@c97818ca39074beaea45180dba704f92496a0082 # v3.0.1
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
         with:
           timeout_minutes: 90
           max_attempts: 3
@@ -368,7 +368,7 @@ jobs:
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: always()
         with:
           name: smoke-tests-container
@@ -415,9 +415,9 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@4574d27a4764455b42196d70a065bc6853246a25 # v3.4.0
+        uses: docker/setup-qemu-action@5964de0df58d5ad28b04d8fe2e6b80ad47105b91 # v3.5.0
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3.9.0
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
 
       # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
       # This step needs to be done right after the partner repo's bootstrap scripts, as they
@@ -448,7 +448,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: Build and push the unstable images for multi-arch
-        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6.13.0
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         with:
           context: .
@@ -478,9 +478,9 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@4574d27a4764455b42196d70a065bc6853246a25 # v3.4.0
+        uses: docker/setup-qemu-action@5964de0df58d5ad28b04d8fe2e6b80ad47105b91 # v3.5.0
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3.9.0
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
 
       # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
       # This step needs to be done right after the partner repo's bootstrap scripts, as they
@@ -511,7 +511,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN_K8S }}
 
       - name: Build and push the unstable images for multi-arch
-        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6.13.0
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         with:
           context: .
