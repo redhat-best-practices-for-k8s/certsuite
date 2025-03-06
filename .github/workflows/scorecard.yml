@@ -19,6 +19,7 @@ permissions: read-all
 
 jobs:
   analysis:
+    if: github.repository_owner == 'redhat-best-practices-for-k8s'
     name: Scorecard analysis
     runs-on: ubuntu-22.04
     permissions:

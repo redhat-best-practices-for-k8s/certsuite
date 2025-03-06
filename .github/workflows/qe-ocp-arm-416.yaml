@@ -28,7 +28,7 @@ env:
 
 jobs:
   build-arm-image-for-qe:
-    if: github.event.pull_request.user.login!='dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'self-hosted-disable')
+    if: github.event.pull_request.user.login!='dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'self-hosted-disable') && github.repository_owner == 'redhat-best-practices-for-k8s'
     runs-on: qe-ocp-arm1
     steps:
       - name: Check out code
