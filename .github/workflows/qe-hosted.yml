@@ -27,6 +27,7 @@ jobs:
   # Build the image used for testing first, then pass the reference to the QE tests.
   # This saves time and resources by not building the image in each QE suite.
   build-image-for-qe:
+    if: github.repository_owner == 'redhat-best-practices-for-k8s'
     runs-on: ubuntu-22.04
     steps:
       - name: Check out code

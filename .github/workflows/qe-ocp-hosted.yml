@@ -11,6 +11,7 @@ env:
 
 jobs:
   build-and-store:
+    if: github.repository_owner == 'redhat-best-practices-for-k8s'
     # build and store the image
     runs-on: ubuntu-22.04
     strategy:

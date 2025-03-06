@@ -16,6 +16,7 @@ env:
 
 jobs:
   pull-unstable-image:
+    if: github.repository_owner == 'redhat-best-practices-for-k8s'
     runs-on: qe-ocp-416
     env:
       SHELL: /bin/bash

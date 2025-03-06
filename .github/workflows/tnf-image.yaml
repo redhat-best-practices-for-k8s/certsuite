@@ -36,6 +36,7 @@ env:
 
 jobs:
   test-and-push-tnf-image-main:
+    if: github.repository_owner == 'redhat-best-practices-for-k8s'
     name: 'Test and push the `certsuite` image'
     runs-on: ubuntu-22.04
     env:

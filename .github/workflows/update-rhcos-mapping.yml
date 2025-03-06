@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   update-certification:
+    if: github.repository_owner == 'redhat-best-practices-for-k8s'
     permissions:
       contents: write  # for peter-evans/create-pull-request to create branch
       pull-requests: write  # for peter-evans/create-pull-request to create a PR
