@@ -21,7 +21,7 @@ require (
 	github.com/operator-framework/api v0.30.0
 	github.com/operator-framework/operator-lifecycle-manager v0.22.0
 	github.com/pkg/errors v0.9.1 // indirect
-	helm.sh/helm/v3 v3.17.1
+	helm.sh/helm/v3 v3.17.2
 	k8s.io/api v0.32.3
 	k8s.io/apimachinery v0.32.3
 	k8s.io/klog/v2 v2.130.1 // indirect
@@ -247,7 +247,7 @@ require (
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20250304173539-1adc5822eb99
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.30.0
-	google.golang.org/api v0.225.0
+	google.golang.org/api v0.226.0
 	k8s.io/kubectl v0.32.3
 	k8s.io/utils v0.0.0-20241210054802-24370beab758
 )
