@@ -231,6 +231,20 @@ func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) 
 		check.LogInfo("Testing Container %q", cut)
 		probePod := env.ProbePods[cut.NodeName]
 
+		// If the probe pod is not found, we cannot run the test.
+		if probePod == nil {
+			check.LogError("Probe Pod not found for node %q", cut.NodeName)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "certsuite probe pod not found", false))
+			continue
+		}
+
+		// Check whether or not a container is available to prevent a panic.
+		if len(probePod.Spec.Containers) == 0 {
+			check.LogError("Probe Pod %q has no containers", probePod)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "certsuite probe pod has no containers", false))
+			continue
+		}
+
 		ctxt := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 		fsDiffTester := cnffsdiff.NewFsDiffTester(check, clientsholder.GetClientsHolder(), ctxt, env.OpenshiftVersion)
 		fsDiffTester.RunTest(cut.UID)
