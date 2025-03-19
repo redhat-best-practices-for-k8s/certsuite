@@ -127,7 +127,7 @@ spec:
       args:
         - "-c"
         - |
-          ./certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' --non-intrusive=true ; sleep inf
+          ./certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' --intrusive=false ; sleep inf
       volumeMounts:
         - name: config-volume
           mountPath: /usr/certsuite/config

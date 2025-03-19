@@ -54,7 +54,7 @@ To skip intrusive tests which may disrupt cluster operations, issue the
 following:
 
 ```shell
-./certsuite run --non-intrusive=true
+./certsuite run --intrusive=false
 ```
 
 The intrusive test cases are:
@@ -67,7 +67,7 @@ The intrusive test cases are:
 Likewise, to enable intrusive tests, set the following:
 
 ```shell
-./certsuite run --non-intrusive=false
+./certsuite run --intrusive=true
 ```
 
 Intrusive tests are enabled by default.

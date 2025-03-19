@@ -1148,11 +1148,11 @@ func TestSetNeedsRefresh(t *testing.T) {
 
 func TestIsIntrusive(t *testing.T) {
 	env := &TestEnvironment{}
-	env.params.NonIntrusiveOnly = true
-	assert.False(t, env.IsIntrusive())
-
-	env.params.NonIntrusiveOnly = false
+	env.params.Intrusive = true
 	assert.True(t, env.IsIntrusive())
+
+	env.params.Intrusive = false
+	assert.False(t, env.IsIntrusive())
 }
 
 func TestIsPreflightInsecureAllowed(t *testing.T) {

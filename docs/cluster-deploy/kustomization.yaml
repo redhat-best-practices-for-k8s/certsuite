@@ -4,7 +4,6 @@ kind: Kustomization
 
 resources:
   - certsuite.yaml
-
 # Uncomment the next line (namespace transformer) to deploy all the certsuite related
 # resources in a different namespace.
 # namespace: my-custom-ns-name
@@ -36,4 +35,4 @@ resources:
 #       - op: replace
 #         path: /spec/containers/0/args/1
 #         value: |
-#           ./certsuite.sh -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' --non-intrusive=false ; sleep inf
+#           ./certsuite.sh -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' --intrusive=true ; sleep inf
