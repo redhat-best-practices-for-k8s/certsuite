@@ -34,5 +34,6 @@ resources:
 #       name: certsuite
 #     patch: |
 #       - op: replace
-#         path: /spec/containers/0/env/0/value
-#         value: false
+#         path: /spec/containers/0/env/1
+#         value: |
+#           ./certsuite.sh -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' --non-intrusive=false ; sleep inf

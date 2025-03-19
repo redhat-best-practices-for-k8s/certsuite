@@ -20,30 +20,6 @@ oc label namespace/default pod-security.kubernetes.io/enforce=privileged
 oc label namespace/default pod-security.kubernetes.io/enforce-version=latest
 ```
 
-## Disable intrusive tests
-
-To skip intrusive tests which may disrupt cluster operations, issue the
-following:
-
-```shell
-export CERTSUITE_NON_INTRUSIVE_ONLY=true
-```
-
-The intrusive test cases are:
-
-- [lifecycle-deployment-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-deployment-scaling)
-- [lifecycle-statefulset-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-statefulset-scaling)
-- [lifecycle-crd-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-crd-scaling)
-- [lifecycle-pod-recreation](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-pod-recreation)
-
-Likewise, to enable intrusive tests, set the following:
-
-```shell
-export CERTSUITE_NON_INTRUSIVE_ONLY=false
-```
-
-Intrusive tests are enabled by default.
-
 ## Preflight Integration
 
 When running the `preflight` suite of tests, there are a few environment variables that
