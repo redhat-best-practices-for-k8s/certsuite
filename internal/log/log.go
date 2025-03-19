@@ -209,12 +209,12 @@ func Logf(logger *Logger, level, format string, args ...any) {
 		logger.Fatal("Error when parsing log level, err: %v", err)
 	}
 
-	if !logger.l.Enabled(context.Background(), logLevel) {
+	if !logger.l.Enabled(context.TODO(), logLevel) {
 		return
 	}
 	var pcs [1]uintptr
 	// skip [Callers, Log, LogWrapper]
 	runtime.Callers(3, pcs[:]) //nolint:mnd
 	r := slog.NewRecord(time.Now(), logLevel, fmt.Sprintf(format, args...), pcs[0])
-	_ = logger.l.Handler().Handle(context.Background(), r)
+	_ = logger.l.Handler().Handle(context.TODO(), r)
 }

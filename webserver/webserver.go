@@ -199,7 +199,7 @@ func installReqHandlers() {
 }
 
 func StartServer(outputFolder string) {
-	ctx := context.Background()
+	ctx := context.TODO()
 	server := &http.Server{
 		Addr:        ":8084",                          // Server address
 		ReadTimeout: readTimeoutSeconds * time.Second, // Maximum duration for reading the entire request

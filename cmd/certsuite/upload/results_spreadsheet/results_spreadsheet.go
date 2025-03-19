@@ -73,7 +73,7 @@ func readCSV(fp string) ([][]string, error) {
 }
 
 func CreateSheetsAndDriveServices(credentials string) (sheetService *sheets.Service, driveService *drive.Service, err error) {
-	ctx := context.Background()
+	ctx := context.TODO()
 
 	sheetSrv, err := sheets.NewService(ctx, option.WithCredentialsFile(credentials))
 	if err != nil {

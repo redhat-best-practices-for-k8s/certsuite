@@ -60,7 +60,7 @@ func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient
 
 		// Get the owner resource, but don't care if it's not found: it might happen for ocp jobs that are constantly
 		// spawned and removed after completion.
-		resource, err := dynamicClient.Resource(gvr).Namespace(namespace).Get(context.Background(), ownerRef.Name, metav1.GetOptions{})
+		resource, err := dynamicClient.Resource(gvr).Namespace(namespace).Get(context.TODO(), ownerRef.Name, metav1.GetOptions{})
 		if err != nil && !k8serrors.IsNotFound(err) {
 			return fmt.Errorf("could not get object indicated by owner references %+v (gvr=%+v): %v", ownerRef, gvr, err)
 		}
