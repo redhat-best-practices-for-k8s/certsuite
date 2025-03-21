@@ -15,9 +15,9 @@ To test the newly added test / existing tests locally, follow the steps
 
 - Also, skip intrusive tests
 
-```shell
-export CERTSUITE_NON_INTRUSIVE_ONLY=true
-```
+    ```shell
+    ./certsuite run --non-intrusive=true
+    ```
 
 - Set K8s config of the cluster where test pods are running
 

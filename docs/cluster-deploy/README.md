@@ -44,7 +44,7 @@ But there are the three example of modifications included in [./kustomization.ya
 
 1. The namespace and the prefix/suffix of each resource's name. By default, the [./certsuite.yaml](certsuite.yaml) uses the namespace "certsuite" to deploy all the reources (except the cluster role and the cluster role binding), but this can be changed uncommenting the line that starts with `namespace:`. It's highly recommended to uncomment at least one of suffixName/prefixName so unique cluster role & cluster role-bindings can be created for each CertSuite Pod. This way, you could run more than one CertSuite Pod in the same cluster!.
 2. The (ginkgo) labels expression, in case you want to run different test cases. Uncomment the object that starts with "patches:". The commented example changes the command to use the "preflight" label only.
-3. The value of the CERTSUITE_NON_INTRUSIVE_ONLY env var. Uncomment the last object that starts with "patches:". The commented example changes the CERTSUITE_NON_INTRUSIVE_ONLY to false, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.
+3. Configuring the --non-intrusive Flag. Uncomment the last object that starts with "patches:". The commented example changes the --non-intrusive to false, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.
 
 In case both (1) and (2) wants to be used, just create a list of patches like this:
 
@@ -65,6 +65,7 @@ patches:
       name: certsuite
     patch: |
       - op: replace
-        path: /spec/containers/0/env/0/value
-        value: false
+        path: /spec/containers/0/args/1
+        value: |
+        ./certsuite run -l 'preflight' --non-intrusive=false ; sleep inf
 ```

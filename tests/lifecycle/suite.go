@@ -43,7 +43,7 @@ const (
 	minWorkerNodesForLifecycle = 2
 	statefulSet                = "StatefulSet"
 	localStorage               = "local-storage"
-	intrusiveTcSkippedReason   = "This is an intrusive test case and the env var CERTSUITE_NON_INTRUSIVE_ONLY was set"
+	intrusiveTcSkippedReason   = "This is an intrusive test case and the flag --non-intrusive was set"
 )
 
 var (
