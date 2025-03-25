@@ -119,7 +119,7 @@ func TestGetUpdatedStatefulset(t *testing.T) {
 	for _, tc := range testCases {
 		// Create a fake client to mock API calls.
 		client := &fake.Clientset{}
-		client.Fake.AddReactor("get", "statefulsets", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+		client.AddReactor("get", "statefulsets", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 			return true, &appsv1.StatefulSet{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "testPod",

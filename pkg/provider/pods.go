@@ -194,7 +194,7 @@ func (p *Pod) ContainsIstioProxy() bool {
 
 func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
 	oc := clientsholder.GetClientsHolder()
-	for _, podOwner := range p.ObjectMeta.GetOwnerReferences() {
+	for _, podOwner := range p.GetOwnerReferences() {
 		if podOwner.Kind == replicationController {
 			replicationControllers, err := oc.K8sClient.CoreV1().ReplicationControllers(p.Namespace).Get(context.TODO(), podOwner.Name, metav1.GetOptions{})
 			if err != nil {
@@ -495,7 +495,7 @@ func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRole
 	logger *log.Logger) (bool, string, error) {
 	// This function accepts a list of clusterRoleBindings and checks to see if the pod's service account is
 	// tied to any of them.  If it is, then it returns true, otherwise it returns false.
-	logger.Info("Pod %q is using service account %q", p, p.Pod.Spec.ServiceAccountName)
+	logger.Info("Pod %q is using service account %q", p, p.Spec.ServiceAccountName)
 
 	// Loop through the service accounts in the namespace, looking for a match between the pod serviceAccountName and
 	// the service account name.  If there is a match, check to make sure that the SA is not a 'subject' of the cluster
@@ -503,8 +503,8 @@ func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRole
 	for crbIndex := range clusterRoleBindings {
 		for _, subject := range clusterRoleBindings[crbIndex].Subjects {
 			if subject.Kind == rbacv1.ServiceAccountKind &&
-				subject.Name == p.Pod.Spec.ServiceAccountName && subject.Namespace == p.Pod.Namespace {
-				logger.Error("Pod %q has service account %q that is tied to cluster role binding %q", p.Pod.Name, p.Pod.Spec.ServiceAccountName, clusterRoleBindings[crbIndex].Name)
+				subject.Name == p.Spec.ServiceAccountName && subject.Namespace == p.Namespace {
+				logger.Error("Pod %q has service account %q that is tied to cluster role binding %q", p.Name, p.Spec.ServiceAccountName, clusterRoleBindings[crbIndex].Name)
 				return true, clusterRoleBindings[crbIndex].RoleRef.Name, nil
 			}
 		}
@@ -514,10 +514,10 @@ func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRole
 }
 
 func (p *Pod) IsRunAsUserID(uid int64) bool {
-	if p.Pod.Spec.SecurityContext == nil || p.Pod.Spec.SecurityContext.RunAsUser == nil {
+	if p.Spec.SecurityContext == nil || p.Spec.SecurityContext.RunAsUser == nil {
 		return false
 	}
-	return *p.Pod.Spec.SecurityContext.RunAsUser == uid
+	return *p.Spec.SecurityContext.RunAsUser == uid
 }
 
 // Returns the list of containers that have the securityContext.runAsNonRoot set to false and securityContext.runAsUser set to zero.
@@ -528,13 +528,13 @@ func (p *Pod) GetRunAsNonRootFalseContainers(knownContainersToSkip map[string]bo
 	// Check pod-level security context this will be set by default for containers
 	// If not already configured at the container level
 	var podRunAsNonRoot *bool
-	if p.Pod.Spec.SecurityContext != nil && p.Pod.Spec.SecurityContext.RunAsNonRoot != nil {
-		podRunAsNonRoot = p.Pod.Spec.SecurityContext.RunAsNonRoot
+	if p.Spec.SecurityContext != nil && p.Spec.SecurityContext.RunAsNonRoot != nil {
+		podRunAsNonRoot = p.Spec.SecurityContext.RunAsNonRoot
 	}
 
 	var podRunAsUserID *int64
-	if p.Pod.Spec.SecurityContext != nil && p.Pod.Spec.SecurityContext.RunAsUser != nil {
-		podRunAsUserID = p.Pod.Spec.SecurityContext.RunAsUser
+	if p.Spec.SecurityContext != nil && p.Spec.SecurityContext.RunAsUser != nil {
+		podRunAsUserID = p.Spec.SecurityContext.RunAsUser
 	}
 
 	// Check each container for the RunAsNonRoot parameter.

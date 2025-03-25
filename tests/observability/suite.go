@@ -386,7 +386,7 @@ func extractUniqueServiceAccountNames(env *provider.TestEnvironment) map[string]
 
 	// Iterate over the service accounts to extract names
 	for _, sa := range env.ServiceAccounts {
-		uniqueServiceAccountNames[sa.ObjectMeta.Name] = struct{}{}
+		uniqueServiceAccountNames[sa.Name] = struct{}{}
 	}
 
 	return uniqueServiceAccountNames

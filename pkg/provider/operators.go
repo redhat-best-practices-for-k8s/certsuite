@@ -169,7 +169,8 @@ func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 	uniqueCsvs := getUniqueCsvListByName(csvs)
 
 	for _, csv := range uniqueCsvs {
-		if !(csv.Status.Phase == olmv1Alpha.CSVPhaseSucceeded || !succeededRequired) {
+		// Skip CSVs that are not in the Succeeded phase if the flag is set.
+		if csv.Status.Phase != olmv1Alpha.CSVPhaseSucceeded && succeededRequired {
 			continue
 		}
 		op := &Operator{Name: csv.Name, Namespace: csv.Namespace}

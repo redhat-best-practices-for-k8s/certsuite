@@ -135,7 +135,7 @@ func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err erro
 		return allNs, fmt.Errorf("error getting all namespaces, err: %v", err)
 	}
 	for index := range nsList.Items {
-		allNs = append(allNs, nsList.Items[index].ObjectMeta.Name)
+		allNs = append(allNs, nsList.Items[index].Name)
 	}
 	return allNs, nil
 }

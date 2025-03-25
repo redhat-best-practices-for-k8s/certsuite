@@ -189,10 +189,10 @@ func (c *Container) IsTagEmpty() bool {
 
 func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool {
 	logger.Info("Testing Container %q", c)
-	if c.Container.SecurityContext == nil || c.Container.SecurityContext.ReadOnlyRootFilesystem == nil {
+	if c.SecurityContext == nil || c.SecurityContext.ReadOnlyRootFilesystem == nil {
 		return false
 	}
-	return *c.Container.SecurityContext.ReadOnlyRootFilesystem
+	return *c.SecurityContext.ReadOnlyRootFilesystem
 }
 
 func (c *Container) IsContainerRunAsNonRoot(podRunAsNonRoot *bool) (isContainerRunAsNonRoot bool, reason string) {
