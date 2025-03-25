@@ -53,8 +53,8 @@ func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool
 		return true
 	}
 
-	// Happy Path - This is detecting a default toleration
-	if t.Effect == corev1.TaintEffectNoExecute {
+	switch t.Effect {
+	case corev1.TaintEffectNoExecute:
 		if t.Key == notReadyStr || t.Key == unreachableStr {
 			// 300 seconds is the default, return false for not modified
 			if t.Operator == corev1.TolerationOpExists && t.TolerationSeconds != nil && *t.TolerationSeconds == int64(tolerationSecondsDefault) {
@@ -64,7 +64,7 @@ func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool
 			// Toleration seconds has been modified, return true.
 			return true
 		}
-	} else if t.Effect == corev1.TaintEffectNoSchedule {
+	case corev1.TaintEffectNoSchedule:
 		// If toleration is NoSchedule - node.kubernetes.io/memory-pressure - Exists and the QoS class for
 		// the pod is different than BestEffort, it is also a default toleration added by k8s
 		if (t.Key == memoryPressureStr) &&
@@ -72,6 +72,9 @@ func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool
 			(qosClass != corev1.PodQOSBestEffort) {
 			return false
 		}
+	case corev1.TaintEffectPreferNoSchedule:
+		// PreferNoSchedule is not a default toleration added by k8s
+		return true
 	}
 
 	// Check through the list of non-compliant tolerations to see if anything snuck by the above short circuit

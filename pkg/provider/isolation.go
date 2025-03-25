@@ -87,7 +87,7 @@ func LoadBalancingDisabled(p *Pod) bool {
 	cpuLoadBalancingDisabled := false
 	irqLoadBalancingDisabled := false
 
-	if v, ok := p.ObjectMeta.Annotations["cpu-load-balancing.crio.io"]; ok {
+	if v, ok := p.Annotations["cpu-load-balancing.crio.io"]; ok {
 		if v == disableVar {
 			cpuLoadBalancingDisabled = true
 		} else {
@@ -97,7 +97,7 @@ func LoadBalancingDisabled(p *Pod) bool {
 		log.Debug("Annotation cpu-load-balancing.crio.io is missing.")
 	}
 
-	if v, ok := p.ObjectMeta.Annotations["irq-load-balancing.crio.io"]; ok {
+	if v, ok := p.Annotations["irq-load-balancing.crio.io"]; ok {
 		if v == disableVar {
 			irqLoadBalancingDisabled = true
 		} else {

@@ -159,11 +159,11 @@ func TestScaleHpaDeploymentFunc(t *testing.T) {
 		var runtimeObjects []runtime.Object
 		runtimeObjects = append(runtimeObjects, tempDP, hpatest)
 		c := k8sfake.NewSimpleClientset(runtimeObjects...)
-		c.Fake.AddReactor("get", "horizontalpodautoscalers", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+		c.AddReactor("get", "horizontalpodautoscalers", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 			return true, hpatest, nil
 		})
 
-		c.Fake.AddReactor("update", "horizontalpodautoscalers", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+		c.AddReactor("update", "horizontalpodautoscalers", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 			return true, hpatest, nil
 		})
 
@@ -238,11 +238,11 @@ func TestScaleHpaDeploymentHelper(t *testing.T) {
 
 		// Spoof the get and update functions
 		client := k8sfake.Clientset{}
-		client.Fake.AddReactor("get", "horizontalpodautoscalers", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+		client.AddReactor("get", "horizontalpodautoscalers", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 			return true, runtimeObjs[0], tc.getResult
 		})
 
-		client.Fake.AddReactor("update", "horizontalpodautoscalers", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+		client.AddReactor("update", "horizontalpodautoscalers", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 			return true, runtimeObjs[0], tc.updateResult
 		})
 
@@ -308,11 +308,11 @@ func TestScaleDeploymentHelper(t *testing.T) {
 
 		// Spoof the get and update functions
 		client := k8sfake.Clientset{}
-		client.Fake.AddReactor("get", "deployments", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+		client.AddReactor("get", "deployments", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 			return true, runtimeObjs[0], tc.getResult
 		})
 
-		client.Fake.AddReactor("update", "deployments", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+		client.AddReactor("update", "deployments", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 			return true, runtimeObjs[0], tc.updateResult
 		})
 

@@ -108,19 +108,19 @@ func Test_followOwnerReferences(t *testing.T) {
 	client := k8sDynamicFake.NewSimpleDynamicClient(scheme, rep1, dep1, csv1, node1, pod1)
 
 	// Spoof the get functions
-	client.Fake.AddReactor("get", "ClusterServiceVersion", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+	client.AddReactor("get", "ClusterServiceVersion", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 		return true, csv1, nil
 	})
-	client.Fake.AddReactor("get", "Deployment", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+	client.AddReactor("get", "Deployment", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 		return true, dep1, nil
 	})
-	client.Fake.AddReactor("get", "ReplicaSet", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+	client.AddReactor("get", "ReplicaSet", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 		return true, rep1, nil
 	})
-	client.Fake.AddReactor("get", "Node", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+	client.AddReactor("get", "Node", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 		return true, node1, nil
 	})
-	client.Fake.AddReactor("get", "Pod", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+	client.AddReactor("get", "Pod", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 		return true, pod1, nil
 	})
 
@@ -225,11 +225,11 @@ func TestGetTopOwners(t *testing.T) {
 	client := k8sDynamicFake.NewSimpleDynamicClient(k8sscheme.Scheme, testDeployment, testPod)
 
 	// Spoof the get functions
-	client.Fake.AddReactor("get", "Deployment", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+	client.AddReactor("get", "Deployment", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 		return true, testDeployment, nil
 	})
 
-	client.Fake.AddReactor("get", "Pod", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+	client.AddReactor("get", "Pod", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 		return true, testPod, nil
 	})
 

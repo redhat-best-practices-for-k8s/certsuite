@@ -58,7 +58,7 @@ func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name str
 func isDeploymentsPodsMatchingAtLeastOneLabel(labels []labelObject, namespace string, deployment *appsv1.Deployment) bool {
 	for _, aLabelObject := range labels {
 		log.Debug("Searching pods in deployment %q found in ns %q using label %s=%s", deployment.Name, namespace, aLabelObject.LabelKey, aLabelObject.LabelValue)
-		if deployment.Spec.Template.ObjectMeta.Labels[aLabelObject.LabelKey] == aLabelObject.LabelValue {
+		if deployment.Spec.Template.Labels[aLabelObject.LabelKey] == aLabelObject.LabelValue {
 			log.Info("Deployment %s found in ns=%s", deployment.Name, namespace)
 			return true
 		}
@@ -106,7 +106,7 @@ func findDeploymentsByLabels(
 func isStatefulSetsMatchingAtLeastOneLabel(labels []labelObject, namespace string, statefulSet *appsv1.StatefulSet) bool {
 	for _, aLabelObject := range labels {
 		log.Debug("Searching pods in statefulset %q found in ns %q using label %s=%s", statefulSet.Name, namespace, aLabelObject.LabelKey, aLabelObject.LabelValue)
-		if statefulSet.Spec.Template.ObjectMeta.Labels[aLabelObject.LabelKey] == aLabelObject.LabelValue {
+		if statefulSet.Spec.Template.Labels[aLabelObject.LabelKey] == aLabelObject.LabelValue {
 			log.Info("StatefulSet %s found in ns=%s", statefulSet.Name, namespace)
 			return true
 		}

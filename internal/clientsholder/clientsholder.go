@@ -219,7 +219,7 @@ func GetClientConfigFromRestConfig(restConfig *rest.Config) *clientcmdapi.Config
 		Clusters: map[string]*clientcmdapi.Cluster{
 			"default-cluster": {
 				Server:               restConfig.Host,
-				CertificateAuthority: restConfig.TLSClientConfig.CAFile,
+				CertificateAuthority: restConfig.CAFile,
 			},
 		},
 		Contexts: map[string]*clientcmdapi.Context{

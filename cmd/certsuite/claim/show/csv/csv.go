@@ -153,7 +153,7 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 	}
 
 	opVers := ""
-	for i, op := range claimScheme.Claim.Configurations.TestOperators {
+	for i, op := range claimScheme.Claim.TestOperators {
 		if i == 0 {
 			opVers = op.Version
 		} else {

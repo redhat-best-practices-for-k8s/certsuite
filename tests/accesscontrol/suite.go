@@ -585,7 +585,7 @@ func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		check.LogInfo("Testing Pod %q", put)
 		podIsCompliant := true
-		if put.Pod.Spec.ServiceAccountName == defaultServiceAccount {
+		if put.Spec.ServiceAccountName == defaultServiceAccount {
 			check.LogError("Pod %q has an empty or default serviceAccountName", put)
 			// Add the pod to the non-compliant list
 			nonCompliantObjects = append(nonCompliantObjects,

@@ -279,7 +279,7 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	env.AllServiceAccounts = data.AllServiceAccounts
 	env.AllServiceAccountsMap = make(map[string]*corev1.ServiceAccount)
 	for i := 0; i < len(data.AllServiceAccounts); i++ {
-		mapIndex := data.AllServiceAccounts[i].ObjectMeta.Namespace + data.AllServiceAccounts[i].ObjectMeta.Name
+		mapIndex := data.AllServiceAccounts[i].Namespace + data.AllServiceAccounts[i].Name
 		env.AllServiceAccountsMap[mapIndex] = data.AllServiceAccounts[i]
 	}
 	// Pods
