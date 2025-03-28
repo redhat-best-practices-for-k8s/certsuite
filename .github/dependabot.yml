@@ -42,8 +42,11 @@ updates:
       docker: 
         patterns: [ "docker/*" ]
         update-types: [ "major", "minor", "patch" ]
-      ci-runtime:
-        patterns: [ "*quick-*" ]
+      other-actions:
+        patterns: [ "*" ]
+        exclude-patterns: 
+          - "actions/*"
+          - "docker/*"
         update-types: [ "major", "minor", "patch" ]
   - package-ecosystem: docker
     directory: /.github/actions/documentation
