@@ -30,9 +30,6 @@ updates:
       interval: weekly
     groups:
       docker-images:
-        patterns: 
-          - "registry.access.redhat.com/ubi9/*"
-          - "registry.access.redhat.com/ubi8/*"
         update-types: [ "major", "minor", "patch" ]
   - package-ecosystem: github-actions
     directory: /
@@ -54,7 +51,4 @@ updates:
       interval: weekly
     groups:
       docker-images:
-        patterns: 
-          - "registry.access.redhat.com/ubi9/*"
-          - "registry.access.redhat.com/ubi8/*"
         update-types: [ "major", "minor", "patch" ]
