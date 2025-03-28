@@ -6,29 +6,42 @@ updates:
     schedule:
       interval: weekly
     groups:
-      dev-dependencies:
-        dependency-type: "development"
-      prod-dependencies:
-        dependency-type: "production"
+      k8s:
+        patterns: [ "k8s.io/*", "sigs.k8s.io/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      redhat-best-practices-for-k8s:
+        patterns: [ "github.com/redhat-best-practices-for-k8s/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      openshift:
+        patterns: [ "github.com/openshift/*" ]
+        update-types: [ "major", "minor", "patch" ]
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
+    groups:
+      certsuite-ubi:
+        patterns: [ "registry.access.redhat.com/ubi*" ]
+        update-types: [ "major", "minor", "patch" ]
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
     groups:
-      dev-dependencies:
-        dependency-type: "development"
-      prod-dependencies:
-        dependency-type: "production"
+      actions:
+        patterns: [ "actions/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      docker: 
+        patterns: [ "docker/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      ci-runtime:
+        patterns: [ "*quick-*" ]
+        update-types: [ "major", "minor", "patch" ]
   - package-ecosystem: docker
     directory: /.github/actions/documentation
     schedule:
       interval: weekly
     groups:
-      dev-dependencies:
-        dependency-type: "development"
-      prod-dependencies:
-        dependency-type: "production"
+      actions-documentation:
+        patterns: [ "registry.access.redhat.com/ubi*" ]
+        update-types: [ "major", "minor", "patch" ]
