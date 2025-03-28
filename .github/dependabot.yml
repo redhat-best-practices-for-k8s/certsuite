@@ -16,16 +16,23 @@ updates:
       openshift:
         patterns: [ "github.com/openshift/*" ]
         update-types: [ "major", "minor", "patch" ]
+      other-go-modules:
+        patterns: [ "*" ]
+        exclude-patterns: 
+          - "k8s.io/*"
+          - "sigs.k8s.io/*"
+          - "github.com/redhat-best-practices-for-k8s/*"
+          - "github.com/openshift/*"
+        update-types: [ "major", "minor", "patch" ]
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
     groups:
-      ubi9:
-        patterns: [ "registry.access.redhat.com/ubi9/*" ]
-        update-types: [ "major", "minor", "patch" ]
-      ubi8:
-        patterns: [ "registry.access.redhat.com/ubi8/*" ]
+      docker-images:
+        patterns: 
+          - "registry.access.redhat.com/ubi9/*"
+          - "registry.access.redhat.com/ubi8/*"
         update-types: [ "major", "minor", "patch" ]
   - package-ecosystem: github-actions
     directory: /
@@ -46,9 +53,8 @@ updates:
     schedule:
       interval: weekly
     groups:
-      docs-ubi:
-        patterns: [ "registry.access.redhat.com/ubi9/*" ]
-        update-types: [ "major", "minor", "patch" ]
-      docs-ubi8:  
-        patterns: [ "registry.access.redhat.com/ubi8/*" ]
+      docker-images:
+        patterns: 
+          - "registry.access.redhat.com/ubi9/*"
+          - "registry.access.redhat.com/ubi8/*"
         update-types: [ "major", "minor", "patch" ]
