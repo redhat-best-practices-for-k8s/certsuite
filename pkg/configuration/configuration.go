@@ -125,7 +125,7 @@ type TestParameters struct {
 	SanitizeClaim                 bool
 	CertSuiteImageRepo            string
 	CertSuiteProbeImage           string
-	NonIntrusiveOnly              bool
+	Intrusive                     bool
 	AllowPreflightInsecure        bool
 	IncludeWebFilesInOutputFolder bool
 	OmitArtifactsZipFile          bool

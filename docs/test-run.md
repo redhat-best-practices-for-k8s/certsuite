@@ -48,6 +48,30 @@ To view which test cases will run for a specific label or label filter use the f
 
 See the [CATALOG.md](CATALOG.md) to find all test labels.
 
+## Disable intrusive tests
+
+To skip intrusive tests which may disrupt cluster operations, issue the
+following:
+
+```shell
+./certsuite run --intrusive=false
+```
+
+The intrusive test cases are:
+
+* [lifecycle-deployment-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-deployment-scaling)
+* [lifecycle-statefulset-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-statefulset-scaling)
+* [lifecycle-crd-scaling](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-crd-scaling)
+* [lifecycle-pod-recreation](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-pod-recreation)
+
+Likewise, to enable intrusive tests, set the following:
+
+```shell
+./certsuite run --intrusive=true
+```
+
+Intrusive tests are enabled by default.
+
 ## Selected flags description
 
 The following is a non-exhaustive list of the most common flags that the `certsuite run` command accepts. To see the complete list use the `-h, --help` flag.
