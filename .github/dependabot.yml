@@ -48,6 +48,40 @@ updates:
           - "actions/*"
           - "docker/*"
         update-types: [ "major", "minor", "patch" ]
+  - package-ecosystem: github-actions
+    directory: /.github/actions/setup-partner-cluster
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: [ "actions/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      docker: 
+        patterns: [ "docker/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      other-actions:
+        patterns: [ "*" ]
+        exclude-patterns: 
+          - "actions/*"
+          - "docker/*"
+        update-types: [ "major", "minor", "patch" ]
+  - package-ecosystem: github-actions
+    directory: /.github/actions/setup
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: [ "actions/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      docker: 
+        patterns: [ "docker/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      other-actions:
+        patterns: [ "*" ]
+        exclude-patterns: 
+          - "actions/*"
+          - "docker/*"
+        update-types: [ "major", "minor", "patch" ]
   - package-ecosystem: docker
     directory: /.github/actions/documentation
     schedule:
