@@ -5,6 +5,7 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 3
     groups:
       k8s:
         patterns: [ "k8s.io/*", "sigs.k8s.io/*" ]
@@ -20,8 +21,11 @@ updates:
     schedule:
       interval: weekly
     groups:
-      certsuite-ubi:
-        patterns: [ "registry.access.redhat.com/ubi*" ]
+      ubi9:
+        patterns: [ "registry.access.redhat.com/ubi9/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      ubi8:
+        patterns: [ "registry.access.redhat.com/ubi8/*" ]
         update-types: [ "major", "minor", "patch" ]
   - package-ecosystem: github-actions
     directory: /
@@ -42,6 +46,9 @@ updates:
     schedule:
       interval: weekly
     groups:
-      actions-documentation:
-        patterns: [ "registry.access.redhat.com/ubi*" ]
+      docs-ubi:
+        patterns: [ "registry.access.redhat.com/ubi9/*" ]
+        update-types: [ "major", "minor", "patch" ]
+      docs-ubi8:  
+        patterns: [ "registry.access.redhat.com/ubi8/*" ]
         update-types: [ "major", "minor", "patch" ]
