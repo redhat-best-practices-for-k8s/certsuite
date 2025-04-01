@@ -579,7 +579,7 @@ func (env *TestEnvironment) SetNeedsRefresh() {
 }
 
 func (env *TestEnvironment) IsIntrusive() bool {
-	return !env.params.NonIntrusiveOnly
+	return env.params.Intrusive
 }
 
 func (env *TestEnvironment) IsPreflightInsecureAllowed() bool {

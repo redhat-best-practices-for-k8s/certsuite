@@ -27,7 +27,6 @@ env:
   CERTSUITE_IMAGE_NAME_LEGACY: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: latest
   CERTSUITE_CONTAINER_CLIENT: docker
-  CERTSUITE_NON_INTRUSIVE_ONLY: false
   CERTSUITE_ALLOW_PREFLIGHT_INSECURE: false
   CERTSUITE_CONFIG_DIR: /tmp/tnf/config
   CERTSUITE_SRC_URL: 'https://github.com/${{ github.repository }}'

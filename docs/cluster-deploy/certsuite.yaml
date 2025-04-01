@@ -127,15 +127,13 @@ spec:
       args:
         - "-c"
         - |
-          ./certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' ; sleep inf
+          ./certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' --intrusive=false ; sleep inf
       volumeMounts:
         - name: config-volume
           mountPath: /usr/certsuite/config
         - name: preflight-dockerconfig
           mountPath: /usr/certsuite/config/preflight
       env:
-        - name: CERTSUITE_NON_INTRUSIVE_ONLY
-          value: "true"
         - name: CERTSUITE_ALLOW_PREFLIGHT_INSECURE
           value: "true"
         - name: CERTSUITE_LOG_LEVEL
