@@ -942,11 +942,9 @@
 </li>
 <li>
 <p>Also, skip intrusive tests</p>
-</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">CERTSUITE_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
+<div class="highlight"><pre><span></span><code>./certsuite<span class="w"> </span>run<span class="w"> </span>--intrusive<span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
-<ul>
+</li>
 <li>
 <p>Set K8s config of the cluster where test pods are running</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">KUBECONFIG</span><span class="o">=</span>&lt;&lt;mypath/.kube/config&gt;&gt;

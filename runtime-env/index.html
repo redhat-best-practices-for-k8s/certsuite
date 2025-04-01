@@ -574,15 +574,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#disable-intrusive-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Disable intrusive tests
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#preflight-integration" class="md-nav__link">
     <span class="md-ellipsis">
       Preflight Integration
@@ -985,15 +976,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#disable-intrusive-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Disable intrusive tests
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#preflight-integration" class="md-nav__link">
     <span class="md-ellipsis">
       Preflight Integration
@@ -1033,22 +1015,6 @@ pod-security.kubernetes.io/enforce-version:<span class="w"> </span>latest
 <div class="highlight"><pre><span></span><code>oc<span class="w"> </span>label<span class="w"> </span>namespace/default<span class="w"> </span>pod-security.kubernetes.io/enforce<span class="o">=</span>privileged
 oc<span class="w"> </span>label<span class="w"> </span>namespace/default<span class="w"> </span>pod-security.kubernetes.io/enforce-version<span class="o">=</span>latest
 </code></pre></div>
-<h2 id="disable-intrusive-tests">Disable intrusive tests<a class="headerlink" href="#disable-intrusive-tests" title="Permanent link">&para;</a></h2>
-<p>To skip intrusive tests which may disrupt cluster operations, issue the
-following:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">CERTSUITE_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
-</code></pre></div>
-<p>The intrusive test cases are:</p>
-<ul>
-<li><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-deployment-scaling">lifecycle-deployment-scaling</a></li>
-<li><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-statefulset-scaling">lifecycle-statefulset-scaling</a></li>
-<li><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-crd-scaling">lifecycle-crd-scaling</a></li>
-<li><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-pod-recreation">lifecycle-pod-recreation</a></li>
-</ul>
-<p>Likewise, to enable intrusive tests, set the following:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">CERTSUITE_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">false</span>
-</code></pre></div>
-<p>Intrusive tests are enabled by default.</p>
 <h2 id="preflight-integration">Preflight Integration<a class="headerlink" href="#preflight-integration" title="Permanent link">&para;</a></h2>
 <p>When running the <code>preflight</code> suite of tests, there are a few environment variables that
 will need to be set:</p>

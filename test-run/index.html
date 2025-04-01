@@ -606,6 +606,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#disable-intrusive-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable intrusive tests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#selected-flags-description" class="md-nav__link">
     <span class="md-ellipsis">
       Selected flags description
@@ -1022,6 +1031,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#disable-intrusive-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable intrusive tests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#selected-flags-description" class="md-nav__link">
     <span class="md-ellipsis">
       Selected flags description
@@ -1116,6 +1134,22 @@
 </ul>
 <p>To view which test cases will run for a specific label or label filter use the flag <code>--list</code>.</p>
 <p>See the <a href="CATALOG.md">CATALOG.md</a> to find all test labels.</p>
+<h2 id="disable-intrusive-tests">Disable intrusive tests<a class="headerlink" href="#disable-intrusive-tests" title="Permanent link">&para;</a></h2>
+<p>To skip intrusive tests which may disrupt cluster operations, issue the
+following:</p>
+<div class="highlight"><pre><span></span><code>./certsuite<span class="w"> </span>run<span class="w"> </span>--intrusive<span class="o">=</span><span class="nb">false</span>
+</code></pre></div>
+<p>The intrusive test cases are:</p>
+<ul>
+<li><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-deployment-scaling">lifecycle-deployment-scaling</a></li>
+<li><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-statefulset-scaling">lifecycle-statefulset-scaling</a></li>
+<li><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-crd-scaling">lifecycle-crd-scaling</a></li>
+<li><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-pod-recreation">lifecycle-pod-recreation</a></li>
+</ul>
+<p>Likewise, to enable intrusive tests, set the following:</p>
+<div class="highlight"><pre><span></span><code>./certsuite<span class="w"> </span>run<span class="w"> </span>--intrusive<span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<p>Intrusive tests are enabled by default.</p>
 <h2 id="selected-flags-description">Selected flags description<a class="headerlink" href="#selected-flags-description" title="Permanent link">&para;</a></h2>
 <p>The following is a non-exhaustive list of the most common flags that the <code>certsuite run</code> command accepts. To see the complete list use the <code>-h, --help</code> flag.</p>
 <ul>
