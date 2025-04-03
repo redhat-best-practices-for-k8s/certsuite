@@ -17,9 +17,9 @@ runs:
       shell: bash
       env:
         MESSAGE: ${{ inputs.message }}
-        REPO_URL: 'https://github.com/${{ github.repository }}'
-        COMMIT_URL: 'https://github.com/${{ github.repository }}/commit/${{ github.sha }}'
-        JOB_URL: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}'
+        REPO_URL: 'github.com/${{ github.repository }}'
+        COMMIT_URL: 'github.com/${{ github.repository }}/commit/${{ github.sha }}'
+        JOB_URL: 'github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}'
         ATTEMPT: ${{ github.run_attempt }}
       run: |
           data="{                              \
