@@ -51,4 +51,7 @@ const (
 	AffiliatedCert = NoDocumentedProcess + " " + `A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.` //nolint:lll
 
 	OperatorSkipRangeExceptionProcess = `If there is not a version of the operator that needs to be skipped, then an exception will be granted.`
+
+	// Exceptions for requests and limits test
+	RequestsAndLimitsExceptionProcess = `Exceptions possible for platform and infrastructure containers. Must identify which container needs access and document why with details.`
 )

@@ -347,10 +347,10 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Property|Description|
 |---|---|
 |Unique ID|access-control-requests-and-limits|
-|Description|Check that containers have resource requests and limits specified in their spec.|
+|Description|Check that containers have resource requests and limits specified in their spec. Set proper QoS class and resource requests/limits based on container use case.|
 |Suggested Remediation|Add requests and limits to your container spec. See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-requests/limits|
-|Exception Process|There is no documented exception process for this.|
+|Exception Process|Exceptions possible for platform and infrastructure containers. Must identify which container needs access and document why with details.|
 |Tags|telco,access-control|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
