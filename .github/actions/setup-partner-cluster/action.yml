@@ -20,7 +20,7 @@ runs:
       with:
         disableDefaultCni: true
         numControlPlaneNodes: 1
-        numWorkerNodes: 3
+        numWorkerNodes: 2
         installOLM: true
         removeDefaultStorageClass: true
         removeControlPlaneTaint: true
