@@ -26,7 +26,7 @@ WORKFLOWS_TO_CHECK=(
 # Loop through the workflows and rekick any failed runs.
 for workflow in "${WORKFLOWS_TO_CHECK[@]}"; do
 	echo "Checking workflow: $workflow"
-	for run_id in $(gh run list --limit 20 --workflow "$workflow" --json conclusion,databaseId | jq -r '.[] | select(.conclusion == "failure") | .databaseId'); do
+	for run_id in $(gh run list --limit 20 --workflow "$workflow" --json conclusion,databaseId | jq -r '.[] | select(.conclusion == "failure" or .conclusion == "timed_out") | .databaseId'); do
 		gh run rerun "$run_id" --failed
 	done
 done
