@@ -20,6 +20,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
@@ -29,8 +31,9 @@ import (
 )
 
 const (
-	partnerPodmanFolder = "/root/podman"
-	tmpMountDestFolder  = "/tmp/tnf-podman"
+	partnerPodmanFolder      = "/root/podman"
+	tmpMountDestFolder       = "/tmp/tnf-podman"
+	errorCode125RetrySeconds = 15
 )
 
 var (
@@ -165,7 +168,25 @@ func (f *FsDiff) RunTest(containerUID string) {
 	}
 
 	f.check.LogInfo("Running \"podman diff\" for container id %s", containerUID)
-	output, err := f.runPodmanDiff(containerUID)
+
+	var output string
+	var err error
+	for i := range [5]int{} {
+		output, err = f.runPodmanDiff(containerUID)
+		if err == nil {
+			break
+		}
+		// Retry if we get a podman error code 125, which is a known issue where the container/pod
+		// has possibly gone missing or is in CrashLoopBackOff state. Adding a retry here to help
+		// smooth out the test results.
+		if strings.Contains(err.Error(), "command terminated with exit code 125") {
+			f.check.LogWarn("Retrying \"podman diff\" due to error code 125 (attempt %d/5)", i+1)
+			time.Sleep(errorCode125RetrySeconds * time.Second)
+			continue
+		}
+		break
+	}
+
 	if err != nil {
 		f.Error = err
 		f.result = testhelper.ERROR
