@@ -35,11 +35,12 @@ import (
 )
 
 const (
-	HugePages2Mi          = "hugepages-2Mi"
-	HugePages1Gi          = "hugepages-1Gi"
-	hugePages             = "hugepages"
-	replicationController = "ReplicationController"
-	deploymentConfig      = "DeploymentConfig"
+	HugePages2Mi            = "hugepages-2Mi"
+	HugePages1Gi            = "hugepages-1Gi"
+	hugePages               = "hugepages"
+	replicationController   = "ReplicationController"
+	deploymentConfig        = "DeploymentConfig"
+	IstioProxyContainerName = "istio-proxy"
 )
 
 type Pod struct {
@@ -185,7 +186,7 @@ func (p *Pod) IsShareProcessNamespace() bool {
 
 func (p *Pod) ContainsIstioProxy() bool {
 	for _, container := range p.Containers {
-		if container.Name == "istio-proxy" {
+		if container.Name == IstioProxyContainerName {
 			return true
 		}
 	}
