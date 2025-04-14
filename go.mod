@@ -4,7 +4,7 @@ go 1.24.2
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.1
-	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.55
+	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.56
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
@@ -242,8 +242,8 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.6
 	github.com/k8snetworkplumbingwg/sriov-network-operator v1.5.0
 	github.com/manifoldco/promptui v0.9.0
-	github.com/redhat-best-practices-for-k8s/oct v0.0.36
-	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.49
+	github.com/redhat-best-practices-for-k8s/oct v0.0.37
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.50
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20250304173539-1adc5822eb99
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.31.0
