@@ -174,7 +174,7 @@ func (c *Container) HasIgnoredContainerName() bool {
 }
 
 func (c *Container) IsIstioProxy() bool {
-	return c.Name == "istio-proxy" //nolint:goconst
+	return c.Name == IstioProxyContainerName
 }
 
 func (c *Container) HasExecProbes() bool {
