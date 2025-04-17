@@ -142,11 +142,10 @@ ENV \
 	OSDK_BIN=/usr/local/osdk/bin
 
 # Install the certsuite binary
-COPY --from=build ${CERTSUITE_DIR} ${CERTSUITE_DIR}
-RUN cp ${CERTSUITE_DIR}/certsuite /usr/local/bin
+COPY --from=build ${CERTSUITE_DIR}/certsuite /usr/local/bin/certsuite
 
 # Add operatorsdk binary to image
-COPY --from=build ${OSDK_BIN} ${OSDK_BIN}
+COPY --from=build ${OSDK_BIN} /usr/local/bin/operator-sdk
 
 # Update the CNF containers, helm charts and operators DB
 ENV \
@@ -154,7 +153,6 @@ ENV \
 	OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
 COPY --from=db ${OCT_DB_PATH} ${CERTSUITE_OFFLINE_DB}
 
-ENV PATH="${OSDK_BIN}:${PATH}"
 WORKDIR ${CERTSUITE_DIR}
 ENV SHELL=/bin/bash
 CMD ["certsuite", "-h"]
