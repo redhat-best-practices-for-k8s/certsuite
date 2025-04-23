@@ -244,7 +244,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/redhat-best-practices-for-k8s/oct v0.0.37
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.50
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20250304173539-1adc5822eb99
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20250415184943-39da695c5e9a
 	github.com/robert-nix/ansihtml v1.0.1
 	golang.org/x/term v0.31.0
 	google.golang.org/api v0.229.0
