@@ -13,7 +13,7 @@ permissions:
 jobs:
   preflight-unstable:
     if: github.repository_owner == 'redhat-best-practices-for-k8s'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
       IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite:unstable

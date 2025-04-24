@@ -13,7 +13,7 @@ jobs:
   build-and-store:
     if: github.repository_owner == 'redhat-best-practices-for-k8s'
     # build and store the image
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
     steps:
@@ -42,7 +42,7 @@ jobs:
       
   smoke-tests:
     name: CRC QE Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: build-and-store
     if: needs.build-and-store.result == 'success'
     strategy:

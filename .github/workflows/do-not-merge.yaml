@@ -11,7 +11,7 @@ jobs:
   do-not-merge:
     if: ${{ contains(github.event.*.labels.*.name, 'do not merge') }}
     name: Prevent Merging
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check for label
         run: |

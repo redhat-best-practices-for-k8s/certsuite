@@ -29,7 +29,7 @@ jobs:
   # This saves time and resources by not building the image in each QE suite.
   build-image-for-qe:
     if: github.repository_owner == 'redhat-best-practices-for-k8s'
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Check out code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -75,7 +75,7 @@ jobs:
           path: /tmp/testimage.tar
 
   qe-testing:
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-24.04-arm
     needs: build-image-for-qe
     if: needs.build-image-for-qe.result == 'success' 
     strategy:
