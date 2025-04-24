@@ -37,7 +37,7 @@ jobs:
   test-and-push-tnf-image-main:
     if: github.repository_owner == 'redhat-best-practices-for-k8s'
     name: 'Test and push the `certsuite` image'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -169,7 +169,7 @@ jobs:
 
   test-and-push-tnf-image-legacy:
     name: 'Test and push the `cnf-certification-test` image (legacy)'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'

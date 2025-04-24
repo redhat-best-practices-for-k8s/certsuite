@@ -36,7 +36,7 @@ concurrency:
 jobs:
   lint:
     name: Run Linters and Vet
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
 
@@ -110,7 +110,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-22.04-arm]
+        os: [ubuntu-24.04, ubuntu-24.04-arm]
     env:
       SHELL: /bin/bash
 
@@ -159,7 +159,7 @@ jobs:
 
   precheck-images:
     name: Precheck Images
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
     steps:
@@ -175,7 +175,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-22.04-arm]
+        os: [ubuntu-24.04, ubuntu-24.04-arm]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -275,7 +275,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-22.04-arm]
+        os: [ubuntu-24.04, ubuntu-24.04-arm]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -405,7 +405,7 @@ jobs:
   create-manifest-multiarch-legacy:
     name: Create manifest list for multi-arch image (legacy)
     needs: [unit-tests, smoke-tests-container]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
     steps:
       - name: Check out code
@@ -468,7 +468,7 @@ jobs:
   create-manifest-multiarch:
     name: Create manifest list for multi-arch image
     needs: [unit-tests, smoke-tests-container]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event_name != 'pull_request' && needs.smoke-tests-container.result == 'success' && needs.unit-tests.result == 'success'
     steps:
       - name: Check out code
@@ -530,7 +530,7 @@ jobs:
 
   check-all-dependencies-are-merged:
     name: Check all the PR dependencies are merged
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code
