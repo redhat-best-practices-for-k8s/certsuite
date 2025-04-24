@@ -6,7 +6,7 @@ The Test Suite can be run using the Certsuite tool directly or through a contain
 To run the Test Suite direct use:
 
 ```shell
-./certsuite run -l <label-filter> -c <certsuite-config> -k <kubeconfig> -o <output-dir> [<flags>]
+certsuite run -l <label-filter> -c <certsuite-config> -k <kubeconfig> -o <output-dir> [<flags>]
 ```
 
 If the _kubeconfig_ is not provided the value of the `KUBECONFIG` environment variable will be taken by default.
@@ -54,7 +54,7 @@ To skip intrusive tests which may disrupt cluster operations, issue the
 following:
 
 ```shell
-./certsuite run --intrusive=false
+certsuite run --intrusive=false
 ```
 
 The intrusive test cases are:
@@ -67,7 +67,7 @@ The intrusive test cases are:
 Likewise, to enable intrusive tests, set the following:
 
 ```shell
-./certsuite run --intrusive=true
+certsuite run --intrusive=true
 ```
 
 Intrusive tests are enabled by default.

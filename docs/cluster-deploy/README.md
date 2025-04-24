@@ -58,7 +58,7 @@ patches:
       - op: replace
         path: /spec/containers/0/args/1
         value: |
-          ./certsuite run -l 'preflight' ; sleep inf
+          certsuite run -l 'preflight' ; sleep inf
   - target:
       version: v1
       kind: Pod
@@ -67,5 +67,5 @@ patches:
       - op: replace
         path: /spec/containers/0/args/1
         value: |
-          ./certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' ; sleep inf
+          certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' ; sleep inf
 ```
