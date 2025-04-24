@@ -38,13 +38,13 @@ oc kustomize k8s/ | oc apply -f -
 
 The `kustomization` tool used by `oc` will parse the content of the [./kustomization.yaml](kustomization.yaml) file, which consists of a set of "transformers" over the resources defined in [./certsuite.yaml](certsuite.yaml).
 
-By default, that command will deploy the Cert Suite Pod without any mutation: it will be deployed in the same namespace and with the same configuration than using the `oc apply -f k8s/certsuite.yaml`.
+By default, that command will deploy the Cert Suite Pod without any mutation: it will be deployed in the same namespace and with the same configuration than using the `oc apply -f cluster-deploy/certsuite.yaml`.
 
 But there are the three example of modifications included in [./kustomization.yaml](kustomization.yaml) that can be used out of the box that can be handy:
 
 1. The namespace and the prefix/suffix of each resource's name. By default, the [./certsuite.yaml](certsuite.yaml) uses the namespace "certsuite" to deploy all the reources (except the cluster role and the cluster role binding), but this can be changed uncommenting the line that starts with `namespace:`. It's highly recommended to uncomment at least one of suffixName/prefixName so unique cluster role & cluster role-bindings can be created for each CertSuite Pod. This way, you could run more than one CertSuite Pod in the same cluster!.
 2. The (ginkgo) labels expression, in case you want to run different test cases. Uncomment the object that starts with "patches:". The commented example changes the command to use the "preflight" label only.
-3. Configuring the --intrusive Flag. Uncomment the last object that starts with "patches:". The commented example changes the --intrusive to true, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.
+3. Configuring the --intrusive Flag. Uncomment the last object that starts with "patches:". The commented example removes the `--intrusive=false` cli flag, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.
 
 In case both (1) and (2) wants to be used, just create a list of patches like this:
 
@@ -67,5 +67,5 @@ patches:
       - op: replace
         path: /spec/containers/0/args/1
         value: |
-        ./certsuite run -l 'preflight' --intrusive=true ; sleep inf
+          ./certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' ; sleep inf
 ```
