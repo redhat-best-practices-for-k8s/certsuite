@@ -1103,7 +1103,7 @@
 <h1 id="run-the-test-suite">Run the Test Suite<a class="headerlink" href="#run-the-test-suite" title="Permanent link">&para;</a></h1>
 <p>The Test Suite can be run using the Certsuite tool directly or through a container.</p>
 <p>To run the Test Suite direct use:</p>
-<div class="highlight"><pre><span></span><code>./certsuite<span class="w"> </span>run<span class="w"> </span>-l<span class="w"> </span>&lt;label-filter&gt;<span class="w"> </span>-c<span class="w"> </span>&lt;certsuite-config&gt;<span class="w"> </span>-k<span class="w"> </span>&lt;kubeconfig&gt;<span class="w"> </span>-o<span class="w"> </span>&lt;output-dir&gt;<span class="w"> </span><span class="o">[</span>&lt;flags&gt;<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>certsuite<span class="w"> </span>run<span class="w"> </span>-l<span class="w"> </span>&lt;label-filter&gt;<span class="w"> </span>-c<span class="w"> </span>&lt;certsuite-config&gt;<span class="w"> </span>-k<span class="w"> </span>&lt;kubeconfig&gt;<span class="w"> </span>-o<span class="w"> </span>&lt;output-dir&gt;<span class="w"> </span><span class="o">[</span>&lt;flags&gt;<span class="o">]</span>
 </code></pre></div>
 <p>If the <em>kubeconfig</em> is not provided the value of the <code>KUBECONFIG</code> environment variable will be taken by default.</p>
 <p>The CLI output will show the following information:</p>
@@ -1137,7 +1137,7 @@
 <h2 id="disable-intrusive-tests">Disable intrusive tests<a class="headerlink" href="#disable-intrusive-tests" title="Permanent link">&para;</a></h2>
 <p>To skip intrusive tests which may disrupt cluster operations, issue the
 following:</p>
-<div class="highlight"><pre><span></span><code>./certsuite<span class="w"> </span>run<span class="w"> </span>--intrusive<span class="o">=</span><span class="nb">false</span>
+<div class="highlight"><pre><span></span><code>certsuite<span class="w"> </span>run<span class="w"> </span>--intrusive<span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
 <p>The intrusive test cases are:</p>
 <ul>
@@ -1147,7 +1147,7 @@ following:</p>
 <li><a href="https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md#lifecycle-pod-recreation">lifecycle-pod-recreation</a></li>
 </ul>
 <p>Likewise, to enable intrusive tests, set the following:</p>
-<div class="highlight"><pre><span></span><code>./certsuite<span class="w"> </span>run<span class="w"> </span>--intrusive<span class="o">=</span><span class="nb">true</span>
+<div class="highlight"><pre><span></span><code>certsuite<span class="w"> </span>run<span class="w"> </span>--intrusive<span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
 <p>Intrusive tests are enabled by default.</p>
 <h2 id="selected-flags-description">Selected flags description<a class="headerlink" href="#selected-flags-description" title="Permanent link">&para;</a></h2>

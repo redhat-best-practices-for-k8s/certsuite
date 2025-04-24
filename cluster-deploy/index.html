@@ -976,7 +976,7 @@
 <span class="go">      - op: replace</span>
 <span class="go">        path: /spec/containers/0/args/1</span>
 <span class="go">        value: |</span>
-<span class="go">          ./certsuite run -l &#39;preflight&#39; ; sleep inf</span>
+<span class="go">          certsuite run -l &#39;preflight&#39; ; sleep inf</span>
 <span class="go">  - target:</span>
 <span class="go">      version: v1</span>
 <span class="go">      kind: Pod</span>
@@ -985,7 +985,7 @@
 <span class="go">      - op: replace</span>
 <span class="go">        path: /spec/containers/0/args/1</span>
 <span class="go">        value: |</span>
-<span class="go">          ./certsuite run -l &#39;!affiliated-certification-container-is-certified-digest &amp;&amp; !access-control-security-context&#39; ; sleep inf</span>
+<span class="go">          certsuite run -l &#39;!affiliated-certification-container-is-certified-digest &amp;&amp; !access-control-security-context&#39; ; sleep inf</span>
 </code></pre></div>
 
 
