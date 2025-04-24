@@ -37,53 +37,53 @@ metadata:
   name: certsuite-config
   namespace: certsuite
 data:
-  certsuite_config.yaml: |
+  certsuite_config.yml: |
     targetNameSpaces:
-      - name: certsuite
+      - name: tnf
     podsUnderTestLabels:
       - "redhat-best-practices-for-k8s.com/generic: target"
-    # deprecated operator label ("redhat-best-practices-for-k8s.com/operator:"") still configured by default, no need to add it here
     operatorsUnderTestLabels:
+      - "redhat-best-practices-for-k8s.com/operator:target"
       - "redhat-best-practices-for-k8s.com/operator1:new"
+      - "cnf/test:cr-scale-operator"
     targetCrdFilters:
       - nameSuffix: "group1.test.com"
         scalable: false
       - nameSuffix: "redhat-best-practices-for-k8s.com"
         scalable: false
-      - nameSuffix: "tutorial.my.domain"
+      - nameSuffix: "memcacheds.cache.example.com"
         scalable: true
     managedDeployments:
-      - name: jack
+      - name: memcached-sample
     managedStatefulsets:
-      - name: jack
-    certifiedcontainerinfo:
-      - name: rocketchat/rocketchat
-        repository: registry.connect.redhat.com
-        tag: 0.56.0-1 # optional, "latest" assumed if empty
-        digest: # if set, takes precedence over tag. e.g. "sha256:aa34453a6417f8f76423ffd2cf874e9c4a1a5451ac872b78dc636ab54a0ebbc3"
-      - name: rocketchat/rocketchat
-        repository: registry.connect.redhat.com
-        tag: 0.56.0-1
-        digest: sha256:03f7f2499233a302351821d6f78f0e813c3f749258184f4133144558097c57b0
-    checkDiscoveredContainerCertificationStatus: false
+      - name: memcached-sample
     acceptedKernelTaints:
       - module: vboxsf
       - module: vboxguest
     skipScalingTestDeployments:
       - name: deployment1
-        namespace: certsuite
+        namespace: tnf
     skipScalingTestStatefulsets:
       - name: statefulset1
-        namespace: certsuite
+        namespace: tnf
     skipHelmChartList:
       - name: coredns
     validProtocolNames:
       - "http3"
       - "sctp"
     servicesignorelist:
-      - "hazelcast-platform-controller-manager-service"
-      - "hazelcast-platform-webhook-service"
       - "new-pro-controller-manager-metrics-service"
+      - "mysql"
+    executedBy: ""
+    partnerName: ""
+    collectorAppPassword: ""
+    collectorAppEndpoint: "http://claims-collector.cnf-certifications.sysdeseng.com"
+    connectAPIConfig:
+      baseURL: "https://access.redhat.com/hydra/cwe/rest/v1.0"
+      apiKey: ""
+      projectID: ""
+      proxyURL: ""
+      proxyPort: ""
 
 ---
 apiVersion: v1
