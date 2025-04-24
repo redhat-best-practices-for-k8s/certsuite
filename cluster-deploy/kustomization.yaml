@@ -23,7 +23,7 @@ resources:
 #       - op: replace
 #         path: /spec/containers/0/args/1
 #         value: |
-#           ./certsuite.sh -l 'preflight' ; sleep inf
+#           ./certsuite run -l 'preflight' ; sleep inf
 
 # Uncomment the next lines (patches) in order to allow intrusive TCs to run.
 # patches:
@@ -35,4 +35,4 @@ resources:
 #       - op: replace
 #         path: /spec/containers/0/args/1
 #         value: |
-#           ./certsuite.sh -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' --intrusive=true ; sleep inf
+#           ./certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context'; sleep inf

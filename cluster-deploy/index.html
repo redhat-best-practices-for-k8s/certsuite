@@ -959,12 +959,12 @@
 <div class="highlight"><pre><span></span><code><span class="go">oc kustomize k8s/ | oc apply -f -</span>
 </code></pre></div>
 <p>The <code>kustomization</code> tool used by <code>oc</code> will parse the content of the <a href="kustomization.yaml">./kustomization.yaml</a> file, which consists of a set of &ldquo;transformers&rdquo; over the resources defined in <a href="certsuite.yaml">./certsuite.yaml</a>.</p>
-<p>By default, that command will deploy the Cert Suite Pod without any mutation: it will be deployed in the same namespace and with the same configuration than using the <code>oc apply -f k8s/certsuite.yaml</code>.</p>
+<p>By default, that command will deploy the Cert Suite Pod without any mutation: it will be deployed in the same namespace and with the same configuration than using the <code>oc apply -f cluster-deploy/certsuite.yaml</code>.</p>
 <p>But there are the three example of modifications included in <a href="kustomization.yaml">./kustomization.yaml</a> that can be used out of the box that can be handy:</p>
 <ol>
 <li>The namespace and the prefix/suffix of each resource&rsquo;s name. By default, the <a href="certsuite.yaml">./certsuite.yaml</a> uses the namespace &ldquo;certsuite&rdquo; to deploy all the reources (except the cluster role and the cluster role binding), but this can be changed uncommenting the line that starts with <code>namespace:</code>. It&rsquo;s highly recommended to uncomment at least one of suffixName/prefixName so unique cluster role &amp; cluster role-bindings can be created for each CertSuite Pod. This way, you could run more than one CertSuite Pod in the same cluster!.</li>
 <li>The (ginkgo) labels expression, in case you want to run different test cases. Uncomment the object that starts with &ldquo;patches:&rdquo;. The commented example changes the command to use the &ldquo;preflight&rdquo; label only.</li>
-<li>Configuring the &ndash;intrusive Flag. Uncomment the last object that starts with &ldquo;patches:&rdquo;. The commented example changes the &ndash;intrusive to true, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.</li>
+<li>Configuring the &ndash;intrusive Flag. Uncomment the last object that starts with &ldquo;patches:&rdquo;. The commented example removes the <code>--intrusive=false</code> cli flag, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.</li>
 </ol>
 <p>In case both (1) and (2) wants to be used, just create a list of patches like this:</p>
 <div class="highlight"><pre><span></span><code><span class="go">patches:</span>
@@ -985,7 +985,7 @@
 <span class="go">      - op: replace</span>
 <span class="go">        path: /spec/containers/0/args/1</span>
 <span class="go">        value: |</span>
-<span class="go">        ./certsuite run -l &#39;preflight&#39; --intrusive=true ; sleep inf</span>
+<span class="go">          ./certsuite run -l &#39;!affiliated-certification-container-is-certified-digest &amp;&amp; !access-control-security-context&#39; ; sleep inf</span>
 </code></pre></div>
 
 
