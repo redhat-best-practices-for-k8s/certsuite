@@ -5,6 +5,8 @@ name: CRC Tests
 on:
   schedule:
     - cron: '0 0 * * *'
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
 env:
   QE_REPO: redhat-best-practices-for-k8s/certsuite-qe
@@ -83,7 +85,7 @@ jobs:
           exit 1
 
       - name: Deploy the OCP Cluster
-        uses: palmsoftware/quick-ocp@v0.0.9
+        uses: palmsoftware/quick-ocp@v0.0.11
         with:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
