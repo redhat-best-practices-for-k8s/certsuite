@@ -2,7 +2,7 @@
 
 set -o errexit -o pipefail
 
-CHANNELS=(4.18 4.17 4.16 4.15 4.14 4.13 4.12 4.11 4.10 4.9 4.8 4.7 4.6 4.5)
+CHANNELS=(4.20 4.19 4.18 4.17 4.16 4.15 4.14 4.13 4.12 4.11 4.10 4.9 4.8 4.7 4.6 4.5)
 CHANNEL_TYPES=(stable candidate)
 
 # Keep track of the number of failures we see from the 'oc adm' calls.
