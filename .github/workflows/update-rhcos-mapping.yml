@@ -4,6 +4,9 @@ on:
   # Triggers the workflow every day
   schedule:
     - cron: "0 0 * * *"
+  # pull_request:
+  #   branches:
+  #     - main
   workflow_dispatch:
 permissions:
   contents: read
@@ -29,10 +32,11 @@ jobs:
         run: |
           if ! command -v oc &> /dev/null; then
             echo "'oc' not found, installing..."
-            curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
-            tar -xvf openshift-client-linux.tar.gz
-            sudo mv oc kubectl /usr/local/bin/
-            rm openshift-client-linux.tar.gz
+            TEMP_DIR=$(mktemp -d)
+            curl -Lo $TEMP_DIR/openshift-client-linux.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
+            tar -xvf $TEMP_DIR/openshift-client-linux.tar.gz -C $TEMP_DIR
+            sudo mv $TEMP_DIR/oc $TEMP_DIR/kubectl /usr/local/bin/
+            rm -rf $TEMP_DIR
           else
             echo "'oc' is already installed."
           fi
