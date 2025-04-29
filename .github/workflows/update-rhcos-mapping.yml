@@ -25,6 +25,18 @@ jobs:
         with:
           ref: main
 
+      - name: Check and install 'oc' OpenShift client
+        run: |
+          if ! command -v oc &> /dev/null; then
+            echo "'oc' not found, installing..."
+            curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
+            tar -xvf openshift-client-linux.tar.gz
+            sudo mv oc kubectl /usr/local/bin/
+            rm openshift-client-linux.tar.gz
+          else
+            echo "'oc' is already installed."
+          fi
+
       - name: Execute `make update-rhcos-versions`
         run: make update-rhcos-versions
 
