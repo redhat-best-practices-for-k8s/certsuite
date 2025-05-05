@@ -106,28 +106,19 @@ RUN \
 COPY . ${CERTSUITE_SRC_DIR}
 WORKDIR ${CERTSUITE_SRC_DIR}
 
-# Build the certsuite binary
+# Build the certsuite binary and clean up unnecessary files in a single step
 RUN \
-	# Set the GOARCH and GOOS based on the TARGETPLATFORM
 	export GOARCH=$TARGETARCH \
 	&& export GOOS=$TARGETOS \
 	&& make build-certsuite-tool \
-	&& cp certsuite ${CERTSUITE_DIR}
+	&& cp certsuite ${CERTSUITE_DIR} \
+	&& dnf remove --assumeyes --disableplugin=subscription-manager gcc git wget \
+	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
+	&& rm -rf ${CERTSUITE_SRC_DIR} ${TEMP_DIR} /root/.cache /root/go/pkg /root/go/src \
+		/usr/lib/golang/pkg /usr/lib/golang/src /var/cache/yum /usr/local/go /usr/local/osdk/bin/*
 
 # Switch contexts back to the root CERTSUITE directory
 WORKDIR ${CERTSUITE_DIR}
-
-# Remove most of the build artifacts
-RUN \
-	dnf remove --assumeyes --disableplugin=subscription-manager gcc git wget \
-	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
-	&& rm -rf ${CERTSUITE_SRC_DIR} \
-	&& rm -rf ${TEMP_DIR} \
-	&& rm -rf /root/.cache \
-	&& rm -rf /root/go/pkg \
-	&& rm -rf /root/go/src \
-	&& rm -rf /usr/lib/golang/pkg \
-	&& rm -rf /usr/lib/golang/src
 
 # Using latest is prone to errors.
 # hadolint ignore=DL3007
