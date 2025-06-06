@@ -1,13 +1,16 @@
-# https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
-
-name: CRC Tests
+name: QE OCP 4.18 Testing
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
   # pull_request:
   #   branches: [ main ]
   workflow_dispatch:
+  # Schedule a daily cron at midnight UTC
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: read
+
 env:
   QE_REPO: redhat-best-practices-for-k8s/certsuite-qe
 
@@ -41,16 +44,14 @@ jobs:
           name: testimage
           path: /tmp/testimage.tar
 
-      
-  smoke-tests:
-    name: CRC QE Tests
+  qe-ocp-418-testing:
+    name: QE OCP 4.18 Tests
     runs-on: ubuntu-24.04
     needs: build-and-store
     if: needs.build-and-store.result == 'success'
     strategy:
       fail-fast: false
-      matrix:
-        # suite: [accesscontrol]
+      matrix: 
         suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
     env:
       SHELL: /bin/bash
@@ -89,6 +90,7 @@ jobs:
         with:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
+          desiredOCPVersion: 4.18
         env:
           OCP_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
       
@@ -114,3 +116,25 @@ jobs:
           timeout_minutes: 150
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.TEST_CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
+
+      - name: Build the binary
+        run: make build-certsuite-tool
+
+      - name: Run the tests (against binary)
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
+      
+      - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
+        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+          JOB_RUN_ID: ${{ github.run_id }}
+          JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_REPO: https://github.com/redhat-best-practices-for-k8s/certsuite
+        run: |
+          curl -X POST --data "{
+              \"text\": \"🚨⚠️  Failed to run non-intrusive OCP 4.18 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+          }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'
