@@ -61,7 +61,7 @@ func SetupLogger(logWriter io.Writer, level string) {
 	logLevel, err := parseLevel(level)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not parse log level, err: %v. Defaulting to DEBUG.", err)
-		globalLogLevel = slog.LevelDebug
+		globalLogLevel = slog.LevelInfo
 	} else {
 		globalLogLevel = logLevel
 	}
