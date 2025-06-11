@@ -193,9 +193,6 @@ func (f *FsDiff) RunTest(containerUID string) {
 		return
 	}
 
-	// see if there's a match in the output
-	f.check.LogDebug("Podman diff output is %s", output)
-
 	diff := fsDiffJSON{}
 	err = json.Unmarshal([]byte(output), &diff)
 	if err != nil {
@@ -206,6 +203,8 @@ func (f *FsDiff) RunTest(containerUID string) {
 	f.DeletedFolders = f.intersectTargetFolders(diff.Deleted)
 	f.ChangedFolders = f.intersectTargetFolders(diff.Changed)
 	if len(f.ChangedFolders) != 0 || len(f.DeletedFolders) != 0 {
+		f.check.LogDebug("Deleted folders found in Podman diff: %s", f.DeletedFolders)
+		f.check.LogDebug("Changed folders found in Podman diff: %s", f.ChangedFolders)
 		f.result = testhelper.FAILURE
 	} else {
 		f.result = testhelper.SUCCESS
