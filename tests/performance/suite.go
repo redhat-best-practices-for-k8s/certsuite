@@ -138,7 +138,7 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 			check.LogInfo("Testing Container %q", cut)
 			if cut.LivenessProbe != nil && cut.LivenessProbe.Exec != nil {
 				counter++
-				if cut.LivenessProbe.PeriodSeconds > minExecProbePeriodSeconds {
+				if cut.LivenessProbe.PeriodSeconds >= minExecProbePeriodSeconds {
 					check.LogInfo("Container %q has a LivenessProbe with PeriodSeconds greater than %d (%d seconds)",
 						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
 
@@ -157,7 +157,7 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 			}
 			if cut.StartupProbe != nil && cut.StartupProbe.Exec != nil {
 				counter++
-				if cut.StartupProbe.PeriodSeconds > minExecProbePeriodSeconds {
+				if cut.StartupProbe.PeriodSeconds >= minExecProbePeriodSeconds {
 					check.LogInfo("Container %q has a StartupProbe with PeriodSeconds greater than %d (%d seconds)",
 						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
 
@@ -176,7 +176,7 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 			}
 			if cut.ReadinessProbe != nil && cut.ReadinessProbe.Exec != nil {
 				counter++
-				if cut.ReadinessProbe.PeriodSeconds > minExecProbePeriodSeconds {
+				if cut.ReadinessProbe.PeriodSeconds >= minExecProbePeriodSeconds {
 					check.LogInfo("Container %q has a ReadinessProbe with PeriodSeconds greater than %d (%d seconds)",
 						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
 
