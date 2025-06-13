@@ -21,6 +21,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -35,8 +36,10 @@ type Process struct {
 }
 
 const (
-	DevNull          = " 2>/dev/null"
-	DockerInspectPID = "chroot /host docker inspect -f '{{.State.Pid}}' "
+	DevNull           = " 2>/dev/null"
+	DockerInspectPID  = "chroot /host docker inspect -f '{{.State.Pid}}' "
+	RetryAttempts     = 5
+	RetrySleepSeconds = 3
 )
 
 func (p *Process) String() string {
@@ -134,8 +137,16 @@ func ExecCommandContainerNSEnter(command string,
 	// Add the container PID and the specific command to run with nsenter
 	nsenterCommand := "nsenter -t " + strconv.Itoa(containerPid) + " -n " + command
 
-	// Run the nsenter command on the probe pod
-	outStr, errStr, err = ch.ExecCommandContainer(ctx, nsenterCommand)
+	// Run the nsenter command on the probe pod with retry logic
+	for attempt := 1; attempt <= RetryAttempts; attempt++ {
+		outStr, errStr, err = ch.ExecCommandContainer(ctx, nsenterCommand)
+		if err == nil {
+			break
+		}
+		if attempt < RetryAttempts {
+			time.Sleep(RetrySleepSeconds * time.Second)
+		}
+	}
 	if err != nil {
 		return "", "", fmt.Errorf("cannot execute command: \" %s \"  on %s err:%s", command, aContainer, err)
 	}
