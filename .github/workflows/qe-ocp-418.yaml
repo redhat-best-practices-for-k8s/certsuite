@@ -45,7 +45,7 @@ jobs:
           path: /tmp/testimage.tar
 
   qe-ocp-418-testing:
-    name: QE OCP 4.18 Tests
+    name: QE OCP 4.18 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
     runs-on: ubuntu-24.04
     needs: build-and-store
     if: needs.build-and-store.result == 'success'
@@ -53,6 +53,7 @@ jobs:
       fail-fast: false
       matrix: 
         suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+        run-type: [binary, image]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.crc/machines/crc/kubeconfig'
@@ -102,34 +103,30 @@ jobs:
           ref: main
 
       - name: Download image from artifact
+        if: matrix.run-type == 'image'
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: testimage
           path: /tmp
 
       - name: Load image into docker
+        if: matrix.run-type == 'image'
         run: docker load --input /tmp/testimage.tar
 
       - name: Run the tests (against image)
+        if: matrix.run-type == 'image'
         uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
         with:
           timeout_minutes: 150
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.TEST_CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
 
-      - name: Cleanup images before next job to save space
-        run: |
-          docker rmi -f ${{env.TEST_CERTSUITE_IMAGE_NAME}}:${{env.TEST_CERTSUITE_IMAGE_TAG}}
-          docker system prune -f --volumes
-
-      - name: Remove crc bundle file to save space
-        run: |
-          rm -rf ~/.crc/cache/*.crcbundle
-
       - name: Build the binary
+        if: matrix.run-type == 'binary'
         run: make build-certsuite-tool
 
       - name: Run the tests (against binary)
+        if: matrix.run-type == 'binary'
         uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
         with:
           timeout_minutes: 60
