@@ -121,6 +121,11 @@ jobs:
       - name: Cleanup images before next job to save space
         run: |
           docker rmi -f ${{env.TEST_CERTSUITE_IMAGE_NAME}}:${{env.TEST_CERTSUITE_IMAGE_TAG}}
+          docker system prune -f --volumes
+
+      - name: Remove crc bundle file to save space
+        run: |
+          rm -rf ~/.crc/cache/*.crcbundle
 
       - name: Build the binary
         run: make build-certsuite-tool
