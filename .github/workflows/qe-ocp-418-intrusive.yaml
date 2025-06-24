@@ -38,11 +38,20 @@ jobs:
           tags: quay.io/redhat-best-practices-for-k8s/certsuite:localtest
           outputs: type=docker,dest=/tmp/testimage.tar
 
+      - name: Build the binary
+        run: make build-certsuite-tool
+
       - name: Store image as artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: testimage
           path: /tmp/testimage.tar
+
+      - name: Store binary as artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: certsuite-binary
+          path: ./certsuite
 
   qe-ocp-418-intrusive-testing:
     name: QE OCP 4.18 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
@@ -110,6 +119,17 @@ jobs:
           name: testimage
           path: /tmp
 
+      - name: Download binary from artifact
+        if: matrix.run-type == 'binary'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: certsuite-binary
+          path: .
+
+      - name: Make binary executable
+        if: matrix.run-type == 'binary'
+        run: chmod +x ./certsuite
+
       - name: Load image into docker
         if: matrix.run-type == 'image'
         run: docker load --input /tmp/testimage.tar
@@ -121,10 +141,6 @@ jobs:
           timeout_minutes: 60
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.TEST_CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
-
-      - name: Build the binary
-        if: matrix.run-type == 'binary'
-        run: make build-certsuite-tool
 
       - name: Run the tests (against binary)
         if: matrix.run-type == 'binary'
