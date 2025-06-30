@@ -1,5 +1,46 @@
 #!/bin/bash
 
+# Default number of days to look back for failed workflows
+DAYS_BACK=1
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+	case $1 in
+	-d | --days)
+		DAYS_BACK="$2"
+		shift 2
+		;;
+	-h | --help)
+		echo "Usage: $0 [-d|--days <number>]"
+		echo "  -d, --days <number>  Number of days back to check for failed workflows (default: 1)"
+		echo "  -h, --help           Show this help message"
+		exit 0
+		;;
+	*)
+		echo "Unknown option: $1"
+		echo "Use -h or --help for usage information"
+		exit 1
+		;;
+	esac
+done
+
+# Validate days input
+if ! [[ "$DAYS_BACK" =~ ^[0-9]+$ ]] || [ "$DAYS_BACK" -le 0 ]; then
+	echo "Error: Days must be a positive integer"
+	exit 1
+fi
+
+# Calculate the date cutoff
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	# macOS date command
+	CUTOFF_DATE=$(date -v-"${DAYS_BACK}"d -u +"%Y-%m-%dT%H:%M:%SZ")
+else
+	# Linux date command
+	CUTOFF_DATE=$(date -d "${DAYS_BACK} days ago" -u +"%Y-%m-%dT%H:%M:%SZ")
+fi
+
+echo "Looking for failed workflows created after: $CUTOFF_DATE (last $DAYS_BACK day(s))"
+
 # Check if the user is logged in
 if ! gh auth status; then
 	echo "You are not logged in. Please log in with 'gh auth login'."
@@ -28,7 +69,23 @@ WORKFLOWS_TO_CHECK=(
 # Loop through the workflows and rekick any failed runs.
 for workflow in "${WORKFLOWS_TO_CHECK[@]}"; do
 	echo "Checking workflow: $workflow"
-	for run_id in $(gh run list --limit 20 --workflow "$workflow" --json conclusion,databaseId | jq -r '.[] | select(.conclusion == "failure" or .conclusion == "timed_out") | .databaseId'); do
+	# Get workflow runs with date filtering
+	failed_runs=$(
+		gh run list --limit 50 --workflow "$workflow" --json conclusion,databaseId,createdAt |
+			jq --arg cutoff "$CUTOFF_DATE" -r '
+			.[] | 
+			select(.conclusion == "failure" or .conclusion == "timed_out") | 
+			select(.createdAt >= $cutoff) | 
+			.databaseId'
+	)
+
+	if [ -z "$failed_runs" ]; then
+		echo "  No failed runs found in the last $DAYS_BACK day(s) for workflow: $workflow"
+		continue
+	fi
+
+	for run_id in $failed_runs; do
+		echo "  Re-running failed workflow run: $run_id"
 		gh run rerun "$run_id" --failed
 	done
 done
