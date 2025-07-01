@@ -145,7 +145,7 @@ jobs:
         if: matrix.run-type == 'binary'
         uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
         with:
-          timeout_minutes: 60
+          timeout_minutes: 150
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
       

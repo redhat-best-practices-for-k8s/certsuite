@@ -28,7 +28,7 @@ runs:
     - name: Run 'make ${{inputs.make-command}}'
       uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
       with:
-        timeout_minutes: 90
+        timeout_minutes: 150
         max_attempts: 3
         command: cd ${GITHUB_WORKSPACE}/certsuite-sample-workload; python3 -m venv .venv; source .venv/bin/activate; pip install --upgrade pip; pip install jinjanator; cp .venv/bin/jinjanate .venv/bin/j2; make ${{ inputs.make-command }}
 
