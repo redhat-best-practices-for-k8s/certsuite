@@ -39,4 +39,4 @@ See more about this variable [here](https://github.com/redhat-openshift-ecosyste
 against a private container registry that has self-signed certificates.
 
 Note that you can also specify the probe pod image to use with `SUPPORT_IMAGE`
-environment variable, default to `certsuite-probe:v0.0.16`.
+environment variable, default to `certsuite-probe:v0.0.18`.
