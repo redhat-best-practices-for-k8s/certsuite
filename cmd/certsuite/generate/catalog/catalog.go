@@ -259,6 +259,14 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 			outString += fmt.Sprintf("|Suggested Remediation|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "))
 			outString += fmt.Sprintf("|Best Practice Reference|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
 			outString += fmt.Sprintf("|Exception Process|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
+
+			// Add impact statement if available
+			if impact, exists := identifiers.ImpactMap[k.identifier.Id]; exists {
+				outString += fmt.Sprintf("|Impact Statement|%s|\n", strings.ReplaceAll(impact, "\n", " "))
+			} else {
+				outString += fmt.Sprintf("|Impact Statement|%s|\n", "Impact not documented")
+			}
+
 			outString += fmt.Sprintf("|Tags|%s|\n", tags)
 			outString += classificationString
 		}
