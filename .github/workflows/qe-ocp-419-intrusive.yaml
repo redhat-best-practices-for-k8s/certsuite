@@ -1,0 +1,163 @@
+name: QE OCP 4.19 Intrusive Testing
+
+on:
+  # pull_request:
+  #   branches: [ main ]
+  workflow_dispatch:
+  # Schedule a daily cron at midnight UTC
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: read
+
+env:
+  QE_REPO: redhat-best-practices-for-k8s/certsuite-qe
+
+jobs:
+  build-and-store:
+    if: github.repository_owner == 'redhat-best-practices-for-k8s'
+    # build and store the image
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+      - name: Build temporary image tag for this PR
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: quay.io/redhat-best-practices-for-k8s/certsuite:localtest
+          outputs: type=docker,dest=/tmp/testimage.tar
+
+      - name: Build the binary
+        run: make build-certsuite-tool
+
+      - name: Store image as artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: testimage
+          path: /tmp/testimage.tar
+
+      - name: Store binary as artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: certsuite-binary
+          path: ./certsuite
+
+  qe-ocp-418-intrusive-testing:
+    name: QE OCP 4.19 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
+    runs-on: ubuntu-24.04
+    needs: build-and-store
+    if: needs.build-and-store.result == 'success'
+    strategy:
+      fail-fast: false
+      matrix: 
+        # Add more suites if more intrusive tests are added to the QE repo
+        suite: [lifecycle]
+        run-type: [binary, image]
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/runner/.crc/machines/crc/kubeconfig'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+      DOCKER_CONFIG_DIR: '/home/runner/.docker/'
+      TEST_CERTSUITE_IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite
+      TEST_CERTSUITE_IMAGE_TAG: localtest
+
+    steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+        if: runner.os == 'Linux'
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: check if CRC_PULL_SECRET exists, if not, exit
+        env: 
+          super_secret: ${{ secrets.CRC_PULL_SECRET }}
+        if: ${{ env.super_secret == '' }}
+        run: |
+          echo "CRC_PULL_SECRET is not set"
+          exit 1
+
+      - name: Deploy the OCP Cluster
+        uses: palmsoftware/quick-ocp@v0.0.16
+        with:
+          ocpPullSecret: $OCP_PULL_SECRET
+          bundleCache: true
+          desiredOCPVersion: 4.19
+        env:
+          OCP_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
+      
+      - name: Clone the QE repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          repository: ${{ env.QE_REPO }}
+          path: certsuite-qe
+          ref: main
+
+      - name: Download image from artifact
+        if: matrix.run-type == 'image'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: testimage
+          path: /tmp
+
+      - name: Download binary from artifact
+        if: matrix.run-type == 'binary'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: certsuite-binary
+          path: .
+
+      - name: Make binary executable
+        if: matrix.run-type == 'binary'
+        run: chmod +x ./certsuite
+
+      - name: Load image into docker
+        if: matrix.run-type == 'image'
+        run: docker load --input /tmp/testimage.tar
+
+      - name: Run the tests (against image)
+        if: matrix.run-type == 'image'
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        with:
+          timeout_minutes: 150
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.TEST_CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
+
+      - name: Run the tests (against binary)
+        if: matrix.run-type == 'binary'
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        with:
+          timeout_minutes: 150
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
+      
+      - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
+        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+          JOB_RUN_ID: ${{ github.run_id }}
+          JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_REPO: https://github.com/redhat-best-practices-for-k8s/certsuite
+        run: |
+          curl -X POST --data "{
+              \"text\": \"🚨⚠️  Failed to run intrusive OCP 4.19 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+          }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'
