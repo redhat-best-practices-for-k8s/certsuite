@@ -53,7 +53,7 @@ jobs:
           name: certsuite-binary
           path: ./certsuite
 
-  qe-ocp-418-testing:
+  qe-ocp-419-testing:
     name: QE OCP 4.19 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
     runs-on: ubuntu-24.04
     needs: build-and-store
