@@ -28,7 +28,7 @@ const (
 	TestNetworkPolicyDenyAllIdentifierImpact           = `Without default deny-all network policies, workloads are exposed to lateral movement attacks and unauthorized network access, compromising security posture and potentially enabling data breaches.`
 	TestReservedExtendedPartnerPortsImpact             = `Using reserved ports can cause port conflicts with essential platform services, leading to service startup failures and unpredictable application behavior.`
 	TestDpdkCPUPinningExecProbeImpact                  = `Exec probes on CPU-pinned DPDK workloads can cause performance degradation, interrupt real-time operations, and potentially crash applications due to resource contention.`
-	TestRestartOnRebootLabelOnPodsUsingSRIOVImpact     = `Without proper restart labels, SRIOV-enabled pods may fail to restart correctly after node reboots, leading to application downtime and service unavailability.`
+	TestRestartOnRebootLabelOnPodsUsingSRIOVImpact     = `Without restart-on-reboot labels, SRIOV-enabled pods may fail to recover from a race condition between kubernetes services startup and SR-IOV device plugin configuration on StarlingX AIO systems, causing SR-IOV devices to disappear from running pods when FPGA devices are reset.`
 	TestNetworkAttachmentDefinitionSRIOVUsingMTUImpact = `Incorrect MTU settings can cause packet fragmentation, network performance issues, and connectivity failures in high-performance networking scenarios.`
 	TestLimitedUseOfExecProbesIdentifierImpact         = `Excessive exec probes can overwhelm system resources, degrade performance, and interfere with critical application operations in resource-constrained environments.`
 	TestICMPv6ConnectivityIdentifierImpact             = `IPv6 connectivity failures can prevent dual-stack applications from functioning properly and limit future network architecture flexibility.`
@@ -39,7 +39,7 @@ const (
 	TestOCPReservedPortsUsageImpact                    = `Using OpenShift-reserved ports can cause critical platform services to fail, potentially destabilizing the entire cluster.`
 
 	// Access Control Suite Impact Statements
-	Test1337UIDIdentifierImpact                             = `UID 1337 is specifically reserved for security scanning tools; using it can interfere with security assessments and violate compliance requirements.`
+	Test1337UIDIdentifierImpact                             = `UID 1337 is reserved for use by Istio service mesh components; using it for applications can cause conflicts with Istio sidecars and break service mesh functionality.`
 	TestNetAdminIdentifierImpact                            = `NET_ADMIN capability allows network configuration changes that can compromise cluster networking, enable privilege escalation, and bypass network security controls.`
 	TestSysAdminIdentifierImpact                            = `SYS_ADMIN capability provides extensive privileges that can compromise container isolation, enable host system access, and create serious security vulnerabilities.`
 	TestIpcLockIdentifierImpact                             = `IPC_LOCK capability can be exploited to lock system memory, potentially causing denial of service and affecting other workloads on the same node.`

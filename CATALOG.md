@@ -216,7 +216,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Suggested Remediation|Use another process UID that is not 1337.|
 |Best Practice Reference|No Doc Link - Extended|
 |Exception Process|No exception needed for optional/extended tests.|
-|Impact Statement|UID 1337 is specifically reserved for security scanning tools; using it can interfere with security assessments and violate compliance requirements.|
+|Impact Statement|UID 1337 is reserved for use by Istio service mesh components; using it for applications can cause conflicts with Istio sidecars and break service mesh functionality.|
 |Tags|extended,access-control|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -1125,7 +1125,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Suggested Remediation|Ensure that the label restart-on-reboot exists on pods that use SRIOV network interfaces.|
 |Best Practice Reference|No Doc Link - Far Edge|
 |Exception Process|There is no documented exception process for this.|
-|Impact Statement|Without proper restart labels, SRIOV-enabled pods may fail to restart correctly after node reboots, leading to application downtime and service unavailability.|
+|Impact Statement|Without restart-on-reboot labels, SRIOV-enabled pods may fail to recover from a race condition between kubernetes services startup and SR-IOV device plugin configuration on StarlingX AIO systems, causing SR-IOV devices to disappear from running pods when FPGA devices are reset.|
 |Tags|faredge,networking|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
