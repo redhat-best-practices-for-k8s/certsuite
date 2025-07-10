@@ -27,6 +27,7 @@ IMAGE_TAG?=localtest
 	build-certsuite-tool \
 	build-certsuite-tool-debug \
 	coverage-html \
+	fmt \
 	generate \
 	install-moq \
 	lint \
@@ -123,6 +124,10 @@ install-shfmt:
 
 vet:
 	go vet ${GO_PACKAGES}
+
+# Formats Go source code
+fmt:
+	go fmt ${GO_PACKAGES}
 
 install-moq:
 	go install github.com/matryer/moq@latest

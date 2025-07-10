@@ -105,6 +105,9 @@ jobs:
 
       - name: Go vet
         run: make vet
+
+      - name: Check impact statements
+        run: make build-catalog-md
   unit-tests:
     name: Run Unit Tests
     runs-on: ${{ matrix.os }}
