@@ -260,11 +260,13 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 			outString += fmt.Sprintf("|Best Practice Reference|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
 			outString += fmt.Sprintf("|Exception Process|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
 
-			// Add impact statement if available
+			// Add impact statement if available - fail if missing
 			if impact, exists := identifiers.ImpactMap[k.identifier.Id]; exists {
 				outString += fmt.Sprintf("|Impact Statement|%s|\n", strings.ReplaceAll(impact, "\n", " "))
 			} else {
-				outString += fmt.Sprintf("|Impact Statement|%s|\n", "Impact not documented")
+				log.Error("Test case %s is missing an impact statement in the ImpactMap", k.identifier.Id)
+				fmt.Printf("ERROR: Test case %s is missing an impact statement in the ImpactMap\n", k.identifier.Id)
+				os.Exit(1)
 			}
 
 			outString += fmt.Sprintf("|Tags|%s|\n", tags)
