@@ -52,7 +52,7 @@ ENV \
 
 # Download operator-sdk binary
 ENV \
-	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.40.0 \
+	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.41.1 \
 	OSDK_BIN=/usr/local/osdk/bin
 
 RUN \
