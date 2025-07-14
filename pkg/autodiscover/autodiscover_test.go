@@ -50,8 +50,8 @@ func TestCreateLabels(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotLabelObjects := createLabels(tt.args.labelStrings); !reflect.DeepEqual(gotLabelObjects, tt.wantLabelObjects) {
-				t.Errorf("createLabels() = %v, want %v", gotLabelObjects, tt.wantLabelObjects)
+			if gotLabelObjects := CreateLabels(tt.args.labelStrings); !reflect.DeepEqual(gotLabelObjects, tt.wantLabelObjects) {
+				t.Errorf("CreateLabels() = %v, want %v", gotLabelObjects, tt.wantLabelObjects)
 			}
 		})
 	}

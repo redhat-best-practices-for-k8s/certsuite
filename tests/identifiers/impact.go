@@ -136,6 +136,7 @@ const (
 	TestCrdsStatusSubresourceIdentifierImpact              = `Missing status subresources prevent proper monitoring and automation based on custom resource states.`
 	TestPodDisruptionBudgetIdentifierImpact                = `Improper disruption budgets can prevent necessary maintenance operations or allow too many pods to be disrupted simultaneously.`
 	TestAPICompatibilityWithNextOCPReleaseIdentifierImpact = `Deprecated API usage can cause applications to break during OpenShift upgrades, requiring emergency fixes.`
+	TestPodCountIdentifierImpact                           = `Inconsistency of running pods can cause instability of the application.`
 
 	// Manageability Test Suite Impact Statements
 	TestContainersImageTagImpact      = `Missing image tags make it difficult to track versions, perform rollbacks, and maintain deployment consistency.`
@@ -277,6 +278,7 @@ var ImpactMap = map[string]string{
 	"observability-crd-status":                          TestCrdsStatusSubresourceIdentifierImpact,
 	"observability-pod-disruption-budget":               TestPodDisruptionBudgetIdentifierImpact,
 	"observability-compatibility-with-next-ocp-release": TestAPICompatibilityWithNextOCPReleaseIdentifierImpact,
+	"observability-pod-count":                           TestPodCountIdentifierImpact,
 
 	// Manageability Test Suite
 	"manageability-containers-image-tag":       TestContainersImageTagImpact,
