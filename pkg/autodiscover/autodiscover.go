@@ -130,7 +130,7 @@ var data = DiscoveredTestData{}
 const labelRegex = `(\S*)\s*:\s*(\S*)`
 const labelRegexMatches = 3
 
-func createLabels(labelStrings []string) (labelObjects []labelObject) {
+func CreateLabels(labelStrings []string) (labelObjects []labelObject) {
 	for _, label := range labelStrings {
 		r := regexp.MustCompile(labelRegex)
 
@@ -159,8 +159,8 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 		log.Fatal("Failed to retrieve storageClasses - err: %v", err)
 	}
 
-	podsUnderTestLabelsObjects := createLabels(config.PodsUnderTestLabels)
-	operatorsUnderTestLabelsObjects := createLabels(config.OperatorsUnderTestLabels)
+	podsUnderTestLabelsObjects := CreateLabels(config.PodsUnderTestLabels)
+	operatorsUnderTestLabelsObjects := CreateLabels(config.OperatorsUnderTestLabels)
 
 	log.Debug("Pods under test labels: %+v", podsUnderTestLabelsObjects)
 	log.Debug("Operators under test labels: %+v", operatorsUnderTestLabelsObjects)
@@ -181,11 +181,11 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.AllPackageManifests = getAllPackageManifests(oc.OlmPkgClient.PackageManifests(""))
 
 	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
-	data.Pods, data.AllPods = findPodsByLabels(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
+	data.Pods, data.AllPods = FindPodsByLabels(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
 	probeLabels := []labelObject{{LabelKey: probeHelperPodsLabelName, LabelValue: probeHelperPodsLabelValue}}
 	probeNS := []string{config.ProbeDaemonSetNamespace}
-	data.ProbePods, _ = findPodsByLabels(oc.K8sClient.CoreV1(), probeLabels, probeNS)
+	data.ProbePods, _ = FindPodsByLabels(oc.K8sClient.CoreV1(), probeLabels, probeNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
 		log.Fatal("Cannot get resource quotas, err: %v", err)
@@ -223,7 +223,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	}
 
 	// Best effort mode autodiscovery for operand (running-only) pods.
-	pods, _ := findPodsByLabels(oc.K8sClient.CoreV1(), nil, data.Namespaces)
+	pods, _ := FindPodsByLabels(oc.K8sClient.CoreV1(), nil, data.Namespaces)
 	if err != nil {
 		log.Fatal("Failed to get running pods, err: %v", err)
 	}

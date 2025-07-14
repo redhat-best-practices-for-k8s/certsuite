@@ -24,16 +24,16 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
-	pdbv1 "github.com/redhat-best-practices-for-k8s/certsuite/tests/observability/pdb"
-
 	apiserv1 "github.com/openshift/api/apiserver/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	pdbv1 "github.com/redhat-best-practices-for-k8s/certsuite/tests/observability/pdb"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
@@ -86,6 +86,13 @@ func LoadChecks() {
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestAPICompatibilityWithNextOCPReleaseIdentifier)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testAPICompatibilityWithNextOCPRelease(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodCountIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testComparePodCount(c, &env)
 			return nil
 		}))
 }
@@ -421,5 +428,72 @@ func testAPICompatibilityWithNextOCPRelease(check *checksdb.Check, env *provider
 	compliantObjects, nonCompliantObjects := evaluateAPICompliance(serviceAccountToDeprecatedAPIs, env.K8sVersion, workloadServiceAccountNames)
 
 	// Add test results
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+// Function to compare the number of running pods to those loaded during autodiscover at the start of test execution.
+func testComparePodCount(check *checksdb.Check, env *provider.TestEnvironment) {
+	oc := clientsholder.GetClientsHolder()
+
+	originalPods := env.Pods
+
+	currentPods, _ := autodiscover.FindPodsByLabels(oc.K8sClient.CoreV1(), autodiscover.CreateLabels(env.Config.PodsUnderTestLabels), env.Namespaces)
+
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	// Compare pod counts
+	originalPodCount := len(originalPods)
+	currentPodCount := len(currentPods)
+
+	if originalPodCount == currentPodCount {
+		check.LogInfo("Pod count is consistent")
+		compliantObjects = append(compliantObjects,
+			testhelper.NewReportObject("Pod count is consistent", "PodCount", true).AddField("OriginalCount", fmt.Sprintf("%d", originalPodCount)).AddField("CurrentCount", fmt.Sprintf("%d", currentPodCount)))
+	} else {
+		check.LogError("Pod count mismatch: original=%d, current=%d", originalPodCount, currentPodCount)
+		nonCompliantObjects = append(nonCompliantObjects,
+			testhelper.NewReportObject("Pod count mismatch", "PodCount", false).AddField("OriginalCount", fmt.Sprintf("%d", originalPodCount)).AddField("CurrentCount", fmt.Sprintf("%d", currentPodCount)))
+	}
+
+	// Create maps for detailed comparison
+	originalPodsMap := make(map[string]struct{})
+	for _, pod := range originalPods {
+		key := fmt.Sprintf("%s/%s", pod.Namespace, pod.Name)
+		originalPodsMap[key] = struct{}{}
+	}
+
+	currentPodsMap := make(map[string]struct{})
+	for i := range currentPods {
+		pod := currentPods[i]
+		key := fmt.Sprintf("%s/%s", pod.Namespace, pod.Name)
+		currentPodsMap[key] = struct{}{}
+	}
+
+	// Check for missing pods (in original but not in current)
+	for _, originalPod := range originalPods {
+		podKey := fmt.Sprintf("%s/%s", originalPod.Namespace, originalPod.Name)
+		if _, exists := currentPodsMap[podKey]; !exists {
+			check.LogError("Pod %q is missing from current state", originalPod.String())
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewReportObject("Pod is missing from current state", testhelper.PodType, false).AddField(testhelper.PodName, originalPod.Name).AddField(testhelper.Namespace, originalPod.Namespace))
+		} else {
+			check.LogInfo("Pod %q is present in current state", originalPod.String())
+			compliantObjects = append(compliantObjects,
+				testhelper.NewReportObject("Pod is present in current state", testhelper.PodType, true).AddField(testhelper.PodName, originalPod.Name).AddField(testhelper.Namespace, originalPod.Namespace))
+		}
+	}
+
+	// Check for extra pods (in current but not in original)
+	for i := range currentPods {
+		currentPod := currentPods[i]
+		podKey := fmt.Sprintf("%s/%s", currentPod.Namespace, currentPod.Name)
+		if _, exists := originalPodsMap[podKey]; !exists {
+			check.LogError("Extra pod %s/%s found in current state", currentPod.Namespace, currentPod.Name)
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewReportObject("Extra pod found in current state", testhelper.PodType, false).AddField(testhelper.PodName, currentPod.Name).AddField(testhelper.Namespace, currentPod.Namespace))
+		}
+	}
+
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }

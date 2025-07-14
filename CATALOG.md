@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 119
+### Total test cases: 120
 
 ### Total suites: 10
 
@@ -18,7 +18,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |lifecycle|18|[lifecycle](#lifecycle)|
 |manageability|2|[manageability](#manageability)|
 |networking|12|[networking](#networking)|
-|observability|5|[observability](#observability)|
+|observability|6|[observability](#observability)|
 |operator|12|[operator](#operator)|
 |performance|6|[performance](#performance)|
 |platform-alteration|14|[platform-alteration](#platform-alteration)|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|---|
 |8|1|
 
-### Non-Telco specific tests only: 70
+### Non-Telco specific tests only: 71
 
 |Mandatory|Optional|
 |---|---|---|
-|43|27|
+|43|28|
 
 ### Telco specific tests only: 27
 
@@ -1202,6 +1202,23 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+#### observability-pod-count
+
+|Property|Description|
+|---|---|
+|Unique ID|observability-pod-count|
+|Description|Checks that all pods running at the beginning of the tests, continue to run throughout the test|
+|Suggested Remediation|Ensure all expected pods are running|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#observability-pod-count|
+|Exception Process|No exceptions|
+|Impact Statement|Inconsistency of running pods can cause instability of the application.|
+|Tags|common,observability|
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### observability-pod-disruption-budget
 

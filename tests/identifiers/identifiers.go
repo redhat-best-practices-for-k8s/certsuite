@@ -170,6 +170,7 @@ var (
 	TestNamespaceResourceQuotaIdentifier                             claim.Identifier
 	TestPodDisruptionBudgetIdentifier                                claim.Identifier
 	TestAPICompatibilityWithNextOCPReleaseIdentifier                 claim.Identifier
+	TestPodCountIdentifier                                           claim.Identifier
 	TestPodTolerationBypassIdentifier                                claim.Identifier
 	TestPersistentVolumeReclaimPolicyIdentifier                      claim.Identifier
 	TestContainersImageTag                                           claim.Identifier
@@ -1668,6 +1669,22 @@ that Node's kernel may not have the same hacks.'`,
 		APICompatibilityWithNextOCPReleaseRemediation,
 		NoExceptions,
 		TestAPICompatibilityWithNextOCPReleaseIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
+		},
+		TagCommon)
+
+	TestPodCountIdentifier = AddCatalogEntry(
+		"pod-count",
+		common.ObservabilityTestKey,
+		`Checks that all pods running at the beginning of the tests, continue to run throughout the test`,
+		"Ensure all expected pods are running",
+		NoExceptions,
+		"https://redhat-best-practices-for-k8s.github.io/guide/#observability-pod-count",
 		true,
 		map[string]string{
 			FarEdge:  Optional,
