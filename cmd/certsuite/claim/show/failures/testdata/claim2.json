@@ -16,7 +16,7 @@
             "tags": "common"
           },
           "catalogInfo": {
-            "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-security-rbac",
+            "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-security-rbac",
             "description": "Ensures that containers do not use SYS_ADMIN capability",
             "exceptionProcess": "Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles \u0026 role bindings",
             "remediation": "In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by CNF (often reserved for cluster admin only)."
@@ -43,7 +43,7 @@
             "tags": "telco"
           },
           "catalogInfo": {
-            "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-security-rbac",
+            "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-security-rbac",
             "description": "Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec. In the case that a CNF is running on a node using the real-time kernel, SYS_NICE will be used to allow DPDK application to switch to SCHED_FIFO.",
             "exceptionProcess": "Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles \u0026 role bindings",
             "remediation": "In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by CNF (often reserved for cluster admin only)."
@@ -70,7 +70,7 @@
             "tags": "common"
           },
           "catalogInfo": {
-            "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-security-rbac",
+            "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-security-rbac",
             "description": "Tests that no one has changed the node's sysctl configs after the node was created, the tests works by checking if the sysctl configs are consistent with the MachineConfig CR which defines how the node should be configured",
             "exceptionProcess": "Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles \u0026 role bindings",
             "remediation": "In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by CNF (often reserved for cluster admin only)."
@@ -97,7 +97,7 @@
             "tags": "common"
           },
           "catalogInfo": {
-            "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-security-rbac",
+            "bestPracticeReference": "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-security-rbac",
             "description": "Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have the same hacks.",
             "exceptionProcess": "Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles \u0026 role bindings",
             "remediation": "In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by CNF (often reserved for cluster admin only)."
