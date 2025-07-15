@@ -117,7 +117,7 @@ install-mac-brew-tools:
 
 # Installs linters
 install-lint:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@${GOLANGCI_VERSION}
+	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@${GOLANGCI_VERSION}
 
 install-shfmt:
 	go install mvdan.cc/sh/v3/cmd/shfmt@latest
