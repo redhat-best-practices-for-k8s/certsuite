@@ -11,41 +11,41 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ### Total suites: 10
 
-|Suite|Tests per suite|
-|---|---|
-|access-control|28|
-|affiliated-certification|4|
-|lifecycle|18|
-|manageability|2|
-|networking|12|
-|observability|5|
-|operator|12|
-|performance|6|
-|platform-alteration|14|
-|preflight|18|
+|Suite|Tests per suite|Link|
+|---|---|---|
+|access-control|28|[access-control](#access-control)|
+|affiliated-certification|4|[affiliated-certification](#affiliated-certification)|
+|lifecycle|18|[lifecycle](#lifecycle)|
+|manageability|2|[manageability](#manageability)|
+|networking|12|[networking](#networking)|
+|observability|5|[observability](#observability)|
+|operator|12|[operator](#operator)|
+|performance|6|[performance](#performance)|
+|platform-alteration|14|[platform-alteration](#platform-alteration)|
+|preflight|18|[preflight](#preflight)|
 
 ### Extended specific tests only: 13
 
 |Mandatory|Optional|
-|---|---|
+|---|---|---|
 |10|3|
 
 ### Far-Edge specific tests only: 9
 
 |Mandatory|Optional|
-|---|---|
+|---|---|---|
 |8|1|
 
 ### Non-Telco specific tests only: 70
 
 |Mandatory|Optional|
-|---|---|
+|---|---|---|
 |43|27|
 
 ### Telco specific tests only: 27
 
 |Mandatory|Optional|
-|---|---|
+|---|---|---|
 |26|1|
 
 ## Test Case list
