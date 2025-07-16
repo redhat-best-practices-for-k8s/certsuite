@@ -278,11 +278,11 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 }
 
 func summaryToMD(aSummary catalogSummary) (out string) {
-	const tableHeader = "|---|---|\n"
+	const tableHeader = "|---|---|---|\n"
 	out += "## Test cases summary\n\n"
 	out += fmt.Sprintf("### Total test cases: %d\n\n", aSummary.totalTests)
 	out += fmt.Sprintf("### Total suites: %d\n\n", aSummary.totalSuites)
-	out += "|Suite|Tests per suite|\n"
+	out += "|Suite|Tests per suite|Link|\n"
 	out += tableHeader
 
 	keys := make([]string, 0, len(aSummary.testsPerSuite))
@@ -292,7 +292,7 @@ func summaryToMD(aSummary catalogSummary) (out string) {
 	}
 	sort.Strings(keys)
 	for _, suite := range keys {
-		out += fmt.Sprintf("|%s|%d|\n", suite, aSummary.testsPerSuite[suite])
+		out += fmt.Sprintf("|%s|%d|[%s](#%s)|\n", suite, aSummary.testsPerSuite[suite], suite, suite)
 	}
 	out += "\n"
 

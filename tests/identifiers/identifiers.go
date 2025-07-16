@@ -1796,7 +1796,7 @@ that Node's kernel may not have the same hacks.'`,
 		"If an application creates CRDs it must supply a role to access those CRDs and no other API resources/permission. This test checks that there is at least one role present in each namespaces under test that only refers to CRDs under test.",
 		"Roles providing access to CRDs should not refer to any other api or resources. Change the generation of the CRD role accordingly",
 		NoExceptionProcessForExtendedTests,
-		"https://redhat-best-practices-for-k8s.github.io/guide/#redhat-best-practices-for-k8s-custom-role-to-access-application-crds",
+		"https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-custom-role-to-access-application-crds",
 		true,
 		map[string]string{
 			FarEdge:  Optional,
