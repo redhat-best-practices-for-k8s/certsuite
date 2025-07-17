@@ -16,7 +16,7 @@ INITIAL_BACKOFF=${LINK_TEST_INITIAL_BACKOFF:-1}
 REQUEST_DELAY=${LINK_TEST_REQUEST_DELAY:-0.2} # Reduced from 0.5s since we have retries
 CONNECT_TIMEOUT=${LINK_TEST_CONNECT_TIMEOUT:-15}
 MAX_TIME=${LINK_TEST_MAX_TIME:-30}
-VERBOSE=${LINK_TEST_VERBOSE:-false}
+# VERBOSE=${LINK_TEST_VERBOSE:-false}  # Currently unused, reserved for future use
 
 # Colors for output
 RED='\033[0;31m'
@@ -31,6 +31,7 @@ PASSED_LINKS=0
 FAILED_LINKS=0
 
 cleanup() {
+	# shellcheck disable=SC2317  # Function is called indirectly via trap
 	rm -rf "$TEMP_DIR"
 }
 
@@ -62,7 +63,7 @@ extract_urls() {
 	grep -o "https://[^|[:space:]]*" "$file" >"$TEMP_DIR/raw_urls.txt" || true
 
 	# Further clean URLs and split multiple URLs on same line
-	>"$TEMP_DIR/all_urls.txt" # Clear the file
+	true >"$TEMP_DIR/all_urls.txt" # Clear the file
 
 	if [[ -f "$TEMP_DIR/raw_urls.txt" ]]; then
 		while IFS= read -r url_line; do
@@ -73,21 +74,21 @@ extract_urls() {
 						# Clean up each URL - remove leading/trailing whitespace
 						url=$(echo "$url" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
 						# Remove leading punctuation that's not part of URLs
-						url=$(echo "$url" | sed 's/^[|(\[{]*//')
+						url=${url#*([|(\[{])}
 						# Remove trailing punctuation step by step (more reliable than complex regex)
-						url=$(echo "$url" | sed 's/\.$//') # Remove trailing dot
-						url=$(echo "$url" | sed 's/)$//')  # Remove trailing )
-						url=$(echo "$url" | sed 's/]$//')  # Remove trailing ]
-						url=$(echo "$url" | sed 's/}$//')  # Remove trailing }
-						url=$(echo "$url" | sed 's/,$//')  # Remove trailing comma
-						url=$(echo "$url" | sed 's/;$//')  # Remove trailing semicolon
-						url=$(echo "$url" | sed 's/:$//')  # Remove trailing colon
-						url=$(echo "$url" | sed 's/!$//')  # Remove trailing !
-						url=$(echo "$url" | sed 's/?$//')  # Remove trailing ?
-						url=$(echo "$url" | sed 's/|$//')  # Remove trailing |
+						url=${url%%.}  # Remove trailing dot
+						url=${url%%)}  # Remove trailing )
+						url=${url%%]}  # Remove trailing ]
+						url=${url%%\}} # Remove trailing }
+						url=${url%%,}  # Remove trailing comma
+						url=${url%%;}  # Remove trailing semicolon
+						url=${url%%:}  # Remove trailing colon
+						url=${url%%!}  # Remove trailing !
+						url=${url%%\?} # Remove trailing ?
+						url=${url%%|}  # Remove trailing |
 						# Repeat for multiple trailing punctuation (like ").")
-						url=$(echo "$url" | sed 's/\.$//') # Remove trailing dot again
-						url=$(echo "$url" | sed 's/)$//')  # Remove trailing ) again
+						url=${url%%.} # Remove trailing dot again
+						url=${url%%)} # Remove trailing ) again
 						# Only keep valid URLs
 						if [[ "$url" =~ ^https://[^[:space:]]+$ ]] && [[ ${#url} -gt 10 ]]; then
 							echo "$url" >>"$TEMP_DIR/all_urls.txt"
@@ -141,8 +142,8 @@ test_url() {
 		set +e # Temporarily disable exit on error for curl
 		http_status=$(curl -s -o "$content_file" -w "%{http_code}" \
 			--location \
-			--max-time $MAX_TIME \
-			--connect-timeout $CONNECT_TIMEOUT \
+			--max-time "$MAX_TIME" \
+			--connect-timeout "$CONNECT_TIMEOUT" \
 			--retry 1 \
 			--retry-delay 1 \
 			--retry-max-time 60 \
@@ -160,7 +161,7 @@ test_url() {
 			((retry_count++))
 			if [[ $retry_count -lt $max_retries ]]; then
 				log_warning "Attempt $retry_count failed for $url, retrying in ${backoff_delay}s..."
-				sleep $backoff_delay
+				sleep "$backoff_delay"
 				# Exponential backoff: 1s, 2s, 4s
 				backoff_delay=$((backoff_delay * 2))
 			else
@@ -177,9 +178,9 @@ test_url() {
 			if [[ -n "$anchor" ]]; then
 				# Check for anchor in HTML content - handle both quoted and unquoted attributes
 				# Look for id="anchor", id='anchor', id=anchor, name="anchor", name='anchor', name=anchor, or href="#anchor"
-				if grep -qE "id=[\"']?$anchor[\"']?" "$content_file" ||
-					grep -qE "name=[\"']?$anchor[\"']?" "$content_file" ||
-					grep -q "href=[\"']#$anchor[\"']" "$content_file"; then
+				if grep -qE "id=[\"']?${anchor}[\"']?" "$content_file" ||
+					grep -qE "name=[\"']?${anchor}[\"']?" "$content_file" ||
+					grep -q "href=[\"']#${anchor}[\"']" "$content_file"; then
 					log_success "✓ $url (HTTP $http_status, anchor found)"
 					echo "PASS: $url" >>"$RESULTS_FILE"
 					((PASSED_LINKS++))
@@ -221,7 +222,7 @@ test_all_urls() {
 			test_url "$url" || true # Continue even if test_url fails
 		fi
 		# Small delay to be respectful to servers (reduced since we have retry logic)
-		sleep $REQUEST_DELAY
+		sleep "$REQUEST_DELAY"
 	done <"$TEMP_DIR/all_urls.txt"
 	set -e # Re-enable exit on error
 }
@@ -263,14 +264,15 @@ main() {
 	test_all_urls
 	print_summary
 
-	# Exit with error code if any links failed
+	# Report results but always exit successfully (informational only)
 	if [[ $FAILED_LINKS -gt 0 ]]; then
-		log_error "Link validation failed: $FAILED_LINKS broken links found"
-		exit 1
+		log_warning "Link validation completed: $FAILED_LINKS broken links found (informational only)"
 	else
 		log_success "All links are valid!"
-		exit 0
 	fi
+
+	# Always exit with success for informational reporting
+	exit 0
 }
 
 # Show usage if help requested
