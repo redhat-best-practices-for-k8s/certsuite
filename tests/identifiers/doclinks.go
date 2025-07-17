@@ -13,7 +13,7 @@ const (
 	TestReservedExtendedPartnerPortsDocLink             = NoDocLinkExtended
 	TestDpdkCPUPinningExecProbeDocLink                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-manager-pinning"
 	TestRestartOnRebootLabelOnPodsUsingSRIOVDocLink     = NoDocLinkFarEdge
-	TestNetworkAttachmentDefinitionSRIOVUsingMTUDocLink = NoDocLinkFarEdge
+	TestNetworkAttachmentDefinitionSRIOVUsingMTUDocLink = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-multus-sr-iov---macvlan"
 	TestLimitedUseOfExecProbesIdentifierDocLink         = NoDocLinkFarEdge
 	TestICMPv6ConnectivityIdentifierDocLink             = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ipv4-&-ipv6"
 	TestICMPv4ConnectivityMultusIdentifierDocLink       = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations"
@@ -30,7 +30,7 @@ const (
 	TestNetRawIdentifierDocLink                              = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-user-plane-cnfs"
 	TestBpfIdentifierDocLink                                 = NoDocLinkTelco
 	TestSecConNonRootUserIdentifierDocLink                   = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-security"
-	TestSecContextIdentifierDocLink                          = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-security"
+	TestSecContextIdentifierDocLink                          = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities"
 	TestSecConPrivilegeEscalationDocLink                     = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-security"
 	TestContainerHostPortDocLink                             = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-avoid-accessing-resource-on-host"
 	TestContainerHostNetworkDocLink                          = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-avoid-the-host-network-namespace"
@@ -54,9 +54,9 @@ const (
 
 	// Affiliated Certification Suite
 	TestHelmVersionIdentifierDocLink                = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-helm"
-	TestContainerIsCertifiedDigestIdentifierDocLink = "https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview"
+	TestContainerIsCertifiedDigestIdentifierDocLink = "https://docs.redhat.com/en/documentation/red_hat_software_certification/2025/html/red_hat_software_certification_workflow_guide/index"
 	TestContainerIsCertifiedIdentifierDocLink       = "https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview"
-	TestHelmIsCertifiedIdentifierDocLink            = "https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview"
+	TestHelmIsCertifiedIdentifierDocLink            = "https://docs.redhat.com/en/documentation/red_hat_software_certification/2025/html/red_hat_software_certification_workflow_guide/index"
 
 	// Platform Alteration Suite
 	TestPodHugePages2MDocLink                       = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-huge-pages"
@@ -70,7 +70,7 @@ const (
 
 	TestOCPLifecycleIdentifierDocLink        = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-k8s"
 	TestNodeOperatingSystemIdentifierDocLink = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-host-os"
-	TestIsRedHatReleaseIdentifierDocLink     = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-base-images"
+	TestIsRedHatReleaseIdentifierDocLink     = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-security"
 	TestIsSELinuxEnforcingIdentifierDocLink  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-pod-security"
 	TestClusterOperatorHealthDocLink         = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-operator-requirements"
 
@@ -86,9 +86,9 @@ const (
 	TestStatefulSetScalingIdentifierDocLink            = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations"
 	TestImagePullPolicyIdentifierDocLink               = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-use-imagepullpolicy:-ifnotpresent"
 	TestPodRecreationIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-upgrade-expectations"
-	TestLivenessProbeIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations"
-	TestReadinessProbeIdentifierDocLink                = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations"
-	TestStartupProbeIdentifierDocLink                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-pod-exit-status"
+	TestLivenessProbeIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes"
+	TestReadinessProbeIdentifierDocLink                = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes"
+	TestStartupProbeIdentifierDocLink                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes"
 	//nolint:gosec
 	TestPodTolerationBypassIdentifierDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-taints-and-tolerations"
 	TestPersistentVolumeReclaimPolicyIdentifierDocLink = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-csi"

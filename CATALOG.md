@@ -384,7 +384,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|access-control-security-context|
 |Description|Checks the security context matches one of the 4 categories|
 |Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 [here](#security-context-categories)|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-security|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities|
 |Exception Process|no exception needed for optional/extended test|
 |Impact Statement|Incorrect security context configurations can weaken container isolation, enable privilege escalation, and create exploitable attack vectors.|
 |Tags|extended,access-control|
@@ -435,7 +435,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|access-control-security-context-read-only-file-system|
 |Description|Checks the security context readOnlyFileSystem in containers is enabled. Containers should not try modify its own filesystem.|
 |Suggested Remediation|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-security|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities|
 |Exception Process|No exceptions|
 |Impact Statement|Writable root filesystems increase the attack surface and can be exploited to modify container behavior or persist malware.|
 |Tags|common,access-control|
@@ -539,7 +539,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|affiliated-certification-container-is-certified-digest|
 |Description|Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).|
 |Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).|
-|Best Practice Reference|https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview|
+|Best Practice Reference|https://docs.redhat.com/en/documentation/red_hat_software_certification/2025/html/red_hat_software_certification_workflow_guide/index|
 |Exception Process|There is no documented exception process for this. A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.|
 |Impact Statement|Uncertified containers may contain security vulnerabilities, lack enterprise support, and fail to meet compliance requirements.|
 |Tags|common,affiliated-certification|
@@ -573,7 +573,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|affiliated-certification-helmchart-is-certified|
 |Description|Tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.|
 |Suggested Remediation|Ensure that the helm charts under test passed the Red Hat's helm Certification Program (e.g. listed in https://charts.openshift.io/index.yaml).|
-|Best Practice Reference|https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview|
+|Best Practice Reference|https://docs.redhat.com/en/documentation/red_hat_software_certification/2025/html/red_hat_software_certification_workflow_guide/index|
 |Exception Process|There is no documented exception process for this. A partner can run the Red Hat Best Practices Test Suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in the Red Hat Best Practices Test Suite must be re-run once the other certifications have been granted.|
 |Impact Statement|Uncertified helm charts may contain security vulnerabilities, configuration errors, and lack proper testing, leading to deployment failures.|
 |Tags|common,affiliated-certification|
@@ -728,7 +728,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|lifecycle-liveness-probe|
 |Description|Check that all containers under test have liveness probe defined. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. When starting up, health probes like liveness and readiness checks can be put into place to ensure the application is functioning properly.|
 |Suggested Remediation|Add a liveness probe to deployed containers. workloads shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Missing liveness probes prevent Kubernetes from detecting and recovering from application deadlocks and hangs.|
 |Tags|telco,lifecycle|
@@ -847,7 +847,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|lifecycle-readiness-probe|
 |Description|Check that all containers under test have readiness probe defined. There are different ways a pod can stop on on OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. In the first case, if the administrator has implemented liveness and readiness checks, OpenShift can stop the pod and either restart it on the same node or a different node in the cluster. For the second case, when the application in the pod stops, it should exit with a code and write suitable log entries to help the administrator diagnose what the issue was that caused the problem.|
 |Suggested Remediation|Add a readiness probe to deployed containers|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Missing readiness probes can cause traffic to be routed to non-ready pods, resulting in failed requests and poor user experience.|
 |Tags|telco,lifecycle|
@@ -864,7 +864,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|lifecycle-startup-probe|
 |Description|Check that all containers under test have startup probe defined. Workloads shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.|
 |Suggested Remediation|Add a startup probe to deployed containers|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-pod-exit-status|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Missing startup probes can cause slow-starting applications to be killed prematurely, preventing successful application startup.|
 |Tags|telco,lifecycle|
@@ -1055,7 +1055,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|networking-network-attachment-definition-sriov-mtu|
 |Description|Ensures that MTU values are set correctly in NetworkAttachmentDefinitions for SRIOV network interfaces.|
 |Suggested Remediation|Ensure that the MTU of the SR-IOV network attachment definition is set explicitly.|
-|Best Practice Reference|No Doc Link - Far Edge|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-multus-sr-iov---macvlan|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Incorrect MTU settings can cause packet fragmentation, network performance issues, and connectivity failures in high-performance networking scenarios.|
 |Tags|faredge,networking|
@@ -1692,7 +1692,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|platform-alteration-isredhat-release|
 |Description|verifies if the container base image is redhat.|
 |Suggested Remediation|Build a new container image that is based on UBI (Red Hat Universal Base Image).|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-base-images|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-security|
 |Exception Process|No exceptions|
 |Impact Statement|Non-Red Hat base images may lack security updates, enterprise support, and compliance certifications required for production use.|
 |Tags|common,platform-alteration|
@@ -1863,7 +1863,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |---|---|
 |Unique ID|preflight-FollowsRestrictedNetworkEnablementGuidelines|
 |Description|Checks for indicators that this bundle has implemented guidelines to indicate readiness for running in a disconnected cluster, or a cluster with a restricted network.|
-|Suggested Remediation|If consumers of your operator may need to do so on a restricted network, implement the guidelines outlines in OCP documentation for your cluster version, such as https://docs.openshift.com/container-platform/4.11/operators/operator_sdk/osdk-generating-csvs.html#olm-enabling-operator-for-restricted-network_osdk-generating-csvs for OCP 4.11|
+|Suggested Remediation|If consumers of your operator may need to do so on a restricted network, implement the guidelines outlined in OCP documentation: https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/disconnected_environments/olm-restricted-networks|
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Non-compliance with restricted network guidelines can prevent deployment in air-gapped environments and violate security policies.|
