@@ -282,7 +282,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|access-control-pod-host-network|
 |Description|Verifies that the spec.HostNetwork parameter is not set (not present)|
 |Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostNetwork should be false.|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-avoid-the-host-network-namespace|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-security|
 |Exception Process|Exception for host resource access tests will only be considered in rare cases where it is absolutely needed|
 |Impact Statement|Host network access removes network isolation, exposes containers to host network interfaces, and can compromise cluster networking security.|
 |Tags|common,access-control|
@@ -452,7 +452,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|access-control-service-type|
 |Description|Tests that each workload Service does not utilize NodePort(s).|
 |Suggested Remediation|Ensure Services are not configured to use NodePort(s). Workloads should avoid accessing host resources - tests that each workload Service does not utilize NodePort(s).|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-avoid-the-host-network-namespace|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-security|
 |Exception Process|Exception for host resource access tests will only be considered in rare cases where it is absolutely needed|
 |Impact Statement|NodePort services expose applications directly on host ports, creating security risks and potential port conflicts with host services.|
 |Tags|common,access-control|
@@ -625,7 +625,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |---|---|
 |Unique ID|lifecycle-container-poststart|
 |Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.|
-|Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.|
+|Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cloud-native-design-best-practices|
 |Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.|
 |Impact Statement|Missing PostStart hooks can cause containers to start serving traffic before proper initialization, leading to application errors.|
@@ -642,7 +642,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |---|---|
 |Unique ID|lifecycle-container-prestop|
 |Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.|
-|Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.|
+|Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cloud-native-design-best-practices|
 |Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.|
 |Impact Statement|Missing PreStop hooks can cause ungraceful shutdowns, data loss, and connection drops during container termination.|

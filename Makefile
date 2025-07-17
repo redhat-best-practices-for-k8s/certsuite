@@ -99,9 +99,12 @@ coverage-html: test
 coverage-qe: build-certsuite-tool
 	./certsuite generate qe-coverage-report
 
-# Generates the test catalog in Markdown
+# Generates the test catalog in Markdown and validates all links
 build-catalog-md: build-certsuite-tool
 	./certsuite generate catalog markdown >CATALOG.md
+	@echo "Validating all links in CATALOG.md..."
+	@chmod +x script/test-catalog-links.sh
+	@./script/test-catalog-links.sh CATALOG.md
 
 # Builds the Certsuite binary with debug flags
 build-certsuite-tool-debug: results-html
