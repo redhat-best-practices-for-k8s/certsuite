@@ -78,7 +78,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|access-control-cluster-role-bindings|
 |Description|Tests that a Pod does not specify ClusterRoleBindings.|
 |Suggested Remediation|In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by the workload (often reserved for cluster admin only).|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-security-rbac|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-security-and-role-based-access-control|
 |Exception Process|Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles & role bindings|
 |Impact Statement|Cluster-wide role bindings grant excessive privileges that can be exploited for lateral movement and privilege escalation across the entire cluster.|
 |Tags|telco,access-control|
@@ -333,7 +333,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|access-control-pod-role-bindings|
 |Description|Ensures that a workload does not utilize RoleBinding(s) in a non-workload Namespace.|
 |Suggested Remediation|Ensure the workload is not configured to use RoleBinding(s) in a non-workload Namespace. Scope of role must <= scope of creator of role.|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-security-rbac|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-security-and-role-based-access-control|
 |Exception Process|No exceptions|
 |Impact Statement|Cross-namespace role bindings can violate tenant isolation and create unintended privilege escalation paths.|
 |Tags|common,access-control|
@@ -367,7 +367,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|access-control-requests-and-limits|
 |Description|Check that containers have resource requests and limits specified in their spec. Set proper QoS class and resource requests/limits based on container use case.|
 |Suggested Remediation|Add requests and limits to your container spec. See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-requests/limits|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-requests-limits|
 |Exception Process|Exceptions possible for platform and infrastructure containers. Must identify which container needs access and document why with details.|
 |Impact Statement|Missing resource requests and limits can lead to resource contention, node instability, and unpredictable application performance.|
 |Tags|telco,access-control|
@@ -469,7 +469,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|access-control-ssh-daemons|
 |Description|Check that pods do not run SSH daemons.|
 |Suggested Remediation|Ensure that no SSH daemons are running inside a pod. Pods should not run as SSH Daemons (replicaset or statefulset only).|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-pod-interaction/configuration|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-pod-interaction-and-configuration|
 |Exception Process|No exceptions - special consideration can be given to certain containers which run as utility tool daemon|
 |Impact Statement|SSH daemons in containers create additional attack surfaces, violate immutable infrastructure principles, and can be exploited for unauthorized access.|
 |Tags|telco,access-control|
@@ -711,7 +711,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|lifecycle-image-pull-policy|
 |Description|Ensure that the containers under test are using IfNotPresent as Image Pull Policy. If there is a situation where the container dies and needs to be restarted, the image pull policy becomes important. PullIfNotPresent is recommended so that a loss of image registry access does not prevent the pod from restarting.|
 |Suggested Remediation|Ensure that the containers under test are using IfNotPresent as Image Pull Policy.|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-use-imagepullpolicy-if-not-present|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-use-imagepullpolicy:-ifnotpresent|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Incorrect image pull policies can cause deployment failures when image registries are unavailable or during network issues.|
 |Tags|telco,lifecycle|
@@ -1159,7 +1159,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|observability-compatibility-with-next-ocp-release|
 |Description|Checks to ensure if the APIs the workload uses are compatible with the next OCP version|
 |Suggested Remediation|Ensure the APIs the workload uses are compatible with the next OCP version|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-to-be-removed-apis|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-k8s-api-versions|
 |Exception Process|No exceptions|
 |Impact Statement|Deprecated API usage can cause applications to break during OpenShift upgrades, requiring emergency fixes.|
 |Tags|common,observability|
