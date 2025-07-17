@@ -90,7 +90,7 @@ const (
 	TestReadinessProbeIdentifierDocLink                = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes"
 	TestStartupProbeIdentifierDocLink                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes"
 	//nolint:gosec
-	TestPodTolerationBypassIdentifierDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-taints-and-tolerations"
+	TestPodTolerationBypassIdentifierDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-manager-pinning"
 	TestPersistentVolumeReclaimPolicyIdentifierDocLink = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-csi"
 	TestCPUIsolationIdentifierDocLink                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-isolation"
 	TestCrdScalingIdentifierDocLink                    = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations"

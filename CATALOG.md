@@ -830,7 +830,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Unique ID|lifecycle-pod-toleration-bypass|
 |Description|Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.|
 |Suggested Remediation|Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes.|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-taints-and-tolerations|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-manager-pinning|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Modified tolerations can allow pods to be scheduled on inappropriate nodes, violating scheduling policies and causing performance issues.|
 |Tags|telco,lifecycle|
