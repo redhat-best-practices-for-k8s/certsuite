@@ -108,6 +108,9 @@ jobs:
 
       - name: Check impact statements
         run: make build-catalog-md
+
+      - name: Check for broken URLs in CATALOG.md
+        run: make check-catalog-links
   unit-tests:
     name: Run Unit Tests
     runs-on: ${{ matrix.os }}
