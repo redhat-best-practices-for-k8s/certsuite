@@ -27,11 +27,10 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
 
-	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/api/v1"
-
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 const (
@@ -473,16 +472,50 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 	return false, nil
 }
 
-func sriovNetworkUsesMTU(sriovNetworks []sriovNetworkOp.SriovNetwork, sriovNetworkNodePolicies []sriovNetworkOp.SriovNetworkNodePolicy, nadName string) bool {
-	for sn := range sriovNetworks {
-		log.Debug("Checking SriovNetwork %s", sriovNetworks[sn].Name)
-		if sriovNetworks[sn].Name == nadName {
-			log.Debug("SriovNetwork %s found to match the NAD name %s", sriovNetworks[sn].Name, nadName)
-			for nodePolicy := range sriovNetworkNodePolicies {
-				log.Debug("Checking SriovNetworkNodePolicy %v", nodePolicy)
-				if sriovNetworkNodePolicies[nodePolicy].Namespace == sriovNetworks[sn].Namespace && sriovNetworkNodePolicies[nodePolicy].Spec.ResourceName == sriovNetworks[sn].Spec.ResourceName {
-					if sriovNetworkNodePolicies[nodePolicy].Spec.Mtu > 0 {
-						return true
+func sriovNetworkUsesMTU(sriovNetworks, sriovNetworkNodePolicies []unstructured.Unstructured, nadName string) bool {
+	for _, sriovNetwork := range sriovNetworks {
+		networkName := sriovNetwork.GetName()
+		log.Debug("Checking SriovNetwork %s", networkName)
+		if networkName == nadName {
+			log.Debug("SriovNetwork %s found to match the NAD name %s", networkName, nadName)
+
+			// Get the ResourceName from the SriovNetwork spec
+			spec, found, err := unstructured.NestedMap(sriovNetwork.Object, "spec")
+			if !found || err != nil {
+				log.Debug("Failed to get spec from SriovNetwork %s: %v", networkName, err)
+				continue
+			}
+
+			resourceName, found, err := unstructured.NestedString(spec, "resourceName")
+			if !found || err != nil {
+				log.Debug("Failed to get resourceName from SriovNetwork %s: %v", networkName, err)
+				continue
+			}
+
+			for _, nodePolicy := range sriovNetworkNodePolicies {
+				policyNamespace := nodePolicy.GetNamespace()
+				networkNamespace := sriovNetwork.GetNamespace()
+
+				log.Debug("Checking SriovNetworkNodePolicy in namespace %s", policyNamespace)
+				if policyNamespace == networkNamespace {
+					// Get the ResourceName and MTU from the SriovNetworkNodePolicy spec
+					policySpec, found, err := unstructured.NestedMap(nodePolicy.Object, "spec")
+					if !found || err != nil {
+						log.Debug("Failed to get spec from SriovNetworkNodePolicy: %v", err)
+						continue
+					}
+
+					policyResourceName, found, err := unstructured.NestedString(policySpec, "resourceName")
+					if !found || err != nil {
+						log.Debug("Failed to get resourceName from SriovNetworkNodePolicy: %v", err)
+						continue
+					}
+
+					if policyResourceName == resourceName {
+						mtu, found, err := unstructured.NestedInt64(policySpec, "mtu")
+						if found && err == nil && mtu > 0 {
+							return true
+						}
 					}
 				}
 			}
