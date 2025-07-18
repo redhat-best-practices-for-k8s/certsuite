@@ -27,7 +27,6 @@ import (
 	"encoding/json"
 
 	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
-	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/api/v1"
 	configv1 "github.com/openshift/api/config/v1"
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
@@ -48,6 +47,7 @@ import (
 	storagev1 "k8s.io/api/storage/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -123,10 +123,10 @@ type TestEnvironment struct { // rename this with testTarget
 	AllCatalogSources            []*olmv1Alpha.CatalogSource `json:"AllCatalogSources"`
 	AllPackageManifests          []*olmpkgv1.PackageManifest `json:"AllPackageManifests"`
 	OperatorGroups               []*olmv1.OperatorGroup      `json:"OperatorGroups"`
-	SriovNetworks                []sriovNetworkOp.SriovNetwork
-	AllSriovNetworks             []sriovNetworkOp.SriovNetwork
-	SriovNetworkNodePolicies     []sriovNetworkOp.SriovNetworkNodePolicy
-	AllSriovNetworkNodePolicies  []sriovNetworkOp.SriovNetworkNodePolicy
+	SriovNetworks                []unstructured.Unstructured
+	AllSriovNetworks             []unstructured.Unstructured
+	SriovNetworkNodePolicies     []unstructured.Unstructured
+	AllSriovNetworkNodePolicies  []unstructured.Unstructured
 	NetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
 	ClusterOperators             []configv1.ClusterOperator
 	IstioServiceMeshFound        bool

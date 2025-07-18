@@ -25,7 +25,7 @@ import (
 	"time"
 
 	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
-	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/api/v1"
+
 	configv1 "github.com/openshift/api/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -46,6 +46,7 @@ import (
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 )
 
@@ -79,10 +80,10 @@ type DiscoveredTestData struct {
 	AllCatalogSources            []*olmv1Alpha.CatalogSource
 	AllPackageManifests          []*olmPkgv1.PackageManifest
 	ClusterOperators             []configv1.ClusterOperator
-	SriovNetworks                []sriovNetworkOp.SriovNetwork
-	SriovNetworkNodePolicies     []sriovNetworkOp.SriovNetworkNodePolicy
-	AllSriovNetworks             []sriovNetworkOp.SriovNetwork
-	AllSriovNetworkNodePolicies  []sriovNetworkOp.SriovNetworkNodePolicy
+	SriovNetworks                []unstructured.Unstructured
+	SriovNetworkNodePolicies     []unstructured.Unstructured
+	AllSriovNetworks             []unstructured.Unstructured
+	AllSriovNetworkNodePolicies  []unstructured.Unstructured
 	NetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
 	Deployments                  []appsv1.Deployment
 	StatefulSet                  []appsv1.StatefulSet
