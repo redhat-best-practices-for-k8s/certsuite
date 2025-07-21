@@ -21,7 +21,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Masterminds/semver"
+	"github.com/Masterminds/semver/v3"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/access"

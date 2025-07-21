@@ -23,7 +23,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/Masterminds/semver"
+	"github.com/Masterminds/semver/v3"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	pdbv1 "github.com/redhat-best-practices-for-k8s/certsuite/tests/observability/pdb"

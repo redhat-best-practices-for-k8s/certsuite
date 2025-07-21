@@ -14,11 +14,11 @@ func TestIsClaimFormatVersionSupported(t *testing.T) {
 		// Invalid version strings
 		{
 			claimFormatVersion: "",
-			expectedError:      `claim file version "" is not valid: Invalid Semantic Version`,
+			expectedError:      `claim file version "" is not valid: invalid semantic version`,
 		},
 		{
 			claimFormatVersion: "v0.v0.2",
-			expectedError:      `claim file version "v0.v0.2" is not valid: Invalid Semantic Version`,
+			expectedError:      `claim file version "v0.v0.2" is not valid: invalid semantic version`,
 		},
 		{
 			claimFormatVersion: "v0.0.0",
