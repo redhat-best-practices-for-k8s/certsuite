@@ -103,6 +103,11 @@ coverage-qe: build-certsuite-tool
 build-catalog-md: build-certsuite-tool
 	./certsuite generate catalog markdown >CATALOG.md
 
+# Validates all links in CATALOG.md
+check-catalog-links:
+	@echo "Validating all links in CATALOG.md..."
+	@./script/test-catalog-links.sh CATALOG.md
+
 # Builds the Certsuite binary with debug flags
 build-certsuite-tool-debug: results-html
 	PATH="${PATH}:${GOBIN}" go build -gcflags "all=-N -l" -ldflags "${LINKER_CERTSUITE_RELEASE_FLAGS} -extldflags '-z relro -z now'" -o certsuite -v cmd/certsuite/main.go

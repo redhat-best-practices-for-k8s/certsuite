@@ -158,11 +158,18 @@ func addPreflightTestsToCatalog() {
 	allChecks = append(allChecks, checksContainer...)
 
 	for _, c := range allChecks {
+		remediation := c.Help().Suggestion
+
+		// Custom override for specific preflight test remediation
+		if c.Name() == "FollowsRestrictedNetworkEnablementGuidelines" {
+			remediation = "If consumers of your operator may need to do so on a restricted network, implement the guidelines outlined in OCP documentation: https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/disconnected_environments/olm-restricted-networks"
+		}
+
 		_ = identifiers.AddCatalogEntry(
 			c.Name(),
 			common.PreflightTestKey,
 			c.Metadata().Description,
-			c.Help().Suggestion,
+			remediation,
 			identifiers.NoDocumentedProcess,
 			identifiers.NoDocLink,
 			true,
