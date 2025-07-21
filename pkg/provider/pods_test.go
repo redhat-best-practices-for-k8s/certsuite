@@ -22,7 +22,6 @@ import (
 	"strings"
 	"testing"
 
-	sriovNetworkOp "github.com/k8snetworkplumbingwg/sriov-network-operator/api/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/stretchr/testify/assert"
@@ -30,6 +29,7 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	v1 "k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	k8sfake "k8s.io/client-go/kubernetes/fake"
 )
@@ -312,123 +312,205 @@ func TestGetSRIOVNetworksNamesFromCNCFNetworks(t *testing.T) {
 
 func TestSriovNetworkUsesMTU(t *testing.T) {
 	testCases := []struct {
-		testSriovNetwork             []sriovNetworkOp.SriovNetwork
-		testSriovNetworkNodePolicies []sriovNetworkOp.SriovNetworkNodePolicy
-		testNadName                  string
-		expectedOutput               bool
+		name                         string
+		testSriovNetwork             []unstructured.Unstructured
+		testSriovNetworkNodePolicies []unstructured.Unstructured
+		nadName                      string
+		expectedResult               bool
 	}{
-		{ // Test Case #1 - Happy path, MTU is set, return true
-			testSriovNetwork: []sriovNetworkOp.SriovNetwork{
+		{
+			name: "MTU is set and resourceName matches - should return true",
+			testSriovNetwork: []unstructured.Unstructured{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "nad-name-1",
-						Namespace: "test-namespace",
-					},
-					Spec: sriovNetworkOp.SriovNetworkSpec{
-						ResourceName: "sriov-network-test1",
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"name":      "test-network",
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+						},
 					},
 				},
 			},
-			testSriovNetworkNodePolicies: []sriovNetworkOp.SriovNetworkNodePolicy{
+			testSriovNetworkNodePolicies: []unstructured.Unstructured{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "sriov-network-node-policy",
-						Namespace: "test-namespace",
-					},
-					Spec: sriovNetworkOp.SriovNetworkNodePolicySpec{
-						ResourceName: "sriov-network-test1",
-						Mtu:          9000,
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+							"mtu":          int64(1500),
+						},
 					},
 				},
 			},
-			testNadName:    "nad-name-1",
-			expectedOutput: true,
+			nadName:        "test-network",
+			expectedResult: true,
 		},
-		{ // Test Case #2 - MTU is not set, return false
-			testSriovNetwork: []sriovNetworkOp.SriovNetwork{
+		{
+			name: "MTU is zero - should return false",
+			testSriovNetwork: []unstructured.Unstructured{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "nad-name-1",
-						Namespace: "test-namespace",
-					},
-					Spec: sriovNetworkOp.SriovNetworkSpec{
-						ResourceName: "sriov-network-test1",
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"name":      "test-network",
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+						},
 					},
 				},
 			},
-			testSriovNetworkNodePolicies: []sriovNetworkOp.SriovNetworkNodePolicy{
+			testSriovNetworkNodePolicies: []unstructured.Unstructured{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "sriov-network-node-policy",
-						Namespace: "test-namespace",
-					},
-					Spec: sriovNetworkOp.SriovNetworkNodePolicySpec{
-						ResourceName: "sriov-network-test1",
-						// Mtu:          9000,
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+							"mtu":          int64(0),
+						},
 					},
 				},
 			},
-			testNadName:    "nad-name-1",
-			expectedOutput: false,
+			nadName:        "test-network",
+			expectedResult: false,
 		},
-		{ // Test Case #3 - NAD name does not match, return false
-			testSriovNetwork: []sriovNetworkOp.SriovNetwork{
+		{
+			name: "resourceName doesn't match - should return false",
+			testSriovNetwork: []unstructured.Unstructured{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "nad-name-1",
-						Namespace: "test-namespace",
-					},
-					Spec: sriovNetworkOp.SriovNetworkSpec{
-						ResourceName: "sriov-network-test1",
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"name":      "test-network",
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+						},
 					},
 				},
 			},
-			testSriovNetworkNodePolicies: []sriovNetworkOp.SriovNetworkNodePolicy{
+			testSriovNetworkNodePolicies: []unstructured.Unstructured{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "sriov-network-node-policy",
-						Namespace: "test-namespace",
-					},
-					Spec: sriovNetworkOp.SriovNetworkNodePolicySpec{
-						ResourceName: "sriov-network-test1",
-						Mtu:          9000,
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "different-resource",
+							"mtu":          int64(1500),
+						},
 					},
 				},
 			},
-			testNadName:    "nad-name-2", // NAD name does not match
-			expectedOutput: false,
+			nadName:        "test-network",
+			expectedResult: false,
 		},
-		{ // Test Case #4 - NAD name matches, but no SriovNetworkNodePolicy found, return false
-			testSriovNetwork: []sriovNetworkOp.SriovNetwork{
+		{
+			name: "NAD name doesn't match - should return false",
+			testSriovNetwork: []unstructured.Unstructured{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "nad-name-1",
-						Namespace: "test-namespace",
-					},
-					Spec: sriovNetworkOp.SriovNetworkSpec{
-						ResourceName: "sriov-network-test1",
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"name":      "different-network",
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+						},
 					},
 				},
 			},
-			testSriovNetworkNodePolicies: []sriovNetworkOp.SriovNetworkNodePolicy{
+			testSriovNetworkNodePolicies: []unstructured.Unstructured{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:      "sriov-network-node-policy",
-						Namespace: "test-namespace",
-					},
-					Spec: sriovNetworkOp.SriovNetworkNodePolicySpec{
-						ResourceName: "sriov-network-test2", // ResourceName does not match
-						Mtu:          9000,
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+							"mtu":          int64(1500),
+						},
 					},
 				},
 			},
-			testNadName:    "nad-name-1",
-			expectedOutput: false,
+			nadName:        "test-network",
+			expectedResult: false,
+		},
+		{
+			name: "namespace doesn't match - should return false",
+			testSriovNetwork: []unstructured.Unstructured{
+				{
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"name":      "test-network",
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+						},
+					},
+				},
+			},
+			testSriovNetworkNodePolicies: []unstructured.Unstructured{
+				{
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"namespace": "different-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+							"mtu":          int64(1500),
+						},
+					},
+				},
+			},
+			nadName:        "test-network",
+			expectedResult: false,
+		},
+		{
+			name: "no MTU field in policy - should return false",
+			testSriovNetwork: []unstructured.Unstructured{
+				{
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"name":      "test-network",
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+						},
+					},
+				},
+			},
+			testSriovNetworkNodePolicies: []unstructured.Unstructured{
+				{
+					Object: map[string]interface{}{
+						"metadata": map[string]interface{}{
+							"namespace": "test-ns",
+						},
+						"spec": map[string]interface{}{
+							"resourceName": "test-resource",
+							// No MTU field
+						},
+					},
+				},
+			},
+			nadName:        "test-network",
+			expectedResult: false,
 		},
 	}
 
-	for _, testCase := range testCases {
-		assert.Equal(t, testCase.expectedOutput, sriovNetworkUsesMTU(testCase.testSriovNetwork, testCase.testSriovNetworkNodePolicies, testCase.testNadName))
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := sriovNetworkUsesMTU(tc.testSriovNetwork, tc.testSriovNetworkNodePolicies, tc.nadName)
+			assert.Equal(t, tc.expectedResult, result)
+		})
 	}
 }
 
