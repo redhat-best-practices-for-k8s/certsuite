@@ -102,6 +102,7 @@ jobs:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
           desiredOCPVersion: 4.18
+          crcMemory: 12000
         env:
           OCP_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
       
