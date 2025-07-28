@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -183,7 +184,7 @@ func TestToJUnitXML(t *testing.T) {
 		endTime, err := time.Parse(DateTimeFormatDirective, "2023-12-20 14:51:34 -0600 MST")
 		assert.Nil(t, err)
 
-		testClaimBuilder, err := NewClaimBuilder()
+		testClaimBuilder, err := NewClaimBuilder(&provider.TestEnvironment{})
 		assert.Nil(t, err)
 
 		testClaimBuilder.claimRoot.Claim.Results = make(map[string]claim.Result)

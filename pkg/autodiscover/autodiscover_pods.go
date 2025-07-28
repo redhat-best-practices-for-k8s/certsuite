@@ -41,7 +41,7 @@ func findPodsMatchingAtLeastOneLabel(oc corev1client.CoreV1Interface, labels []l
 	return allPods
 }
 
-func findPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, namespaces []string) (runningPods, allPods []corev1.Pod) {
+func FindPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, namespaces []string) (runningPods, allPods []corev1.Pod) {
 	runningPods = []corev1.Pod{}
 	allPods = []corev1.Pod{}
 	// Iterate through namespaces
@@ -69,4 +69,21 @@ func findPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, nam
 	}
 
 	return runningPods, allPods
+}
+
+func CountPodsByStatus(allPods []corev1.Pod) map[string]int {
+	podStates := map[string]int{
+		"ready":     0,
+		"non-ready": 0,
+	}
+
+	for i := range allPods {
+		if allPods[i].Status.Phase == corev1.PodRunning {
+			podStates["ready"]++
+		} else {
+			podStates["non-ready"]++
+		}
+	}
+
+	return podStates
 }

@@ -20,11 +20,10 @@ import (
 	j "encoding/json"
 	"encoding/xml"
 	"fmt"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
-
-	"os"
 	"time"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -109,7 +108,7 @@ type ClaimBuilder struct {
 	claimRoot *claim.Root
 }
 
-func NewClaimBuilder() (*ClaimBuilder, error) {
+func NewClaimBuilder(env *provider.TestEnvironment) (*ClaimBuilder, error) {
 	if os.Getenv("UNIT_TEST") == "true" {
 		return &ClaimBuilder{
 			claimRoot: CreateClaimRoot(),
@@ -117,7 +116,7 @@ func NewClaimBuilder() (*ClaimBuilder, error) {
 	}
 
 	log.Debug("Creating claim file builder.")
-	configurations, err := MarshalConfigurations()
+	configurations, err := MarshalConfigurations(env)
 	if err != nil {
 		return nil, fmt.Errorf("configuration node missing because of: %v", err)
 	}
@@ -277,9 +276,12 @@ func (c *ClaimBuilder) Reset() {
 
 // MarshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
 // this method fatally fails.
-func MarshalConfigurations() (configurations []byte, err error) {
-	config := provider.GetTestEnvironment()
-	configurations, err = j.Marshal(config)
+func MarshalConfigurations(env *provider.TestEnvironment) (configurations []byte, err error) {
+	config := env
+	if config == nil {
+		*config = provider.GetTestEnvironment()
+	}
+	configurations, err = j.Marshal(&config)
 	if err != nil {
 		log.Error("Error converting configurations to JSON: %v", err)
 		return configurations, err

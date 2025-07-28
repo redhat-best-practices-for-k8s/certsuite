@@ -91,7 +91,7 @@ func TestFindPodsUnderTest(t *testing.T) {
 		testRuntimeObjects = append(testRuntimeObjects, generatePod(tc.testPodName, tc.testPodNamespace, tc.queryLabel))
 		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
-		podResult, _ := findPodsByLabels(oc.K8sClient.CoreV1(), testLabel, testNamespaces)
+		podResult, _ := FindPodsByLabels(oc.K8sClient.CoreV1(), testLabel, testNamespaces)
 		assert.Equal(t, tc.expectedResults, podResult)
 	}
 }

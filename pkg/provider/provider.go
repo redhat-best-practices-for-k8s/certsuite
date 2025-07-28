@@ -81,6 +81,7 @@ type TestEnvironment struct { // rename this with testTarget
 	ProbePods       map[string]*corev1.Pod // map from nodename to probePod
 	AllPods         []*Pod                 `json:"AllPods"`
 	CSVToPodListMap map[string][]*Pod      `json:"CSVToPodListMap"`
+	PodStates       autodiscover.PodStates `json:"podStates"`
 
 	// Deployment Groupings
 	Deployments []*Deployment `json:"testDeployments"`
@@ -300,6 +301,8 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 		nodeName := data.ProbePods[i].Spec.NodeName
 		env.ProbePods[nodeName] = &data.ProbePods[i]
 	}
+
+	env.PodStates = data.PodStates
 
 	csvPods := []*Pod{}
 	env.CSVToPodListMap = make(map[string][]*Pod)
