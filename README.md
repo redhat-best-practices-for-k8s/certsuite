@@ -18,11 +18,14 @@ OpenShift clusters are followed.
 
 * The test suite can be run as a standalone (after compiling the Golang code)
 or as a container.
-* The **full documentation** is published
-[here](https://redhat-best-practices-for-k8s.github.io/certsuite/).
+* The **full documentation** is published in the
+[official documentation site](https://redhat-best-practices-for-k8s.github.io/certsuite/).
 Please contact us in case the documentation is broken.
 
-* The catalog of all the available test cases can be found [here](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md).
+* The catalog of all the available test cases can be found in the [test catalog](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md).
+
+* The **nightlies dashboard** for monitoring QE workflow health is available in the
+[nightlies dashboard](https://redhat-best-practices-for-k8s.github.io/certsuite/nightlies/).
 
 ## Demo
 

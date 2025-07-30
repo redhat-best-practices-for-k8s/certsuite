@@ -3,6 +3,12 @@ name: QE Testing (Ubuntu-hosted on AMD64)
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+      - 'Dockerfile'
+      - '.github/workflows/qe-hosted.yml'
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
