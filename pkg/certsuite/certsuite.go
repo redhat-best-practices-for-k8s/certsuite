@@ -11,6 +11,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/results"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/collector"
@@ -135,13 +136,6 @@ func Run(labelsFilter, outputFolder string) error {
 
 	env := provider.GetTestEnvironment()
 
-	claimBuilder, err := claimhelper.NewClaimBuilder()
-	if err != nil {
-		log.Fatal("Failed to get claim builder: %v", err)
-	}
-
-	claimOutputFile := filepath.Join(outputFolder, claimFileName)
-
 	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, testParams.Timeout)
 	startTime := time.Now()
 	failedCtr, err := checksdb.RunChecks(testParams.Timeout)
@@ -150,6 +144,20 @@ func Run(labelsFilter, outputFolder string) error {
 	}
 	endTime := time.Now()
 	log.Info("Finished running checks in %v", endTime.Sub(startTime))
+
+	claimOutputFile := filepath.Join(outputFolder, claimFileName)
+
+	oc := clientsholder.GetClientsHolder()
+	_, allPods := autodiscover.FindPodsByLabels(oc.K8sClient.CoreV1(), autodiscover.CreateLabels(env.Config.PodsUnderTestLabels), env.Namespaces)
+	env.PodStates.AfterExecution = autodiscover.CountPodsByStatus(allPods)
+	if env.PodStates.BeforeExecution["ready"] != env.PodStates.AfterExecution["ready"] {
+		log.Warn("Some pods were not ready during entire test execution. See %s podStates section for more details", claimOutputFile)
+	}
+
+	claimBuilder, err := claimhelper.NewClaimBuilder(&env)
+	if err != nil {
+		log.Fatal("Failed to get claim builder: %v", err)
+	}
 
 	if failedCtr > 0 {
 		log.Warn("Some checks failed. See %s for details", claimOutputFile)
