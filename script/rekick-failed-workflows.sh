@@ -64,7 +64,6 @@ WORKFLOWS_TO_CHECK=(
 	"QE OCP 4.17 Intrusive Testing"
 	"QE OCP 4.18 Intrusive Testing"
 	"QE OCP 4.19 Intrusive Testing"
-	"OCP ARM64 4.16 QE Testing"
 	"qe-ocp-hosted.yml"
 )
 
