@@ -1,0 +1,18 @@
+[INFO] [Feb 26 16:23:23.315] [certsuite.go: 72] kubeconfig path /Users/bpalm/.kube/config is present
+[INFO] [Feb 26 16:23:23.315] [clientsholder.go: 295] Creating k8s go-clients holder.
+[INFO] [Feb 26 16:23:23.315] [clientsholder.go: 257] Running outside a cluster. Parsing kubeconfig file/s [/Users/bpalm/.kube/config]
+[DEBUG] [Feb 26 16:23:23.331] [suite.go: 74] Loading access-control suite checks
+[DEBUG] [Feb 26 16:23:23.331] [suite.go: 77] Loading affiliated-certification suite checks
+[DEBUG] [Feb 26 16:23:23.331] [suite.go: 68] Loading lifecycle suite checks
+[DEBUG] [Feb 26 16:23:23.331] [suite.go: 49] Loading manageability suite checks
+[DEBUG] [Feb 26 16:23:23.331] [suite.go: 59] Loading networking suite checks
+[DEBUG] [Feb 26 16:23:23.331] [suite.go: 52] Loading observability suite checks
+[DEBUG] [Feb 26 16:23:23.331] [suite.go: 83] Loading performance suite checks
+[DEBUG] [Feb 26 16:23:23.331] [suite.go: 55] Loading platform-alteration suite checks
+[DEBUG] [Feb 26 16:23:23.331] [suite.go: 51] Loading operator suite checks
+[INFO] [Feb 26 16:23:23.331] [utils.go: 40] Loading config from file: config/certsuite_config.yml
+[WARN] [Feb 26 16:23:23.332] [utils.go: 53] No namespace configured for the probe daemonset. Defaulting to namespace "cnf-suite"
+[DEBUG] [Feb 26 16:23:23.332] [provider.go: 240] CERTSUITE configuration: {TargetNameSpaces:[{Name:tnf}] PodsUnderTestLabels:[redhat-best-practices-for-k8s.com/generic: target] OperatorsUnderTestLabels:[redhat-best-practices-for-k8s.com/operator:target redhat-best-practices-for-k8s.com/operator1:new cnf/test:cr-scale-operator] CrdFilters:[{NameSuffix:group1.test.com Scalable:false} {NameSuffix:redhat-best-practices-for-k8s.com Scalable:false} {NameSuffix:memcacheds.cache.example.com Scalable:true}] ManagedDeployments:[{Name:memcached-sample}] ManagedStatefulsets:[{Name:memcached-sample}] AcceptedKernelTaints:[{Module:vboxsf} {Module:vboxguest}] SkipHelmChartList:[{Name:coredns}] SkipScalingTestDeployments:[{Name:deployment1 Namespace:tnf}] SkipScalingTestStatefulSets:[] ValidProtocolNames:[http3 sctp] ServicesIgnoreList:[new-pro-controller-manager-metrics-service mysql] ProbeDaemonSetNamespace:cnf-suite ExecutedBy: PartnerName: CollectorAppPassword: CollectorAppEndpoint:http://claims-collector.cnf-certifications.sysdeseng.com ConnectAPIConfig:{APIKey: ProjectID: BaseURL:https://access.redhat.com/hydra/cwe/rest/v1.0 ProxyURL: ProxyPort:}}
+[ERROR] [Feb 26 16:24:05.001] [provider.go: 244] The TNF daemonset could not be deployed, err: could not deploy certsuite daemonset, err=failed to get daemonset "certsuite-probe" (ns "cnf-suite"), err: client rate limiter Wait returned an error: context deadline exceeded - error from a previous attempt: read tcp 127.0.0.1:53503->127.0.0.1:6443: read: connection reset by peer
+[ERROR] [Feb 26 16:24:15.050] [autodiscover_pv.go: 49] Error when listing storage classes, err: Get "https://api.crc.testing:6443/apis/storage.k8s.io/v1/storageclasses": read tcp 127.0.0.1:53599->127.0.0.1:6443: read: connection reset by peer - error from a previous attempt: read tcp 127.0.0.1:53586->127.0.0.1:6443: read: connection reset by peer
+[FATAL] [Feb 26 16:24:15.050] [autodiscover.go: 158] Failed to retrieve storageClasses - err: Get "https://api.crc.testing:6443/apis/storage.k8s.io/v1/storageclasses": read tcp 127.0.0.1:53599->127.0.0.1:6443: read: connection reset by peer - error from a previous attempt: read tcp 127.0.0.1:53586->127.0.0.1:6443: read: connection reset by peer

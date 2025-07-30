@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certsuite Workflow Dashboard - Preview</title>
+    <style>
+        :root {
+            --success: #22c55e;
+            --failure: #ef4444;
+            --pending: #f59e0b;
+            --neutral: #6b7280;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .header p {
+            color: var(--neutral);
+            font-size: 1.1rem;
+        }
+
+        .preview-badge {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card h3 {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--neutral);
+            margin-bottom: 0.5rem;
+        }
+
+        .card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .card.success .value { color: var(--success); }
+        .card.failure .value { color: var(--failure); }
+        .card.pending .value { color: var(--pending); }
+
+        .workflows-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .workflows-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .workflow-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .workflow-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .workflow-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .workflow-title-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .workflow-title-link:hover .workflow-title {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+
+        .workflow-subtitle {
+            color: var(--neutral);
+            font-size: 0.875rem;
+        }
+
+        .runs-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .run-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .run-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .status-badge.success { background: var(--success); }
+        .status-badge.failure { background: var(--failure); }
+        .status-badge.pending { background: var(--pending); }
+
+        .run-info {
+            flex-grow: 1;
+        }
+
+        .run-id {
+            font-weight: 500;
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .run-id:hover {
+            text-decoration: underline;
+        }
+
+        .run-time {
+            color: var(--neutral);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .refresh-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+
+        .refresh-btn:hover {
+            background: #2563eb;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: var(--neutral);
+            font-size: 0.875rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Certsuite Workflow Dashboard</h1>
+            <p>Monitoring the last 3 days of workflow results</p>
+            <div class="preview-badge">📋 Preview Mode - Sample Data</div>
+            <button class="refresh-btn" onclick="alert('This is preview mode with sample data')">🔄 Refresh Data</button>
+        </div>
+
+        <div class="summary-cards">
+            <div class="card success">
+                <h3>Success Rate</h3>
+                <div class="value">78%</div>
+                <div>47/60 runs</div>
+            </div>
+            <div class="card failure">
+                <h3>Failed Runs</h3>
+                <div class="value">13</div>
+                <div>Last 3 days</div>
+            </div>
+            <div class="card pending">
+                <h3>Active Workflows</h3>
+                <div class="value">13</div>
+                <div>Being monitored</div>
+            </div>
+            <div class="card">
+                <h3>Avg Runtime</h3>
+                <div class="value">2.4h</div>
+                <div>Completed runs</div>
+            </div>
+        </div>
+
+        <div class="workflows-grid">
+            <!-- QE OCP 4.19 Testing - Mostly successful -->
+                                <div class="workflow-card">
+                        <div class="workflow-header">
+                            <div>
+                                <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-419.yaml" class="workflow-title-link" target="_blank">
+                                    <div class="workflow-title">QE OCP 4.19 Testing</div>
+                                </a>
+                                <div class="workflow-subtitle">8 runs in last 3 days (7 successful) • avg 2.1h</div>
+                            </div>
+                        </div>
+                <div class="runs-list">
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#1247 - success</a>
+                            <div class="run-time">2 hours ago • 2h 15m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#1246 - success</a>
+                            <div class="run-time">8 hours ago • 2h 8m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge failure"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#1245 - failure</a>
+                            <div class="run-time">1 day ago • 1h 42m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#1244 - success</a>
+                            <div class="run-time">1 day ago • 2h 28m duration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QE OCP 4.18 Testing - Some issues -->
+                                <div class="workflow-card">
+                        <div class="workflow-header">
+                            <div>
+                                <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-418.yaml" class="workflow-title-link" target="_blank">
+                                    <div class="workflow-title">QE OCP 4.18 Testing</div>
+                                </a>
+                                <div class="workflow-subtitle">6 runs in last 3 days (4 successful) • avg 2.6h</div>
+                            </div>
+                        </div>
+                <div class="runs-list">
+                    <div class="run-item">
+                        <div class="status-badge failure"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#1156 - failure</a>
+                            <div class="run-time">4 hours ago • 1h 28m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#1155 - success</a>
+                            <div class="run-time">12 hours ago • 2h 45m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge failure"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#1154 - timed_out</a>
+                            <div class="run-time">1 day ago • 6h 0m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#1153 - success</a>
+                            <div class="run-time">2 days ago • 2h 32m duration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QE OCP 4.17 Intrusive Testing - Currently running -->
+                                <div class="workflow-card">
+                        <div class="workflow-header">
+                            <div>
+                                <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-417-intrusive.yaml" class="workflow-title-link" target="_blank">
+                                    <div class="workflow-title">QE OCP 4.17 Intrusive Testing</div>
+                                </a>
+                                <div class="workflow-subtitle">4 runs in last 3 days (3 successful) • avg 3.2h</div>
+                            </div>
+                        </div>
+                <div class="runs-list">
+                    <div class="run-item">
+                        <div class="status-badge pending"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#892 - running</a>
+                            <div class="run-time">23 minutes ago • 2h 23m elapsed</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#891 - success</a>
+                            <div class="run-time">1 day ago • 3h 12m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#890 - success</a>
+                            <div class="run-time">2 days ago • 2h 58m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge failure"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#889 - failure</a>
+                            <div class="run-time">3 days ago • 4h 5m duration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QE OCP 4.16 Testing - Stable -->
+                                <div class="workflow-card">
+                        <div class="workflow-header">
+                            <div>
+                                <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-416.yaml" class="workflow-title-link" target="_blank">
+                                    <div class="workflow-title">QE OCP 4.16 Testing</div>
+                                </a>
+                                <div class="workflow-subtitle">5 runs in last 3 days (5 successful) • avg 1.9h</div>
+                            </div>
+                        </div>
+                <div class="runs-list">
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#2034 - success</a>
+                            <div class="run-time">6 hours ago • 1h 52m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#2033 - success</a>
+                            <div class="run-time">18 hours ago • 1h 48m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#2032 - success</a>
+                            <div class="run-time">1 day ago • 2h 5m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#2031 - success</a>
+                            <div class="run-time">2 days ago • 1h 58m duration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <!-- qe-ocp-hosted.yml - Regular runs -->
+                                <div class="workflow-card">
+                        <div class="workflow-header">
+                            <div>
+                                <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-hosted.yml" class="workflow-title-link" target="_blank">
+                                    <div class="workflow-title">qe-ocp-hosted.yml</div>
+                                </a>
+                                <div class="workflow-subtitle">7 runs in last 3 days (5 successful) • avg 1.3h</div>
+                            </div>
+                        </div>
+                <div class="runs-list">
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#789 - success</a>
+                            <div class="run-time">1 hour ago • 1h 15m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#788 - success</a>
+                            <div class="run-time">7 hours ago • 1h 22m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge failure"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#787 - failure</a>
+                            <div class="run-time">14 hours ago • 0h 48m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge success"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#786 - success</a>
+                            <div class="run-time">1 day ago • 1h 18m duration</div>
+                        </div>
+                    </div>
+                    <div class="run-item">
+                        <div class="status-badge failure"></div>
+                        <div class="run-info">
+                            <a href="#" class="run-id">#785 - timed_out</a>
+                            <div class="run-time">2 days ago • 2h 5m duration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="last-updated">
+            Last updated: January 26, 2025 at 3:45:12 PM (Preview Mode)
+        </div>
+    </div>
+</body>
+</html> 
