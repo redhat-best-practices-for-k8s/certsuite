@@ -439,14 +439,10 @@ jobs:
 
             node generate-dashboard.js
 
-      - name: Commit updated dashboard
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add docs/nightlies/index.html docs/nightlies/workflow-data.json
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "🔄 Update nightlies dashboard [automated]"
-            git push
-          fi
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/nightlies
+          destination_dir: nightlies
+          keep_files: false
