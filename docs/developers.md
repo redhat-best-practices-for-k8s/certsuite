@@ -33,7 +33,7 @@ To test the newly added test / existing tests locally, follow the steps
     ./certsuite run -l networking
     ```
 
-# Dependencies on other PR
+## Dependencies on other PR
 
 If you have dependencies on other Pull Requests, you can add a comment like that:
 
@@ -43,7 +43,7 @@ Depends-On: <url of the PR>
 
 and the dependent PR will automatically be extracted and injected in your change during the GitHub Action CI jobs and the DCI jobs.
 
-# Linters for the Codebase
+## Linters for the Codebase
 
 - [`checkmake`](https://github.com/mrtazz/checkmake)
 - [`golangci-lint`](https://github.com/golangci/golangci-lint)

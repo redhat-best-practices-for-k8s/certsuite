@@ -33,7 +33,7 @@ When running as a container, the docker config is mounted to the container via v
 
 When running as a standalone binary, the environment variables are consumed directly from your local machine.
 
-See more about this variable [here](https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md).
+See more about this variable in the [Preflight configuration documentation](https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md).
 
 `CERTSUITE_ALLOW_PREFLIGHT_INSECURE` (default: false) is required set to `true` if you are running
 against a private container registry that has self-signed certificates.

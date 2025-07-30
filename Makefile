@@ -31,8 +31,10 @@ IMAGE_TAG?=localtest
 	generate \
 	install-moq \
 	lint \
+	markdownlint \
 	update-rhcos-versions \
-	vet
+	vet \
+	yamllint
 
 # Gets default value of $GOBIN if not explicitly set
 GO_PATH=$(shell go env GOPATH)
@@ -85,6 +87,14 @@ lint:
 	markdownlint '**/*.md'
 	yamllint --no-warnings .
 	shellcheck --nocomments --format=gcc ${BASH_SCRIPTS}
+
+# Runs markdownlint only
+markdownlint:
+	markdownlint '**/*.md'
+
+# Runs yamllint only
+yamllint:
+	yamllint --no-warnings .
 
 # Builds and runs unit tests
 test: coverage-qe
