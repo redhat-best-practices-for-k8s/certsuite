@@ -24,8 +24,7 @@ Please contact us in case the documentation is broken.
 
 * The catalog of all the available test cases can be found in the [test catalog](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md).
 
-* The **nightlies dashboard** for monitoring QE workflow health is available in the
-[nightlies dashboard](https://redhat-best-practices-for-k8s.github.io/certsuite/nightlies/).
+
 
 ## Demo
 
