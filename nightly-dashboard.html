@@ -1,0 +1,3640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certsuite - Nightly QE Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            margin: 0 4px;
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .tab:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab.active {
+            background: white;
+            color: #2d3748;
+            opacity: 1;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+            max-width: 1200px;
+        }
+
+        .ocp-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+            min-height: 280px;
+        }
+
+        .ocp-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .ocp-version {
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 8px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .ocp-version-link {
+            display: block;
+            color: #2d3748;
+            text-decoration: none;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 8px;
+            background: #f7fafc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ocp-version-link:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-decoration: none;
+        }
+
+        .ocp-version-link:visited {
+            color: #2d3748;
+        }
+
+        .ocp-version-link:visited:hover {
+            color: white;
+        }
+
+        .job-link {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+            padding: 2px 4px;
+            margin: -2px -4px;
+        }
+
+        .job-link:hover {
+            text-decoration: underline;
+            background-color: rgba(0, 0, 0, 0.05);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .job-link:visited {
+            color: inherit;
+        }
+
+        .job-link.success:hover {
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .job-link.failure:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Job Analysis Tab Styles */
+        .job-analysis-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .analysis-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .analysis-header h2 {
+            color: #1a202c;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .analysis-header p {
+            color: #2d3748;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .analysis-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            color: #1a202c;
+            font-weight: 600;
+        }
+
+        .analysis-controls label {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .analysis-controls select {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #5a67d8;
+        }
+
+        .charts-container {
+            margin-top: 20px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e2e8f0;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .chart-canvas {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+
+        /* Suite Performance Ranking Styles */
+        .suite-ranking-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .suite-ranking-header h3 {
+            color: #1a202c;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .suite-ranking-header p {
+            color: #2d3748;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .suite-ranking-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .suite-performance-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .suite-performance-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .suite-performance-card.fast {
+            border-left: 4px solid #10b981;
+        }
+
+        .suite-performance-card.medium {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .suite-performance-card.slow {
+            border-left: 4px solid #ef4444;
+        }
+
+        .suite-rank {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .rank-icon {
+            font-size: 1.5rem;
+        }
+
+        .rank-number {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #718096;
+        }
+
+        .suite-info {
+            margin-bottom: 15px;
+        }
+
+        .suite-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0 0 8px 0;
+        }
+
+        .suite-avg-duration {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .suite-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .suite-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-label {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .suite-category-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .suite-category-badge.fast {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .suite-category-badge.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .suite-category-badge.slow {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .analysis-summary {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-stat {
+            text-align: center;
+        }
+
+        .summary-label {
+            display: block;
+            color: #4a5568;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .summary-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .loading-analysis {
+            text-align: center;
+            padding: 60px 20px;
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .loading-analysis .spinner {
+            margin: 0 auto 20px;
+        }
+
+        .suite-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        .suite-stat {
+            text-align: center;
+        }
+
+        .suite-stat-label {
+            color: #718096;
+            display: block;
+            font-size: 0.8rem;
+        }
+
+        .suite-stat-value {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .health-indicator {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .health-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .health-excellent { background: linear-gradient(90deg, #48bb78, #38a169); }
+        .health-good { background: linear-gradient(90deg, #ed8936, #dd6b20); }
+        .health-poor { background: linear-gradient(90deg, #f56565, #e53e3e); }
+        .health-unknown { background: linear-gradient(90deg, #a0aec0, #718096); }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-success { background-color: #48bb78; }
+        .status-failure { background-color: #f56565; }
+        .status-running { background-color: #ed8936; animation: pulse 2s infinite; }
+        .status-unknown { background-color: #a0aec0; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .run-history {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+
+        .run-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #e2e8f0;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .run-dot:hover {
+            transform: scale(1.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .run-dot.success {
+            background-color: #48bb78;
+            border-color: #38a169;
+        }
+
+        .run-dot.failure {
+            background-color: #f56565;
+            border-color: #e53e3e;
+        }
+
+        .run-dot.running {
+            background-color: #ed8936;
+            border-color: #dd6b20;
+            animation: pulse 2s infinite;
+        }
+
+        .run-dot.unknown {
+            background-color: #a0aec0;
+            border-color: #718096;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .stat-label {
+            color: #718096;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .stat-value.success { color: #48bb78; }
+        .stat-value.failure { color: #f56565; }
+        .stat-value.warning { color: #ed8936; }
+
+        .trend-indicator {
+            font-size: 0.8rem;
+            margin-left: 4px;
+        }
+
+        .trend-up { color: #48bb78; }
+        .trend-down { color: #f56565; }
+        .trend-stable { color: #a0aec0; }
+
+        .last-run {
+            font-size: 0.8rem;
+            color: #a0aec0;
+            text-align: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .rekick-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 12px;
+            margin-right: 8px;
+            width: calc(50% - 4px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .rekick-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .rekick-button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .rekick-button.has-failures {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+
+        .rekick-button.has-failures:hover {
+            box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+        }
+
+        .trigger-button {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 12px;
+            width: calc(50% - 4px);
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .trigger-button:hover {
+            background: linear-gradient(135deg, #38a169, #2f855a);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .trigger-button:disabled {
+            background: #cbd5e0 !important;
+            cursor: help;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        .trigger-button:disabled:hover {
+            background: #cbd5e0 !important;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f7fafc;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #a0aec0;
+            transition: color 0.2s ease;
+        }
+
+        .close:hover {
+            color: #2d3748;
+        }
+
+        .failed-run-item {
+            background: #fed7d7;
+            border: 1px solid #feb2b2;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .run-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .run-number {
+            font-weight: 600;
+            color: #742a2a;
+        }
+
+        .run-time {
+            font-size: 0.9rem;
+            color: #9f2a2a;
+        }
+
+        .gh-command {
+            background: #2d3748;
+            color: #f7fafc;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            margin-top: 8px;
+            position: relative;
+        }
+
+        .copy-button {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+        }
+
+        .copy-button:hover {
+            background: #38a169;
+        }
+
+        .no-failures {
+            text-align: center;
+            color: #48bb78;
+            padding: 20px;
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .timestamp {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .github-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .github-link:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #f56565;
+            text-align: center;
+            padding: 20px;
+            background: #fed7d7;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .ocp-card {
+                min-height: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌙 Certsuite Nightly Dashboard</h1>
+            <p>Real-time status of nightly QE workflows and testing across OpenShift versions</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'non-intrusive')">
+                🚀 Non-Intrusive Testing
+            </button>
+            <button class="tab" onclick="switchTab(event, 'intrusive')">
+                ⚠️ Intrusive Testing
+            </button>
+            <button class="tab" onclick="switchTab(event, 'job-analysis')">
+                📊 Job Analysis
+            </button>
+        </div>
+
+        <!-- Non-Intrusive Tab Content -->
+        <div id="non-intrusive" class="tab-content active">
+            <div class="dashboard">
+                <!-- OCP 4.14 Regular -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-414.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.14 Testing workflow runs on GitHub">
+                        OpenShift 4.14
+                    </a>
+                    <div id="ocp-414-regular-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.15 Regular -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-415.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.15 Testing workflow runs on GitHub">
+                        OpenShift 4.15
+                    </a>
+                    <div id="ocp-415-regular-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.16 Regular -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-416.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.16 Testing workflow runs on GitHub">
+                        OpenShift 4.16
+                    </a>
+                    <div id="ocp-416-regular-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.17 Regular -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-417.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.17 Testing workflow runs on GitHub">
+                        OpenShift 4.17
+                    </a>
+                    <div id="ocp-417-regular-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.18 Regular -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-418.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.18 Testing workflow runs on GitHub">
+                        OpenShift 4.18
+                    </a>
+                    <div id="ocp-418-regular-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.19 Regular -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-419.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.19 Testing workflow runs on GitHub">
+                        OpenShift 4.19
+                    </a>
+                    <div id="ocp-419-regular-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- ARM64 & Hosted - COMMENTED OUT FOR NOW -->
+                <!--
+                <div class="ocp-card">
+                    <div class="ocp-version">ARM64 & Hosted</div>
+                    <div id="special-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+                -->
+
+                <!-- Overall Health -->
+                <div class="ocp-card">
+                    <div class="ocp-version">Overall Health</div>
+                    <div id="overall-regular-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- Trending -->
+                <div class="ocp-card">
+                    <div class="ocp-version">Recent Trends</div>
+                    <div id="trends-regular-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Intrusive Tab Content -->
+        <div id="intrusive" class="tab-content">
+            <div class="dashboard">
+                <!-- OCP 4.14 Intrusive -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-414-intrusive.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.14 Intrusive Testing workflow runs on GitHub">
+                        OpenShift 4.14
+                    </a>
+                    <div id="ocp-414-intrusive-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.15 Intrusive -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-415-intrusive.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.15 Intrusive Testing workflow runs on GitHub">
+                        OpenShift 4.15
+                    </a>
+                    <div id="ocp-415-intrusive-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.16 Intrusive -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-416-intrusive.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.16 Intrusive Testing workflow runs on GitHub">
+                        OpenShift 4.16
+                    </a>
+                    <div id="ocp-416-intrusive-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.17 Intrusive -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-417-intrusive.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.17 Intrusive Testing workflow runs on GitHub">
+                        OpenShift 4.17
+                    </a>
+                    <div id="ocp-417-intrusive-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.18 Intrusive -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-418-intrusive.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.18 Intrusive Testing workflow runs on GitHub">
+                        OpenShift 4.18
+                    </a>
+                    <div id="ocp-418-intrusive-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.19 Intrusive -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-419-intrusive.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.19 Intrusive Testing workflow runs on GitHub">
+                        OpenShift 4.19
+                    </a>
+                    <div id="ocp-419-intrusive-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- Intrusive Summary -->
+                <div class="ocp-card">
+                    <div class="ocp-version">Intrusive Summary</div>
+                    <div id="intrusive-summary-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- Overall Intrusive Health -->
+                <div class="ocp-card">
+                    <div class="ocp-version">Overall Health</div>
+                    <div id="overall-intrusive-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- Intrusive Trends -->
+                <div class="ocp-card">
+                    <div class="ocp-version">Recent Trends</div>
+                    <div id="trends-intrusive-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Analysis Tab Content -->
+        <div id="job-analysis" class="tab-content">
+            <div class="job-analysis-container">
+                <div class="analysis-header">
+                    <h2>📊 Test Suite Performance Ranking</h2>
+                    <p>Which test suites are fastest vs slowest on average (combining binary + image data across all OCP versions)</p>
+                </div>
+
+                <div class="analysis-controls">
+                    <label for="analysis-runs">📈 Runs to analyze:</label>
+                    <select id="analysis-runs" onchange="updateJobAnalysis()">
+                        <option value="3">Last 3 runs</option>
+                        <option value="5">Last 5 runs</option>
+                        <option value="10" selected>Last 10 runs</option>
+                    </select>
+                    
+                    <button onclick="refreshJobAnalysis()" class="refresh-btn">🔄 Refresh Analysis</button>
+                </div>
+
+                <div class="charts-container" id="job-charts-container">
+                    <div class="loading-analysis">
+                        <div class="spinner"></div>
+                        <p>Ranking test suite performance...</p>
+                        <p style="font-size: 0.9rem; color: #718096;">Combining binary + image data across all OCP versions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timestamp" id="last-updated">
+            Last updated: Loading...
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="loadDashboard()" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+                🔄 Refresh Dashboard
+            </button>
+            <button onclick="testAPI()" style="background: #48bb78; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-left: 10px;">
+                🧪 Test API
+            </button>
+            <button onclick="forceRefreshDashboard()" style="background: #f56565; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-left: 10px;">
+                🚫 Force Refresh (No Cache)
+            </button>
+            <button onclick="showCacheStatus()" style="background: #9f7aea; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-left: 10px;">
+                💾 Cache Status
+            </button>
+        </div>
+        
+        <div style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: #718096;">
+            💡 <strong>Cache:</strong> API responses cached for 5 minutes to avoid rate limits
+        </div>
+
+        <!-- Job Count Control at Bottom -->
+        <div style="margin-top: 30px; padding: 20px; background: #f7fafc; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0;">
+            <div style="margin-bottom: 15px; font-weight: 600; color: #2d3748; font-size: 1.1rem;">
+                📊 Dashboard Configuration
+            </div>
+            <!-- Configuration Controls -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 800px; margin: 0 auto;">
+                
+                <!-- Job Count Control -->
+                <div style="text-align: center;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px;">
+                        <label for="jobCount" style="font-weight: 500; color: #4a5568;">
+                            📊 Jobs per tile:
+                        </label>
+                        <select id="jobCount" onchange="handleJobCountChange()" style="
+                            padding: 8px 12px; 
+                            border: 2px solid #e2e8f0; 
+                            border-radius: 6px; 
+                            background: white; 
+                            color: #2d3748; 
+                            font-weight: 500;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        " onmouseover="this.style.borderColor='#4299e1'" onmouseout="this.style.borderColor='#e2e8f0'">
+                            <option value="1">1 job</option>
+                            <option value="2">2 jobs</option>
+                            <option value="3">3 jobs</option>
+                            <option value="4">4 jobs</option>
+                            <option value="5" selected>5 jobs</option>
+                            <option value="6">6 jobs</option>
+                            <option value="7">7 jobs</option>
+                            <option value="8">8 jobs</option>
+                            <option value="9">9 jobs</option>
+                            <option value="10">10 jobs</option>
+                        </select>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #718096;">
+                        Changes the number of workflow runs displayed
+                    </div>
+                </div>
+
+                <!-- GitHub Token Control -->
+                <div style="text-align: center;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px;">
+                        <label for="githubToken" style="font-weight: 500; color: #4a5568;">
+                            🔑 GitHub Token:
+                        </label>
+                        <input type="password" id="githubToken" placeholder="ghp_..." onchange="handleTokenChange()" style="
+                            padding: 8px 12px; 
+                            border: 2px solid #e2e8f0; 
+                            border-radius: 6px; 
+                            background: white; 
+                            color: #2d3748; 
+                            font-weight: 500;
+                            font-family: monospace;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            width: 200px;
+                        " onmouseover="this.style.borderColor='#4299e1'" onmouseout="this.style.borderColor='#e2e8f0'">
+                        <button onclick="toggleTokenVisibility()" style="
+                            padding: 8px 10px; 
+                            border: 2px solid #e2e8f0; 
+                            border-radius: 6px; 
+                            background: white; 
+                            cursor: pointer;
+                            margin-left: -2px;
+                            border-left: none;
+                            color: #6b7280;
+                            transition: all 0.3s ease;
+                        " title="Toggle token visibility">👁️</button>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #718096;">
+                        Optional: <a href="https://github.com/settings/tokens" target="_blank" style="color: #3b82f6;">Get 5000 req/hr vs 60</a>
+                        <span id="tokenStatus" style="margin-left: 10px;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rekick Modal -->
+        <div id="rekickModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">🔄 Rekick Failed Workflows</div>
+                    <span class="close" onclick="closeRekickModal()">&times;</span>
+                </div>
+                <div id="rekickModalBody">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const REPO_OWNER = 'redhat-best-practices-for-k8s';
+        const REPO_NAME = 'certsuite';
+        const API_BASE = 'https://api.github.com';
+        
+        // GitHub Personal Access Token (now handled via UI input)
+        // Legacy constant - now using getUserToken() function instead
+        
+        // Global variable for job count (default 5)
+        let jobCount = 5;
+
+        // Cache configuration
+        const CACHE_PREFIX = 'certsuite_dashboard_';
+        const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+        // GitHub Token Management
+        function getUserToken() {
+            const tokenInput = document.getElementById('githubToken');
+            return tokenInput ? tokenInput.value.trim() : '';
+        }
+
+        function saveTokenToStorage(token) {
+            try {
+                if (token) {
+                    localStorage.setItem('certsuite_github_token', token);
+                } else {
+                    localStorage.removeItem('certsuite_github_token');
+                }
+            } catch (error) {
+                console.warn('Failed to save token to localStorage:', error);
+            }
+        }
+
+        function loadTokenFromStorage() {
+            try {
+                return localStorage.getItem('certsuite_github_token') || '';
+            } catch (error) {
+                console.warn('Failed to load token from localStorage:', error);
+                return '';
+            }
+        }
+
+        function handleTokenChange() {
+            const token = getUserToken();
+            saveTokenToStorage(token);
+            updateTokenStatus();
+            
+            // Clear cache when token changes to force fresh API calls
+            clearAllCache();
+            
+            console.log(token ? '🔑 GitHub token updated - using authenticated requests' : '🔐 GitHub token removed - using anonymous requests');
+        }
+
+        function toggleTokenVisibility() {
+            const tokenInput = document.getElementById('githubToken');
+            const toggleBtn = event.target;
+            
+            if (tokenInput.type === 'password') {
+                tokenInput.type = 'text';
+                toggleBtn.textContent = '🙈';
+                toggleBtn.title = 'Hide token';
+            } else {
+                tokenInput.type = 'password';
+                toggleBtn.textContent = '👁️';
+                toggleBtn.title = 'Show token';
+            }
+        }
+
+        function updateTokenStatus() {
+            const token = getUserToken();
+            const statusSpan = document.getElementById('tokenStatus');
+            
+            if (!statusSpan) return;
+            
+            if (token) {
+                if (token.startsWith('ghp_') && token.length > 20) {
+                    statusSpan.innerHTML = '<span style="color: #10b981; font-weight: 500;">✅ Active (5000/hr)</span>';
+                } else {
+                    statusSpan.innerHTML = '<span style="color: #f59e0b; font-weight: 500;">⚠️ Invalid format</span>';
+                }
+            } else {
+                statusSpan.innerHTML = '<span style="color: #6b7280;">Anonymous (60/hr)</span>';
+            }
+        }
+
+        function initializeTokenInput() {
+            const savedToken = loadTokenFromStorage();
+            const tokenInput = document.getElementById('githubToken');
+            
+            if (tokenInput && savedToken) {
+                tokenInput.value = savedToken;
+                updateTokenStatus();
+                console.log('🔑 Loaded saved GitHub token from storage');
+            } else {
+                updateTokenStatus();
+            }
+        }
+        
+        // Cache management functions
+        function getCacheKey(endpoint) {
+            return `${CACHE_PREFIX}${btoa(endpoint).replace(/[^a-zA-Z0-9]/g, '_')}`;
+        }
+        
+        function setCacheData(endpoint, data) {
+            try {
+                const cacheItem = {
+                    data: data,
+                    timestamp: Date.now(),
+                    endpoint: endpoint
+                };
+                localStorage.setItem(getCacheKey(endpoint), JSON.stringify(cacheItem));
+                console.log(`💾 Cached data for: ${endpoint}`);
+            } catch (error) {
+                console.warn('Failed to cache data:', error);
+            }
+        }
+        
+        function getCacheData(endpoint) {
+            try {
+                const cacheKey = getCacheKey(endpoint);
+                const cached = localStorage.getItem(cacheKey);
+                
+                if (!cached) {
+                    console.log(`📭 No cache found for: ${endpoint}`);
+                    return null;
+                }
+                
+                const cacheItem = JSON.parse(cached);
+                const age = Date.now() - cacheItem.timestamp;
+                
+                if (age > CACHE_DURATION) {
+                    console.log(`⏰ Cache expired for: ${endpoint} (age: ${Math.round(age/1000)}s)`);
+                    localStorage.removeItem(cacheKey);
+                    return null;
+                }
+                
+                console.log(`💡 Using cached data for: ${endpoint} (age: ${Math.round(age/1000)}s)`);
+                return cacheItem.data;
+            } catch (error) {
+                console.warn('Failed to read cache:', error);
+                return null;
+            }
+        }
+        
+        function clearOldCache() {
+            try {
+                const keys = Object.keys(localStorage);
+                let cleared = 0;
+                
+                keys.forEach(key => {
+                    if (key.startsWith(CACHE_PREFIX)) {
+                        try {
+                            const cached = JSON.parse(localStorage.getItem(key));
+                            const age = Date.now() - cached.timestamp;
+                            
+                            if (age > CACHE_DURATION) {
+                                localStorage.removeItem(key);
+                                cleared++;
+                            }
+                        } catch (error) {
+                            // Remove invalid cache entries
+                            localStorage.removeItem(key);
+                            cleared++;
+                        }
+                    }
+                });
+                
+                if (cleared > 0) {
+                    console.log(`🧹 Cleared ${cleared} old cache entries`);
+                }
+            } catch (error) {
+                console.warn('Failed to clear old cache:', error);
+            }
+        }
+        
+        function clearAllCache() {
+            try {
+                const keys = Object.keys(localStorage);
+                let cleared = 0;
+                
+                keys.forEach(key => {
+                    if (key.startsWith(CACHE_PREFIX)) {
+                        localStorage.removeItem(key);
+                        cleared++;
+                    }
+                });
+                
+                console.log(`🗑️ Cleared all ${cleared} cache entries`);
+            } catch (error) {
+                console.warn('Failed to clear cache:', error);
+            }
+        }
+
+        // OCP Versions and their workflows
+        const OCP_VERSIONS = {
+            '4.14': {
+                regular: 'QE OCP 4.14 Testing',
+                intrusive: 'QE OCP 4.14 Intrusive Testing'
+            },
+            '4.15': {
+                regular: 'QE OCP 4.15 Testing',
+                intrusive: 'QE OCP 4.15 Intrusive Testing'
+            },
+            '4.16': {
+                regular: 'QE OCP 4.16 Testing',
+                intrusive: 'QE OCP 4.16 Intrusive Testing'
+            },
+            '4.17': {
+                regular: 'QE OCP 4.17 Testing',
+                intrusive: 'QE OCP 4.17 Intrusive Testing'
+            },
+            '4.18': {
+                regular: 'QE OCP 4.18 Testing',
+                intrusive: 'QE OCP 4.18 Intrusive Testing'
+            },
+            '4.19': {
+                regular: 'QE OCP 4.19 Testing',
+                intrusive: 'QE OCP 4.19 Intrusive Testing'
+            }
+        };
+
+        // SPECIAL_WORKFLOWS - COMMENTED OUT FOR NOW
+        /*
+        const SPECIAL_WORKFLOWS = [
+            "OCP ARM64 4.16 QE Testing",
+            "QE Testing (Ubuntu-hosted on AMD64)",
+            "QE Testing (Ubuntu-hosted on ARM64)"
+        ];
+        */
+
+        // GitHub API helper function with caching
+        async function fetchGitHubAPI(endpoint, useCache = true) {
+            try {
+                // Check cache first if enabled
+                if (useCache) {
+                    const cachedData = getCacheData(endpoint);
+                    if (cachedData) {
+                        return cachedData;
+                    }
+                }
+
+                console.log(`🌐 Fetching from API: ${API_BASE}${endpoint}`);
+                
+                // Prepare headers for authentication if token is provided
+                const headers = {
+                    'Accept': 'application/vnd.github.v3+json'
+                };
+                
+                const userToken = getUserToken();
+                if (userToken) {
+                    headers['Authorization'] = `token ${userToken}`;
+                    console.log(`🔐 Using authenticated requests (higher rate limits)`);
+                }
+                
+                const response = await fetch(`${API_BASE}${endpoint}`, { headers });
+                console.log(`📡 Response status: ${response.status}`);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`API Error: ${response.status} ${response.statusText}`, errorText);
+                    
+                    // Check if this is a rate limit error
+                    if (response.status === 403 && errorText.includes('rate limit')) {
+                        console.warn('🚫 Rate limit detected! Using cache if available...');
+                        const cachedData = getCacheData(endpoint);
+                        if (cachedData) {
+                            console.log('💡 Returning stale cached data due to rate limit');
+                            return cachedData;
+                        }
+                    }
+                    
+                    throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log(`✅ Fetched ${data.total_count || data.length || 'unknown'} items from ${endpoint}`);
+                
+                // Cache the successful response
+                if (useCache) {
+                    setCacheData(endpoint, data);
+                }
+                
+                return data;
+            } catch (error) {
+                console.error(`❌ Error fetching ${endpoint}:`, error);
+                
+                // If we hit an error, try to return cached data as fallback
+                if (useCache) {
+                    const cachedData = getCacheData(endpoint);
+                    if (cachedData) {
+                        console.log('🔄 Using cached data as fallback after error');
+                        return cachedData;
+                    }
+                }
+                
+                throw error;
+            }
+        }
+
+        // Format time ago
+        function timeAgo(date) {
+            const now = new Date();
+            const diff = now - new Date(date);
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (days > 0) return `${days}d ago`;
+            if (hours > 0) return `${hours}h ago`;
+            if (minutes > 0) return `${minutes}m ago`;
+            return 'Just now';
+        }
+
+        // Get status class and indicator
+        function getStatusInfo(conclusion, status) {
+            if (status === 'in_progress' || status === 'queued') {
+                return { class: 'running', indicator: 'status-running', text: 'Running' };
+            }
+            if (conclusion === 'success') {
+                return { class: 'success', indicator: 'status-success', text: 'Success' };
+            }
+            if (conclusion === 'failure' || conclusion === 'cancelled') {
+                return { class: 'failure', indicator: 'status-failure', text: 'Failed' };
+            }
+            return { class: 'unknown', indicator: 'status-unknown', text: 'Unknown' };
+        }
+
+        // Map workflow names to their file names
+        const WORKFLOW_FILE_MAP = {
+            'QE OCP 4.14 Testing': 'qe-ocp-414.yaml',
+            'QE OCP 4.14 Intrusive Testing': 'qe-ocp-414-intrusive.yaml',
+            'QE OCP 4.15 Testing': 'qe-ocp-415.yaml',
+            'QE OCP 4.15 Intrusive Testing': 'qe-ocp-415-intrusive.yaml',
+            'QE OCP 4.16 Testing': 'qe-ocp-416.yaml',
+            'QE OCP 4.16 Intrusive Testing': 'qe-ocp-416-intrusive.yaml',
+            'QE OCP 4.17 Testing': 'qe-ocp-417.yaml',
+            'QE OCP 4.17 Intrusive Testing': 'qe-ocp-417-intrusive.yaml',
+            'QE OCP 4.18 Testing': 'qe-ocp-418.yaml',
+            'QE OCP 4.18 Intrusive Testing': 'qe-ocp-418-intrusive.yaml',
+            'QE OCP 4.19 Testing': 'qe-ocp-419.yaml',
+            'QE OCP 4.19 Intrusive Testing': 'qe-ocp-419-intrusive.yaml',
+            'OCP ARM64 4.16 QE Testing': 'qe-ocp-arm-416.yaml',
+            'QE Testing (Ubuntu-hosted on AMD64)': 'qe-hosted.yml',
+            'QE Testing (Ubuntu-hosted on ARM64)': 'qe-hosted-arm.yml'
+        };
+
+        // Generate GitHub workflow URL for a given version and workflow type
+        function getWorkflowUrl(version, workflowType) {
+            const workflows = OCP_VERSIONS[version];
+            if (!workflows) {
+                console.warn(`No workflows found for version ${version}`);
+                return '#';
+            }
+
+            const workflowName = workflowType === 'Regular' ? workflows.regular : workflows.intrusive;
+            const workflowFile = WORKFLOW_FILE_MAP[workflowName];
+            
+            if (!workflowFile) {
+                console.warn(`No workflow file found for ${workflowName}`);
+                return '#';
+            }
+
+            return `https://github.com/${REPO_OWNER}/${REPO_NAME}/actions/workflows/${workflowFile}`;
+        }
+
+        // Get last N runs for a specific workflow using the workflow-specific endpoint
+        async function getLastNRuns(workflowName, count = null) {
+            const actualCount = count || jobCount;
+            try {
+                console.log(`Getting last ${actualCount} runs for: ${workflowName}`);
+                
+                const workflowFile = WORKFLOW_FILE_MAP[workflowName];
+                if (!workflowFile) {
+                    console.error(`No workflow file mapping found for: ${workflowName}`);
+                    return [];
+                }
+                
+                console.log(`Using workflow file: ${workflowFile}`);
+                
+                // Use the workflow-specific endpoint
+                const workflowRuns = await fetchGitHubAPI(`/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/${workflowFile}/runs?per_page=${actualCount}`);
+                
+                console.log(`Found ${workflowRuns.workflow_runs.length} runs for "${workflowName}"`);
+                
+                return workflowRuns.workflow_runs || [];
+            } catch (error) {
+                console.error(`Error getting runs for ${workflowName}:`, error);
+                
+                // Fallback: try to find it in the general runs list
+                try {
+                    console.log(`Fallback: searching in general runs list...`);
+                    const allRuns = await fetchGitHubAPI(`/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs?per_page=100`);
+                    const matchedRuns = allRuns.workflow_runs
+                        .filter(run => run.name === workflowName)
+                        .slice(0, actualCount);
+                    console.log(`Fallback found ${matchedRuns.length} runs for "${workflowName}"`);
+                    return matchedRuns;
+                } catch (fallbackError) {
+                    console.error(`Fallback also failed:`, fallbackError);
+                    return [];
+                }
+            }
+        }
+
+        // Backward compatibility function
+        async function getLast5Runs(workflowName) {
+            return getLastNRuns(workflowName, null);
+        }
+
+        // Calculate statistics for runs
+        function calculateStats(runs) {
+            const total = runs.length;
+            if (total === 0) return { total: 0, success: 0, failure: 0, running: 0, successRate: 0 };
+
+            let success = 0;
+            let failure = 0;
+            let running = 0;
+
+            runs.forEach(run => {
+                if (run.status === 'in_progress' || run.status === 'queued') {
+                    running++;
+                } else if (run.conclusion === 'success') {
+                    success++;
+                } else if (run.conclusion === 'failure' || run.conclusion === 'cancelled') {
+                    failure++;
+                }
+            });
+
+            const successRate = Math.round((success / total) * 100);
+            
+            return { total, success, failure, running, successRate };
+        }
+
+        // Get health status based on success rate
+        function getHealthStatus(successRate) {
+            if (successRate >= 80) return 'excellent';
+            if (successRate >= 60) return 'good';
+            if (successRate >= 40) return 'poor';
+            return 'poor';
+        }
+
+        // Calculate trend
+        function calculateTrend(runs) {
+            if (runs.length < 3) return 'stable';
+            
+            const recent3 = runs.slice(0, 3);
+            const older2 = runs.slice(3, 5);
+            
+            const recentSuccessRate = recent3.filter(r => r.conclusion === 'success').length / recent3.length;
+            const olderSuccessRate = older2.length > 0 ? older2.filter(r => r.conclusion === 'success').length / older2.length : recentSuccessRate;
+            
+            if (recentSuccessRate > olderSuccessRate + 0.2) return 'up';
+            if (recentSuccessRate < olderSuccessRate - 0.2) return 'down';
+            return 'stable';
+        }
+
+        // Helper function to format duration
+        function formatDuration(ms) {
+            const minutes = Math.floor(ms / 60000);
+            const hours = Math.floor(minutes / 60);
+            
+            if (hours > 0) {
+                const remainingMins = minutes % 60;
+                return `${hours}h ${remainingMins}m`;
+            } else {
+                return `${minutes}m`;
+            }
+        }
+
+        // Calculate additional run metrics (original workflow-level durations)
+        function calculateAdvancedStats(runs) {
+            if (!runs || runs.length === 0) {
+                return {
+                    avgDuration: 'N/A',
+                    avgDurationMins: 0,
+                    totalDuration: 'N/A',
+                    fastestRun: 'N/A',
+                    slowestRun: 'N/A',
+                    completedRuns: 0,
+                    avgStartDelay: 'N/A'
+                };
+            }
+
+            // Filter only completed runs (success or failure, not cancelled/pending)
+            const completedRuns = runs.filter(run => 
+                run.created_at && run.updated_at && 
+                (run.conclusion === 'success' || run.conclusion === 'failure')
+            );
+
+            if (completedRuns.length === 0) {
+                return {
+                    avgDuration: 'N/A',
+                    avgDurationMins: 0,
+                    totalDuration: 'N/A',
+                    fastestRun: 'N/A',
+                    slowestRun: 'N/A',
+                    completedRuns: 0,
+                    avgStartDelay: 'N/A'
+                };
+            }
+
+            // Calculate durations in milliseconds
+            const durations = completedRuns.map(run => {
+                const start = new Date(run.created_at);
+                const end = new Date(run.updated_at);
+                return end - start;
+            });
+
+            const totalDurationMs = durations.reduce((sum, dur) => sum + dur, 0);
+            const avgDurationMs = totalDurationMs / durations.length;
+
+            // Find fastest and slowest
+            const fastestMs = Math.min(...durations);
+            const slowestMs = Math.max(...durations);
+
+            // Calculate average start delay (time from run_started_at to created_at)
+            const startsWithDelay = completedRuns.filter(run => run.run_started_at && run.created_at);
+            let avgStartDelay = 'N/A';
+            
+            if (startsWithDelay.length > 0) {
+                const startDelays = startsWithDelay.map(run => {
+                    const created = new Date(run.created_at);
+                    const started = new Date(run.run_started_at);
+                    return Math.max(0, started - created); // Ensure non-negative
+                });
+                
+                const avgStartDelayMs = startDelays.reduce((sum, delay) => sum + delay, 0) / startDelays.length;
+                
+                if (avgStartDelayMs > 60000) { // More than 1 minute
+                    avgStartDelay = formatDuration(avgStartDelayMs);
+                } else {
+                    avgStartDelay = `${Math.round(avgStartDelayMs / 1000)}s`;
+                }
+            }
+
+            return {
+                avgDuration: formatDuration(avgDurationMs),
+                avgDurationMins: Math.round(avgDurationMs / 60000),
+                totalDuration: formatDuration(totalDurationMs),
+                fastestRun: formatDuration(fastestMs),
+                slowestRun: formatDuration(slowestMs),
+                completedRuns: completedRuns.length,
+                avgStartDelay: avgStartDelay
+            };
+        }
+
+        // Calculate job-based metrics by fetching individual job durations
+        async function calculateJobBasedStats(runs) {
+            if (!runs || runs.length === 0) {
+                return {
+                    avgJobDuration: 'N/A',
+                    avgJobDurationMins: 0,
+                    totalJobs: 0,
+                    fastestJob: 'N/A',
+                    slowestJob: 'N/A',
+                    completedJobs: 0
+                };
+            }
+
+            // Filter only completed runs to get their jobs
+            const completedRuns = runs.filter(run => 
+                run.created_at && run.updated_at && 
+                (run.conclusion === 'success' || run.conclusion === 'failure')
+            );
+
+            if (completedRuns.length === 0) {
+                return {
+                    avgJobDuration: 'N/A',
+                    avgJobDurationMins: 0,
+                    totalJobs: 0,
+                    fastestJob: 'N/A',
+                    slowestJob: 'N/A',
+                    completedJobs: 0
+                };
+            }
+
+            console.log(`Fetching job data for ${completedRuns.length} completed runs...`);
+
+            // Fetch jobs for all completed runs
+            const allJobsWithDurations = [];
+            let totalJobs = 0;
+
+            for (const run of completedRuns.slice(0, 3)) { // Limit to first 3 runs to avoid API abuse
+                try {
+                    console.log(`Fetching jobs for run ${run.id}...`);
+                    const jobsResponse = await fetchGitHubAPI(`/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs/${run.id}/jobs`);
+                    
+                    if (jobsResponse && jobsResponse.jobs) {
+                        const jobs = jobsResponse.jobs;
+                        totalJobs += jobs.length;
+
+                        // Calculate duration for each completed job
+                        for (const job of jobs) {
+                            if (job.started_at && job.completed_at && job.conclusion) {
+                                const start = new Date(job.started_at);
+                                const end = new Date(job.completed_at);
+                                const duration = end - start;
+                                
+                                if (duration > 0) { // Valid duration
+                                    allJobsWithDurations.push({
+                                        duration: duration,
+                                        job: job,
+                                        url: job.html_url,
+                                        name: job.name,
+                                        conclusion: job.conclusion
+                                    });
+                                }
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.warn(`Failed to fetch jobs for run ${run.id}:`, error);
+                    // Continue with other runs even if one fails
+                }
+            }
+
+            console.log(`Collected ${allJobsWithDurations.length} job durations from ${totalJobs} total jobs`);
+
+            if (allJobsWithDurations.length === 0) {
+                return {
+                    avgJobDuration: 'N/A',
+                    avgJobDurationMins: 0,
+                    totalJobs: totalJobs,
+                    fastestJob: 'N/A',
+                    fastestJobUrl: null,
+                    slowestJob: 'N/A',
+                    slowestJobUrl: null,
+                    completedJobs: 0
+                };
+            }
+
+            // Calculate statistics
+            const durations = allJobsWithDurations.map(item => item.duration);
+            const totalJobDurationMs = durations.reduce((sum, dur) => sum + dur, 0);
+            const avgJobDurationMs = totalJobDurationMs / durations.length;
+
+            // Find fastest and slowest jobs with their details
+            const fastestJobItem = allJobsWithDurations.reduce((fastest, current) => 
+                current.duration < fastest.duration ? current : fastest
+            );
+            const slowestJobItem = allJobsWithDurations.reduce((slowest, current) => 
+                current.duration > slowest.duration ? current : slowest
+            );
+
+            console.log(`Fastest job: ${fastestJobItem.name} (${formatDuration(fastestJobItem.duration)})`);
+            console.log(`Slowest job: ${slowestJobItem.name} (${formatDuration(slowestJobItem.duration)})`);
+
+            return {
+                avgJobDuration: formatDuration(avgJobDurationMs),
+                avgJobDurationMins: Math.round(avgJobDurationMs / 60000),
+                totalJobs: totalJobs,
+                fastestJob: formatDuration(fastestJobItem.duration),
+                fastestJobUrl: fastestJobItem.url,
+                fastestJobName: fastestJobItem.name,
+                slowestJob: formatDuration(slowestJobItem.duration),
+                slowestJobUrl: slowestJobItem.url,
+                slowestJobName: slowestJobItem.name,
+                completedJobs: allJobsWithDurations.length
+            };
+        }
+
+        // Get run efficiency metrics
+        function calculateEfficiencyMetrics(runs, advancedStats) {
+            if (!runs || runs.length === 0 || advancedStats.completedRuns === 0) {
+                return {
+                    efficiency: 'N/A',
+                    reliability: 'N/A',
+                    avgFrequency: 'N/A'
+                };
+            }
+
+            // Calculate efficiency (runs that complete vs runs that get cancelled/timeout)
+            const completionRate = (advancedStats.completedRuns / runs.length) * 100;
+            
+            // Calculate frequency of runs
+            const sortedRuns = runs.filter(r => r.created_at).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            let avgFrequency = 'N/A';
+            
+            if (sortedRuns.length >= 2) {
+                const timeSpan = new Date(sortedRuns[0].created_at) - new Date(sortedRuns[sortedRuns.length - 1].created_at);
+                const avgFrequencyMs = timeSpan / (sortedRuns.length - 1);
+                const hours = avgFrequencyMs / (1000 * 60 * 60);
+                
+                if (hours >= 24) {
+                    avgFrequency = `${Math.round(hours / 24)}d`;
+                } else if (hours >= 1) {
+                    avgFrequency = `${Math.round(hours)}h`;
+                } else {
+                    avgFrequency = `${Math.round(hours * 60)}m`;
+                }
+            }
+
+            return {
+                efficiency: `${Math.round(completionRate)}%`,
+                reliability: advancedStats.avgDurationMins > 0 ? 
+                    (advancedStats.avgDurationMins < 30 ? 'Fast' : 
+                     advancedStats.avgDurationMins < 60 ? 'Normal' : 'Slow') : 'N/A',
+                avgFrequency: avgFrequency
+            };
+        }
+
+        // Tab switching function
+        function switchTab(event, tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content and mark tab as active
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Load job analysis data when switching to that tab
+            if (tabName === 'job-analysis') {
+                loadJobAnalysis();
+            }
+        }
+
+        // Handle job count change
+        function handleJobCountChange() {
+            const select = document.getElementById('jobCount');
+            jobCount = parseInt(select.value);
+            console.log(`Job count changed to: ${jobCount}`);
+            
+            // Reload the dashboard with new job count
+            loadDashboard();
+        }
+
+        // Rekick button functions
+        function renderRekickButton(runs, version, workflowType) {
+            const failedRuns = runs.filter(run => 
+                run.conclusion === 'failure' || 
+                run.conclusion === 'cancelled' || 
+                run.conclusion === 'timed_out'
+            );
+            
+            const hasFailures = failedRuns.length > 0;
+            const buttonClass = hasFailures ? 'rekick-button has-failures' : 'rekick-button';
+            const buttonText = hasFailures ? `🔄 Rekick ${failedRuns.length} Failed` : '✅ No Failures';
+            const workflowName = getWorkflowName(version, workflowType);
+            
+            return `
+                <button 
+                    class="${buttonClass}" 
+                    onclick="showRekickModal('${workflowName}', '${version}', '${workflowType}')"
+                    ${!hasFailures ? 'disabled' : ''}
+                >
+                    ${buttonText}
+                </button>
+            `;
+        }
+
+        // Trigger workflow button function
+        function renderTriggerWorkflowButton(version, workflowType) {
+            const workflowName = getWorkflowName(version, workflowType);
+            const workflowFile = getWorkflowFile(version, workflowType);
+            
+            let isDisabled = false;
+            let tooltipMessage = `Start a new workflow run for ${workflowName}. Click to trigger a fresh run on the main branch.`;
+            
+            if (!workflowFile) {
+                isDisabled = true;
+                tooltipMessage = 'Cannot trigger combined workflow view - this tile shows multiple workflows';
+            }
+            
+            return `
+                <button 
+                    class="trigger-button" 
+                    onclick="triggerWorkflow('${workflowName}', '${version}', '${workflowType}')"
+                    title="${tooltipMessage}"
+                    ${isDisabled ? 'disabled' : ''}
+                >
+                    🚀 Trigger Run
+                </button>
+            `;
+        }
+
+        function getWorkflowName(version, workflowType) {
+            if (version === 'ARM64' || workflowType === 'Special') {
+                return 'SPECIAL_WORKFLOWS'; // Special identifier for multiple workflows
+            }
+            
+            const workflows = OCP_VERSIONS[version];
+            if (!workflows) return '';
+            
+            return workflowType === 'Intrusive' ? workflows.intrusive : workflows.regular;
+        }
+
+        async function showRekickModal(workflowName, version, workflowType) {
+            try {
+                console.log(`Getting failed runs for: ${workflowName}`);
+                
+                let allRuns = [];
+                
+                // Handle special workflows (ARM64 & Hosted) - COMMENTED OUT
+                if (workflowName === 'SPECIAL_WORKFLOWS') {
+                    // Special workflows are currently disabled
+                    console.log('Special workflows are currently disabled');
+                    allRuns = [];
+                } else {
+                    // Get the last N runs for regular workflow
+                    const runs = await getLastNRuns(workflowName);
+                    allRuns = runs.map(run => ({ ...run, workflowName }));
+                }
+                
+                // Filter for failed/cancelled/timed out runs
+                const failedRuns = allRuns.filter(run => 
+                    run.conclusion === 'failure' || 
+                    run.conclusion === 'cancelled' || 
+                    run.conclusion === 'timed_out'
+                );
+
+                const modalBody = document.getElementById('rekickModalBody');
+                
+                if (failedRuns.length === 0) {
+                    modalBody.innerHTML = `
+                        <div class="no-failures">
+                            🎉 No failed runs found in the last 5 runs for ${workflowType} ${version}!
+                        </div>
+                    `;
+                } else {
+                    const hasToken = getUserToken().length > 0;
+                    
+                    const failedRunsHtml = failedRuns.map(run => {
+                        const displayWorkflowName = run.workflowName || workflowName;
+                        const ghCommand = `gh run rerun ${run.id} --failed`;
+                        
+                        // Create direct rekick button if token is available
+                        const directRekickButton = hasToken ? `
+                            <button 
+                                class="copy-button" 
+                                data-run-id="${run.id}"
+                                onclick="rekickWorkflowRun(${run.id}, ${run.run_number}, '${displayWorkflowName}')"
+                                style="background: #3b82f6; color: white; margin-right: 8px;"
+                                title="Directly rekick this run using your GitHub token"
+                            >
+                                🚀 Rekick Now
+                            </button>
+                        ` : '';
+                        
+                        return `
+                            <div class="failed-run-item">
+                                <div class="run-info">
+                                    <div class="run-number">
+                                        <a href="${run.html_url}" target="_blank" class="github-link">
+                                            Run #${run.run_number}
+                                        </a>
+                                        ${run.workflowName ? `<br><small style="color: #718096;">${run.workflowName}</small>` : ''}
+                                    </div>
+                                    <div class="run-time">${timeAgo(run.updated_at)}</div>
+                                </div>
+                                <div style="font-size: 0.85rem; color: #9f2a2a; margin-bottom: 8px;">
+                                    Status: ${run.conclusion} • Branch: ${run.head_branch}
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    ${directRekickButton}
+                                    <div class="gh-command" style="flex: 1; min-width: 200px;">
+                                        ${ghCommand}
+                                        <button class="copy-button" onclick="copyToClipboard('${ghCommand}', this)" title="Copy CLI command">📋 Copy CLI</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    const rekickAllButton = hasToken && failedRuns.length > 1 ? `
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <button 
+                                onclick="rekickAllFailedRuns([${failedRuns.map(r => r.id).join(',')}], '${workflowType} ${version}')"
+                                style="
+                                    background: #8b5cf6; 
+                                    color: white; 
+                                    border: none; 
+                                    padding: 12px 24px; 
+                                    border-radius: 8px; 
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                "
+                                onmouseover="this.style.background='#7c3aed'"
+                                onmouseout="this.style.background='#8b5cf6'"
+                                title="Rekick all ${failedRuns.length} failed runs at once"
+                            >
+                                🚀 Rekick All ${failedRuns.length} Failed Runs
+                            </button>
+                        </div>
+                    ` : '';
+
+                    const instructionsHtml = hasToken ? `
+                        <div style="margin-bottom: 20px; padding: 12px; background: #d1fae5; border-radius: 8px; font-size: 0.9rem; border-left: 4px solid #10b981;">
+                            🚀 <strong>Direct Rekick Available!</strong> You can rekick failed runs directly from this interface using your GitHub token.
+                            <br><br>
+                            • <strong>🚀 Rekick Now:</strong> Instantly restart individual failed runs via GitHub API
+                            <br>
+                            • <strong>📋 Copy CLI:</strong> Get the command for terminal use
+                            ${failedRuns.length > 1 ? '<br>• <strong>🚀 Rekick All:</strong> Restart all failed runs at once' : ''}
+                        </div>
+                    ` : `
+                        <div style="margin-bottom: 20px; padding: 12px; background: #f0f8ff; border-radius: 8px; font-size: 0.9rem;">
+                            💡 <strong>Instructions:</strong> Copy and paste these commands in your terminal (requires 
+                            <a href="https://cli.github.com/" target="_blank">GitHub CLI</a>):
+                            <br><br>
+                            <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">gh auth login</code> (if not already logged in)
+                            <br><br>
+                            <strong>Or:</strong> Add your GitHub token below for direct rekick functionality! 
+                            <a href="#" onclick="closeRekickModal(); document.getElementById('githubToken').focus();">Add Token</a>
+                        </div>
+                    `;
+
+                    modalBody.innerHTML = `
+                        <div style="margin-bottom: 20px;">
+                            <strong>${failedRuns.length} failed run(s) found</strong> for <em>${workflowType} ${version}</em>
+                        </div>
+                        ${instructionsHtml}
+                        ${rekickAllButton}
+                        ${failedRunsHtml}
+                    `;
+                }
+
+                document.getElementById('rekickModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error showing rekick modal:', error);
+                const modalBody = document.getElementById('rekickModalBody');
+                modalBody.innerHTML = `
+                    <div class="error">
+                        Error loading failed runs: ${error.message}
+                    </div>
+                `;
+                document.getElementById('rekickModal').style.display = 'block';
+            }
+        }
+
+        function closeRekickModal() {
+            document.getElementById('rekickModal').style.display = 'none';
+        }
+
+        // Direct API rekick functionality
+        async function rekickWorkflowRun(runId, runNumber, workflowName) {
+            const token = getUserToken();
+            if (!token) {
+                alert('GitHub token required for direct rekick. Please add your token in the configuration section below.');
+                return;
+            }
+
+            try {
+                console.log(`🔄 Attempting to rekick run #${runNumber} (ID: ${runId}) for ${workflowName}`);
+                
+                // Update button to show loading state
+                const button = document.querySelector(`[data-run-id="${runId}"]`);
+                if (button) {
+                    button.innerHTML = '⏳ Rekicking...';
+                    button.disabled = true;
+                }
+
+                // Make API call to rerun the workflow
+                const endpoint = `/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs/${runId}/rerun-failed-jobs`;
+                const headers = {
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Authorization': `token ${token}`
+                };
+
+                console.log(`🌐 API Call: POST ${API_BASE}${endpoint}`);
+                const response = await fetch(`${API_BASE}${endpoint}`, {
+                    method: 'POST',
+                    headers: headers
+                });
+
+                if (response.status === 201) {
+                    // Success
+                    console.log(`✅ Successfully rekicked run #${runNumber}`);
+                    if (button) {
+                        button.innerHTML = '✅ Rekicked!';
+                        button.style.background = '#10b981';
+                        button.style.color = 'white';
+                    }
+                    
+                    // Show success message
+                    showRekickMessage(`✅ Successfully rekicked run #${runNumber} for ${workflowName}`, 'success');
+                    
+                    // Auto-refresh dashboard after 3 seconds
+                    setTimeout(() => {
+                        loadDashboard();
+                    }, 3000);
+
+                } else if (response.status === 403) {
+                    // Permission error
+                    const errorData = await response.text();
+                    console.error(`❌ Permission denied for rekick: ${errorData}`);
+                    if (button) {
+                        button.innerHTML = '❌ No Permission';
+                        button.style.background = '#ef4444';
+                        button.style.color = 'white';
+                    }
+                    showRekickMessage(`❌ Permission denied. Your token may lack required permissions.`, 'error');
+
+                } else {
+                    // Other error
+                    const errorData = await response.text();
+                    console.error(`❌ Rekick failed: ${response.status} ${errorData}`);
+                    if (button) {
+                        button.innerHTML = '❌ Failed';
+                        button.style.background = '#ef4444';
+                        button.style.color = 'white';
+                    }
+                    showRekickMessage(`❌ Rekick failed: ${response.status} ${response.statusText}`, 'error');
+                }
+
+            } catch (error) {
+                console.error('❌ Error during rekick:', error);
+                const button = document.querySelector(`[data-run-id="${runId}"]`);
+                if (button) {
+                    button.innerHTML = '❌ Error';
+                    button.style.background = '#ef4444';
+                    button.style.color = 'white';
+                }
+                showRekickMessage(`❌ Error during rekick: ${error.message}`, 'error');
+            }
+        }
+
+        function showRekickMessage(message, type) {
+            // Create or update message area in modal
+            let messageArea = document.getElementById('rekickMessages');
+            if (!messageArea) {
+                messageArea = document.createElement('div');
+                messageArea.id = 'rekickMessages';
+                messageArea.style.cssText = 'margin-bottom: 15px;';
+                const modalBody = document.getElementById('rekickModalBody');
+                modalBody.insertBefore(messageArea, modalBody.firstChild);
+            }
+
+            const bgColor = type === 'success' ? '#d1fae5' : '#fee2e2';
+            const textColor = type === 'success' ? '#065f46' : '#991b1b';
+            const borderColor = type === 'success' ? '#10b981' : '#ef4444';
+
+            messageArea.innerHTML = `
+                <div style="
+                    padding: 12px; 
+                    background: ${bgColor}; 
+                    border: 1px solid ${borderColor}; 
+                    border-radius: 8px; 
+                    color: ${textColor};
+                    font-weight: 500;
+                ">
+                    ${message}
+                </div>
+            `;
+
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    if (messageArea && messageArea.parentNode) {
+                        messageArea.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // Bulk rekick functionality
+        async function rekickAllFailedRuns(runIds, workflowInfo) {
+            const token = getUserToken();
+            if (!token) {
+                alert('GitHub token required for direct rekick. Please add your token in the configuration section below.');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to rekick all ${runIds.length} failed runs for ${workflowInfo}?`)) {
+                return;
+            }
+
+            console.log(`🔄 Starting bulk rekick of ${runIds.length} failed runs for ${workflowInfo}`);
+            
+            // Update button to show progress
+            const allButton = event.target;
+            allButton.innerHTML = `⏳ Rekicking ${runIds.length} runs...`;
+            allButton.disabled = true;
+
+            let successCount = 0;
+            let failureCount = 0;
+            const results = [];
+
+            // Process each run sequentially to avoid API rate limits
+            for (let i = 0; i < runIds.length; i++) {
+                const runId = runIds[i];
+                try {
+                    console.log(`🔄 Rekicking run ${i + 1}/${runIds.length}: ${runId}`);
+                    
+                    const endpoint = `/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs/${runId}/rerun-failed-jobs`;
+                    const headers = {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Authorization': `token ${token}`
+                    };
+
+                    const response = await fetch(`${API_BASE}${endpoint}`, {
+                        method: 'POST',
+                        headers: headers
+                    });
+
+                    if (response.status === 201) {
+                        successCount++;
+                        results.push(`✅ Run ${runId}: Success`);
+                        console.log(`✅ Successfully rekicked run ${runId}`);
+                    } else {
+                        failureCount++;
+                        const errorText = await response.text();
+                        results.push(`❌ Run ${runId}: ${response.status} ${response.statusText}`);
+                        console.error(`❌ Failed to rekick run ${runId}: ${response.status} ${errorText}`);
+                    }
+
+                    // Update progress on button
+                    allButton.innerHTML = `⏳ ${i + 1}/${runIds.length} processed...`;
+
+                    // Small delay to be nice to the API
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                } catch (error) {
+                    failureCount++;
+                    results.push(`❌ Run ${runId}: ${error.message}`);
+                    console.error(`❌ Error rekicking run ${runId}:`, error);
+                }
+            }
+
+            // Update final button state
+            if (successCount === runIds.length) {
+                allButton.innerHTML = `✅ All ${successCount} Rekicked!`;
+                allButton.style.background = '#10b981';
+                showRekickMessage(`✅ Successfully rekicked all ${successCount} failed runs for ${workflowInfo}`, 'success');
+            } else if (successCount > 0) {
+                allButton.innerHTML = `⚠️ ${successCount}/${runIds.length} Success`;
+                allButton.style.background = '#f59e0b';
+                showRekickMessage(`⚠️ Rekicked ${successCount}/${runIds.length} runs. ${failureCount} failed.`, 'error');
+            } else {
+                allButton.innerHTML = `❌ All Failed`;
+                allButton.style.background = '#ef4444';
+                showRekickMessage(`❌ Failed to rekick all runs for ${workflowInfo}`, 'error');
+            }
+
+            // Log detailed results
+            console.log('🔄 Bulk rekick results:', results);
+
+            // Auto-refresh dashboard after 5 seconds if any succeeded
+            if (successCount > 0) {
+                setTimeout(() => {
+                    loadDashboard();
+                }, 5000);
+            }
+        }
+
+        // Trigger workflow functionality
+        async function triggerWorkflow(workflowName, version, workflowType) {
+            const token = getUserToken();
+            if (!token) {
+                alert('GitHub token required to trigger workflows. Please add your token in the configuration section below.');
+                document.getElementById('githubToken').focus();
+                return;
+            }
+
+            // Get the workflow file name for this combination
+            const workflowFile = getWorkflowFile(version, workflowType);
+            if (!workflowFile) {
+                alert(`❌ Unable to identify workflow file for ${workflowName}`);
+                return;
+            }
+
+            const button = event.target;
+            const originalText = button.innerHTML;
+            
+            // Confirm the action
+            if (!confirm(`🚀 Are you sure you want to trigger a new run of "${workflowName}"?`)) {
+                return;
+            }
+
+            try {
+                console.log(`🚀 Triggering new workflow run for ${workflowName} (${workflowFile})`);
+                
+                // Update button state
+                button.disabled = true;
+                button.innerHTML = '⏳ Triggering...';
+
+                // Make API call to trigger workflow
+                const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/${workflowFile}/dispatches`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ref: 'main', // Trigger on main branch
+                        inputs: {} // No additional inputs needed
+                    })
+                });
+
+                if (response.ok) {
+                    console.log(`✅ Successfully triggered ${workflowName}`);
+                    
+                    // Update button state
+                    button.innerHTML = '✅ Triggered!';
+                    button.classList.add('success');
+                    
+                    // Show success message
+                    showTriggerMessage(`✅ Successfully triggered new run of "${workflowName}"!`, 'success');
+                    
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                        button.classList.remove('success');
+                    }, 3000);
+
+                    // Auto-refresh dashboard after 10 seconds to show new run
+                    setTimeout(() => {
+                        loadDashboard();
+                    }, 10000);
+
+                } else {
+                    const errorText = await response.text();
+                    let errorData = '';
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        errorData = errorJson.message || errorText;
+                    } catch {
+                        errorData = errorText;
+                    }
+
+                    if (response.status === 403) {
+                        console.error(`❌ Permission denied for workflow trigger: ${errorData}`);
+                        showTriggerMessage(`❌ Permission denied. Your token may lack required permissions to trigger workflows.`, 'error');
+                    } else if (response.status === 422) {
+                        console.error(`❌ Workflow not found or not dispatchable: ${errorData}`);
+                        showTriggerMessage(`❌ Workflow "${workflowName}" may not support manual triggering or was not found.`, 'error');
+                    } else {
+                        console.error(`❌ Workflow trigger failed: ${response.status} ${errorData}`);
+                        showTriggerMessage(`❌ Failed to trigger workflow: ${response.status} ${response.statusText}`, 'error');
+                    }
+
+                    // Reset button state
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }
+
+            } catch (error) {
+                console.error('❌ Error during workflow trigger:', error);
+                
+                // Reset button state
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                showTriggerMessage(`❌ Error triggering workflow: ${error.message}`, 'error');
+            }
+        }
+
+        function showTriggerMessage(message, type) {
+            // Create or get message area
+            let messageArea = document.getElementById('triggerMessages');
+            if (!messageArea) {
+                messageArea = document.createElement('div');
+                messageArea.id = 'triggerMessages';
+                messageArea.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 1001;
+                    max-width: 400px;
+                `;
+                document.body.appendChild(messageArea);
+            }
+
+            // Create message element
+            const messageEl = document.createElement('div');
+            messageEl.style.cssText = `
+                background: ${type === 'success' ? '#48bb78' : '#f56565'};
+                color: white;
+                padding: 12px 16px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                font-weight: 500;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+            `;
+            messageEl.textContent = message;
+
+            messageArea.appendChild(messageEl);
+
+            // Animate in
+            setTimeout(() => {
+                messageEl.style.opacity = '1';
+                messageEl.style.transform = 'translateX(0)';
+            }, 10);
+
+            // Auto-remove after 8 seconds
+            setTimeout(() => {
+                messageEl.style.opacity = '0';
+                messageEl.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (messageEl.parentNode) {
+                        messageEl.parentNode.removeChild(messageEl);
+                    }
+                }, 300);
+            }, 8000);
+        }
+
+        function getWorkflowFile(version, workflowType) {
+            // Map version and type to workflow file names
+            if (version === 'ARM64' || workflowType === 'Special') {
+                // For ARM64/Special, we can't trigger as it's a combined view
+                return null;
+            } else if (workflowType.toLowerCase() === 'intrusive') {
+                return `qe-ocp-${version.replace('.', '')}-intrusive.yaml`;
+            } else if (workflowType.toLowerCase() === 'regular') {
+                return `qe-ocp-${version.replace('.', '')}.yaml`;
+            }
+            return null;
+        }
+
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#38a169';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#48bb78';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                button.textContent = 'Failed';
+                button.style.background = '#f56565';
+                
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                    button.style.background = '#48bb78';
+                }, 2000);
+            });
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('rekickModal');
+            if (event.target === modal) {
+                closeRekickModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeRekickModal();
+            }
+        });
+
+        // Render single workflow type card (regular OR intrusive only)
+        async function renderSingleWorkflowCard(version, runs, workflowType, containerId) {
+            const stats = calculateStats(runs);
+            const health = getHealthStatus(stats.successRate);
+            const trend = calculateTrend(runs);
+            const advancedStats = calculateAdvancedStats(runs);
+            const jobStats = await calculateJobBasedStats(runs);
+            const efficiency = calculateEfficiencyMetrics(runs, advancedStats);
+            
+            // Create clickable run history dots
+            const runDots = runs.map(run => {
+                const statusInfo = getStatusInfo(run.conclusion, run.status);
+                const title = `${workflowType} - ${statusInfo.text} - ${timeAgo(run.updated_at)} - Click to view`;
+                const runUrl = run.html_url;
+                return `<a href="${runUrl}" target="_blank" class="run-dot ${statusInfo.class}" title="${title}"></a>`;
+            }).join('');
+
+            // Pad with empty dots if we have less than jobCount runs
+            const emptyDots = Array(Math.max(0, jobCount - runs.length)).fill('<div class="run-dot unknown" title="No data"></div>').join('');
+
+            const trendIcon = trend === 'up' ? '↗️' : trend === 'down' ? '↘️' : '→';
+            const trendClass = trend === 'up' ? 'trend-up' : trend === 'down' ? 'trend-down' : 'trend-stable';
+
+            const html = `
+                <div class="health-indicator">
+                    <div class="health-bar health-${health}" style="width: ${stats.successRate}%"></div>
+                </div>
+                
+                <div class="run-history">
+                    ${runDots}${emptyDots}
+                </div>
+
+                <div class="stats-row">
+                    <span class="stat-label">Success Rate:</span>
+                    <span class="stat-value ${health === 'excellent' ? 'success' : health === 'good' ? 'warning' : 'failure'}">
+                        ${stats.successRate}%
+                        <span class="trend-indicator ${trendClass}">${trendIcon}</span>
+                    </span>
+                </div>
+
+                <div class="stats-row">
+                    <span class="stat-label">Avg Job Duration:</span>
+                    <span class="stat-value ${jobStats.avgJobDurationMins < 30 ? 'success' : jobStats.avgJobDurationMins < 60 ? 'warning' : 'failure'}">${jobStats.avgJobDuration}</span>
+                </div>
+
+                <div class="stats-row">
+                    <span class="stat-label">Efficiency:</span>
+                    <span class="stat-value ${efficiency.efficiency === 'N/A' ? '' : parseInt(efficiency.efficiency) >= 80 ? 'success' : parseInt(efficiency.efficiency) >= 60 ? 'warning' : 'failure'}">${efficiency.efficiency}</span>
+                </div>
+
+                <div class="stats-row">
+                    <span class="stat-label">Frequency:</span>
+                    <span class="stat-value">${efficiency.avgFrequency}</span>
+                </div>
+
+                <div class="stats-row">
+                    <span class="stat-label">Runs:</span>
+                    <span class="stat-value">${stats.total}/${jobCount} (${stats.success}✅ ${stats.failure}❌)</span>
+                </div>
+
+                ${stats.running > 0 ? `
+                <div class="stats-row">
+                    <span class="stat-label">Running:</span>
+                    <span class="stat-value warning">${stats.running}</span>
+                </div>
+                ` : ''}
+
+                ${jobStats.completedJobs > 0 ? `
+                <div class="stats-row" style="border-top: 1px solid #e2e8f0; padding-top: 8px; margin-top: 8px;">
+                    <span class="stat-label">Fastest Job:</span>
+                    ${jobStats.fastestJobUrl ? 
+                        `<a href="${jobStats.fastestJobUrl}" target="_blank" class="stat-value success job-link" title="View fastest job: ${jobStats.fastestJobName}">${jobStats.fastestJob}</a>` : 
+                        `<span class="stat-value success">${jobStats.fastestJob}</span>`
+                    }
+                </div>
+
+                <div class="stats-row">
+                    <span class="stat-label">Slowest Job:</span>
+                    ${jobStats.slowestJobUrl ? 
+                        `<a href="${jobStats.slowestJobUrl}" target="_blank" class="stat-value failure job-link" title="View slowest job: ${jobStats.slowestJobName}">${jobStats.slowestJob}</a>` : 
+                        `<span class="stat-value failure">${jobStats.slowestJob}</span>`
+                    }
+                </div>
+
+                <div class="stats-row">
+                    <span class="stat-label">Total Jobs:</span>
+                    <span class="stat-value">${jobStats.totalJobs} (${jobStats.completedJobs} analyzed)</span>
+                </div>
+
+                ${advancedStats.avgStartDelay !== 'N/A' ? `
+                <div class="stats-row">
+                    <span class="stat-label">Start Delay:</span>
+                    <span class="stat-value">${advancedStats.avgStartDelay}</span>
+                </div>
+                ` : ''}
+                ` : ''}
+
+                <div class="last-run">
+                    ${runs.length > 0 ? `Last run: ${timeAgo(runs[0].updated_at)}` : 'No recent runs'}
+                </div>
+
+                ${renderRekickButton(runs, version, workflowType)}
+                ${renderTriggerWorkflowButton(version, workflowType)}
+            `;
+
+            document.getElementById(containerId).innerHTML = html;
+        }
+
+        // Load regular workflow data for an OCP version
+        async function loadRegularOCPVersion(version) {
+            try {
+                console.log(`Loading OCP ${version} regular data...`);
+                const workflows = OCP_VERSIONS[version];
+                const regularRuns = await getLastNRuns(workflows.regular);
+                
+                console.log(`OCP ${version} - Regular runs: ${regularRuns.length}`);
+                await renderSingleWorkflowCard(version, regularRuns, 'Regular', `ocp-${version.replace('.', '')}-regular-content`);
+            } catch (error) {
+                console.error(`Error loading OCP ${version} regular:`, error);
+                document.getElementById(`ocp-${version.replace('.', '')}-regular-content`).innerHTML = 
+                    `<div class="error">
+                        <strong>Error loading OCP ${version}</strong><br>
+                        ${error.message}<br>
+                        <small>Check browser console for details</small>
+                    </div>`;
+            }
+        }
+
+        // Load intrusive workflow data for an OCP version
+        async function loadIntrusiveOCPVersion(version) {
+            try {
+                console.log(`Loading OCP ${version} intrusive data...`);
+                const workflows = OCP_VERSIONS[version];
+                const intrusiveRuns = await getLastNRuns(workflows.intrusive);
+                
+                console.log(`OCP ${version} - Intrusive runs: ${intrusiveRuns.length}`);
+                await renderSingleWorkflowCard(version, intrusiveRuns, 'Intrusive', `ocp-${version.replace('.', '')}-intrusive-content`);
+            } catch (error) {
+                console.error(`Error loading OCP ${version} intrusive:`, error);
+                document.getElementById(`ocp-${version.replace('.', '')}-intrusive-content`).innerHTML = 
+                    `<div class="error">
+                        <strong>Error loading OCP ${version}</strong><br>
+                        ${error.message}<br>
+                        <small>Check browser console for details</small>
+                    </div>`;
+            }
+        }
+
+        // Load special workflows (ARM64 & Hosted) - COMMENTED OUT FOR NOW
+        /*
+        async function loadSpecialWorkflows() {
+            try {
+                const allRuns = [];
+                for (const workflowName of SPECIAL_WORKFLOWS) {
+                    const runs = await getLastNRuns(workflowName);
+                    allRuns.push(...runs);
+                }
+                
+                const stats = calculateStats(allRuns);
+                const health = getHealthStatus(stats.successRate);
+                
+                const html = `
+                    <div class="health-indicator">
+                        <div class="health-bar health-${health}" style="width: ${stats.successRate}%"></div>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <span class="stat-label">ARM64 Testing:</span>
+                        <span class="stat-value">Available</span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Hosted Testing:</span>
+                        <span class="stat-value">Available</span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Success Rate:</span>
+                        <span class="stat-value ${health === 'excellent' ? 'success' : health === 'good' ? 'warning' : 'failure'}">
+                            ${stats.successRate}%
+                        </span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Total Runs:</span>
+                        <span class="stat-value">${stats.total}</span>
+                    </div>
+
+                    <div class="last-run">
+                        ${allRuns.length > 0 ? `Last run: ${timeAgo(allRuns[0].updated_at)}` : 'No recent runs'}
+                    </div>
+
+                    ${renderRekickButton(allRuns, 'ARM64', 'Special')}
+                ${renderTriggerWorkflowButton('ARM64', 'Special')}
+                `;
+
+                document.getElementById('special-content').innerHTML = html;
+            } catch (error) {
+                document.getElementById('special-content').innerHTML = 
+                    `<div class="error">Error loading special workflows: ${error.message}</div>`;
+            }
+        }
+        */
+
+        // Load overall health summary for regular workflows
+        async function loadOverallRegularHealth() {
+            try {
+                let allRuns = [];
+                
+                // Get regular runs from all OCP versions
+                for (const [version, workflows] of Object.entries(OCP_VERSIONS)) {
+                    const regularRuns = await getLastNRuns(workflows.regular);
+                    allRuns.push(...regularRuns);
+                }
+                
+                // Get special workflow runs - COMMENTED OUT
+                /*
+                for (const workflowName of SPECIAL_WORKFLOWS) {
+                    const runs = await getLastNRuns(workflowName);
+                    allRuns.push(...runs);
+                }
+                */
+
+                const stats = calculateStats(allRuns);
+                const health = getHealthStatus(stats.successRate);
+                
+                const html = `
+                    <div class="health-indicator">
+                        <div class="health-bar health-${health}" style="width: ${stats.successRate}%"></div>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <span class="stat-label">Overall Health:</span>
+                        <span class="stat-value ${health === 'excellent' ? 'success' : health === 'good' ? 'warning' : 'failure'}">
+                            ${health.charAt(0).toUpperCase() + health.slice(1)}
+                        </span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Success Rate:</span>
+                        <span class="stat-value ${health === 'excellent' ? 'success' : health === 'good' ? 'warning' : 'failure'}">
+                            ${stats.successRate}%
+                        </span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Active Versions:</span>
+                        <span class="stat-value">${Object.keys(OCP_VERSIONS).length}</span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Total Regular Tests:</span>
+                        <span class="stat-value">${stats.total}</span>
+                    </div>
+
+                    <div class="last-run">
+                        Non-intrusive testing health
+                    </div>
+                `;
+
+                document.getElementById('overall-regular-content').innerHTML = html;
+            } catch (error) {
+                document.getElementById('overall-regular-content').innerHTML = 
+                    `<div class="error">Error loading overall health: ${error.message}</div>`;
+            }
+        }
+
+        // Load overall health summary for intrusive workflows
+        async function loadOverallIntrusiveHealth() {
+            try {
+                let allRuns = [];
+                
+                // Get intrusive runs from all OCP versions
+                for (const [version, workflows] of Object.entries(OCP_VERSIONS)) {
+                    const intrusiveRuns = await getLastNRuns(workflows.intrusive);
+                    allRuns.push(...intrusiveRuns);
+                }
+
+                const stats = calculateStats(allRuns);
+                const health = getHealthStatus(stats.successRate);
+                
+                const html = `
+                    <div class="health-indicator">
+                        <div class="health-bar health-${health}" style="width: ${stats.successRate}%"></div>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <span class="stat-label">Overall Health:</span>
+                        <span class="stat-value ${health === 'excellent' ? 'success' : health === 'good' ? 'warning' : 'failure'}">
+                            ${health.charAt(0).toUpperCase() + health.slice(1)}
+                        </span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Success Rate:</span>
+                        <span class="stat-value ${health === 'excellent' ? 'success' : health === 'good' ? 'warning' : 'failure'}">
+                            ${stats.successRate}%
+                        </span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Active Versions:</span>
+                        <span class="stat-value">${Object.keys(OCP_VERSIONS).length}</span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Total Intrusive Tests:</span>
+                        <span class="stat-value">${stats.total}</span>
+                    </div>
+
+                    <div class="last-run">
+                        Intrusive testing health
+                    </div>
+                `;
+
+                document.getElementById('overall-intrusive-content').innerHTML = html;
+            } catch (error) {
+                document.getElementById('overall-intrusive-content').innerHTML = 
+                    `<div class="error">Error loading overall health: ${error.message}</div>`;
+            }
+        }
+
+        // Load trending data for regular workflows
+        async function loadRegularTrends() {
+            try {
+                const trends = [];
+                
+                for (const [version, workflows] of Object.entries(OCP_VERSIONS)) {
+                    const regularRuns = await getLastNRuns(workflows.regular);
+                    const stats = calculateStats(regularRuns);
+                    const trend = calculateTrend(regularRuns);
+                    
+                    trends.push({ version, successRate: stats.successRate, trend });
+                }
+
+                // Sort by success rate
+                trends.sort((a, b) => b.successRate - a.successRate);
+
+                const html = trends.map(item => {
+                    const trendIcon = item.trend === 'up' ? '↗️' : item.trend === 'down' ? '↘️' : '→';
+                    const trendClass = item.trend === 'up' ? 'trend-up' : item.trend === 'down' ? 'trend-down' : 'trend-stable';
+                    
+                    return `
+                        <div class="stats-row">
+                            <span class="stat-label">OCP ${item.version}:</span>
+                            <span class="stat-value ${item.successRate >= 80 ? 'success' : item.successRate >= 60 ? 'warning' : 'failure'}">
+                                ${item.successRate}%
+                                <span class="trend-indicator ${trendClass}">${trendIcon}</span>
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+
+                const finalHtml = `
+                    <div style="margin-bottom: 12px; font-size: 0.9rem; color: #718096; text-align: center;">
+                        Regular testing success rates
+                    </div>
+                    ${html}
+                    <div class="last-run">
+                        ↗️ Improving • → Stable • ↘️ Declining
+                    </div>
+                `;
+
+                document.getElementById('trends-regular-content').innerHTML = finalHtml;
+            } catch (error) {
+                document.getElementById('trends-regular-content').innerHTML = 
+                    `<div class="error">Error loading trends: ${error.message}</div>`;
+            }
+        }
+
+        // Load trending data for intrusive workflows
+        async function loadIntrusiveTrends() {
+            try {
+                const trends = [];
+                
+                for (const [version, workflows] of Object.entries(OCP_VERSIONS)) {
+                    const intrusiveRuns = await getLastNRuns(workflows.intrusive);
+                    const stats = calculateStats(intrusiveRuns);
+                    const trend = calculateTrend(intrusiveRuns);
+                    
+                    trends.push({ version, successRate: stats.successRate, trend });
+                }
+
+                // Sort by success rate
+                trends.sort((a, b) => b.successRate - a.successRate);
+
+                const html = trends.map(item => {
+                    const trendIcon = item.trend === 'up' ? '↗️' : item.trend === 'down' ? '↘️' : '→';
+                    const trendClass = item.trend === 'up' ? 'trend-up' : item.trend === 'down' ? 'trend-down' : 'trend-stable';
+                    
+                    return `
+                        <div class="stats-row">
+                            <span class="stat-label">OCP ${item.version}:</span>
+                            <span class="stat-value ${item.successRate >= 80 ? 'success' : item.successRate >= 60 ? 'warning' : 'failure'}">
+                                ${item.successRate}%
+                                <span class="trend-indicator ${trendClass}">${trendIcon}</span>
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+
+                const finalHtml = `
+                    <div style="margin-bottom: 12px; font-size: 0.9rem; color: #718096; text-align: center;">
+                        Intrusive testing success rates
+                    </div>
+                    ${html}
+                    <div class="last-run">
+                        ↗️ Improving • → Stable • ↘️ Declining
+                    </div>
+                `;
+
+                document.getElementById('trends-intrusive-content').innerHTML = finalHtml;
+            } catch (error) {
+                document.getElementById('trends-intrusive-content').innerHTML = 
+                    `<div class="error">Error loading trends: ${error.message}</div>`;
+            }
+        }
+
+        // Load intrusive summary
+        async function loadIntrusiveSummary() {
+            try {
+                let totalRuns = 0;
+                let totalSuccess = 0;
+                let totalFailure = 0;
+                let totalRunning = 0;
+                
+                for (const [version, workflows] of Object.entries(OCP_VERSIONS)) {
+                    const intrusiveRuns = await getLastNRuns(workflows.intrusive);
+                    const stats = calculateStats(intrusiveRuns);
+                    
+                    totalRuns += stats.total;
+                    totalSuccess += stats.success;
+                    totalFailure += stats.failure;
+                    totalRunning += stats.running;
+                }
+
+                const overallSuccessRate = totalRuns > 0 ? Math.round((totalSuccess / totalRuns) * 100) : 0;
+                const health = getHealthStatus(overallSuccessRate);
+
+                const html = `
+                    <div class="health-indicator">
+                        <div class="health-bar health-${health}" style="width: ${overallSuccessRate}%"></div>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <span class="stat-label">Total Tests:</span>
+                        <span class="stat-value">${totalRuns}</span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Success Rate:</span>
+                        <span class="stat-value ${health === 'excellent' ? 'success' : health === 'good' ? 'warning' : 'failure'}">
+                            ${overallSuccessRate}%
+                        </span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Passed:</span>
+                        <span class="stat-value success">${totalSuccess}</span>
+                    </div>
+
+                    <div class="stats-row">
+                        <span class="stat-label">Failed:</span>
+                        <span class="stat-value failure">${totalFailure}</span>
+                    </div>
+
+                    ${totalRunning > 0 ? `
+                    <div class="stats-row">
+                        <span class="stat-label">Running:</span>
+                        <span class="stat-value warning">${totalRunning}</span>
+                    </div>
+                    ` : ''}
+
+                    <div class="last-run">
+                        Intrusive testing across all versions
+                    </div>
+                `;
+
+                document.getElementById('intrusive-summary-content').innerHTML = html;
+            } catch (error) {
+                document.getElementById('intrusive-summary-content').innerHTML = 
+                    `<div class="error">Error loading intrusive summary: ${error.message}</div>`;
+            }
+        }
+
+
+
+
+
+        // Load all data
+        async function loadDashboard() {
+            const startTime = new Date();
+            
+            // Load both tabs in parallel
+            await Promise.all([
+                // Load regular (non-intrusive) tab data
+                ...Object.keys(OCP_VERSIONS).map(version => loadRegularOCPVersion(version)),
+                // loadSpecialWorkflows(), // COMMENTED OUT - ARM64 & Hosted tile removed
+                loadOverallRegularHealth(), 
+                loadRegularTrends(),
+                
+                // Load intrusive tab data
+                ...Object.keys(OCP_VERSIONS).map(version => loadIntrusiveOCPVersion(version)),
+                loadIntrusiveSummary(),
+                loadOverallIntrusiveHealth(),
+                loadIntrusiveTrends()
+            ]);
+
+            document.getElementById('last-updated').textContent = 
+                `Last updated: ${startTime.toLocaleString()}`;
+        }
+
+        // Auto-refresh every 5 minutes
+        function startAutoRefresh() {
+            setInterval(loadDashboard, 5 * 60 * 1000);
+        }
+
+        // Test API function for debugging
+        async function testAPI() {
+            console.log('🧪 Testing API connection...');
+            try {
+                // Test basic API connection
+                const repo = await fetchGitHubAPI(`/repos/${REPO_OWNER}/${REPO_NAME}`);
+                console.log('✅ Repository data:', repo.name, repo.full_name);
+                
+                // Test workflow runs endpoint
+                const runs = await fetchGitHubAPI(`/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs?per_page=5`);
+                console.log('✅ Latest workflow runs:', runs.workflow_runs.length);
+                
+                // Test specific regular workflow
+                const testRegularWorkflow = 'QE OCP 4.16 Testing';
+                const testRegularRuns = await getLastNRuns(testRegularWorkflow);
+                console.log(`✅ Test regular workflow "${testRegularWorkflow}" runs (${jobCount} requested):`, testRegularRuns.length);
+                
+                // Test specific intrusive workflow
+                const testIntrusiveWorkflow = 'QE OCP 4.16 Intrusive Testing';
+                const testIntrusiveRuns = await getLastNRuns(testIntrusiveWorkflow);
+                console.log(`✅ Test intrusive workflow "${testIntrusiveWorkflow}" runs (${jobCount} requested):`, testIntrusiveRuns.length);
+                
+                alert('API test completed! Check browser console for details.\nTesting both regular and intrusive workflows.');
+            } catch (error) {
+                console.error('❌ API test failed:', error);
+                alert(`API test failed: ${error.message}\nCheck browser console for details.`);
+            }
+        }
+
+        // Force refresh dashboard without using cache
+        async function forceRefreshDashboard() {
+            console.log('🚫 Force refreshing dashboard (bypassing cache)...');
+            
+            // Clear all cache first
+            clearAllCache();
+            
+            // Load dashboard with cache disabled temporarily
+            const originalUseCache = true;
+            
+            try {
+                // Override fetchGitHubAPI temporarily to not use cache
+                const originalFetch = window.fetchGitHubAPI;
+                window.fetchGitHubAPI = (endpoint) => originalFetch(endpoint, false);
+                
+                await loadDashboard();
+                
+                // Restore original function
+                window.fetchGitHubAPI = originalFetch;
+                
+                alert('✅ Dashboard force refreshed! All data fetched fresh from GitHub API.');
+            } catch (error) {
+                console.error('❌ Force refresh failed:', error);
+                alert(`❌ Force refresh failed: ${error.message}`);
+            }
+        }
+
+        // Show cache status information
+        function showCacheStatus() {
+            try {
+                const keys = Object.keys(localStorage);
+                const cacheKeys = keys.filter(key => key.startsWith(CACHE_PREFIX));
+                
+                if (cacheKeys.length === 0) {
+                    alert('💾 Cache Status:\n\nNo cached data found.\nNext dashboard load will fetch fresh data from GitHub API.');
+                    return;
+                }
+                
+                let cacheInfo = `💾 Cache Status:\n\n`;
+                cacheInfo += `📊 Total cached items: ${cacheKeys.length}\n`;
+                cacheInfo += `⏰ Cache duration: ${CACHE_DURATION / 1000 / 60} minutes\n\n`;
+                
+                let validCache = 0;
+                let expiredCache = 0;
+                
+                cacheKeys.forEach(key => {
+                    try {
+                        const cached = JSON.parse(localStorage.getItem(key));
+                        const age = Date.now() - cached.timestamp;
+                        const ageMinutes = Math.round(age / 1000 / 60);
+                        
+                        if (age > CACHE_DURATION) {
+                            expiredCache++;
+                        } else {
+                            validCache++;
+                        }
+                    } catch (error) {
+                        expiredCache++;
+                    }
+                });
+                
+                cacheInfo += `✅ Valid cache entries: ${validCache}\n`;
+                cacheInfo += `⏰ Expired cache entries: ${expiredCache}\n\n`;
+                
+                if (expiredCache > 0) {
+                    cacheInfo += `🧹 Expired entries will be cleaned on next refresh.\n\n`;
+                }
+                
+                cacheInfo += `🔄 Next auto-refresh: ${Math.ceil(5 - ((Date.now() % (5 * 60 * 1000)) / 60 / 1000))} minutes\n`;
+                cacheInfo += `💡 Use "Force Refresh" to bypass cache completely.`;
+                
+                alert(cacheInfo);
+                
+                // Also clean expired cache
+                clearOldCache();
+                
+            } catch (error) {
+                console.error('❌ Error checking cache status:', error);
+                alert(`❌ Error checking cache: ${error.message}`);
+            }
+        }
+
+        // ===== JOB ANALYSIS FUNCTIONS =====
+
+        // Extract test suite from job name
+        function extractTestSuite(jobName) {
+            // Match patterns like "QE OCP 4.19 Tests (accesscontrol)" or "QE OCP 4.19 Tests (operator-sdk)"
+            const suiteMatch = jobName.match(/Tests \(([^)]+)\)/);
+            if (suiteMatch) {
+                let suite = suiteMatch[1];
+                
+                // Remove binary/image suffixes to combine data
+                suite = suite.replace(/\s*-\s*(binary|image)$/i, '');
+                
+                return suite;
+            }
+            
+            // Fallback patterns for other naming conventions
+            const fallbackPatterns = [
+                /Tests-([a-z-]+)/i,
+                /-([a-z]+)-tests/i,
+                /([a-z]+)-suite/i
+            ];
+            
+            for (const pattern of fallbackPatterns) {
+                const match = jobName.match(pattern);
+                if (match) {
+                    let suite = match[1];
+                    
+                    // Remove binary/image suffixes to combine data
+                    suite = suite.replace(/\s*-\s*(binary|image)$/i, '');
+                    
+                    return suite;
+                }
+            }
+            
+            return 'unknown';
+        }
+
+        // Extract OCP version from job name or workflow name
+        function extractOCPVersion(jobName, workflowName) {
+            // Try job name first
+            const jobVersionMatch = jobName.match(/OCP (\d+\.\d+)/);
+            if (jobVersionMatch) {
+                return jobVersionMatch[1];
+            }
+            
+            // Try workflow name
+            const workflowVersionMatch = workflowName.match(/(\d+\.\d+)/);
+            if (workflowVersionMatch) {
+                return workflowVersionMatch[1];
+            }
+            
+            return 'unknown';
+        }
+
+        // Collect job analysis data from all workflows
+        async function collectJobAnalysisData() {
+            const analysisRuns = parseInt(document.getElementById('analysis-runs').value) || 5;
+            console.log(`🔍 Collecting job analysis data for last ${analysisRuns} runs...`);
+            
+            const allJobData = [];
+            const errorCount = { count: 0 };
+            
+            // Process all OCP versions (both regular and intrusive)
+            for (const [version, workflows] of Object.entries(OCP_VERSIONS)) {
+                console.log(`📊 Processing OCP ${version}...`);
+                
+                // Process regular workflow
+                try {
+                    const regularRuns = await getLastNRuns(workflows.regular, analysisRuns);
+                    const regularJobData = await extractJobsFromRuns(regularRuns, version, 'regular');
+                    allJobData.push(...regularJobData);
+                } catch (error) {
+                    console.warn(`⚠️ Failed to collect regular jobs for OCP ${version}:`, error);
+                    errorCount.count++;
+                }
+                
+                // Process intrusive workflow
+                try {
+                    const intrusiveRuns = await getLastNRuns(workflows.intrusive, analysisRuns);
+                    const intrusiveJobData = await extractJobsFromRuns(intrusiveRuns, version, 'intrusive');
+                    allJobData.push(...intrusiveJobData);
+                } catch (error) {
+                    console.warn(`⚠️ Failed to collect intrusive jobs for OCP ${version}:`, error);
+                    errorCount.count++;
+                }
+            }
+            
+            console.log(`✅ Collected ${allJobData.length} jobs from analysis. Errors: ${errorCount.count}`);
+            return allJobData;
+        }
+
+        // Extract job data from workflow runs
+        async function extractJobsFromRuns(runs, ocpVersion, workflowType) {
+            const jobData = [];
+            
+            // Limit to first 3 runs to avoid API abuse
+            for (const run of runs.slice(0, 3)) {
+                try {
+                    const jobsResponse = await fetchGitHubAPI(`/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs/${run.id}/jobs`);
+                    
+                    if (jobsResponse && jobsResponse.jobs) {
+                        for (const job of jobsResponse.jobs) {
+                            if (job.started_at && job.completed_at && job.conclusion) {
+                                const start = new Date(job.started_at);
+                                const end = new Date(job.completed_at);
+                                const duration = end - start;
+                                
+                                if (duration > 0) {
+                                    const suite = extractTestSuite(job.name);
+                                    
+                                    jobData.push({
+                                        name: job.name,
+                                        suite: suite,
+                                        ocpVersion: ocpVersion,
+                                        workflowType: workflowType,
+                                        duration: duration,
+                                        durationMinutes: Math.round(duration / 60000),
+                                        conclusion: job.conclusion,
+                                        url: job.html_url,
+                                        runDate: new Date(run.created_at),
+                                        runId: run.id,
+                                        runNumber: run.run_number
+                                    });
+                                }
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.warn(`Failed to fetch jobs for run ${run.id}:`, error);
+                }
+            }
+            
+            return jobData;
+        }
+
+        // Group job data by test suite
+        function groupJobsBySuite(jobData) {
+            const suiteGroups = {};
+            
+            for (const job of jobData) {
+                if (!suiteGroups[job.suite]) {
+                    suiteGroups[job.suite] = {};
+                }
+                
+                if (!suiteGroups[job.suite][job.ocpVersion]) {
+                    suiteGroups[job.suite][job.ocpVersion] = [];
+                }
+                
+                suiteGroups[job.suite][job.ocpVersion].push(job);
+            }
+            
+            return suiteGroups;
+        }
+
+
+
+        // Calculate overall suite performance statistics
+        function calculateSuitePerformance(jobData) {
+            const suiteStats = {};
+            
+            for (const job of jobData) {
+                if (!suiteStats[job.suite]) {
+                    suiteStats[job.suite] = {
+                        name: job.suite,
+                        durations: [],
+                        totalJobs: 0,
+                        successfulJobs: 0,
+                        failedJobs: 0
+                    };
+                }
+                
+                suiteStats[job.suite].durations.push(job.durationMinutes);
+                suiteStats[job.suite].totalJobs++;
+                
+                if (job.conclusion === 'success') {
+                    suiteStats[job.suite].successfulJobs++;
+                } else {
+                    suiteStats[job.suite].failedJobs++;
+                }
+            }
+            
+            // Calculate averages and sort by average duration
+            const suiteArray = Object.values(suiteStats).map(suite => {
+                const durations = suite.durations;
+                const avgDuration = Math.round(durations.reduce((sum, dur) => sum + dur, 0) / durations.length);
+                const minDuration = Math.min(...durations);
+                const maxDuration = Math.max(...durations);
+                const successRate = Math.round((suite.successfulJobs / suite.totalJobs) * 100);
+                
+                return {
+                    name: suite.name,
+                    avgDuration: avgDuration,
+                    minDuration: minDuration,
+                    maxDuration: maxDuration,
+                    totalJobs: suite.totalJobs,
+                    successRate: successRate,
+                    category: avgDuration < 30 ? 'fast' : avgDuration < 60 ? 'medium' : 'slow'
+                };
+            });
+            
+            // Sort by average duration (fastest first)
+            suiteArray.sort((a, b) => a.avgDuration - b.avgDuration);
+            
+            return suiteArray;
+        }
+
+        // Render job analysis as suite performance ranking
+        function renderJobAnalysis(jobData) {
+            const container = document.getElementById('job-charts-container');
+            
+            if (jobData.length === 0) {
+                container.innerHTML = `
+                    <div class="loading-analysis">
+                        <p>😔 No job data available for analysis</p>
+                        <p style="font-size: 0.9rem; color: #718096;">Try refreshing or check if workflows have completed jobs.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const suitePerformance = calculateSuitePerformance(jobData);
+            
+            // Filter out 'unknown' suite unless it's the only one
+            const validSuites = suitePerformance.filter(suite => suite.name !== 'unknown' || suitePerformance.length === 1);
+            
+            if (validSuites.length === 0) {
+                container.innerHTML = `
+                    <div class="loading-analysis">
+                        <p>😔 No recognizable test suites found</p>
+                        <p style="font-size: 0.9rem; color: #718096;">Job names may not match expected patterns.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <div class="suite-ranking-header">
+                    <h3>⚡ Test Suite Performance Ranking</h3>
+                    <p>Average execution time across all OCP versions and workflow types (fastest to slowest)</p>
+                </div>
+                
+                <div class="suite-ranking-grid">
+            `;
+            
+            validSuites.forEach((suite, index) => {
+                const rankIcon = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '📊';
+                const categoryIcon = suite.category === 'fast' ? '⚡' : suite.category === 'medium' ? '⏱️' : '🐌';
+                const categoryClass = suite.category === 'fast' ? 'success' : suite.category === 'medium' ? 'warning' : 'failure';
+                
+                html += `
+                    <div class="suite-performance-card ${suite.category}">
+                        <div class="suite-rank">
+                            <span class="rank-icon">${rankIcon}</span>
+                            <span class="rank-number">#${index + 1}</span>
+                        </div>
+                        
+                        <div class="suite-info">
+                            <h4 class="suite-name">${categoryIcon} ${suite.name.charAt(0).toUpperCase() + suite.name.slice(1)}</h4>
+                            <div class="suite-avg-duration ${categoryClass}">
+                                ${suite.avgDuration} minutes average
+                            </div>
+                        </div>
+                        
+                        <div class="suite-details">
+                            <div class="suite-detail">
+                                <span class="detail-label">Range:</span>
+                                <span class="detail-value">${suite.minDuration}m - ${suite.maxDuration}m</span>
+                            </div>
+                            <div class="suite-detail">
+                                <span class="detail-label">Success Rate:</span>
+                                <span class="detail-value ${suite.successRate >= 80 ? 'success' : suite.successRate >= 60 ? 'warning' : 'failure'}">${suite.successRate}%</span>
+                            </div>
+                            <div class="suite-detail">
+                                <span class="detail-label">Jobs Analyzed:</span>
+                                <span class="detail-value">${suite.totalJobs}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="suite-category-badge ${suite.category}">
+                            ${suite.category.toUpperCase()}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                </div>
+                
+                <div class="analysis-summary">
+                    <div class="summary-stats">
+                        <div class="summary-stat">
+                            <span class="summary-label">⚡ Fastest Suite:</span>
+                            <span class="summary-value success">${validSuites[0].name} (${validSuites[0].avgDuration}m)</span>
+                        </div>
+                        <div class="summary-stat">
+                            <span class="summary-label">🐌 Slowest Suite:</span>
+                            <span class="summary-value failure">${validSuites[validSuites.length - 1].name} (${validSuites[validSuites.length - 1].avgDuration}m)</span>
+                        </div>
+                        <div class="summary-stat">
+                            <span class="summary-label">📊 Total Suites:</span>
+                            <span class="summary-value">${validSuites.length}</span>
+                        </div>
+                        <div class="summary-stat">
+                            <span class="summary-label">🔧 Total Jobs:</span>
+                            <span class="summary-value">${validSuites.reduce((sum, suite) => sum + suite.totalJobs, 0)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            
+            console.log(`📊 Rendered performance ranking for ${validSuites.length} test suites`);
+        }
+
+        // Load job analysis data
+        async function loadJobAnalysis() {
+            console.log('📊 Loading job analysis...');
+            
+            const container = document.getElementById('job-charts-container');
+            container.innerHTML = `
+                <div class="loading-analysis">
+                    <div class="spinner"></div>
+                    <p>Ranking test suite performance...</p>
+                    <p style="font-size: 0.9rem; color: #718096;">Combining binary + image data across all OCP versions and workflow types.</p>
+                </div>
+            `;
+            
+            try {
+                const jobData = await collectJobAnalysisData();
+                renderJobAnalysis(jobData);
+            } catch (error) {
+                console.error('❌ Error loading job analysis:', error);
+                container.innerHTML = `
+                    <div class="loading-analysis">
+                        <p>❌ Failed to load job analysis</p>
+                        <p style="font-size: 0.9rem; color: #ef4444;">${error.message}</p>
+                        <button onclick="refreshJobAnalysis()" class="refresh-btn" style="margin-top: 15px;">🔄 Try Again</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Refresh job analysis
+        function refreshJobAnalysis() {
+            console.log('🔄 Refreshing job analysis...');
+            loadJobAnalysis();
+        }
+
+        // Update job analysis when run count changes
+        function updateJobAnalysis() {
+            console.log('🔄 Updating job analysis with new run count...');
+            loadJobAnalysis();
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Initializing Certsuite Dashboard...');
+            
+            // Initialize GitHub token input from storage
+            initializeTokenInput();
+            
+            // Clean up old cache entries on startup
+            clearOldCache();
+            
+            loadDashboard();
+            startAutoRefresh();
+        });
+
+        // Add manual refresh button functionality
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                e.preventDefault();
+                loadDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
