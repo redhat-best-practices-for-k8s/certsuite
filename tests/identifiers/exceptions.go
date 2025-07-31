@@ -52,6 +52,6 @@ const (
 
 	OperatorSkipRangeExceptionProcess = `If there is not a version of the operator that needs to be skipped, then an exception will be granted.`
 
-	// Exceptions for requests and limits test
-	RequestsAndLimitsExceptionProcess = `Exceptions possible for platform and infrastructure containers. Must identify which container needs access and document why with details.`
+	// Exceptions for requests test
+	RequestsExceptionProcess = `Exceptions possible for platform and infrastructure containers. Must identify which container needs access and document why with details.`
 )

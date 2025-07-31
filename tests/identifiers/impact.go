@@ -62,7 +62,7 @@ const (
 	TestOneProcessPerContainerIdentifierImpact              = `Multiple processes per container complicate monitoring, debugging, and security assessment, and can lead to zombie processes and resource leaks.`
 	TestSYSNiceRealtimeCapabilityIdentifierImpact           = `Missing SYS_NICE capability on real-time nodes prevents applications from setting appropriate scheduling priorities, causing performance degradation.`
 	TestSysPtraceCapabilityIdentifierImpact                 = `Missing SYS_PTRACE capability when using shared process namespaces prevents inter-container process communication, breaking application functionality.`
-	TestPodRequestsAndLimitsIdentifierImpact                = `Missing resource requests and limits can lead to resource contention, node instability, and unpredictable application performance.`
+	TestPodRequestsIdentifierImpact                         = `Missing resource requests can lead to resource contention, node instability, and unpredictable application performance.`
 	TestNamespaceResourceQuotaIdentifierImpact              = `Without resource quotas, workloads can consume excessive cluster resources, causing performance issues and potential denial of service for other applications.`
 	TestSecConReadOnlyFilesystemImpact                      = `Writable root filesystems increase the attack surface and can be exploited to modify container behavior or persist malware.`
 	TestNoSSHDaemonsAllowedIdentifierImpact                 = `SSH daemons in containers create additional attack surfaces, violate immutable infrastructure principles, and can be exploited for unauthorized access.`
@@ -203,7 +203,7 @@ var ImpactMap = map[string]string{
 	"access-control-one-process-per-container":               TestOneProcessPerContainerIdentifierImpact,
 	"access-control-sys-nice-realtime-capability":            TestSYSNiceRealtimeCapabilityIdentifierImpact,
 	"access-control-sys-ptrace-capability":                   TestSysPtraceCapabilityIdentifierImpact,
-	"access-control-requests-and-limits":                     TestPodRequestsAndLimitsIdentifierImpact,
+	"access-control-requests":                                TestPodRequestsIdentifierImpact,
 	"access-control-namespace-resource-quota":                TestNamespaceResourceQuotaIdentifierImpact,
 	"access-control-security-context-read-only-file-system":  TestSecConReadOnlyFilesystemImpact,
 	"access-control-ssh-daemons":                             TestNoSSHDaemonsAllowedIdentifierImpact,
