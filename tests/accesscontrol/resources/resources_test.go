@@ -16,12 +16,25 @@ const (
 	validMemLimit = "512Mi"
 )
 
-func TestHasRequestsAndLimitsSet(t *testing.T) {
+func TestHasRequestsSet(t *testing.T) {
 	testCases := []struct {
 		testContainer  *provider.Container
 		expectedResult bool
 	}{
-		{ // Test Case #1 - Happy path, all resource are set
+		{ // Test Case #1 - Happy path, requests are set
+			testContainer: &provider.Container{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
+							"cpu":    resource.MustParse(validCPULimit),
+							"memory": resource.MustParse(validMemLimit),
+						},
+					},
+				},
+			},
+			expectedResult: true,
+		},
+		{ // Test Case #2 - Success even with limits present (we only check requests now)
 			testContainer: &provider.Container{
 				Container: &corev1.Container{
 					Resources: corev1.ResourceRequirements{
@@ -38,29 +51,11 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 			},
 			expectedResult: true,
 		},
-		{ // Test Case #2 - Failure due to missing limits
+		{ // Test Case #3 - Failure due to missing memory request
 			testContainer: &provider.Container{
 				Container: &corev1.Container{
 					Resources: corev1.ResourceRequirements{
 						Requests: corev1.ResourceList{
-							"cpu":    resource.MustParse(validCPULimit),
-							"memory": resource.MustParse(validMemLimit),
-						},
-						Limits: nil,
-					},
-				},
-			},
-			expectedResult: false,
-		},
-		{ // Test Case #3 - Failure due to missing memory limit
-			testContainer: &provider.Container{
-				Container: &corev1.Container{
-					Resources: corev1.ResourceRequirements{
-						Requests: corev1.ResourceList{
-							"cpu":    resource.MustParse(validCPULimit),
-							"memory": resource.MustParse(validMemLimit),
-						},
-						Limits: corev1.ResourceList{
 							"cpu": resource.MustParse(validCPULimit),
 						},
 					},
@@ -68,7 +63,19 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 			},
 			expectedResult: false,
 		},
-		{ // Test Case #4 - Failure due to missing resources in general
+		{ // Test Case #4 - Failure due to missing CPU request
+			testContainer: &provider.Container{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
+							"memory": resource.MustParse(validMemLimit),
+						},
+					},
+				},
+			},
+			expectedResult: false,
+		},
+		{ // Test Case #5 - Failure due to missing resources in general
 			testContainer: &provider.Container{
 				Container: &corev1.Container{},
 			},
@@ -79,7 +86,7 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 	var logArchive strings.Builder
 	log.SetupLogger(&logArchive, "INFO")
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedResult, HasRequestsAndLimitsSet(tc.testContainer, log.GetLogger()))
+		assert.Equal(t, tc.expectedResult, HasRequestsSet(tc.testContainer, log.GetLogger()))
 	}
 }
 

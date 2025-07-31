@@ -48,7 +48,7 @@ const (
 	TestOneProcessPerContainerIdentifierDocLink              = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-one-process-per-container"
 	TestSYSNiceRealtimeCapabilityIdentifierDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-sys_nice"
 	TestSysPtraceCapabilityIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-sys_ptrace"
-	TestPodRequestsAndLimitsIdentifierDocLink                = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-requests-limits"
+	TestPodRequestsIdentifierDocLink                         = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-requests-limits"
 	TestNamespaceResourceQuotaIdentifierDocLink              = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-memory-allocation"
 	TestNoSSHDaemonsAllowedIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-pod-interaction-and-configuration"
 

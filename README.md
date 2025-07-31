@@ -24,8 +24,6 @@ Please contact us in case the documentation is broken.
 
 * The catalog of all the available test cases can be found in the [test catalog](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md).
 
-
-
 ## Demo
 
 <!-- markdownlint-disable MD033 MD045 -->

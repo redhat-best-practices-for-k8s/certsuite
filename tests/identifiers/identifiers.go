@@ -166,7 +166,7 @@ var (
 	TestOneProcessPerContainerIdentifier                             claim.Identifier
 	TestSYSNiceRealtimeCapabilityIdentifier                          claim.Identifier
 	TestSysPtraceCapabilityIdentifier                                claim.Identifier
-	TestPodRequestsAndLimitsIdentifier                               claim.Identifier
+	TestPodRequestsIdentifier                                        claim.Identifier
 	TestNamespaceResourceQuotaIdentifier                             claim.Identifier
 	TestPodDisruptionBudgetIdentifier                                claim.Identifier
 	TestAPICompatibilityWithNextOCPReleaseIdentifier                 claim.Identifier
@@ -1613,13 +1613,13 @@ that Node's kernel may not have the same hacks.'`,
 		},
 		TagTelco)
 
-	TestPodRequestsAndLimitsIdentifier = AddCatalogEntry(
-		"requests-and-limits",
+	TestPodRequestsIdentifier = AddCatalogEntry(
+		"requests",
 		common.AccessControlTestKey,
-		`Check that containers have resource requests and limits specified in their spec. Set proper QoS class and resource requests/limits based on container use case.`,
-		RequestsAndLimitsRemediation,
-		RequestsAndLimitsExceptionProcess,
-		TestPodRequestsAndLimitsIdentifierDocLink,
+		`Check that containers have resource requests specified in their spec. Set proper resource requests based on container use case.`,
+		RequestsRemediation,
+		RequestsExceptionProcess,
+		TestPodRequestsIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
