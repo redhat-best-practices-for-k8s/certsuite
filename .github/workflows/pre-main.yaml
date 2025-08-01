@@ -31,7 +31,7 @@ env:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   lint:
@@ -113,6 +113,8 @@ jobs:
         run: make check-catalog-links
   unit-tests:
     name: Run Unit Tests
+    needs: lint
+    if: ${{ needs.lint.result == 'success' }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -176,8 +178,8 @@ jobs:
 
   smoke-tests-local:
     name: Run Local Smoke Tests
-    needs: precheck-images
-    if: needs.precheck-images.result == 'success'
+    needs: [precheck-images, lint]
+    if: needs.precheck-images.result == 'success' && needs.lint.result == 'success'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -276,8 +278,8 @@ jobs:
 
   smoke-tests-container:
     name: Run Container Smoke Tests
-    needs: precheck-images
-    if: needs.precheck-images.result == 'success'
+    needs: [precheck-images, lint]
+    if: needs.precheck-images.result == 'success' && needs.lint.result == 'success'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
