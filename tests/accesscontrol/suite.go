@@ -245,10 +245,10 @@ func LoadChecks() {
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodRequestsAndLimitsIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodRequestsIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
-			testPodRequestsAndLimits(c, &env)
+			testPodRequests(c, &env)
 			return nil
 		}))
 
@@ -955,21 +955,21 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodRequestsAndLimits is a function that checks if each container has resource requests and limits.
+// testPodRequests is a function that checks if each container has resource requests.
 // It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
-func testPodRequestsAndLimits(check *checksdb.Check, env *provider.TestEnvironment) {
+func testPodRequests(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	// Loop through the containers, looking for containers that are missing requests or limits.
+	// Loop through the containers, looking for containers that are missing requests.
 	// These need to be defined in order to pass.
 	for _, cut := range env.Containers {
 		check.LogInfo("Testing Container %q", cut)
-		if !resources.HasRequestsAndLimitsSet(cut, check.GetLogger()) {
-			check.LogError("Container %q is missing resource requests or limits", cut)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing resource requests or limits", false))
+		if !resources.HasRequestsSet(cut, check.GetLogger()) {
+			check.LogError("Container %q is missing resource requests", cut)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing resource requests", false))
 		} else {
-			check.LogInfo("Container %q has resource requests and limits", cut)
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has resource requests and limits", true))
+			check.LogInfo("Container %q has resource requests", cut)
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has resource requests", true))
 		}
 	}
 

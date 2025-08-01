@@ -157,7 +157,7 @@ const (
 
 	OCPReservedPortsUsageRemediation = `Ensure that workload's apps do not listen on ports that are reserved by OpenShift. The following ports are reserved by OpenShift and must NOT be used by any application: 22623, 22624.`
 
-	RequestsAndLimitsRemediation = `Add requests and limits to your container spec. See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits`
+	RequestsRemediation = `Add requests to your container spec. See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits`
 
 	NamespaceResourceQuotaRemediation = `Apply a ResourceQuota to the namespace your workload is running in. The workload's namespace should have resource quota defined.`
 

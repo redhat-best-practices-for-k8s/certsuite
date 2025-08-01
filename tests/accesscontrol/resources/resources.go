@@ -5,26 +5,11 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
-// HasRequestsAndLimitsSet checks if a container has both resource limits and resource requests set.
+// HasRequestsSet checks if a container has resource requests set.
 // Returns :
-//   - bool : true if both resource limits and resource requests are set for the container, otherwise return false.
-func HasRequestsAndLimitsSet(cut *provider.Container, logger *log.Logger) bool {
+//   - bool : true if resource requests are set for the container, otherwise return false.
+func HasRequestsSet(cut *provider.Container, logger *log.Logger) bool {
 	passed := true
-	// Parse the limits.
-	if len(cut.Resources.Limits) == 0 {
-		logger.Error("Container %q has been found missing resource limits", cut)
-		passed = false
-	} else {
-		if cut.Resources.Limits.Cpu().IsZero() {
-			logger.Error("Container %q has been found missing CPU limits", cut)
-			passed = false
-		}
-
-		if cut.Resources.Limits.Memory().IsZero() {
-			logger.Error("Container %q has been found missing memory limits", cut)
-			passed = false
-		}
-	}
 
 	// Parse the requests.
 	if len(cut.Resources.Requests) == 0 {
