@@ -102,6 +102,7 @@ jobs:
           bundleCache: true
           desiredOCPVersion: 4.19
           crcMemory: 12000
+          waitForOperatorsReady: true
         env:
           OCP_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
       
