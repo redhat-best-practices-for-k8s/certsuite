@@ -30,8 +30,8 @@ TOTAL_LINKS=0
 PASSED_LINKS=0
 FAILED_LINKS=0
 
+# shellcheck disable=SC2317,SC2329  # SC2317: Function is called indirectly via trap, SC2329: Use 'local' to declare variables in functions
 cleanup() {
-	# shellcheck disable=SC2317  # Function is called indirectly via trap
 	rm -rf "$TEMP_DIR"
 }
 

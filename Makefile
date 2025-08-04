@@ -86,7 +86,7 @@ lint:
 	typos
 	markdownlint '**/*.md'
 	yamllint --no-warnings .
-	shellcheck --nocomments --format=gcc ${BASH_SCRIPTS}
+	shellcheck --format=gcc ${BASH_SCRIPTS}
 
 # Runs markdownlint only
 markdownlint:
