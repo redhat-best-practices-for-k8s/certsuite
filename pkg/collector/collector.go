@@ -6,6 +6,12 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"time"
+)
+
+const (
+	// collectorUploadTimeout is the timeout for collector uploads
+	collectorUploadTimeout = 30 * time.Second
 )
 
 func addClaimFileToPostRequest(w *multipart.Writer, claimFilePath string) error {
@@ -87,7 +93,9 @@ func SendClaimFileToCollector(endPoint, claimFilePath, executedBy, partnerName, 
 		return err
 	}
 
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: collectorUploadTimeout, // 30 second timeout for collector uploads
+	}
 	resp, err := client.Do(postReq)
 	if err != nil {
 		return err
