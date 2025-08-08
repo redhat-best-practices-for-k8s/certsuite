@@ -79,10 +79,34 @@ jobs:
           name: testimage
           path: /tmp/testimage.tar
 
+  # Build the binary used for testing first, then pass it to the QE tests.
+  # This saves time by not building the binary in each QE suite.
+  build-binary-for-qe:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up Go
+        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
+        with:
+          go-version-file: go.mod
+
+      - name: Build the binary
+        run: make build-certsuite-tool
+
+      - name: Store binary as artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: certsuite-binary
+          path: ./certsuite
+
   qe-testing:
     runs-on: ubuntu-24.04
-    needs: build-image-for-qe
-    if: needs.build-image-for-qe.result == 'success' 
+    needs: [build-image-for-qe, build-binary-for-qe]
+    if: needs.build-image-for-qe.result == 'success' && needs.build-binary-for-qe.result == 'success' 
     strategy:
       fail-fast: false
       matrix:
@@ -121,6 +145,17 @@ jobs:
       - name: Load image into docker
         run: docker load --input /tmp/testimage.tar
 
+      - name: Download binary from artifact
+        if: github.event_name == 'schedule'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: certsuite-binary
+          path: .
+
+      - name: Make binary executable
+        if: github.event_name == 'schedule'
+        run: chmod +x ./certsuite
+
       - name: Clone the QE repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -141,10 +176,6 @@ jobs:
           command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
       # Only run against the binary during a scheduled run
-      - name: Build the binary
-        if: github.event_name == 'schedule'
-        run: make build-certsuite-tool
-        
       - name: Run the tests (against binary)
         if: github.event_name == 'schedule'
         uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
