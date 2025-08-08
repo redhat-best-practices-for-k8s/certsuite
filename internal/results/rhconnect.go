@@ -15,6 +15,11 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
+const (
+	// redHatConnectAPITimeout is the timeout for Red Hat Connect API calls
+	redHatConnectAPITimeout = 60 * time.Second
+)
+
 func createFormField(w *multipart.Writer, field, value string) error {
 	fw, err := w.CreateFormField(field)
 	if err != nil {
@@ -78,7 +83,9 @@ func GetCertIDFromConnectAPI(apiKey, projectID, connectAPIBaseURL, proxyURL, pro
 	// print the request
 	log.Debug("Sending request to %s", certIDURL)
 
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: redHatConnectAPITimeout, // 60 second timeout for Red Hat Connect API
+	}
 	setProxy(client, proxyURL, proxyPort)
 	res, err := sendRequest(req, client)
 	if err != nil {
@@ -181,7 +188,9 @@ func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, 
 	req.Header.Set("x-api-key", apiKey)
 
 	// Create a client
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: redHatConnectAPITimeout, // 60 second timeout for Red Hat Connect API upload
+	}
 	setProxy(client, proxyURL, proxyPort)
 	response, err := sendRequest(req, client)
 	if err != nil {
