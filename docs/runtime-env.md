@@ -39,4 +39,4 @@ See more about this variable in the [Preflight configuration documentation](http
 against a private container registry that has self-signed certificates.
 
 Note that you can also specify the probe pod image to use with `SUPPORT_IMAGE`
-environment variable, default to `certsuite-probe:v0.0.21`.
+environment variable, default to `certsuite-probe:v0.0.24`.
