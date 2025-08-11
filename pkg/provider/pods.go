@@ -58,14 +58,25 @@ func NewPod(aPod *corev1.Pod) (out Pod) {
 	var err error
 	out.Pod = aPod
 	out.MultusNetworkInterfaces = make(map[string]CniNetworkInterface)
-	out.MultusNetworkInterfaces, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
-	if err != nil {
-		log.Error("Could not get IPs for Pod %q (namespace %q), err: %v", aPod.Name, aPod.Namespace, err)
-	}
+	annotations := aPod.GetAnnotations()
+	netStatus, exists := annotations[CniNetworksStatusKey]
+	if !exists || strings.TrimSpace(netStatus) == "" {
+		// Be graceful: log which annotations are present when the expected one is missing/empty
+		keys := make([]string, 0, len(annotations))
+		for k := range annotations {
+			keys = append(keys, k)
+		}
+		log.Info("Pod %q (namespace %q) missing or empty annotation %q. Present annotations: %v", aPod.Name, aPod.Namespace, CniNetworksStatusKey, keys)
+	} else {
+		out.MultusNetworkInterfaces, err = GetPodIPsPerNet(netStatus)
+		if err != nil {
+			log.Error("Could not get IPs for Pod %q (namespace %q), err: %v", aPod.Name, aPod.Namespace, err)
+		}
 
-	out.MultusPCIs, err = GetPciPerPod(aPod.GetAnnotations()[CniNetworksStatusKey])
-	if err != nil {
-		log.Error("Could not get PCIs for Pod %q (namespace %q), err: %v", aPod.Name, aPod.Namespace, err)
+		out.MultusPCIs, err = GetPciPerPod(netStatus)
+		if err != nil {
+			log.Error("Could not get PCIs for Pod %q (namespace %q), err: %v", aPod.Name, aPod.Namespace, err)
+		}
 	}
 
 	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
