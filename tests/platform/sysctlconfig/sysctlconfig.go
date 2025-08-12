@@ -25,7 +25,14 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
-// Creates a map describing the final sysctl key-value pair out of the results of "sysctl --system"
+// parseSysctlSystemOutput parses the output of "sysctl --system" and returns a map of sysctl keys to their values.
+//
+// It takes a single string argument containing the raw command output.
+// The function splits the input into lines, ignores comments and empty lines,
+// extracts key-value pairs using regular expressions, and stores them in a map.
+// The returned map has string keys representing sysctl parameters and string
+// values representing the corresponding settings. If parsing fails for a line,
+// that entry is omitted from the result.
 func parseSysctlSystemOutput(sysctlSystemOutput string) map[string]string {
 	retval := make(map[string]string)
 	splitConfig := strings.Split(sysctlSystemOutput, "\n")
@@ -46,6 +53,13 @@ func parseSysctlSystemOutput(sysctlSystemOutput string) map[string]string {
 	return retval
 }
 
+// GetSysctlSettings retrieves sysctl settings from a container.
+//
+// It accepts a TestEnvironment pointer and the name of a target container.
+// The function executes a command inside that container to read all
+// sysctl values, parses the output into a map of key/value strings,
+// and returns this map along with any error encountered during execution
+// or parsing.
 func GetSysctlSettings(env *provider.TestEnvironment, nodeName string) (map[string]string, error) {
 	const (
 		sysctlCommand = "chroot /host sysctl --system"

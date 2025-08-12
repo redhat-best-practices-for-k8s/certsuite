@@ -30,6 +30,11 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
 )
 
+// LoadInternalChecksDB initializes the internal checks database.
+//
+// It loads all built‑in check definitions into the global registry.
+// The returned value is a cleanup function that should be called when
+// the tests are finished to release any resources held by the database.
 func LoadInternalChecksDB() {
 	accesscontrol.LoadChecks()
 	certification.LoadChecks()
@@ -42,6 +47,13 @@ func LoadInternalChecksDB() {
 	operator.LoadChecks()
 }
 
+// LoadChecksDB creates a closure that loads the checks database.
+//
+// It returns a function that accepts a string (typically a directory or file
+// path) and performs the loading of checks. The returned function internally
+// uses LoadInternalChecksDB, ShouldRun, and LoadChecks to populate the
+// database based on the provided input. The returned function does not
+// return a value; it modifies global state or caches as required.
 func LoadChecksDB(labelsExpr string) {
 	LoadInternalChecksDB()
 
@@ -58,6 +70,10 @@ const (
 	noLabelsFilterExpr     = "none"
 )
 
+// getK8sClientsConfigFileNames returns a list of Kubernetes client configuration file paths.
+//
+// It gathers the names of kubeconfig files from test parameters and environment variables,
+// verifies that each file exists, logs its discovery, and returns all valid paths as a slice of strings.
 func getK8sClientsConfigFileNames() []string {
 	params := configuration.GetTestParameters()
 	fileNames := []string{}
@@ -81,6 +97,16 @@ func getK8sClientsConfigFileNames() []string {
 	return fileNames
 }
 
+// Startup initializes the certsuite application, loading configuration,
+// setting up logging, preparing Kubernetes clients, and loading check
+// definitions.
+//
+// It retrieves test parameters from the environment or command line,
+// evaluates any label filtering expressions, creates a global log file,
+// and ensures that all required resources are available before the
+// main execution proceeds.  The function returns an error cleanup
+// routine that should be deferred by callers to release allocated
+// resources when the application exits.
 func Startup() {
 	testParams := configuration.GetTestParameters()
 
@@ -119,6 +145,11 @@ func Startup() {
 	fmt.Printf("\n")
 }
 
+// Shutdown performs cleanup before exiting the program.
+//
+// It closes the global log file, writes a final message to standard output,
+// and then terminates the process with Exit(0). The function returns
+// immediately after initiating these actions.
 func Shutdown() {
 	err := log.CloseGlobalLogFile()
 	if err != nil {
@@ -127,7 +158,13 @@ func Shutdown() {
 	}
 }
 
-//nolint:funlen,gocyclo
+// Run executes the certificate suite test workflow.
+//
+// It accepts a path to a configuration file and a namespace,
+// then orchestrates parameter retrieval, environment setup,
+// pod discovery, claim building, result generation,
+// and optional reporting to an external collector.
+// The function returns an error if any step fails.
 func Run(labelsFilter, outputFolder string) error {
 	testParams := configuration.GetTestParameters()
 

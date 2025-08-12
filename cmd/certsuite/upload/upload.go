@@ -12,6 +12,12 @@ var (
 	}
 )
 
+// NewCommand creates the root upload command.
+//
+// It constructs a new cobra.Command configured to handle certificate
+// uploads. The returned command can be added to other commands via
+// AddCommand. No parameters are required; it returns a pointer to
+// the configured cobra.Command instance.
 func NewCommand() *cobra.Command {
 	upload.AddCommand(resultsspreadsheet.NewCommand())
 

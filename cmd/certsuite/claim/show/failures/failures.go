@@ -104,6 +104,13 @@ var availableOutputFormats = []string{
 	outputFormatText, outputFormatJSON,
 }
 
+// NewCommand creates the CLI command to show claim failures.
+//
+// It defines a cobra.Command with options for specifying the claim file path,
+// test suites, and output format (text or JSON). The function sets up
+// flag variables, marks required flags, and validates the chosen output format.
+// If an unsupported format is supplied it logs a fatal error. The resulting
+// command can be added to the root CLI tree.
 func NewCommand() *cobra.Command {
 	showFailuresCommand.Flags().StringVarP(&claimFilePathFlag, "claim", "c", "",
 		"Required: Existing claim file path.",
@@ -130,8 +137,14 @@ func NewCommand() *cobra.Command {
 	return showFailuresCommand
 }
 
-// Parses the comma separated list to create a helper map, whose
-// keys are the test suite names.
+// parseTargetTestSuitesFlag parses the comma separated list of test suite names supplied via the flag and returns a map keyed by each name with a boolean value.
+//
+// parseTargetTestSuitesFlag parses the comma separated list of test suite names
+// supplied through the command line flag, trims whitespace from each entry,
+// and builds a helper map where the keys are the individual test suite names
+// and the values are true. The returned map is used to quickly check whether
+// a given test suite should be processed. No arguments are required; it reads
+// the global flag value directly.
 func parseTargetTestSuitesFlag() map[string]bool {
 	if testSuitesFlag == "" {
 		return nil
@@ -145,8 +158,12 @@ func parseTargetTestSuitesFlag() map[string]bool {
 	return targetTestSuites
 }
 
-// Parses the output format flag. Returns error if the format
-// does not appear in the list "availableOutputFormats".
+// parseOutputFormatFlag parses the output format flag and validates it.
+//
+// It checks that the value of the global variable outputFormatFlag is one of
+// the strings listed in availableOutputFormats. If the format is not found,
+// an error is returned describing the invalid choice. The function returns
+// the validated format string or an empty string when an error occurs.
 func parseOutputFormatFlag() (string, error) {
 	for _, outputFormat := range availableOutputFormats {
 		if outputFormat == outputFormatFlag {
@@ -157,8 +174,13 @@ func parseOutputFormatFlag() (string, error) {
 	return "", fmt.Errorf("invalid output format flag %q - available formats: %v", outputFormatFlag, availableOutputFormats)
 }
 
-// Parses the claim's test case's checkDetails field and creates a list
-// of NonCompliantObject's.
+// GetNonCompliantObjectsFromFailureReason parses a failure reason string and returns the non‑compliant objects described within it.
+//
+// It unmarshals the JSON in checkDetails, extracts each object's
+// type, ID, name, namespace, and any additional fields, and
+// constructs a slice of NonCompliantObject. If the input is empty or
+// cannot be parsed, an error is returned. The function returns both
+// the slice and an error value.
 func getNonCompliantObjectsFromFailureReason(checkDetails string) ([]NonCompliantObject, error) {
 	objects := struct {
 		Compliant    []testhelper.ReportObject `json:"CompliantObjectsOut"`
@@ -184,7 +206,12 @@ func getNonCompliantObjectsFromFailureReason(checkDetails string) ([]NonComplian
 	return nonCompliantObjects, nil
 }
 
-// Prints the failures in plain text.
+// printFailuresText prints the failures in plain text.
+//
+// It iterates over a slice of FailedTestSuite and outputs each failure
+// with its name, count, and detailed messages using standard output.
+// The function formats the data into human‑readable lines without any
+// additional formatting or error handling.
 func printFailuresText(testSuites []FailedTestSuite) {
 	for _, ts := range testSuites {
 		fmt.Printf("Test Suite: %s\n", ts.TestSuiteName)
@@ -216,7 +243,10 @@ func printFailuresText(testSuites []FailedTestSuite) {
 	}
 }
 
-// Prints the failures in json format.
+// printFailuresJSON prints a slice of FailedTestSuite values in JSON format.
+//
+// It marshals the given failures into indented JSON and writes the result to
+// standard output. If marshalling fails, it terminates the program with an error message.
 func printFailuresJSON(testSuites []FailedTestSuite) {
 	type ClaimFailures struct {
 		Failures []FailedTestSuite `json:"testSuites"`
@@ -231,10 +261,12 @@ func printFailuresJSON(testSuites []FailedTestSuite) {
 	fmt.Printf("%s\n", string(bytes))
 }
 
-// Creates a list of FailingTestSuite from the results parsed from a claim file. The parsed
-// results in claimResultsByTestSuite var maps a test suite name to a list of TestCaseResult,
-// which are processed to create the list of FailingTestSuite, filtering out those test suites
-// that don't exist in the targetTestSuites map.
+// getFailedTestCasesByTestSuite
+// Creates a list of FailedTestSuite from parsed claim results.
+//
+// It receives a map of test suite names to slices of TestCaseResult and a set of target test suites.
+// The function iterates over the claim results, filters out any suites not present in the target map,
+// and builds a slice of FailedTestSuite structs containing only the failing cases for each relevant suite.
 func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.TestCaseResult, targetTestSuites map[string]bool) []FailedTestSuite {
 	testSuites := []FailedTestSuite{}
 	for testSuite := range claimResultsByTestSuite {
@@ -277,7 +309,12 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 	return testSuites
 }
 
-// Main function for the `show failures` subcommand.
+// showFailures handles the `show failures` subcommand.
+//
+// It parses command-line flags, validates the claim file and output format,
+// retrieves failed test cases for specified test suites, and prints them
+// either as JSON or plain text based on the chosen format.
+// The function returns an error if any step fails.
 func showFailures(_ *cobra.Command, _ []string) error {
 	outputFormat, err := parseOutputFormatFlag()
 	if err != nil {

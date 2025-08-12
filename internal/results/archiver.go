@@ -18,11 +18,22 @@ const (
 	tarGzFileNameSuffix       = "cnf-test-results.tar.gz"
 )
 
+// generateZipFileName creates a timestamped filename for the results archive.
+//
+// It returns a string formatted as "<YYYYMMDDHHMMSS>.tar.gz", where the
+// timestamp is generated from the current time at call time. This name is used
+// when writing the compressed results file to disk.
 func generateZipFileName() string {
 	return time.Now().Format(tarGzFileNamePrefixLayout) + "-" + tarGzFileNameSuffix
 }
 
-// Helper function to get the tar file header from a file.
+// getFileTarHeader returns a tar header for the given file path.
+//
+// It takes a string representing the path to a file, retrieves its
+// FileInfo via os.Stat, and creates a tar.Header using tar.FileInfoHeader.
+// The function sets the header name to the provided path. If any step fails,
+// it returns an error describing the issue. The returned *tar.Header can be
+// used when adding files to a tar archive.
 func getFileTarHeader(file string) (*tar.Header, error) {
 	info, err := os.Stat(file)
 	if err != nil {
@@ -37,7 +48,13 @@ func getFileTarHeader(file string) (*tar.Header, error) {
 	return header, nil
 }
 
-// Creates a zip file in the outputDir containing each file in the filePaths slice.
+// CompressResultsArtifacts creates a compressed archive of result files.
+//
+// It accepts an output directory and a slice of file paths to include in the
+// archive. The function generates a zip file name, writes each specified file
+// into the archive, and returns the full path to the created zip file along
+// with any error encountered during the process. If successful, the returned
+// string is the absolute path to the new archive and the error is nil.
 func CompressResultsArtifacts(outputDir string, filePaths []string) (string, error) {
 	zipFileName := generateZipFileName()
 	zipFilePath := filepath.Join(outputDir, zipFileName)

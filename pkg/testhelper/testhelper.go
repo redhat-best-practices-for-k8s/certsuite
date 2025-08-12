@@ -30,17 +30,39 @@ const (
 	ERROR
 )
 
+// ReportObject holds key-value pairs and a type for reporting purposes.
+//
+// It stores field keys and corresponding values in separate slices,
+// allowing incremental construction of structured data.
+// The ObjectType string indicates the kind of entity being reported, such as
+// a container process or a cluster operator. Methods on the struct enable
+// adding fields and setting the type, facilitating fluent configuration of
+// report objects used throughout the test helper package.
 type ReportObject struct {
 	ObjectType         string
 	ObjectFieldsKeys   []string
 	ObjectFieldsValues []string
 }
 
+// FailureReasonOut represents the outcome of a failure reason check.
+//
+// It contains slices of report objects that either complied with or failed to meet
+// the specified criteria. The CompliantObjectsOut slice holds pointers to
+// ReportObject instances that passed the check, while NonCompliantObjectsOut
+// holds those that did not. This struct is used by test helpers to summarize
+// which objects satisfied a condition and which did not.
 type FailureReasonOut struct {
 	CompliantObjectsOut    []*ReportObject
 	NonCompliantObjectsOut []*ReportObject
 }
 
+// Equal compares two slices of ReportObject pointers for equality.
+//
+// It first checks that the slices have the same length. If they do not, it
+// returns false. Then it iterates over the elements and uses reflect.DeepEqual
+// to compare each corresponding pair. If any comparison fails, the function
+// immediately returns false. If all pairs are deeply equal, the function
+// returns true.
 func Equal(p, other []*ReportObject) bool {
 	if len(p) != len(other) {
 		return false
@@ -59,7 +81,9 @@ func Equal(p, other []*ReportObject) bool {
 	return true
 }
 
-// FailureReasonOutTestString returns a string representation of the FailureReasonOut struct.
+// FailureReasonOutTestString returns a string representation of a FailureReasonOut struct.
+//
+// It formats the struct fields into a readable string, calling ReportObjectTestStringPointer on any nested pointers to produce their test strings and using Sprintf to assemble the final output.
 func FailureReasonOutTestString(p FailureReasonOut) (out string) {
 	out = "testhelper.FailureReasonOut{"
 	out += fmt.Sprintf("CompliantObjectsOut: %s,", ReportObjectTestStringPointer(p.CompliantObjectsOut))
@@ -68,8 +92,13 @@ func FailureReasonOutTestString(p FailureReasonOut) (out string) {
 	return out
 }
 
-// ReportObjectTestStringPointer takes a slice of pointers to ReportObject and returns a string representation of the objects.
-// The returned string is in the format "[]*testhelper.ReportObject{&{...}, &{...}, ...}".
+// ReportObjectTestStringPointer converts a slice of *ReportObject to its string representation.
+//
+// It takes a slice of pointers to ReportObject and returns a formatted string
+// showing the slice contents in the form
+//   []*testhelper.ReportObject{&{...}, &{...}, ...}
+//
+// The function uses fmt.Sprintf to build the output.
 func ReportObjectTestStringPointer(p []*ReportObject) (out string) {
 	out = "[]*testhelper.ReportObject{"
 	for _, p := range p {
@@ -80,8 +109,11 @@ func ReportObjectTestStringPointer(p []*ReportObject) (out string) {
 }
 
 // ReportObjectTestString returns a string representation of the given slice of ReportObject.
-// Each ReportObject is formatted using the %#v format specifier and appended to the output string.
-// The resulting string is enclosed in square brackets and prefixed with "[]testhelper.ReportObject{".
+//
+// It takes a slice of pointers to ReportObject and formats each element using the %#v verb,
+// concatenating them into a single string. The output is wrapped in square brackets
+// and prefixed with "[]testhelper.ReportObject{", producing a readable summary
+// suitable for debugging or test output. The function returns this formatted string.
 func ReportObjectTestString(p []*ReportObject) (out string) {
 	out = "[]testhelper.ReportObject{"
 	for _, p := range p {
@@ -91,9 +123,11 @@ func ReportObjectTestString(p []*ReportObject) (out string) {
 	return out
 }
 
-// Equal checks if the current FailureReasonOut is equal to the other FailureReasonOut.
-// It compares the CompliantObjectsOut and NonCompliantObjectsOut fields of both structs.
-// Returns true if they are equal, false otherwise.
+// Equal checks if two FailureReasonOut values are identical.
+//
+// It compares the CompliantObjectsOut and NonCompliantObjectsOut fields of both
+// structs and returns true only when all corresponding elements match. If any
+// difference is found, it returns false.
 func (p FailureReasonOut) Equal(other FailureReasonOut) bool {
 	return Equal(p.CompliantObjectsOut, other.CompliantObjectsOut) &&
 		Equal(p.NonCompliantObjectsOut, other.NonCompliantObjectsOut)
@@ -221,10 +255,10 @@ const (
 	PodRoleBinding               = "Pods with RoleBindings details"
 )
 
-// SetContainerProcessValues sets the values for a container process in the report object.
-// It takes the scheduling policy, scheduling priority, and command line as input parameters.
-// It adds the process command line, scheduling policy, and scheduling priority fields to the report object.
-// Finally, it sets the object type to ContainerProcessType.
+// SetContainerProcessValues adds container process information to the report object.
+//
+// It records the scheduling policy, scheduling priority and command line for a container
+// process by adding corresponding fields to the report. The function also sets the object type to ContainerProcessType.
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
 	obj.AddField(ProcessCommandLine, aCommandLine)
 	obj.AddField(SchedulingPolicy, aPolicy)
@@ -234,8 +268,9 @@ func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandL
 }
 
 // NewContainerReportObject creates a new ReportObject for a container.
+//
 // It takes the namespace, pod name, container name, reason, and compliance status as parameters.
-// It returns a pointer to the created ReportObject.
+// The function constructs a ReportObject with fields Namespace, PodName, ContainerName, ReasonForCompliance or ReasonForNonCompliance set based on the compliance flag, and returns a pointer to it.
 func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, ContainerType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -244,9 +279,10 @@ func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason stri
 	return out
 }
 
-// NewCertifiedContainerReportObject creates a new ReportObject for a certified container.
-// It takes a ContainerImageIdentifier, aReason string, and a boolean indicating whether the container is compliant.
-// It returns a pointer to the created ReportObject.
+// NewCertifiedContainerReportObject creates a ReportObject for a certified container.
+//
+// It takes a ContainerImageIdentifier, a reason string, and a boolean indicating whether the container is compliant.
+// The function returns a pointer to the created ReportObject.
 func NewCertifiedContainerReportObject(cii provider.ContainerImageIdentifier, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, ContainerImageType, isCompliant)
 	out.AddField(ImageDigest, cii.Digest)
@@ -256,24 +292,33 @@ func NewCertifiedContainerReportObject(cii provider.ContainerImageIdentifier, aR
 	return out
 }
 
-// NewNodeReportObject creates a new ReportObject for a node with the given name, reason, and compliance status.
-// It returns the created ReportObject.
+// NewNodeReportObject creates a report object for a node.
+//
+// It takes the node name, a reason string, and a boolean indicating
+// compliance status. The function constructs a ReportObject using
+// NewReportObject, adds fields for the node name and reason,
+// and sets the compliance flag before returning the pointer.
 func NewNodeReportObject(aNodeName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, NodeType, isCompliant)
 	out.AddField(Name, aNodeName)
 	return out
 }
 
-// NewClusterVersionReportObject creates a new ReportObject for a cluster version.
-// It takes the version, aReason, and isCompliant as input parameters and returns the created ReportObject.
+// NewClusterVersionReportObject creates a ReportObject that records the status of a cluster version check.
+//
+// It accepts three parameters: the version string, an explanatory reason, and a boolean indicating compliance.
+// The function builds a new ReportObject with these values set as fields and returns it for further use in reporting.
 func NewClusterVersionReportObject(version, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, OCPClusterType, isCompliant)
 	out.AddField(OCPClusterVersionType, version)
 	return out
 }
 
-// NewTaintReportObject creates a new ReportObject with taint-related information.
-// It takes in the taintBit, nodeName, aReason, and isCompliant parameters and returns a pointer to the created ReportObject.
+// NewTaintReportObject creates a report object containing taint information.
+//
+// It constructs a ReportObject with fields for the taint bit, node name,
+// reason for compliance or non‑compliance, and whether the node is compliant.
+// The returned pointer can be used to add further details before reporting.
 func NewTaintReportObject(taintBit, nodeName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, TaintType, isCompliant)
 	out.AddField(NodeType, nodeName)
@@ -281,9 +326,12 @@ func NewTaintReportObject(taintBit, nodeName, aReason string, isCompliant bool) 
 	return out
 }
 
-// NewPodReportObject creates a new ReportObject for a pod.
-// It takes the namespace, pod name, reason, and compliance status as input parameters.
-// It returns a pointer to the created ReportObject.
+// NewPodReportObject creates a new report object for a pod.
+//
+// It takes the namespace, pod name, reason, and compliance status as input,
+// constructs a ReportObject using NewReportObject, adds the PodName, Namespace,
+// ReasonForCompliance or ReasonForNonCompliance field based on the status,
+// and returns a pointer to the created ReportObject.
 func NewPodReportObject(aNamespace, aPodName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, PodType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -291,9 +339,12 @@ func NewPodReportObject(aNamespace, aPodName, aReason string, isCompliant bool) 
 	return out
 }
 
-// NewHelmChartReportObject creates a new ReportObject for a Helm chart.
-// It takes the namespace, Helm chart name, reason, and compliance status as input parameters.
-// It returns the created ReportObject.
+// NewHelmChartReportObject creates a ReportObject for a Helm chart.
+//
+// It takes a namespace, the Helm chart name, a reason string, and a boolean indicating
+// whether the chart is compliant. The function constructs a new ReportObject,
+// adds fields for the chart type, name, namespace, reason, and compliance status,
+// and then returns the populated object.
 func NewHelmChartReportObject(aNamespace, aHelmChartName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, HelmType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -301,9 +352,11 @@ func NewHelmChartReportObject(aNamespace, aHelmChartName, aReason string, isComp
 	return out
 }
 
-// NewOperatorReportObject creates a new ReportObject for an operator.
-// It takes the namespace, operator name, reason, and compliance status as input parameters.
-// It returns the created ReportObject.
+// NewOperatorReportObject creates a ReportObject for an operator.
+//
+// It builds a report object with the given namespace, operator name,
+// reason string and compliance flag. The returned object contains
+// fields populated from these inputs and can be used in test reports.
 func NewOperatorReportObject(aNamespace, aOperatorName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, OperatorType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -311,15 +364,24 @@ func NewOperatorReportObject(aNamespace, aOperatorName, aReason string, isCompli
 	return out
 }
 
+// NewClusterOperatorReportObject creates a ReportObject for a cluster operator test.
+//
+// It takes the name of the operator, its version string, and a boolean indicating
+// whether the operator is expected to be compliant. The function initializes a new
+// report object with these values and adds fields for the operator name,
+// version, compliance expectation, and an empty list of reasons.
+// The returned *ReportObject can then be populated with test results.
 func NewClusterOperatorReportObject(aClusterOperatorName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, ClusterOperatorType, isCompliant)
 	out.AddField(Name, aClusterOperatorName)
 	return out
 }
 
-// NewCatalogSourceReportObject creates a new ReportObject for a catalog source.
-// It takes the namespace, catalog source name, reason, and compliance status as input parameters.
-// It returns the created ReportObject.
+// NewCatalogSourceReportObject creates a ReportObject for a catalog source.
+//
+// It accepts the namespace, catalog source name, reason string and compliance boolean.
+// The function constructs a new ReportObject, adds fields for namespace, name, reason and compliance status,
+// and returns the resulting object.
 func NewCatalogSourceReportObject(aNamespace, aCatalogSourceName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, CatalogSourceType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -327,9 +389,10 @@ func NewCatalogSourceReportObject(aNamespace, aCatalogSourceName, aReason string
 	return out
 }
 
-// NewDeploymentReportObject creates a new ReportObject for a deployment.
-// It takes the namespace, deployment name, reason, and compliance status as input parameters.
-// It returns a pointer to the created ReportObject.
+// NewDeploymentReportObject creates a deployment report object.
+//
+// It takes a namespace, deployment name, reason string, and a compliance flag,
+// constructs a ReportObject with these fields set, and returns a pointer to it.
 func NewDeploymentReportObject(aNamespace, aDeploymentName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, DeploymentType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -338,8 +401,11 @@ func NewDeploymentReportObject(aNamespace, aDeploymentName, aReason string, isCo
 }
 
 // NewStatefulSetReportObject creates a new ReportObject for a StatefulSet.
-// It takes the namespace, statefulSetName, reason, and compliance status as parameters.
-// It returns the created ReportObject.
+//
+// It takes a namespace, the name of the StatefulSet, a reason string,
+// and a boolean indicating compliance status.
+// The function returns a pointer to the created ReportObject with fields
+// populated for reporting purposes.
 func NewStatefulSetReportObject(aNamespace, aStatefulSetName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, StatefulSetType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -347,8 +413,11 @@ func NewStatefulSetReportObject(aNamespace, aStatefulSetName, aReason string, is
 	return out
 }
 
-// NewCrdReportObject creates a new ReportObject for a custom resource definition (CRD).
-// It takes the name, version, reason, and compliance status as parameters and returns the created ReportObject.
+// NewCrdReportObject creates a ReportObject for a custom resource definition (CRD).
+//
+// It accepts the CRD name, its version, a reason string and a compliance flag.
+// The returned ReportObject contains fields for Name, Version, Reason, and Status set to
+// "Success" or "Failure" based on the boolean.
 func NewCrdReportObject(aName, aVersion, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, CustomResourceDefinitionType, isCompliant)
 	out.AddField(CustomResourceDefinitionName, aName)
@@ -357,9 +426,10 @@ func NewCrdReportObject(aName, aVersion, aReason string, isCompliant bool) (out 
 }
 
 // NewReportObject creates a new ReportObject with the specified reason, type, and compliance status.
-// If isCompliant is true, the reason is added as a field with the key ReasonForCompliance.
-// If isCompliant is false, the reason is added as a field with the key ReasonForNonCompliance.
-// Returns a pointer to the created ReportObject.
+//
+// It takes a reason string, a type string, and a boolean indicating compliance.
+// If isCompliant is true, the reason is stored under the key ReasonForCompliance;
+// otherwise it is stored under ReasonForNonCompliance. The function returns a pointer to the newly created ReportObject.
 func NewReportObject(aReason, aType string, isCompliant bool) (out *ReportObject) {
 	out = &ReportObject{}
 	out.ObjectType = aType
@@ -372,8 +442,9 @@ func NewReportObject(aReason, aType string, isCompliant bool) (out *ReportObject
 }
 
 // AddField adds a key-value pair to the ReportObject.
-// It appends the given key to the ObjectFieldsKeys slice and the given value to the ObjectFieldsValues slice.
-// It returns the modified ReportObject.
+//
+// It appends the given key to ObjectFieldsKeys and the value to ObjectFieldsValues,
+// then returns the modified ReportObject instance for chaining.
 func (obj *ReportObject) AddField(aKey, aValue string) (out *ReportObject) {
 	obj.ObjectFieldsKeys = append(obj.ObjectFieldsKeys, aKey)
 	obj.ObjectFieldsValues = append(obj.ObjectFieldsValues, aValue)
@@ -381,30 +452,41 @@ func (obj *ReportObject) AddField(aKey, aValue string) (out *ReportObject) {
 }
 
 // NewNamespacedReportObject creates a new ReportObject with the specified reason, type, compliance status, and namespace.
-// It adds the namespace field to the ReportObject.
+//
+// It calls NewReportObject to initialise the object and then adds a
+// "namespace" field using AddField. The returned *ReportObject can be used
+// directly in tests or reporting logic.
 func NewNamespacedReportObject(aReason, aType string, isCompliant bool, aNamespace string) (out *ReportObject) {
 	return NewReportObject(aReason, aType, isCompliant).AddField(Namespace, aNamespace)
 }
 
-// NewNamespacedNamedReportObject creates a new namespaced named report object with the given parameters.
-// It returns a pointer to the created ReportObject.
-// The report object contains the specified reason, type, compliance status, namespace, and name.
+// NewNamespacedNamedReportObject creates a ReportObject with namespace and name.
+//
+// It accepts a reason string, type string, compliance status boolean,
+// a namespace string, and a name string. The function constructs
+// a new report object using NewReportObject, then adds fields for
+// reason, type, compliance, namespace, and name before returning the pointer.
 func NewNamespacedNamedReportObject(aReason, aType string, isCompliant bool, aNamespace, aName string) (out *ReportObject) {
 	return NewReportObject(aReason, aType, isCompliant).AddField(Namespace, aNamespace).AddField(Name, aName)
 }
 
-// SetType sets the type of the ReportObject.
-// It takes aType as a parameter and updates the ObjectType field of the ReportObject.
-// It returns a pointer to the updated ReportObject.
+// SetType sets the type of a ReportObject.
+//
+// SetType assigns the provided string value to the ObjectType field
+// of the ReportObject and returns a pointer to the modified object.
+// It is intended to be used in fluent chains when building or updating
+// report objects for test scenarios.
 func (obj *ReportObject) SetType(aType string) (out *ReportObject) {
 	obj.ObjectType = aType
 	return obj
 }
 
-// ResultToString converts an integer result code into a corresponding string representation.
-// It takes an integer result as input and returns the corresponding string representation.
-// The possible result codes are SUCCESS, FAILURE, and ERROR.
-// If the input result code is not recognized, an empty string is returned.
+// ResultToString converts an integer result code into a string.
+//
+// 
+// It takes an int representing a result and returns the corresponding
+// string constant: SUCCESS, FAILURE or ERROR. If the value does not match
+// any known code, it returns an empty string.
 func ResultToString(result int) (str string) {
 	switch result {
 	case SUCCESS:
@@ -417,6 +499,13 @@ func ResultToString(result int) (str string) {
 	return ""
 }
 
+// GetNonOCPClusterSkipFn returns a closure that determines whether the current test should be skipped because it runs on an OpenShift cluster.
+//
+// GetNonOCPClusterSkipFn returns a closure that inspects the environment to see if the
+// tests are running on an OpenShift (OCP) cluster. The returned function returns a
+// boolean indicating whether the skip condition is met and a string explaining the reason.
+// If the cluster is OCP, it will return true with a message stating that non-OCP clusters
+// are required for this test; otherwise it returns false with an empty message.
 func GetNonOCPClusterSkipFn() func() (bool, string) {
 	return func() (bool, string) {
 		if !provider.IsOCPCluster() {
@@ -426,6 +515,11 @@ func GetNonOCPClusterSkipFn() func() (bool, string) {
 	}
 }
 
+// GetNoServicesUnderTestSkipFn returns a function that can be used to skip tests when no services are under test.
+//
+// The returned function checks the provided TestEnvironment for an empty Services list.
+// If the list is empty, it returns true and a message indicating that there are no services to test,
+// causing the calling test to be skipped. Otherwise, it returns false with an empty string.
 func GetNoServicesUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Services) == 0 {
@@ -436,6 +530,9 @@ func GetNoServicesUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, s
 	}
 }
 
+// GetDaemonSetFailedToSpawnSkipFn returns a function that determines whether to skip tests when a DaemonSet fails to spawn.
+// The returned closure checks the test environment state and may trigger an abort if certain conditions are met,
+// returning a boolean indicating skip status and a message explaining the reason.
 func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if env.DaemonsetFailedToSpawn {
@@ -446,6 +543,13 @@ func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool
 	}
 }
 
+// GetNoCPUPinningPodsSkipFn returns a predicate used to skip tests when no CPU‑pinned pods are present.
+//
+// The returned function examines the current test environment and determines
+// whether any CPU‑pinning pods with DPDK support exist. If the list is empty,
+// it signals that the test should be skipped, providing an explanatory string.
+// Otherwise, the test proceeds normally. This helper allows tests to be
+// conditionally bypassed in environments lacking the required pod setup.
 func GetNoCPUPinningPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.GetCPUPinningPodsWithDpdk()) == 0 {
@@ -456,6 +560,13 @@ func GetNoCPUPinningPodsSkipFn(env *provider.TestEnvironment) func() (bool, stri
 	}
 }
 
+// GetNoSRIOVPodsSkipFn returns a function that can be used to skip tests when no SR‑I/O‑V pods are present.
+//
+// It accepts a test environment and returns a closure. When the closure is called it checks how many
+// pods in the environment use SR‑I/O‑V networking. If none do, the closure returns true along with a message
+// indicating that the test is being skipped because no SR‑I/O‑V pods were found.
+// Otherwise it returns false and an empty string. The returned function can be passed to test frameworks
+// that support skip callbacks.
 func GetNoSRIOVPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		pods, err := env.GetPodsUsingSRIOV()
@@ -471,6 +582,10 @@ func GetNoSRIOVPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	}
 }
 
+// GetNoContainersUnderTestSkipFn returns a skip function for tests that require at least one container under test.
+//
+// It examines the provided TestEnvironment and determines whether any containers are marked for testing.
+// If none are found, it returns true along with an explanatory message; otherwise it returns false.
 func GetNoContainersUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Containers) == 0 {
@@ -481,6 +596,13 @@ func GetNoContainersUnderTestSkipFn(env *provider.TestEnvironment) func() (bool,
 	}
 }
 
+// GetNoPodsUnderTestSkipFn returns a closure that indicates whether to skip tests when no pods are present.
+//
+// The returned function examines the TestEnvironment passed to GetNoPodsUnderTestSkipFn and
+// determines if the number of pods under test is zero. If so, it returns true along with a
+// message explaining that the tests are skipped because there are no pods to evaluate.
+// Otherwise, it returns false and an empty string. This helper is used in test suites to
+// conditionally skip test execution when the required pod resources are absent.
 func GetNoPodsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Pods) == 0 {
@@ -491,6 +613,12 @@ func GetNoPodsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, strin
 	}
 }
 
+// GetNoDeploymentsUnderTestSkipFn returns a function that can be used to conditionally skip tests when there are no deployments under test.
+//
+// It accepts a pointer to a TestEnvironment and produces a zero‑argument function.
+// The returned function evaluates the environment’s deployment list; if it is empty,
+// it returns true with an explanatory message, otherwise false. This allows callers
+// to defer the decision until runtime while keeping the skip logic encapsulated.
 func GetNoDeploymentsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Deployments) == 0 {
@@ -501,6 +629,9 @@ func GetNoDeploymentsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool
 	}
 }
 
+// GetNoStatefulSetsUnderTestSkipFn returns a function that can be used as a test skip predicate.  
+// It examines the supplied TestEnvironment and determines whether any StatefulSet resources are present under test.  
+// If the count of StatefulSets is zero, the returned function signals to skip the test by returning true along with an explanatory message; otherwise it indicates that the test should run.
 func GetNoStatefulSetsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.StatefulSets) == 0 {
@@ -511,6 +642,13 @@ func GetNoStatefulSetsUnderTestSkipFn(env *provider.TestEnvironment) func() (boo
 	}
 }
 
+// GetNoCrdsUnderTestSkipFn returns a function that determines whether to skip tests
+// when no custom resource definitions (CRDs) are present in the test environment.
+//
+// It accepts a pointer to a TestEnvironment and produces a closure.
+// The closure checks if the number of CRDs under test is zero; if so, it returns
+// true along with a message explaining that tests are skipped because no CRDs were found.
+// Otherwise, it returns false and an empty string.
 func GetNoCrdsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Crds) == 0 {
@@ -521,6 +659,14 @@ func GetNoCrdsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, strin
 	}
 }
 
+// GetNoNamespacesSkipFn returns a skip function based on namespace support.
+//
+// It inspects the provided TestEnvironment; if the environment reports no
+// namespaces (len==0), the returned closure will signal that a test should be
+// skipped and supply a message explaining the lack of namespace support.
+// Otherwise the closure signals that the test may proceed normally. This is
+// intended for use in test suites where tests must be conditionally bypassed
+// when namespaces are unavailable.
 func GetNoNamespacesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Namespaces) == 0 {
@@ -531,6 +677,15 @@ func GetNoNamespacesSkipFn(env *provider.TestEnvironment) func() (bool, string) 
 	}
 }
 
+// GetNoRolesSkipFn returns a test skip predicate based on the TestEnvironment’s NoRoles list.
+//
+// GetNoRolesSkipFn returns a function that indicates whether a test should be skipped
+// because no roles are defined in the current TestEnvironment.
+//
+// The returned function examines the TestEnvironment passed to GetNoRolesSkipFn.
+// If the environment has an empty NoRoles slice, it returns true along with a message
+// explaining that the test is being skipped due to lack of roles. Otherwise it returns
+// false and an empty string, indicating the test should proceed.
 func GetNoRolesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Roles) == 0 {
@@ -541,6 +696,13 @@ func GetNoRolesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	}
 }
 
+// GetSharedProcessNamespacePodsSkipFn returns a function that determines whether to skip tests for pods using shared process namespace.
+//
+// The returned closure checks the test environment for any pods that have
+// shareProcessNamespace set. If such pods exist, it signals to skip by
+// returning true and an explanatory message; otherwise it indicates no skip
+// with false and an empty string. It uses GetShareProcessNamespacePods to
+// gather the relevant pods and len to decide if skipping is needed.
 func GetSharedProcessNamespacePodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.GetShareProcessNamespacePods()) == 0 {
@@ -551,6 +713,13 @@ func GetSharedProcessNamespacePodsSkipFn(env *provider.TestEnvironment) func() (
 	}
 }
 
+// GetNotIntrusiveSkipFn returns a function that can be used to skip tests when the environment is marked as intrusive.
+//
+// The returned closure checks whether the given TestEnvironment is flagged as intrusive
+// by calling IsIntrusive. If it is, the closure signals that the test should be skipped,
+// returning true along with a message explaining why. Otherwise it indicates that
+// the test should proceed by returning false and an empty string. This helper is
+// useful for tests that must not run in environments where intrusive checks are enabled.
 func GetNotIntrusiveSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if !env.IsIntrusive() {
@@ -561,6 +730,10 @@ func GetNotIntrusiveSkipFn(env *provider.TestEnvironment) func() (bool, string) 
 	}
 }
 
+// GetNoPersistentVolumesSkipFn returns a function that decides whether to skip tests requiring persistent volumes based on the test environment.
+//
+// The returned closure examines the provided TestEnvironment and checks the number of persistent volume claims it contains.
+// If no persistent volumes are present, it returns true along with an explanatory message; otherwise it returns false and an empty string.
 func GetNoPersistentVolumesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.PersistentVolumes) == 0 {
@@ -571,6 +744,13 @@ func GetNoPersistentVolumesSkipFn(env *provider.TestEnvironment) func() (bool, s
 	}
 }
 
+// GetNotEnoughWorkersSkipFn creates a test skip function based on the required number of workers.
+//
+// It accepts a TestEnvironment and an integer indicating how many workers are needed.
+// The returned function queries the environment for its current worker count
+// using GetWorkerCount. If the count is below the requested amount, it returns
+// true along with a message explaining that there are not enough workers;
+// otherwise it returns false and an empty string.
 func GetNotEnoughWorkersSkipFn(env *provider.TestEnvironment, minWorkerNodes int) func() (bool, string) {
 	return func() (bool, string) {
 		if env.GetWorkerCount() < minWorkerNodes {
@@ -581,6 +761,14 @@ func GetNotEnoughWorkersSkipFn(env *provider.TestEnvironment, minWorkerNodes int
 	}
 }
 
+// GetPodsWithoutAffinityRequiredLabelSkipFn returns a skip function that can be used to
+// determine whether a test should be skipped because the current environment has no pods
+// lacking the required affinity label.
+//
+// It takes a TestEnvironment pointer, retrieves all pods missing the affinity-required
+// label by calling GetPodsWithoutAffinityRequiredLabel, and returns a closure. The
+// closure returns true and an explanatory message if any such pods exist; otherwise it
+// returns false with an empty string.
 func GetPodsWithoutAffinityRequiredLabelSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.GetPodsWithoutAffinityRequiredLabel()) == 0 {
@@ -591,6 +779,15 @@ func GetPodsWithoutAffinityRequiredLabelSkipFn(env *provider.TestEnvironment) fu
 	}
 }
 
+// GetNoGuaranteedPodsWithExclusiveCPUsSkipFn returns a test skip function.
+//
+// It creates a closure that inspects the test environment for any
+// guaranteed pods that have exclusive CPU allocations. If such pods are
+// found, the returned function will signal to skip the test by returning
+// true along with an explanatory message; otherwise it signals not to
+// skip by returning false and an empty string. The function relies on
+// GetGuaranteedPodsWithExclusiveCPUs to retrieve the relevant pod list
+// and uses len to determine if any entries exist.
 func GetNoGuaranteedPodsWithExclusiveCPUsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.GetGuaranteedPodsWithExclusiveCPUs()) == 0 {
@@ -601,6 +798,10 @@ func GetNoGuaranteedPodsWithExclusiveCPUsSkipFn(env *provider.TestEnvironment) f
 	}
 }
 
+// GetNoAffinityRequiredPodsSkipFn returns a skip function that checks whether there are any pods requiring affinity in the test environment.
+//
+// It retrieves the list of affinity-required pods via GetAffinityRequiredPods, then returns true with an explanatory message if that list is empty,
+// indicating that no such pods exist and the test can be skipped. If affinity-required pods are present, it returns false to continue testing.
 func GetNoAffinityRequiredPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.GetAffinityRequiredPods()) == 0 {
@@ -611,6 +812,13 @@ func GetNoAffinityRequiredPodsSkipFn(env *provider.TestEnvironment) func() (bool
 	}
 }
 
+// GetNoStorageClassesSkipFn returns a closure used to decide whether to skip tests when the cluster provides no StorageClass resources.
+//
+// It accepts a *provider.TestEnvironment and yields a function that, when called,
+// evaluates the number of storage classes available in the test environment.
+// If none are present, it returns true along with a message explaining that
+// the test is skipped due to the absence of StorageClasses. Otherwise it
+// returns false and an empty string indicating the test should proceed.
 func GetNoStorageClassesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.StorageClassList) == 0 {
@@ -620,6 +828,13 @@ func GetNoStorageClassesSkipFn(env *provider.TestEnvironment) func() (bool, stri
 	}
 }
 
+// GetNoPersistentVolumeClaimsSkipFn returns a test skip predicate based on persistent volume claim usage.
+//
+// It takes a pointer to a TestEnvironment and produces a closure that, when called,
+// determines whether the environment has zero PersistentVolumeClaim resources.
+// If there are no claims, it signals that the test should be skipped by returning true
+// along with an explanatory message. The function uses len on the environment's
+// claim list to perform this check.
 func GetNoPersistentVolumeClaimsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.PersistentVolumeClaims) == 0 {
@@ -629,6 +844,11 @@ func GetNoPersistentVolumeClaimsSkipFn(env *provider.TestEnvironment) func() (bo
 	}
 }
 
+// GetNoBareMetalNodesSkipFn returns a skip function that indicates whether tests should be skipped when no bare metal nodes are available.
+//
+// It takes a TestEnvironment pointer and examines the number of bare metal nodes
+// in the environment. If zero, it returns a function that always signals to skip,
+// providing an explanatory message. Otherwise, it returns a function that never skips.
 func GetNoBareMetalNodesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.GetBaremetalNodes()) == 0 {
@@ -638,6 +858,13 @@ func GetNoBareMetalNodesSkipFn(env *provider.TestEnvironment) func() (bool, stri
 	}
 }
 
+// GetNoIstioSkipFn returns a function that determines whether Istio tests should be skipped based on the test environment.
+//
+// It accepts a pointer to TestEnvironment and returns a closure.
+// The returned function evaluates the environment configuration and
+// indicates if Istio is not present, returning (true, "reason") or
+// (false, "") accordingly. This allows callers to conditionally skip
+// tests when Istio is absent from the cluster.
 func GetNoIstioSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if !env.IstioServiceMeshFound {
@@ -647,6 +874,12 @@ func GetNoIstioSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	}
 }
 
+// GetNoHugepagesPodsSkipFn returns a function that determines if a test should be skipped when no hugepages pods are present.
+//
+// It accepts a TestEnvironment pointer and produces a closure that, when called,
+// checks the number of hugepages pods available in the environment using
+// GetHugepagesPods. If none are found, it signals to skip by returning true
+// along with a descriptive message; otherwise it returns false and an empty string.
 func GetNoHugepagesPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.GetHugepagesPods()) == 0 {
@@ -656,6 +889,12 @@ func GetNoHugepagesPodsSkipFn(env *provider.TestEnvironment) func() (bool, strin
 	}
 }
 
+// GetNoCatalogSourcesSkipFn returns a function that determines whether tests should be skipped due to the absence of CatalogSource objects.
+//
+// It accepts a *provider.TestEnvironment and produces a closure that, when called,
+// checks the test environment for any catalog sources. If none are found,
+// it returns true along with a message explaining that no catalog sources
+// were detected; otherwise it returns false and an empty string.
 func GetNoCatalogSourcesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.AllCatalogSources) == 0 {
@@ -665,6 +904,13 @@ func GetNoCatalogSourcesSkipFn(env *provider.TestEnvironment) func() (bool, stri
 	}
 }
 
+// GetNoOperatorsSkipFn returns a function that determines whether to skip tests when the test environment has no operators configured.
+//
+// It examines the provided TestEnvironment and, if the NoOperators slice is empty,
+// signals that tests requiring operators should be skipped by returning true
+// along with an explanatory message. If operators are present, it returns false
+// and an empty string. The returned function can be used as a skip condition in
+// test suites to conditionally bypass operator‑dependent checks.
 func GetNoOperatorsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Operators) == 0 {
@@ -674,6 +920,13 @@ func GetNoOperatorsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	}
 }
 
+// GetNoOperatorPodsSkipFn returns a function that decides whether to skip tests when no operator pods are present.
+//
+// The returned closure examines the TestEnvironment passed to GetNoOperatorPodsSkipFn and
+// determines if any operator pods exist in the current test cluster.
+// If zero operator pods are found, it returns true along with an explanatory message,
+// otherwise it returns false. This helper is used by test suites that should be bypassed
+// when operators are not running.
 func GetNoOperatorPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.CSVToPodListMap) == 0 {
@@ -684,6 +937,12 @@ func GetNoOperatorPodsSkipFn(env *provider.TestEnvironment) func() (bool, string
 	}
 }
 
+// GetNoOperatorCrdsSkipFn returns a closure used to determine whether tests should be skipped when no Operator Custom Resource Definitions (CRDs) are present in the test environment.
+//
+// It accepts a pointer to a TestEnvironment and produces a function that, when called,
+// returns a boolean indicating if the skip condition is met and an accompanying message.
+// The inner function typically checks the number of operator CRDs available; if none are found
+// it signals that related tests should be skipped. The returned message explains the reason for skipping.
 func GetNoOperatorCrdsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Crds) == 0 {
@@ -693,7 +952,9 @@ func GetNoOperatorCrdsSkipFn(env *provider.TestEnvironment) func() (bool, string
 	}
 }
 
-// The returned func returns true (skip) if there isn't any node using realtime kernel type.
+// GetNoNodesWithRealtimeKernelSkipFn returns a function that indicates whether tests should be skipped due to lack of realtime kernel nodes.
+//
+// It accepts a test environment and produces a closure. The closure checks the node list for any node running a realtime kernel by calling IsRTKernel. If no such node is found, it returns true along with a message explaining the skip condition. Otherwise, it returns false, allowing tests to proceed.
 func GetNoNodesWithRealtimeKernelSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		for i := range env.Nodes {
@@ -708,6 +969,14 @@ func GetNoNodesWithRealtimeKernelSkipFn(env *provider.TestEnvironment) func() (b
 	}
 }
 
+// ResultObjectsToString converts two slices of ReportObject pointers into a JSON string representation.
+//
+// It takes two slices: the first contains objects that passed checks,
+// and the second contains objects that failed checks.
+// The function marshals both slices into a single JSON object with
+// "passed" and "failed" fields. If marshalling fails, it returns an error
+// wrapped with context about the conversion failure. On success it returns
+// the resulting JSON string and nil error.
 func ResultObjectsToString(compliantObject, nonCompliantObject []*ReportObject) (string, error) {
 	reason := FailureReasonOut{
 		CompliantObjectsOut:    compliantObject,

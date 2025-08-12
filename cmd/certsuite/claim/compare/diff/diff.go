@@ -8,8 +8,9 @@ import (
 	"strings"
 )
 
-// Diffs holds the differences between two interface{} objects that have
-// been obtained by unmarshalling JSON strings.
+// Diffs holds the differences between two JSON objects that have been unmarshalled into interface{} values.
+//
+// It records three slices: Fields contains field-by-field differences with their values from each object; FieldsInClaim1Only lists fields present only in the first object; and FieldsInClaim2Only lists fields present only in the second. The Name field can be used to label the comparison when rendering or logging.
 type Diffs struct {
 	// Name of the json object whose diffs are stored here.
 	// It will be used when serializing the data in table format.
@@ -21,32 +22,24 @@ type Diffs struct {
 	FieldsInClaim2Only []string
 }
 
-// FieldDIff holds the field path and the values from both claim files
-// that have been found to be different.
+// FieldDiff holds information about a field that differs between two claim files.
+//
+// It stores the path of the differing field and the corresponding values from each claim file.
 type FieldDiff struct {
 	FieldPath   string      `json:"field"`
 	Claim1Value interface{} `json:"claim1Value"`
 	Claim2Value interface{} `json:"claim2Value"`
 }
 
-// Stringer method. The output string is a table like this:
-// <name>: Differences
-// FIELD                           CLAIM 1     CLAIM 2
-// /jsonpath/to/field1             value1      value2
-// /jsonpath/to/another/field2     value3      value4
-// ...
+// String returns a formatted table showing the differences between two claims.
 //
-// <name>: Only in CLAIM 1
-// /jsonpath/to/field/in/claim1/only
-// ...
-//
-// <name>: Only in CLAIM 2
-// /jsonpath/to/field/in/claim2/only
-// ...
-//
-// Where <name> is replaced by the value of d.Name.
-// The columns "FIELD" and "CLAIM 1" have a dynamic width that depends
-// on the longest field path and longest value.
+// It generates a multi-line string that lists fields present in both claims with
+// their differing values, as well as fields unique to each claim.
+// The output is organized into sections titled "<name>: Differences",
+// "<name>: Only in CLAIM 1", and "<name>: Only in CLAIM 2", where <name> is the
+// value of d.Name. Columns are padded to accommodate the longest field path
+// and value, ensuring a readable table layout. This method implements the
+// Stringer interface for Diffs.
 func (d *Diffs) String() string {
 	const (
 		noDiffs        = "<none>"
@@ -110,13 +103,13 @@ func (d *Diffs) String() string {
 	return str
 }
 
-// Compares to interface{} objects obtained through json.Unmarshal() and returns
-// a pointer to a Diffs object.
-// A simple filtering of json subtrees can be achieved using the filters slice parameter.
-// This might be helpful with big json trees that could have too many potential differences,
-// but we want to get just the differences for some custom nodes/subtrees.
-// E.g.: filters = []string{"labels"} : only the nodes/subtrees under all the
-// labels nodes/branches will be traversed and compared.
+// Compare compares two interface{} objects obtained through json.Unmarshal() and returns a pointer to a Diffs object.
+//
+// It accepts a JSON path string, the left and right interface values to compare,
+// and an optional slice of filter strings that restrict traversal to specific subtrees.
+// Only nodes whose paths match any filter are examined; all other parts of the trees are ignored.
+// The function walks both structures in parallel, records differences into a Diffs instance,
+// and returns a pointer to that instance for further inspection.
 func Compare(objectName string, claim1Object, claim2Object interface{}, filters []string) *Diffs {
 	objectsDiffs := Diffs{Name: objectName}
 
@@ -163,13 +156,26 @@ func Compare(objectName string, claim1Object, claim2Object interface{}, filters 
 	return &objectsDiffs
 }
 
+// field represents a leaf node in a nested structure, storing its path and value.
+//
+// It is used internally by the traversal logic to capture each terminal field
+// encountered during a recursive walk of an arbitrary data structure.
+// The Path field holds the dot‑separated string that identifies the location
+// of the value within the original object. Value contains the actual leaf
+// value, which may be any Go type.
 type field struct {
 	Path  string
 	Value interface{}
 }
 
-// Helper function that traverses recursively a node to return a list
-// of each field (leaf) path and its value.
+// traverse recursively walks a node, returning each leaf field's path and value.
+//
+// It accepts an interface{} representing the current node, a string prefix
+// for building the field path, and a slice of strings that holds the
+// accumulated paths so far. The function returns a slice of field structs,
+// each containing a full path to a leaf node and its corresponding value.
+// This helper is used to flatten nested structures into a list of
+// key/value pairs for comparison purposes.
 func traverse(node interface{}, path string, filters []string) []field {
 	if node == nil {
 		return nil

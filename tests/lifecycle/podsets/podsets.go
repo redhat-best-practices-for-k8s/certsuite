@@ -73,6 +73,15 @@ var WaitForScalingToComplete = func(ns, name string, timeout time.Duration, grou
 	return false
 }
 
+// WaitForStatefulSetReady waits until the specified StatefulSet is fully ready or a timeout occurs.
+//
+// It repeatedly checks the readiness status of the StatefulSet identified by the
+// provided namespace and name, sleeping between attempts. The function logs
+// debug information using the supplied logger and returns true if the
+// StatefulSet becomes ready before the timeout duration expires; otherwise it
+// returns false. The parameters are: a string for the namespace, a string for
+// the StatefulSet name, a time.Duration specifying the maximum wait time,
+// and a pointer to log.Logger for logging output.
 func WaitForStatefulSetReady(ns, name string, timeout time.Duration, logger *log.Logger) bool {
 	logger.Debug("Check if statefulset %s:%s is ready", ns, name)
 	clients := clientsholder.GetClientsHolder()
@@ -91,6 +100,13 @@ func WaitForStatefulSetReady(ns, name string, timeout time.Duration, logger *log
 	return false
 }
 
+// isDeploymentReady checks if a deployment is fully rolled out.
+//
+// It takes the namespace and deployment name, retrieves the latest
+// deployment configuration, evaluates its status via IsDeploymentReady,
+// and returns true when the desired replica count matches the available
+// replicas. If an error occurs during retrieval or evaluation it is
+// returned along with false.
 func isDeploymentReady(name, namespace string) (bool, error) {
 	appsV1Api := clientsholder.GetClientsHolder().K8sClient.AppsV1()
 
@@ -102,6 +118,14 @@ func isDeploymentReady(name, namespace string) (bool, error) {
 	return dep.IsDeploymentReady(), nil
 }
 
+// isStatefulSetReady checks whether a StatefulSet is fully ready.
+//
+// It takes the namespace and name of a StatefulSet as input,
+// retrieves the latest state from the Kubernetes API, and evaluates
+// its readiness by examining replica counts and conditions.
+// The function returns true if the StatefulSet meets all readiness criteria,
+// or false otherwise. An error is returned if any API call fails or the
+// StatefulSet cannot be retrieved.
 func isStatefulSetReady(name, namespace string) (bool, error) {
 	appsV1Api := clientsholder.GetClientsHolder().K8sClient.AppsV1()
 
@@ -113,8 +137,12 @@ func isStatefulSetReady(name, namespace string) (bool, error) {
 	return sts.IsStatefulSetReady(), nil
 }
 
-// Helper function to get a slice of namespace:name strings from a slice of *provider.Deployments.
-// E.g: [tnf:test tnf:hazelcast-platform-controller-manager]
+// getDeploymentsInfo returns a slice of namespace:name strings from deployments.
+//
+// It takes a slice of *provider.Deployment pointers and constructs
+// a string for each deployment in the form "namespace:name".
+// The returned slice contains one entry per deployment, suitable for
+// use in logging or comparison operations.
 func getDeploymentsInfo(deployments []*provider.Deployment) []string {
 	deps := []string{}
 	for _, dep := range deployments {
@@ -124,7 +152,11 @@ func getDeploymentsInfo(deployments []*provider.Deployment) []string {
 	return deps
 }
 
-// Helper function to get a slice of namespace: name strings from a slice of *provider.Statefulsets.
+// getStatefulSetsInfo returns a slice of namespace:name strings for each StatefulSet.
+//
+// It takes a slice of *provider.StatefulSet pointers, extracts the Namespace and Name
+// from each object, formats them as "namespace: name" using Sprintf,
+// and appends each formatted string to a result slice which is then returned.
 func getStatefulSetsInfo(statefulSets []*provider.StatefulSet) []string {
 	stsInfo := []string{}
 	for _, sts := range statefulSets {
@@ -134,8 +166,10 @@ func getStatefulSetsInfo(statefulSets []*provider.StatefulSet) []string {
 	return stsInfo
 }
 
-// Helper function that checks the status of each deployment in the slice and returns
-// a slice with the not-ready ones.
+// getNotReadyDeployments returns a slice of deployments that are not ready.
+//
+// It iterates over the provided deployments, checks each one with isDeploymentReady,
+// and collects those that fail into a new slice which it then returns.
 func getNotReadyDeployments(deployments []*provider.Deployment) []*provider.Deployment {
 	notReadyDeployments := []*provider.Deployment{}
 	for _, dep := range deployments {
@@ -157,8 +191,12 @@ func getNotReadyDeployments(deployments []*provider.Deployment) []*provider.Depl
 	return notReadyDeployments
 }
 
-// Helper function that checks the status of each statefulSet in the slice and returns
-// a slice with the not-ready ones.
+// getNotReadyStatefulSets returns the subset of stateful sets that are not ready.
+//
+// It iterates over the provided slice of StatefulSet pointers, checks each one
+// with isStatefulSetReady, and appends those that are not ready to a new slice.
+// The resulting slice contains only the stateful sets whose status does not meet
+// readiness criteria. The function returns this filtered slice.
 func getNotReadyStatefulSets(statefulSets []*provider.StatefulSet) []*provider.StatefulSet {
 	notReadyStatefulSets := []*provider.StatefulSet{}
 	for _, sts := range statefulSets {
@@ -180,6 +218,11 @@ func getNotReadyStatefulSets(statefulSets []*provider.StatefulSet) []*provider.S
 	return notReadyStatefulSets
 }
 
+// WaitForAllPodSetsReady waits until all deployments and stateful sets in the test environment are ready or the timeout expires.
+//
+// It polls the current status of deployments and stateful sets, logging progress at each interval.
+// The function returns two slices: one containing ready deployments and another containing ready stateful sets.
+// If the timeout is reached before readiness, it logs an error and still returns the last observed ready objects.
 func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration, logger *log.Logger) (
 	notReadyDeployments []*provider.Deployment,
 	notReadyStatefulSets []*provider.StatefulSet) {
@@ -217,6 +260,12 @@ func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration
 	return deploymentsToCheck, statefulSetsToCheck
 }
 
+// GetAllNodesForAllPodSets returns a set of node names that host any pod in the provided slice.
+//
+// It accepts a slice of pointers to provider.Pod and iterates over each pod’s node assignment.
+// For every pod, it records the node name in a map with boolean values,
+// ensuring that each node appears only once. The resulting map keys represent
+// all distinct nodes across the entire collection of pods.
 func GetAllNodesForAllPodSets(pods []*provider.Pod) (nodes map[string]bool) {
 	nodes = make(map[string]bool)
 	for _, put := range pods {

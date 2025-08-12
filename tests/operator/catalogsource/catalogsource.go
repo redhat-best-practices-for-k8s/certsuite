@@ -5,6 +5,11 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
+// SkipPMBasedOnChannel determines whether a package manager should be skipped based on channel availability.
+//
+// It accepts a slice of PackageChannel objects and a string representing the desired channel.
+// The function returns true if the specified channel is not present in the slice, indicating that
+// the package manager should be bypassed; otherwise it returns false.
 func SkipPMBasedOnChannel(channels []olmpkgv1.PackageChannel, csvName string) bool {
 	// This logic is in place because it is possible for an operator to pull from a multiple package manifests.
 	skipPMBasedOnChannel := true

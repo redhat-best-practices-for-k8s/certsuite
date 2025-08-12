@@ -38,6 +38,12 @@ var (
 	}
 )
 
+// runGenerateFeedbackJsFile generates a JavaScript file from a JSON feedback file.
+//
+// It reads the input JSON file, unmarshals it into a Go data structure,
+// marshals that structure back to pretty‑printed JSON, and writes the
+// result to a new JavaScript file with an export statement. The function
+// returns an error if any I/O or encoding step fails.
 func runGenerateFeedbackJsFile(_ *cobra.Command, _ []string) error {
 	dat, err := os.ReadFile(feedbackJSONFilePath)
 	if err != nil {
@@ -69,7 +75,12 @@ func runGenerateFeedbackJsFile(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
-// Execute executes the "catalog" CLI.
+// NewCommand creates the feedback command for the certsuite CLI.
+//
+// NewCommand constructs and returns a cobra.Command that handles
+// generating feedback data. It sets up flags for the JSON input file
+// and output directory, marks them as required, and configures the
+// command to execute the feedback generation logic when invoked.
 func NewCommand() *cobra.Command {
 	generateFeedbackJsFile.Flags().StringVarP(
 		&feedbackJSONFilePath, "feedback", "f", "",

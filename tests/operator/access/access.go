@@ -4,6 +4,10 @@ import (
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
+// PermissionsHaveBadRule reports whether any permission in the list has an invalid or forbidden rule.
+//
+// It iterates over a slice of StrategyDeploymentPermissions and returns true if at least one
+// element contains a rule that violates the expected constraints, otherwise it returns false.
 func PermissionsHaveBadRule(clusterPermissions []v1alpha1.StrategyDeploymentPermissions) bool {
 	badRuleFound := false
 	for permissionIndex := range clusterPermissions {

@@ -48,6 +48,11 @@ var (
 	GetProcessCPUSchedulingFn            = GetProcessCPUScheduling
 )
 
+// parseSchedulingPolicyAndPriority parses a scheduling policy string into its components.
+//
+// It accepts a string in the format "policy:priority" where priority is an integer.
+// The function splits the input, validates the presence of both parts,
+// converts the priority to an int, and returns the policy string, priority value, and any error encountered.
 func parseSchedulingPolicyAndPriority(chrtCommandOutput string) (schedPolicy string, schedPriority int, err error) {
 	/*	Sample output:
 		pid 476's current scheduling policy: SCHED_OTHER
@@ -83,6 +88,14 @@ var schedulingRequirements = map[string]string{SharedCPUScheduling: "SHARED_CPU_
 	ExclusiveCPUScheduling: "EXCLUSIVE_CPU_SCHEDULING: scheduling priority < 10 and scheduling policy == SCHED_RR or SCHED_FIFO",
 	IsolatedCPUScheduling:  "ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO"}
 
+// ProcessPidsCPUScheduling analyzes the CPU scheduling settings of processes inside a container and returns report objects.
+//
+// It takes a slice of process pointers, a container reference, a string identifier, and a logger.
+// For each process it retrieves the current CPU scheduling policy and priority using GetProcessCPUSchedulingFn,
+// logs debug information, and records any errors encountered. The function then populates the container’s
+// process values with the retrieved scheduling data, creates report objects for each process, and returns
+// a slice of those reports. If an error occurs while retrieving or setting values, it is logged and
+// the process is skipped in the final report list.
 func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *provider.Container, check string, logger *log.Logger) (compliantContainerPids, nonCompliantContainerPids []*testhelper.ReportObject) {
 	hasCPUSchedulingConditionSuccess := false
 	for _, process := range processes {
@@ -117,6 +130,15 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 	return compliantContainerPids, nonCompliantContainerPids
 }
 
+// GetProcessCPUScheduling retrieves the CPU scheduling policy and priority
+// of a process running inside a container.
+//
+// It takes a PID and a reference to the container in which the process is
+// running, executes a command inside that container to query the scheduler,
+// parses the output into a scheduling policy string and an integer priority,
+// and returns them along with any error encountered. If the process cannot be
+// found or the scheduling information cannot be parsed, it returns an empty
+// policy, zero priority, and an error describing the failure.
 func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedulePolicy string, schedulePriority int, err error) {
 	log.Info("Checking the scheduling policy/priority in %v for pid=%d", testContainer, pid)
 
@@ -144,6 +166,11 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 	return schedulePolicy, schedulePriority, err
 }
 
+// PolicyIsRT reports whether the given scheduling policy name corresponds to a real‑time policy.
+//
+// It accepts a single string argument representing a scheduling policy and
+// returns true if that policy is one of the recognized real‑time policies
+// (e.g., "SCHED_FIFO" or "SCHED_RR"), otherwise it returns false.
 func PolicyIsRT(schedPolicy string) bool {
 	return schedPolicy == SchedulingFirstInFirstOut || schedPolicy == SchedulingRoundRobin
 }

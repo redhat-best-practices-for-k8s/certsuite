@@ -41,6 +41,12 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 )
 
+// Operator represents an installed operator in a Kubernetes cluster.
+// It contains metadata about the operator such as name, channel, version,
+// and its installation status. The struct also tracks related resources
+// like subscriptions, install plans, operand pods, and any preflight
+// results collected during validation. This information is used by
+// CertSuite to assess operator compliance and operational health.
 type Operator struct {
 	Name                  string                                `yaml:"name" json:"name"`
 	Namespace             string                                `yaml:"namespace" json:"namespace"`
@@ -60,6 +66,11 @@ type Operator struct {
 	OperandPods           map[string]*Pod
 }
 
+// CsvInstallPlan represents the configuration needed to install a CSV from an operator bundle.
+//
+// It holds the image references for the bundle, the index that contains it,
+// and the name of the ClusterServiceVersion to deploy. These fields are
+// used by the provider package when creating or updating an installation plan.
 type CsvInstallPlan struct {
 	// Operator's installPlan name
 	Name string `yaml:"name" json:"name"`
@@ -69,10 +80,25 @@ type CsvInstallPlan struct {
 	IndexImage string `yaml:"indexImage" json:"indexImage"`
 }
 
+// String returns a human-readable representation of the Operator.
+//
+// It formats the operator's fields into a concise string, typically used for
+// logging or debugging purposes. The output includes key attributes such as
+// the operator type and relevant identifiers. This method does not modify
+// the receiver.
 func (op *Operator) String() string {
 	return fmt.Sprintf("csv: %s ns:%s subscription:%s targetNamespaces=%v", op.Name, op.Namespace, op.SubscriptionName, op.TargetNamespaces)
 }
 
+// SetPreflightResults runs the preflight checks on a test environment and stores their results in the database.
+//
+// SetPreflightResults executes all configured preflight tests against the given TestEnvironment,
+// collects any errors or warnings, writes the results to the provider's preflight results
+// database, and returns an error if the operation fails. It uses the operator's client
+// configuration, supports insecure connections based on environment settings, and logs
+// progress through the provider's logging facilities. The function does not return the
+// individual test outcomes directly; they are persisted for later retrieval via
+// GetPreflightResultsDB.
 func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	if len(op.InstallPlans) == 0 {
 		log.Warn("Operator %q has no InstallPlans. Skipping setting Preflight results", op)
@@ -131,8 +157,11 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	return nil
 }
 
-// getUniqueCsvListByName returns a CSV list with unique names from a list which may contain
-// more than one CSV with the same name. The output CSV list is sorted by CSV name.
+// getUniqueCsvListByName returns a list of ClusterServiceVersions with unique names.
+//
+// It accepts a slice that may contain multiple CSV objects sharing the same name and
+// produces a new slice containing only one instance per distinct name.
+// The resulting slice is sorted by the CSV name field for deterministic ordering.
 func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Alpha.ClusterServiceVersion {
 	uniqueCsvsMap := map[string]*olmv1Alpha.ClusterServiceVersion{}
 	for _, csv := range csvs {
@@ -151,6 +180,13 @@ func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Al
 	return uniqueCsvsList
 }
 
+// createOperators constructs a slice of Operator objects from various operator resources.
+//
+// It takes lists of CSVs, Subscriptions, PackageManifests, InstallPlans, and CatalogSources,
+// along with flags indicating whether to include catalog sources and subscriptions.
+// The function deduplicates CSVs by name, associates subscriptions and install plans
+// with their target namespaces, and creates Operator structs containing the relevant
+// metadata. It returns a slice of pointers to these Operator objects for further processing.
 func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 	allSubscriptions []olmv1Alpha.Subscription,
 	allPackageManifests []*olmpkgv1.PackageManifest,
@@ -205,6 +241,15 @@ func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 	return operators
 }
 
+// getAtLeastOneSubscription checks that at least one subscription matches a package manifest.
+//
+// It takes an Operator, a ClusterServiceVersion, a slice of Subscriptions,
+// and a list of PackageManifests. The function returns true if any
+// subscription is found for which a corresponding package manifest can be
+// retrieved via getPackageManifestWithSubscription. If no matching
+// subscription exists or an error occurs while retrieving the manifest,
+// it logs the error and returns false. This ensures that operators have
+// at least one valid subscription before proceeding with further checks.
 func getAtLeastOneSubscription(op *Operator, csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription, packageManifests []*olmpkgv1.PackageManifest) (atLeastOneSubscription bool) {
 	atLeastOneSubscription = false
 	for s := range subscriptions {
@@ -234,6 +279,13 @@ func getAtLeastOneSubscription(op *Operator, csv *olmv1Alpha.ClusterServiceVersi
 	return atLeastOneSubscription
 }
 
+// getPackageManifestWithSubscription retrieves the package manifest that corresponds to a given Operator Lifecycle Manager subscription.
+//
+// It accepts a pointer to an olmv1Alpha.Subscription and a slice of
+// olm.PackageManifest objects. The function examines each manifest in the
+// slice, comparing relevant fields (such as name, catalog source, or namespace)
+// against the subscription's specification to find a match. If a matching
+// PackageManifest is found it is returned; otherwise the function returns nil.
 func getPackageManifestWithSubscription(subscription *olmv1Alpha.Subscription, packageManifests []*olmpkgv1.PackageManifest) *olmpkgv1.PackageManifest {
 	for index := range packageManifests {
 		if packageManifests[index].Status.PackageName == subscription.Spec.Package &&
@@ -245,6 +297,12 @@ func getPackageManifestWithSubscription(subscription *olmv1Alpha.Subscription, p
 	return nil
 }
 
+// getAtLeastOneCsv reports whether a valid ClusterServiceVersion is available.
+//
+// It examines the supplied ClusterServiceVersion and its associated InstallPlan.
+// If either is nil or indicates an error state, it logs a warning and returns false.
+// Otherwise, it returns true to signal that at least one CSV has been successfully
+// retrieved and can be used for further operator validation.
 func getAtLeastOneCsv(csv *olmv1Alpha.ClusterServiceVersion, installPlan *olmv1Alpha.InstallPlan) (atLeastOneCsv bool) {
 	atLeastOneCsv = false
 	for _, csvName := range installPlan.Spec.ClusterServiceVersionNames {
@@ -262,6 +320,14 @@ func getAtLeastOneCsv(csv *olmv1Alpha.ClusterServiceVersion, installPlan *olmv1A
 	return atLeastOneCsv
 }
 
+// getAtLeastOneInstallPlan checks whether an operator has at least one InstallPlan that can be used to install the specified CSV.
+//
+// It receives a pointer to the Operator, the desired ClusterServiceVersion,
+// a slice of available InstallPlans and a slice of CatalogSources.
+// The function first verifies that the CSV exists in the catalog sources,
+// then iterates over the InstallPlans looking for one whose image index
+// matches the CSV's bundle image. If such an InstallPlan is found it returns true;
+// otherwise false.
 func getAtLeastOneInstallPlan(op *Operator, csv *olmv1Alpha.ClusterServiceVersion, allInstallPlans []*olmv1Alpha.InstallPlan, allCatalogSources []*olmv1Alpha.CatalogSource) (atLeastOneInstallPlan bool) {
 	atLeastOneInstallPlan = false
 	for _, installPlan := range allInstallPlans {
@@ -291,6 +357,11 @@ func getAtLeastOneInstallPlan(op *Operator, csv *olmv1Alpha.ClusterServiceVersio
 	return atLeastOneInstallPlan
 }
 
+// CsvToString converts a ClusterServiceVersion to its string representation.
+//
+// It takes a pointer to an olmv1Alpha.ClusterServiceVersion and returns a
+// formatted string that includes the key fields of the object for display or
+// logging purposes.
 func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {
 	return fmt.Sprintf("operator csv: %s ns: %s",
 		csv.Name,
@@ -298,6 +369,13 @@ func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {
 	)
 }
 
+// getSummaryAllOperators extracts a concise summary from each Operator and returns them as a slice of strings.
+//
+// It takes a slice of pointers to Operator structs, iterates over them,
+// formats each operator's name and status into a human‑readable string,
+// and collects these strings in a new slice.
+// The returned slice contains one entry per operator, preserving the
+// original order. This summary is used for reporting or logging purposes.
 func getSummaryAllOperators(operators []*Operator) (summary []string) {
 	operatorMap := map[string]bool{}
 	for _, o := range operators {
@@ -317,6 +395,13 @@ func getSummaryAllOperators(operators []*Operator) (summary []string) {
 	return summary
 }
 
+// getCatalogSourceImageIndexFromInstallPlan extracts the image index URL from an Operator Lifecycle Manager install plan and a list of catalog sources.
+//
+// It searches the provided InstallPlan for the relevant CatalogSource reference,
+// matches that reference against the supplied CatalogSource slice, and retrieves
+// the image field which represents the container image index to be used.
+// If no matching catalog source is found or if any error occurs while accessing
+// the fields, it returns an empty string along with an error describing the issue.
 func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPlan, allCatalogSources []*olmv1Alpha.CatalogSource) (string, error) {
 	// ToDo/Technical debt: what to do if installPlan has more than one BundleLookups entries.
 	catalogSourceName := installPlan.Status.BundleLookups[0].CatalogSourceRef.Name
@@ -331,6 +416,11 @@ func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPl
 	return "", fmt.Errorf("failed to get catalogsource: not found")
 }
 
+// getOperatorTargetNamespaces retrieves the namespaces targeted by an Operator in a given namespace.
+//
+// It takes a namespace name as input, queries the cluster for operator groups and operators
+// within that namespace, extracts their target namespaces, and returns them as a slice of strings.
+// If any step fails it returns an error describing the failure.
 func getOperatorTargetNamespaces(namespace string) ([]string, error) {
 	client := clientsholder.GetClientsHolder()
 
@@ -347,6 +437,13 @@ func getOperatorTargetNamespaces(namespace string) ([]string, error) {
 	return list.Items[0].Spec.TargetNamespaces, nil
 }
 
+// GetAllOperatorGroups retrieves all OperatorGroup resources from the cluster.
+//
+// It returns a slice of pointers to olmv1.OperatorGroup and an error if the
+// operation fails. The function uses the provider's client holder to list
+// OperatorGroup objects via the OperatorsV1 API. If no groups are found, it
+// returns an empty slice without error. Any other errors encountered during
+// the listing process are propagated back to the caller.
 func GetAllOperatorGroups() ([]*olmv1.OperatorGroup, error) {
 	client := clientsholder.GetClientsHolder()
 
@@ -374,6 +471,10 @@ func GetAllOperatorGroups() ([]*olmv1.OperatorGroup, error) {
 	return operatorGroups, nil
 }
 
+// searchPodInSlice searches a slice of Pod pointers for a pod that matches the given name and namespace.
+// It iterates over the provided []*Pod slice and returns the first Pod whose Name and Namespace fields match the
+// supplied arguments. If no matching pod is found, it returns nil. This helper is used internally by operator
+// logic to locate specific pods within a collection.
 func searchPodInSlice(name, namespace string, pods []*Pod) *Pod {
 	// Helper map to filter pods that have been already added
 	podsMap := map[types.NamespacedName]*Pod{}
@@ -390,6 +491,11 @@ func searchPodInSlice(name, namespace string, pods []*Pod) *Pod {
 	return nil
 }
 
+// addOperatorPodsToTestPods adds operator pods to the test environment pod list.
+//
+// It scans the current test pod slice and appends any operator-related pods that are not already present.
+// The function uses the TestEnvironment context to determine which pods qualify as operators,
+// checks for duplicates via searchPodInSlice, logs actions with Info, and updates the pod slice in place.
 func addOperatorPodsToTestPods(operatorPods []*Pod, env *TestEnvironment) {
 	for _, operatorPod := range operatorPods {
 		// Check whether the pod was already discovered
@@ -406,6 +512,14 @@ func addOperatorPodsToTestPods(operatorPods []*Pod, env *TestEnvironment) {
 	}
 }
 
+// addOperandPodsToTestPods appends operand pods to the test environment pod list.
+//
+// It iterates over the provided slice of pod references and checks if each
+// pod is already present in the TestEnvironment's collection by calling
+// searchPodInSlice. If a pod is not found, it logs an informational message
+// and appends the pod to the environment's internal slice.
+// The function does not return a value; it mutates the TestEnvironment passed
+// as its second argument.
 func addOperandPodsToTestPods(operandPods []*Pod, env *TestEnvironment) {
 	for _, operandPod := range operandPods {
 		// Check whether the pod was already discovered

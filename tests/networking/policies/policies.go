@@ -21,7 +21,13 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//nolint:gocritic // unnamed results
+// IsNetworkPolicyCompliant checks whether a given NetworkPolicy is compliant with a specified policy type.
+//
+// It returns a boolean indicating compliance and a string containing an explanatory message.
+// The function examines the rules of the provided networkingv1.NetworkPolicy against the
+// supplied PolicyType, verifying that the necessary ingress or egress policies are defined
+// appropriately. If the policy does not meet the requirements, the return value will be false
+// and the message will describe why the policy is non‑compliant.
 func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType networkingv1.PolicyType) (bool, string) {
 	// As long as we have decided above that there is no pod selector,
 	// we just have to make sure that the policy type is either Ingress or Egress (or both) we can return true.
@@ -57,6 +63,12 @@ func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType network
 	return policyTypeFound, ""
 }
 
+// LabelsMatch reports whether the given selector matches the provided labels.
+//
+// It accepts a v1.LabelSelector and a map of string keys to string values,
+// evaluates whether all requirements in the selector are satisfied by the
+// label set, and returns true if they match or false otherwise. The function
+// does not modify its arguments.
 func LabelsMatch(podSelectorLabels v1.LabelSelector, podLabels map[string]string) bool {
 	labelMatch := false
 

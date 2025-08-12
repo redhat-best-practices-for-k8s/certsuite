@@ -25,6 +25,12 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
+// findAbnormalEvents retrieves events from the provided client that are considered abnormal based on specific criteria.
+//
+// It takes a CoreV1Interface to access the Kubernetes API and a slice of namespace names to limit the search.
+// The function lists all events in each given namespace, filters them for abnormal conditions (e.g., high severity or specific reason),
+// and returns a slice of corev1.Event objects that match those conditions. If an error occurs while listing events, it is logged but not returned,
+// allowing the caller to proceed with any successfully retrieved events.
 func findAbnormalEvents(oc corev1client.CoreV1Interface, namespaces []string) (abnormalEvents []corev1.Event) {
 	abnormalEvents = []corev1.Event{}
 	for _, ns := range namespaces {

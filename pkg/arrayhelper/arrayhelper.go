@@ -20,8 +20,13 @@ import (
 	"strings"
 )
 
-// ArgListToMap takes a list of strings of the form "key=value" and translate it into a map
-// of the form {key: value}
+// ArgListToMap converts a slice of strings formatted as key=value into a map.
+//
+// It iterates over each string in the input slice, splits it on the first '='
+// character, and assigns the resulting key and value to a new map. The function
+// returns this map containing all parsed key/value pairs. If an element does not
+// contain '=', it is ignored. This utility is useful for parsing command-line
+// arguments or configuration options into a dictionary.
 func ArgListToMap(lst []string) map[string]string {
 	retval := make(map[string]string)
 	for _, arg := range lst {
@@ -36,7 +41,11 @@ func ArgListToMap(lst []string) map[string]string {
 	return retval
 }
 
-// FilterArray takes a list and a predicate and returns a list of all elements for whom the predicate returns true
+// FilterArray filters a slice of strings using the provided predicate.
+//
+// It iterates over each element in the input slice and appends those
+// for which the predicate function returns true to a new slice.
+// The resulting slice is returned, leaving the original unchanged.
 func FilterArray(vs []string, f func(string) bool) []string {
 	vsf := make([]string, 0)
 	for _, v := range vs {
@@ -47,6 +56,11 @@ func FilterArray(vs []string, f func(string) bool) []string {
 	return vsf
 }
 
+// Unique removes duplicate strings from a slice and returns a new slice containing only unique values.
+//
+// It takes a slice of strings, iterates over each element, and builds a new slice that contains
+// each string exactly once while preserving the original order of first occurrences.
+// The function does not modify the input slice.
 func Unique(slice []string) []string {
 	// create a map with all the values as key
 	uniqMap := make(map[string]struct{})

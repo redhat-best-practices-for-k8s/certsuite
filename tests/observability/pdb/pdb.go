@@ -12,7 +12,12 @@ const (
 	percentageDivisor = 100
 )
 
-// percentageToFloat converts a percentage string to a float
+// percentageToFloat converts a percentage string to a float.
+//
+// It parses the input string as a floating point number and returns
+// the value divided by the constant percentageDivisor, along with any
+// parsing error that occurs. The returned float64 represents the numeric
+// value of the percentage without the percent sign.
 func percentageToFloat(percentage string) (float64, error) {
 	var percentageFloat float64
 	_, err := fmt.Sscanf(percentage, "%f%%", &percentageFloat)
@@ -22,6 +27,12 @@ func percentageToFloat(percentage string) (float64, error) {
 	return percentageFloat / percentageDivisor, nil
 }
 
+// CheckPDBIsValid verifies that a PodDisruptionBudget is properly configured for a given replica count.
+//
+// It accepts a pointer to a policyv1.PodDisruptionBudget and an optional desired replica count.
+// The function checks the MinAvailable and MaxUnavailable fields, converting them from IntOrString
+// representations to integer values when necessary. If the PDB constraints are satisfied it returns true
+// with no error; otherwise it returns false along with an explanatory error.
 func CheckPDBIsValid(pdb *policyv1.PodDisruptionBudget, replicas *int32) (bool, error) {
 	var replicaCount int32
 	if replicas != nil {
@@ -66,6 +77,12 @@ func CheckPDBIsValid(pdb *policyv1.PodDisruptionBudget, replicas *int32) (bool, 
 	return true, nil
 }
 
+// intOrStringToValue converts an IntOrString value to a concrete integer, optionally applying a scaling factor.
+//
+// It accepts a pointer to an IntOrString and a maximum int32 value. If the IntOrString holds an integer,
+// that value is returned directly. If it contains a percentage string, the function interprets the
+// percentage relative to the supplied max, rounds to the nearest even integer, and returns the result.
+// Errors are reported if the input cannot be parsed or the computed value exceeds int32 limits.
 func intOrStringToValue(intOrStr *intstr.IntOrString, replicas int32) (int, error) {
 	switch intOrStr.Type {
 	case intstr.Int:

@@ -24,6 +24,11 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
+// GetServiceIPVersion returns the IP version of a Kubernetes Service.
+//
+// It examines the service's cluster IPs and determines whether the
+// service is IPv4, IPv6, or dual‑stack. If no IPs are present or an error
+// occurs while parsing the addresses, it returns an error describing the issue.
 func GetServiceIPVersion(aService *corev1.Service) (result netcommons.IPVersion, err error) {
 	ipver, err := netcommons.GetIPVersion(aService.Spec.ClusterIP)
 	if err != nil {
@@ -65,6 +70,12 @@ func GetServiceIPVersion(aService *corev1.Service) (result netcommons.IPVersion,
 	return result, err
 }
 
+// ToString returns a human-readable description of the given Service.
+//
+// It accepts a pointer to a corev1.Service object and formats its
+// key attributes (such as name, namespace, cluster IP, ports, etc.) into a
+// single string using fmt.Sprintf. The resulting string can be used for logging,
+// debugging or test assertions.
 func ToString(aService *corev1.Service) (out string) {
 	return fmt.Sprintf("Service ns: %s, name: %s ClusterIP:%s ClusterIPs: %v", aService.Namespace,
 		aService.Name,
@@ -72,6 +83,12 @@ func ToString(aService *corev1.Service) (out string) {
 		aService.Spec.ClusterIPs)
 }
 
+// ToStringSlice converts a slice of Service pointers into a single string representation.
+//
+// It accepts a slice of Service objects from the core v1 API and produces
+// a human‑readable string, typically by concatenating relevant fields such
+// as service names or namespaces. The resulting string is returned for use in
+// logging, debugging, or test output.
 func ToStringSlice(manyServices []*corev1.Service) (out string) {
 	for _, aService := range manyServices {
 		out += fmt.Sprintf("Service ns: %s, name: %s ClusterIP:%s ClusterIPs: %v\n", aService.Namespace,
@@ -82,6 +99,11 @@ func ToStringSlice(manyServices []*corev1.Service) (out string) {
 	return out
 }
 
+// isClusterIPsDualStack determines whether the provided cluster IP addresses are a dual‑stack set.
+//
+// It accepts a slice of string IP addresses, checks each address to determine its
+// version (IPv4 or IPv6) using GetIPVersion, and returns true if both versions are present.
+// If an error occurs during validation, it returns false along with that error.
 func isClusterIPsDualStack(ips []string) (result bool, err error) {
 	var hasIPv4, hasIPv6 bool
 	for _, ip := range ips {

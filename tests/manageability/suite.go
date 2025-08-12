@@ -45,6 +45,12 @@ var (
 )
 
 // LoadChecks loads all the checks.
+//
+// It registers a series of checks that validate various aspects of
+// container manageability. The function sets up before‑each hooks,
+// creates check groups, and adds individual checks with their
+// corresponding test functions and skip conditions. No parameters are
+// required and it returns nothing.
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.ManageabilityTestKey)
 
@@ -66,8 +72,11 @@ func LoadChecks() {
 		}))
 }
 
-// testContainersImageTag is a function that checks if each container is missing image tag(s).
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testContainersImageTag checks if any container is missing an image tag and sets the compliance result accordingly.
+//
+// It iterates over the containers in the provided environment, determines whether each container's image tag is empty,
+// categorises them into compliant or non-compliant lists, creates report objects for each case, logs relevant information,
+// and finally updates the check result with a pass if all containers are compliant or fail otherwise.
 func testContainersImageTag(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -88,16 +97,21 @@ func testContainersImageTag(check *checksdb.Check, env *provider.TestEnvironment
 // and the optional <suffix> can be chosen by the application. Allowed protocol names: grpc, grpc-web, http, http2, tcp, udp.
 var allowedProtocolNames = map[string]bool{"grpc": true, "http": true, "http2": true, "tcp": true, "udp": true}
 
-// containerPortNameFormatCheck is a function that checks if the format of a container port name is valid.
-// Return:
-//   - bool: true if the format of a container port name is valid, otherwise return false.
+// containerPortNameFormatCheck checks if a container port name follows the required format.
+//
+// It validates that the given string conforms to the pattern <protocol>[-<suffix>],
+// where <protocol> must be one of the allowed protocol names such as grpc, grpc-web,
+// http, http2, tcp, or udp. The function returns true when the format is valid
+// and false otherwise. This check is used to ensure container port names meet
+// the specifications before further processing.
 func containerPortNameFormatCheck(portName string) bool {
 	res := strings.Split(portName, "-")
 	return allowedProtocolNames[res[0]]
 }
 
-// testContainerPortNameFormat is a function that checks if each container declares ports that do not follow the partner naming conventions.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testContainerPortNameFormat checks that each container declares ports with names following partner naming conventions.
+// It analyzes the container port lists, categorizes them into compliant and non-compliant,
+// updates the compliance check result, and records detailed report objects for each container.
 func testContainerPortNameFormat(check *checksdb.Check, env *provider.TestEnvironment) {
 	for _, newProtocol := range env.ValidProtocolNames {
 		allowedProtocolNames[newProtocol] = true
