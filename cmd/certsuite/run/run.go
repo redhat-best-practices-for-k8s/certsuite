@@ -23,12 +23,6 @@ var (
 	}
 )
 
-// NewCommand creates and configures the root command for the certsuite CLI.
-//
-// It sets up persistent flags for various configuration options such as
-// output format, verbosity, and target environments. The function returns a
-// fully initialized cobra.Command that can be used by the main program to
-// register subcommands and execute the application.
 func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().StringP("output-dir", "o", "results", "The directory where the output artifacts will be placed")
 	runCmd.PersistentFlags().StringP("label-filter", "l", "none", "Label expression to filter test cases  (e.g. --label-filter 'access-control && !access-control-sys-admin-capability')")
@@ -60,13 +54,6 @@ func NewCommand() *cobra.Command {
 	return runCmd
 }
 
-// initTestParamsFromFlags sets test parameters from command‑line flags and returns an error if any required flag is missing or invalid.
-//
-// initTestParamsFromFlags reads the values of all relevant flags on a Cobra command,
-// populates the test configuration structure with those values, and performs basic
-// validation. It returns nil on success or an error describing why the parameters
-// could not be initialized. The function expects to be called during command
-// initialization after flags have been defined.
 func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams := configuration.GetTestParameters()
 
@@ -121,15 +108,6 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 
 	return nil
 }
-
-// runTestSuite executes the certificate suite test workflow.
-//
-// It initializes test parameters from command line flags, starts the
-// server, performs startup routines, runs the tests, and then shuts
-// down the server. Errors during any phase are reported via Fatal
-// logs and returned to the caller. The function accepts a Cobra
-// command and arguments slice, but does not use them directly beyond
-// flag parsing. It returns an error if test execution fails.
 func runTestSuite(cmd *cobra.Command, _ []string) error {
 	err := initTestParamsFromFlags(cmd)
 	if err != nil {

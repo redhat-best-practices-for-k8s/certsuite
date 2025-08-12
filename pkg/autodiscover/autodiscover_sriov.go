@@ -24,13 +24,6 @@ var SriovNetworkNodePolicyGVR = schema.GroupVersionResource{
 	Resource: "sriovnetworknodepolicies",
 }
 
-// getSriovNetworks retrieves SR‑IOV network resources from a cluster.
-//
-// It accepts a ClientsHolder to access the Kubernetes API and a slice of namespace names.
-// For each namespace it lists SriovNetwork and SriovNetworkNodePolicy objects,
-// collecting them into a single slice of unstructured.Unstructured values.
-// The function returns that slice along with any error encountered during listing,
-// including handling of not‑found resources gracefully.
 func getSriovNetworks(client *clientsholder.ClientsHolder, namespaces []string) (sriovNetworks []unstructured.Unstructured, err error) {
 	// Check for nil client or DynamicClient to prevent panic
 	if client == nil || client.DynamicClient == nil {
@@ -53,13 +46,6 @@ func getSriovNetworks(client *clientsholder.ClientsHolder, namespaces []string) 
 	return sriovNetworkList, nil
 }
 
-// getSriovNetworkNodePolicies retrieves all SriovNetworkNodePolicy objects from the provided client set and namespaces.
-//
-// It accepts a ClientsHolder containing Kubernetes clients and a slice of namespace names.
-// For each namespace it lists resources defined by SriovNetworkNodePolicyGVR.
-// If a namespace is not found, the error is ignored and processing continues.
-// The function returns a slice of unstructured.Unstructured objects representing
-// the policies that were successfully retrieved, or an error if any other issue occurs.
 func getSriovNetworkNodePolicies(client *clientsholder.ClientsHolder, namespaces []string) (sriovNetworkNodePolicies []unstructured.Unstructured, err error) {
 	// Check for nil client or DynamicClient to prevent panic
 	if client == nil || client.DynamicClient == nil {

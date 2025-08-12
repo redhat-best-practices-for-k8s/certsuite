@@ -72,14 +72,6 @@ var (
 	MasterLabels = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
 )
 
-// TestEnvironment holds all resources and configuration needed to run a certsuite test.
-//
-// It aggregates lists of Kubernetes objects such as Pods, Nodes, Services, CRDs,
-// Operators, and catalog sources, along with runtime state like node counts,
-// version information, and connectivity settings. The struct also tracks
-// abnormal events and provides helper maps for quick lookup. It is used by
-// the provider package to expose a snapshot of the cluster that can be
-// queried by test functions to verify compliance rules.
 type TestEnvironment struct { // rename this with testTarget
 	Namespaces     []string `json:"testNamespaces"`
 	AbnormalEvents []*Event
@@ -155,12 +147,6 @@ type TestEnvironment struct { // rename this with testTarget
 	SkipPreflight                bool
 }
 
-// MachineConfig represents a machine configuration in the provider package.
-//
-// It embeds a *mcv1.MachineConfig and adds a Config field that holds systemd unit definitions.
-// The Config field contains a nested struct with a Systemd field, which includes a slice of Units,
-// each having a Name and Contents string. This structure is used to construct or interpret
-// machine configuration objects for managing Kubernetes nodes.
 type MachineConfig struct {
 	*mcv1.MachineConfig
 	Config struct {
@@ -173,12 +159,6 @@ type MachineConfig struct {
 	} `json:"config"`
 }
 
-// CniNetworkInterface represents a network interface defined by a Kubernetes CNI plugin.
-//
-// It contains information about the interface name, whether it is the default,
-// the device details, its IP addresses and DNS configuration. This struct
-// is used to unmarshal the CNI annotation "k8s.v1.cni.cncf.io/networks-status"
-// which provides per-pod network interface data.
 type CniNetworkInterface struct {
 	Name       string                 `json:"name"`
 	Interface  string                 `json:"interface"`
@@ -188,41 +168,20 @@ type CniNetworkInterface struct {
 	DeviceInfo deviceInfo             `json:"device-info"`
 }
 
-// ScaleObject represents a Kubernetes resource that can be scaled.
-//
-// It contains the GroupResourceSchema identifying the kind of resource and a CrScale
-// value describing its current scale status. The struct is used by provider functions
-// to manage scaling operations for custom resources.
 type ScaleObject struct {
 	Scale               CrScale
 	GroupResourceSchema schema.GroupResource
 }
 
-// deviceInfo holds information about a hardware device.
-//
-// It stores the PCI address, the type of the device, and its version string.
-// This struct is used internally by the provider package to keep track of
-// devices that have been discovered or provisioned during testing.
 type deviceInfo struct {
 	Type    string `json:"type"`
 	Version string `json:"version"`
 	PCI     pci    `json:"pci"`
 }
 
-// pci represents a PCI device identifier.
-//
-// It holds the PCI address of a device in standard format (domain:bus:device.function).
-// The PciAddress field stores this value as a string, allowing other components
-// to reference or query the specific hardware device within the system.
 type pci struct {
 	PciAddress string `json:"pci-address"`
 }
-
-// PreflightTest represents a single test that can be executed before deployment.
-//
-// It holds the name of the test, a short description, an optional error returned when the test fails,
-// and remediation instructions to resolve any issues found. The struct is used by the provider
-// package to aggregate results from multiple preflight checks.
 type PreflightTest struct {
 	Name        string
 	Description string
@@ -230,12 +189,6 @@ type PreflightTest struct {
 	Error       error
 }
 
-// PreflightResultsDB holds the outcome of a pre‑flight test run.
-//
-// It contains three slices of PreflightTest values:
-// Errors lists tests that encountered errors during execution,
-// Failed records tests that completed but failed validation,
-// Passed includes tests that succeeded without issues.
 type PreflightResultsDB struct {
 	Passed []PreflightTest
 	Failed []PreflightTest
@@ -247,12 +200,6 @@ var (
 	loaded = false
 )
 
-// deployDaemonSet creates a daemon set on the cluster and waits until it is ready.
-//
-// It accepts the name of the daemon set to deploy, constructs the DaemonSet
-// object from test parameters, applies it via the Kubernetes client,
-// and then blocks until the daemon set reports readiness or an error occurs.
-// If any step fails, an error describing the failure is returned.
 func deployDaemonSet(namespace string) error {
 	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
 
@@ -282,12 +229,6 @@ func deployDaemonSet(namespace string) error {
 	return nil
 }
 
-// buildTestEnvironment creates a test environment with nodes, operators, and pods ready for verification.
-//
-// It loads configuration and test parameters, deploys the necessary daemon sets,
-// discovers available operator groups, creates operator instances, and
-// generates node and pod objects based on those operators. The function
-// returns a cleanup function that should be called when the test completes.
 func buildTestEnvironment() { //nolint:funlen,gocyclo
 	start := time.Now()
 	env = TestEnvironment{}
@@ -470,10 +411,6 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	log.Info("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
 }
 
-// updateCrUnderTest converts a slice of autodiscover.ScaleObject into the package’s internal ScaleObject representation.
-//
-// It iterates over each element in the input slice, appends it to a new slice
-// and returns that slice as []ScaleObject. No other side effects occur.
 func updateCrUnderTest(scaleCrUnderTest []autodiscover.ScaleObject) []ScaleObject {
 	var scaleCrUndeTestTemp []ScaleObject
 	for i := range scaleCrUnderTest {
@@ -484,11 +421,6 @@ func updateCrUnderTest(scaleCrUnderTest []autodiscover.ScaleObject) []ScaleObjec
 	return scaleCrUndeTestTemp
 }
 
-// getPodContainers returns the list of containers for a given pod, optionally including init containers.
-// It inspects the Pod object and extracts each container's name, image, and runtime UID,
-// building a Container struct for every non‑ignored container. If withInit is true,
-// init containers are processed as well. The function logs warnings when it encounters
-// missing or ignored containers and returns a slice of pointers to Container objects.
 func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Container) {
 	for j := 0; j < len(aPod.Spec.Containers); j++ {
 		cut := &(aPod.Spec.Containers[j])
@@ -537,12 +469,6 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 	return containerList
 }
 
-// isSkipHelmChart determines if a Helm chart should be skipped based on a list of skip rules.
-//
-// It takes the name of a Helm chart and a slice of SkipHelmChartList entries.
-// Each entry contains a pattern or exact match for chart names to ignore.
-// The function returns true if any rule matches the given chart name,
-// indicating that the chart should not be processed. Otherwise it returns false.
 func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelmChartList) bool {
 	if len(skipHelmChartList) == 0 {
 		return false
@@ -556,11 +482,6 @@ func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelm
 	return false
 }
 
-// GetTestEnvironment returns a TestEnvironment instance configured from the current environment variables.
-//
-// It constructs the test environment by calling buildTestEnvironment, which gathers configuration
-// such as provider name, cluster ID, namespace, and other runtime settings.
-// The returned TestEnvironment contains all information needed to run tests against the target Kubernetes cluster.
 func GetTestEnvironment() TestEnvironment {
 	if !loaded {
 		buildTestEnvironment()
@@ -569,21 +490,10 @@ func GetTestEnvironment() TestEnvironment {
 	return env
 }
 
-// IsOCPCluster reports whether the current cluster is an OpenShift Container Platform (OCP) installation.
-//
-// It performs detection logic based on the presence of OCP‑specific resources,
-// labels, or configuration that are unique to OCP clusters.
-// The function returns true if it determines the environment is running
-// OCP and false otherwise. No parameters are required.
 func IsOCPCluster() bool {
 	return env.OpenshiftVersion != autodiscover.NonOpenshiftClusterVersion
 }
 
-// buildContainerImageSource constructs a ContainerImageIdentifier from the provided image name and tag.
-// It parses the image string to extract registry, repository, and image components,
-// handling both explicit and implicit defaults (e.g., Docker Hub). The function returns a
-// ContainerImageIdentifier struct that can be used to reference the container image in subsequent
-// provider logic. If parsing fails, it logs a debug message and falls back to an empty identifier.
 func buildContainerImageSource(urlImage, urlImageID string) (source ContainerImageIdentifier) {
 	const regexImageWithTag = `^([^/]*)/*([^@]*):(.*)`
 	const regexImageDigest = `^([^/]*)/(.*)@(.*:.*)`
@@ -620,12 +530,6 @@ func buildContainerImageSource(urlImage, urlImageID string) (source ContainerIma
 	return source
 }
 
-// GetRuntimeUID returns the runtime UID of a container.
-//
-// It examines the given ContainerStatus and parses its State or ID field
-// to extract the numeric UID assigned by the container runtime.
-// The returned string contains only the UID portion; if parsing fails,
-// an empty string is returned.
 func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 	split := strings.Split(cs.ContainerID, "://")
 	if len(split) > 0 {
@@ -635,13 +539,9 @@ func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 	return runtime, uid
 }
 
-// GetPodIPsPerNet retrieves the IP addresses of a pod from its CNI networks-status annotation.
-//
-// It accepts a string containing the JSON value of the
-// “k8s.v1.cni.cncf.io/networks-status” annotation.
-// The function unmarshals this data into a map keyed by network name,
-// where each value is a CniNetworkInterface describing that network’s
-// IP(s). If parsing fails, it returns an error.
+// GetPodIPsPerNet gets the IPs of a pod.
+// CNI annotation "k8s.v1.cni.cncf.io/networks-status".
+// Returns (ips, error).
 func GetPodIPsPerNet(annotation string) (ips map[string]CniNetworkInterface, err error) {
 	// This is a map indexed with the network name (network attachment) and
 	// listing all the IPs created in this subnet and belonging to the pod namespace
@@ -663,13 +563,6 @@ func GetPodIPsPerNet(annotation string) (ips map[string]CniNetworkInterface, err
 	return ips, nil
 }
 
-// GetPciPerPod returns the list of PCI device IDs allocated to a pod.
-//
-// It accepts the name of a pod as its argument, retrieves the pod's
-// annotation that lists PCI devices, parses the JSON value, and returns
-// a slice containing each PCI device identifier. If the annotation is
-// missing or malformed, it returns an empty slice and an error describing
-// the issue.
 func GetPciPerPod(annotation string) (pciAddr []string, err error) {
 	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
@@ -684,61 +577,26 @@ func GetPciPerPod(annotation string) (pciAddr []string, err error) {
 	return pciAddr, nil
 }
 
-// SetNeedsRefresh flags the test environment to indicate that a refresh is required.
-//
-// It sets an internal flag so that subsequent operations will trigger a re‑initialisation
-// of the provider state, ensuring that any changes in the cluster are reflected before
-// further tests run. No parameters or return values are involved.
 func (env *TestEnvironment) SetNeedsRefresh() {
 	loaded = false
 }
 
-// IsIntrusive reports whether the current TestEnvironment operates in an intrusive mode.
-//
-// It examines internal configuration of the TestEnvironment and determines
-// if the tests are allowed to modify or affect the cluster state.
-// The method takes no parameters and returns a boolean value:
-// true indicates that the environment is set up for intrusive testing,
-// false means non‑intrusive (read‑only) operation.
 func (env *TestEnvironment) IsIntrusive() bool {
 	return env.params.Intrusive
 }
 
-// IsPreflightInsecureAllowed reports whether pre‑flight checks are allowed to run insecurely.
-//
-// It returns a boolean indicating if the test environment permits insecure
-// execution of pre‑flight validation steps. This is typically used to decide
-// whether certain network or security tests should be skipped when running
-// in environments that enforce stricter connectivity constraints.
 func (env *TestEnvironment) IsPreflightInsecureAllowed() bool {
 	return env.params.AllowPreflightInsecure
 }
 
-// GetDockerConfigFile returns the path to the Docker configuration file used by the test environment.
-//
-// It retrieves the location of the Docker config file from the TestEnvironment
-// instance and returns it as a string. The function does not take any parameters
-// and always returns a valid file path when called on an initialized
-// TestEnvironment.
 func (env *TestEnvironment) GetDockerConfigFile() string {
 	return env.params.PfltDockerconfig
 }
 
-// GetOfflineDBPath returns the filesystem path to the offline database used by the test environment.
-//
-// It retrieves the location where the provider stores its offline database, which is
-// required for tests that run without network access. The returned string contains
-// an absolute or relative path depending on how the TestEnvironment was configured.
-// No parameters are needed; the function simply reads internal configuration fields.
 func (env *TestEnvironment) GetOfflineDBPath() string {
 	return env.params.OfflineDB
 }
 
-// GetWorkerCount returns the number of worker nodes in the test environment.
-//
-// It iterates over all known nodes and counts those that satisfy the
-// IsWorkerNode predicate, which checks for labels defined in WorkerLabels.
-// The result is an integer representing how many worker nodes are present.
 func (env *TestEnvironment) GetWorkerCount() int {
 	workerCount := 0
 	for _, e := range env.Nodes {
@@ -749,12 +607,6 @@ func (env *TestEnvironment) GetWorkerCount() int {
 	return workerCount
 }
 
-// GetMasterCount counts the number of master nodes in the test environment.
-//
-// It iterates over all known nodes, checks each one with the IsControlPlaneNode
-// helper to determine if it is a control‑plane (master) node, and returns the
-// total count as an integer. This value is used by tests that need to know how
-// many masters are present in the cluster being evaluated.
 func (env *TestEnvironment) GetMasterCount() int {
 	masterCount := 0
 	for _, e := range env.Nodes {
@@ -765,23 +617,10 @@ func (env *TestEnvironment) GetMasterCount() int {
 	return masterCount
 }
 
-// IsSNO reports whether the test environment represents a Single Node OpenShift cluster.
-//
-// It examines the current node labels and determines if only one master node is present.
-// The function returns true when the cluster has a single master, indicating an SNO setup,
-// otherwise it returns false. This information is used to adjust tests that are
-// specific to single-node deployments.
 func (env *TestEnvironment) IsSNO() bool {
 	return len(env.Nodes) == 1
 }
 
-// getMachineConfig retrieves a MachineConfig for the given name.
-//
-// getMachineConfig looks up a machine configuration by its name in the
-// supplied map of MachineConfig objects. If the requested configuration is
-// not present, it attempts to fetch it from the cluster's MachineConfiguration
-// API using the provided clients holder. The function returns the resolved
-// MachineConfig value and an error if the lookup or unmarshalling fails.
 func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (MachineConfig, error) {
 	client := clientsholder.GetClientsHolder()
 
@@ -807,15 +646,6 @@ func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (M
 	return mc, nil
 }
 
-// createNodes builds a map of Node objects from a slice of corev1.Node.
-//
-// It iterates over the provided node list, extracting relevant metadata such as
-// labels, annotations, and machine configuration data. For each node it constructs
-// a Node struct that includes role information derived from MasterLabels and
-// WorkerLabels, status indicators, and any applicable warnings or errors.
-// The function logs informational messages via Info, Warn, and Error helpers,
-// and returns the resulting map keyed by node name. If node extraction fails,
-// an empty map is returned while errors are logged.
 func createNodes(nodes []corev1.Node) map[string]Node {
 	wrapperNodes := map[string]Node{}
 
@@ -852,12 +682,6 @@ func createNodes(nodes []corev1.Node) map[string]Node {
 
 	return wrapperNodes
 }
-
-// GetBaremetalNodes returns the list of cluster nodes that are running on bare‑metal infrastructure.
-//
-// It iterates over all known nodes and selects those whose names do not start with any
-// prefix indicating a cloud provider. The returned slice contains Node objects representing
-// each bare‑metal node, which can then be used for further inspection or testing.
 func (env *TestEnvironment) GetBaremetalNodes() []Node {
 	var baremetalNodes []Node
 	for _, node := range env.Nodes {
@@ -868,14 +692,6 @@ func (env *TestEnvironment) GetBaremetalNodes() []Node {
 	return baremetalNodes
 }
 
-// GetPreflightResultsDB returns a PreflightResultsDB based on the supplied Results.
-//
-// It constructs a database object that contains information about preflight checks,
-// including their names, metadata, help text, and any errors encountered.
-// The function iterates over the provided Results slice, appending each check's
-// details to the database. If an error is present for a check, it is recorded
-// in the resulting PreflightResultsDB. This DB can then be queried or exported
-// for reporting purposes.
 func GetPreflightResultsDB(results *plibRuntime.Results) PreflightResultsDB {
 	resultsDB := PreflightResultsDB{}
 	for _, res := range results.Passed {

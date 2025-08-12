@@ -54,12 +54,7 @@ var (
 	}
 )
 
-// LoadChecks registers all networking checks and returns a setup function.
-//
-// It creates several check groups, adds individual checks for network
-// connectivity and pod/daemonset conditions, and configures skip logic
-// based on the test environment. The returned closure performs any
-// required initialization before the checks are executed.
+//nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.NetworkingTestKey)
 
@@ -173,11 +168,6 @@ func LoadChecks() {
 		}))
 }
 
-// testExecProbDenyAtCPUPinning verifies that containers with exec probes set to deny at CPU pinning are correctly reported.
-//
-// It receives a Check object and a slice of Pod objects, examines each pod for the presence of exec probes,
-// logs relevant information, creates report entries for pods lacking such probes, and updates the check result
-// accordingly. The function does not return a value but modifies the supplied Check via SetResult.
 func testExecProbDenyAtCPUPinning(check *checksdb.Check, dpdkPods []*provider.Pod) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -201,9 +191,7 @@ func testExecProbDenyAtCPUPinning(check *checksdb.Check, dpdkPods []*provider.Po
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testUndeclaredContainerPortsUsage examines each pod in the environment to determine if any containers expose ports that are not declared in their manifests.  
-// It retrieves listening ports from the cluster, compares them against the expected port list for each container, and records discrepancies in a report object.  
-// The function logs progress and errors during its execution and updates the test result with details of any undeclared ports found.
+//nolint:funlen
 func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -276,11 +264,7 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testNetworkConnectivity verifies that the default network interfaces of containers can reach each other across different IP versions and interface types.
-//
-// It accepts a test environment, an IP version, an interface type, and a check definition.
-// The function builds a networking test context, logs progress, runs connectivity tests,
-// and records the result. The returned closure performs these steps when executed.
+// testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
 func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommons.IPVersion, aType netcommons.IFType, check *checksdb.Check) {
 	netsUnderTest := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType, check.GetLogger())
 	report, skip := icmp.RunNetworkingTests(netsUnderTest, defaultNumPings, aIPVersion, check.GetLogger())
@@ -290,14 +274,6 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	check.SetResult(report.CompliantObjectsOut, report.NonCompliantObjectsOut)
 }
 
-// testOCPReservedPortsUsage tests that OpenShift reserved ports are correctly used by the system.
-//
-// It runs the TestReservedPortsUsage check against the provided test environment,
-// logs any relevant information, and records the result of the check in the
-// checks database. The function receives a pointer to a Check object for storing
-// results and a pointer to the current TestEnvironment which contains all
-// necessary configuration and context. No return value is produced; results are
-// stored via SetResult.
 func testOCPReservedPortsUsage(check *checksdb.Check, env *provider.TestEnvironment) {
 	// List of all ports reserved by OpenShift
 	OCPReservedPorts := map[int32]bool{
@@ -307,12 +283,6 @@ func testOCPReservedPortsUsage(check *checksdb.Check, env *provider.TestEnvironm
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPartnerSpecificTCPPorts checks that the networking environment correctly handles reserved TCP ports for a given partner.
-//
-// It takes a Check object and a TestEnvironment pointer.
-// The function logs its progress, verifies that the required
-// partner-specific TCP ports are available using TestReservedPortsUsage,
-// and records the result in the check. No value is returned.
 func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnvironment) {
 	// List of all of the ports reserved by partner
 	ReservedPorts := map[int32]bool{
@@ -330,14 +300,6 @@ func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnviro
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testDualStackServices checks that a service is reachable over both IPv4 and IPv6 addresses.
-//
-// It retrieves the service IP version for each address family, attempts to ping
-// the service from the test environment, and records success or failure in a
-// report object. The function logs informational messages during execution,
-// handles errors by logging them, and sets the overall result status based on
-// whether all pings succeeded. No return value is produced; results are
-// reported via the testing framework's reporting mechanisms.
 func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -368,12 +330,6 @@ func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment)
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testNetworkPolicyDenyAll verifies that a Kubernetes cluster enforces a "deny all" NetworkPolicy correctly.
-//
-// It receives a check object and a test environment containing the namespace and pods to examine.
-// The function logs progress, checks whether all pods match the expected labels,
-// determines compliance of each pod with the deny‑all policy,
-// records any errors encountered, and updates the check result accordingly.
 func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -438,14 +394,6 @@ func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironme
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testRestartOnRebootLabelOnPodsUsingSriov checks that pods using SR‑IOV have the appropriate reboot label set and reports any discrepancies.
-//
-// It iterates over a slice of Pod objects, retrieves each pod’s labels,
-// and verifies whether the reboot label is present when SR‑IOV is enabled.
-// For each pod, it logs information about the check, records errors if
-// labels are missing or incorrect, and appends a report object to the
-// provided checks database. The function does not return a value but
-// updates the check results via SetResult on the database.
 func testRestartOnRebootLabelOnPodsUsingSriov(check *checksdb.Check, sriovPods []*provider.Pod) {
 	const (
 		restartOnRebootLabel = "restart-on-reboot"
@@ -476,10 +424,6 @@ func testRestartOnRebootLabelOnPodsUsingSriov(check *checksdb.Check, sriovPods [
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testNetworkAttachmentDefinitionSRIOVUsingMTU checks whether pods using SR‑I/O‑V network attachments have the correct MTU setting.
-//
-// It receives a check database entry and a slice of pod objects, iterates over each pod to determine if it is configured with SR‑I/O‑V and an MTU value,
-// logs any discrepancies, updates the pod report objects accordingly, and records the overall result in the check.
 func testNetworkAttachmentDefinitionSRIOVUsingMTU(check *checksdb.Check, sriovPods []*provider.Pod) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject

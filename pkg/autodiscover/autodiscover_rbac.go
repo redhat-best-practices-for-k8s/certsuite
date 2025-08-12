@@ -25,13 +25,7 @@ import (
 	rbacv1typed "k8s.io/client-go/kubernetes/typed/rbac/v1"
 )
 
-// getRoleBindings returns all of the rolebindings in the cluster.
-//
-// It uses the provided RbacV1Interface to list RoleBinding objects from
-// every namespace and returns a slice containing them. If an error occurs
-// during listing, it is returned alongside a nil slice. The function does
-// not perform any filtering or modification; it simply retrieves all
-// rolebindings present in the cluster.
+// getRoleBindings returns all of the rolebindings in the cluster
 func getRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.RoleBinding, error) {
 	// Get all of the rolebindings from all namespaces
 	roleList, roleErr := client.RoleBindings("").List(context.TODO(), metav1.ListOptions{})
@@ -42,11 +36,7 @@ func getRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.RoleBinding, 
 	return roleList.Items, nil
 }
 
-// getClusterRoleBindings returns all of the clusterrolebindings in the cluster.
-//
-// It accepts an rbacv1typed.RbacV1Interface, lists every ClusterRoleBinding
-// resource from the cluster, and returns them as a slice along with any error
-// that occurs during the operation.
+// getClusterRoleBindings returns all of the clusterrolebindings in the cluster
 func getClusterRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.ClusterRoleBinding, error) {
 	// Get all of the clusterrolebindings from the cluster
 	// These are not namespaced so we want all of them
@@ -58,10 +48,7 @@ func getClusterRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.Cluste
 	return crbList.Items, nil
 }
 
-// getRoles returns all of the roles in the cluster.
-//
-// It uses the provided RbacV1Interface to list Role objects across all namespaces
-// and returns a slice of rbacv1.Role along with any error encountered during the API call.
+// getRoles returns all of the roles in the cluster
 func getRoles(client rbacv1typed.RbacV1Interface) ([]rbacv1.Role, error) {
 	// Get all of the roles from all namespaces
 	roleList, roleErr := client.Roles("").List(context.TODO(), metav1.ListOptions{})

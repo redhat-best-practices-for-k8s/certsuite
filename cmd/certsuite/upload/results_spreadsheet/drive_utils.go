@@ -10,12 +10,6 @@ import (
 	"google.golang.org/api/sheets/v4"
 )
 
-// createDriveFolder creates or retrieves a folder in Google Drive.
-//
-// It accepts a drive.Service, the parent folder ID, and the desired name of the new folder.
-// The function first searches for an existing folder with that name under the specified parent.
-// If found, it returns the matching *drive.File. If not found, it creates a new folder with the given title
-// under the parent and returns the created *drive.File. Errors from any Drive API calls are wrapped in a descriptive message.
 func createDriveFolder(srv *drive.Service, folderName, parentFolderID string) (*drive.File, error) {
 	driveFolder := &drive.File{
 		Name:     folderName,
@@ -44,12 +38,6 @@ func createDriveFolder(srv *drive.Service, folderName, parentFolderID string) (*
 	return createdFolder, nil
 }
 
-// MoveSpreadSheetToFolder moves a Google Sheets file into a specified folder in Drive and updates its metadata to reference the new location.
-//
-// It takes a Drive service, the file representing the spreadsheet, and the Spreadsheet object itself.
-// The function retrieves the current parents of the file, removes them, adds the target folder as a new parent,
-// then updates the file on Drive. Finally it sets the spreadsheet's Properties field to include the
-// newly assigned folder ID. Errors from any API call are returned to the caller.
 func MoveSpreadSheetToFolder(srv *drive.Service, folder *drive.File, spreadsheet *sheets.Spreadsheet) error {
 	file, err := srv.Files.Get(spreadsheet.SpreadsheetId).Fields("parents").Do()
 	if err != nil {
@@ -77,12 +65,6 @@ func MoveSpreadSheetToFolder(srv *drive.Service, folder *drive.File, spreadsheet
 	return nil
 }
 
-// extractFolderIDFromURL extracts the folder ID from a Google Drive URL and returns it or an error if the URL is invalid.
-//
-// extractFolderIDFromURL parses a Google Drive folder URL to return its unique identifier.
-// It expects the URL to contain a path segment that ends with the folder ID. The function
-// splits the URL, validates the number of segments, and extracts the last non-empty part as
-// the folder ID. If the URL does not match the expected format or is empty, an error is returned.
 func extractFolderIDFromURL(u string) (string, error) {
 	parsedURL, err := url.Parse(u)
 	if err != nil {

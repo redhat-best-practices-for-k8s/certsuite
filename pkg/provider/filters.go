@@ -24,11 +24,9 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
-// GetGuaranteedPodsWithExclusiveCPUs returns all Pods that are guaranteed to have exclusive CPUs.
-//
-// It iterates over the Pods stored in the TestEnvironment, filters out those that do not
-// satisfy the exclusive CPU guarantee condition, and returns a slice containing only the
-// qualifying Pod objects. The returned slice may be empty if no such Pods exist.
+// GetGuaranteedPodsWithExclusiveCPUs returns a slice of Pod objects that are guaranteed to have exclusive CPUs.
+// It iterates over the Pods in the TestEnvironment and filters out the Pods that do not have exclusive CPUs.
+// The filtered Pods are then returned as a slice.
 func (env *TestEnvironment) GetGuaranteedPodsWithExclusiveCPUs() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -39,15 +37,8 @@ func (env *TestEnvironment) GetGuaranteedPodsWithExclusiveCPUs() []*Pod {
 	return filteredPods
 }
 
-// GetGuaranteedPodsWithIsolatedCPUs returns a slice of Pod pointers that are both guaranteed to use exclusive CPUs and comply with CPU isolation requirements.
-//
-// GetGuaranteedPodsWithIsolatedCPUs retrieves all pods from the TestEnvironment
-// that meet two conditions: they must be scheduled as guaranteed (i.e., have
-// CPU requests equal to limits) and their container configuration must satisfy
-// the CPU isolation compliance rules. The function iterates over the internal
-// pod list, filters each pod using IsPodGuaranteedWithExclusiveCPUs and
-// IsCPUIsolationCompliant, and appends matching pods to the result slice,
-// which it then returns.
+// GetGuaranteedPodsWithIsolatedCPUs returns a list of pods from the TestEnvironment
+// that are guaranteed to have isolated CPUs and are CPU isolation compliant.
 func (env *TestEnvironment) GetGuaranteedPodsWithIsolatedCPUs() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -58,11 +49,10 @@ func (env *TestEnvironment) GetGuaranteedPodsWithIsolatedCPUs() []*Pod {
 	return filteredPods
 }
 
-// GetGuaranteedPods returns all pods that are considered guaranteed in the test environment.
-//
-// It iterates over every pod managed by the TestEnvironment, checks each with IsPodGuaranteed,
-// and collects those that satisfy the guarantee criteria into a slice.
-// The resulting slice is returned to the caller.
+// GetGuaranteedPods returns a slice of guaranteed pods in the test environment.
+// A guaranteed pod is a pod that meets certain criteria specified by the IsPodGuaranteed method.
+// The method iterates over all pods in the environment and filters out the guaranteed ones.
+// It returns the filtered pods as a slice.
 func (env *TestEnvironment) GetGuaranteedPods() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -73,12 +63,7 @@ func (env *TestEnvironment) GetGuaranteedPods() []*Pod {
 	return filteredPods
 }
 
-// GetNonGuaranteedPods returns a slice of non‑guaranteed pods in the test environment.
-//
-// It iterates over all pods tracked by the TestEnvironment and filters out those
-// whose resource requests do not equal their limits (i.e., not guaranteed).
-// The returned slice contains pointers to Pod objects that are eligible for
-// non‑guaranteed scheduling tests.
+// GetNonGuaranteedPods returns a slice of non-guaranteed pods in the test environment.
 func (env *TestEnvironment) GetNonGuaranteedPods() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -89,11 +74,9 @@ func (env *TestEnvironment) GetNonGuaranteedPods() []*Pod {
 	return filteredPods
 }
 
-// GetPodsWithoutAffinityRequiredLabel returns all Pods in the TestEnvironment that lack the affinity required label.
-//
-// It scans each Pod stored in the TestEnvironment, checks whether it has the
-// affinity required label using the AffinityRequired function, and collects
-// those that do not. The resulting slice of pointers to Pod is returned.
+// GetPodsWithoutAffinityRequiredLabel returns a slice of Pod objects that do not have the affinity required label.
+// It iterates over the Pods in the TestEnvironment and filters out the ones that do not have the affinity required label.
+// The filtered Pods are returned as a slice.
 func (env *TestEnvironment) GetPodsWithoutAffinityRequiredLabel() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -104,11 +87,9 @@ func (env *TestEnvironment) GetPodsWithoutAffinityRequiredLabel() []*Pod {
 	return filteredPods
 }
 
-// GetAffinityRequiredPods returns all Pods in the environment that require affinity.
-//
-// It iterates over the TestEnvironment's Pods slice, checks each Pod with
-// the AffinityRequired helper, and collects those that have an affinity
-// requirement into a new slice which is returned to the caller.
+// GetAffinityRequiredPods returns a slice of Pod objects that have affinity required.
+// It iterates over the Pods in the TestEnvironment and filters out the Pods that have affinity required.
+// The filtered Pods are returned as a slice.
 func (env *TestEnvironment) GetAffinityRequiredPods() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -119,11 +100,9 @@ func (env *TestEnvironment) GetAffinityRequiredPods() []*Pod {
 	return filteredPods
 }
 
-// GetHugepagesPods returns all pods with hugepage memory enabled.
-//
-// It iterates over the TestEnvironment's pod list, checks each pod using HasHugepages,
-// and collects those that expose a hugepage volume into a slice of *Pod.
-// The resulting slice is returned to the caller.
+// GetHugepagesPods returns a slice of Pod objects that have hugepages enabled.
+// It iterates over the Pods in the TestEnvironment and filters out the ones that do not have hugepages.
+// The filtered Pods are returned as a []*Pod.
 func (env *TestEnvironment) GetHugepagesPods() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -134,21 +113,11 @@ func (env *TestEnvironment) GetHugepagesPods() []*Pod {
 	return filteredPods
 }
 
-// GetCPUPinningPodsWithDpdk returns Pods with CPU pinning enabled and DPDK usage.
-//
-// It filters the current environment for pods that are running DPDK
-// and have exclusive CPUs guaranteed, then returns a slice of those
-// Pod objects. The returned slice may be empty if no such pods exist.
+// GetCPUPinningPodsWithDpdk returns a slice of Pods that have CPU pinning enabled with DPDK.
 func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod {
 	return filterDPDKRunningPods(env.GetGuaranteedPodsWithExclusiveCPUs())
 }
 
-// filterPodsWithoutHostPID removes pods that run with the HostPID option set.
-//
-// It iterates over a slice of Pod pointers and returns a new slice
-// containing only those pods whose specification does not enable
-// host process namespace sharing (i.e., HostPID is false or unset).
-// The function preserves the order of the remaining pods.
 func filterPodsWithoutHostPID(pods []*Pod) []*Pod {
 	var withoutHostPIDPods []*Pod
 
@@ -161,14 +130,6 @@ func filterPodsWithoutHostPID(pods []*Pod) []*Pod {
 	return withoutHostPIDPods
 }
 
-// filterDPDKRunningPods filters a slice of Pod pointers, returning only those
-// pods that are confirmed to be running the Data Plane Development Kit (DPDK).
-//
-// For each pod in the input slice it checks whether any container inside the
-// pod is executing a DPDK process by invoking an exec command. Pods for which
-// the command succeeds and returns output containing a DPDK indicator string
-// are retained; all others are discarded. The function preserves the order of
-// matching pods in the returned slice. It does not modify the original pods.
 func filterDPDKRunningPods(pods []*Pod) []*Pod {
 	var filteredPods []*Pod
 	const (
@@ -194,10 +155,9 @@ func filterDPDKRunningPods(pods []*Pod) []*Pod {
 	return filteredPods
 }
 
-// GetShareProcessNamespacePods returns all pods in the environment that have ShareProcessNamespace enabled.
-//
-// It scans the TestEnvironment's pod list, checks each Pod with IsShareProcessNamespace,
-// and collects those that return true into a new slice which is then returned.
+// GetShareProcessNamespacePods returns a slice of Pod objects that have the ShareProcessNamespace flag set to true.
+// It iterates over the Pods in the TestEnvironment and filters out the ones that do not have the ShareProcessNamespace flag set.
+// The filtered Pods are then returned as a slice.
 func (env *TestEnvironment) GetShareProcessNamespacePods() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -208,12 +168,10 @@ func (env *TestEnvironment) GetShareProcessNamespacePods() []*Pod {
 	return filteredPods
 }
 
-// GetPodsUsingSRIOV returns a slice of Pod pointers that are using SR-IOV.
-//
-// It iterates over the pods stored in the TestEnvironment and checks each pod
-// with IsUsingSRIOV. If an error occurs during this check, it is returned immediately.
-// Pods confirmed to use SR‑IOV are appended to the result slice, which is returned
-// along with a nil error when all pods have been processed.
+// GetPodsUsingSRIOV returns a list of pods that are using SR-IOV.
+// It iterates through the pods in the TestEnvironment and checks if each pod is using SR-IOV.
+// If an error occurs while checking the SR-IOV usage for a pod, it returns an error.
+// The filtered pods that are using SR-IOV are returned along with a nil error.
 func (env *TestEnvironment) GetPodsUsingSRIOV() ([]*Pod, error) {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -229,11 +187,6 @@ func (env *TestEnvironment) GetPodsUsingSRIOV() ([]*Pod, error) {
 	return filteredPods, nil
 }
 
-// getContainers extracts all containers from a slice of Pods and returns them as a single slice.
-//
-// It iterates over each Pod in the input slice, appends every container found
-// within that Pod to a new slice, and then returns the aggregated list.
-// The function does not modify the original Pods or their containers.
 func getContainers(pods []*Pod) []*Container {
 	var containers []*Container
 
@@ -243,39 +196,26 @@ func getContainers(pods []*Pod) []*Container {
 	return containers
 }
 
-// GetGuaranteedPodContainersWithExclusiveCPUs returns a slice of Container pointers representing the containers
-//
-// that are part of guaranteed pods which have exclusive CPU allocations in the TestEnvironment.
-// It gathers all containers from the environment and filters them to include only those belonging
-// to pods identified by GetGuaranteedPodsWithExclusiveCPUs. The result is useful for
-// further analysis or validation of CPU affinity settings.
+// GetGuaranteedPodContainersWithExclusiveCPUs returns a slice of Container objects representing the containers
+// that have exclusive CPUs in the TestEnvironment.
 func (env *TestEnvironment) GetGuaranteedPodContainersWithExclusiveCPUs() []*Container {
 	return getContainers(env.GetGuaranteedPodsWithExclusiveCPUs())
 }
 
-// GetNonGuaranteedPodContainersWithoutHostPID returns all containers from non‑guaranteed pods that do not have HostPID enabled.
-//
-// It first retrieves the list of non‑guaranteed pods, then filters out any pods with the HostPID setting,
-// and finally collects the containers belonging to the remaining pods. The result is a slice of pointers
-// to Container objects representing those containers.
+// GetNonGuaranteedPodContainersWithoutHostPID returns a slice of containers from the test environment
+// that belong to non-guaranteed pods without the HostPID setting enabled.
 func (env *TestEnvironment) GetNonGuaranteedPodContainersWithoutHostPID() []*Container {
 	return getContainers(filterPodsWithoutHostPID(env.GetNonGuaranteedPods()))
 }
 
 // GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID returns a slice of containers from the test environment
-//
-// It filters the pods in the environment to those that are guaranteed and have exclusive CPUs,
-// then excludes any pod with HostPID enabled, finally returning all containers belonging to the remaining pods.
+// that belong to pods with exclusive CPUs and do not have the host PID enabled.
 func (env *TestEnvironment) GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID() []*Container {
 	return getContainers(filterPodsWithoutHostPID(env.GetGuaranteedPodsWithExclusiveCPUs()))
 }
 
-// GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID retrieves all containers from the TestEnvironment that belong to guaranteed pods with isolated CPUs and do not use HostPID.
-//
-// It first obtains the list of containers in the environment, filters those whose
-// parent pod has isolated CPU annotations, and then removes any container whose
-// pod sets the HostPID flag. The returned slice contains only the qualifying
-// containers for further processing.
+// GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID returns a slice of containers from the TestEnvironment
+// that have guaranteed pods with isolated CPUs and without the HostPID flag set.
 func (env *TestEnvironment) GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID() []*Container {
 	return getContainers(filterPodsWithoutHostPID(env.GetGuaranteedPodsWithIsolatedCPUs()))
 }

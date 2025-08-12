@@ -7,35 +7,20 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
 )
 
-// TcResultsSummary represents a summary of test case results.
-//
-// It contains three integer counters:
-// - Failed counts the number of failed test cases.
-// - Passed counts the number of passed test cases.
-// - Skipped counts the number of skipped test cases.
 type TcResultsSummary struct {
 	Passed  int
 	Skipped int
 	Failed  int
 }
 
-// TcResultDifference represents a difference between two claim results.
-//
-// It holds the names of the claims compared, as well as their individual result strings.
-// The struct is used to report discrepancies during test case comparisons.
 type TcResultDifference struct {
 	Name         string
 	Claim1Result string
 	Claim2Result string
 }
 
-// DiffReport holds the results summary and the list of test cases whose result is different.
-//
-// It aggregates summary statistics from two claim files and identifies
-// which individual test cases differ between them. The struct contains
-// summaries for each claim, a count of differing test cases, and a slice
-// detailing each difference. This information is used by the String method
-// to produce a human‑readable comparison report.
+// Holds the results summary and the list of test cases whose result
+// is different.
 type DiffReport struct {
 	Claim1ResultsSummary TcResultsSummary `json:"claimFile1ResultsSummary"`
 	Claim2ResultsSummary TcResultsSummary `json:"claimFile2ResultsSummary"`
@@ -44,13 +29,8 @@ type DiffReport struct {
 	DifferentTestCasesResults int                  `json:"differentTestCasesResults"`
 }
 
-// getTestCasesResultsMap creates a map from test case names to their results.
-//
-// It iterates over the TestSuiteResults argument, which contains a mapping of
-// test suite names to slices of individual test case results, and builds a new
-// map where each key is a test case name and the value is its corresponding
-// result string. The returned map can be used for quick lookup of test case
-// outcomes by name.
+// Helper function that iterates over resultsByTestSuite, which maps a test suite name to a list
+// of test case results, to create a map with test case results.
 func getTestCasesResultsMap(testSuiteResults claim.TestSuiteResults) map[string]string {
 	testCaseResults := map[string]string{}
 
@@ -61,10 +41,10 @@ func getTestCasesResultsMap(testSuiteResults claim.TestSuiteResults) map[string]
 	return testCaseResults
 }
 
-// getMergedTestCasesNames returns a sorted slice of all test case names found in two maps, without duplicates.
-//
-// It accepts two maps whose keys are test case names and produces a slice containing each unique name from both maps.
-// The resulting slice is sorted alphabetically. Duplicate names that appear in both input maps are included only once.
+// Given two results helper maps whose keys are test case names, returns a slice of
+// all the test cases (sorted) names found in both maps, without repetitions.
+// If one test case appears in both map, it will only appear once in the
+// output slice.
 func getMergedTestCasesNames(results1, results2 map[string]string) []string {
 	testCasesNamesMap := map[string]struct{}{}
 
@@ -86,12 +66,7 @@ func getMergedTestCasesNames(results1, results2 map[string]string) []string {
 	return names
 }
 
-// getTestCasesResultsSummary generates a summary of test case results.
-//
-// It accepts a map where keys are test case names and values are the corresponding
-// results. The function creates and returns a TcResultsSummary struct populated
-// with this data, providing a convenient way to convert raw result maps into
-// structured summaries for further processing.
+// Helper function to fill a TcResultsSummary struct from a results map (tc name -> result).
 func getTestCasesResultsSummary(results map[string]string) TcResultsSummary {
 	summary := TcResultsSummary{}
 
@@ -109,12 +84,9 @@ func getTestCasesResultsSummary(results map[string]string) TcResultsSummary {
 	return summary
 }
 
-// GetDiffReport compares the results from two claim files and returns a DiffReport.
-//
-// It takes two TestSuiteResults values, one from each claim file, and produces a report
-// summarizing differences between them. For any test case that exists in only one of the
-// inputs, the report marks its status as "not found". The function builds maps of results,
-// merges test case names, aggregates summaries, and assembles the final DiffReport structure.
+// Process the results from different claim files and return the DiffReport.
+// In case one tc name does not exist in the other claim file, the result will
+// be marked as "not found" in the table.
 func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) *DiffReport {
 	const tcResultNotFound = "not found"
 
@@ -156,12 +128,20 @@ func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) *DiffRep
 	return &report
 }
 
-// String returns a formatted summary of the diff report.
+// Stringer method for the DiffReport. Will return a string with two tables:
+// Test cases summary table:
+// STATUS         # in CLAIM-1        # in CLAIM-2
+// passed         22                  21
+// skipped        62                  62
+// failed         3                   4
 //
-// It builds two tables: one summarizing test case counts per status
-// across CLAIM-1 and CLAIM-2, and another listing individual test cases
-// that differ between the two claims along with their statuses.
-// The returned string is suitable for printing or logging.
+// Test cases with different results table:
+// TEST CASE NAME                                              CLAIM-1   CLAIM-2
+// access-control-net-admin-capability-check                   failed    passed
+// access-control-pod-automount-service-account-token          passed    failed
+// access-control-pod-role-bindings                            passed    failed
+// access-control-pod-service-account                          passed    failed
+// ...
 func (r *DiffReport) String() string {
 	const (
 		tcDiffRowFmt          = "%-60s%-10s%-s\n"

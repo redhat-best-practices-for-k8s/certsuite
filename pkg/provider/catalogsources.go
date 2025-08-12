@@ -10,13 +10,6 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
-// GetCatalogSourceBundleCount retrieves the number of bundle images published by a CatalogSource.
-//
-// It logs progress using the test environment's logging facilities, determines whether
-// the CatalogSource is running in an OLM probe container or has package manifests,
-// and counts bundles accordingly. The function returns the count as an integer.
-// If an error occurs during counting it will be logged but not returned; the caller
-// receives zero for that case.
 func GetCatalogSourceBundleCount(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int {
 	// Now that we know the catalog source, we are going to count up all of the relatedImages
 	// that are associated with the catalog source. This will give us the number of bundles that
@@ -49,12 +42,6 @@ func GetCatalogSourceBundleCount(env *TestEnvironment, cs *olmv1Alpha.CatalogSou
 	return getCatalogSourceBundleCountFromPackageManifests(env, cs)
 }
 
-// getCatalogSourceBundleCountFromProbeContainer retrieves the number of bundles in a CatalogSource by executing a probe command inside its container and parsing the output.
-//
-// It runs a command in the probe pod that lists catalog bundles, trims whitespace,
-// converts the result to an integer, and returns this count.
-// The function logs progress and errors using the TestEnvironment's logger.
-// If parsing fails or the command errors, it logs the issue and returns 0.
 func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int {
 	// We need to use the probe container to get the bundle count
 	// This is because the package manifests are not available in the cluster
@@ -101,12 +88,6 @@ func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olm
 	return -1
 }
 
-// getCatalogSourceBundleCountFromPackageManifests counts the number of bundle entries contained within a CatalogSource's PackageManifest resources.
-//
-// It takes a test environment and a pointer to an olmv1Alpha.CatalogSource, retrieves all
-// associated PackageManifest objects, aggregates their Bundle references, and returns
-// the total count as an integer. The function uses the length of the aggregated slice
-// to compute the result.
 func getCatalogSourceBundleCountFromPackageManifests(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int {
 	totalRelatedBundles := 0
 	for _, pm := range env.AllPackageManifests {

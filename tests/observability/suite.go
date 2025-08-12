@@ -48,12 +48,6 @@ var (
 	}
 )
 
-// LoadChecks registers the observability checks used in the test suite.
-//
-// It creates a new checks group, attaches various check functions,
-// and configures skip logic for different resource types. The function
-// does not take any parameters or return values; it performs all setup
-// via side effects on the testing framework.
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.ObservabilityTestKey)
 
@@ -96,12 +90,8 @@ func LoadChecks() {
 		}))
 }
 
-// containerHasLoggingOutput retrieves the last line of a container's log output and reports whether any
-// logging was found.
-//
-// It accepts a pointer to a Container, streams its logs via the Kubernetes client,
-// extracts the final line, and returns true if that line contains non-empty content.
-// If an error occurs during retrieval or streaming, it returns false along with the error.
+// containerHasLoggingOutput helper function to get the last line of logging output from
+// a container. Returns true in case some output was found, false otherwise.
 func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 	ocpClient := clientsholder.GetClientsHolder()
 
@@ -128,12 +118,6 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 	return buf.String() != "", nil
 }
 
-// testContainersLogging checks that containers produce expected logging output.
-//
-// It takes a Check and a TestEnvironment, iterates over the containers
-// in the environment, verifies each container has logging output,
-// logs informational or error messages accordingly, and records the
-// results in the report object. The function does not return a value.
 func testContainersLogging(check *checksdb.Check, env *provider.TestEnvironment) {
 	// Iterate through all the CUTs to get their log output. The TC checks that at least
 	// one log line is found.
@@ -163,12 +147,7 @@ func testContainersLogging(check *checksdb.Check, env *provider.TestEnvironment)
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testCrds tests whether Custom Resource Definitions have a status subresource set.
-//
-// It receives a checksdb.Check and a TestEnvironment, performs logging,
-// collects test results into report objects, and sets the overall result
-// based on whether CRDs expose a status field. The function does not return
-// any value; it reports its outcome via side effects on the provided check.
+// testCrds testing if crds have a status sub resource set
 func testCrds(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -194,13 +173,7 @@ func testCrds(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testTerminationMessagePolicy tests that termination message handling for pods behaves as expected.
-//
-// testTerminationMessagePolicy verifies the termination message logic in observed pods.
-// It receives a check object and a test environment, logs progress, builds container
-// report objects, updates results, and ensures correct handling of pod termination
-// messages. The function does not return a value; it records success or failure
-// through the provided check object's result state.
+// testTerminationMessagePolicy tests to make sure that pods
 func testTerminationMessagePolicy(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -221,13 +194,7 @@ func testTerminationMessagePolicy(check *checksdb.Check, env *provider.TestEnvir
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodDisruptionBudgets tests the validity of Pod Disruption Budgets in a given environment.
-//
-// testPodDisruptionBudgets checks that each Pod Disruption Budget in the cluster
-// matches expected criteria such as labels, selectors and allowed disruptions.
-// It logs information about the test progress, records any errors encountered,
-// and updates a report object with the results. The function receives a
-// database check context and a test environment, but does not return a value.
+//nolint:funlen
 func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -314,9 +281,11 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// buildServiceAccountToDeprecatedAPIMap creates a mapping from workload service accounts to APIs that will be deprecated and the release in which they are removed.
-//
-// It iterates over a slice of API request counts, selecting entries whose status indicates a future removal (status.removedInRelease is non‑empty). For each such entry it checks whether the service account involved belongs to the list of workload service accounts defined in env.ServiceAccounts. If so, the function records the API name and its removal release under that service account. The result is a map where keys are service account identifiers and values are maps from API names to their corresponding deprecation releases. This map can be used to identify which APIs each service account will need to replace or update before the specified release.
+// Function to build a map from workload service accounts
+// to their associated to-be-deprecated APIs and the release version
+// Filters:
+// - status.removedInRelease is not empty
+// - Verifies if the service account is inside the workload SA list from env.ServiceAccounts
 func buildServiceAccountToDeprecatedAPIMap(apiRequestCounts []apiserv1.APIRequestCount, workloadServiceAccountNames map[string]struct{}) map[string]map[string]string {
 	// Define a map where the key is the service account name and the value is another map
 	// The inner map key is the API name and the value is the release version in which it will be removed
@@ -353,14 +322,7 @@ func buildServiceAccountToDeprecatedAPIMap(apiRequestCounts []apiserv1.APIReques
 	return serviceAccountToDeprecatedAPIs
 }
 
-// evaluateAPICompliance evaluates the compliance of workload APIs with the next Kubernetes version.
-//
-// It takes a map of workloads to their API groups, a target minor version string,
-// and a set of known non-compliant API groups. The function returns a slice of
-// ReportObject pointers describing which workloads are compliant or not.
-// For each workload it checks whether any of its API groups are present in the
-// non‑compliant set for the next minor version, constructing report objects
-// that include fields such as the workload name, API group, and compliance status.
+// Evaluate workload API compliance with the next Kubernetes version
 func evaluateAPICompliance(
 	serviceAccountToDeprecatedAPIs map[string]map[string]string,
 	kubernetesVersion string,
@@ -418,10 +380,7 @@ func evaluateAPICompliance(
 	return compliantObjects, nonCompliantObjects
 }
 
-// extractUniqueServiceAccountNames retrieves unique service account names related to workloads from the test environment.
-//
-// It examines the provided TestEnvironment and collects all distinct service account identifiers associated with workload components.
-// The result is returned as a map keyed by service account name, where each value is an empty struct for set semantics.
+// Function to extract unique workload-related service account names from the environment
 func extractUniqueServiceAccountNames(env *provider.TestEnvironment) map[string]struct{} {
 	uniqueServiceAccountNames := make(map[string]struct{})
 
@@ -433,11 +392,7 @@ func extractUniqueServiceAccountNames(env *provider.TestEnvironment) map[string]
 	return uniqueServiceAccountNames
 }
 
-// testAPICompatibilityWithNextOCPRelease tests compatibility of cluster APIs with the next OpenShift release.
-//
-// It receives a checksdb.Check and a TestEnvironment, determines if the cluster is an OCP cluster,
-// gathers API request counts, identifies service accounts using deprecated APIs, evaluates
-// compliance, and sets the result on the check. The function logs progress and errors during execution.
+// Function to test API compatibility with the next OCP release
 func testAPICompatibilityWithNextOCPRelease(check *checksdb.Check, env *provider.TestEnvironment) {
 	isOCP := provider.IsOCPCluster()
 	check.LogInfo("Is OCP: %v", isOCP)

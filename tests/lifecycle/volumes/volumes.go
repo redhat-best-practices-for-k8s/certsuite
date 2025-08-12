@@ -20,11 +20,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-// getPVCFromSlice retrieves a PersistentVolumeClaim from a slice by name.
-//
-// It iterates over the provided slice of corev1.PersistentVolumeClaim and returns
-// a pointer to the claim whose Name matches the given string.
-// If no matching claim is found, it returns nil.
 func getPVCFromSlice(pvcs []corev1.PersistentVolumeClaim, pvcName string) *corev1.PersistentVolumeClaim {
 	for i := range pvcs {
 		if pvcs[i].Name == pvcName {
@@ -34,13 +29,6 @@ func getPVCFromSlice(pvcs []corev1.PersistentVolumeClaim, pvcName string) *corev
 	return nil
 }
 
-// IsPodVolumeReclaimPolicyDelete checks if a pod volume has delete reclaim policy.
-//
-// It receives a pointer to a Volume, a slice of PersistentVolumes and a slice of
-// PersistentVolumeClaims. The function determines whether the volume is associated
-// with any claim that uses the Delete reclaim policy and returns true if so,
-// otherwise false. It may internally retrieve claims from the slices using helper
-// functions.
 func IsPodVolumeReclaimPolicyDelete(vol *corev1.Volume, pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeClaim) bool {
 	// Check if the Volume is bound to a PVC.
 	if putPVC := getPVCFromSlice(pvcs, vol.PersistentVolumeClaim.ClaimName); putPVC != nil {

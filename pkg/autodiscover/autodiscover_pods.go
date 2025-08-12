@@ -25,13 +25,6 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-// findPodsMatchingAtLeastOneLabel retrieves a list of pods that match at least one of the provided labels in the given namespace.
-//
-// It accepts a CoreV1 client interface, a slice of label objects representing key-value pairs,
-// and a namespace string. The function queries the Kubernetes API for pods in that namespace
-// whose labels satisfy any of the specified label criteria. The result is returned as a pointer
-// to corev1.PodList. If no matching pods are found or an error occurs during listing, the
-// function logs the issue using the debug logger and returns nil.
 func findPodsMatchingAtLeastOneLabel(oc corev1client.CoreV1Interface, labels []labelObject, namespace string) *corev1.PodList {
 	allPods := &corev1.PodList{}
 	for _, l := range labels {
@@ -48,12 +41,6 @@ func findPodsMatchingAtLeastOneLabel(oc corev1client.CoreV1Interface, labels []l
 	return allPods
 }
 
-// FindPodsByLabels retrieves Kubernetes pods that match any of the provided label selectors.
-//
-// It accepts a CoreV1Interface client, a slice of label objects defining key/value pairs,
-// and an optional list of namespace names to restrict the search.
-// The function returns all Pods found in the specified namespaces that contain at least one
-// matching label. If no namespaces are supplied, it searches across all namespaces.
 func FindPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, namespaces []string) (runningPods, allPods []corev1.Pod) {
 	runningPods = []corev1.Pod{}
 	allPods = []corev1.Pod{}
@@ -84,14 +71,6 @@ func FindPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, nam
 	return runningPods, allPods
 }
 
-// CountPodsByStatus aggregates pods by their phase and returns a count per status.
-//
-// It iterates over the provided slice of Pod objects, extracts each pod's Phase
-// field from its Status, and tallies how many pods are in each phase.
-// The returned map keys are the string representations of the pod phases,
-// such as "Pending", "Running", "Succeeded", etc., with integer values indicating
-// the number of pods in that state. If the input slice is empty, it returns an
-// empty map.
 func CountPodsByStatus(allPods []corev1.Pod) map[string]int {
 	podStates := map[string]int{
 		"ready":     0,

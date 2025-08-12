@@ -65,15 +65,6 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-// logStreamHandler streams log output over a WebSocket connection.
-//
-// It upgrades the HTTP request to a WebSocket, reads incoming data from
-// the socket, converts it to HTML, and writes formatted messages back
-// to the client. The function logs key events such as upgrades,
-// message processing, and any errors that occur during the stream.
-// It uses a scanner to read byte slices from the connection and
-// appends them to an internal buffer before sending responses. This
-// handler is intended for real‑time log viewing in the web interface.
 func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -103,14 +94,6 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// RequestedData holds configuration parameters received from an external source.
-//
-// It aggregates a collection of string slices that represent various settings,
-// such as API endpoints, credentials, deployment identifiers, and filtering
-// options used by the webserver to tailor its behavior. Each field is a slice
-// because multiple values may be supplied for a given parameter.
-// The struct is populated by unmarshalling JSON or similar data structures
-// before being passed to functions that perform operations based on these settings.
 type RequestedData struct {
 	SelectedOptions                      []string `json:"selectedOptions"`
 	TargetNameSpaces                     []string `json:"targetNameSpaces"`
@@ -139,21 +122,10 @@ type RequestedData struct {
 	ConnectAPIProxyURL                   []string `json:"proxyURL,omitempty"`
 	ConnectAPIProxyPort                  []string `json:"proxyPort,omitempty"`
 }
-
-// ResponseData holds the response payload sent by the server.
-//
-// It contains a single field, Message, which carries the textual
-// content of the HTTP response. The struct is exported so that callers
-// can read or construct responses programmatically.
 type ResponseData struct {
 	Message string `json:"message"`
 }
 
-// installReqHandlers registers HTTP handlers for the web server.
-//
-// It sets up routes for static assets, the main page, and various API endpoints,
-// configuring CORS headers, content types, and response writing for each handler.
-// The function returns a cleanup closure that can be used to unregister the handlers.
 func installReqHandlers() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Set the content type to "text/html".
@@ -226,12 +198,6 @@ func installReqHandlers() {
 	http.HandleFunc("/logstream", logStreamHandler)
 }
 
-// StartServer starts an HTTP server on the specified address and returns a shutdown function.
-//
-// It sets up request handlers, configures timeouts, and begins listening on the provided
-// network address. The returned function can be called to gracefully stop the server.
-// If any error occurs during setup or while calling ListenAndServe, it is logged and the
-// program panics.
 func StartServer(outputFolder string) {
 	ctx := context.TODO()
 	server := &http.Server{
@@ -253,14 +219,9 @@ func StartServer(outputFolder string) {
 	}
 }
 
-// runHandler defines an HTTP handler that triggers CERTSUITE tests.
+// Define an HTTP handler that triggers CERTSUITE tests
 //
-// It accepts a ResponseWriter and an *http.Request, parses form values and any uploaded
-// file, creates temporary directories for the test run, initializes logging,
-// loads the checks database, evaluates expressions, runs the tests, writes output
-// files, updates test result metadata, and finally sends a response back to the
-// client. The handler performs cleanup of temporary resources and logs any errors
-// encountered during execution. It returns no value.
+//nolint:funlen
 func runHandler(w http.ResponseWriter, r *http.Request) {
 	buf = bytes.NewBufferString("")
 	// The log output will be written to the log file and to this buffer buf
@@ -369,12 +330,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// updateTnf updates the TNF data based on requested fields.
-//
-// It accepts a byte slice containing the current TNF payload and a pointer to
-// RequestedData describing which parts of the TNF should be modified.
-// The function unmarshals the input, applies the requested changes,
-// marshals the result back into JSON, and returns the updated byte slice.
+//nolint:funlen,gocyclo
 func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	// Unmarshal the YAML data into a Config struct
 	var config configuration.TestConfiguration
@@ -482,12 +438,7 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	return newData
 }
 
-// outputTestCases outputs the Markdown representation of test cases from the catalog to stdout.
-//
-// It gathers all available test case identifiers, retrieves their suite information,
-// and formats each entry into a Markdown table row.
-// The function writes the resulting string to the standard output stream
-// and returns an empty string on success.
+// outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
 func outputTestCases() (outString string) {
 	// Building a separate data structure to store the key order for the map
 	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
@@ -527,14 +478,6 @@ func outputTestCases() (outString string) {
 	outString += "}"
 	return outString
 }
-
-// toJSONString converts a map of strings into a pretty‑printed JSON string.
-//
-// It marshals the provided map using json.MarshalIndent with an indentation
-// of two spaces, then returns the resulting bytes as a string. If marshalling
-// fails, it panics, as this function is intended for internal use where
-// input data should always be serializable. The returned string can be sent
-// directly in HTTP responses or logged.
 func toJSONString(data map[string]string) string {
 	// Convert the map to a JSON-like string
 	jsonbytes, err := json.MarshalIndent(data, "", "  ")
@@ -544,12 +487,6 @@ func toJSONString(data map[string]string) string {
 
 	return string(jsonbytes)
 }
-
-// GetSuitesFromIdentifiers returns a list of unique suite names from a slice of claim.Identifier.
-//
-// It iterates over the provided identifiers, collecting the suite name from each,
-// appends them to a temporary slice, and then removes duplicates using the
-// Unique helper function before returning the resulting slice of strings.
 func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	var suites []string
 	for _, i := range keys {
@@ -558,22 +495,11 @@ func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	return arrayhelper.Unique(suites)
 }
 
-// Entry holds information about a test case for a specific certificate identifier.
-//
-// It contains the identifier of the certificate and the name of the test to be run against it. The fields are used by catalog creation functions to group tests by identifier and to generate printable output.
 type Entry struct {
 	testName   string
 	identifier claim.Identifier // {url and version}
 }
 
-// CreatePrintableCatalogFromIdentifiers creates a printable catalog from a slice of identifiers.
-//
-// It takes a slice of claim.Identifier and builds a map where the key is a
-// string representation of an identifier type (e.g., "certificate", "policy")
-// and the value is a slice of Entry structs containing printable information
-// for each identifier. The function allocates the map, iterates over the input
-// identifiers, appends appropriate entries, and returns the resulting catalog.
-// If no identifiers are provided, it returns an empty map.
 func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]Entry {
 	catalog := make(map[string][]Entry)
 	// we need the list of suite's names

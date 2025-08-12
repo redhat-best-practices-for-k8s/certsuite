@@ -31,11 +31,6 @@ const (
 	timeout = 5 * time.Minute
 )
 
-// WaitOperatorReady waits until the operator reaches a ready state or times out.
-//
-// It polls the status of the given ClusterServiceVersion, logging progress and
-// handling success, failure, or unknown phases. The function returns true if
-// the operator succeeds before the timeout expires; otherwise it returns false.
 func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 	oc := clientsholder.GetClientsHolder()
 	start := time.Now()
@@ -70,23 +65,11 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 	return false
 }
 
-// isOperatorPhaseSucceeded determines whether the Operator's phase has completed successfully.
-//
-// It accepts a pointer to a ClusterServiceVersion object and evaluates its status fields
-// to ascertain if the current phase indicates success. The function returns true when
-// the operator reports a successful completion, otherwise false. Debug logging may be
-// performed during evaluation.
 func isOperatorPhaseSucceeded(csv *v1alpha1.ClusterServiceVersion) bool {
 	log.Debug("Checking succeeded status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
 	return csv.Status.Phase == v1alpha1.CSVPhaseSucceeded
 }
 
-// isOperatorPhaseFailedOrUnknown(*v1alpha1.ClusterServiceVersion) bool
-//
-// isOperatorPhaseFailedOrUnknown reports whether a ClusterServiceVersion has entered a failed or unknown phase.
-//
-// The function examines the operator's current phase and returns true if the phase indicates failure or an unknown state,
-// allowing callers to react accordingly. It logs diagnostic information via the Debug helper for troubleshooting purposes.
 func isOperatorPhaseFailedOrUnknown(csv *v1alpha1.ClusterServiceVersion) bool {
 	log.Debug("Checking failed status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
 	return csv.Status.Phase == v1alpha1.CSVPhaseFailed ||

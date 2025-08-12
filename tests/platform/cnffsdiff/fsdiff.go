@@ -55,26 +55,19 @@ var (
 	}
 )
 
-// fsDiffJSON represents the JSON output of `podman diff --format json`.
-// It contains slices of file paths for each event type: added, changed, and deleted.
+// fsDiffJSON is a helper struct to unmarshall the "podman diff --format json" output: a slice of
+// folders/filepaths (strings) for each event type changed/added/deleted:
 //
-// The struct is used to unmarshal the command’s output into Go values,
-// allowing callers to inspect which files or directories were affected.
-// Only the Added, Changed, and Deleted fields are populated; other
-// event types may be ignored.
+//	{"changed": ["folder1, folder2"], added": ["folder5", "folder6"], "deleted": ["folder3", "folder4"]"}
+//
+// We'll only care about deleted and changed types, though, as in case a folder/file is created to any of them,
+// there will be two entries, one for the "added" and another for the "changed".
 type fsDiffJSON struct {
 	Changed []string `json:"changed"`
 	Deleted []string `json:"deleted"`
 	Added   []string `json:"added"` // Will not be checked, but let's keep it just in case.
 }
 
-// FsDiff holds state and configuration for a file system difference test.
-//
-// It tracks changed and deleted folders, the result code, any error encountered,
-// and whether custom Podman should be used. The struct is initialized by NewFsDiffTester
-// with references to a checks database entry, command client, and context. RunTest
-// performs the comparison using podman diff and populates the fields accordingly.
-// GetResults returns the exit status of the diff operation.
 type FsDiff struct {
 	check           *checksdb.Check
 	result          int
@@ -87,23 +80,11 @@ type FsDiff struct {
 	Error          error
 }
 
-// FsDiffFuncs defines the contract for running filesystem diff tests.
-//
-// The interface provides two methods: RunTest, which executes a filesystem
-// comparison test given a set of inputs, and GetResults, which retrieves
-// the outcomes of those tests as structured data. Implementations are
-// expected to handle any necessary setup, execution, and result aggregation
-// for filesystem differences within the cnffsdiff package.
 type FsDiffFuncs interface {
 	RunTest(ctx clientsholder.Context, containerUID string)
 	GetResults() int
 }
 
-// NewFsDiffTester creates a new FsDiff instance for comparing filesystem differences.
-//
-// It takes a check definition, a command interface, a context holder, and a string identifier.
-// The function initializes the necessary temporary directories and decides whether to use a custom podman setup,
-// then returns an initialized *FsDiff ready for running diff tests.
 func NewFsDiffTester(check *checksdb.Check, client clientsholder.Command, ctxt clientsholder.Context, ocpVersion string) *FsDiff {
 	useCustomPodman := shouldUseCustomPodman(check, ocpVersion)
 	check.LogDebug("Using custom podman: %v.", useCustomPodman)
@@ -117,13 +98,10 @@ func NewFsDiffTester(check *checksdb.Check, client clientsholder.Command, ctxt c
 	}
 }
 
-// shouldUseCustomPodman determines whether to use the custom podman binary or the preinstalled one.
-//
-// It examines the OCP version from the provided checksdb.Check and the podman path string.
-// If the major version is less than 4, it returns true to indicate that the custom podman
-// should be used. For versions 4.13.0 and above, it returns false as the preinstalled podman
-// is sufficient. The function parses the version using NewVersion and logs any parsing errors.
-// It returns a boolean indicating whether the custom podman binary should be employed.
+// Helper function that is used to check whether we should use the podman that comes preinstalled
+// on each ocp node or the one that we've (custom) precompiled inside the probe pods that can only work in
+// RHEL 8.x based ocp versions (4.12.z and lower). For ocp >= 4.13.0 this workaround should not be
+// necessary.
 func shouldUseCustomPodman(check *checksdb.Check, ocpVersion string) bool {
 	const (
 		ocpForPreinstalledPodmanMajor = 4
@@ -150,12 +128,6 @@ func shouldUseCustomPodman(check *checksdb.Check, ocpVersion string) bool {
 	return false
 }
 
-// intersectTargetFolders filters a slice of folder paths, returning only those that exist in the predefined target folders.
-//
-// It iterates over each input path and checks whether it is present in the package-level
-// targetFolders slice using StringInSlice. Paths not found trigger a warning via LogWarn
-// and are omitted from the result. The function returns a new slice containing only the
-// valid, intersecting paths.
 func (f *FsDiff) intersectTargetFolders(src []string) []string {
 	var dst []string
 	for _, folder := range src {
@@ -167,15 +139,6 @@ func (f *FsDiff) intersectTargetFolders(src []string) []string {
 	return dst
 }
 
-// runPodmanDiff executes the Podman diff command inside a container and returns its output.
-//
-// It receives a container identifier as input, constructs a
-// Podman diff command that compares the mounted filesystem with the
-// target directories, runs it using ExecCommandContainer, and captures
-// the resulting diff string. If the command fails, an error is returned
-// with context about the failed operation. The function returns the
-// diff output as a string along with any error encountered during
-// execution.
 func (f *FsDiff) runPodmanDiff(containerUID string) (string, error) {
 	podmanPath := "podman"
 	if f.useCustomPodman {
@@ -192,13 +155,6 @@ func (f *FsDiff) runPodmanDiff(containerUID string) (string, error) {
 	return output, nil
 }
 
-// RunTest executes the file system diff test for a given target folder.
-//
-// It installs a custom podman instance, mounts the node's temporary
-// directory into it, runs a podman diff against the specified target,
-// and then unmounts and cleans up. The function logs progress,
-// handles errors by logging warnings, and sleeps briefly between steps.
-// It returns an error if any step fails or nil on success.
 func (f *FsDiff) RunTest(containerUID string) {
 	if f.useCustomPodman {
 		err := f.installCustomPodman()
@@ -255,24 +211,13 @@ func (f *FsDiff) RunTest(containerUID string) {
 	}
 }
 
-// GetResults returns the number of differences found during the comparison.
-//
-// It examines all stored difference records in the FsDiff instance and
-// counts how many discrepancies were detected between source and target
-// filesystems. The result is returned as an integer value.
 func (f *FsDiff) GetResults() int {
 	return f.result
 }
 
-// execCommandContainer runs a command inside the probe pod of the container under test.
-// It returns an error if any output is produced on stdout or stderr, concatenating the provided
-// error string with that output and the underlying execution error.
-//
-// The function takes two string arguments: the first is a descriptive error message used when
-// reporting failures, and the second is the command to execute. It executes the command in
-// the probe pod context via ExecCommandContainer. If the command writes anything to stdout
-// or stderr, that output is considered a failure and included in the returned error.
-// The function returns nil only when the command exits successfully with no output.
+// Generic helper function to execute a command inside the corresponding probe pod of the
+// container under test. Whatever output in stdout or stderr is considered a failure, so it will
+// return the concatenation of the given errorStr with those stdout, stderr and the error string.
 func (f *FsDiff) execCommandContainer(cmd, errorStr string) error {
 	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, cmd)
 	if err != nil || output != "" || outerr != "" {
@@ -282,54 +227,26 @@ func (f *FsDiff) execCommandContainer(cmd, errorStr string) error {
 	return nil
 }
 
-// createNodeFolder creates a temporary directory structure for the node side of a filesystem comparison.
-//
-// It prepares a mount point by invoking an execCommandContainer call to create the required folder hierarchy.
-// The function returns an error if any step in setting up the node temporary mount fails.
 func (f *FsDiff) createNodeFolder() error {
 	return f.execCommandContainer(fmt.Sprintf("mkdir %s", nodeTmpMountFolder),
 		fmt.Sprintf("failed or unexpected output when creating folder %s.", nodeTmpMountFolder))
 }
 
-// deleteNodeFolder removes the temporary mount directory used during
-// a file system diff operation.
-//
-// It executes a container command to remove the nodeTmpMountFolder from
-// the filesystem, ensuring that any temporary data created during the
-// diff process is cleaned up before the test completes.
-// The function returns an error if the removal command fails.
 func (f *FsDiff) deleteNodeFolder() error {
 	return f.execCommandContainer(fmt.Sprintf("rmdir %s", nodeTmpMountFolder),
 		fmt.Sprintf("failed or unexpected output when deleting folder %s.", nodeTmpMountFolder))
 }
 
-// mountProbePodmanFolder checks that the podman folder is correctly mounted in the container.
-//
-// It executes a command inside the target container to verify that the
-// expected podman directory exists and is accessible, returning an error if
-// the check fails. The function performs no arguments and returns only an
-// error value indicating success or failure of the probe.
 func (f *FsDiff) mountProbePodmanFolder() error {
 	return f.execCommandContainer(fmt.Sprintf("mount --bind %s %s", partnerPodmanFolder, nodeTmpMountFolder),
 		fmt.Sprintf("failed or unexpected output when mounting %s into %s.", partnerPodmanFolder, nodeTmpMountFolder))
 }
 
-// unmountProbePodmanFolder removes the probe mount for a Podman folder during diff cleanup.
-//
-// It executes the container command to unmount the temporary probe directory
-// that was mounted into the target pod. The function returns an error if the
-// unmount operation fails, otherwise it returns nil. This is used as part of
-// the FsDiff teardown process to ensure no leftover mounts remain after a test.
 func (f *FsDiff) unmountProbePodmanFolder() error {
 	return f.execCommandContainer(fmt.Sprintf("umount %s", nodeTmpMountFolder),
 		fmt.Sprintf("failed or unexpected output when unmounting %s.", nodeTmpMountFolder))
 }
 
-// installCustomPodman installs the custom podman folder needed for FsDiff operations.
-//
-// It creates a temporary node folder, mounts the podman probe directory into it,
-// and cleans up any previous installations. On success it returns nil; on failure
-// it returns an error describing what went wrong.
 func (f *FsDiff) installCustomPodman() error {
 	// We need to create the destination folder first.
 	f.check.LogInfo("Creating temp folder %s", nodeTmpMountFolder)
@@ -352,11 +269,6 @@ func (f *FsDiff) installCustomPodman() error {
 	return nil
 }
 
-// unmountCustomPodman cleans up podman mount artifacts for the current FsDiff instance.
-//
-// It logs the start of the unmount process, attempts to unmount the probe podman folder,
-// logs completion of that step, and finally removes the node temporary mount directory.
-// No parameters are accepted and it does not return a value.
 func (f *FsDiff) unmountCustomPodman() {
 	// Unmount podman folder from host.
 	f.check.LogInfo("Unmounting folder %s", nodeTmpMountFolder)

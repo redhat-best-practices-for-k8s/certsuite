@@ -73,11 +73,6 @@ var (
 	}
 )
 
-// LoadChecks loads and returns the certification checks for the suite.
-//
-// It constructs a group of checks, registers them with the test environment,
-// and provides hooks to run before each check. The returned function
-// performs any necessary cleanup or finalization when called.
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.AffiliatedCertTestKey)
 
@@ -113,12 +108,6 @@ func LoadChecks() {
 		}))
 }
 
-// getContainersToQuery creates a lookup map of container image identifiers that should be queried in the current test environment.
-//
-// It inspects the provided TestEnvironment and constructs a map where each key is a
-// ContainerImageIdentifier representing an image to check, and the value indicates
-// whether that image should be included (true). The returned map can be used by
-// other functions to determine which container images require certification checks.
 func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerImageIdentifier]bool {
 	containersToQuery := make(map[provider.ContainerImageIdentifier]bool)
 	for _, cut := range env.Containers {
@@ -127,22 +116,10 @@ func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerI
 	return containersToQuery
 }
 
-// testContainerCertification checks whether a container image meets the certification criteria defined by a validator.
-//
-// It takes a ContainerImageIdentifier and a CertificationStatusValidator, invokes
-// IsContainerCertified to determine if the image satisfies the required
-// certification status, and returns true when it does, otherwise false.
 func testContainerCertification(c provider.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
 	return validator.IsContainerCertified(c.Registry, c.Repository, c.Tag, c.Digest)
 }
 
-// testAllOperatorCertified checks that all operators in the cluster are certified.
-//
-// It iterates over each operator found by the test environment, verifies
-// whether the cluster is an OCP cluster, splits operator names to extract
-// namespace and name components, and calls IsOperatorCertified for each.
-// The function logs progress and errors, builds a report object per operator,
-// and sets the overall result using the provided CertificationStatusValidator.
 func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	operatorsUnderTest := env.Operators
 	var compliantObjects []*testhelper.ReportObject
@@ -174,9 +151,6 @@ func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironme
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testHelmCertified performs the Helm chart certification check for a given operator.
-//
-// It accepts a Check object containing the operator's metadata, a TestEnvironment providing access to the cluster and Helm releases, and a CertificationStatusValidator used to validate the certification status. The function returns a closure that runs the actual test: it logs progress, verifies whether the operator's Helm chart is certified, records any errors, and updates the report object with the result.
 func testHelmCertified(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	helmchartsReleases := env.HelmChartReleases
 
@@ -201,12 +175,6 @@ func testHelmCertified(check *checksdb.Check, env *provider.TestEnvironment, val
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testContainerCertificationStatusByDigest tests the certification status of a container image identified by its digest and records the result in a report object.
-//
-// It receives a database check record, a test environment, and a certification status validator.
-// The function logs progress, constructs report objects for each operator tested,
-// calls testContainerCertification to perform the actual verification,
-// and appends any errors to the report. Finally it sets the overall result of the check.
 func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -238,14 +206,6 @@ func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provid
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testHelmVersion checks Helm chart version compliance for a certification check.
-//
-// It retrieves the Kubernetes client set from the environment, lists all Helm releases in the cluster,
-// extracts the associated chart names, and compares them against known supported chart versions.
-// For each release it creates a report object recording the result. If any release has an unsupported
-// or missing chart version, the overall check is marked as failed. The function logs detailed information
-// about each release, handles errors from client calls, and records the final status in the supplied Check
-// object using SetResult.
 func testHelmVersion(check *checksdb.Check) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject

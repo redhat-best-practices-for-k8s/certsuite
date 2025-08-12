@@ -23,12 +23,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-// Log retrieves the current test environment state and signals that it may need to be refreshed.
-//
-// The function first obtains the current test environment information, then marks the
-// environment as needing a refresh. It again fetches the environment data, formats it into
-// a readable string using Sprintf, and returns this string. The returned value is intended
-// for use in postmortem reports or debugging output.
 func Log() (out string) {
 	// Get current environment
 	env := provider.GetTestEnvironment()

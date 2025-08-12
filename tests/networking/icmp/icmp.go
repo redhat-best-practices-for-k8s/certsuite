@@ -36,11 +36,6 @@ const (
 	SuccessfulOutputRegex = `(?m)(\d+) packets transmitted, (\d+)( packets){0,1} received, (?:\+(\d+) errors)?.*$`
 )
 
-// PingResults holds the statistics of a ping command execution.
-//
-// It stores the number of transmitted packets, the number received,
-// the outcome status code, and any errors encountered during the
-// ping operation. The String method formats these values into a human‑readable string.
 type PingResults struct {
 	outcome     int
 	transmitted int
@@ -48,22 +43,10 @@ type PingResults struct {
 	errors      int
 }
 
-// String returns a human‑readable summary of the ping test results.
-//
-// It formats the data contained in a PingResults instance into a single
-// string, including metrics such as packet loss and latency.
-// The returned string is suitable for logging or displaying to users.
 func (results PingResults) String() string {
 	return fmt.Sprintf("outcome: %s transmitted: %d received: %d errors: %d", testhelper.ResultToString(results.outcome), results.transmitted, results.received, results.errors)
 }
 
-// BuildNetTestContext creates a map of network test contexts for the given pods.
-//
-// It accepts a slice of pod pointers, an IP version indicator, an interface type,
-// and a logger. For each pod it generates a NetTestContext containing
-// information about container IPs, interface configurations, and other
-// networking parameters needed for ICMP tests. The function logs progress
-// messages and returns the constructed map keyed by pod identifiers.
 func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, aType netcommons.IFType, logger *log.Logger) (netsUnderTest map[string]netcommons.NetTestContext) {
 	netsUnderTest = make(map[string]netcommons.NetTestContext)
 	for _, put := range pods {
@@ -93,10 +76,8 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 	return netsUnderTest
 }
 
-// processContainerIpsPerNet processes container IP addresses for a given network attachment and uses them as test targets.
-//
-// It selects the first container in the loop as the test initiator and uses that container's OC context to initiate ping tests.
-// The function filters IPs by version, logs debug information, and returns a closure that performs the actual test when invoked.
+// processContainerIpsPerNet takes a container ip addresses for a given network attachment's and uses it as a test target.
+// The first container in the loop is selected as the test initiator. the Oc context of the container is used to initiate the pings
 func processContainerIpsPerNet(containerID *provider.Container,
 	netKey string,
 	ipAddresses []string,
@@ -145,14 +126,8 @@ func processContainerIpsPerNet(containerID *provider.Container,
 	netsUnderTest[netKey] = entry
 }
 
-// RunNetworkingTests executes ping tests across multiple network attachments and reports failures.
-//
-// It receives a map of NetTestContext values keyed by network name, the number of retries,
-// an IP version selector, and a logger. For each network context it runs a series of
-// ping tests against target IPs, collecting any that fail. The function returns a map
-// from network names to slices of failed target IP addresses along with a boolean
-// indicating whether any failures were encountered. This allows callers to quickly
-// identify which networks or targets are problematic and to generate detailed reports.
+// runNetworkingTests takes a map netcommons.NetTestContext, e.g. one context per network attachment
+// and runs pings test with it. Returns a network name to a slice of bad target IPs map.
 func RunNetworkingTests( //nolint:funlen
 	netsUnderTest map[string]netcommons.NetTestContext,
 	count int,
@@ -268,15 +243,6 @@ var TestPing = func(sourceContainerID *provider.Container, targetContainerIP net
 	return results, err
 }
 
-// parsePingResult extracts ping statistics from raw output strings and returns a PingResults struct or an error.
-//
-// It takes two string arguments: the standard output of a ping command
-// and any error output produced by the command. The function parses
-// the outputs using regular expressions to find packet loss,
-// round‑trip times, and other metrics. If the parsing succeeds,
-// it converts numeric values from strings to integers and populates
-// a PingResults structure with these fields. On failure, it returns
-// an error describing why the output could not be parsed.
 func parsePingResult(stdout, stderr string) (results PingResults, err error) {
 	re := regexp.MustCompile(ConnectInvalidArgumentRegex)
 	matched := re.FindStringSubmatch(stdout)

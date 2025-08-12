@@ -6,11 +6,8 @@ import (
 )
 
 // HasRequestsSet checks if a container has resource requests set.
-//
-// It takes a Kubernetes container definition and a logger, examines the
-// CPU and memory request fields, logs any errors encountered during
-// parsing, and returns true if either request is non‑zero,
-// otherwise false.
+// Returns :
+//   - bool : true if resource requests are set for the container, otherwise return false.
 func HasRequestsSet(cut *provider.Container, logger *log.Logger) bool {
 	passed := true
 
@@ -32,13 +29,10 @@ func HasRequestsSet(cut *provider.Container, logger *log.Logger) bool {
 	return passed
 }
 
-// HasExclusiveCPUsAssigned reports whether a container has exclusive CPUs assigned.
-//
-// It examines the CPU resource limits of the given container and determines if
-// those limits correspond to an exclusive CPU allocation according to Kubernetes'
-// cpu management policies. The function returns true when the container's CPU
-// configuration indicates exclusivity, otherwise it returns false. A logger can
-// be supplied for debug output.
+// For more info on cpu management policies see https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/.
+// HasExclusiveCPUsAssigned checks if a container has exclusive CPU's assigned.
+// Returns:
+//   - bool : true if a container has exclusive CPU's assigned, otherwise return false.
 func HasExclusiveCPUsAssigned(cut *provider.Container, logger *log.Logger) bool {
 	cpuLimits := cut.Resources.Limits.Cpu()
 	memLimits := cut.Resources.Limits.Memory()

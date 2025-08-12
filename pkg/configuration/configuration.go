@@ -22,31 +22,19 @@ const (
 	defaultProbeDaemonSetNamespace = "cnf-suite"
 )
 
-// SkipHelmChartList holds the name of a Helm chart that should be skipped during processing.
-//
-// The Name field specifies the identifier of the Helm chart to exclude.
-// This structure is used by configuration logic to filter out unwanted
-// charts from installation or validation steps.
 type SkipHelmChartList struct {
 	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
 	Name string `yaml:"name" json:"name"`
 }
 
-// AcceptedKernelTaintsInfo holds all certified operator request information.
-//
-// It contains the module name that specifies which kernel taint handling
-// logic should be accepted by the system. This struct is used to capture
-// configuration data required during certification checks.
+// AcceptedKernelTaintsInfo contains all certified operator request info
 type AcceptedKernelTaintsInfo struct {
 
 	// Accepted modules that cause taints that we want to supply to the test suite
 	Module string `yaml:"module" json:"module"`
 }
 
-// SkipScalingTestDeploymentsInfo holds deployment identifiers that should be excluded from scaling tests to avoid conflicts.
-//
-// It contains a Name field specifying the deployment name and a Namespace field indicating where the deployment resides.
-// Deployments listed in this structure are skipped during scaling test runs, ensuring those resources remain untouched.
+// SkipScalingTestDeploymentsInfo contains a list of names of deployments that should be skipped by the scaling tests to prevent issues
 type SkipScalingTestDeploymentsInfo struct {
 
 	// Deployment name and namespace that can be skipped by the scaling tests
@@ -54,9 +42,7 @@ type SkipScalingTestDeploymentsInfo struct {
 	Namespace string `yaml:"namespace" json:"namespace"`
 }
 
-// SkipScalingTestStatefulSetsInfo specifies statefulsets that should be excluded from scaling tests to avoid problems.
-//
-// It holds the name and namespace of a StatefulSet that must not be subjected to scaling operations during test runs. This prevents unintended side effects on critical workloads.
+// SkipScalingTestStatefulSetsInfo contains a list of names of statefulsets that should be skipped by the scaling tests to prevent issues
 type SkipScalingTestStatefulSetsInfo struct {
 
 	// StatefulSet name and namespace that can be skipped by the scaling tests
@@ -64,42 +50,21 @@ type SkipScalingTestStatefulSetsInfo struct {
 	Namespace string `yaml:"namespace" json:"namespace"`
 }
 
-// Namespace represents a Kubernetes namespace configuration.
-//
-// It holds the name of the namespace to be used in various operations.
-// The struct is intended to be instantiated with a string value for Name,
-// which specifies the target namespace for resource creation, deletion,
-// or inspection within the application.
+// Namespace struct defines namespace properties
 type Namespace struct {
 	Name string `yaml:"name" json:"name"`
 }
 
 // CrdFilter defines a CustomResourceDefinition config filter.
-//
-// It filters CRDs based on their names and scalability flag.
-// NameSuffix specifies a suffix that matching CRD names must have.
-// Scalable indicates whether the filtered CRDs are expected to be scalable resources.
 type CrdFilter struct {
 	NameSuffix string `yaml:"nameSuffix" json:"nameSuffix"`
 	Scalable   bool   `yaml:"scalable" json:"scalable"`
 }
-
-// ManagedDeploymentsStatefulsets represents the configuration for a managed stateful set deployment.
-//
-// It stores the name of a StatefulSet that is managed by the system.
-// The struct can be extended with additional fields to capture
-// further deployment properties such as namespace, labels, or replicas.
 type ManagedDeploymentsStatefulsets struct {
 	Name string `yaml:"name" json:"name"`
 }
 
-// ConnectAPIConfig holds configuration values for accessing the Red Hat Connect API.
-//
-// It contains the API key used for authentication, the base URL of the service,
-// the project identifier, and optional proxy settings including the proxy URL
-// and port. These fields are populated from environment variables or a
-// configuration file and are passed to clients that need to make requests
-// to the Connect API.
+// ConnectAPIConfig contains the configuration for the Red Hat Connect API
 type ConnectAPIConfig struct {
 	// APIKey is the API key for the Red Hat Connect
 	APIKey string `yaml:"apiKey" json:"apiKey"`
@@ -113,15 +78,7 @@ type ConnectAPIConfig struct {
 	ProxyPort string `yaml:"proxyPort" json:"proxyPort"`
 }
 
-// TestConfiguration provides test related configuration.
-//
-// It holds settings that control how tests are executed, including which
-// Kubernetes resources to target, labels for operators and pods under test,
-// collector endpoint details, and lists of items to skip or ignore during
-// testing. The fields include information on kernel taints, managed
-// deployments, protocol names, and namespace targets. This struct is used by
-// the configuration package to load and supply runtime settings for test
-// execution.
+// TestConfiguration provides test related configuration
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
 	TargetNameSpaces []Namespace `yaml:"targetNameSpaces,omitempty" json:"targetNameSpaces,omitempty"`
@@ -153,9 +110,6 @@ type TestConfiguration struct {
 	ConnectAPIConfig ConnectAPIConfig `yaml:"connectAPIConfig,omitempty" json:"connectAPIConfig,omitempty"`
 }
 
-// TestParameters holds configuration values used by CertSuite to control test execution and output generation.
-//
-// It contains fields that specify image repositories, API endpoints, resource limits, logging levels, data collection flags, and various file paths. The structure is populated from command-line options or configuration files and passed to the testing framework to configure runtime behavior, such as enabling preflight checks, setting Kubernetes client settings, and defining output directories.
 type TestParameters struct {
 	Kubeconfig                    string
 	ConfigFile                    string

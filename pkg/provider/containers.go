@@ -40,10 +40,7 @@ var (
 	ignoredContainerNames = []string{"istio-proxy"}
 )
 
-// ContainerImageIdentifier identifies a container image by registry, repository, and either tag or digest.
-//
-// It contains four string fields: Registry, Repository, Tag, and Digest.
-// The Tag and Digest fields are mutually exclusive; if both are set, the Digest value is used.
+// Tag and Digest should not be populated at the same time. Digest takes precedence if both are populated
 type ContainerImageIdentifier struct {
 	// Repository is the name of the image that you want to check if exists in the RedHat catalog
 	Repository string `yaml:"repository" json:"repository"`
@@ -59,13 +56,6 @@ type ContainerImageIdentifier struct {
 	Digest string `yaml:"digest" json:"digest"`
 }
 
-// Container represents a Kubernetes container with metadata and status information used by the provider package.
-//
-// It holds identifiers, namespace, node, pod name, runtime details, and preflight results.
-// The embedded corev1.Container provides access to spec fields such as image and security context.
-// Methods on this type expose helpers for retrieving UID, checking probe configuration,
-// determining if the container is an Istio proxy, validating runAsNonRoot settings,
-// ensuring a read‑only root filesystem, and formatting its data as strings.
 type Container struct {
 	*corev1.Container
 	Status                   corev1.ContainerStatus
@@ -78,26 +68,12 @@ type Container struct {
 	PreflightResults         PreflightResultsDB
 }
 
-// NewContainer creates a new Container instance.
-//
-// It returns a pointer to a freshly initialized Container struct, ready for use
-// in the provider package. The returned container has default field values set,
-// but no runtime resources are allocated at this point. This function is intended
-// as a constructor helper for internal logic that requires a clean Container
-// object.
 func NewContainer() *Container {
 	return &Container{
 		Container: &corev1.Container{}, // initialize the corev1.Container object
 	}
 }
 
-// GetUID returns the container's UID as a string or an error if extraction fails.
-//
-// It examines the container’s ID field, which may contain a host identifier
-// followed by a colon and the actual UID. The method splits on “:” and,
-// depending on the resulting slice length, returns either the full ID or
-// just the part after the colon. If the ID cannot be parsed, it logs a
-// debug message and returns an empty string with an error.
 func (c *Container) GetUID() (string, error) {
 	split := strings.Split(c.Status.ContainerID, "://")
 	uid := ""
@@ -112,14 +88,6 @@ func (c *Container) GetUID() (string, error) {
 	return uid, nil
 }
 
-// SetPreflightResults stores the preflight check results for a container.
-//
-// It receives a map keyed by container name containing PreflightResultsDB
-// structures and a pointer to TestEnvironment used during the checks.
-// The function runs each registered preflight test, collects their outcomes,
-// and writes them into the provided map. It returns an error if any test fails
-// or if there is a problem accessing Docker configuration or running the
-// preflight checks.
 func (c *Container) SetPreflightResults(preflightImageCache map[string]PreflightResultsDB, env *TestEnvironment) error {
 	log.Info("Running Preflight container test for container %q with image %q", c, c.Image)
 
@@ -178,8 +146,6 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]Preflight
 	return nil
 }
 
-// StringLong returns a human‑readable representation of the Container.
-// It formats the container's name, image, and status into a single string.
 func (c *Container) StringLong() string {
 	return fmt.Sprintf("node: %s ns: %s podName: %s containerName: %s containerUID: %s containerRuntime: %s",
 		c.NodeName,
@@ -190,13 +156,6 @@ func (c *Container) StringLong() string {
 		c.Runtime,
 	)
 }
-
-// String returns a formatted string representation of the container.
-//
-// It uses fmt.Sprintf to build a human‑readable description that includes
-// key fields such as the container name, image, state, and any other
-// relevant metadata stored in the Container struct. The resulting string
-// can be used for logging or debugging purposes.
 func (c *Container) String() string {
 	return fmt.Sprintf("container: %s pod: %s ns: %s",
 		c.Name,
@@ -205,12 +164,6 @@ func (c *Container) String() string {
 	)
 }
 
-// HasIgnoredContainerName reports whether the container’s name is in the list of ignored names.
-//
-// It checks if the container matches known special cases such as an Istio proxy,
-// and then looks up the container name in a global slice of names to ignore.
-// The function returns true when the name should be excluded from standard
-// validation logic, otherwise false.
 func (c *Container) HasIgnoredContainerName() bool {
 	for _, ign := range ignoredContainerNames {
 		if c.IsIstioProxy() || strings.Contains(c.Name, ign) {
@@ -220,39 +173,20 @@ func (c *Container) HasIgnoredContainerName() bool {
 	return false
 }
 
-// IsIstioProxy reports whether the container is an Istio proxy instance.
-//
-// It examines the container's name against a known list of Istio
-// proxy container names and returns true if a match is found.
-// The function has no parameters and returns only a boolean.
 func (c *Container) IsIstioProxy() bool {
 	return c.Name == IstioProxyContainerName
 }
 
-// HasExecProbes reports if the container defines any exec probe.
-//
-// It checks the container’s readiness, liveness, and startup probe
-// configurations for an Exec action and returns true if at least one
-// of those probes is present, otherwise false.
 func (c *Container) HasExecProbes() bool {
 	return c.LivenessProbe != nil && c.LivenessProbe.Exec != nil ||
 		c.ReadinessProbe != nil && c.ReadinessProbe.Exec != nil ||
 		c.StartupProbe != nil && c.StartupProbe.Exec != nil
 }
 
-// IsTagEmpty reports whether the container's image tag is empty.
-//
-// It examines the Container’s Image field and determines if a tag component
-// (the part after the last colon in the image name) has been omitted.
-// The function returns true when no tag is present, otherwise false.
 func (c *Container) IsTagEmpty() bool {
 	return c.ContainerImageIdentifier.Tag == ""
 }
 
-// IsReadOnlyRootFilesystem reports whether the container’s root file system is mounted as read‑only.
-//
-// It takes a logger to record diagnostic information and returns true when the container
-// has been configured with a read‑only root file system, otherwise false.
 func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool {
 	logger.Info("Testing Container %q", c)
 	if c.SecurityContext == nil || c.SecurityContext.ReadOnlyRootFilesystem == nil {
@@ -261,13 +195,6 @@ func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool {
 	return *c.SecurityContext.ReadOnlyRootFilesystem
 }
 
-// IsContainerRunAsNonRoot checks if a container is configured to run as non‑root.
-//
-// It accepts a pointer to a boolean that indicates whether the container’s
-// security context specifies runAsNonRoot. The function returns true when
-// the flag is set to true, otherwise false. Additionally it returns a string
-// describing the result: “runAsNonRoot=true” or “runAsNonRoot=false”. This
-// information can be used in audit reports or logging.
 func (c *Container) IsContainerRunAsNonRoot(podRunAsNonRoot *bool) (isContainerRunAsNonRoot bool, reason string) {
 	if c.SecurityContext != nil && c.SecurityContext.RunAsNonRoot != nil {
 		return *c.SecurityContext.RunAsNonRoot, fmt.Sprintf("RunAsNonRoot is set to %t at the container level, overriding a %v value defined at pod level",
@@ -281,11 +208,6 @@ func (c *Container) IsContainerRunAsNonRoot(podRunAsNonRoot *bool) (isContainerR
 	return false, "RunAsNonRoot is set to nil at pod and container level"
 }
 
-// IsContainerRunAsNonRootUserID reports whether the container is configured to run with a non‑root user ID.
-// It examines the RunAsUser field of the container specification, which may be nil or point to an int64 value.
-// If the pointer is nil, it returns false and a message indicating that no RunAsUser was set.
-// If the value is zero (root), it returns false with a message that the container runs as root.
-// For any other positive user ID, it returns true and a message confirming non‑root execution.
 func (c *Container) IsContainerRunAsNonRootUserID(podRunAsNonRootUserID *int64) (isContainerRunAsNonRootUserID bool, reason string) {
 	if c.SecurityContext != nil && c.SecurityContext.RunAsUser != nil {
 		return *c.SecurityContext.RunAsUser != 0, fmt.Sprintf("RunAsUser is set to %v at the container level, overriding a %s value defined at pod level",

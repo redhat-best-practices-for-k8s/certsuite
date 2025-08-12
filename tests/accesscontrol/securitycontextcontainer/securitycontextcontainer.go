@@ -27,12 +27,7 @@ const (
 	NOKString = "false"
 )
 
-// String returns the string representation of an OkNok value.
-//
-// It formats the underlying status as a human‑readable string, such as "OK" or "NOK". The
-// returned string can be used in logs, test output, or any place where a textual
-// description of the result is required. No parameters are taken and only one string
-// value is returned.
+// print the strings
 func (okNok OkNok) String() string {
 	switch okNok {
 	case OK:
@@ -43,9 +38,6 @@ func (okNok OkNok) String() string {
 	return "false"
 }
 
-// ContainerSCC represents the security context constraints applied to a container.
-//
-// It aggregates boolean flags indicating whether various security settings are allowed or required for the container, such as host network usage, privilege escalation, read‑only root filesystem, and SELinux context presence. Each field holds an OkNok value that specifies whether the corresponding capability is permitted (Ok), forbidden (Nok), or not applicable. The struct also includes a CapabilitiesCategory to classify the container’s capability requirements and an AllVolumeAllowed flag indicating if any volume type may be mounted.
 type ContainerSCC struct {
 	HostDirVolumePluginPresent      OkNok // 0 or 1 - 0 is false 1 - true
 	HostIPC                         OkNok
@@ -75,12 +67,6 @@ const (
 	CategoryID4
 )
 
-// PodListCategory represents a container within a pod and its security category.
-//
-// It holds the name of the container, the namespace and pod it belongs to,
-// and an identifier indicating the security context classification.
-// This struct is used by CheckPod to group containers and provide
-// human‑readable output via its String method.
 type PodListCategory struct {
 	Containername string
 	Podname       string
@@ -162,11 +148,7 @@ var (
 		OK}          // AllVolumeAllowed
 )
 
-// String returns a formatted string representation of the pod list category.
-//
-// It formats the receiver value into a human‑readable form using fmt.Sprintf
-// and returns that string to the caller. The method has no parameters and
-// produces a single string output.
+// print the strings
 func (category PodListCategory) String() string {
 	returnString := fmt.Sprintf("Containername: %s Podname: %s NameSpace: %s Category: %s \n ",
 		category.Containername, category.Podname, category.NameSpace, category.Category)
@@ -181,11 +163,9 @@ const (
 	CategoryID4String       = "CategoryID4(anything not matching lower category)"
 )
 
-// String returns the string representation of the CategoryID.
-//
-// It converts the receiver value to its corresponding human‑readable name,
-// such as "OK", "NOK" or one of the predefined category strings. The returned
-// string can be used for logging, display, or comparison against known values.
+// String converts the category to a string.
+// Returns:
+//   - string: The string representation of the Category.
 func (category CategoryID) String() string {
 	switch category {
 	case CategoryID1:
@@ -204,14 +184,11 @@ func (category CategoryID) String() string {
 	return CategoryID4String
 }
 
-// GetContainerSCC updates a ContainerSCC instance based on the capabilities present in a container.
+// GetContainerSCC is update the containerSCC according capability of container(cut)
+// Returns:
+//   - ContainerSCC: struct that updated according container(cut)
 //
-// It accepts a pointer to a provider.Container and an existing ContainerSCC.
-// The function examines the container's capability set, adjusts the
-// security context accordingly by calling updateCapabilitiesFromContainer,
-// and returns the modified ContainerSCC. This allows callers to obtain a
-// security context that reflects the actual capabilities allowed or dropped
-// for the given container.
+//nolint:gocritic
 func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) ContainerSCC {
 	containerSCC.HostPorts = NOK
 	for _, aPort := range cut.Ports {
@@ -246,15 +223,7 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 	return containerSCC
 }
 
-// updateCapabilitiesFromContainer updates the per container capabilities with the capabilities defined at the container level.
-//
-// It iterates over the capabilities specified in the provider.Container,
-// checks which categories are present, and appends any missing
-// category-specific capabilities to the ContainerSCC.
-// The function handles dropping default capabilities when a
-// category is not allowed and adds required capabilities for
-// each allowed category. No value is returned; errors are logged
-// internally if capability lists cannot be processed.
+// updateCapabilitiesFromContainer update the per container capabilities with the capabilities defined at the container level.
 func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *ContainerSCC) {
 	containerSCC.RequiredDropCapabilitiesPresent = NOK
 	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
@@ -287,12 +256,10 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 	}
 }
 
-// AllVolumeAllowed determines whether all volumes in a slice are permitted.
-//
-// It examines each corev1.Volume in the provided slice and checks if any
-// volume uses a HostPath source. The first return value indicates whether
-// every volume is allowed (OK or NOK). The second return value signals
-// whether at least one HostPath volume was encountered (OK or NOK).
+// AllVolumeAllowed checks if all volumes in the provided slice are allowed based on certain criteria.
+// Returns :
+//   - r1 : whether all volumes are allowed (OK/NOK)
+//   - r2 : whether any volume with HostPath is found (OK/NOK)
 func AllVolumeAllowed(volumes []corev1.Volume) (r1, r2 OkNok) {
 	countVolume := 0
 	var value OkNok
@@ -326,11 +293,12 @@ func AllVolumeAllowed(volumes []corev1.Volume) (r1, r2 OkNok) {
 	return NOK, value
 }
 
-// checkContainerCategory categorizes each container in a pod based on its security context.
-// It iterates over the provided containers, compares their security settings
-// against defined SCC categories, and builds a slice of PodListCategory
-// structs containing the container name, category ID, and associated
-// category string. The function returns this slice for further processing.
+// checkContainerCategory categorizes each container based on Security context.
+// builds a list of PodListCategory structs , each representing a container along with its category information.
+// Returns:
+//   - []PodListCategory: a slice of PodListCategory structs representing categorized containers.
+//
+//nolint:gocritic
 func checkContainerCategory(containers []corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) []PodListCategory {
 	var ContainerList []PodListCategory
 	var categoryinfo PodListCategory
@@ -360,11 +328,9 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 	return ContainerList
 }
 
-// checkContainCategory verifies that every capability in addCapability is present in referenceCategoryAddCapabilities.
-//
-// It iterates over the slice of corev1.Capability values, converting each to a string and checking membership
-// in the reference slice using StringInSlice. The function returns true only if all capabilities are found,
-// otherwise it returns false.
+// checkContainCategory checks whether all elements in the addCapability exist in referenceCategoryAddCapabilities
+// Returns:
+//   - bool: true if all elements in the addCapability exist in referenceCategoryAddCapabilities, otherwise return false
 func checkContainCategory(addCapability []corev1.Capability, referenceCategoryAddCapabilities []string) bool {
 	for _, ncc := range addCapability {
 		if !stringhelper.StringInSlice(referenceCategoryAddCapabilities, string(ncc), true) {
@@ -374,11 +340,11 @@ func checkContainCategory(addCapability []corev1.Capability, referenceCategoryAd
 	return true
 }
 
-// CheckPod returns a slice of PodListCategory structs describing each container in the pod and its security context category.
-//
-// It first updates the pod-level security context variables, then merges any container-level overrides into the containerSCC objects.
-// Each container is evaluated against predefined conditions to determine its category.
-// The resulting list contains one entry per container, including its name and assigned category information.
+// CheckPod updates the containerSCC objects with security context variable defined at the Pod Level. Then it updates the containerSCC object with security context values overloaded at the container level.
+// It then categorizes each container based on specific conditions and constructs a list of PodListCategory structs,
+// each representing a container along with its category information.
+// Returns:
+//   - []PodListCategory: a slice of PodListCategory structs representing categorized containers for the pod.
 func CheckPod(pod *provider.Pod) []PodListCategory {
 	var containerSCC ContainerSCC
 	containerSCC.HostIPC = NOK
@@ -411,14 +377,11 @@ func CheckPod(pod *provider.Pod) []PodListCategory {
 	return checkContainerCategory(pod.Spec.Containers, containerSCC, pod.Name, pod.Namespace)
 }
 
-// compareCategory compares two security context containers against a reference category and returns whether the container matches that category.
+// compareCategory compare between the fields in refCategory and containerSCC
+// Returns:
+//   - bool : true if containerSCC matches the reference category, otherwise return false.
 //
-// compareCategory checks if the fields of containerSCC match those specified in refCategory
-// according to the rules defined for the given CategoryID. It examines user, group,
-// capabilities, SELinux options, and other relevant security context attributes.
-// The function returns true when all compared fields satisfy the constraints of the
-// reference category; otherwise it returns false. This is used internally by tests
-// to validate that a container's security context conforms to an expected policy.
+//nolint:funlen
 func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) bool {
 	result := true
 	log.Debug("Testing if pod belongs to category %s", &id)

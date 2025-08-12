@@ -27,14 +27,6 @@ var (
 	tolerationSecondsDefault = 300
 )
 
-// IsTolerationModified reports whether a toleration differs from the default
-// behavior for a given QoS class.
-//
-// It compares the provided toleration against the standard defaults for the
-// specified PodQOSClass, taking into account the tolerationSecondsDefault
-// value and any nonCompliantTolerations. The function returns true if the
-// toleration is considered modified (i.e., not equal to the default)
-// and false otherwise.
 func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool {
 	const (
 		notReadyStr       = "node.kubernetes.io/not-ready"
@@ -95,12 +87,6 @@ func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool
 	return false
 }
 
-// IsTolerationDefault reports whether a given Toleration is considered the default compliant value.
-//
-// IsTolerationDefault checks if a corev1.Toleration matches one of the predefined
-// non‑compliant tolerations or uses the default tolerationSeconds value.
-// It returns true when the toleration is not among the non‑compliant list and
-// its seconds field equals the package default; otherwise it returns false.
 func IsTolerationDefault(t corev1.Toleration) bool {
 	return strings.Contains(t.Key, "node.kubernetes.io")
 }

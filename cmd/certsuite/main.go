@@ -15,12 +15,6 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/version"
 )
 
-// newRootCmd creates the top-level command for the certsuite application.
-//
-// It constructs a new cobra.Command, sets its usage and description,
-// and registers all of the sub‑commands that make up the certsuite CLI.
-// The function returns a pointer to this root command so it can be
-// passed to Execute or used in tests.
 func newRootCmd() *cobra.Command {
 	rootCmd := cobra.Command{
 		Use:   "certsuite",
@@ -38,11 +32,6 @@ func newRootCmd() *cobra.Command {
 	return &rootCmd
 }
 
-// main initializes and executes the CertSuite CLI.
-//
-// It creates the root command, invokes its Execute method to run the
-// application based on user input, handles any errors by printing them,
-// and exits with a non‑zero status if execution fails.
 func main() {
 	rootCmd := newRootCmd()
 	if err := rootCmd.Execute(); err != nil {

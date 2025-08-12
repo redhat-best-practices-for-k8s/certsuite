@@ -29,12 +29,8 @@ var (
 	parameters    = TestParameters{}
 )
 
-// LoadConfiguration loads the test configuration from a file once.
-//
-// It takes the path to a JSON configuration file, reads its contents,
-// unmarshals it into a TestConfiguration struct, and returns that
-// configuration along with any error encountered during reading or parsing.
-// Subsequent calls will return the same cached configuration without re-reading the file.
+// LoadConfiguration return a function that loads
+// the configuration from a file once
 func LoadConfiguration(filePath string) (TestConfiguration, error) {
 	if confLoaded {
 		log.Debug("config file already loaded, return previous element")
@@ -64,12 +60,6 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 	return configuration, nil
 }
 
-// GetTestParameters retrieves the current test configuration parameters.
-//
-// It ensures that the global configuration has been loaded and returns a pointer
-// to the TestParameters structure containing all relevant settings for the
-// test suite. If the configuration has not yet been initialized, it triggers
-// the loading process before returning the parameters.
 func GetTestParameters() *TestParameters {
 	return &parameters
 }

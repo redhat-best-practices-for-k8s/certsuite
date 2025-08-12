@@ -26,12 +26,10 @@ import (
 
 const nbProcessesIndex = 2
 
-// getNbOfProcessesInPidNamespace retrieves the number of processes in a given PID namespace.
-//
-// It executes a command inside the container to list processes for the specified
-// process ID and parses the output to count them.
-// The function returns the count as an integer and any error that occurs during
-// command execution or result parsing.
+// getNbOfProcessesInPidNamespace retrieves the number of processes in the Pid namespace.
+// Returns:
+//   - int :  the number of processes in the PID namespace associated with the specified process ID
+//   - error : An error, if any occurred during the execution of the command or parsing of the output.
 func getNbOfProcessesInPidNamespace(ctx clientsholder.Context, targetPid int, ch clientsholder.Command) (int, error) {
 	cmd := "lsns -p " + strconv.Itoa(targetPid) + " -t pid -n"
 

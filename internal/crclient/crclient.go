@@ -30,16 +30,6 @@ import (
 
 const PsRegex = `(?m)^(\d+?)\s+?(\d+?)\s+?(\d+?)\s+?(.*?)$`
 
-// Process represents a single operating system process within the container environment, capturing its identifier, parent identifier, namespace, and command arguments.
-//
-// It is used by the client to map running processes back to their originating containers and namespaces, facilitating diagnostics and audit logging. The fields are:
-//
-// - Pid: the unique process ID.
-// - PPid: the parent process ID.
-// - PidNs: the PID namespace identifier for the container.
-// - Args: a string containing the command line arguments of the process.
-//
-// The String method formats these values into a human‑readable representation.
 type Process struct {
 	PidNs, Pid, PPid int
 	Args             string
@@ -52,23 +42,13 @@ const (
 	RetrySleepSeconds = 3
 )
 
-// String returns a human-readable representation of the Process.
-//
-// It formats key attributes of the Process into a single string,
-// typically including identifiers such as the process ID and
-// other relevant metadata. The returned value is suitable for
-// logging or debugging purposes.
 func (p *Process) String() string {
 	return fmt.Sprintf("cmd: %s, pid: %d, ppid: %d, pidNs: %d", p.Args, p.Pid, p.PPid, p.PidNs)
 }
 
-// GetNodeProbePodContext creates a context for the probe pod on a node.
-//
-// It accepts a node name and a test environment, locates the first
-// container of the probe pod running on that node, and returns a
-// clientsholder.Context that can be used to execute shell commands
-// against the container. If no suitable pod is found or an error
-// occurs during context creation, it returns an error.
+// Helper function to create the clientsholder.Context of the first container of the probe pod
+// that runs in the give node. This context is usually needed to run shell commands that get
+// information from a node where a pod/container under test is running.
 func GetNodeProbePodContext(node string, env *provider.TestEnvironment) (clientsholder.Context, error) {
 	probePod := env.ProbePods[node]
 	if probePod == nil {
@@ -78,12 +58,6 @@ func GetNodeProbePodContext(node string, env *provider.TestEnvironment) (clients
 	return clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name), nil
 }
 
-// GetPidFromContainer retrieves the process ID of a running container.
-//
-// GetPidFromContainer extracts the PID of the specified container by executing
-// an inspection command inside the container environment and parsing the
-// output. It takes a Container reference and a context holding client
-// connections, returning the integer PID or an error if the operation fails.
 func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (int, error) {
 	var pidCmd string
 
@@ -111,12 +85,7 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 	return strconv.Atoi(strings.TrimSuffix(outStr, "\n"))
 }
 
-// GetContainerPidNamespace retrieves the PID namespace of a container.
-//
-// It takes a Container and TestEnvironment as inputs, determines the
-// container's process ID via GetPidFromContainer or exec,
-// then reads /proc/<pid>/ns/pid to obtain the namespace identifier.
-// The function returns the namespace string or an error if any step fails.
+// To get the pid namespace of the container
 func GetContainerPidNamespace(testContainer *provider.Container, env *provider.TestEnvironment) (string, error) {
 	// Get the container pid
 	ocpContext, err := GetNodeProbePodContext(testContainer.NodeName, env)
@@ -139,11 +108,6 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	return strings.Fields(stdout)[0], nil
 }
 
-// GetContainerProcesses retrieves the list of processes running inside a Docker container.
-//
-// It accepts a Container and TestEnvironment, obtains the PID namespace of the container,
-// then enumerates all PIDs within that namespace to build Process structs.
-// The function returns a slice of pointers to Process or an error if any step fails.
 func GetContainerProcesses(container *provider.Container, env *provider.TestEnvironment) ([]*Process, error) {
 	pidNs, err := GetContainerPidNamespace(container, env)
 	if err != nil {
@@ -153,14 +117,7 @@ func GetContainerProcesses(container *provider.Container, env *provider.TestEnvi
 	return GetPidsFromPidNamespace(pidNs, container)
 }
 
-// ExecCommandContainerNSEnter executes a command inside a container's namespace using nsenter.
-//
-// It takes the name of a command and a pointer to a Container struct.
-// The function retrieves the process ID of the target container, constructs an nsenter
-// command that enters the container’s PID namespace, and runs the specified command
-// there. It returns the combined standard output and error streams as a string,
-// along with any execution errors. If the container cannot be located or the
-// command fails to run, it returns an appropriate error message.
+// ExecCommandContainerNSEnter executes a command in the specified container namespace using nsenter
 func ExecCommandContainerNSEnter(command string,
 	aContainer *provider.Container) (outStr, errStr string, err error) {
 	env := provider.GetTestEnvironment()
@@ -197,17 +154,6 @@ func ExecCommandContainerNSEnter(command string,
 	return outStr, errStr, err
 }
 
-// GetPidsFromPidNamespace retrieves the process IDs belonging to a specified PID namespace within a container.
-//
-// It executes a command inside the given container to list all processes
-// that belong to the supplied PID namespace. The function parses the
-// output, converts each entry into a Process struct and returns a slice
-// of these structs. If any step fails—such as executing the command,
-// parsing the output, or converting values—the function returns an
-// error along with a nil slice. The first argument is the target PID
-// namespace name; the second argument is a pointer to the container
-// in which the query should run. The return value is a slice of Process
-// pointers representing each matching process and an error if one occurred.
 func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container) (p []*Process, err error) {
 	const command = "trap \"\" SIGURG ; ps -e -o pidns,pid,ppid,args"
 	env := provider.GetTestEnvironment()

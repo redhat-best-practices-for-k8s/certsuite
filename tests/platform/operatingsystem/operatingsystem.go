@@ -28,11 +28,6 @@ const (
 //go:embed files/rhcos_version_map
 var rhcosVersionMap string
 
-// GetRHCOSMappedVersions parses a string of RHCOS version mappings and returns them as a map.
-//
-// It expects the input to contain lines in the form "key: value". The function splits the
-// input into lines, trims whitespace around keys and values, and builds a map from key to value.
-// If parsing succeeds it returns the map and nil error; otherwise it returns an empty map and an error.
 func GetRHCOSMappedVersions(rhcosVersionMap string) (map[string]string, error) {
 	capturedInfo := make(map[string]string)
 
@@ -59,11 +54,6 @@ func GetRHCOSMappedVersions(rhcosVersionMap string) (map[string]string, error) {
 	return capturedInfo, nil
 }
 
-// GetShortVersionFromLong extracts the short OS version from a full version string.
-//
-// It accepts a long-form operating system version string, looks up a
-// corresponding short form in the rhcosVersionMap, and returns the
-// short version string along with an error if the input is empty or not found.
 func GetShortVersionFromLong(longVersion string) (string, error) {
 	capturedVersions, err := GetRHCOSMappedVersions(rhcosVersionMap)
 	if err != nil {

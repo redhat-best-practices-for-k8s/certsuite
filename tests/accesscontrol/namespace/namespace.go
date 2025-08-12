@@ -28,9 +28,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-// TestCrsNamespaces verifies that the instances of specified CRDs are only in given namespaces.
-//
-// It accepts a slice of CustomResourceDefinition objects, a list of namespace names, and a logger. The function returns a map mapping each CRD to its invalid namespace entries and an error if any issues occur during processing.
+// TestCrsNamespaces finds the list of the input CRDs (crds parameter) instances (CRs) and verify that they are only in namespaces provided as input.
+// Returns :
+//   - map[string]map[string][]string : The list of CRs not belonging to the namespaces passed as input is returned as invalid.
+//   - error : if exist error.
 func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespaces []string, logger *log.Logger) (invalidCrs map[string]map[string][]string, err error) {
 	// Initialize the top level map
 	invalidCrs = make(map[string]map[string][]string)
@@ -54,11 +55,10 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 	return invalidCrs, nil
 }
 
-// getCrsPerNamespaces retrieves the custom resources instantiated in the cluster per namespace.
-//
-// It accepts a CustomResourceDefinition pointer and returns a map where each key is a namespace
-// and the corresponding value is a slice of CR names found in that namespace.
-// If an error occurs during listing, it is returned alongside the map.
+// getCrsPerNamespaces gets the list of CRs instantiated in the cluster per namespace.
+// Returns :
+//   - map[string][]string : a map indexed by namespace and data is a list of CR names.
+//   - error : if exist error.
 func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces map[string][]string, err error) {
 	oc := clientsholder.GetClientsHolder()
 	for _, version := range aCrd.Spec.Versions {
@@ -94,14 +94,9 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 	return crdNamespaces, nil
 }
 
-// GetInvalidCRsNum returns the number of invalid CRs in the provided map.
-//
-// It iterates over a nested map structure where the outer key is a string,
-// the inner key is also a string, and the value is a slice of strings.
-// The function counts how many entries are considered invalid based on
-// internal logic (e.g., empty slices or malformed data) and logs errors
-// using the supplied logger. It returns an integer representing the total
-// count of invalid CRs found in the map.
+// GetInvalidCRDsNum returns the number of invalid CRs in the map.
+// Return:
+//   - int : number of invalid CRs in the map.
 func GetInvalidCRsNum(invalidCrs map[string]map[string][]string, logger *log.Logger) int {
 	var invalidCrsNum int
 	for crdName, namespaces := range invalidCrs {

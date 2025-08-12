@@ -49,32 +49,17 @@ const (
 	TestStateSkipped = "skipped"
 )
 
-// SkippedMessage holds information about a message that was ignored
-// during claim handling. The Messages field contains a concise
-// identifier or brief description of the skipped item, while the Text
-// field provides a more detailed explanation or context for why it
-// was omitted. This struct is used to aggregate and report all
-// messages that were intentionally left out from further processing.
 type SkippedMessage struct {
 	Text     string `xml:",chardata"`
 	Messages string `xml:"message,attr,omitempty"`
 }
 
-// FailureMessage represents an error message that can be attached to a claim.
-//
-// It contains a human readable Message, optional detailed Text, and a Type indicating the kind of failure. The fields are exported so they can be marshalled to JSON or other formats when communicating claim status.
 type FailureMessage struct {
 	Text    string `xml:",chardata"`
 	Message string `xml:"message,attr,omitempty"`
 	Type    string `xml:"type,attr,omitempty"`
 }
 
-// TestCase represents the result of a single test execution.
-//
-// It holds metadata such as the test name, classname and status,
-// along with optional failure or skip messages, system error output,
-// test output text, and the duration of the test.
-// The fields are used to serialize test results into standard reporting formats.
 type TestCase struct {
 	Text      string          `xml:",chardata"`
 	Name      string          `xml:"name,attr,omitempty"`
@@ -86,12 +71,6 @@ type TestCase struct {
 	Failure   *FailureMessage `xml:"failure"`
 }
 
-// Testsuite represents the result of a test suite execution.
-//
-// It contains metadata such as the suite name, package, and timestamps,
-// along with aggregated counts for tests, failures, errors, skips, and disabled cases.
-// The Text field holds any human‑readable output from the suite run.
-// Properties provides additional key/value data, while Testcase is a slice of individual test case results.
 type Testsuite struct {
 	Text       string `xml:",chardata"`
 	Name       string `xml:"name,attr,omitempty"`
@@ -114,12 +93,6 @@ type Testsuite struct {
 	Testcase []TestCase `xml:"testcase"`
 }
 
-// TestSuitesXML represents the XML structure of a JUnit test suite report.
-//
-// It contains summary attributes such as the total number of tests, failures,
-// and errors, along with a nested Testsuite element that holds individual
-// test case details. The struct is marshalled to XML using the standard
-// encoding/xml package, with XMLName specifying the root element name.
 type TestSuitesXML struct {
 	XMLName   xml.Name  `xml:"testsuites"`
 	Text      string    `xml:",chardata"`
@@ -131,23 +104,10 @@ type TestSuitesXML struct {
 	Testsuite Testsuite `xml:"testsuite"`
 }
 
-// ClaimBuilder creates, resets, and exports claim data.
-//
-// It holds a reference to the root of a claim tree and provides methods
-// to build the claim from a test environment, reset its state, and
-// generate JUnit XML output for reporting. The builder orchestrates
-// time stamping, formatting, and writing of claim artifacts, handling
-// errors internally and logging informational messages during each step.
 type ClaimBuilder struct {
 	claimRoot *claim.Root
 }
 
-// NewClaimBuilder creates a ClaimBuilder configured for the given test environment.
-//
-// It reads environment variables, initializes claim roots, marshals and unmarshals
-// configuration data, generates nodes, and fetches version information from
-// various components. The function returns a pointer to the constructed ClaimBuilder
-// and an error if any step fails.
 func NewClaimBuilder(env *provider.TestEnvironment) (*ClaimBuilder, error) {
 	if os.Getenv("UNIT_TEST") == "true" {
 		return &ClaimBuilder{
@@ -182,13 +142,6 @@ func NewClaimBuilder(env *provider.TestEnvironment) (*ClaimBuilder, error) {
 	}, nil
 }
 
-// Build creates a closure that produces the claim report for a given test run.
-//
-// It records the current UTC time using the standard RFC3339 format,
-// retrieves reconciled test results, marshals them into JSON or
-// XML based on the feature flag, and writes the output to a file.
-// The returned function accepts the test name as its argument
-// and performs the write operation, logging progress with Info.
 func (c *ClaimBuilder) Build(outputFile string) {
 	endTime := time.Now()
 
@@ -202,13 +155,7 @@ func (c *ClaimBuilder) Build(outputFile string) {
 	log.Info("Claim file created at %s", outputFile)
 }
 
-// populateXMLFromClaim converts a Claim into a TestSuitesXML representation suitable for JUnit output.
-//
-// It takes a Claim, the start time of the test run, and the end time,
-// producing a structured XML object that includes test case results,
-// durations, and overall status information. The returned TestSuitesXML
-// contains suite names, timestamps in UTC, and aggregated metrics such as
-// total tests, failures, and skipped counts derived from the Claim data.
+//nolint:funlen
 func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuitesXML {
 	const (
 		TestSuiteName = "CNF Certification Test Suite"
@@ -306,14 +253,6 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 	return xmlOutput
 }
 
-// ToJUnitXML generates a JUnit XML report from a ClaimBuilder instance.
-//
-// It accepts a filename, a start time, and an end time.
-// The method creates the XML representation of the claim data,
-// writes it to the specified file with proper permissions,
-// logs success or failure using the logger, and returns
-// a no‑op function that can be called by the caller when the
-// report is no longer needed.
 func (c *ClaimBuilder) ToJUnitXML(outputFile string, startTime, endTime time.Time) {
 	// Create the JUnit XML file from the claim output.
 	xmlOutput := populateXMLFromClaim(*c.claimRoot.Claim, startTime, endTime)
@@ -331,22 +270,12 @@ func (c *ClaimBuilder) ToJUnitXML(outputFile string, startTime, endTime time.Tim
 	}
 }
 
-// Reset clears the ClaimBuilder and sets default values.
-//
-// It resets all internal fields of the builder to their zero or
-// default state, then initializes the claim with a new timestamp
-// in UTC using the standard format. After calling this method,
-// the builder is ready for constructing a fresh claim.
 func (c *ClaimBuilder) Reset() {
 	c.claimRoot.Claim.Metadata.StartTime = time.Now().UTC().Format(DateTimeFormatDirective)
 }
 
-// MarshalConfigurations creates a byte stream representation of the test configurations.
-//
-// It takes a TestEnvironment pointer, marshals its data into JSON,
-// and returns the resulting byte slice along with an error if the
-// operation fails. If marshalling encounters an error, the function
-// will terminate the program by calling Error on the logger.
+// MarshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
+// this method fatally fails.
 func MarshalConfigurations(env *provider.TestEnvironment) (configurations []byte, err error) {
 	config := env
 	if config == nil {
@@ -360,8 +289,8 @@ func MarshalConfigurations(env *provider.TestEnvironment) (configurations []byte
 	return configurations, nil
 }
 
-// UnmarshalConfigurations creates a map from configurations byte stream.
-// It takes the configuration data as a byte slice and populates the provided map with the parsed values. If parsing fails, it logs a fatal error and terminates the program.
+// UnmarshalConfigurations creates a map from configurations byte stream.  In the event of an error, this method fatally
+// fails.
 func UnmarshalConfigurations(configurations []byte, claimConfigurations map[string]interface{}) {
 	err := j.Unmarshal(configurations, &claimConfigurations)
 	if err != nil {
@@ -369,13 +298,7 @@ func UnmarshalConfigurations(configurations []byte, claimConfigurations map[stri
 	}
 }
 
-// UnmarshalClaim unmarshals a claim file into a Root structure.
-//
-// It accepts the raw bytes of a claim file and a pointer to a claim.Root
-// where the decoded data will be stored. The function uses json.Unmarshal
-// internally; if unmarshalling fails, it logs a fatal error and terminates
-// execution. On success, the provided root object is populated with the
-// contents of the input bytes.
+// UnmarshalClaim unmarshals the claim file
 func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 	err := j.Unmarshal(claimFile, &claimRoot)
 	if err != nil {
@@ -383,12 +306,7 @@ func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 	}
 }
 
-// ReadClaimFile reads the contents of a claim file.
-//
-// It takes a single argument which is the file path to read.
-// The function returns the raw bytes from the file and an error if one occurred.
-// On success the byte slice contains the file data; on failure an empty slice and the error are returned.  
-// Logging is performed for informational and error events.
+// ReadClaimFile writes the output payload to the claim file.  In the event of an error, this method fatally fails.
 func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	data, err = os.ReadFile(claimFileName)
 	if err != nil {
@@ -398,11 +316,7 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	return data, nil
 }
 
-// GetConfigurationFromClaimFile retrieves configuration details from a claim file.
-//
-// It reads the specified claim file, parses its contents into a Claim structure,
-// extracts the TestEnvironment configuration, and returns it.
-// The function returns a pointer to provider.TestEnvironment and an error if any step fails.
+// GetConfigurationFromClaimFile retrieves configuration details from claim file
 func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvironment, err error) {
 	data, err := ReadClaimFile(claimFileName)
 	if err != nil {
@@ -420,11 +334,8 @@ func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvi
 	return env, err
 }
 
-// MarshalClaimOutput serializes a claim into JSON.
-//
-// It accepts a pointer to a claim.Root and returns the indented JSON
-// representation as a byte slice. If serialization fails, it logs the
-// error and terminates the program with a fatal exit.
+// MarshalClaimOutput is a helper function to serialize a claim as JSON for output.  In the event of an error, this
+// method fatally fails.
 func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 	payload, err := j.MarshalIndent(claimRoot, "", "  ")
 	if err != nil {
@@ -433,11 +344,7 @@ func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 	return payload
 }
 
-// WriteClaimOutput writes the output payload to a claim file.
-//
-// It accepts the path of the claim file and the payload as a byte slice,
-// writes the data to disk with appropriate permissions, logs success,
-// and aborts the program on any error.
+// WriteClaimOutput writes the output payload to the claim file.  In the event of an error, this method fatally fails.
 func WriteClaimOutput(claimOutputFile string, payload []byte) {
 	log.Info("Writing claim data to %s", claimOutputFile)
 	err := os.WriteFile(claimOutputFile, payload, claimFilePermissions)
@@ -446,12 +353,6 @@ func WriteClaimOutput(claimOutputFile string, payload []byte) {
 	}
 }
 
-// GenerateNodes builds a map of node information used in claims.
-//
-// It gathers data from the cluster such as node JSON, CNI plugins,
-// hardware info and CSI drivers by calling helper functions.
-// The returned map has string keys and interface{} values representing
-// various node attributes that are later included in claim files.
 func GenerateNodes() map[string]interface{} {
 	const (
 		nodeSummaryField = "nodeSummary"
@@ -467,10 +368,8 @@ func GenerateNodes() map[string]interface{} {
 	return nodes
 }
 
-// CreateClaimRoot creates a claim root object based on the model defined in the certsuite-claim repository.
-//
-// It constructs a new claim.Root with default values and sets its creation timestamp to the current UTC time.
-// The function returns a pointer to the newly created Root instance, ready for further population or serialization.
+// CreateClaimRoot creates the claim based on the model created in
+// https://github.com/redhat-best-practices-for-k8s/certsuite-claim.
 func CreateClaimRoot() *claim.Root {
 	// Initialize the claim with the start time.
 	startTime := time.Now()
@@ -483,12 +382,6 @@ func CreateClaimRoot() *claim.Root {
 	}
 }
 
-// SanitizeClaimFile removes invalid labels from a claim file and writes a cleaned version.
-//
-// It reads the input claim file, unmarshals its contents, evaluates label expressions,
-// deletes any labels that do not match the expected pattern, and writes the sanitized
-// output to the specified destination path. The function returns the path of the
-// written file and an error if any step fails.
 func SanitizeClaimFile(claimFileName, labelsFilter string) (string, error) {
 	log.Info("Sanitizing claim file %s", claimFileName)
 	data, err := ReadClaimFile(claimFileName)
