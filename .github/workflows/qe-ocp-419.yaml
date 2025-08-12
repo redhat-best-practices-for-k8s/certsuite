@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.sha }}
 
@@ -83,7 +83,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.sha }}
 
@@ -107,7 +107,7 @@ jobs:
           OCP_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
       
       - name: Clone the QE repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           repository: ${{ env.QE_REPO }}
           path: certsuite-qe
@@ -115,14 +115,14 @@ jobs:
 
       - name: Download image from artifact
         if: matrix.run-type == 'image'
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: testimage
           path: /tmp
 
       - name: Download binary from artifact
         if: matrix.run-type == 'binary'
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: certsuite-binary
           path: .
