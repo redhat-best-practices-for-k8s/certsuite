@@ -59,11 +59,20 @@ var (
 	}
 )
 
+// Entry represents a single test case entry in a printable catalog.
+//
+// It contains the original claim identifier and the extracted test name,
+// allowing consumers to display or process test cases in a human‑readable format.
 type Entry struct {
 	testName   string
 	identifier claim.Identifier // {url and version}
 }
 
+// catalogSummary holds aggregated statistics about the test catalog.
+//
+// It tracks how many tests are present per scenario, how many tests belong to each suite,
+// and totals for all suites and tests. These values are used when generating
+// Markdown summaries of the catalog.
 type catalogSummary struct {
 	totalSuites     int
 	totalTests      int
@@ -71,8 +80,10 @@ type catalogSummary struct {
 	testPerScenario map[string]map[string]int
 }
 
-// emitTextFromFile is a utility method to stream file contents to stdout.  This allows more natural specification of
-// the non-dynamic aspects of CATALOG.md.
+// emitTextFromFile streams the contents of a file to stdout.
+//
+// It reads the entire file specified by its path and prints the data
+// directly to standard output, returning an error if reading or printing fails.
 func emitTextFromFile(filename string) error {
 	text, err := os.ReadFile(filename)
 	if err != nil {
@@ -82,20 +93,12 @@ func emitTextFromFile(filename string) error {
 	return nil
 }
 
-// createPrintableCatalogFromIdentifiers creates an structured catalogue.
-// Decompose claim.Identifier urls like http://redhat-best-practices-for-k8s.com/testcases/SuiteName/TestName
-// to get SuiteNames and TestNames and build a "more printable" catalogue in the way of:
+// CreatePrintableCatalogFromIdentifiers creates a printable catalog from claim identifiers.
 //
-//	{
-//	    suiteNameA: [
-//						{testName, identifier{url, version}},
-//						{testName2, identifier{url, version}}
-//	               ]
-//	    suiteNameB: [
-//						{testName3, identifier{url, version}},
-//						{testName4, identifier{url, version}}
-//	               ]
-//	}
+// It takes a slice of Identifier objects, parses each URL to extract the suite and test names,
+// and organizes them into a map where keys are suite names and values are slices of entries.
+// Each entry contains the test name and its corresponding identifier (URL and version).
+// The resulting map provides a structured representation suitable for printing or further processing.
 func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]Entry {
 	catalog := make(map[string][]Entry)
 	// we need the list of suite's names
@@ -108,6 +111,10 @@ func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][
 	return catalog
 }
 
+// GetSuitesFromIdentifiers returns a list of unique suite identifiers from the provided claim identifiers.
+//
+// It accepts a slice of claim.Identifier and extracts the suite component from each identifier.
+// The function collects these suites, removes duplicates, and returns them as a slice of strings.
 func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	var suites []string
 	for _, i := range keys {
@@ -116,6 +123,13 @@ func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	return arrayhelper.Unique(suites)
 }
 
+// scenarioIDToText converts a scenario identifier into a human‑readable string.
+//
+// It accepts a single string argument that represents the internal ID of a
+// scenario and returns a formatted text description suitable for display in
+// documentation or user output. The function performs any necessary mapping
+// from the raw ID to a more descriptive label, ensuring consistency across
+// generated catalogs.
 func scenarioIDToText(id string) (text string) {
 	switch id {
 	case identifiers.FarEdge:
@@ -132,6 +146,10 @@ func scenarioIDToText(id string) (text string) {
 	return text
 }
 
+// addPreflightTestsToCatalog adds predefined preflight tests to the catalog.
+//
+// It creates a map writer, registers several checks with their metadata,
+// and appends them to the catalog entries for later use in certificate suite generation.
 func addPreflightTestsToCatalog() {
 	const dummy = "dummy"
 	// Create artifacts handler
@@ -184,6 +202,8 @@ func addPreflightTestsToCatalog() {
 }
 
 // outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
+//
+// It generates a Markdown string summarizing all test case scenarios and returns this string along with a catalogSummary structure that contains metadata about the generated content. The function gathers identifiers, creates printable representations of the catalog, formats scenario descriptions, and writes the resulting Markdown to standard output before returning the data.
 func outputTestCases() (outString string, summary catalogSummary) { //nolint:funlen
 	// Adds Preflight tests to catalog
 	addPreflightTestsToCatalog()
@@ -284,6 +304,12 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 	return outString, summary
 }
 
+// summaryToMD converts a catalogSummary into a Markdown formatted string.
+//
+// summaryToMD takes a catalogSummary value and produces a Markdown representation of that summary.
+// It constructs the output by assembling various sections, including headings, tables, and lists,
+// based on the fields present in the catalogSummary. The function returns the resulting Markdown
+// as a single string.
 func summaryToMD(aSummary catalogSummary) (out string) {
 	const tableHeader = "|---|---|---|\n"
 	out += "## Test cases summary\n\n"
@@ -321,6 +347,11 @@ func summaryToMD(aSummary catalogSummary) (out string) {
 	return out
 }
 
+// outputJS outputs the generated catalog in JSON format.
+//
+// It marshals the catalog data into indented JSON and writes it to standard
+// output. If marshalling fails, an error message is printed. The function
+// returns a no‑op function suitable for use as a Cobra command RunE handler.
 func outputJS() {
 	out, err := json.MarshalIndent(identifiers.Classification, "", "  ")
 	if err != nil {
@@ -329,6 +360,12 @@ func outputJS() {
 	}
 	fmt.Printf("classification=  %s ", out)
 }
+
+// generateJS generates JavaScript output for the catalog command.
+//
+// It takes a cobra.Command and a slice of arguments, processes the
+// catalog data, and writes JavaScript to the standard output or a file.
+// The function returns an error if generation fails or required data is missing.
 func generateJS(_ *cobra.Command, _ []string) error {
 	// process the test cases
 	outputJS()
@@ -336,6 +373,11 @@ func generateJS(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
+// outputIntro generates an introductory message for the catalog.
+//
+// It constructs a user-friendly introduction that explains what the
+// generated catalog contains and how it can be used. The function
+// returns this text as a single string value, with no input parameters.
 func outputIntro() (out string) {
 	headerStr :=
 		"<!-- markdownlint-disable line-length no-bare-urls blanks-around-lists ul-indent blanks-around-headings no-trailing-spaces -->\n" +
@@ -350,6 +392,13 @@ func outputIntro() (out string) {
 	return headerStr + introStr
 }
 
+// outputSccCategories returns a formatted string listing all supported SCC categories.
+//
+// The function generates a concise, human‑readable representation of the security
+// context constraints categories that can be applied to workloads. It is used
+// by the catalog generation process to provide documentation and reference
+// information for users configuring policies. No parameters are required; it
+// simply returns the category list as a single string.
 func outputSccCategories() (sccCategories string) {
 	sccCategories = "\n## Security Context Categories\n"
 
@@ -394,6 +443,12 @@ func outputSccCategories() (sccCategories string) {
 }
 
 // runGenerateMarkdownCmd generates a markdown test catalog.
+//
+// It writes a Markdown representation of the test cases and their
+// classification hierarchy to the provided command output stream.
+// The function accepts a Cobra command and arguments slice, but only
+// uses the command to access its output writer. It returns an error
+// if any write operation fails.
 func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	// prints intro
 	intro := outputIntro()
@@ -408,7 +463,12 @@ func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
-// Execute executes the "catalog" CLI.
+// NewCommand creates the root command for the catalog generation subcommand.
+//
+// It constructs a cobra.Command instance, sets up its usage and description,
+// and registers two child commands: one for generating markdown documentation
+// and another for producing a classification file. The returned command can be
+// added to the main certsuite CLI tree.
 func NewCommand() *cobra.Command {
 	generateCmd.AddCommand(markdownGenerateCmd)
 

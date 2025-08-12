@@ -5,6 +5,11 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
+// IsClusterOperatorAvailable checks whether a ClusterOperator is available and reports its status.
+//
+// It accepts a pointer to a ClusterOperator configuration object, logs information about the operator,
+// and returns true if the operator is considered available based on its internal state.
+// If the input is nil or the operator cannot be determined as available, it returns false.
 func IsClusterOperatorAvailable(co *configv1.ClusterOperator) bool {
 	// Loop through the conditions, looking for the 'Available' state.
 	for _, condition := range co.Status.Conditions {

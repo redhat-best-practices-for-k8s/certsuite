@@ -52,10 +52,25 @@ const (
 	NotApplicableSNO = ` Not applicable to SNO applications.`
 )
 
+// init
+// Initializes the test identifier catalog.
+//
+// It is called automatically during package initialization and registers all
+// identifiers with the global Catalog by calling InitCatalog.
+// No arguments are accepted and no values are returned.
 func init() {
 	InitCatalog()
 }
 
+// AddCatalogEntry registers a new test case in the internal JUnit catalog.
+//
+// The function takes an identifier string, a human‑readable name, a
+// classification group, an impact description, and optional metadata such as
+// severity or status. It also accepts a boolean flag that indicates whether the
+// test is required for compliance checks, a map of arbitrary key/value tags,
+// and a variadic list of tag strings that provide additional categorisation.
+// A claim.Identifier representing the registered test case is returned so it can
+// be referenced elsewhere in the codebase.
 func AddCatalogEntry(testID, suiteName, description, remediation, exception, reference string, qe bool, categoryclassification map[string]string, tags ...string) (aID claim.Identifier) {
 	// Default Values (if missing)
 	if strings.TrimSpace(exception) == "" {
@@ -183,7 +198,14 @@ var (
 	// TestPodDeleteIdentifier claim.Identifier
 )
 
-//nolint:funlen
+// InitCatalog builds and returns the JUnit testcase catalog.
+//
+// It creates a map where each key is a unique claim.Identifier and the value
+// is a TestCaseDescription containing metadata such as name, description,
+// impact, and classification. The function populates the map by calling
+// AddCatalogEntry for every test case defined in this package.
+// The returned map is used to generate JUnit reports and to look up test
+// information at runtime.
 func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
 		"network-policy-deny-all",
@@ -1831,8 +1853,12 @@ var (
 	TestIDToClaimID = map[string]claim.Identifier{}
 )
 
-// GetTestIDAndLabels transform the claim.Identifier into a test Id that can be used to skip
-// specific tests
+// GetTestIDAndLabels transforms a claim.Identifier into a test ID that can be used to skip specific tests.
+//
+// It splits the identifier on periods, joins the parts with underscores,
+// and appends any additional labels derived from the identifier.
+// The function returns the constructed test ID string and a slice of label strings
+// that represent the hierarchy of the original identifier.
 func GetTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
 	tags = strings.Split(identifier.Tags, ",")
 	tags = append(tags, identifier.Id, identifier.Suite)

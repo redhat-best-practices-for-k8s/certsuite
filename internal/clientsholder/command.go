@@ -27,12 +27,21 @@ import (
 	"k8s.io/kubectl/pkg/scheme"
 )
 
-//go:generate moq -out command_moq.go . Command
+// Command represents a command execution strategy within the client holder package.
+//
+// It defines methods that allow executing commands inside containers or host environments,
+// facilitating communication with Kubernetes pods and other resources.
+// Implementations typically provide container-specific logic, error handling,
+// and integration with the rest of the certsuite toolchain.
 type Command interface {
 	ExecCommandContainer(Context, string) (string, string, error)
 }
 
-// ExecCommand runs command in the pod and returns buffer output.
+// ExecCommandContainer runs a command inside a specified container of a pod and returns its standard output as a string.
+//
+// ExecCommandContainer executes the provided command string in the target container within the given context.
+// It constructs an API request to the Kubernetes exec subresource, streams the response,
+// captures the output buffer, and returns it along with any error encountered during execution.
 func (clientsholder *ClientsHolder) ExecCommandContainer(
 	ctx Context, command string) (stdout, stderr string, err error) {
 	commandStr := []string{"sh", "-c", command}

@@ -44,6 +44,12 @@ with column header:
 	}
 )
 
+// NewCommand creates the CSV output command for certsuite claim show.
+//
+// It returns a *cobra.Command configured to dump claim data in CSV format.
+// The command defines flags for input file, CNF name, CNF list file,
+// and an optional header flag. All required flags are marked as such,
+// and validation errors cause the program to exit with a fatal message.
 func NewCommand() *cobra.Command {
 	CSVDumpCommand.Flags().StringVarP(&claimFilePathFlag, "claim-file", "c", "",
 		"Required: path to claim file.",
@@ -82,6 +88,13 @@ func NewCommand() *cobra.Command {
 	return CSVDumpCommand
 }
 
+// dumpCsv writes claim data to CSV format.
+//
+// dumpCsv writes claim data to CSV format.
+// It parses command line flags, verifies the API version,
+// loads a CNF type map, builds a catalog by ID, and
+// generates CSV output using the standard csv package.
+// The function returns an error if any step fails.
 func dumpCsv(_ *cobra.Command, _ []string) error {
 	// set log output to stderr
 	log.SetOutput(os.Stderr)
@@ -133,8 +146,11 @@ func dumpCsv(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
-// dumps claim file in CSV format.
-// adds remediation, mandatory/optional, CNFType to the claim data
+// buildCSV creates a CSV representation of claim data with additional metadata.
+//
+// It takes a pointer to a claim.Schema, the CNF name as a string, and a map of test case descriptions.
+// The returned two-dimensional slice contains rows where each row represents a field in the claim,
+// enriched with remediation information, mandatory/optional status, and the CNF type.
 func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]claimschema.TestCaseDescription) (resultsCSVRecords [][]string) {
 	if cnfType == "" {
 		cnfType = identifiers.NonTelco
@@ -187,7 +203,13 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 	return resultsCSVRecords
 }
 
-// loads records from a CSV
+// loadCNFTypeMap loads a CSV file containing CNF type mappings and returns them as a map.
+//
+// It accepts the path to the CSV file, opens it, reads all rows,
+// unmarshals each row into a struct, and builds a map from the
+// first column value to the second. The function returns the map
+// and an error if any step fails, such as opening the file or
+// parsing its contents.
 func loadCNFTypeMap(path string) (CNFTypeMap map[string]string, err error) { //nolint:gocritic // CNF is a valid acronym
 	// Open the CSV file
 	file, err := os.Open(path)
@@ -213,7 +235,10 @@ func loadCNFTypeMap(path string) (CNFTypeMap map[string]string, err error) { //n
 	return CNFTypeMap, nil
 }
 
-// builds a catalog map indexed by test case ID
+// buildCatalogByID builds a map of test case descriptions keyed by ID.
+//
+// It creates an empty map from string to TestCaseDescription and returns it.
+// This function is used internally to index catalog entries by their identifier.
 func buildCatalogByID() (catalogMap map[string]claimschema.TestCaseDescription) {
 	catalogMap = make(map[string]claimschema.TestCaseDescription)
 

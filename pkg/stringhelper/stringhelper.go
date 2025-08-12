@@ -21,7 +21,13 @@ import (
 	"strings"
 )
 
-// StringInSlice checks a slice for a given string.
+// StringInSlice checks whether a given value is present in a slice.
+//
+// It accepts three arguments: a slice of values, the value to search for,
+// and a boolean indicating whether the comparison should ignore case.
+// The function returns true if the value exists in the slice, otherwise false.
+// When ignoreCase is true, both the target value and each element are trimmed
+// of leading/trailing whitespace and compared in a case-insensitive manner.
 func StringInSlice[T ~string](s []T, str T, containsCheck bool) bool {
 	for _, v := range s {
 		if !containsCheck {
@@ -37,7 +43,11 @@ func StringInSlice[T ~string](s []T, str T, containsCheck bool) bool {
 	return false
 }
 
-// SubSlice checks if a slice's elements all exist within a slice
+// SubSlice checks whether all elements of the first slice appear in the second.
+//
+// It returns true if every string in the first argument is found within
+// the second slice, otherwise it returns false. The function uses StringInSlice
+// internally to perform membership tests.
 func SubSlice(s, sub []string) bool {
 	for _, v := range sub {
 		if !StringInSlice(s, v, false) {
@@ -47,7 +57,9 @@ func SubSlice(s, sub []string) bool {
 	return true
 }
 
-// checks that at least one element is common to both slices
+// HasAtLeastOneCommonElement reports whether two slices share any element.
+//
+// It returns true if there exists at least one string that appears in both input slices, otherwise false. The function iterates over the first slice and checks each value for membership in the second slice.
 func HasAtLeastOneCommonElement(s1, s2 []string) bool {
 	for _, v := range s2 {
 		if StringInSlice(s1, v, false) {
@@ -57,6 +69,11 @@ func HasAtLeastOneCommonElement(s1, s2 []string) bool {
 	return false
 }
 
+// RemoveEmptyStrings returns a new slice with all empty strings removed.
+//
+// It takes a slice of strings, iterates over each element,
+// and appends only non‑empty strings to the result.
+// The returned slice contains the original order of non‑empty elements.
 func RemoveEmptyStrings(s []string) []string {
 	var r []string
 	for _, str := range s {
@@ -67,31 +84,16 @@ func RemoveEmptyStrings(s []string) []string {
 	return r
 }
 
-// PointerToString returns the default string representation of the value pointer by p, mainly
-// used in log traces to print k8s resources' pointer fields.
-// If p is a nil pointer, no matter the type, it will return the string "nil".
+// PointerToString returns a string representation of the value pointed to by p.
+// It handles nil pointers by returning the literal string "nil". For non‑nil
+// pointers, it converts the underlying value to its default string form,
+// typically using fmt.Sprint.
 //
-// # Example 1
-//
-//	var b* bool
-//	PointerToString(b) -> returns "nil"
-//
-// # Example 2
-//
-//	b := true
-//	bTrue := &b
-//	PointerToString(bTrue) -> returns "true"
-//
-// # Example 3
-//
-//	var num *int
-//	PointerToString(num) -> returns "nil"
-//
-// # Example 4
-//
-//	num := 1984
-//	num1984 := &num
-//	PointerToString(num1984) -> returns "1984"
+// The function accepts a single pointer argument of any type and yields a
+// string. If the pointer is nil, the result is "nil"; otherwise, the
+// dereferenced value is formatted as a string. This helper is useful for
+// logging or tracing Kubernetes resources where pointer fields need to be
+// displayed in human‑readable form.
 func PointerToString[T any](p *T) string {
 	if p == nil {
 		return "nil"

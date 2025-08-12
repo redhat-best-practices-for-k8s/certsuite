@@ -24,6 +24,14 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
+// getServices retrieves Kubernetes services matching specified name and namespace filters.
+//
+// It accepts a CoreV1Interface client, a slice of service names to filter by, and a slice of
+// namespaces to restrict the search to. The function lists all services in the provided
+// namespaces, then selects those whose names appear in the name filter list.
+// It returns a slice of Service pointers that match the criteria and an error if the
+// underlying client call fails. If no filters are supplied, it will return all services
+// found in the given namespaces.
 func getServices(oc corev1client.CoreV1Interface, namespaces, ignoreList []string) (allServices []*corev1.Service, err error) {
 	for _, ns := range namespaces {
 		s, err := oc.Services(ns).List(context.TODO(), metav1.ListOptions{})

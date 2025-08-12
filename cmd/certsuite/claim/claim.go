@@ -13,6 +13,12 @@ var (
 	}
 )
 
+// NewCommand creates the root command for the claim subcommand.
+//
+// It constructs a new cobra.Command instance, configures it with
+// usage information and registers any child commands by calling AddCommand.
+// The returned *cobra.Command is ready to be added to the main application
+// command tree.
 func NewCommand() *cobra.Command {
 	claimCommand.AddCommand(compare.NewCommand())
 	claimCommand.AddCommand(show.NewCommand())

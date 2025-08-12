@@ -79,6 +79,15 @@ var (
 	}
 )
 
+// LoadChecks registers all performance checks with the test framework.
+//
+// LoadChecks registers all predefined performance checks and their
+// associated skip conditions within the current test environment.
+// It configures check groups, adds individual checks, and sets up
+// any necessary before-each hooks. The function returns a no‑argument
+// closure that can be invoked to perform the registration steps,
+// allowing deferred execution if required. No parameters are needed,
+// and the returned closure does not return a value.
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.PerformanceTestKey)
 
@@ -128,7 +137,15 @@ func LoadChecks() {
 		}))
 }
 
-//nolint:funlen
+// testLimitedUseOfExecProbes limits the number of exec probes performed during a test run.
+//
+// It iterates over the containers in the provided check, performing up to
+// maxNumberOfExecProbes exec operations per container with a minimum period
+// of minExecProbePeriodSeconds between probes.  The function logs progress,
+// records results for each probe attempt, and aggregates failures into a
+// report object which is then set on the test environment's result.
+// No values are returned; all state changes occur through logging and
+// modifying the check and environment objects passed in.
 func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -208,6 +225,14 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testExclusiveCPUPool checks that a pod with exclusive CPU allocation can run without errors and reports its status.
+//
+// testExclusiveCPUPool verifies the behavior of pods assigned exclusive CPUs.
+// It receives a check configuration and a test environment, then attempts to
+// execute the test logic for exclusive CPU pools. The function logs relevant
+// information, creates pod report objects, sets results, and handles any
+// errors that occur during execution. No value is returned; it operates by
+// side effects on the provided arguments.
 func testExclusiveCPUPool(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -241,6 +266,9 @@ func testExclusiveCPUPool(check *checksdb.Check, env *provider.TestEnvironment) 
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testSchedulingPolicyInCPUPool returns a cleanup function that verifies the CPU scheduling policy for a set of containers in a CPU pool.
+//
+// It receives a check definition, test environment, a slice of containers, and a CPU pool identifier. The returned function logs information, retrieves each container’s PID namespace, gathers all PIDs within that namespace, analyzes their CPU scheduling behavior, and records the results in the test report. Any errors encountered during these steps are logged and cause the check to fail.
 func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvironment,
 	podContainers []*provider.Container, schedulingType string) {
 	var compliantContainersPids []*testhelper.ReportObject
@@ -276,6 +304,9 @@ func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvi
 	check.SetResult(compliantContainersPids, nonCompliantContainersPids)
 }
 
+// getExecProbesCmds returns a map of command strings to bool indicating whether each exec probe should be run on the given container.
+//
+// It builds a set of exec probe commands by combining base commands with arguments derived from the container's configuration. The returned map keys are the fully qualified exec probe commands, and all values are true. This function is used internally to determine which probes need to be executed for performance testing.
 func getExecProbesCmds(c *provider.Container) map[string]bool {
 	cmds := map[string]bool{}
 
@@ -302,6 +333,17 @@ func getExecProbesCmds(c *provider.Container) map[string]bool {
 
 const noProcessFoundErrMsg = "No such process"
 
+// testRtAppsNoExecProbes checks that non‑guaranteed pod containers without HostPID
+// do not run exec probes and reports any violations.
+//
+// It retrieves all non‑guaranteed pod containers lacking a HostPID,
+// logs their count, and iterates over each container.
+// For containers with exec probes it records the probe process IDs,
+// filters out those that belong to known probe processes, and if any
+// remaining processes are found, creates a report object for each
+// indicating the violation. It also checks whether the container is a
+// real‑time policy container and reports accordingly. The function sets
+// the result status on the provided check after processing all containers.
 func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -361,6 +403,10 @@ func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// filterProbeProcesses filters a list of processes to include only those that match execution probe commands for the given container.
+// It returns two slices: one with the matching processes and another containing report objects summarizing each matched process.
+// The function uses the container's exec probes configuration to determine relevant command patterns, then builds report objects
+// with details such as the command name, its arguments, and the associated container information.
 func filterProbeProcesses(allProcesses []*crclient.Process, cut *provider.Container) (notExecProbeProcesses []*crclient.Process, compliantObjects []*testhelper.ReportObject) {
 	execProbeProcesses := []int{}
 	execProbesCmds := getExecProbesCmds(cut)

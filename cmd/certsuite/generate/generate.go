@@ -15,6 +15,14 @@ var (
 	}
 )
 
+// NewCommand creates the root generate command.
+//
+// It constructs a new cobra.Command that serves as the entry point
+// for the generate subcommand of certsuite. The function sets up
+// the command's usage, description, and registers any child commands
+// by calling AddCommand on the returned command.
+// The resulting *cobra.Command is returned to be added to the main
+// application command tree.
 func NewCommand() *cobra.Command {
 	generate.AddCommand(catalog.NewCommand())
 	generate.AddCommand(feedback.NewCommand())

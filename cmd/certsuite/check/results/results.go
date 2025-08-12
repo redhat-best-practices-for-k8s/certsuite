@@ -26,12 +26,23 @@ const (
 	resultMiss = "MISSING"
 )
 
+// TestCaseList holds the names of test cases grouped by result status.
+//
+// It contains three slices of strings: Fail, Pass, and Skip,
+// each holding the identifiers of test cases that ended with
+// the corresponding outcome during a certsuite run.
 type TestCaseList struct {
 	Pass []string `yaml:"pass"`
 	Fail []string `yaml:"fail"`
 	Skip []string `yaml:"skip"`
 }
 
+// TestResults represents the collection of test case outcomes.
+//
+// It embeds a TestCaseList to provide access to individual test cases and their
+// execution status. The struct is used to aggregate results from multiple
+// test runs within the certsuite command-line tool, enabling reporting,
+// filtering, and further analysis of test outcomes.
 type TestResults struct {
 	TestCaseList `yaml:"testCases"`
 }
@@ -42,6 +53,12 @@ var checkResultsCmd = &cobra.Command{
 	RunE:  checkResults,
 }
 
+// checkResults compares test results with expected values and writes a report.
+//
+// It retrieves command flags, loads the stored test results from the database,
+// compares them against expected outcomes, and optionally generates a template
+// file. Mismatches are printed to stdout and cause the program to exit with
+// an error status. The function returns an error if any operation fails.
 func checkResults(cmd *cobra.Command, _ []string) error {
 	templateFileName, _ := cmd.Flags().GetString("template")
 	generateTemplate, _ := cmd.Flags().GetBool("generate-template")
@@ -90,6 +107,14 @@ func checkResults(cmd *cobra.Command, _ []string) error {
 	return nil
 }
 
+// getTestResultsDB reads a test results file and returns a map of test identifiers to their outcome.
+//
+// getTestResultsDB parses the specified file path, expecting lines formatted as
+// "testID: result". It returns a map where each key is the test identifier and
+// the value is one of the predefined result constants (pass, fail, skip, miss).
+// If the file cannot be opened or any parsing error occurs, it returns an
+// error describing the problem. The function does not modify the input file
+// and closes it before returning.
 func getTestResultsDB(logFileName string) (map[string]string, error) {
 	resultsDB := make(map[string]string)
 
@@ -124,6 +149,12 @@ func getTestResultsDB(logFileName string) (map[string]string, error) {
 	return resultsDB, nil
 }
 
+// getExpectedTestResults reads a JSON file containing expected test results and returns them as a map.
+//
+// It takes the path to a template file, opens and parses its contents into a
+// map where keys are test identifiers and values are expected result strings.
+// The function returns the populated map or an error if the file cannot be read,
+// the data cannot be unmarshaled, or any other issue occurs.
 func getExpectedTestResults(templateFileName string) (map[string]string, error) {
 	templateFile, err := os.ReadFile(templateFileName)
 	if err != nil {
@@ -150,6 +181,12 @@ func getExpectedTestResults(templateFileName string) (map[string]string, error) 
 	return expectedTestResults, nil
 }
 
+// printTestResultsMismatch reports mismatched test results between two sets.
+//
+// It takes three arguments: a slice of test names, a map of expected results,
+// and a map of actual results. The function compares each test's expected
+// outcome with the actual outcome, printing a formatted table that shows
+// which tests passed, failed, were skipped, or missed. No value is returned.
 func printTestResultsMismatch(mismatchedTestCases []string, actualResults, expectedResults map[string]string) {
 	fmt.Printf("\n")
 	fmt.Println(strings.Repeat("-", 96)) //nolint:mnd // table line
@@ -169,6 +206,12 @@ func printTestResultsMismatch(mismatchedTestCases []string, actualResults, expec
 	}
 }
 
+// generateTemplateFile writes a JSON file from the provided map of strings.
+//
+// It creates a temporary buffer, encodes the map as pretty‑printed JSON,
+// and writes the result to a file named by TestResultsTemplateFileName
+// with permissions specified by TestResultsTemplateFilePermissions.
+// If any step fails, it returns an error describing the problem.
 func generateTemplateFile(resultsDB map[string]string) error {
 	var resultsTemplate TestResults
 	for testCase, result := range resultsDB {
@@ -201,6 +244,14 @@ func generateTemplateFile(resultsDB map[string]string) error {
 	return nil
 }
 
+// NewCommand creates the command used to run checks on a set of test results.
+//
+// It returns a *cobra.Command configured with persistent flags that control
+// output formatting, filtering, and other behavior. The command exposes flags
+// for specifying output files, choosing which result states to display,
+// enabling or disabling verbose output, and selecting whether to mark
+// mutually exclusive options. The returned command is intended to be added
+// to the main application’s root command hierarchy.
 func NewCommand() *cobra.Command {
 	checkResultsCmd.PersistentFlags().String("template", "expected_results.yaml", "reference YAML template with the expected results")
 	checkResultsCmd.PersistentFlags().String("log-file", "certsuite.log", "log file of the Certsuite execution")

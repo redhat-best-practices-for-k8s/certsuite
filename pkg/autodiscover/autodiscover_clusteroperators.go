@@ -10,6 +10,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// findClusterOperators retrieves the list of cluster operators from the OpenShift API and returns them as a slice, along with any error encountered.
+//
+// It takes a ClusterOperatorInterface client as input, uses it to list all
+// ClusterOperator resources, handles not-found errors gracefully, logs debug
+// information, and returns the resulting slice or an error if the operation
+// fails.
 func findClusterOperators(client clientconfigv1.ClusterOperatorInterface) ([]configv1.ClusterOperator, error) {
 	clusterOperators, err := client.List(context.TODO(), metav1.ListOptions{})
 	if err != nil && !k8serrors.IsNotFound(err) {
