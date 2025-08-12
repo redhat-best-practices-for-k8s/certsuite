@@ -548,6 +548,11 @@ func GetPodIPsPerNet(annotation string) (ips map[string]CniNetworkInterface, err
 	// The list of ips pr net is parsed from the content of the "k8s.v1.cni.cncf.io/networks-status" annotation.
 	ips = make(map[string]CniNetworkInterface)
 
+	// Sanity check: if the annotation is missing or empty, return empty result without error
+	if strings.TrimSpace(annotation) == "" {
+		return ips, nil
+	}
+
 	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
@@ -564,6 +569,11 @@ func GetPodIPsPerNet(annotation string) (ips map[string]CniNetworkInterface, err
 }
 
 func GetPciPerPod(annotation string) (pciAddr []string, err error) {
+	// Sanity check: if the annotation is missing or empty, return empty result without error
+	if strings.TrimSpace(annotation) == "" {
+		return []string{}, nil
+	}
+
 	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
