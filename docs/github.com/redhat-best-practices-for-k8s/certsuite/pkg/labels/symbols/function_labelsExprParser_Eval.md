@@ -1,0 +1,1 @@
+labelsExprParser.Eval` turns a list of label strings into a lookup table, optionally rewrites the expression, recursively evaluates the AST against that table, and returns whether the label set satisfies the original boolean condition.
