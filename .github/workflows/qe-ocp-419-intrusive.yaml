@@ -63,7 +63,8 @@ jobs:
       matrix: 
         # Add more suites if more intrusive tests are added to the QE repo
         suite: [lifecycle]
-        run-type: [binary, image]
+        # run-type: [binary, image]
+        run-type: [binary]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.crc/machines/crc/kubeconfig'

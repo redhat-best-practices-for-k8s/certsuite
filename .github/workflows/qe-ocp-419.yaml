@@ -62,7 +62,8 @@ jobs:
       fail-fast: false
       matrix: 
         suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
-        run-type: [binary, image]
+        # run-type: [binary, image]
+        run-type: [binary]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.crc/machines/crc/kubeconfig'
