@@ -138,4 +138,6 @@ type TestParameters struct {
 	ConnectAPIBaseURL             string
 	ConnectAPIProxyURL            string
 	ConnectAPIProxyPort           string
+	// AllowNonRunning determines whether autodiscovery includes non-Running pods
+	AllowNonRunning bool
 }
