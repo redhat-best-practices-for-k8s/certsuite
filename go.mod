@@ -23,7 +23,7 @@ require (
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20250415184943-39da695c5e9a
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/spf13/cobra v1.9.1
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 	golang.org/x/term v0.34.0
 	google.golang.org/api v0.248.0
 	gopkg.in/yaml.v3 v3.0.1
