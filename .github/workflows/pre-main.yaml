@@ -19,7 +19,7 @@ env:
   OCT_IMAGE_NAME: redhat-best-practices-for-k8s/oct
   OCT_IMAGE_TAG: latest
   PROBE_IMAGE_NAME: redhat-best-practices-for-k8s/certsuite-probe
-  PROBE_IMAGE_TAG: v0.0.24
+  PROBE_IMAGE_TAG: v0.0.25
   CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
   CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
   SMOKE_TESTS_LOG_LEVEL: debug
