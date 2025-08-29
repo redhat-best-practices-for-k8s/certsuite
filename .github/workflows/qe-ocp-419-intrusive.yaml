@@ -13,6 +13,7 @@ permissions:
 
 env:
   QE_REPO: redhat-best-practices-for-k8s/certsuite-qe
+  ENABLE_CERTSUITE_MEMORY_LIMIT: true
 
 jobs:
   build-and-store:
@@ -98,7 +99,7 @@ jobs:
           exit 1
 
       - name: Deploy the OCP Cluster
-        uses: palmsoftware/quick-ocp@v0.0.16
+        uses: palmsoftware/quick-ocp@v0.0.17
         with:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
