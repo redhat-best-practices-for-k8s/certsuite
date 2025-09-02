@@ -85,5 +85,5 @@ func GetSSHDaemonPort(cut *provider.Container) (string, error) {
 		return "", fmt.Errorf("failed to execute command %s on %s, err: %v", findSSHDaemonPort, cut, err)
 	}
 
-	return outStr, nil
+	return strings.TrimSpace(outStr), nil
 }
