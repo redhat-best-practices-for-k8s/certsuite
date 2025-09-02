@@ -27,8 +27,6 @@ import (
 	"encoding/json"
 
 	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
-	configv1 "github.com/openshift/api/config/v1"
-	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olmpkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
@@ -36,6 +34,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/ocplite"
 	k8sPrivilegedDs "github.com/redhat-best-practices-for-k8s/privileged-daemonset"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	"helm.sh/helm/v3/pkg/release"
@@ -129,7 +128,7 @@ type TestEnvironment struct { // rename this with testTarget
 	SriovNetworkNodePolicies     []unstructured.Unstructured
 	AllSriovNetworkNodePolicies  []unstructured.Unstructured
 	NetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
-	ClusterOperators             []configv1.ClusterOperator
+	ClusterOperators             []ocplite.ClusterOperator
 	IstioServiceMeshFound        bool
 	ValidProtocolNames           []string
 	DaemonsetFailedToSpawn       bool
@@ -148,7 +147,9 @@ type TestEnvironment struct { // rename this with testTarget
 }
 
 type MachineConfig struct {
-	*mcv1.MachineConfig
+	Spec struct {
+		KernelArguments []string `json:"kernelArguments"`
+	} `json:"spec"`
 	Config struct {
 		Systemd struct {
 			Units []struct {
@@ -639,20 +640,36 @@ func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (M
 		return mc, nil
 	}
 
-	nodeMc, err := client.MachineCfg.MachineconfigurationV1().MachineConfigs().Get(context.TODO(), mcName, metav1.GetOptions{})
+	// Fetch MachineConfig via dynamic client
+	mcGVR := schema.GroupVersionResource{Group: "machineconfiguration.openshift.io", Version: "v1", Resource: "machineconfigs"}
+	u, err := client.DynamicClient.Resource(mcGVR).Get(context.TODO(), mcName, metav1.GetOptions{})
 	if err != nil {
 		return MachineConfig{}, err
 	}
 
-	mc := MachineConfig{
-		MachineConfig: nodeMc,
+	var mc MachineConfig
+	// Extract spec.kernelArguments and spec.config
+	if specObj, ok := u.Object["spec"].(map[string]interface{}); ok {
+		if kaArr, ok := specObj["kernelArguments"].([]interface{}); ok {
+			for _, v := range kaArr {
+				if s, ok := v.(string); ok {
+					mc.Spec.KernelArguments = append(mc.Spec.KernelArguments, s)
+				}
+			}
+		}
+		if cfg, ok := specObj["config"].(map[string]interface{}); ok {
+			b, err := json.Marshal(cfg)
+			if err != nil {
+				return MachineConfig{}, fmt.Errorf("failed to marshal machineconfig spec.config: %v", err)
+			}
+			if err := json.Unmarshal(b, &mc.Config); err != nil {
+				return MachineConfig{}, fmt.Errorf("failed to unmarshal mc's Config field, err: %v", err)
+			}
+		}
 	}
 
-	err = json.Unmarshal(nodeMc.Spec.Config.Raw, &mc.Config)
-	if err != nil {
-		return MachineConfig{}, fmt.Errorf("failed to unmarshal mc's Config field, err: %v", err)
-	}
-
+	// Cache and return
+	machineConfigs[mcName] = mc
 	return mc, nil
 }
 

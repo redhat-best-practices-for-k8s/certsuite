@@ -3,32 +3,29 @@ package clusteroperator
 import (
 	"testing"
 
-	configv1 "github.com/openshift/api/config/v1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/ocplite"
 	"github.com/stretchr/testify/assert"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestIsClusterOperatorAvailable(t *testing.T) {
 	generateClusterOperator := func(
-		availableStatus configv1.ConditionStatus,
-		degradedStatus configv1.ConditionStatus,
-		progressingStatus configv1.ConditionStatus) *configv1.ClusterOperator {
-		return &configv1.ClusterOperator{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: "test-cluster-operator",
-			},
-			Status: configv1.ClusterOperatorStatus{
-				Conditions: []configv1.ClusterOperatorStatusCondition{
+		availableStatus string,
+		degradedStatus string,
+		progressingStatus string) *ocplite.ClusterOperator {
+		return &ocplite.ClusterOperator{
+			Name: "test-cluster-operator",
+			Status: ocplite.ClusterOperatorStatus{
+				Conditions: []ocplite.ClusterOperatorStatusCondition{
 					{
-						Type:   configv1.OperatorAvailable,
+						Type:   ocplite.OperatorAvailable,
 						Status: availableStatus,
 					},
 					{
-						Type:   configv1.OperatorDegraded,
+						Type:   ocplite.OperatorDegraded,
 						Status: degradedStatus,
 					},
 					{
-						Type:   configv1.OperatorProgressing,
+						Type:   ocplite.OperatorProgressing,
 						Status: progressingStatus,
 					},
 				},
@@ -37,15 +34,15 @@ func TestIsClusterOperatorAvailable(t *testing.T) {
 	}
 
 	testCases := []struct {
-		testAvailableStatus   configv1.ConditionStatus
-		testDegradedStatus    configv1.ConditionStatus
-		testProgressingStatus configv1.ConditionStatus
+		testAvailableStatus   string
+		testDegradedStatus    string
+		testProgressingStatus string
 		expectedResult        bool
 	}{
 		{
-			testAvailableStatus:   configv1.ConditionTrue,
-			testDegradedStatus:    configv1.ConditionFalse,
-			testProgressingStatus: configv1.ConditionFalse,
+			testAvailableStatus:   "True",
+			testDegradedStatus:    "False",
+			testProgressingStatus: "False",
 			expectedResult:        true,
 		},
 	}

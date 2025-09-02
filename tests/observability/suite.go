@@ -24,19 +24,19 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
-	pdbv1 "github.com/redhat-best-practices-for-k8s/certsuite/tests/observability/pdb"
-
-	apiserv1 "github.com/openshift/api/apiserver/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/ocplite"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	pdbv1 "github.com/redhat-best-practices-for-k8s/certsuite/tests/observability/pdb"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 var (
@@ -286,7 +286,7 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 // Filters:
 // - status.removedInRelease is not empty
 // - Verifies if the service account is inside the workload SA list from env.ServiceAccounts
-func buildServiceAccountToDeprecatedAPIMap(apiRequestCounts []apiserv1.APIRequestCount, workloadServiceAccountNames map[string]struct{}) map[string]map[string]string {
+func buildServiceAccountToDeprecatedAPIMap(apiRequestCounts []ocplite.APIRequestCount, workloadServiceAccountNames map[string]struct{}) map[string]map[string]string {
 	// Define a map where the key is the service account name and the value is another map
 	// The inner map key is the API name and the value is the release version in which it will be removed
 	serviceAccountToDeprecatedAPIs := make(map[string]map[string]string)
@@ -393,6 +393,8 @@ func extractUniqueServiceAccountNames(env *provider.TestEnvironment) map[string]
 }
 
 // Function to test API compatibility with the next OCP release
+//
+//nolint:funlen // The function performs a cohesive flow with dynamic client calls and evaluations.
 func testAPICompatibilityWithNextOCPRelease(check *checksdb.Check, env *provider.TestEnvironment) {
 	isOCP := provider.IsOCPCluster()
 	check.LogInfo("Is OCP: %v", isOCP)
@@ -402,12 +404,59 @@ func testAPICompatibilityWithNextOCPRelease(check *checksdb.Check, env *provider
 		return
 	}
 
-	// Retrieve APIRequestCount using clientsholder
+	// Retrieve APIRequestCount using dynamic client
 	oc := clientsholder.GetClientsHolder()
-	apiRequestCounts, err := oc.ApiserverClient.ApiserverV1().APIRequestCounts().List(context.TODO(), metav1.ListOptions{})
+	apirequestGVR := schema.GroupVersionResource{Group: "apiserver.openshift.io", Version: "v1", Resource: "apirequestcounts"}
+	ulist, err := oc.DynamicClient.Resource(apirequestGVR).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		check.LogError("Error retrieving APIRequestCount objects: %s", err)
 		return
+	}
+
+	// Build minimal ocplite objects from unstructured
+	var apiRequestCounts []ocplite.APIRequestCount
+	for i := range ulist.Items {
+		u := &ulist.Items[i]
+		item := ocplite.APIRequestCount{Name: u.GetName()}
+		if statusObj, ok := u.Object["status"].(map[string]interface{}); ok {
+			if rir, ok := statusObj["removedInRelease"].(string); ok {
+				item.Status.RemovedInRelease = rir
+			}
+			if last24hArr, ok := statusObj["last24h"].([]interface{}); ok {
+				for _, l := range last24hArr {
+					lmap, ok := l.(map[string]interface{})
+					if !ok {
+						continue
+					}
+					var perRes ocplite.Last24h
+					if byNodeArr, ok := lmap["byNode"].([]interface{}); ok {
+						for _, bn := range byNodeArr {
+							bnmap, ok := bn.(map[string]interface{})
+							if !ok {
+								continue
+							}
+							var perNode ocplite.ByNode
+							if byUserArr, ok := bnmap["byUser"].([]interface{}); ok {
+								for _, bu := range byUserArr {
+									bumap, ok := bu.(map[string]interface{})
+									if !ok {
+										continue
+									}
+									var user ocplite.PerUserAPIRequestCount
+									if un, ok := bumap["userName"].(string); ok {
+										user.UserName = un
+									}
+									perNode.ByUser = append(perNode.ByUser, user)
+								}
+							}
+							perRes.ByNode = append(perRes.ByNode, perNode)
+						}
+					}
+					item.Status.Last24h = append(item.Status.Last24h, perRes)
+				}
+			}
+		}
+		apiRequestCounts = append(apiRequestCounts, item)
 	}
 
 	// Extract unique service account names from env.ServiceAccounts
@@ -415,7 +464,7 @@ func testAPICompatibilityWithNextOCPRelease(check *checksdb.Check, env *provider
 	check.LogInfo("Detected %d unique service account names for the workload: %v", len(workloadServiceAccountNames), workloadServiceAccountNames)
 
 	// Build a map from service accounts to deprecated APIs
-	serviceAccountToDeprecatedAPIs := buildServiceAccountToDeprecatedAPIMap(apiRequestCounts.Items, workloadServiceAccountNames)
+	serviceAccountToDeprecatedAPIs := buildServiceAccountToDeprecatedAPIMap(apiRequestCounts, workloadServiceAccountNames)
 
 	// Evaluate API compliance with the next Kubernetes version
 	compliantObjects, nonCompliantObjects := evaluateAPICompliance(serviceAccountToDeprecatedAPIs, env.K8sVersion, workloadServiceAccountNames)

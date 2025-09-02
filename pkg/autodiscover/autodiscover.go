@@ -26,14 +26,13 @@ import (
 
 	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 
-	configv1 "github.com/openshift/api/config/v1"
-	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olmPkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/compatibility"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/ocplite"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
@@ -48,6 +47,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/dynamic"
 )
 
 const (
@@ -85,7 +85,7 @@ type DiscoveredTestData struct {
 	AllInstallPlans              []*olmv1Alpha.InstallPlan
 	AllCatalogSources            []*olmv1Alpha.CatalogSource
 	AllPackageManifests          []*olmPkgv1.PackageManifest
-	ClusterOperators             []configv1.ClusterOperator
+	ClusterOperators             []ocplite.ClusterOperator
 	SriovNetworks                []unstructured.Unstructured
 	SriovNetworkNodePolicies     []unstructured.Unstructured
 	AllSriovNetworks             []unstructured.Unstructured
@@ -218,7 +218,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Subscriptions = findSubscriptions(oc.OlmClient.OperatorsV1alpha1(), data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
 
-	data.ClusterOperators, err = findClusterOperators(oc.OcpClient.ClusterOperators())
+	data.ClusterOperators, err = findClusterOperators(oc.DynamicClient)
 	if err != nil {
 		log.Fatal("Failed to get cluster operators, err: %v", err)
 	}
@@ -240,7 +240,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 		log.Fatal("Failed to get operand pods, err: %v", err)
 	}
 
-	openshiftVersion, err := getOpenshiftVersion(oc.OcpClient)
+	openshiftVersion, err := getOpenshiftVersion(oc.DynamicClient)
 	if err != nil {
 		log.Fatal("Failed to get the OpenShift version, err: %v", err)
 	}
@@ -356,9 +356,8 @@ func namespacesListToStringList(namespaceList []configuration.Namespace) (string
 	return stringList
 }
 
-func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, err error) {
-	var clusterOperator *configv1.ClusterOperator
-	clusterOperator, err = oClient.ClusterOperators().Get(context.TODO(), "openshift-apiserver", metav1.GetOptions{})
+func getOpenshiftVersion(dynamicClient dynamic.Interface) (ver string, err error) {
+	u, err := dynamicClient.Resource(ClusterOperatorGVR).Get(context.TODO(), "openshift-apiserver", metav1.GetOptions{})
 	if err != nil {
 		switch {
 		case kerrors.IsNotFound(err):
@@ -369,15 +368,28 @@ func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, 
 		}
 	}
 
-	for _, ver := range clusterOperator.Status.Versions {
-		if ver.Name == tnfCsvTargetLabelName {
-			// openshift-apiserver does not report version,
-			// clusteroperator/openshift-apiserver does, and only version number
-			log.Info("OpenShift Version found: %v", ver.Version)
-			return ver.Version, nil
+	status, ok := u.Object["status"].(map[string]interface{})
+	if !ok {
+		return "", errors.New("clusterOperator has no status field")
+	}
+	versions, ok := status["versions"].([]interface{})
+	if !ok {
+		return "", errors.New("clusterOperator status.versions not found")
+	}
+	for _, iv := range versions {
+		vm, _ := iv.(map[string]interface{})
+		if vm == nil {
+			continue
+		}
+		name, _ := vm["name"].(string)
+		if name == tnfCsvTargetLabelName {
+			v, _ := vm["version"].(string)
+			if v != "" {
+				log.Info("OpenShift Version found: %v", v)
+				return v, nil
+			}
 		}
 	}
-
 	return "", errors.New("could not get openshift version from clusterOperator")
 }
 

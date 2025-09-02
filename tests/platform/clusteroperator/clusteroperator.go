@@ -1,14 +1,14 @@
 package clusteroperator
 
 import (
-	configv1 "github.com/openshift/api/config/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/ocplite"
 )
 
-func IsClusterOperatorAvailable(co *configv1.ClusterOperator) bool {
+func IsClusterOperatorAvailable(co *ocplite.ClusterOperator) bool {
 	// Loop through the conditions, looking for the 'Available' state.
 	for _, condition := range co.Status.Conditions {
-		if condition.Type == configv1.OperatorAvailable {
+		if condition.Type == ocplite.OperatorAvailable {
 			log.Info("ClusterOperator %q is in an 'Available' state", co.Name)
 			return true
 		}
