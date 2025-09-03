@@ -149,6 +149,7 @@ const (
 	PreflightFollowsRestrictedNetworkEnablementGuidelinesImpact = `Non-compliance with restricted network guidelines can prevent deployment in air-gapped environments and violate security policies.`
 	PreflightHasLicenseImpact                                   = `Missing license information can create legal compliance issues and prevent proper software asset management.`
 	PreflightHasModifiedFilesImpact                             = `Modified files in containers can introduce security vulnerabilities, create inconsistent behavior, and violate immutable infrastructure principles.`
+	PreflightHasNoProhibitedLabelsImpact                        = `Misuse of Red Hat trademarks in name, vendor, or maintainer labels creates legal and compliance risks that can block certification and publication.`
 	PreflightHasNoProhibitedPackagesImpact                      = `Prohibited packages can introduce security vulnerabilities, licensing issues, and compliance violations.`
 	PreflightHasProhibitedContainerNameImpact                   = `Prohibited container names can cause conflicts with system components and violate naming conventions.`
 	PreflightHasRequiredLabelImpact                             = `Missing required labels prevent proper metadata management and can cause deployment and management issues.`
@@ -293,6 +294,7 @@ var ImpactMap = map[string]string{
 	"preflight-FollowsRestrictedNetworkEnablementGuidelines": PreflightFollowsRestrictedNetworkEnablementGuidelinesImpact,
 	"preflight-HasLicense":                                   PreflightHasLicenseImpact,
 	"preflight-HasModifiedFiles":                             PreflightHasModifiedFilesImpact,
+	"preflight-HasNoProhibitedLabels":                        PreflightHasNoProhibitedLabelsImpact,
 	"preflight-HasNoProhibitedPackages":                      PreflightHasNoProhibitedPackagesImpact,
 	"preflight-HasProhibitedContainerName":                   PreflightHasProhibitedContainerNameImpact,
 	"preflight-HasRequiredLabel":                             PreflightHasRequiredLabelImpact,
