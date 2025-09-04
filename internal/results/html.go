@@ -17,7 +17,12 @@ const (
 //go:embed html/results.html
 var htmlResultsFileContent []byte
 
-// Creates the claimjson.js file from the claim.json file.
+// createClaimJSFile Creates a JavaScript file containing the claim JSON data
+//
+// The function reads the contents of a specified claim.json file, prefixes it
+// with a JavaScript variable declaration, and writes this combined string to a
+// new file in the given output directory. It returns the path to the newly
+// created file or an error if reading or writing fails.
 func createClaimJSFile(claimFilePath, outputDir string) (filePath string, err error) {
 	// Read claim.json content.
 	claimContent, err := os.ReadFile(claimFilePath)
@@ -37,11 +42,13 @@ func createClaimJSFile(claimFilePath, outputDir string) (filePath string, err er
 	return filePath, nil
 }
 
-// Creates all the html/web related files needed for parsing the claim file in outputDir.
-// - claimjson.js
-// - results.html
-// - classification.js
-// Returns a slice with the paths of every file created.
+// CreateResultsWebFiles Creates HTML web assets for claim data
+//
+// The function generates the JavaScript file that exposes the claim JSON
+// content, writes a static results page, and returns their paths. It accepts an
+// output directory and a claim file name, constructs the necessary files,
+// handles any I/O errors, and collects the created file locations in a slice.
+// The returned slice contains the paths to all web artifacts for later use.
 func CreateResultsWebFiles(outputDir, claimFileName string) (filePaths []string, err error) {
 	type file struct {
 		Path    string

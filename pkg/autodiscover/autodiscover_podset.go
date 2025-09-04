@@ -29,6 +29,12 @@ import (
 	"k8s.io/client-go/scale"
 )
 
+// FindDeploymentByNameByNamespace Retrieves a deployment by name within a specified namespace
+//
+// The function queries the Kubernetes API for a Deployment object using the
+// provided client, namespace, and name. If the query fails, it logs an error
+// and returns the encountered error; otherwise it returns the retrieved
+// Deployment pointer.
 func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.Deployment, error) {
 	dp, err := appClient.Deployments(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
@@ -37,6 +43,13 @@ func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, name
 	}
 	return dp, nil
 }
+
+// FindStatefulsetByNameByNamespace Retrieves a StatefulSet by name within a specified namespace
+//
+// The function calls the Kubernetes API to fetch a StatefulSet resource using
+// the provided client, namespace, and name. If the retrieval fails, it logs an
+// error message and returns nil along with the encountered error; otherwise, it
+// returns the fetched StatefulSet and a nil error.
 func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.StatefulSet, error) {
 	ss, err := appClient.StatefulSets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
@@ -46,6 +59,11 @@ func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, nam
 	return ss, nil
 }
 
+// FindCrObjectByNameByNamespace Retrieves a scaling object for a given resource
+//
+// The function queries the Kubernetes API to obtain a Scale resource identified
+// by namespace, name, and group‑resource schema. It returns the retrieved
+// scale object or an error if the request fails, logging a message on failure.
 func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name string, groupResourceSchema schema.GroupResource) (*scalingv1.Scale, error) {
 	crScale, err := scalesGetter.Scales(ns).Get(context.TODO(), groupResourceSchema, name, metav1.GetOptions{})
 	if err != nil {
@@ -55,6 +73,12 @@ func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name str
 	return crScale, nil
 }
 
+// isDeploymentsPodsMatchingAtLeastOneLabel checks if a deployment’s pod template contains any of the specified labels
+//
+// The function iterates over each provided label object, comparing its
+// key/value pair against the labels defined in the deployment’s pod template.
+// If it finds a match, it logs the discovery and returns true immediately. If
+// no labels match after examining all options, it returns false.
 func isDeploymentsPodsMatchingAtLeastOneLabel(labels []labelObject, namespace string, deployment *appsv1.Deployment) bool {
 	for _, aLabelObject := range labels {
 		log.Debug("Searching pods in deployment %q found in ns %q using label %s=%s", deployment.Name, namespace, aLabelObject.LabelKey, aLabelObject.LabelValue)
@@ -66,6 +90,14 @@ func isDeploymentsPodsMatchingAtLeastOneLabel(labels []labelObject, namespace st
 	return false
 }
 
+// findDeploymentsByLabels collects deployments matching specified labels across namespaces
+//
+// The function iterates over each namespace, listing all deployment objects.
+// For every deployment it checks whether any of the provided label key/value
+// pairs match the pod template labels; if so or if no labels were supplied, the
+// deployment is added to a result slice. Errors during listing are logged and
+// skipped, and a warning is emitted when a namespace contains no deployments.
+//
 //nolint:dupl
 func findDeploymentsByLabels(
 	appClient appv1client.AppsV1Interface,
@@ -103,6 +135,12 @@ func findDeploymentsByLabels(
 	return allDeployments
 }
 
+// isStatefulSetsMatchingAtLeastOneLabel checks if a StatefulSet contains at least one pod label that matches the given list
+//
+// The function iterates over each supplied label object, comparing its key and
+// value against the labels defined in the StatefulSet's pod template. If any
+// match is found, it logs the discovery and returns true; otherwise it returns
+// false after examining all labels.
 func isStatefulSetsMatchingAtLeastOneLabel(labels []labelObject, namespace string, statefulSet *appsv1.StatefulSet) bool {
 	for _, aLabelObject := range labels {
 		log.Debug("Searching pods in statefulset %q found in ns %q using label %s=%s", statefulSet.Name, namespace, aLabelObject.LabelKey, aLabelObject.LabelValue)
@@ -114,6 +152,15 @@ func isStatefulSetsMatchingAtLeastOneLabel(labels []labelObject, namespace strin
 	return false
 }
 
+// findStatefulSetsByLabels Retrieves statefulsets matching specified labels across namespaces
+//
+// The function iterates over each provided namespace, listing all StatefulSet
+// objects via the client interface. It then filters those sets by checking if
+// any of the supplied label key/value pairs match the pod template labels
+// inside a StatefulSet; if no labels are given it includes every set found.
+// Matching or included StatefulSets are collected into a slice that is
+// returned, with warnings logged when none are found.
+//
 //nolint:dupl
 func findStatefulSetsByLabels(
 	appClient appv1client.AppsV1Interface,
@@ -151,6 +198,13 @@ func findStatefulSetsByLabels(
 	return allStatefulSets
 }
 
+// findHpaControllers Collects all HorizontalPodAutoscaler objects across given namespaces
+//
+// The function iterates over each namespace provided, listing the
+// HorizontalPodAutoscalers in that namespace using the Kubernetes client. Each
+// discovered HPA is appended to a slice which is returned after all namespaces
+// are processed. If no HPAs are found or an error occurs during listing,
+// appropriate log messages are emitted and an empty slice may be returned.
 func findHpaControllers(cs kubernetes.Interface, namespaces []string) []*scalingv1.HorizontalPodAutoscaler {
 	var m []*scalingv1.HorizontalPodAutoscaler
 	for _, ns := range namespaces {

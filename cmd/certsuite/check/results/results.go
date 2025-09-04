@@ -26,12 +26,25 @@ const (
 	resultMiss = "MISSING"
 )
 
+// TestCaseList Stores the names of test cases categorized by outcome
+//
+// This structure keeps three slices, each holding strings that represent test
+// case identifiers. The Pass slice lists all tests that succeeded, Fail
+// contains those that failed, and Skip holds tests that were not executed. It
+// is used to report results in a concise format.
 type TestCaseList struct {
 	Pass []string `yaml:"pass"`
 	Fail []string `yaml:"fail"`
 	Skip []string `yaml:"skip"`
 }
 
+// TestResults Holds a collection of test case results
+//
+// This structure contains a slice of individual test case outcomes, allowing
+// the program to group related results together. The embedded field
+// automatically inherits all fields and methods from the underlying test case
+// list type, enabling direct access to the collection’s elements. It serves
+// as a container for serializing or reporting aggregated test data.
 type TestResults struct {
 	TestCaseList `yaml:"testCases"`
 }
@@ -42,6 +55,14 @@ var checkResultsCmd = &cobra.Command{
 	RunE:  checkResults,
 }
 
+// checkResults compares recorded test outcomes against a reference template
+//
+// The function reads actual test results from a log file, optionally generates
+// a YAML template of those results, or loads expected results from an existing
+// template. It then checks each test case for mismatches between actual and
+// expected values, reporting any discrepancies in a formatted table and
+// terminating the program if differences are found. If all results match, it
+// prints a success message.
 func checkResults(cmd *cobra.Command, _ []string) error {
 	templateFileName, _ := cmd.Flags().GetString("template")
 	generateTemplate, _ := cmd.Flags().GetBool("generate-template")
@@ -90,6 +111,13 @@ func checkResults(cmd *cobra.Command, _ []string) error {
 	return nil
 }
 
+// getTestResultsDB Parses a log file to build a test result map
+//
+// The function opens the specified log file, reads it line by line, and
+// extracts test case names and their recorded results using a regular
+// expression. Each matched pair is stored in a map where the key is the test
+// case name and the value is its result string. It returns this map along with
+// an error if any step fails.
 func getTestResultsDB(logFileName string) (map[string]string, error) {
 	resultsDB := make(map[string]string)
 
@@ -124,6 +152,13 @@ func getTestResultsDB(logFileName string) (map[string]string, error) {
 	return resultsDB, nil
 }
 
+// getExpectedTestResults loads expected test outcomes from a YAML template
+//
+// The function reads a specified file, decodes its YAML content into a
+// structured list of test cases classified as pass, skip, or fail, then builds
+// a map associating each case with the corresponding result string. It returns
+// this map along with any error that occurs during file reading or
+// unmarshalling.
 func getExpectedTestResults(templateFileName string) (map[string]string, error) {
 	templateFile, err := os.ReadFile(templateFileName)
 	if err != nil {
@@ -150,6 +185,14 @@ func getExpectedTestResults(templateFileName string) (map[string]string, error) 
 	return expectedTestResults, nil
 }
 
+// printTestResultsMismatch Displays a formatted table of test cases that did not match the expected results
+//
+// The function receives a list of mismatched test case identifiers along with
+// maps of actual and expected outcomes. It prints a header, then iterates over
+// each mismatched case, retrieving the corresponding expected and actual
+// values—using a placeholder when either is missing—and outputs them in
+// aligned columns. Finally, it draws separators to delineate each row for
+// readability.
 func printTestResultsMismatch(mismatchedTestCases []string, actualResults, expectedResults map[string]string) {
 	fmt.Printf("\n")
 	fmt.Println(strings.Repeat("-", 96)) //nolint:mnd // table line
@@ -169,6 +212,14 @@ func printTestResultsMismatch(mismatchedTestCases []string, actualResults, expec
 	}
 }
 
+// generateTemplateFile Creates a YAML template file summarizing test case outcomes
+//
+// This function takes a map of test cases to result strings and builds a
+// structured template containing lists for passed, skipped, and failed tests.
+// It encodes the structure into YAML with two-space indentation and writes it
+// to a predefined file path with specific permissions. If an unknown result
+// value is encountered or any I/O operation fails, it returns an error
+// detailing the issue.
 func generateTemplateFile(resultsDB map[string]string) error {
 	var resultsTemplate TestResults
 	for testCase, result := range resultsDB {
@@ -201,6 +252,12 @@ func generateTemplateFile(resultsDB map[string]string) error {
 	return nil
 }
 
+// NewCommand Creates a command for checking test results against expected templates
+//
+// It defines persistent flags for specifying the template file, log file, and
+// an option to generate a new template from logs. The flags are mutually
+// exclusive to avoid conflicting inputs. Finally, it returns the configured
+// command instance.
 func NewCommand() *cobra.Command {
 	checkResultsCmd.PersistentFlags().String("template", "expected_results.yaml", "reference YAML template with the expected results")
 	checkResultsCmd.PersistentFlags().String("log-file", "certsuite.log", "log file of the Certsuite execution")

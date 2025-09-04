@@ -4,6 +4,14 @@ import (
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
+// PermissionsHaveBadRule detects if any RBAC rule grants access to security context constraints
+//
+// The function iterates over a slice of cluster permissions, examining each
+// rule for the presence of the security API group or a wildcard. When such a
+// group is found, it then checks whether the rule targets the
+// securitycontextconstraints resource or all resources. If any matching rule
+// exists, the function returns true to indicate a problematic configuration;
+// otherwise it returns false.
 func PermissionsHaveBadRule(clusterPermissions []v1alpha1.StrategyDeploymentPermissions) bool {
 	badRuleFound := false
 	for permissionIndex := range clusterPermissions {

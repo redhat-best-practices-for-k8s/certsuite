@@ -24,10 +24,22 @@ import (
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 )
 
+// StatefulSet Encapsulates a Kubernetes StatefulSet for simplified management
+//
+// The structure embeds the official StatefulSet type, allowing direct access to
+// its fields while providing helper methods. It offers functionality to
+// determine if the set is fully ready and to produce a concise string
+// representation of its identity.
 type StatefulSet struct {
 	*appsv1.StatefulSet
 }
 
+// StatefulSet.IsStatefulSetReady Checks if all replicas of a StatefulSet are fully operational
+//
+// The method compares the desired number of replicas, which defaults to one if
+// unspecified, against the current status fields: ready, current, and updated
+// replicas. If any of these counts differ from the target, it returns false;
+// otherwise, true indicates the StatefulSet is considered ready.
 func (ss *StatefulSet) IsStatefulSetReady() bool {
 	var replicas int32
 	if ss.Spec.Replicas != nil {
@@ -43,6 +55,11 @@ func (ss *StatefulSet) IsStatefulSetReady() bool {
 	return true
 }
 
+// StatefulSet.ToString Formats a StatefulSet name and namespace into a string
+//
+// The method builds a concise representation of the StatefulSet by combining
+// its name and namespace. It uses formatting utilities to return a single
+// string that identifies the resource in a human‑readable form.
 func (ss *StatefulSet) ToString() string {
 	return fmt.Sprintf("statefulset: %s ns: %s",
 		ss.Name,
@@ -50,6 +67,13 @@ func (ss *StatefulSet) ToString() string {
 	)
 }
 
+// GetUpdatedStatefulset Retrieves the current StatefulSet object for a given namespace and name
+//
+// This function calls an internal discovery helper to fetch the latest
+// statefulset from the Kubernetes API. It wraps the result in a custom
+// StatefulSet type that provides additional methods, such as readiness checks.
+// The returned pointer is nil if an error occurs, with the error propagated to
+// the caller.
 func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, name string) (*StatefulSet, error) {
 	result, err := autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, name)
 	return &StatefulSet{

@@ -50,6 +50,16 @@ var (
 	}
 )
 
+// LoadChecks Registers platform alteration tests into the internal checks database
+//
+// The function logs that it is loading the platform alteration suite and
+// creates a new checks group identified by a common key. It registers a
+// before‑each hook and then adds numerous checks, each with its own skip
+// conditions and execution logic. Each check is built from an identifier,
+// configured to run only when appropriate environment conditions are met, and
+// invokes a specific test function that evaluates node or pod properties. The
+// assembled group is added to the checks database for later execution.
+//
 //nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.PlatformAlterationTestKey)
@@ -175,6 +185,13 @@ func LoadChecks() {
 		}))
 }
 
+// testHyperThreadingEnabled Verifies hyper‑threading status on all bare metal nodes
+//
+// The routine retrieves every bare metal node from the test environment and
+// queries whether hyper‑threading is active for each one. It records
+// compliant nodes where hyper‑threading is enabled, logs errors for disabled
+// or query failures, and compiles separate lists of compliant and
+// non‑compliant objects before setting the check result.
 func testHyperThreadingEnabled(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -198,6 +215,13 @@ func testHyperThreadingEnabled(check *checksdb.Check, env *provider.TestEnvironm
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testServiceMesh Verifies that every pod contains an Istio proxy container
+//
+// The function iterates over all pods in the test environment, checking each
+// container for a service‑mesh indicator. Pods lacking an Istio proxy are
+// recorded as non‑compliant and logged with an error; those containing one
+// are marked compliant and logged positively. Finally, the check result is set
+// with lists of compliant and non‑compliant report objects.
 func testServiceMesh(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -223,7 +247,13 @@ func testServiceMesh(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testContainersFsDiff test that all CUT did not install new packages are starting
+// testContainersFsDiff Verifies containers have not been altered by comparing file system snapshots
+//
+// The routine iterates over each container under test, locating a corresponding
+// probe pod to obtain the original filesystem state. It runs a diff check; if
+// the container shows no changes it records compliance, otherwise it logs the
+// modified or deleted directories and marks non‑compliance. Errors during the
+// diff process are captured as failures and reported with error details.
 func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -268,6 +298,15 @@ func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) 
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testTainted Checks nodes for kernel taints against an allowlist
+//
+// The function iterates over cluster nodes, verifies a workload is present,
+// retrieves each node's kernel taint bitmask, and decodes the taints. It
+// compares found taints to a configured list of acceptable modules, logging
+// errors when unexpected taints or non‑module taints appear. Compliant and
+// non‑compliant findings are collected into report objects and reported via
+// SetResult.
+//
 //nolint:funlen
 func testTainted(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
@@ -403,6 +442,13 @@ func testTainted(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testIsRedHatRelease Verifies that containers use a Red Hat Enterprise Linux base image
+//
+// The function iterates over all test containers, creating a tester for each
+// based on its namespace, pod name, and container name. It calls the tester to
+// determine if the underlying image is a RHEL release; any errors are logged as
+// failures. Containers that pass or fail are recorded in separate report lists
+// which are then stored in the check result.
 func testIsRedHatRelease(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -426,6 +472,12 @@ func testIsRedHatRelease(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testIsSELinuxEnforcing Checks that SELinux is enforcing on cluster nodes
+//
+// The function runs a command inside each probe pod to read the SELinux mode
+// via chroot and verifies it matches "Enforcing\n". It records compliant or
+// non‑compliant results per node, logging errors for execution failures. The
+// final result aggregates all objects and updates the check status.
 func testIsSELinuxEnforcing(check *checksdb.Check, env *provider.TestEnvironment) {
 	const (
 		getenforceCommand = `chroot /host getenforce`
@@ -458,6 +510,13 @@ func testIsSELinuxEnforcing(check *checksdb.Check, env *provider.TestEnvironment
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testHugepages Verifies that node hugepages configuration has not been altered
+//
+// The function iterates over all nodes in the test environment, skipping
+// non‑worker nodes as compliant. For each worker node it looks up a probe
+// pod, creates a hugepages tester and runs its check. Results are collected
+// into compliant or non‑compliant report objects which are then set on the
+// provided check.
 func testHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -496,6 +555,14 @@ func testHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testUnalteredBootParams Validates kernel boot parameters against MachineConfig and GRUB settings on each node
+//
+// The routine iterates over all containers in the test environment, ensuring
+// each node is checked only once. For every unique node it calls a helper that
+// compares current kernel command‑line arguments to those defined in the
+// MachineConfig and GRUB configuration, logging any mismatches. Results are
+// collected into compliant or non‑compliant report objects which are then set
+// as the check’s outcome.
 func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -523,6 +590,14 @@ func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironmen
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testSysctlConfigs Verifies node sysctl values against machine config
+//
+// This routine iterates over containers, ensuring each node is checked only
+// once. For every node it retrieves current sysctl settings and compares them
+// to the expected kernel arguments defined in its machine configuration.
+// Mismatches are logged and reported as non‑compliant; nodes with matching
+// values are marked compliant. The results are stored in the check result for
+// later reporting.
 func testSysctlConfigs(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -569,6 +644,12 @@ func testSysctlConfigs(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testOCPStatus Checks OpenShift cluster version against lifecycle status
+//
+// The function inspects the environment’s OpenShift status, logs an
+// appropriate message for EOL, maintenance, GA, or pre‑GA releases, and marks
+// the check as compliant unless the version is in end of life. It constructs
+// report objects indicating compliance and assigns them to the check result.
 func testOCPStatus(check *checksdb.Check, env *provider.TestEnvironment) {
 	clusterIsInEOL := false
 	switch env.OCPStatus {
@@ -597,6 +678,8 @@ func testOCPStatus(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testNodeOperatingSystemStatus Verifies node operating system compatibility
+//
 //nolint:funlen
 func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvironment) {
 	failedControlPlaneNodes := []string{}
@@ -706,6 +789,14 @@ func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvi
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testPodHugePagesSize Verifies that pods use the expected hugepages size
+//
+// The function iterates over all pods configured with hugepages in the test
+// environment, checks each pod's allocated hugepages against a specified size,
+// and logs whether each check passes or fails. It collects compliant and
+// non‑compliant pods into separate report objects, which are then set as the
+// result of the current test. Errors are logged for any pod that does not match
+// the expected size.
 func testPodHugePagesSize(check *checksdb.Check, env *provider.TestEnvironment, size string) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -723,6 +814,12 @@ func testPodHugePagesSize(check *checksdb.Check, env *provider.TestEnvironment, 
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testClusterOperatorHealth Verifies that all cluster operators are available
+//
+// The function iterates over each operator in the test environment, logging a
+// check for each one. It uses a helper to determine if an operator is in the
+// 'Available' state and records compliant or non‑compliant results
+// accordingly. Finally, it aggregates these results into the test's outcome.
 func testClusterOperatorHealth(check *checksdb.Check, env *provider.TestEnvironment) {
 	// Checks the various ClusterOperator(s) to see if they are all in an 'Available' state.
 	// If they are not in an 'Available' state, the check will fail.

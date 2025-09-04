@@ -20,6 +20,11 @@ const (
 	redHatConnectAPITimeout = 60 * time.Second
 )
 
+// createFormField Creates a single form field in a multipart payload
+//
+// The function accepts a multipart writer, a field name, and its value. It uses
+// the writer to create the field and writes the provided string into it. Errors
+// during creation or writing are wrapped with context and returned.
 func createFormField(w *multipart.Writer, field, value string) error {
 	fw, err := w.CreateFormField(field)
 	if err != nil {
@@ -34,6 +39,12 @@ func createFormField(w *multipart.Writer, field, value string) error {
 	return nil
 }
 
+// CertIDResponse Represents a certification case response from RHConnect
+//
+// This struct holds information returned by the RHConnect API for a
+// certification request, including the internal ID, external case number,
+// status, level, URL, and whether the partner initiated it. It also embeds a
+// nested type providing the certification category's identifier and name.
 type CertIDResponse struct {
 	ID                  int    `json:"id"`
 	CaseNumber          string `json:"caseNumber"`
@@ -47,7 +58,14 @@ type CertIDResponse struct {
 	} `json:"certificationType"`
 }
 
-// GetCertIDFromConnectAPI gets the certification ID from the Red Hat Connect API
+// GetCertIDFromConnectAPI Retrieves a certification identifier from the Red Hat Connect service
+//
+// The function builds a JSON payload containing a project ID, sends it as a
+// POST request to the Connect API endpoint for certifications, and decodes the
+// returned JSON to extract the numeric certification ID. It supports optional
+// proxy configuration, sanitizes input strings, and applies a timeout to the
+// HTTP client. The resulting ID is returned as a string; errors are reported if
+// any step fails.
 func GetCertIDFromConnectAPI(apiKey, projectID, connectAPIBaseURL, proxyURL, proxyPort string) (string, error) {
 	log.Info("Getting certification ID from Red Hat Connect API")
 
@@ -106,6 +124,13 @@ func GetCertIDFromConnectAPI(apiKey, projectID, connectAPIBaseURL, proxyURL, pro
 	return fmt.Sprintf("%d", certIDResponse.ID), nil
 }
 
+// UploadResult Details the outcome of a file upload operation
+//
+// This structure holds information about an uploaded artifact, including its
+// unique identifier, type, name, size, MIME type, description, download link,
+// uploader, upload timestamp, and related certificate ID. It is used to convey
+// all relevant metadata back to clients or services that need to reference the
+// stored file.
 type UploadResult struct {
 	UUID         string    `json:"uuid"`
 	Type         string    `json:"type"`
@@ -119,7 +144,14 @@ type UploadResult struct {
 	CertID       int       `json:"certId"`
 }
 
-// SendResultsToConnectAPI sends the results to the Red Hat Connect API
+// SendResultsToConnectAPI Uploads a ZIP file of test results to the Red Hat Connect API
+//
+// The function takes a zip file path, an API key, base URL, certification ID,
+// and optional proxy settings. It builds a multipart/form‑data POST request
+// containing the file and metadata fields, then sends it with a
+// timeout‑limited HTTP client that can use a proxy if configured. On success
+// it logs the returned download URL and upload date; otherwise it returns an
+// error describing what failed.
 //
 //nolint:funlen
 func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, proxyPort string) error {
@@ -210,6 +242,12 @@ func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, 
 	return nil
 }
 
+// sendRequest Sends an HTTP request using a client and checks for success
+//
+// This function logs the target URL, executes the request with the provided
+// http.Client, and returns the response if the status code is 200 OK. If an
+// error occurs during execution or the status code differs from OK, it returns
+// a formatted error describing the failure.
 func sendRequest(req *http.Request, client *http.Client) (*http.Response, error) {
 	// print the request
 	log.Debug("Sending request to %s", req.URL)
@@ -227,6 +265,12 @@ func sendRequest(req *http.Request, client *http.Client) (*http.Response, error)
 	return res, nil
 }
 
+// setProxy configures an HTTP client to use a proxy when provided
+//
+// When both the proxy address and port are supplied, the function builds a
+// proxy URL, parses it, logs the configuration, and assigns a transport with
+// that proxy to the client. If parsing fails, an error is logged but no panic
+// occurs. The client remains unchanged if either value is empty.
 func setProxy(client *http.Client, proxyURL, proxyPort string) {
 	if proxyURL != "" && proxyPort != "" {
 		log.Debug("Proxy is set. Using proxy %s:%s", proxyURL, proxyPort)

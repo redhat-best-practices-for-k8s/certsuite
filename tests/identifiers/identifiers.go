@@ -52,10 +52,23 @@ const (
 	NotApplicableSNO = ` Not applicable to SNO applications.`
 )
 
+// init initializes the test catalog
+//
+// When the identifiers package is imported this function runs automatically and
+// calls InitCatalog to populate the global catalog of test cases. It ensures
+// all test entries are registered before any tests execute.
 func init() {
 	InitCatalog()
 }
 
+// AddCatalogEntry Creates a test case entry in the catalog
+//
+// This function registers a new test by building a descriptive record from its
+// ID, suite name, description, remediation, and other metadata. It applies
+// defaults for missing exception or reference strings, ensures at least one tag
+// is present, then calls the claim builder to generate a structured test case
+// description. The resulting identifier and description are stored in global
+// maps for later retrieval during test execution.
 func AddCatalogEntry(testID, suiteName, description, remediation, exception, reference string, qe bool, categoryclassification map[string]string, tags ...string) (aID claim.Identifier) {
 	// Default Values (if missing)
 	if strings.TrimSpace(exception) == "" {
@@ -183,6 +196,15 @@ var (
 	// TestPodDeleteIdentifier claim.Identifier
 )
 
+// InitCatalog Initializes the test case catalog with predefined identifiers
+//
+// This routine registers a series of test case descriptions into the global
+// Catalog map by calling AddCatalogEntry for each known identifier. Each call
+// supplies metadata such as test ID, suite key, description, remediation logic,
+// exception handling, reference link, query‑enabled flag, classification
+// tags, and category classification. The function returns the populated catalog
+// mapping identifiers to their corresponding TestCaseDescription objects.
+//
 //nolint:funlen
 func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
@@ -1831,8 +1853,12 @@ var (
 	TestIDToClaimID = map[string]claim.Identifier{}
 )
 
-// GetTestIDAndLabels transform the claim.Identifier into a test Id that can be used to skip
-// specific tests
+// GetTestIDAndLabels Transforms a claim identifier into a test ID and associated labels
+//
+// The function splits the Tags field of a claim.Identifier by commas to create
+// label slices, then appends the identifier's Id and Suite values to that list.
+// It stores the full identifier in a global map keyed by Id for later lookup,
+// and returns the Id as the test ID along with the constructed label slice.
 func GetTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
 	tags = strings.Split(identifier.Tags, ",")
 	tags = append(tags, identifier.Id, identifier.Suite)

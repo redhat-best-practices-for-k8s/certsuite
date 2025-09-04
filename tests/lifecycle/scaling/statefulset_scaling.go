@@ -36,6 +36,13 @@ import (
 	hps "k8s.io/client-go/kubernetes/typed/autoscaling/v1"
 )
 
+// TestScaleStatefulSet Tests scaling of a StatefulSet by adjusting replicas
+//
+// The function retrieves Kubernetes clients, determines the current replica
+// count, and then performs an up‑then‑down or down‑then‑up scale
+// sequence using a helper that retries on conflict. It logs each action and
+// returns false if any scaling step fails. A true value indicates both scale
+// operations succeeded within the given timeout.
 func TestScaleStatefulSet(statefulset *appsv1.StatefulSet, timeout time.Duration, logger *log.Logger) bool {
 	clients := clientsholder.GetClientsHolder()
 	name, namespace := statefulset.Name, statefulset.Namespace
@@ -79,6 +86,12 @@ func TestScaleStatefulSet(statefulset *appsv1.StatefulSet, timeout time.Duration
 	return true
 }
 
+// scaleStatefulsetHelper updates a StatefulSet replica count and waits for readiness
+//
+// The helper retrieves the current StatefulSet, sets its desired replicas, and
+// updates it using retry logic to handle conflicts. After each successful
+// update it polls until the set reports ready or times out. It logs failures
+// and returns a boolean indicating success.
 func scaleStatefulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.StatefulSetInterface, statefulset *appsv1.StatefulSet, replicas int32, timeout time.Duration, logger *log.Logger) bool {
 	name := statefulset.Name
 	namespace := statefulset.Namespace
@@ -110,6 +123,14 @@ func scaleStatefulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.St
 	return true
 }
 
+// TestScaleHpaStatefulSet Verifies HPA scaling of a StatefulSet
+//
+// The function obtains Kubernetes clients, then adjusts the HPA’s min and max
+// replica counts to test both up‑scaling and down‑scaling scenarios on the
+// target StatefulSet. It calls a helper that updates the HPA, waits for the
+// StatefulSet to become ready, and reports success or failure. Finally it
+// restores the original HPA settings and returns whether all scaling steps
+// succeeded.
 func TestScaleHpaStatefulSet(statefulset *appsv1.StatefulSet, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration, logger *log.Logger) bool {
 	clients := clientsholder.GetClientsHolder()
 	hpaName := hpa.Name
@@ -161,6 +182,13 @@ func TestScaleHpaStatefulSet(statefulset *appsv1.StatefulSet, hpa *v1autoscaling
 	return pass
 }
 
+// scaleHpaStatefulSetHelper updates HPA replica limits and waits for StatefulSet readiness
+//
+// The function attempts to set the horizontal pod autoscaler's minimum and
+// maximum replicas, retrying on conflicts until success or timeout. After each
+// update it polls the target StatefulSet to confirm it reaches a ready state
+// within the given duration, logging errors if not. It returns true when both
+// the HPA update and readiness check succeed, otherwise false.
 func scaleHpaStatefulSetHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, statefulsetName, namespace string, min, max int32, timeout time.Duration, logger *log.Logger) bool {
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		hpa, err := hpscaler.Get(context.TODO(), hpaName, v1machinery.GetOptions{})

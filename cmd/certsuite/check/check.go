@@ -13,6 +13,13 @@ var (
 	}
 )
 
+// NewCommand Creates a check command that aggregates image certification and result verification actions
+//
+// This function builds a new Cobra command for the tool’s check
+// functionality. It registers two child commands: one to verify image
+// certificates and another to validate test results against expected outputs or
+// logs. The resulting command is returned for inclusion in the main CLI
+// hierarchy.
 func NewCommand() *cobra.Command {
 	checkCmd.AddCommand(imagecert.NewCommand())
 	checkCmd.AddCommand(results.NewCommand())

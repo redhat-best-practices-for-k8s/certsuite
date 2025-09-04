@@ -28,10 +28,14 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-// TestCrsNamespaces finds the list of the input CRDs (crds parameter) instances (CRs) and verify that they are only in namespaces provided as input.
-// Returns :
-//   - map[string]map[string][]string : The list of CRs not belonging to the namespaces passed as input is returned as invalid.
-//   - error : if exist error.
+// TestCrsNamespaces identifies custom resources outside allowed namespaces
+//
+// The function examines each provided CRD, gathers all its instances across the
+// cluster, and checks whether their namespaces match a given list of permitted
+// namespaces. For any instance found in an unauthorized namespace, it records
+// the CRD name, namespace, and resource names in a nested map. The resulting
+// map is returned along with any error that occurred during retrieval;
+// otherwise nil indicates success.
 func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespaces []string, logger *log.Logger) (invalidCrs map[string]map[string][]string, err error) {
 	// Initialize the top level map
 	invalidCrs = make(map[string]map[string][]string)
@@ -55,10 +59,14 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 	return invalidCrs, nil
 }
 
-// getCrsPerNamespaces gets the list of CRs instantiated in the cluster per namespace.
-// Returns :
-//   - map[string][]string : a map indexed by namespace and data is a list of CR names.
-//   - error : if exist error.
+// getCrsPerNamespaces Retrieves custom resources per namespace
+//
+// This function queries the Kubernetes cluster for all instances of a given
+// CustomResourceDefinition across its versions, organizing them into a map
+// keyed by namespace with lists of resource names as values. It uses a dynamic
+// client from a shared holder to perform list operations and logs debug
+// information during the search. If any listing operation fails, an error is
+// returned along with a nil or partially filled map.
 func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces map[string][]string, err error) {
 	oc := clientsholder.GetClientsHolder()
 	for _, version := range aCrd.Spec.Versions {
@@ -94,9 +102,12 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 	return crdNamespaces, nil
 }
 
-// GetInvalidCRDsNum returns the number of invalid CRs in the map.
-// Return:
-//   - int : number of invalid CRs in the map.
+// GetInvalidCRsNum Counts the number of custom resources that are not in allowed namespaces
+//
+// The function walks through a nested map where each CRD maps to namespaces and
+// then to lists of CR names, logging an error for every invalid entry it finds.
+// It tallies these occurrences into an integer which is returned as the total
+// count of invalid custom resources.
 func GetInvalidCRsNum(invalidCrs map[string]map[string][]string, logger *log.Logger) int {
 	var invalidCrsNum int
 	for crdName, namespaces := range invalidCrs {

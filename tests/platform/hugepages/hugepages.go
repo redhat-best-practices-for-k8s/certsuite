@@ -32,8 +32,12 @@ type countBySize map[int]int
 // hugepagesByNuma maps a numa id to a hpSizeCounts map.
 type hugepagesByNuma map[int]countBySize
 
-// String is the stringer implementation for the numaHpSizeCounts type so debug/info
-// lines look better.
+// hugepagesByNuma.String Produces a formatted string of NUMA node hugepage allocations
+//
+// It orders the NUMA indices, then for each index lists all page sizes with
+// their counts in a human‑readable format. The resulting string contains
+// entries like "Numa=0 [Size=2048kB Count=4]" and is returned for debugging or
+// logging purposes.
 func (numaHps hugepagesByNuma) String() string {
 	// Order numa ids/indexes
 	numaIndexes := []int{}
@@ -54,6 +58,13 @@ func (numaHps hugepagesByNuma) String() string {
 	return sb.String()
 }
 
+// Tester performs validation of node hugepage configuration against MachineConfig settings
+//
+// It gathers hugepage counts per NUMA from the node, parses MachineConfig
+// kernel arguments or systemd units, and compares these values to ensure
+// consistency. The Run method selects the appropriate comparison path based on
+// whether systemd units are present. A successful run confirms that all
+// configured hugepages match between the node and its MachineConfig.
 type Tester struct {
 	node      *provider.Node
 	context   clientsholder.Context
@@ -63,6 +74,13 @@ type Tester struct {
 	mcSystemdHugepagesByNuma hugepagesByNuma
 }
 
+// hugepageSizeToInt Converts a hugepage size string into an integer kilobyte value
+//
+// This function takes a size string such as "2M" or "1G", extracts the numeric
+// portion and multiplies it by 1024 for megabytes or 1024 squared for
+// gigabytes. It returns the resulting value in kilobytes as an int, ignoring
+// any errors from parsing. The conversion is used to translate kernel argument
+// values into usable integer sizes within the program.
 func hugepageSizeToInt(s string) int {
 	num, _ := strconv.Atoi(s[:len(s)-1])
 	unit := s[len(s)-1]
@@ -76,6 +94,13 @@ func hugepageSizeToInt(s string) int {
 	return num
 }
 
+// NewTester Creates a tester for node hugepage validation
+//
+// This function initializes a Tester object with the provided node, probe pod,
+// and command executor. It sets up the execution context inside the probe
+// container and retrieves the node's NUMA hugepages information along with
+// machineconfig systemd unit configurations. The resulting Tester is ready to
+// run checks against the gathered data.
 func NewTester(node *provider.Node, probePod *corev1.Pod, commander clientsholder.Command) (*Tester, error) {
 	tester := &Tester{
 		node:      node,
@@ -99,10 +124,24 @@ func NewTester(node *provider.Node, probePod *corev1.Pod, commander clientsholde
 	return tester, nil
 }
 
+// Tester.HasMcSystemdHugepagesUnits Indicates whether MachineConfig contains Systemd hugepage unit definitions
+//
+// The method returns true if the internal map of Systemd hugepages per NUMA
+// node has one or more entries, meaning that the machine configuration includes
+// explicit hugepage units. It does this by checking the length of the map; a
+// non‑zero count signals presence, otherwise it indicates no such units were
+// defined.
 func (tester *Tester) HasMcSystemdHugepagesUnits() bool {
 	return len(tester.mcSystemdHugepagesByNuma) > 0
 }
 
+// Tester.Run Runs the hugepage configuration comparison tests
+//
+// The method checks whether MachineConfig includes systemd unit definitions for
+// hugepages. If so, it verifies that the node's hugepage counts match those
+// units; otherwise it compares kernel argument values against the node's
+// totals. It logs progress and returns an error if any mismatch or test failure
+// occurs.
 func (tester *Tester) Run() error {
 	if tester.HasMcSystemdHugepagesUnits() {
 		log.Info("Comparing MachineConfig Systemd hugepages info against node values.")
@@ -118,7 +157,14 @@ func (tester *Tester) Run() error {
 	return nil
 }
 
-// TestNodeHugepagesWithMcSystemd compares the node's hugepages values against the mc's systemd units ones.
+// Tester.TestNodeHugepagesWithMcSystemd Verifies node hugepage counts match MachineConfig systemd settings
+//
+// The function walks through each NUMA node’s actual hugepage configuration,
+// ensuring that any size or node absent from the MachineConfig has a count of
+// zero. It then cross‑checks every entry in the MachineConfig against the
+// node’s values, confirming matching sizes and counts for all NUMA indices.
+// If any discrepancy is found, it returns false with an explanatory error;
+// otherwise it reports success.
 func (tester *Tester) TestNodeHugepagesWithMcSystemd() (bool, error) {
 	// Iterate through node's actual hugepages to make sure that each node's size that does not exist in the
 	// MachineConfig has a value of 0.
@@ -169,9 +215,14 @@ func (tester *Tester) TestNodeHugepagesWithMcSystemd() (bool, error) {
 	return true, nil
 }
 
-// TestNodeHugepagesWithKernelArgs compares node hugepages against kernelArguments config.
-// The total count of hugepages of the size defined in the kernelArguments must match the kernArgs' hugepages value.
-// For other sizes, the sum should be 0.
+// Tester.TestNodeHugepagesWithKernelArgs Validates node hugepage counts against kernel argument configuration
+//
+// The method retrieves the hugepage sizes and counts specified in a machine's
+// kernel arguments, then checks that each size present on the node appears in
+// those arguments with non‑zero counts. It aggregates node counts per size
+// across all NUMA nodes and compares them to the expected totals from the
+// kernel arguments, returning an error if any mismatch occurs. On success it
+// logs matching sizes and returns true without error.
 func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
 	kernelArgsHpCountBySize, _ := getMcHugepagesFromMcKernelArguments(&tester.node.Mc)
 
@@ -207,7 +258,13 @@ func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
 	return true, nil
 }
 
-// getNodeNumaHugePages gets the actual node's hugepages config based on /sys/devices/system/node/nodeX files.
+// Tester.getNodeNumaHugePages Retrieves the node's current hugepage configuration
+//
+// This method runs a command inside the probe pod to read
+// /sys/devices/system/node files, parses each line for NUMA node number, page
+// size, and count, and aggregates them into a map keyed by node. It returns the
+// populated map or an error if execution fails or output cannot be parsed. The
+// result is used to compare against desired hugepage settings.
 func (tester *Tester) getNodeNumaHugePages() (hugepages hugepagesByNuma, err error) {
 	// This command must run inside the node, so we'll need the node's context to run commands inside the probe daemonset pod.
 	stdout, stderr, err := tester.commander.ExecCommandContainer(tester.context, cmd)
@@ -246,7 +303,13 @@ func (tester *Tester) getNodeNumaHugePages() (hugepages hugepagesByNuma, err err
 	return hugepages, nil
 }
 
-// getMcSystemdUnitsHugepagesConfig gets the hugepages information from machineconfig's systemd units.
+// getMcSystemdUnitsHugepagesConfig extracts hugepage configuration from machineconfig systemd units
+//
+// This function scans the systemd unit files in a machine configuration for
+// entries that define hugepage allocations. It parses each matching unit’s
+// contents to capture the number, size, and NUMA node of the hugepages,
+// organizing them into a nested map keyed by node and page size. The resulting
+// structure is returned along with any parsing errors encountered.
 func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages hugepagesByNuma, err error) {
 	const UnitContentsRegexMatchLen = 4
 	hugepages = hugepagesByNuma{}
@@ -284,6 +347,13 @@ func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages hug
 	return hugepages, nil
 }
 
+// logMcKernelArgumentsHugepages Logs the hugepage configuration extracted from machine‑config kernel arguments
+//
+// This function builds a human‑readable string that includes the default
+// hugepage size and each configured size with its count. It then sends this
+// message to the package logger at info level, providing visibility into how
+// many hugepages of each size were requested by the node’s machine
+// configuration.
 func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz int) {
 	var sb strings.Builder
 	sb.WriteString(fmt.Sprintf("MC KernelArguments hugepages config: default_hugepagesz=%d-kB", defhugepagesz))
@@ -293,7 +363,13 @@ func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz i
 	log.Info("%s", sb.String())
 }
 
-// getMcHugepagesFromMcKernelArguments gets the hugepages params from machineconfig's kernelArguments
+// getMcHugepagesFromMcKernelArguments extracts hugepage configuration from kernel arguments
+//
+// The function parses the kernelArguments field of a MachineConfig to build a
+// map that associates each hugepage size with its count, using RHEL defaults
+// when necessary. It also determines the default hugepages size specified in
+// the arguments or falls back to a system default. The resulting map and
+// default size are returned for use by tests validating node hugepage settings.
 func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesPerSize map[int]int, defhugepagesz int) {
 	defhugepagesz = RhelDefaultHugepagesz
 	hugepagesPerSize = map[int]int{}

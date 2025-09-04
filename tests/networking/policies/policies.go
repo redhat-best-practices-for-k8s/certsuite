@@ -21,6 +21,13 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// IsNetworkPolicyCompliant Checks if a network policy enforces an empty rule for the specified direction
+//
+// The function receives a network policy and a policy . It verifies that the
+// policy includes the given type, that its rules are nil or empty, and that the
+// overall PolicyTypes slice is not empty. If these conditions hold it returns
+// true; otherwise false with an explanatory reason.
+//
 //nolint:gocritic // unnamed results
 func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType networkingv1.PolicyType) (bool, string) {
 	// As long as we have decided above that there is no pod selector,
@@ -57,6 +64,12 @@ func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType network
 	return policyTypeFound, ""
 }
 
+// LabelsMatch Determines whether a pod satisfies the selector's label constraints
+//
+// The function examines the labels specified in a pod selector against the
+// actual labels of a pod. If the selector has no labels, it immediately returns
+// true, meaning all pods match. Otherwise, it checks for at least one matching
+// key/value pair and returns true only if such a pair is found.
 func LabelsMatch(podSelectorLabels v1.LabelSelector, podLabels map[string]string) bool {
 	labelMatch := false
 

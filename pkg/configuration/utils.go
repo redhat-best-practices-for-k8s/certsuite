@@ -29,8 +29,13 @@ var (
 	parameters    = TestParameters{}
 )
 
-// LoadConfiguration return a function that loads
-// the configuration from a file once
+// LoadConfiguration Loads and parses a configuration file once
+//
+// The function reads the specified YAML file, unmarshals its contents into a
+// TestConfiguration structure, and caches the result for subsequent calls. It
+// logs progress and warns if the probe daemonset namespace is missing,
+// defaulting it to a predefined value. Errors during reading or unmarshalling
+// are returned alongside the configuration.
 func LoadConfiguration(filePath string) (TestConfiguration, error) {
 	if confLoaded {
 		log.Debug("config file already loaded, return previous element")
@@ -60,6 +65,14 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 	return configuration, nil
 }
 
+// GetTestParameters Retrieves the current global test configuration
+//
+// This function returns a pointer to the singleton TestParameters instance that
+// holds all runtime settings for the certification suite. The parameters are
+// initialized once at program start and can be modified through command‑line
+// flags or environment variables before use. Subsequent calls return the same
+// instance, allowing different parts of the application to read shared
+// configuration values.
 func GetTestParameters() *TestParameters {
 	return &parameters
 }

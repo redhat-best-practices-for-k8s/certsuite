@@ -23,6 +23,15 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
+// Log Provides a diagnostic snapshot of the test environment
+//
+// The function retrieves the current test environment, refreshes its state, and
+// then builds a multiline string summarizing node taints, pending pods that are
+// not running or succeeded, and any abnormal events. It loops over nodes to
+// list their names and taint configurations, iterates through all pods
+// filtering by status, and appends each relevant pod's string representation.
+// Finally, it gathers abnormal events from the environment and returns the
+// combined output.
 func Log() (out string) {
 	// Get current environment
 	env := provider.GetTestEnvironment()

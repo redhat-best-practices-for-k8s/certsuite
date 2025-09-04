@@ -26,6 +26,13 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
+// findPodsMatchingAtLeastOneLabel Retrieves pods that match any provided label in a namespace
+//
+// The function iterates over each supplied label, querying the Kubernetes API
+// for pods that have the corresponding key-value pair. It accumulates all
+// matching pod objects into a single list, logging errors but continuing on
+// failures. The resulting list is returned, containing every pod that satisfies
+// at least one of the specified labels.
 func findPodsMatchingAtLeastOneLabel(oc corev1client.CoreV1Interface, labels []labelObject, namespace string) *corev1.PodList {
 	allPods := &corev1.PodList{}
 	for _, l := range labels {
@@ -42,6 +49,14 @@ func findPodsMatchingAtLeastOneLabel(oc corev1client.CoreV1Interface, labels []l
 	return allPods
 }
 
+// FindPodsByLabels Retrieves pods matching specified labels across namespaces
+//
+// The function queries each provided namespace for pods, optionally filtering
+// by one or more label key/value pairs. It returns two slices: runningPods
+// contains only those that are not marked for deletion and either in the
+// Running phase or allowed non‑running per configuration; allPods includes
+// every pod found regardless of status. Errors during listing are logged and
+// skipped.
 func FindPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, namespaces []string) (runningPods, allPods []corev1.Pod) {
 	runningPods = []corev1.Pod{}
 	allPods = []corev1.Pod{}
@@ -75,6 +90,12 @@ func FindPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, nam
 	return runningPods, allPods
 }
 
+// CountPodsByStatus Counts running versus non‑running pods
+//
+// The function iterates over a slice of pod objects, incrementing counters for
+// those in the Running phase versus all others. It returns a map with keys
+// "ready" and "non-ready" holding the respective counts. The result is used to
+// track pod state before and after test execution.
 func CountPodsByStatus(allPods []corev1.Pod) map[string]int {
 	podStates := map[string]int{
 		"ready":     0,

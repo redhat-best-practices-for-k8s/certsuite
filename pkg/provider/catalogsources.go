@@ -10,6 +10,15 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
+// GetCatalogSourceBundleCount Returns the number of bundles for a catalog source
+//
+// The function determines how many bundles are associated with a given catalog
+// source by examining either probe container data or package manifests,
+// depending on the OpenShift version. It first checks if the cluster is running
+// an OCP version less than or equal to 4.12; if so, it retrieves the count via
+// a probe container. Otherwise, it falls back to counting bundles listed in the
+// package manifests. The result is returned as an integer, with -1 indicating
+// failure to determine the count.
 func GetCatalogSourceBundleCount(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int {
 	// Now that we know the catalog source, we are going to count up all of the relatedImages
 	// that are associated with the catalog source. This will give us the number of bundles that
@@ -42,6 +51,13 @@ func GetCatalogSourceBundleCount(env *TestEnvironment, cs *olmv1Alpha.CatalogSou
 	return getCatalogSourceBundleCountFromPackageManifests(env, cs)
 }
 
+// getCatalogSourceBundleCountFromProbeContainer retrieves the number of bundles for a catalog source via probe container
+//
+// The function locates the service linked to the given catalog source, then
+// runs a grpcurl command inside each available probe pod to list registry
+// bundles. It parses the output into an integer and returns that count. If no
+// matching service or probe pod yields a valid result, it logs a warning and
+// returns -1.
 func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int {
 	// We need to use the probe container to get the bundle count
 	// This is because the package manifests are not available in the cluster
@@ -88,6 +104,13 @@ func getCatalogSourceBundleCountFromProbeContainer(env *TestEnvironment, cs *olm
 	return -1
 }
 
+// getCatalogSourceBundleCountFromPackageManifests Counts bundles from package manifests linked to a catalog source
+//
+// It iterates over all known package manifests in the test environment, filters
+// those that belong to the specified catalog source by name and namespace, then
+// sums the number of entries across every channel for each matching manifest.
+// The total count is returned as an integer representing how many bundles are
+// available via the manifests.
 func getCatalogSourceBundleCountFromPackageManifests(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int {
 	totalRelatedBundles := 0
 	for _, pm := range env.AllPackageManifests {

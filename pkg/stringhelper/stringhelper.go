@@ -21,7 +21,12 @@ import (
 	"strings"
 )
 
-// StringInSlice checks a slice for a given string.
+// StringInSlice Checks if a value exists in a string slice
+//
+// The function iterates over the provided slice, trimming whitespace from each
+// element before comparison. If containsCheck is false it tests for exact
+// equality; otherwise it checks whether the element contains the target
+// substring. It returns true as soon as a match is found, otherwise false.
 func StringInSlice[T ~string](s []T, str T, containsCheck bool) bool {
 	for _, v := range s {
 		if !containsCheck {
@@ -37,7 +42,12 @@ func StringInSlice[T ~string](s []T, str T, containsCheck bool) bool {
 	return false
 }
 
-// SubSlice checks if a slice's elements all exist within a slice
+// SubSlice verifies all elements of one slice exist in another
+//
+// The function receives two string slices: the main slice and a candidate
+// sub-slice. It iterates over each element of the candidate, checking for an
+// exact match within the main slice using StringInSlice. If any element is
+// missing, it returns false; otherwise it returns true after all checks pass.
 func SubSlice(s, sub []string) bool {
 	for _, v := range sub {
 		if !StringInSlice(s, v, false) {
@@ -47,7 +57,12 @@ func SubSlice(s, sub []string) bool {
 	return true
 }
 
-// checks that at least one element is common to both slices
+// HasAtLeastOneCommonElement verifies whether two string collections contain a shared value
+//
+// The routine iterates over the second slice and checks each element against
+// the first using a helper that compares trimmed strings for equality. If any
+// match is found, it immediately returns true; otherwise it completes the loop
+// and returns false.
 func HasAtLeastOneCommonElement(s1, s2 []string) bool {
 	for _, v := range s2 {
 		if StringInSlice(s1, v, false) {
@@ -57,6 +72,11 @@ func HasAtLeastOneCommonElement(s1, s2 []string) bool {
 	return false
 }
 
+// RemoveEmptyStrings Filters out empty entries from a slice
+//
+// This function iterates over an input list of strings, selecting only those
+// that are not empty. It builds a new slice containing the non-empty values and
+// returns it. The original slice is left unchanged.
 func RemoveEmptyStrings(s []string) []string {
 	var r []string
 	for _, str := range s {
@@ -67,31 +87,12 @@ func RemoveEmptyStrings(s []string) []string {
 	return r
 }
 
-// PointerToString returns the default string representation of the value pointer by p, mainly
-// used in log traces to print k8s resources' pointer fields.
-// If p is a nil pointer, no matter the type, it will return the string "nil".
+// PointerToString converts a pointer to its string representation
 //
-// # Example 1
-//
-//	var b* bool
-//	PointerToString(b) -> returns "nil"
-//
-// # Example 2
-//
-//	b := true
-//	bTrue := &b
-//	PointerToString(bTrue) -> returns "true"
-//
-// # Example 3
-//
-//	var num *int
-//	PointerToString(num) -> returns "nil"
-//
-// # Example 4
-//
-//	num := 1984
-//	num1984 := &num
-//	PointerToString(num1984) -> returns "1984"
+// When the argument is nil, it returns "nil"; otherwise it dereferences the
+// pointer and formats the value using standard printing rules. The function
+// works for any type thanks to generics, making it useful in log traces or
+// debugging output.
 func PointerToString[T any](p *T) string {
 	if p == nil {
 		return "nil"

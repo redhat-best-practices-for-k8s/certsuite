@@ -31,6 +31,15 @@ const (
 	kernelArgscommand     = "cat /host/proc/cmdline"
 )
 
+// TestBootParamsHelper Verifies that node kernel parameters match the MachineConfig
+//
+// The function retrieves the expected kernel arguments from a MachineConfig,
+// then obtains the current command‑line arguments from both the container’s
+// process and the GRUB configuration on the same node. It compares each
+// argument value against the expected one, logging warnings when mismatches
+// occur and debug messages for matches. If any required probe pod is missing or
+// an error occurs during retrieval, it returns an error; otherwise it completes
+// silently.
 func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container, logger *log.Logger) error {
 	probePod := env.ProbePods[cut.NodeName]
 	if probePod == nil {
@@ -66,11 +75,24 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 	return nil
 }
 
+// GetMcKernelArguments Retrieves kernel arguments from a node’s MachineConfig
+//
+// This function accesses the specified node in the test environment, pulls the
+// KernelArguments slice from its MachineConfig, and converts it into a map of
+// key‑value pairs using ArgListToMap. The resulting map is returned for
+// further comparison against runtime values or other configuration sources.
 func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap map[string]string) {
 	mcKernelArgumentsMap := arrayhelper.ArgListToMap(env.Nodes[nodeName].Mc.Spec.KernelArguments)
 	return mcKernelArgumentsMap
 }
 
+// getGrubKernelArgs Retrieves GRUB kernel arguments from a probe pod
+//
+// The function runs a command inside the node's probe container to capture the
+// GRUB configuration line, filters for the options line, splits it into
+// individual arguments, and converts them into a map of key-value pairs. It
+// returns this map along with any error that occurs during execution or
+// parsing.
 func getGrubKernelArgs(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, err error) {
 	o := clientsholder.GetClientsHolder()
 	ctx := clientsholder.NewContext(env.ProbePods[nodeName].Namespace, env.ProbePods[nodeName].Name, env.ProbePods[nodeName].Spec.Containers[0].Name)
@@ -92,6 +114,13 @@ func getGrubKernelArgs(env *provider.TestEnvironment, nodeName string) (aMap map
 	return arrayhelper.ArgListToMap(grubSplitKernelConfig), nil
 }
 
+// getCurrentKernelCmdlineArgs retrieves the current kernel command-line arguments from a node's probe pod
+//
+// The function executes a predefined command inside the probe pod container to
+// capture the kernel's command line, splits the output into individual
+// arguments, and converts them into a map of key-value pairs. It returns this
+// map along with any error that occurs during execution or parsing. The
+// returned data is used to compare against expected configuration values.
 func getCurrentKernelCmdlineArgs(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, err error) {
 	o := clientsholder.GetClientsHolder()
 	ctx := clientsholder.NewContext(env.ProbePods[nodeName].Namespace, env.ProbePods[nodeName].Name, env.ProbePods[nodeName].Spec.Containers[0].Name)

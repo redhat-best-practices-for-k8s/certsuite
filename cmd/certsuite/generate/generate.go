@@ -15,6 +15,13 @@ var (
 	}
 )
 
+// NewCommand Builds the generate CLI command with its subcommands
+//
+// This function initializes a cobra.Command for the generate group and
+// registers several child commands—catalog, feedback, config, and QE coverage
+// reporting—by calling their NewCommand functions. It then returns the fully
+// configured parent command ready to be added to the main application root. The
+// returned value is a pointer to the cobra.Command instance.
 func NewCommand() *cobra.Command {
 	generate.AddCommand(catalog.NewCommand())
 	generate.AddCommand(feedback.NewCommand())

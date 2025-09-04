@@ -46,6 +46,15 @@ var (
 	}
 )
 
+// LoadChecks Registers operator test checks with the internal database
+//
+// This routine creates a new check group for operator tests, then adds a series
+// of predefined checks to that group. Each check is configured with optional
+// skip logic and a function that performs the actual validation against the
+// current test environment. The group is logged when created and all added
+// checks are registered in the shared checks database so they can be executed
+// during a certification run.
+//
 //nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.OperatorTestKey)
@@ -138,7 +147,14 @@ func LoadChecks() {
 		}))
 }
 
-// This function checks if single/multi namespaced operators should only be installed in the tenant dedicated operator namespace
+// testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces Validates that only single or multi‑namespaced operators reside in tenant namespaces
+//
+// The routine iterates over all operator namespaces found in the test
+// environment, checks each for dedicated status, and gathers any operators or
+// pods that violate the single/multi‑namespace rule. It builds compliance
+// reports per namespace, marking those that contain only valid operators as
+// compliant and reporting detailed reasons for non‑compliance otherwise. The
+// results are set on the provided check object.
 func testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.LogInfo("Starting testOnlySingleNamespacedOperatorsAllowedInTenantNamespaces")
 
@@ -204,7 +220,14 @@ func testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces(check *ch
 	}
 }
 
-// This function check if the Operator CRD version follows K8s versioning
+// testOperatorCrdVersioning Verifies that all operator CRDs use Kubernetes-compatible versioning
+//
+// The routine iterates over each CRD in the test environment, checking every
+// declared version against a Kubernetes semantic‑version pattern. If any
+// non‑conforming version is found, it logs an error and records the CRD as
+// non‑compliant; otherwise it logs success and marks it compliant. Finally,
+// it reports the lists of compliant and non‑compliant objects for the test
+// result.
 func testOperatorCrdVersioning(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.LogInfo("Starting testOperatorCrdVersioning")
 	var compliantObjects []*testhelper.ReportObject
@@ -238,7 +261,13 @@ func testOperatorCrdVersioning(check *checksdb.Check, env *provider.TestEnvironm
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// This function checks if the operator CRD is defined with OpenAPI 3 specification
+// testOperatorCrdOpenAPISpec Verifies that operator CRDs use OpenAPI v3 schemas
+//
+// The function iterates over all CRDs in the test environment, checks whether
+// each has an OpenAPI v3 schema defined, and records compliance status. It logs
+// the result for each CRD and collects compliant and non‑compliant objects
+// into separate slices. Finally it reports these results via the check’s
+// SetResult method.
 func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.LogInfo("Starting testOperatorCrdOpenAPISpec")
 	var compliantObjects []*testhelper.ReportObject
@@ -259,7 +288,12 @@ func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnviron
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// This function checks for semantic versioning of the installed operators
+// testOperatorSemanticVersioning Verifies operators use semantic versioning
+//
+// The function iterates through each operator in the test environment, checks
+// if its version string conforms to semantic version rules, and logs the
+// outcome. It collects compliant and non‑compliant operators into separate
+// lists of report objects, then sets these as the result for the check.
 func testOperatorSemanticVersioning(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.LogInfo("Starting testOperatorSemanticVersioning")
 	var compliantObjects []*testhelper.ReportObject
@@ -283,6 +317,12 @@ func testOperatorSemanticVersioning(check *checksdb.Check, env *provider.TestEnv
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testOperatorInstallationPhaseSucceeded Verifies that each operator reaches the Succeeded phase
+//
+// The function iterates over all operators in the test environment, waiting for
+// each ClusterServiceVersion to report a Succeeded status. It logs success or
+// failure, collects compliant and non‑compliant objects into report entries,
+// and finally records the results on the check object.
 func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -302,6 +342,14 @@ func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testOperatorInstallationAccessToSCC Checks operators’ CSV cluster permissions for disallowed SCC access
+//
+// The function iterates over all operators in the test environment, examining
+// each operator’s ClusterServiceVersion for clusterPermissions. If no
+// permissions are defined it records compliance; otherwise it calls a helper to
+// detect any rule granting access to securitycontextconstraints and logs
+// non‑compliance. Results are collected into report objects and set on the
+// check.
 func testOperatorInstallationAccessToSCC(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -330,6 +378,13 @@ func testOperatorInstallationAccessToSCC(check *checksdb.Check, env *provider.Te
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testOperatorOlmSubscription Verifies that each operator has an OLM subscription
+//
+// The function iterates over all operators in the test environment, logging
+// status for each one. It checks whether a SubscriptionName exists; if missing,
+// it records a non‑compliant report object and logs an error. If present, it
+// creates a compliant report object noting the subscription was found. Finally,
+// it sets the check result with the collected objects.
 func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -351,6 +406,13 @@ func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnviro
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testOperatorSingleCrdOwner Verifies that each CustomResourceDefinition is owned by only one operator
+//
+// The function builds a mapping of CRD names to the operators that declare
+// ownership in their CSVs, filtering duplicate versions per operator. It then
+// iterates through this map, marking any CRD with multiple owners as
+// non‑compliant and generating report objects accordingly. Finally, it
+// records compliant and non‑compliant results on the check instance.
 func testOperatorSingleCrdOwner(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -393,6 +455,13 @@ func testOperatorSingleCrdOwner(check *checksdb.Check, env *provider.TestEnviron
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testOperatorPodsNoHugepages Checks that operator pods do not use hugepages
+//
+// The function iterates over all CSV-to-pod mappings in the test environment,
+// examining each pod to determine whether it requests hugepage memory. Pods
+// requesting hugepages are marked non‑compliant and logged as errors;
+// otherwise they are considered compliant and logged positively. After
+// processing all pods, the results are set on the check object for reporting.
 func testOperatorPodsNoHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -414,6 +483,13 @@ func testOperatorPodsNoHugepages(check *checksdb.Check, env *provider.TestEnviro
 	}
 }
 
+// testOperatorOlmSkipRange Verifies the presence of an OLM skipRange annotation on each operator
+//
+// The function iterates over all operators in the test environment, checking
+// whether each has a non-empty "olm.skipRange" annotation. It logs information
+// about the check and records compliant or non-compliant operators accordingly.
+// Finally, it sets the result of the check with lists of compliant and
+// non‑compliant report objects.
 func testOperatorOlmSkipRange(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -434,6 +510,12 @@ func testOperatorOlmSkipRange(check *checksdb.Check, env *provider.TestEnvironme
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testMultipleSameOperators Verifies operators are not duplicated across installations
+//
+// The function iterates over all installed operators in the test environment,
+// checking each pair for duplicate CSV names with different versions. It
+// records non‑compliant operators when a duplicate is found and marks others
+// as compliant. The results are then set on the provided check object.
 func testMultipleSameOperators(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -463,6 +545,14 @@ func testMultipleSameOperators(check *checksdb.Check, env *provider.TestEnvironm
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testOperatorCatalogSourceBundleCount Verifies catalog sources contain fewer than a thousand bundle images
+//
+// The function iterates over operators in the test environment, matching each
+// to its catalog source via package manifests. It then counts referenced
+// bundles using probe containers for older OpenShift versions or package
+// manifests otherwise. If a catalog source exceeds 1000 bundles it logs an
+// error and records non‑compliance; otherwise it records compliance.
+//
 //nolint:funlen
 func testOperatorCatalogSourceBundleCount(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject

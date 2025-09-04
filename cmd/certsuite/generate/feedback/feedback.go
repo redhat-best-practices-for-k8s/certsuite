@@ -38,6 +38,13 @@ var (
 	}
 )
 
+// runGenerateFeedbackJsFile Creates a JavaScript file containing feedback data
+//
+// The function reads a JSON file with feedback information, parses it into a
+// map, formats the data with indentation, and writes it to a new JavaScript
+// file prefixed by 'feedback=' in the specified output directory. It logs the
+// resulting string to standard output and returns any errors encountered during
+// reading, unmarshalling, or writing.
 func runGenerateFeedbackJsFile(_ *cobra.Command, _ []string) error {
 	dat, err := os.ReadFile(feedbackJSONFilePath)
 	if err != nil {
@@ -69,7 +76,11 @@ func runGenerateFeedbackJsFile(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
-// Execute executes the "catalog" CLI.
+// NewCommand Creates a command to generate feedback.js from a JSON file
+//
+// It defines flags for the input JSON path and output directory, marking both
+// as required. If flag validation fails, it logs a fatal error. The function
+// returns the configured cobra.Command instance.
 func NewCommand() *cobra.Command {
 	generateFeedbackJsFile.Flags().StringVarP(
 		&feedbackJSONFilePath, "feedback", "f", "",

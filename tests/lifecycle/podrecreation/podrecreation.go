@@ -45,6 +45,13 @@ const (
 	NoDelete                    = "noDelete"
 )
 
+// CordonHelper Executes a cordon or uncordon operation on a node
+//
+// The function retrieves the Kubernetes client holder, logs the requested
+// action, and attempts to update the node’s unschedulable status using a
+// retry loop that handles conflicts. It accepts a node name and an operation
+// string, applies the appropriate flag, and returns any error encountered
+// during retrieval or update.
 func CordonHelper(name, operation string) error {
 	clients := clientsholder.GetClientsHolder()
 
@@ -73,6 +80,15 @@ func CordonHelper(name, operation string) error {
 	return retryErr
 }
 
+// CountPodsWithDelete Counts pods scheduled on a node and optionally deletes them
+//
+// The function iterates over all provided pods, selecting those belonging to
+// deployments or statefulsets that are running on the specified node and not
+// managed by a DaemonSet. It increments a counter for each qualifying pod and,
+// if deletion is requested, initiates the delete operation in either foreground
+// or background mode while synchronizing with a wait group. Errors during
+// deletion are logged but do not abort the counting; the function returns the
+// total count and any error encountered.
 func CountPodsWithDelete(pods []*provider.Pod, nodeName, mode string) (count int, err error) {
 	count = 0
 	var wg sync.WaitGroup
@@ -99,6 +115,11 @@ func CountPodsWithDelete(pods []*provider.Pod, nodeName, mode string) (count int
 	return count, nil
 }
 
+// skipDaemonPod identifies pods managed by a DaemonSet
+//
+// This function examines the owner references of a pod and returns true if any
+// reference is of kind DaemonSet. Pods owned by a DaemonSet are skipped from
+// deletion or recreation logic. Otherwise it returns false.
 func skipDaemonPod(pod *corev1.Pod) bool {
 	for _, or := range pod.OwnerReferences {
 		if or.Kind == DaemonSetString {
@@ -108,6 +129,14 @@ func skipDaemonPod(pod *corev1.Pod) bool {
 	return false
 }
 
+// deletePod removes a pod and optionally waits for its deletion
+//
+// The function initiates the deletion of a specified pod using the Kubernetes
+// client, applying the pod's configured termination grace period. It creates a
+// watch on the pod to monitor its removal from the cluster; if the mode is not
+// background, it launches a goroutine that blocks until the pod is confirmed
+// deleted or a timeout occurs. Errors during watcher creation or deletion are
+// returned for handling by the caller.
 func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 	clients := clientsholder.GetClientsHolder()
 	log.Debug("deleting ns=%s pod=%s with %s mode", pod.Namespace, pod.Name, mode)
@@ -140,6 +169,13 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 	return nil
 }
 
+// CordonCleanup Restores a node to schedulable state after draining
+//
+// This routine attempts to uncordon the specified node by calling the helper
+// function with an uncordon operation. If the uncordon fails, it aborts the
+// current check, logging the error and providing diagnostic information. The
+// function is used as a cleanup step in tests that temporarily cordon nodes
+// during pod recreation scenarios.
 func CordonCleanup(node string, check *checksdb.Check) {
 	err := CordonHelper(node, Uncordon)
 	if err != nil {
@@ -147,6 +183,12 @@ func CordonCleanup(node string, check *checksdb.Check) {
 	}
 }
 
+// waitPodDeleted waits for a pod to be deleted or times out
+//
+// The function monitors the provided watcher until it receives a deletion event
+// for the specified pod, then stops the watch. If no deletion occurs within the
+// timeout period, it logs a timeout message and exits. It does not return a
+// value but signals completion by stopping the watcher.
 func waitPodDeleted(ns, podName string, timeout int64, watcher watch.Interface) {
 	log.Debug("Entering waitPodDeleted ns=%s pod=%s", ns, podName)
 	defer watcher.Stop()

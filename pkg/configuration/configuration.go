@@ -22,19 +22,37 @@ const (
 	defaultProbeDaemonSetNamespace = "cnf-suite"
 )
 
+// SkipHelmChartList Specifies a Helm chart to exclude from catalog checks
+//
+// This structure holds the identifier for an operator bundle package or image
+// version that should be omitted when verifying existence against the RedHat
+// catalog. The Name field contains the exact name used in the catalog lookup.
+// When populated, the system will skip any validation or processing related to
+// this chart.
 type SkipHelmChartList struct {
 	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
 	Name string `yaml:"name" json:"name"`
 }
 
-// AcceptedKernelTaintsInfo contains all certified operator request info
+// AcceptedKernelTaintsInfo stores information about kernel module taints used in tests
+//
+// This structure holds the name of a kernel module that, when loaded, causes
+// specific taints on nodes. The module field is used by the test suite to
+// identify which taints should be accepted during certification testing. It
+// facilitates configuration of test environments that require certain kernel
+// behavior.
 type AcceptedKernelTaintsInfo struct {
 
 	// Accepted modules that cause taints that we want to supply to the test suite
 	Module string `yaml:"module" json:"module"`
 }
 
-// SkipScalingTestDeploymentsInfo contains a list of names of deployments that should be skipped by the scaling tests to prevent issues
+// SkipScalingTestDeploymentsInfo Lists deployments excluded from scaling tests
+//
+// This structure stores a deployment's name and namespace that should be
+// ignored during scaling test runs. By including these entries in the
+// configuration, the testing framework bypasses any checks or actions that
+// could interfere with or corrupt the selected deployments.
 type SkipScalingTestDeploymentsInfo struct {
 
 	// Deployment name and namespace that can be skipped by the scaling tests
@@ -42,7 +60,12 @@ type SkipScalingTestDeploymentsInfo struct {
 	Namespace string `yaml:"namespace" json:"namespace"`
 }
 
-// SkipScalingTestStatefulSetsInfo contains a list of names of statefulsets that should be skipped by the scaling tests to prevent issues
+// SkipScalingTestStatefulSetsInfo Specifies statefulsets excluded from scaling tests
+//
+// This structure holds the name and namespace of a StatefulSet that should be
+// ignored during scaling test runs to avoid potential failures or conflicts. By
+// listing such StatefulSets, the testing framework can bypass them while still
+// evaluating other components.
 type SkipScalingTestStatefulSetsInfo struct {
 
 	// StatefulSet name and namespace that can be skipped by the scaling tests
@@ -50,21 +73,43 @@ type SkipScalingTestStatefulSetsInfo struct {
 	Namespace string `yaml:"namespace" json:"namespace"`
 }
 
-// Namespace struct defines namespace properties
+// Namespace Represents a Kubernetes namespace configuration
+//
+// This structure holds information about a single namespace, primarily its name
+// used for identification in the cluster. The name is serialized to YAML or
+// JSON under the key "name". It serves as a basic unit for configuring
+// namespace-specific settings within the application.
 type Namespace struct {
 	Name string `yaml:"name" json:"name"`
 }
 
-// CrdFilter defines a CustomResourceDefinition config filter.
+// CrdFilter filters CustomResourceDefinitions by name suffix and scaling capability
+//
+// This structure holds criteria for selecting CRDs from a configuration. The
+// NameSuffix field specifies a string that must appear at the end of a CRD’s
+// name to be considered a match. The Scalable boolean indicates whether only
+// scalable CRDs should be included in the filtered set.
 type CrdFilter struct {
 	NameSuffix string `yaml:"nameSuffix" json:"nameSuffix"`
 	Scalable   bool   `yaml:"scalable" json:"scalable"`
 }
+
+// ManagedDeploymentsStatefulsets Represents the identifier of a StatefulSet in a managed deployment
+//
+// This structure stores the name of a Kubernetes StatefulSet that should be
+// tracked or controlled by the system. It is used as part of configuration
+// data, typically loaded from YAML or JSON files, to specify which stateful
+// sets are relevant for monitoring or management tasks.
 type ManagedDeploymentsStatefulsets struct {
 	Name string `yaml:"name" json:"name"`
 }
 
-// ConnectAPIConfig contains the configuration for the Red Hat Connect API
+// ConnectAPIConfig configuration holder for accessing the Red Hat Connect API
+//
+// It stores the credentials, project identifier, endpoint address, and optional
+// proxy settings required to communicate with the Red Hat Connect service. Each
+// field is mapped to YAML and JSON keys so it can be loaded from configuration
+// files or environment variables.
 type ConnectAPIConfig struct {
 	// APIKey is the API key for the Red Hat Connect
 	APIKey string `yaml:"apiKey" json:"apiKey"`
@@ -78,7 +123,13 @@ type ConnectAPIConfig struct {
 	ProxyPort string `yaml:"proxyPort" json:"proxyPort"`
 }
 
-// TestConfiguration provides test related configuration
+// TestConfiguration holds configuration values used during test execution
+//
+// This struct groups settings that control which namespaces, pods, operators,
+// and CRDs are considered in a test run. It also contains parameters for the
+// collector application and connection to an external API. The fields support
+// filtering, skipping certain resources, and specifying accepted kernel taints
+// or protocol names.
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
 	TargetNameSpaces []Namespace `yaml:"targetNameSpaces,omitempty" json:"targetNameSpaces,omitempty"`
@@ -110,6 +161,13 @@ type TestConfiguration struct {
 	ConnectAPIConfig ConnectAPIConfig `yaml:"connectAPIConfig,omitempty" json:"connectAPIConfig,omitempty"`
 }
 
+// TestParameters holds configuration settings for test execution
+//
+// This structure contains a collection of fields that control how tests are
+// run, including resource limits, image repositories, API connection details,
+// and output options. It also flags whether to include non-running pods, enable
+// data collection or XML creation, and sets timeouts and log levels for the
+// test environment.
 type TestParameters struct {
 	Kubeconfig                    string
 	ConfigFile                    string
