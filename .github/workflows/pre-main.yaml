@@ -19,7 +19,6 @@ env:
   OCT_IMAGE_NAME: redhat-best-practices-for-k8s/oct
   OCT_IMAGE_TAG: latest
   PROBE_IMAGE_NAME: redhat-best-practices-for-k8s/certsuite-probe
-  PROBE_IMAGE_TAG: v0.0.25
   CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
   CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
   SMOKE_TESTS_LOG_LEVEL: debug
@@ -171,10 +170,17 @@ jobs:
     env:
       SHELL: /bin/bash
     steps:
+      - name: Check out code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ github.sha }}
+
       - name: Pull the images to verify they exist
         run: |
           docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
-          docker pull ${REGISTRY}/${PROBE_IMAGE_NAME}:${PROBE_IMAGE_TAG}
+          PROBE_TAG=$(jq -r '.debugTag' version.json)
+          echo "Using probe tag: ${PROBE_TAG}"
+          docker pull ${REGISTRY}/${PROBE_IMAGE_NAME}:${PROBE_TAG}
 
   smoke-tests-local:
     name: Run Local Smoke Tests

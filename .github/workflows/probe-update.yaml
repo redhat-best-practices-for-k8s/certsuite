@@ -95,9 +95,6 @@ jobs:
           # Update default flag in cmd/certsuite/run/run.go
           sed -i "s|quay.io/redhat-best-practices-for-k8s/certsuite-probe:v[0-9]\+\.[0-9]\+\.[0-9]\+|quay.io/redhat-best-practices-for-k8s/certsuite-probe:${LATEST}|" cmd/certsuite/run/run.go
 
-          # Update PROBE_IMAGE_TAG in CI workflow pre-main.yaml
-          sed -i "s|PROBE_IMAGE_TAG: v[0-9]\+\.[0-9]\+\.[0-9]\+|PROBE_IMAGE_TAG: ${LATEST}|" .github/workflows/pre-main.yaml
-
           echo "Updated files to ${LATEST}:"
           git --no-pager diff -- . | cat
 
