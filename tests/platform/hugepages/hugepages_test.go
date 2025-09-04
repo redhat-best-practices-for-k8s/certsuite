@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
@@ -126,7 +125,7 @@ func Test_hugepagesFromKernelArgsFunc(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		mc := provider.MachineConfig{MachineConfig: &mcv1.MachineConfig{}}
+		mc := provider.MachineConfig{}
 
 		// Prepare fake MC object: only KernelArguments is needed.
 		mc.Spec.KernelArguments = tc.kernelArgs
@@ -163,7 +162,7 @@ func TestPositiveMachineConfigSystemdHugepages(t *testing.T) {
 	// helper function to get a provider.MachineConfig object from an slice of units to
 	// be used on each tc.
 	getMcFromUnits := func(units []mcUnitConfig) provider.MachineConfig {
-		mc := provider.MachineConfig{MachineConfig: &mcv1.MachineConfig{}}
+		mc := provider.MachineConfig{}
 
 		for _, unit := range units {
 			mc.Config.Systemd.Units = append(mc.Config.Systemd.Units, struct {
@@ -329,7 +328,7 @@ func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
 	// helper function to get a provider.MachineConfig object from an slice of units to
 	// be used on each tc.
 	getMcFromUnits := func(units []mcUnitConfig) provider.MachineConfig {
-		mc := provider.MachineConfig{MachineConfig: &mcv1.MachineConfig{}}
+		mc := provider.MachineConfig{}
 
 		for _, unit := range units {
 			mc.Config.Systemd.Units = append(mc.Config.Systemd.Units, struct {
@@ -493,7 +492,9 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 
 	// helper function to get a provider.MachineConfig object from a kernelArguments slice
 	getMcFromKernelArgs := func(kernelArgs []string) provider.MachineConfig {
-		return provider.MachineConfig{MachineConfig: &mcv1.MachineConfig{Spec: mcv1.MachineConfigSpec{KernelArguments: kernelArgs}}}
+		mc := provider.MachineConfig{}
+		mc.Spec.KernelArguments = kernelArgs
+		return mc
 	}
 
 	testCases := []struct {
@@ -615,7 +616,9 @@ func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 
 	// helper function to get a provider.MachineConfig object from a kernelArguments slice
 	getMcFromKernelArgs := func(kernelArgs []string) provider.MachineConfig {
-		return provider.MachineConfig{MachineConfig: &mcv1.MachineConfig{Spec: mcv1.MachineConfigSpec{KernelArguments: kernelArgs}}}
+		mc := provider.MachineConfig{}
+		mc.Spec.KernelArguments = kernelArgs
+		return mc
 	}
 
 	testCases := []struct {

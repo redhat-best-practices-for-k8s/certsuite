@@ -19,10 +19,9 @@ package observability
 import (
 	"testing"
 
-	apiserv1 "github.com/openshift/api/apiserver/v1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/ocplite"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/stretchr/testify/assert"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestBuildServiceAccountToDeprecatedAPIMap(t *testing.T) {
@@ -36,27 +35,24 @@ func TestBuildServiceAccountToDeprecatedAPIMap(t *testing.T) {
 
 	testCases := []struct {
 		name                        string
-		apiRequestCounts            []apiserv1.APIRequestCount
+		apiRequestCounts            []ocplite.APIRequestCount
 		workloadServiceAccountNames map[string]struct{}
 		expected                    map[string]map[string]string
 	}{
 		{
 			name: "Test to ensure proper mapping of service accounts to deprecated APIs",
-			apiRequestCounts: []apiserv1.APIRequestCount{
+			apiRequestCounts: []ocplite.APIRequestCount{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "api1",
-					},
-					Status: apiserv1.APIRequestCountStatus{
+					Name: "api1",
+					Status: ocplite.APIRequestCountStatus{
 						RemovedInRelease: "v1.20",
-						Last24h: []apiserv1.PerResourceAPIRequestLog{
+						Last24h: []ocplite.Last24h{
 							{
-								ByNode: []apiserv1.PerNodeAPIRequestLog{
+								ByNode: []ocplite.ByNode{
 									{
-										ByUser: []apiserv1.PerUserAPIRequestCount{
+										ByUser: []ocplite.PerUserAPIRequestCount{
 											{
-												UserName:  "eventtest-operator-service-account",
-												UserAgent: "agent1",
+												UserName: "eventtest-operator-service-account",
 											},
 										},
 									},
@@ -66,19 +62,16 @@ func TestBuildServiceAccountToDeprecatedAPIMap(t *testing.T) {
 					},
 				},
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "api2",
-					},
-					Status: apiserv1.APIRequestCountStatus{
+					Name: "api2",
+					Status: ocplite.APIRequestCountStatus{
 						RemovedInRelease: "v1.21",
-						Last24h: []apiserv1.PerResourceAPIRequestLog{
+						Last24h: []ocplite.Last24h{
 							{
-								ByNode: []apiserv1.PerNodeAPIRequestLog{
+								ByNode: []ocplite.ByNode{
 									{
-										ByUser: []apiserv1.PerUserAPIRequestCount{
+										ByUser: []ocplite.PerUserAPIRequestCount{
 											{
-												UserName:  "unknown-sa",
-												UserAgent: "agent2",
+												UserName: "unknown-sa",
 											},
 										},
 									},
@@ -97,21 +90,18 @@ func TestBuildServiceAccountToDeprecatedAPIMap(t *testing.T) {
 		},
 		{
 			name: "Test where no matching service account names exist",
-			apiRequestCounts: []apiserv1.APIRequestCount{
+			apiRequestCounts: []ocplite.APIRequestCount{
 				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "api3",
-					},
-					Status: apiserv1.APIRequestCountStatus{
+					Name: "api3",
+					Status: ocplite.APIRequestCountStatus{
 						RemovedInRelease: "v1.22",
-						Last24h: []apiserv1.PerResourceAPIRequestLog{
+						Last24h: []ocplite.Last24h{
 							{
-								ByNode: []apiserv1.PerNodeAPIRequestLog{
+								ByNode: []ocplite.ByNode{
 									{
-										ByUser: []apiserv1.PerUserAPIRequestCount{
+										ByUser: []ocplite.PerUserAPIRequestCount{
 											{
-												UserName:  "non-existent-sa",
-												UserAgent: "agent3",
+												UserName: "non-existent-sa",
 											},
 										},
 									},

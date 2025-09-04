@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"time"
 
-	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -38,8 +37,6 @@ import (
 	cncfV1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned"
 	cncfNetworkAttachmentFake "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/fake"
-	apiserverscheme "github.com/openshift/client-go/apiserver/clientset/versioned"
-	ocpMachine "github.com/openshift/client-go/machineconfiguration/clientset/versioned"
 	olmpkgclient "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/client/clientset/versioned/typed/operators/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -67,16 +64,13 @@ type ClientsHolder struct {
 	APIExtClient         apiextv1.Interface
 	OlmClient            olmClient.Interface
 	OlmPkgClient         olmpkgclient.PackagesV1Interface
-	OcpClient            clientconfigv1.ConfigV1Interface
 	K8sClient            kubernetes.Interface
 	K8sNetworkingClient  networkingv1.NetworkingV1Interface
 	CNCFNetworkingClient cncfNetworkAttachmentv1.Interface
 	DiscoveryClient      discovery.DiscoveryInterface
-	MachineCfg           ocpMachine.Interface
 	KubeConfig           []byte
 	ready                bool
 	GroupResources       []*metav1.APIResourceList
-	ApiserverClient      apiserverscheme.Interface
 }
 
 var clientsHolder = ClientsHolder{}
@@ -319,15 +313,6 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate k8sclient: %s", err)
 	}
-	// create the oc client
-	clientsHolder.OcpClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
-	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate ocClient: %s", err)
-	}
-	clientsHolder.MachineCfg, err = ocpMachine.NewForConfig(clientsHolder.RestConfig)
-	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate MachineCfg client: %s", err)
-	}
 	clientsHolder.K8sNetworkingClient, err = networkingv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate k8s networking client: %s", err)
@@ -360,15 +345,12 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 		return nil, fmt.Errorf("cannot instantiate CNCF networking client")
 	}
 
-	clientsHolder.ApiserverClient, err = apiserverscheme.NewForConfig(clientsHolder.RestConfig)
-	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate apiserverscheme: %w", err)
-	}
-
 	clientsHolder.ready = true
 	return &clientsHolder, nil
 }
 
+// Context holds targeting information (namespace, pod name, container name)
+// to execute commands inside a specific container via the probe pod.
 type Context struct {
 	namespace     string
 	podName       string
