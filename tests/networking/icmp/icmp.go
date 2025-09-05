@@ -36,6 +36,12 @@ const (
 	SuccessfulOutputRegex = `(?m)(\d+) packets transmitted, (\d+)( packets){0,1} received, (?:\+(\d+) errors)?.*$`
 )
 
+// PingResults represents the outcome of a ping test
+//
+// The structure holds counts for transmitted, received, and error packets along
+// with an outcome code that indicates success, failure, or error. It is used by
+// parsing functions to convert raw command output into structured data, and it
+// provides a string representation summarizing these metrics.
 type PingResults struct {
 	outcome     int
 	transmitted int
@@ -43,10 +49,23 @@ type PingResults struct {
 	errors      int
 }
 
+// PingResults.String Provides a formatted string representation of ping results
+//
+// The method formats the outcome, transmitted count, received count, and error
+// count into a readable string. It converts the numeric result code to a
+// human‑readable word using a helper function before embedding all values in
+// the output.
 func (results PingResults) String() string {
 	return fmt.Sprintf("outcome: %s transmitted: %d received: %d errors: %d", testhelper.ResultToString(results.outcome), results.transmitted, results.received, results.errors)
 }
 
+// BuildNetTestContext Creates a map of network test contexts for pods
+//
+// The function iterates over provided pods, filtering out those excluded from
+// tests. For each pod it collects IP addresses based on the requested interface
+// , selects one container to represent the namespace, and builds a context that
+// designates a tester source and destination targets. The resulting map is
+// keyed by network identifiers and returned for use in connectivity checks.
 func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, aType netcommons.IFType, logger *log.Logger) (netsUnderTest map[string]netcommons.NetTestContext) {
 	netsUnderTest = make(map[string]netcommons.NetTestContext)
 	for _, put := range pods {
@@ -76,8 +95,13 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 	return netsUnderTest
 }
 
-// processContainerIpsPerNet takes a container ip addresses for a given network attachment's and uses it as a test target.
-// The first container in the loop is selected as the test initiator. the Oc context of the container is used to initiate the pings
+// processContainerIpsPerNet collects container IPs for a network to set up ping tests
+//
+// This routine filters the supplied IP addresses by the desired IP version,
+// then records them in a shared map keyed by network name. The first IP found
+// is designated as the test initiator and stored as the source of pings;
+// subsequent IPs become destination targets. If no suitable IPs exist, the
+// container is skipped and the function exits early.
 func processContainerIpsPerNet(containerID *provider.Container,
 	netKey string,
 	ipAddresses []string,
@@ -126,8 +150,13 @@ func processContainerIpsPerNet(containerID *provider.Container,
 	netsUnderTest[netKey] = entry
 }
 
-// runNetworkingTests takes a map netcommons.NetTestContext, e.g. one context per network attachment
-// and runs pings test with it. Returns a network name to a slice of bad target IPs map.
+// RunNetworkingTests Executes ICMP ping tests across multiple network attachments
+//
+// The function receives a map of networking contexts, a ping count, IP version,
+// and logger. It iterates over each network, performing pings from a source
+// container to all destination containers, recording successes and failures in
+// report objects. If no networks or destinations are available, the test is
+// skipped.
 func RunNetworkingTests( //nolint:funlen
 	netsUnderTest map[string]netcommons.NetTestContext,
 	count int,
@@ -243,6 +272,13 @@ var TestPing = func(sourceContainerID *provider.Container, targetContainerIP net
 	return results, err
 }
 
+// parsePingResult Parses ping command output to determine success, failure, or error
+//
+// The function examines the standard output for patterns indicating invalid
+// arguments or successful execution. It extracts transmitted, received, and
+// error counts from the output using regular expressions and converts them to
+// integers. Based on these metrics, it sets an outcome flag and returns the
+// results along with any parsing errors.
 func parsePingResult(stdout, stderr string) (results PingResults, err error) {
 	re := regexp.MustCompile(ConnectInvalidArgumentRegex)
 	matched := re.FindStringSubmatch(stdout)

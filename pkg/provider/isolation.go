@@ -20,6 +20,13 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
+// AreResourcesIdentical Verifies that CPU and memory requests match limits for every container in a pod
+//
+// The function iterates over all containers in the supplied pod, ensuring each
+// has defined resource limits. It compares the request values to their
+// corresponding limits for both CPU and memory; if any mismatch is found, it
+// logs a debug message and returns false. When all containers satisfy these
+// conditions, the function returns true.
 func AreResourcesIdentical(p *Pod) bool {
 	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
 	for _, cut := range p.Containers {
@@ -50,6 +57,13 @@ func AreResourcesIdentical(p *Pod) bool {
 	return true
 }
 
+// AreCPUResourcesWholeUnits Verifies that all CPU requests and limits are whole units
+//
+// The function iterates over each container in a pod, ensuring both CPU
+// requests and limits are defined and expressed as multiples of one . If any
+// container lacks these specifications or has non‑whole‑unit values, it
+// logs the issue and returns false. When all containers meet the criteria, it
+// returns true.
 func AreCPUResourcesWholeUnits(p *Pod) bool {
 	isInteger := func(val int64) bool {
 		return val%1000 == 0
@@ -79,6 +93,13 @@ func AreCPUResourcesWholeUnits(p *Pod) bool {
 	return true
 }
 
+// LoadBalancingDisabled Determines if both CPU and IRQ load balancing are disabled via annotations
+//
+// The function checks a pod’s annotations for "cpu-load-balancing.crio.io"
+// and "irq-load-balancing.crio.io", verifying each is set to the value
+// "disable". If either annotation is missing or has an invalid value, it logs a
+// debug message. It returns true only when both annotations are present with
+// the correct value; otherwise it returns false.
 func LoadBalancingDisabled(p *Pod) bool {
 	const (
 		disableVar = "disable"

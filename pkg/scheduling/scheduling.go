@@ -48,6 +48,14 @@ var (
 	GetProcessCPUSchedulingFn            = GetProcessCPUScheduling
 )
 
+// parseSchedulingPolicyAndPriority Extracts CPU scheduling policy and priority from chrt command output
+//
+// The function parses the string produced by the "chrt -p" command, looking for
+// lines that indicate the current scheduling policy or priority. It splits the
+// output into lines, tokenizes each line, and captures the last word as either
+// the policy name or a numeric priority value. If parsing fails or an
+// unexpected line appears, it returns an error; otherwise it provides the
+// extracted policy string and integer priority.
 func parseSchedulingPolicyAndPriority(chrtCommandOutput string) (schedPolicy string, schedPriority int, err error) {
 	/*	Sample output:
 		pid 476's current scheduling policy: SCHED_OTHER
@@ -83,6 +91,14 @@ var schedulingRequirements = map[string]string{SharedCPUScheduling: "SHARED_CPU_
 	ExclusiveCPUScheduling: "EXCLUSIVE_CPU_SCHEDULING: scheduling priority < 10 and scheduling policy == SCHED_RR or SCHED_FIFO",
 	IsolatedCPUScheduling:  "ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO"}
 
+// ProcessPidsCPUScheduling Evaluates CPU scheduling compliance for container processes
+//
+// The function iterates over a list of process objects, retrieves each
+// process's CPU scheduling policy and priority, and checks them against the
+// specified scheduling . For each process it records whether it meets the
+// requirements, creating a report object that includes scheduling details and
+// arguments. The result is two slices: one for compliant processes and another
+// for non‑compliant ones.
 func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *provider.Container, check string, logger *log.Logger) (compliantContainerPids, nonCompliantContainerPids []*testhelper.ReportObject) {
 	hasCPUSchedulingConditionSuccess := false
 	for _, process := range processes {
@@ -117,6 +133,13 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 	return compliantContainerPids, nonCompliantContainerPids
 }
 
+// GetProcessCPUScheduling retrieves a process's CPU scheduling policy and priority
+//
+// The function runs the "chrt -p" command inside a node probe pod to gather
+// scheduling information for a given PID within a container. It parses the
+// command output to extract the scheduling policy string and numeric priority,
+// handling errors when the probe context or command fails. The results are
+// returned along with any error encountered during execution.
 func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedulePolicy string, schedulePriority int, err error) {
 	log.Info("Checking the scheduling policy/priority in %v for pid=%d", testContainer, pid)
 
@@ -144,6 +167,12 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 	return schedulePolicy, schedulePriority, err
 }
 
+// PolicyIsRT Determines whether a scheduling policy represents a real‑time policy
+//
+// The function receives the name of a Linux CPU scheduling policy and returns
+// true if it matches either the First‑In‑First‑Out or Round‑Robin
+// policies, which are considered real‑time in this context. Any other policy
+// string results in false, indicating non‑real‑time behavior.
 func PolicyIsRT(schedPolicy string) bool {
 	return schedPolicy == SchedulingFirstInFirstOut || schedPolicy == SchedulingRoundRobin
 }

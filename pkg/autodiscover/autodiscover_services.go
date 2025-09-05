@@ -24,6 +24,13 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
+// getServices Retrieves services from specified namespaces while excluding ignored names
+//
+// The function iterates over a list of namespace strings, querying the
+// Kubernetes API for services in each one. It filters out any service whose
+// name appears in an ignore list using a helper that checks string membership.
+// Matching services are collected into a slice and returned; if any API call
+// fails, the error is propagated immediately.
 func getServices(oc corev1client.CoreV1Interface, namespaces, ignoreList []string) (allServices []*corev1.Service, err error) {
 	for _, ns := range namespaces {
 		s, err := oc.Services(ns).List(context.TODO(), metav1.ListOptions{})

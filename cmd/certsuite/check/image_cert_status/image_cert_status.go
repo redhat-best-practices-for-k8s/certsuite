@@ -30,6 +30,14 @@ var checkImageCertStatusCmd = &cobra.Command{
 	RunE:  checkImageCertStatus,
 }
 
+// checkImageCertStatus checks whether a container image is certified
+//
+// The function reads command-line flags for an image name, registry, tag, or
+// digest, then uses a validator from the certdb package to determine
+// certification status. It prints formatted information about the selected
+// image and outputs a colored result indicating success or failure. Errors are
+// returned if required parameters are missing or if the validator cannot be
+// obtained.
 func checkImageCertStatus(cmd *cobra.Command, _ []string) error {
 	imageName, _ := cmd.Flags().GetString("name")
 	imageRegistry, _ := cmd.Flags().GetString("registry")
@@ -64,6 +72,13 @@ func checkImageCertStatus(cmd *cobra.Command, _ []string) error {
 	return nil
 }
 
+// NewCommand configures and returns the image certificate status command
+//
+// This function sets up persistent flags for specifying an image name,
+// registry, tag, digest, and an optional offline database path. It enforces
+// that a name and registry must be provided together while ensuring the name
+// and digest cannot both be set at once. Finally, it returns the fully
+// configured command object.
 func NewCommand() *cobra.Command {
 	checkImageCertStatusCmd.PersistentFlags().String("name", "", "name of the image to verify")
 	checkImageCertStatusCmd.PersistentFlags().String("registry", "", "registry where the image is stored")

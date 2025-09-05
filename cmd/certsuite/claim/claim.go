@@ -13,6 +13,12 @@ var (
 	}
 )
 
+// NewCommand Creates a subcommand for claim operations
+//
+// It initializes the claim command by attaching its compare and show
+// subcommands, each of which provides functionality for comparing claim files
+// or displaying claim information. The function returns the configured
+// cobra.Command ready to be added to the main application root command.
 func NewCommand() *cobra.Command {
 	claimCommand.AddCommand(compare.NewCommand())
 	claimCommand.AddCommand(show.NewCommand())

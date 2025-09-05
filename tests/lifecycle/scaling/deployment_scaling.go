@@ -37,6 +37,14 @@ import (
 	hps "k8s.io/client-go/kubernetes/typed/autoscaling/v1"
 )
 
+// TestScaleDeployment Tests scaling behavior of a Deployment without HPA
+//
+// The function obtains Kubernetes clients, determines the current replica count
+// or defaults to one, then performs a scale-up followed by a scale-down if the
+// deployment has fewer than two replicas; otherwise it scales down first and
+// then up. Each scaling operation is executed through a helper that retries on
+// conflicts and waits for pods to become ready. It logs success or failure and
+// returns true only when both scaling steps complete successfully.
 func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration, logger *log.Logger) bool {
 	clients := clientsholder.GetClientsHolder()
 	logger.Info("Deployment not using HPA: %s:%s", deployment.Namespace, deployment.Name)
@@ -76,6 +84,14 @@ func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration, l
 	return true
 }
 
+// scaleDeploymentHelper Adjusts a Deployment's replica count with conflict handling
+//
+// This routine logs the scaling action, retrieves the current Deployment
+// object, updates its desired replica count, and applies the change using a
+// retry loop to handle conflicts. After a successful update it waits for all
+// pods in the set to become ready within a specified timeout, reporting any
+// errors through logging. The function returns true if the scaling succeeds and
+// false otherwise.
 func scaleDeploymentHelper(client typedappsv1.AppsV1Interface, deployment *appsv1.Deployment, replicas int32, timeout time.Duration, up bool, logger *log.Logger) bool {
 	if up {
 		logger.Info("Scale UP deployment to %d replicas", replicas)
@@ -110,6 +126,16 @@ func scaleDeploymentHelper(client typedappsv1.AppsV1Interface, deployment *appsv
 	return true
 }
 
+// TestScaleHpaDeployment Verifies that an HPA can scale a deployment up and down correctly
+//
+// The function retrieves the Kubernetes client and determines the current
+// replica count of the deployment, as well as the min and max values from the
+// HPA specification. It then performs a sequence of scaling operations: if
+// replicas are low it scales up to the minimum, restores to the original, or if
+// high it scales down to one replica before restoring. After each adjustment it
+// calls a helper that updates the HPA and waits for the deployment to become
+// ready. If any step fails, false is returned; otherwise true indicates
+// successful round‑trip scaling.
 func TestScaleHpaDeployment(deployment *provider.Deployment, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration, logger *log.Logger) bool {
 	clients := clientsholder.GetClientsHolder()
 	hpscaler := clients.K8sClient.AutoscalingV1().HorizontalPodAutoscalers(deployment.Namespace)
@@ -160,6 +186,13 @@ func TestScaleHpaDeployment(deployment *provider.Deployment, hpa *v1autoscaling.
 	return scaleHpaDeploymentHelper(hpscaler, hpa.Name, deployment.Name, deployment.Namespace, min, max, timeout, logger)
 }
 
+// scaleHpaDeploymentHelper Adjusts the minimum and maximum replica counts for a horizontal pod autoscaler and waits for the deployment to stabilize
+//
+// The helper updates an HPA's MinReplicas and MaxReplicas fields using retry
+// logic to handle conflicts, then triggers a wait until the associated
+// deployment is ready or times out. It logs any errors encountered during get,
+// update, or readiness checks and returns true only when all operations
+// succeed.
 func scaleHpaDeploymentHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, deploymentName, namespace string, min, max int32, timeout time.Duration, logger *log.Logger) bool {
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		hpa, err := hpscaler.Get(context.TODO(), hpaName, v1machinery.GetOptions{})

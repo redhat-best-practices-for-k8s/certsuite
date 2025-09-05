@@ -18,6 +18,13 @@ var CustomLevelNames = map[slog.Leveler]string{
 	CustomLevelFatal: "FATAL",
 }
 
+// CustomHandler Formats and writes structured log entries to an output stream
+//
+// The handler collects attributes and optional context information such as
+// level, time, source file, and message. It serializes these into a single line
+// using a custom attribute formatting routine before writing them atomically to
+// the configured writer. The handler supports adding default attributes via
+// WithAttrs while preserving thread safety with a mutex.
 type CustomHandler struct {
 	opts  slog.HandlerOptions
 	attrs []slog.Attr
@@ -25,6 +32,12 @@ type CustomHandler struct {
 	out   io.Writer
 }
 
+// NewCustomHandler Creates a thread‑safe log handler that writes to an io.Writer
+//
+// This function constructs a CustomHandler with the supplied writer and
+// optional slog.HandlerOptions. If options are nil or lack a level, it defaults
+// to slog.LevelInfo. The resulting handler can be used by other components to
+// emit structured logs in a concurrency‑safe manner.
 func NewCustomHandler(out io.Writer, opts *slog.HandlerOptions) *CustomHandler {
 	h := &CustomHandler{out: out, mu: &sync.Mutex{}}
 	if opts != nil {
@@ -37,12 +50,23 @@ func NewCustomHandler(out io.Writer, opts *slog.HandlerOptions) *CustomHandler {
 	return h
 }
 
+// CustomHandler.Enabled Determines if a log level is enabled based on configuration
+//
+// The method compares the supplied logging level against the handler's
+// configured threshold, returning true when the level meets or exceeds that
+// threshold. It ignores the context parameter because the decision relies
+// solely on static settings.
 func (h *CustomHandler) Enabled(_ context.Context, level slog.Level) bool {
 	return level >= h.opts.Level.Level()
 }
 
-// The Handle method will write a log line with the following format:
-// LOG_LEVEL [TIME] [SOURCE_FILE] [CUSTOM_ATTRS] MSG
+// CustomHandler.Handle writes a formatted log line to the output
+//
+// This method receives a context and a slog.Record, builds a byte buffer
+// containing level, time, source file, custom attributes, and message in a
+// specific format, then writes it to an underlying writer. It locks a mutex
+// during the write to ensure thread safety and returns any error from the write
+// operation.
 //
 //nolint:gocritic // r param is heavy but defined in the slog.Handler interface
 func (h *CustomHandler) Handle(_ context.Context, r slog.Record) error {
@@ -78,11 +102,23 @@ func (h *CustomHandler) Handle(_ context.Context, r slog.Record) error {
 	return err
 }
 
-// Not implemented. Returns the nil handler.
+// CustomHandler.WithGroup Returns a new handler scoped to a named group
+//
+// When called, this method ignores the provided group name and simply returns a
+// nil handler, indicating that grouping functionality is not implemented for
+// CustomHandler. It satisfies the slog.Handler interface but does not create
+// any new handler instance or modify state.
 func (h *CustomHandler) WithGroup(_ string) slog.Handler {
 	return nil
 }
 
+// CustomHandler.WithAttrs Creates a handler that includes additional attributes
+//
+// The method takes a slice of attributes, merges them with the handler’s
+// existing ones, and returns a new handler instance containing the combined
+// set. If no attributes are supplied it simply returns the original handler to
+// avoid unnecessary copying. The returned handler is a copy of the receiver so
+// that modifications do not affect the original.
 func (h *CustomHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
 	if len(attrs) == 0 {
 		return h
@@ -98,6 +134,13 @@ func (h *CustomHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
 	return &h2
 }
 
+// CustomHandler.appendAttr Formats a logging attribute for output
+//
+// The function resolves the attribute’s value, skips empty attributes, then
+// formats the output based on the kind of value. String values are printed
+// plainly or in brackets; time values use a millisecond timestamp; other kinds
+// include level or key/value pairs with appropriate spacing. The resulting
+// bytes are appended to the buffer and returned.
 func (h *CustomHandler) appendAttr(buf []byte, a slog.Attr) []byte {
 	// Resolve the Attr's value before doing anything else.
 	a.Value = a.Value.Resolve()

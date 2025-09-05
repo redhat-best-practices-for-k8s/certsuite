@@ -73,6 +73,14 @@ var (
 	}
 )
 
+// LoadChecks Loads the suite of certification checks
+//
+// This function registers several checks for Helm, operators, Helm charts, and
+// container certifications by creating a group in the checks database. It
+// attaches skip functions that prevent tests from running when necessary data
+// is missing and assigns each check a callback to perform its validation logic.
+// The function logs its activity at debug level and relies on global
+// environment and validator objects for execution.
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.AffiliatedCertTestKey)
 
@@ -108,6 +116,12 @@ func LoadChecks() {
 		}))
 }
 
+// getContainersToQuery Creates a set of container image identifiers for querying
+//
+// The function iterates over the containers defined in the test environment,
+// adding each container's image identifier to a map with a true value. This map
+// represents the collection of images that should be queried during testing. It
+// returns the constructed map.
 func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerImageIdentifier]bool {
 	containersToQuery := make(map[provider.ContainerImageIdentifier]bool)
 	for _, cut := range env.Containers {
@@ -116,10 +130,24 @@ func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerI
 	return containersToQuery
 }
 
+// testContainerCertification Checks if a container image is certified in the database
+//
+// This function accepts an image identifier and a validator, delegating to the
+// validator's method to determine certification status. It returns true when
+// the image's registry, repository, tag, and digest match a certified record,
+// otherwise false. The result informs test logic that verifies container
+// compliance.
 func testContainerCertification(c provider.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
 	return validator.IsContainerCertified(c.Registry, c.Repository, c.Tag, c.Digest)
 }
 
+// testAllOperatorCertified Verifies that all operators are certified for the current OpenShift version
+//
+// The function iterates over every operator listed in the test environment,
+// determining whether each is certified for the detected OpenShift minor
+// release. It logs successes or failures and builds separate lists of compliant
+// and non‑compliant report objects. Finally, it records these results in the
+// check’s outcome.
 func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	operatorsUnderTest := env.Operators
 	var compliantObjects []*testhelper.ReportObject
@@ -151,6 +179,13 @@ func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironme
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testHelmCertified Verifies each Helm chart release against certification rules
+//
+// The function iterates over all Helm chart releases in the test environment,
+// logging status for each. It uses a validator to determine if a chart is
+// certified for the current Kubernetes version and records compliant or
+// non‑compliant reports accordingly. Finally, it sets the overall test result
+// with lists of both compliant and non‑compliant objects.
 func testHelmCertified(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	helmchartsReleases := env.HelmChartReleases
 
@@ -175,6 +210,14 @@ func testHelmCertified(check *checksdb.Check, env *provider.TestEnvironment, val
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testContainerCertificationStatusByDigest Validates container digests against certification database
+//
+// The function iterates over containers in the test environment, checking that
+// each has a digest and that the digest exists in the certification database.
+// Containers missing a digest or with an unregistered digest are logged as
+// errors and added to non‑compliant results; compliant ones are recorded
+// accordingly. Finally, it sets the check result with lists of compliant and
+// non‑compliant containers.
 func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -206,6 +249,13 @@ func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provid
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testHelmVersion Checks Helm release version compatibility
+//
+// This routine inspects the cluster for a Tiller pod to determine whether Helm
+// v2 or v3 is in use. If no Tiller pod exists, it records all installed charts
+// as compliant with Helm v3 and logs that v3 is being used. When a Tiller pod
+// is found, it flags each such pod as non‑compliant because the required
+// version is v3, then sets the test result accordingly.
 func testHelmVersion(check *checksdb.Check) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject

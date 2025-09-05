@@ -28,6 +28,13 @@ const (
 //go:embed files/rhcos_version_map
 var rhcosVersionMap string
 
+// GetRHCOSMappedVersions Parses a formatted string of RHCOS versions into a mapping
+//
+// The function receives a multiline string where each line contains a short
+// RHCOS version, a slash, and its long-form counterpart. It splits the input by
+// newline, trims whitespace, ignores empty lines, then separates each pair on
+// the slash to build a map from short to long versions. The resulting map is
+// returned along with any error .
 func GetRHCOSMappedVersions(rhcosVersionMap string) (map[string]string, error) {
 	capturedInfo := make(map[string]string)
 
@@ -54,6 +61,12 @@ func GetRHCOSMappedVersions(rhcosVersionMap string) (map[string]string, error) {
 	return capturedInfo, nil
 }
 
+// GetShortVersionFromLong Retrieves a concise RHCOS version string from its full identifier
+//
+// The function looks up the provided long-form RHCOS identifier in a preloaded
+// mapping of short-to-long versions. If a match is found, it returns the
+// corresponding short version; otherwise, it returns a sentinel value
+// indicating that the version was not located.
 func GetShortVersionFromLong(longVersion string) (string, error) {
 	capturedVersions, err := GetRHCOSMappedVersions(rhcosVersionMap)
 	if err != nil {

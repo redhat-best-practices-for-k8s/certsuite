@@ -36,6 +36,15 @@ import (
 	retry "k8s.io/client-go/util/retry"
 )
 
+// TestScaleCrd Tests scaling of a custom resource by temporarily adjusting its replica count
+//
+// The function receives a reference to a CR with desired replicas, a
+// group‑resource schema, a timeout duration, and a logger. It retrieves
+// Kubernetes clients, then either increments or decrements the replica count
+// depending on whether the current value is one or more, calling an internal
+// helper to apply the change and wait for completion. Success of both
+// scale‑up and scale‑down operations results in true; any failure logs an
+// error and returns false.
 func TestScaleCrd(crScale *provider.CrScale, groupResourceSchema schema.GroupResource, timeout time.Duration, logger *log.Logger) bool {
 	if crScale == nil {
 		logger.Error("CR object is nill")
@@ -76,6 +85,13 @@ func TestScaleCrd(crScale *provider.CrScale, groupResourceSchema schema.GroupRes
 	return true
 }
 
+// scaleCrHelper adjusts the replica count of a custom resource
+//
+// The function takes a scaling client, a group-resource descriptor, a CR
+// object, desired replicas, direction flag, timeout, and logger. It updates the
+// scaling specification for the CR, retries on conflict using exponential
+// backoff, waits for scaling to finish, logs errors if any, and returns true
+// when successful.
 func scaleCrHelper(scalesGetter scale.ScalesGetter, rc schema.GroupResource, autoscalerpram *provider.CrScale, replicas int32, up bool, timeout time.Duration, logger *log.Logger) bool {
 	if up {
 		logger.Debug("Scale UP CRS to %d replicas", replicas)
@@ -110,6 +126,14 @@ func scaleCrHelper(scalesGetter scale.ScalesGetter, rc schema.GroupResource, aut
 	return true
 }
 
+// TestScaleHPACrd Validates HPA scaling for a custom resource
+//
+// The function checks that an associated horizontal pod autoscaler can scale
+// the target CR up and down within a timeout, restoring original limits
+// afterward. It updates the HPA spec to match the CR’s desired replica count,
+// waits for the CR to reach that state, then reverts to its original min/max
+// settings. If any step fails it logs an error and returns false; otherwise
+// true.
 func TestScaleHPACrd(cr *provider.CrScale, hpa *scalingv1.HorizontalPodAutoscaler, groupResourceSchema schema.GroupResource, timeout time.Duration, logger *log.Logger) bool {
 	if cr == nil {
 		logger.Error("CR object is nill")
@@ -162,6 +186,13 @@ func TestScaleHPACrd(cr *provider.CrScale, hpa *scalingv1.HorizontalPodAutoscale
 	return scaleHpaCRDHelper(hpscaler, hpa.Name, name, namespace, min, hpa.Spec.MaxReplicas, timeout, groupResourceSchema, logger)
 }
 
+// scaleHpaCRDHelper Attempts to scale an HPA by updating its replica bounds
+//
+// The function retrieves the specified HorizontalPodAutoscaler, sets new
+// minimum and maximum replica counts, and updates it in a retry loop that
+// handles conflicts. After a successful update, it waits for the associated
+// custom resource to reach the desired state within a timeout period. It logs
+// any errors encountered and returns true on success or false if scaling fails.
 func scaleHpaCRDHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, crName, namespace string, min, max int32, timeout time.Duration, groupResourceSchema schema.GroupResource, logger *log.Logger) bool {
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		hpa, err := hpscaler.Get(context.TODO(), hpaName, metav1.GetOptions{})

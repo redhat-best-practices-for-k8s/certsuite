@@ -12,7 +12,13 @@ const (
 	percentageDivisor = 100
 )
 
-// percentageToFloat converts a percentage string to a float
+// percentageToFloat Parses a percentage string into a decimal value
+//
+// The function reads a string that represents a and extracts the numeric part
+// using formatted scanning. It then converts this number to a float64 and
+// divides by a divisor to express it as a proportion, such as 0.25 for
+// twenty‑five percent. If the input is not in the expected format, an error
+// is returned.
 func percentageToFloat(percentage string) (float64, error) {
 	var percentageFloat float64
 	_, err := fmt.Sscanf(percentage, "%f%%", &percentageFloat)
@@ -22,6 +28,14 @@ func percentageToFloat(percentage string) (float64, error) {
 	return percentageFloat / percentageDivisor, nil
 }
 
+// CheckPDBIsValid Validates a PodDisruptionBudget against replica count
+//
+// The function checks the .spec.minAvailable and .spec.maxUnavailable fields of
+// a PodDisruptionBudget, converting them to integer values based on the
+// provided replica count or a default of one. It ensures minAvailable is
+// non‑zero and does not exceed replicas, and that maxUnavailable is less than
+// the number of pods. If any rule fails, it returns false with an explanatory
+// error; otherwise it returns true.
 func CheckPDBIsValid(pdb *policyv1.PodDisruptionBudget, replicas *int32) (bool, error) {
 	var replicaCount int32
 	if replicas != nil {
@@ -66,6 +80,13 @@ func CheckPDBIsValid(pdb *policyv1.PodDisruptionBudget, replicas *int32) (bool, 
 	return true, nil
 }
 
+// intOrStringToValue Converts an IntOrString to a concrete integer based on replica count
+//
+// The function examines the type of the input value; if it is an integer, that
+// value is returned directly. If it is a string representing a percentage, the
+// percentage is parsed and multiplied by the number of replicas, rounding to
+// the nearest even integer. Errors are produced for unsupported types or
+// invalid percentage strings.
 func intOrStringToValue(intOrStr *intstr.IntOrString, replicas int32) (int, error) {
 	switch intOrStr.Type {
 	case intstr.Int:

@@ -14,6 +14,13 @@ const (
 	checkIdxNone = -1
 )
 
+// ChecksGroup Holds a collection of checks and orchestrates their execution
+//
+// This structure stores the group's name, the list of checks to run, and
+// optional callback functions for before/after all and before/after each check.
+// It tracks which check is currently executing to handle aborts or failures
+// correctly. The group provides methods to add checks, run them with support
+// for labeling, and record results.
 type ChecksGroup struct {
 	name   string
 	checks []*Check
@@ -25,6 +32,13 @@ type ChecksGroup struct {
 	currentRunningCheckIdx int
 }
 
+// NewChecksGroup creates or retrieves a checks group by name
+//
+// This function locks the global database, ensuring thread safety while
+// accessing the map of groups. It initializes the map if necessary, then looks
+// up an existing group with the given key. If found it returns that instance;
+// otherwise it constructs a new ChecksGroup with default fields, stores it in
+// the map, and returns it.
 func NewChecksGroup(groupName string) *ChecksGroup {
 	dbLock.Lock()
 	defer dbLock.Unlock()
@@ -48,30 +62,60 @@ func NewChecksGroup(groupName string) *ChecksGroup {
 	return group
 }
 
+// ChecksGroup.WithBeforeAllFn Registers a function to run before all checks
+//
+// This method assigns the provided callback to the group, which will be
+// executed with the slice of checks prior to any other operations. It returns
+// the modified group for chaining purposes.
 func (group *ChecksGroup) WithBeforeAllFn(beforeAllFn func(checks []*Check) error) *ChecksGroup {
 	group.beforeAllFn = beforeAllFn
 
 	return group
 }
 
+// ChecksGroup.WithBeforeEachFn Assigns a callback to execute prior to each check
+//
+// This method accepts a function that takes a check pointer and may return an
+// error. It stores this function in the group's internal field so it will be
+// invoked before each individual check runs. The group instance is returned,
+// allowing further chained configuration calls.
 func (group *ChecksGroup) WithBeforeEachFn(beforeEachFn func(check *Check) error) *ChecksGroup {
 	group.beforeEachFn = beforeEachFn
 
 	return group
 }
 
+// ChecksGroup.WithAfterEachFn Assigns a function that runs after every individual check
+//
+// This method stores the provided function as the group's post‑check hook,
+// ensuring it is invoked with a reference to each Check object once the check
+// completes. The stored callback can modify or inspect the check before the
+// group continues processing. It returns the same ChecksGroup instance for
+// chaining.
 func (group *ChecksGroup) WithAfterEachFn(afterEachFn func(check *Check) error) *ChecksGroup {
 	group.afterEachFn = afterEachFn
 
 	return group
 }
 
+// ChecksGroup.WithAfterAllFn Assigns a callback to execute after all checks complete
+//
+// This method stores the supplied function in the ChecksGroup so it will be
+// called with the list of executed checks once processing is finished. The
+// stored function can perform cleanup or result aggregation. It returns the
+// same group instance, allowing method chaining.
 func (group *ChecksGroup) WithAfterAllFn(afterAllFn func(checks []*Check) error) *ChecksGroup {
 	group.afterAllFn = afterAllFn
 
 	return group
 }
 
+// ChecksGroup.Add Adds a check to the group
+//
+// This method acquires a global lock, appends the provided check to the group's
+// internal slice, and then releases the lock. It ensures thread‑safe
+// modification of the checks collection while keeping the operation simple and
+// efficient.
 func (group *ChecksGroup) Add(check *Check) {
 	dbLock.Lock()
 	defer dbLock.Unlock()
@@ -79,18 +123,38 @@ func (group *ChecksGroup) Add(check *Check) {
 	group.checks = append(group.checks, check)
 }
 
+// skipCheck Marks a check as skipped with a reason
+//
+// This function records an informational message indicating that the specified
+// check will not be executed due to the supplied reason. It then updates the
+// check’s status to skipped and displays the outcome using the standard
+// output routine.
 func skipCheck(check *Check, reason string) {
 	check.LogInfo("Skipping check %s, reason: %s", check.ID, reason)
 	check.SetResultSkipped(reason)
 	printCheckResult(check)
 }
 
+// skipAll marks all remaining checks as skipped with a given reason
+//
+// This routine iterates over a slice of check objects, calling an internal
+// helper for each one to log the skip action, set its result state to skipped,
+// and output its status. The provided reason string is passed unchanged to
+// every check so that downstream reporting can identify why the checks were not
+// executed. No value is returned; the function simply updates each check's
+// internal state.
 func skipAll(checks []*Check, reason string) {
 	for _, check := range checks {
 		skipCheck(check, reason)
 	}
 }
 
+// onFailure Handles a failure during group or check execution
+//
+// When a before/after or check function fails, this routine marks the current
+// check as an error with a descriptive message. It then skips all remaining
+// checks in the same group using a concise skip reason. Finally it returns a
+// generic error that indicates which failure type occurred.
 func onFailure(failureType, failureMsg string, group *ChecksGroup, currentCheck *Check, remainingChecks []*Check) error {
 	// Set current Check's result as error.
 	fmt.Printf("\r[ %s ] %-60s\n", cli.CheckResultTagError, currentCheck.ID)
@@ -102,6 +166,12 @@ func onFailure(failureType, failureMsg string, group *ChecksGroup, currentCheck 
 	return errors.New(reason)
 }
 
+// runBeforeAllFn Executes a group-wide setup routine before any checks run
+//
+// This function calls the optional beforeAllFn defined on a ChecksGroup,
+// passing all checks to it. If the function panics or returns an error, the
+// first check is marked as failed and all remaining checks are skipped with an
+// explanatory reason. No other actions occur if beforeAllFn is nil.
 func runBeforeAllFn(group *ChecksGroup, checks []*Check) (err error) {
 	log.Debug("GROUP %s - Running beforeAll", group.name)
 	if group.beforeAllFn == nil {
@@ -127,6 +197,13 @@ func runBeforeAllFn(group *ChecksGroup, checks []*Check) (err error) {
 	return nil
 }
 
+// runAfterAllFn Executes the group's final cleanup routine
+//
+// When a checks group has finished running all its checks, this function
+// invokes any registered afterAll hook with the entire list of checks. It logs
+// the start and handles both panics and returned errors by marking the last
+// executed check as failed and preventing further actions. The result is an
+// error if the cleanup fails; otherwise nil.
 func runAfterAllFn(group *ChecksGroup, checks []*Check) (err error) {
 	log.Debug("GROUP %s - Running afterAll", group.name)
 
@@ -154,6 +231,13 @@ func runAfterAllFn(group *ChecksGroup, checks []*Check) (err error) {
 	return nil
 }
 
+// runBeforeEachFn Executes a group’s beforeEach hook for a specific check
+//
+// This function runs the optional beforeEachFn defined on a ChecksGroup,
+// passing it the current Check. It captures panics or returned errors, logs
+// diagnostic information, and records the failure by marking the check as
+// errored and skipping subsequent checks. If no issues occur, the function
+// simply returns nil.
 func runBeforeEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) (err error) {
 	log.Debug("GROUP %s - Running beforeEach for check %s", group.name, check.ID)
 	if group.beforeEachFn == nil {
@@ -178,6 +262,13 @@ func runBeforeEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check)
 	return nil
 }
 
+// runAfterEachFn Handles post‑check cleanup and error reporting
+//
+// This routine runs a group's afterEach function for each check, logging its
+// start and capturing any panic or returned error. If the function panics, it
+// logs the stack trace and marks the current check as failed without skipping
+// subsequent checks. On a normal error, it reports the issue, sets the check
+// result to an error state, and returns that error.
 func runAfterEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) (err error) {
 	log.Debug("GROUP %s - Running afterEach for check %s", group.name, check.ID)
 
@@ -203,6 +294,14 @@ func runAfterEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) 
 	return nil
 }
 
+// shouldSkipCheck decides whether a check should be skipped based on its skip functions
+//
+// The function evaluates each user-provided skip function, collecting any
+// reasons for skipping. If any reason is found, it applies the check's SkipMode
+// policy: SkipModeAny skips if at least one reason exists, while SkipModeAll
+// requires all skip functions to indicate a skip. The function also recovers
+// from panics in skip functions, logs an error, and treats that as a skip with
+// a panic reason.
 func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
 	if len(check.SkipCheckFns) == 0 {
 		return false, []string{}
@@ -253,6 +352,13 @@ func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
 	return false, []string{}
 }
 
+// runCheck Executes a check with error handling and panic recovery
+//
+// The function runs the provided check, capturing any panics or errors that
+// occur during its execution. If a panic is detected, it distinguishes between
+// an intentional abort and unexpected failures, logs detailed information, and
+// marks subsequent checks as skipped. Successful completion returns nil, while
+// any failure results in an error describing the issue.
 func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -278,19 +384,13 @@ func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err e
 	return nil
 }
 
-// Runs all the checks in the group whose labels match the label expression filter.
-//  1. Calls group.BeforeAll(). Then, for each Check in the group:
-//  2. Calls group.BeforeEach()  -> normally used to get/refresh the test environment variable.
-//  3. Calls check.SkipCheckFn() -> if true, skip the check.Run() (step 4)
-//  4. Calls check.Run() -> Will call the actual CNF Cert requirement check function.
-//  5. Calls group.AfterEach()
-//  6. Calls group.AfterAll()
+// ChecksGroup.RunChecks Executes a filtered set of checks with lifecycle hooks
 //
-// Issues/errors/panics:
-//   - BeforeAll panic/error: Set first check as error. Run AfterAll()
-//   - BeforeEach panic/error: Set check as error and skip remaining. Skip check.Run(), run AfterEach + AfterAll.
-//   - Check.Run() panic/error:  Set check as panicked. Run AfterEach + AfterAll
-//   - AfterEach panic: Set check as error.
+// The method gathers checks whose labels match the group’s filter, then runs
+// them in order while invoking BeforeAll, BeforeEach, AfterEach, and AfterAll
+// callbacks. It handles skipping logic, abort signals, and panics by recording
+// errors or marking checks as skipped/failed. The function returns any
+// collected errors and a count of failed checks.
 //
 //nolint:funlen
 func (group *ChecksGroup) RunChecks(stopChan <-chan bool, abortChan chan string) (errs []error, failedChecks int) {
@@ -377,6 +477,13 @@ func (group *ChecksGroup) RunChecks(stopChan <-chan bool, abortChan chan string)
 	return errs, failedChecks
 }
 
+// ChecksGroup.OnAbort Handles a group’s abort by setting check results accordingly
+//
+// When an abort occurs, this method iterates over all checks in the group.
+// Checks that do not match labels are marked as skipped with a label reason. If
+// no check had started yet, every remaining check is skipped with the abort
+// reason; otherwise the currently running check is marked aborted and
+// subsequent checks are skipped. Each result is printed immediately.
 func (group *ChecksGroup) OnAbort(abortReason string) error {
 	// If this wasn't the group with the aborted check.
 	if group.currentRunningCheckIdx == checkIdxNone {
@@ -408,6 +515,13 @@ func (group *ChecksGroup) OnAbort(abortReason string) error {
 	return nil
 }
 
+// ChecksGroup.RecordChecksResults Logs each check result and stores it in the results database
+//
+// The method iterates over all checks in the group, invoking a helper that logs
+// information about the test ID, state, and duration. For each check, it
+// records the outcome in a shared map keyed by the test identifier, including
+// metadata such as timestamps, skip reasons, and catalog references. This
+// ensures that results are persisted for later reporting or further processing.
 func (group *ChecksGroup) RecordChecksResults() {
 	log.Info("Recording checks results of group %s", group.name)
 	for _, check := range group.checks {
