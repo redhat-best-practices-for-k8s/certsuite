@@ -56,8 +56,8 @@ The icmp package provides utilities for performing ICMP ping tests between conta
 
 ### PingResults
 
-
 #### Fields
+
 | Field       | Type | Description |
 |-------------|------|-------------|
 | `outcome`   | `int` | Enumerated result code (e.g., success, failure, error) returned by the test helper. |
@@ -66,9 +66,11 @@ The icmp package provides utilities for performing ICMP ping tests between conta
 | `errors`    | `int` | Count of packets that resulted in an error (e.g., time‑outs or unreachable). |
 
 #### Purpose
+
 `PingResults` aggregates quantitative data about a single ping test: how many packets were sent, how many were answered, and any errors encountered. The `outcome` field classifies the overall success status using predefined constants from the test helper package.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `PingResults.String()` | Formats the struct into a human‑readable string for logging or display. |
@@ -83,7 +85,6 @@ The icmp package provides utilities for performing ICMP ping tests between conta
 ### BuildNetTestContext
 
 **BuildNetTestContext** - Generates a mapping of network identifiers to `NetTestContext` objects that describe how ICMP connectivity tests should be performed between pods. It gathers IP addresses, selects tester sources, and populates destination targets based on pod networking configuration.
-
 
 #### Signature (Go)
 
@@ -170,7 +171,6 @@ func main() {
 
 **String** - Produces a concise textual representation of ping test results, including outcome status and transmitted/received/error counts.
 
-
 The `String` method formats a `PingResults` value into a human‑readable string that reports the outcome and packet statistics.
 
 ---
@@ -232,18 +232,18 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/icmp"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/icmp"
 )
 
 func main() {
-	results := icmp.PingResults{
-		outcome:    icmp.SUCCESS,
-		transmitted: 10,
-		received:   9,
-		errors:     1,
-	}
-	fmt.Println(results.String())
+ results := icmp.PingResults{
+  outcome:    icmp.SUCCESS,
+  transmitted: 10,
+  received:   9,
+  errors:     1,
+ }
+ fmt.Println(results.String())
 }
 ```
 
@@ -254,7 +254,6 @@ func main() {
 ### RunNetworkingTests
 
 **RunNetworkingTests** - Runs ICMP ping tests for each network attachment in `netsUnderTest`. It reports compliant and non‑compliant results per container pair and decides whether to skip the overall test.
-
 
 #### Signature (Go)
 
@@ -353,7 +352,6 @@ func main() {
 
 **parsePingResult** - Interprets the standard output and error streams from a `ping` execution to populate a `PingResults` structure, determining whether the ping succeeded, failed, or encountered errors.
 
-
 #### Signature (Go)
 
 ```go
@@ -424,7 +422,6 @@ if err != nil {
 ### processContainerIpsPerNet
 
 **processContainerIpsPerNet** - Filters container IPs by the desired IP version, then populates or updates a `NetTestContext` entry for the given network key. The first qualifying IP is used as the test initiator (tester source), while the remaining IPs become ping destinations.
-
 
 #### 1) Signature (Go)
 
@@ -520,4 +517,3 @@ func main() {
 ---
 
 ---
-

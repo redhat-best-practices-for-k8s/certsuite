@@ -36,7 +36,6 @@ The `check` package provides the top‑level *check* command for the Certsuite C
 
 **NewCommand** - Instantiates the top‑level *check* command for the Certsuite CLI and registers its child commands.
 
-
 #### Signature (Go)
 
 ```go
@@ -85,20 +84,19 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/check"
-	"github.com/spf13/cobra"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/check"
+ "github.com/spf13/cobra"
 )
 
 func main() {
-	root := &cobra.Command{Use: "certsuite"}
-	root.AddCommand(check.NewCommand())
-	if err := root.Execute(); err != nil {
-		panic(err)
-	}
+ root := &cobra.Command{Use: "certsuite"}
+ root.AddCommand(check.NewCommand())
+ if err := root.Execute(); err != nil {
+  panic(err)
+ }
 }
 ```
 
 ---
 
 ---
-

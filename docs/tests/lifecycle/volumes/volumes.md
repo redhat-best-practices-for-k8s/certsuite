@@ -44,7 +44,6 @@ Provides utilities for examining pod volume reclaim policies within Kubernetes t
 
 **IsPodVolumeReclaimPolicyDelete** - Determines if a pod volume’s backing PV has `PersistentVolumeReclaimPolicyDelete`.
 
-
 Checks whether a pod’s volume is backed by a persistent volume claim whose associated persistent volume has a reclaim policy of **Delete**.
 
 #### Signature (Go)
@@ -128,7 +127,6 @@ func main() {
 
 **getPVCFromSlice** - Searches a slice of `PersistentVolumeClaim` objects for one whose name matches the supplied `pvcName` and returns a pointer to it. If no match is found, it returns `nil`.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -193,4 +191,3 @@ func example() {
 ```
 
 ---
-

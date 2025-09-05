@@ -89,14 +89,17 @@ The claimhelper package builds and manages CNF certification claim files, serial
 Creates and writes claim files for a test environment.
 
 #### Fields
+
 | Field      | Type           | Description |
 |------------|----------------|-------------|
 | `claimRoot` | `*claim.Root`  | Pointer to the root object that holds all data for a claim file. |
 
 #### Purpose  
+
 `ClaimBuilder` is a helper that constructs a complete claim document based on a test environment’s state. It initializes metadata such as start and end times, injects configuration information, collects diagnostic results, and finally marshals the data into a JSON claim file or a JUnit XML report. The builder pattern allows resetting timestamps for repeated use without recreating the entire structure.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewClaimBuilder` | Constructs a new `ClaimBuilder`, populating it with environment configurations, node data, and version information. |
@@ -111,7 +114,7 @@ Creates and writes claim files for a test environment.
 ### FailureMessage
 
 <!-- DEBUG: Struct FailureMessage exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -126,7 +129,7 @@ Creates and writes claim files for a test environment.
 ### SkippedMessage
 
 <!-- DEBUG: Struct SkippedMessage exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -140,7 +143,7 @@ Creates and writes claim files for a test environment.
 ### TestCase
 
 <!-- DEBUG: Struct TestCase exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -160,7 +163,7 @@ Creates and writes claim files for a test environment.
 ### TestSuitesXML
 
 <!-- DEBUG: Struct TestSuitesXML exists in bundle but ParsedOK=false, Fields=8 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -180,7 +183,7 @@ Creates and writes claim files for a test environment.
 ### Testsuite
 
 <!-- DEBUG: Struct Testsuite exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -207,23 +210,25 @@ Creates and writes claim files for a test environment.
 
 **Build** - Completes the claim by recording its end time, aggregating check results, serialising the claim structure to JSON, writing it to a file, and logging the action.
 
-
 #### Signature (Go)
+
 ```go
 func (c *ClaimBuilder) Build(outputFile string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Completes the claim by recording its end time, aggregating check results, serialising the claim structure to JSON, writing it to a file, and logging the action. |
 | **Parameters** | `outputFile string` – Path where the claim JSON should be written. |
 | **Return value** | None (void). The function logs any fatal errors internally. |
 | **Key dependencies** | • `time.Now()` – obtains current timestamp.<br>• `checksdb.GetReconciledResults()` – fetches consolidated check results.<br>• `MarshalClaimOutput(*claim.Root)` – serialises the claim structure to indented JSON.<br>• `WriteClaimOutput(string, []byte)` – writes the JSON payload to disk.<br>• `log.Info(...)` – records a success message. |
-| **Side effects** | * Mutates the receiver’s `claimRoot.Claim.Metadata.EndTime`. <br>* Populates `claimRoot.Claim.Results` with reconciled data. <br>* Generates and writes a JSON file to `outputFile`. <br>* Emits an informational log entry. |
+| **Side effects** | *Mutates the receiver’s `claimRoot.Claim.Metadata.EndTime`. <br>* Populates `claimRoot.Claim.Results` with reconciled data. <br>*Generates and writes a JSON file to `outputFile`. <br>* Emits an informational log entry. |
 | **How it fits the package** | Acts as the terminal step of the claim‑building workflow, turning an in‑memory claim representation into a persisted artifact ready for downstream consumption or archival. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Get current time"}
@@ -237,6 +242,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_ClaimBuilder.Build --> time.Now
@@ -247,9 +253,11 @@ graph TD
 ```
 
 #### Functions calling `ClaimBuilder.Build` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ClaimBuilder.Build
 package main
@@ -272,7 +280,6 @@ func main() {
 ### ClaimBuilder.Reset
 
 **Reset** - Initializes or reinitializes the `StartTime` field of the underlying claim metadata with the present UTC time, ensuring that subsequent claims are stamped correctly.
-
 
 Resets the claim builder’s start time to the current UTC timestamp formatted per the package directive.
 
@@ -325,7 +332,6 @@ builder.Reset() // sets StartTime to now UTC
 ### ClaimBuilder.ToJUnitXML
 
 **ToJUnitXML** - Builds a JUnit‑style XML file summarizing the test results stored in the `ClaimBuilder`’s claim root. The report includes overall statistics and individual test case details, then writes it to disk.
-
 
 #### 1) Signature (Go)
 
@@ -404,11 +410,13 @@ func main() {
 Creates the initial claim structure with a timestamped start time for CertSuite reports.
 
 #### Signature (Go)
+
 ```go
 func CreateClaimRoot() *claim.Root
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Instantiates a `claim.Root` containing a single `claim.Claim`. The claim’s metadata records the UTC start time formatted according to `DateTimeFormatDirective`. |
@@ -419,6 +427,7 @@ func CreateClaimRoot() *claim.Root
 | **How it fits the package** | Provides a foundational claim root used by builders (e.g., `NewClaimBuilder`) and test utilities to seed claim data before adding configurations, nodes, and version information. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Get current time with time.Now()"]
@@ -429,6 +438,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_CreateClaimRoot --> func_time.Now
@@ -437,25 +447,27 @@ graph TD
 ```
 
 #### Functions calling `CreateClaimRoot` (Mermaid)
+
 ```mermaid
 graph TD
   func_NewClaimBuilder --> func_CreateClaimRoot
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CreateClaimRoot
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
 )
 
 func main() {
-	root := claimhelper.CreateClaimRoot()
-	fmt.Printf("Claim start time: %s\n", root.Claim.Metadata.StartTime)
+ root := claimhelper.CreateClaimRoot()
+ fmt.Printf("Claim start time: %s\n", root.Claim.Metadata.StartTime)
 }
 ```
 
@@ -464,7 +476,6 @@ func main() {
 ### GenerateNodes
 
 **GenerateNodes** - Collects various node diagnostics (summary, CNI plugins, hardware info, CSI drivers) into a single map for inclusion in a claim file.
-
 
 #### 1) Signature (Go)
 
@@ -523,7 +534,6 @@ fmt.Printf("Collected %d diagnostic entries\n", len(nodes))
 ### GetConfigurationFromClaimFile
 
 **GetConfigurationFromClaimFile** - Reads a claim file, extracts the `Configurations` section, and converts it into a `*provider.TestEnvironment`.
-
 
 #### Signature (Go)
 
@@ -597,7 +607,6 @@ func main() {
 
 **MarshalClaimOutput** - Converts a `claim.Root` value into an indented JSON byte slice for output. If serialization fails, the program terminates immediately with a fatal log message.
 
-
 #### Signature (Go)
 
 ```go
@@ -647,20 +656,20 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/claim"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/claim"
 )
 
 func main() {
-	// Assume we have a populated claim.Root instance
-	var root *claim.Root
+ // Assume we have a populated claim.Root instance
+ var root *claim.Root
 
-	// Marshal the claim to JSON bytes
-	payload := claimhelper.MarshalClaimOutput(root)
+ // Marshal the claim to JSON bytes
+ payload := claimhelper.MarshalClaimOutput(root)
 
-	fmt.Println(string(payload))
+ fmt.Println(string(payload))
 }
 ```
 
@@ -672,13 +681,14 @@ func main() {
 
 **MarshalConfigurations** - Produces a JSON‑encoded byte slice of the supplied `TestEnvironment`. If the argument is nil, it falls back to the global test environment via `GetTestEnvironment()`. Any marshalling failure is reported through the logger and returned.
 
-
 #### Signature (Go)
+
 ```go
 func MarshalConfigurations(env *provider.TestEnvironment) ([]byte, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Produces a JSON‑encoded byte slice of the supplied `TestEnvironment`. If the argument is nil, it falls back to the global test environment via `GetTestEnvironment()`. Any marshalling failure is reported through the logger and returned. |
@@ -689,6 +699,7 @@ func MarshalConfigurations(env *provider.TestEnvironment) ([]byte, error)
 | **How it fits the package** | Used by claim builders to embed current test configuration into a generated claim file. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"env nil?"}
@@ -701,6 +712,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_MarshalConfigurations --> func_GetTestEnvironment
@@ -709,31 +721,33 @@ graph TD
 ```
 
 #### Functions calling `MarshalConfigurations`
+
 ```mermaid
 graph TD
   func_NewClaimBuilder --> func_MarshalConfigurations
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking MarshalConfigurations
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	env := provider.GetTestEnvironment()
-	data, err := claimhelper.MarshalConfigurations(env)
-	if err != nil {
-		fmt.Println("Failed to marshal configurations:", err)
-		return
-	}
-	fmt.Printf("JSON configuration: %s\n", data)
+ env := provider.GetTestEnvironment()
+ data, err := claimhelper.MarshalConfigurations(env)
+ if err != nil {
+  fmt.Println("Failed to marshal configurations:", err)
+  return
+ }
+ fmt.Printf("JSON configuration: %s\n", data)
 }
 ```
 
@@ -742,7 +756,6 @@ func main() {
 ### NewClaimBuilder
 
 **NewClaimBuilder** - Builds a `ClaimBuilder` that encapsulates all data required to generate a claim file. It marshals the test environment into JSON, unmarshals it back into a map for configuration inclusion, and populates the claim root with node information, version metadata, and configurations.
-
 
 #### Signature (Go)
 
@@ -820,13 +833,14 @@ if err != nil {
 
 **ReadClaimFile** - Loads the raw byte payload from the specified claim file. It logs success or failure and returns the data or an error.
 
-
 #### Signature (Go)
+
 ```go
 func ReadClaimFile(claimFileName string) (data []byte, err error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Loads the raw byte payload from the specified claim file. It logs success or failure and returns the data or an error. |
@@ -837,6 +851,7 @@ func ReadClaimFile(claimFileName string) (data []byte, err error)
 | **How it fits the package** | Core helper for other claim‑handling functions (`GetConfigurationFromClaimFile`, `SanitizeClaimFile`) that need raw file data before unmarshalling or processing. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Read file"}
@@ -847,6 +862,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_ReadClaimFile --> func_ReadFile
@@ -855,6 +871,7 @@ graph TD
 ```
 
 #### Functions calling `ReadClaimFile` (Mermaid)
+
 ```mermaid
 graph TD
   func_GetConfigurationFromClaimFile --> func_ReadClaimFile
@@ -862,6 +879,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ReadClaimFile
 package main
@@ -887,13 +905,14 @@ func main() {
 
 **SanitizeClaimFile** - Filters the claim file by removing any test results whose labels do not satisfy the supplied label expression.
 
-
 #### Signature (Go)
+
 ```go
 func SanitizeClaimFile(claimFileName, labelsFilter string) (string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Filters the claim file by removing any test results whose labels do not satisfy the supplied label expression. |
@@ -904,6 +923,7 @@ func SanitizeClaimFile(claimFileName, labelsFilter string) (string, error)
 | **How it fits the package** | Part of the public API used by the test runner (`Run`) after generating a claim; ensures only relevant results are kept before further processing or submission. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Read file"]
@@ -924,6 +944,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_SanitizeClaimFile --> func_ReadClaimFile
@@ -935,29 +956,31 @@ graph TD
 ```
 
 #### Functions calling `SanitizeClaimFile` (Mermaid)
+
 ```mermaid
 graph TD
   func_Run --> func_SanitizeClaimFile
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking SanitizeClaimFile
 package main
 
 import (
-	"fmt"
-	"log"
+ "fmt"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
 )
 
 func main() {
-	out, err := claimhelper.SanitizeClaimFile("claims.json", "env==prod && type!=regression")
-	if err != nil {
-		log.Fatalf("sanitize failed: %v", err)
-	}
-	fmt.Printf("Sanitized file written to %s\n", out)
+ out, err := claimhelper.SanitizeClaimFile("claims.json", "env==prod && type!=regression")
+ if err != nil {
+  log.Fatalf("sanitize failed: %v", err)
+ }
+ fmt.Printf("Sanitized file written to %s\n", out)
 }
 ```
 
@@ -967,13 +990,14 @@ func main() {
 
 **UnmarshalClaim** - Decodes a JSON‑encoded claim into a `claim.Root` structure. If unmarshalling fails, the program logs a fatal error and exits.
 
-
 #### 1) Signature (Go)
+
 ```go
 func([]byte, *claim.Root)()
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Decodes a JSON‑encoded claim into a `claim.Root` structure. If unmarshalling fails, the program logs a fatal error and exits. |
@@ -984,6 +1008,7 @@ func([]byte, *claim.Root)()
 | **How it fits the package** | Central helper for reading claim files; used by higher‑level functions that need configuration data from a claim. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph UnmarshalClaim
@@ -995,6 +1020,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_UnmarshalClaim --> func_encoding/json.Unmarshal
@@ -1002,6 +1028,7 @@ graph TD
 ```
 
 #### 5) Functions calling `UnmarshalClaim` (Mermaid)
+
 ```mermaid
 graph TD
   func_GetConfigurationFromClaimFile --> func_UnmarshalClaim
@@ -1009,18 +1036,19 @@ graph TD
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking UnmarshalClaim
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/claim"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/claim"
 )
 
 func main() {
-	data := []byte(`{"some":"json"}`) // replace with real claim data
-	var root claim.Root
-	UnmarshalClaim(data, &root)
-	// root is now populated; proceed with further logic
+ data := []byte(`{"some":"json"}`) // replace with real claim data
+ var root claim.Root
+ UnmarshalClaim(data, &root)
+ // root is now populated; proceed with further logic
 }
 ```
 
@@ -1029,7 +1057,6 @@ func main() {
 ### UnmarshalConfigurations
 
 **UnmarshalConfigurations** - Deserialises a JSON‑encoded configuration payload into the provided `map[string]interface{}`. If deserialization fails, the function logs a fatal error and terminates the process.
-
 
 #### Signature (Go)
 
@@ -1080,20 +1107,20 @@ graph TD
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+ "encoding/json"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/claimhelper"
 )
 
 func main() {
-	// Example JSON configuration
-	data := []byte(`{"key":"value","number":42}`)
+ // Example JSON configuration
+ data := []byte(`{"key":"value","number":42}`)
 
-	configMap := map[string]interface{}{}
-	claimhelper.UnmarshalConfigurations(data, configMap)
+ configMap := map[string]interface{}{}
+ claimhelper.UnmarshalConfigurations(data, configMap)
 
-	fmt.Printf("Parsed config: %#v\n", configMap)
+ fmt.Printf("Parsed config: %#v\n", configMap)
 }
 ```
 
@@ -1105,13 +1132,14 @@ This example demonstrates how to supply a JSON byte slice and receive the parsed
 
 **WriteClaimOutput** - Persists the serialized claim payload (`payload`) into the specified file (`claimOutputFile`). If writing fails, the program terminates with a fatal log message.
 
-
 #### Signature (Go)
+
 ```go
 func WriteClaimOutput(claimOutputFile string, payload []byte) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Persists the serialized claim payload (`payload`) into the specified file (`claimOutputFile`). If writing fails, the program terminates with a fatal log message. |
@@ -1122,6 +1150,7 @@ func WriteClaimOutput(claimOutputFile string, payload []byte)
 | **How it fits the package** | Core helper used by claim construction (`ClaimBuilder.Build`) and sanitization (`SanitizeClaimFile`) to persist claim data. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Log Writing claim data"]
@@ -1131,6 +1160,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_WriteClaimOutput --> func_log.Info
@@ -1139,6 +1169,7 @@ graph TD
 ```
 
 #### Functions calling `WriteClaimOutput`
+
 ```mermaid
 graph TD
   ClaimBuilder.Build --> WriteClaimOutput
@@ -1146,17 +1177,18 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking WriteClaimOutput
 package main
 
 import (
-	"log"
+ "log"
 )
 
 func main() {
-	payload := []byte(`{"example":"data"}`)
-	WriteClaimOutput("claim.json", payload)
+ payload := []byte(`{"example":"data"}`)
+ WriteClaimOutput("claim.json", payload)
 }
 ```
 
@@ -1167,7 +1199,6 @@ func main() {
 ### populateXMLFromClaim
 
 **populateXMLFromClaim** - Builds a `TestSuitesXML` structure representing the results of a CNF certification claim, ready for JUnit XML marshalling.
-
 
 #### Signature (Go)
 
@@ -1182,7 +1213,7 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 | **Purpose** | Builds a `TestSuitesXML` structure representing the results of a CNF certification claim, ready for JUnit XML marshalling. |
 | **Parameters** | `c claim.Claim` – the claim containing test results.<br>`startTime time.Time` – overall test run start.<br>`endTime time.Time` – overall test run end. |
 | **Return value** | `TestSuitesXML` – fully populated XML data structure. |
-| **Key dependencies** | * `sort.Strings` – sorts test IDs.<br>* `strconv.Itoa`, `strconv.FormatFloat` – convert numbers to strings.<br>* `time.Parse`, `time.Sub`, `time.Now().UTC()` – handle timestamps and durations.<br>* `strings.Split` – strip nanosecond suffix from claim times. |
+| **Key dependencies** | *`sort.Strings` – sorts test IDs.<br>* `strconv.Itoa`, `strconv.FormatFloat` – convert numbers to strings.<br>*`time.Parse`, `time.Sub`, `time.Now().UTC()` – handle timestamps and durations.<br>* `strings.Split` – strip nanosecond suffix from claim times. |
 | **Side effects** | No external I/O or concurrency; only creates in‑memory data structures. |
 | **How it fits the package** | Internally used by `ClaimBuilder.ToJUnitXML` to convert a `claim.Claim` into JUnit XML format for reporting. |
 
@@ -1246,4 +1277,3 @@ func main() {
 ```
 
 ---
-

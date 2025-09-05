@@ -46,7 +46,6 @@ The phasecheck package provides utilities to monitor the lifecycle of an Operato
 
 **WaitOperatorReady** - Polls the CSV until it is in `Succeeded` or terminates on failure/timeout.
 
-
 Checks whether an Operator’s ClusterServiceVersion (CSV) reaches the **Succeeded** phase within a configured timeout.
 
 ---
@@ -146,13 +145,14 @@ func main() {
 
 **isOperatorPhaseFailedOrUnknown** - Checks whether the given `ClusterServiceVersion` (CSV) has entered a terminal state indicating failure or uncertainty. It returns `true` if the CSV’s phase is either *Failed* or *Unknown*.
 
-
 #### Signature (Go)
+
 ```go
 func isOperatorPhaseFailedOrUnknown(csv *v1alpha1.ClusterServiceVersion) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the given `ClusterServiceVersion` (CSV) has entered a terminal state indicating failure or uncertainty. It returns `true` if the CSV’s phase is either *Failed* or *Unknown*. |
@@ -163,6 +163,7 @@ func isOperatorPhaseFailedOrUnknown(csv *v1alpha1.ClusterServiceVersion) bool
 | **How it fits the package** | Part of the operator phase‑checking utilities (`phasecheck` package). It is used by `WaitOperatorReady` to decide whether to abort waiting when a CSV cannot progress to *Succeeded*. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive csv"] --> B["Log debug message"]
@@ -174,33 +175,36 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_isOperatorPhaseFailedOrUnknown --> func_LogDebug
 ```
 
 #### Functions calling `isOperatorPhaseFailedOrUnknown` (Mermaid)
+
 ```mermaid
 graph TD
   func_WaitOperatorReady --> func_isOperatorPhaseFailedOrUnknown
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isOperatorPhaseFailedOrUnknown
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/v1alpha1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/v1alpha1"
 )
 
 func main() {
-	csv := &v1alpha1.ClusterServiceVersion{
-		Status: v1alpha1.CSVStatus{Phase: v1alpha1.CSVPhaseFailed},
-	}
-	if isOperatorPhaseFailedOrUnknown(csv) {
-		fmt.Println("CSV is in a failed or unknown state.")
-	} else {
-		fmt.Println("CSV is still progressing.")
-	}
+ csv := &v1alpha1.ClusterServiceVersion{
+  Status: v1alpha1.CSVStatus{Phase: v1alpha1.CSVPhaseFailed},
+ }
+ if isOperatorPhaseFailedOrUnknown(csv) {
+  fmt.Println("CSV is in a failed or unknown state.")
+ } else {
+  fmt.Println("CSV is still progressing.")
+ }
 }
 ```
 
@@ -209,7 +213,6 @@ func main() {
 ### isOperatorPhaseSucceeded
 
 **isOperatorPhaseSucceeded** - Determines if the CSV status phase equals `v1alpha1.CSVPhaseSucceeded`.
-
 
 Checks whether a given ClusterServiceVersion (CSV) has reached the **Succeeded** phase.
 
@@ -273,22 +276,21 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	v1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
+ v1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
 func main() {
-	csv := &v1alpha1.ClusterServiceVersion{
-		Status: v1alpha1.ClusterServiceVersionStatus{Phase: v1alpha1.CSVPhaseSucceeded},
-	}
-	if isOperatorPhaseSucceeded(csv) {
-		fmt.Println("CSV has succeeded")
-	} else {
-		fmt.Println("CSV not yet succeeded")
-	}
+ csv := &v1alpha1.ClusterServiceVersion{
+  Status: v1alpha1.ClusterServiceVersionStatus{Phase: v1alpha1.CSVPhaseSucceeded},
+ }
+ if isOperatorPhaseSucceeded(csv) {
+  fmt.Println("CSV has succeeded")
+ } else {
+  fmt.Println("CSV not yet succeeded")
+ }
 }
 ```
 
 ---
-

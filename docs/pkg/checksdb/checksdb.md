@@ -154,12 +154,12 @@ The checksdb package provides infrastructure for registering, configuring, execu
 
 ### Check
 
-
 The `Check` type represents a single validation unit in the test framework.  
 It holds configuration, state, and helper methods for executing a check,
 recording its result, and reporting logs.
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `mutex` | `sync.Mutex` | Synchronises concurrent access to mutable fields. |
@@ -182,9 +182,11 @@ recording its result, and reporting logs.
 | `abortChan` | `chan string` | Channel used to signal an external abort request. |
 
 #### Purpose
+
 A `Check` encapsulates everything needed to run a single validation: configuration (labels, timeouts), hooks for setup and teardown (`BeforeCheckFn`, `AfterCheckFn`), the core logic (`CheckFn`), and mechanisms for skipping or aborting execution. It also records logs and results, which are later persisted by the surrounding test suite.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewCheck(id string, labels []string) *Check` | Constructor that initializes a check with default state and logger. |
@@ -208,8 +210,8 @@ These methods collectively provide a flexible, thread‑safe API for defining, e
 
 ### ChecksGroup
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `name` | `string` | Identifier for the group; used in logs and to retrieve the group from the global registry. |
@@ -219,9 +221,11 @@ These methods collectively provide a flexible, thread‑safe API for defining, e
 | `currentRunningCheckIdx` | `int` | Index of the currently executing check in the group's slice; set to `checkIdxNone` when no check is running. Used for abort handling and tracking progress. |
 
 #### Purpose
+
 `ChecksGroup` aggregates checks that belong together, typically representing a test suite or a logical grouping of validations. It manages execution order, optional lifecycle hooks (`beforeAll`, `afterEach`, etc.), and state needed to handle aborts or failures gracefully. The group is registered in a global map upon creation via `NewChecksGroup`.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `Add` | Appends a new check to the group's slice, guarded by a mutex. |
@@ -240,7 +244,6 @@ These methods collectively provide a flexible, thread‑safe API for defining, e
 ### Check.Abort
 
 **Abort** - Stops the current check immediately, emits an abort message on `abortChan`, and panics with a custom error.
-
 
 #### Signature (Go)
 
@@ -301,13 +304,14 @@ check.Abort("unexpected error")
 
 **GetLogger** - Provides access to the logger associated with a specific `Check`.
 
-
 #### Signature (Go)
+
 ```go
 func (check *Check) GetLogger() *log.Logger
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Provides access to the logger associated with a specific `Check`. |
@@ -318,6 +322,7 @@ func (check *Check) GetLogger() *log.Logger
 | **How it fits the package** | Allows other components to log messages contextualized to a particular check without exposing internal fields. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph CheckObject["Check"]
@@ -326,12 +331,15 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `Check.GetLogger`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Check.GetLogger
 
@@ -357,7 +365,6 @@ func main() {
 ### Check.GetLogs
 
 **GetLogs** - Returns the complete log message that has been collected during the execution of a check.
-
 
 #### Signature (Go)
 
@@ -416,11 +423,13 @@ fmt.Println("Collected logs:", logOutput)
 Logs a debug‑level message for the current check instance.
 
 #### Signature (Go)
+
 ```go
 func (check *Check) LogDebug(msg string, args ...any)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Emits a formatted debug log entry tied to the specific `Check`. |
@@ -431,6 +440,7 @@ func (check *Check) LogDebug(msg string, args ...any)
 | **How it fits the package** | Provides a convenient wrapper for emitting debug logs within check logic, ensuring consistent logger usage across the checks database. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph Check_LogDebug
@@ -440,18 +450,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Check.LogDebug --> func_log.Logf
 ```
 
 #### Functions calling `Check.LogDebug` (Mermaid)
+
 ```mermaid
 graph TD
   func_recordCheckResult --> func_Check.LogDebug
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Check.LogDebug
 check := &checksdb.Check{logger: myLogger}
@@ -464,13 +477,14 @@ check.LogDebug("Initializing check %s with value %d", "MyCheck", 42)
 
 **LogError** - Emits a formatted error‑level log entry associated with the `Check` instance.
 
-
 #### Signature (Go)
+
 ```go
 func (check *Check) LogError(msg string, args ...any)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Emits a formatted error‑level log entry associated with the `Check` instance. |
@@ -481,18 +495,21 @@ func (check *Check) LogError(msg string, args ...any)
 | **How it fits the package** | Provides a convenient, consistent way for `Check` methods (e.g., `SetResult`, `runCheck`) to report errors without duplicating formatting logic. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Format msg & args"] --> B["Call log.Logf with LevelError"]
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Check_LogError --> func_log_Logf
 ```
 
 #### Functions calling `Check.LogError`
+
 ```mermaid
 graph TD
   func_Check_SetResult --> func_Check_LogError
@@ -501,6 +518,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Check.LogError
 check := &checksdb.Check{logger: log.NewLogger()}
@@ -512,7 +530,6 @@ check.LogError("Failed to process item %d: %v", 42, err)
 ### Check.LogFatal
 
 **LogFatal** - Emits a fatal log entry using the check’s logger, prints the message to standard error with a “FATAL:” prefix, and exits the program with status 1.
-
 
 Logs a fatal message and terminates the process.
 
@@ -564,12 +581,12 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 )
 
 func main() {
-	check := &checksdb.Check{Logger: nil} // assume logger is set appropriately
-	check.LogFatal("unable to load configuration: %v", err) // program exits after printing
+ check := &checksdb.Check{Logger: nil} // assume logger is set appropriately
+ check.LogFatal("unable to load configuration: %v", err) // program exits after printing
 }
 ```
 
@@ -578,7 +595,6 @@ func main() {
 ### Check.LogInfo
 
 **LogInfo** - Emits an informational log entry associated with the current `Check` object. The log is formatted using the supplied message and optional arguments.
-
 
 Logs a message at the *info* level for a specific check instance.
 
@@ -632,13 +648,14 @@ check.LogInfo("Starting check for %s", "my-test-id")
 
 **LogWarn** - Emits a log entry at the *warn* level associated with a specific `Check` instance.
 
-
 #### 1. Signature (Go)
+
 ```go
 func (check *Check) LogWarn(msg string, args ...any)
 ```
 
 #### 2. Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Emits a log entry at the *warn* level associated with a specific `Check` instance. |
@@ -649,6 +666,7 @@ func (check *Check) LogWarn(msg string, args ...any)
 | **How it fits the package** | Provides a convenient wrapper so that checks can emit warnings without exposing the underlying logging implementation directly. |
 
 #### 3. Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check.LogWarn(msg, args...)"] --> B["log.Logf(check.logger, log.LevelWarn, msg, args...)"]
@@ -670,6 +688,7 @@ graph TD
 ```
 
 #### 6. Usage example (Go)
+
 ```go
 // Minimal example invoking Check.LogWarn
 check := &checksdb.Check{ID: "example-check", logger: &log.Logger{}}
@@ -681,7 +700,6 @@ check.LogWarn("This check is not applicable for the current cluster: %s", "reaso
 ### Check.Run
 
 **Run** - Runs a registered check, handling setup, execution, and cleanup while recording timing and logging.
-
 
 #### Signature (Go)
 
@@ -772,13 +790,14 @@ if err := check.Run(); err != nil {
 
 **SetAbortChan** - Stores the provided `abortChan` in the `Check` instance so that the check can later signal an abort.
 
-
 #### 1) Signature
+
 ```go
 func (check *Check) SetAbortChan(abortChan chan string)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Stores the provided `abortChan` in the `Check` instance so that the check can later signal an abort. |
@@ -789,6 +808,7 @@ func (check *Check) SetAbortChan(abortChan chan string)
 | **How it fits the package** | Enables a running check to send an abort signal back to the orchestrating `ChecksGroup` during execution. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Receive abortChan"] --> B["Set check.abortChan = abortChan"]
@@ -799,24 +819,26 @@ flowchart TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### 5) Functions calling `Check.SetAbortChan` (Mermaid)
+
 ```mermaid
 graph TD
     func_ChecksGroup_RunChecks --> func_Check_SetAbortChan
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking Check.SetAbortChan
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 )
 
 func main() {
-	check := &checksdb.Check{}
-	abortChan := make(chan string)
-	check.SetAbortChan(abortChan) // Assign the abort channel to the check
+ check := &checksdb.Check{}
+ abortChan := make(chan string)
+ check.SetAbortChan(abortChan) // Assign the abort channel to the check
 }
 ```
 
@@ -828,8 +850,8 @@ func main() {
 
 **SetResult** - Persists the lists of compliant and non‑compliant objects for a check, updates the check’s result status accordingly, and records diagnostic details.
 
-
 #### Signature (Go)
+
 ```go
 func (check *Check) SetResult(
     compliantObjects  []*testhelper.ReportObject,
@@ -838,16 +860,18 @@ func (check *Check) SetResult(
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Persists the lists of compliant and non‑compliant objects for a check, updates the check’s result status accordingly, and records diagnostic details. |
 | **Parameters** | `compliantObjects []*testhelper.ReportObject` – objects that passed the check.<br>`nonCompliantObjects []*testhelper.ReportObject` – objects that failed the check. |
 | **Return value** | None (void). The function mutates the receiver’s state. |
 | **Key dependencies** | • `check.mutex.Lock/Unlock` – protects concurrent access.<br>• `testhelper.ResultObjectsToString` – serialises result lists to JSON for logging.<br>• `Check.LogError`, `Check.LogWarn` – emits diagnostics. |
-| **Side effects** | * Thread‑safe state mutation: sets `check.details`, may change `check.Result` and `check.skipReason`. <br>* Emits log messages on errors or when the check is skipped. |
+| **Side effects** | *Thread‑safe state mutation: sets `check.details`, may change `check.Result` and `check.skipReason`. <br>* Emits log messages on errors or when the check is skipped. |
 | **How it fits the package** | Part of the runtime evaluation of a check; called after a check has gathered its result objects to finalize status before persisting to the database. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Lock mutex"] --> B{"Result == Aborted"}
@@ -866,6 +890,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Check.SetResult --> func_Lock
@@ -876,9 +901,11 @@ graph TD
 ```
 
 #### Functions calling `Check.SetResult` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Check.SetResult
 check := &Check{ID: "example-check", Result: CheckResultUnknown}
@@ -902,7 +929,6 @@ check.SetResult(compliantObjs, nonCompliantObjs)
 
 **SetResultAborted** - Records that the check has been aborted, storing the supplied reason and setting its result state accordingly.
 
-
 #### Signature (Go)
 
 ```go
@@ -916,7 +942,7 @@ func (check *Check) SetResultAborted(reason string)
 | **Purpose** | Records that the check has been aborted, storing the supplied reason and setting its result state accordingly. |
 | **Parameters** | `reason` (string) – explanation of why the check was aborted. |
 | **Return value** | None |
-| **Key dependencies** | * Calls `check.mutex.Lock()` to obtain exclusive access.<br>* Calls `check.mutex.Unlock()` via `defer`. |
+| **Key dependencies** | *Calls `check.mutex.Lock()` to obtain exclusive access.<br>* Calls `check.mutex.Unlock()` via `defer`. |
 | **Side effects** | Mutates the check’s internal state: sets `Result` to `CheckResultAborted` and records `skipReason`. No I/O or concurrency beyond mutex protection. |
 | **How it fits the package** | Used by higher‑level orchestration (e.g., `ChecksGroup.OnAbort`) to mark a specific check as aborted when an abort event occurs during a test run. |
 
@@ -961,23 +987,25 @@ check.SetResultAborted(abortReason)
 
 **SetResultError** - Sets the check’s result to `CheckResultError`, records a skip reason, and logs a warning if the result was already an error. It aborts if the check has been aborted.
 
-
 #### Signature (Go)
+
 ```go
 func (check *Check) SetResultError(reason string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Sets the check’s result to `CheckResultError`, records a skip reason, and logs a warning if the result was already an error. It aborts if the check has been aborted. |
 | **Parameters** | `reason string` – human‑readable description of why the check failed. |
 | **Return value** | None |
-| **Key dependencies** | * `check.mutex.Lock()` / `Unlock()` – ensures exclusive access to mutable fields.<br>* `Check.LogWarn(msg string, args ...any)` – logs a warning when attempting to overwrite an existing error result. |
+| **Key dependencies** | *`check.mutex.Lock()` / `Unlock()` – ensures exclusive access to mutable fields.<br>* `Check.LogWarn(msg string, args ...any)` – logs a warning when attempting to overwrite an existing error result. |
 | **Side effects** | Mutates the receiver’s `Result`, `skipReason` fields; performs thread‑safe locking/unlocking; may produce log output. |
 | **How it fits the package** | Provides a safe, idempotent way for other components (e.g., failure handlers) to record an error state on a check within the checks database. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   subgraph Locking
@@ -991,6 +1019,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Check.SetResultError --> func_Lock
@@ -999,12 +1028,14 @@ graph TD
 ```
 
 #### Functions calling `Check.SetResultError`
+
 ```mermaid
 graph TD
   func_onFailure --> func_Check.SetResultError
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Check.SetResultError
 check := &Check{ID: "example", Result: CheckResultPass}
@@ -1018,23 +1049,25 @@ check.SetResultError("validation failed")
 
 **SetResultSkipped** - Flags the check’s result as *skipped*, recording why it was not executed. Skipping is idempotent and ignored if the check had already been aborted.
 
-
 #### Signature (Go)
+
 ```go
 func (check *Check) SetResultSkipped(reason string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Flags the check’s result as *skipped*, recording why it was not executed. Skipping is idempotent and ignored if the check had already been aborted. |
 | **Parameters** | `reason` (string) – a human‑readable explanation for the skip (e.g., label mismatch, abort reason). |
 | **Return value** | None. The function mutates the receiver’s state only. |
-| **Key dependencies** | * `check.mutex.Lock()` – ensures exclusive access to the check data.<br>* `check.mutex.Unlock()` – releases the lock via defer. |
+| **Key dependencies** | *`check.mutex.Lock()` – ensures exclusive access to the check data.<br>* `check.mutex.Unlock()` – releases the lock via defer. |
 | **Side effects** | • Locks and unlocks the check’s mutex.<br>• Sets `check.Result` to `CheckResultSkipped` unless it is already `CheckResultAborted`. <br>• Stores the skip reason in `check.skipReason`. |
 | **How it fits the package** | Within the checks database, this method centralizes state transition for skipped checks, enabling callers (e.g., group abort logic) to uniformly mark non‑run tests without duplicating locking or result handling. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   subgraph Locking["Acquire Mutex"]
@@ -1047,6 +1080,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Check.SetResultSkipped --> func_Lock
@@ -1054,6 +1088,7 @@ graph TD
 ```
 
 #### Functions calling `Check.SetResultSkipped`
+
 ```mermaid
 graph TD
   func_ChecksGroup.OnAbort --> func_Check.SetResultSkipped
@@ -1061,6 +1096,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Check.SetResultSkipped
 check := &Check{
@@ -1077,13 +1113,14 @@ check.SetResultSkipped("not applicable in this environment")
 
 **WithAfterCheckFn** - Assigns an optional function that will be executed after the check’s main logic finishes. The callback receives the same `*Check` instance and may return an error to signal post‑check failure.
 
-
 #### Signature (Go)
+
 ```go
 func (check *Check) WithAfterCheckFn(afterCheckFn func(check *Check) error) *Check
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Assigns an optional function that will be executed after the check’s main logic finishes. The callback receives the same `*Check` instance and may return an error to signal post‑check failure. |
@@ -1094,6 +1131,7 @@ func (check *Check) WithAfterCheckFn(afterCheckFn func(check *Check) error) *Che
 | **How it fits the package** | Provides a fluent interface for attaching post‑check behaviour, complementing other builder methods on `Check`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"check.Error != nil"}
@@ -1121,6 +1159,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Check.WithAfterCheckFn
 check := NewCheck("example")
@@ -1139,7 +1178,6 @@ check.
 
 **WithBeforeCheckFn** - Registers a function that runs before the main check logic. If the check already contains an error, the hook is skipped.
 
-
 ```go
 func (check *Check) WithBeforeCheckFn(beforeCheckFn func(check *Check) error) *Check
 ```
@@ -1154,6 +1192,7 @@ func (check *Check) WithBeforeCheckFn(beforeCheckFn func(check *Check) error) *C
 | **How it fits the package** | Enables users to inject custom pre‑processing or validation logic into a check’s lifecycle within the *checksdb* package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Check instance"] --> B{"check.Error != nil?"}
@@ -1163,12 +1202,15 @@ flowchart TD
 ```
 
 #### Function dependencies  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `Check.WithBeforeCheckFn`  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example
+
 ```go
 // Minimal example invoking Check.WithBeforeCheckFn
 c := &Check{}
@@ -1183,7 +1225,6 @@ c = c.WithBeforeCheckFn(func(chk *Check) error {
 ### Check.WithCheckFn
 
 **WithCheckFn** - Sets the check’s execution function (`CheckFn`) if no prior error exists, enabling custom validation logic.
-
 
 #### 1) Signature (Go)
 
@@ -1238,7 +1279,6 @@ modifiedCheck := check.WithCheckFn(customFn)
 ### Check.WithSkipCheckFn
 
 **WithSkipCheckFn** - Registers one or more functions that determine whether the check should be skipped and why. These callbacks are stored in `check.SkipCheckFns`.
-
 
 #### Signature (Go)
 
@@ -1295,13 +1335,14 @@ chk = chk.WithSkipCheckFn(
 
 **WithSkipModeAll** - Configures the `Check` instance so that all sub‑checks are skipped during execution. If the check is already in an error state, it returns unchanged.
 
-
 #### Signature (Go)
+
 ```go
 func (check *Check) WithSkipModeAll() *Check
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Configures the `Check` instance so that all sub‑checks are skipped during execution. If the check is already in an error state, it returns unchanged. |
@@ -1312,6 +1353,7 @@ func (check *Check) WithSkipModeAll() *Check
 | **How it fits the package** | Provides a fluent API to alter a check’s behavior before running it, facilitating conditional test execution in the checks database. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"check.Error != nil"}
@@ -1321,6 +1363,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 ```mermaid
@@ -1329,6 +1372,7 @@ graph TD
 ```
 
 #### Functions calling `Check.WithSkipModeAll` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 ```mermaid
@@ -1337,6 +1381,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Check.WithSkipModeAll
 check := &Check{ /* initialize fields as needed */ }
@@ -1349,7 +1394,6 @@ check = check.WithSkipModeAll()
 ### Check.WithSkipModeAny
 
 **WithSkipModeAny** - Configures a `Check` instance so that it will skip only when *any* of its conditions are met. This is the default behaviour and therefore this modifier exists mainly for API completeness.
-
 
 #### Signature (Go)
 
@@ -1409,7 +1453,6 @@ func main() {
 
 **WithTimeout** - Assigns a duration to the `Timeout` field of a `Check`, unless an error has already been set.
 
-
 #### Signature (Go)
 
 ```go
@@ -1462,15 +1505,15 @@ graph TD
 package main
 
 import (
-	"time"
+ "time"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 )
 
 func main() {
-	check := &checksdb.Check{}
-	// Chain configuration: set timeout and then proceed with other methods
-	check = check.WithTimeout(30 * time.Second)
+ check := &checksdb.Check{}
+ // Chain configuration: set timeout and then proceed with other methods
+ check = check.WithTimeout(30 * time.Second)
 }
 ```
 
@@ -1479,7 +1522,6 @@ func main() {
 ### CheckResult.String
 
 **String** - Converts the `CheckResult` value into its underlying string form.
-
 
 #### 1) Signature (Go)
 
@@ -1549,7 +1591,6 @@ func main() {
 
 **Add** - Safely appends a new `*Check` to the group's internal slice, ensuring concurrent access is protected by a global lock.
 
-
 #### Signature (Go)
 
 ```go
@@ -1602,7 +1643,6 @@ group.Add(check)
 ### ChecksGroup.OnAbort
 
 **OnAbort** - Marks the current and remaining checks in a group as aborted or skipped, depending on their state, when an abort event occurs.
-
 
 #### Signature (Go)
 
@@ -1681,7 +1721,6 @@ func main() {
 
 **RecordChecksResults** - Iterates over every `Check` in the receiver’s check list and persists each outcome to the global results store, emitting an informational log.
 
-
 Collects the results of all checks in a group and records them into the shared result database, logging the action.
 
 #### Signature (Go)
@@ -1753,13 +1792,14 @@ func main() {
 
 **RunChecks** - Runs all enabled checks in a `ChecksGroup`, respecting label filtering and lifecycle hooks (`BeforeAll`, `BeforeEach`, `AfterEach`, `AfterAll`). It returns any errors encountered and the count of failed checks.
 
-
 #### Signature (Go)
+
 ```go
 func (group *ChecksGroup) RunChecks(stopChan <-chan bool, abortChan chan string) ([]error, int)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Runs all enabled checks in a `ChecksGroup`, respecting label filtering and lifecycle hooks (`BeforeAll`, `BeforeEach`, `AfterEach`, `AfterAll`). It returns any errors encountered and the count of failed checks. |
@@ -1770,6 +1810,7 @@ func (group *ChecksGroup) RunChecks(stopChan <-chan bool, abortChan chan string)
 | **How it fits the package** | Central orchestration routine for executing a set of CNF certification checks, integrating filtering, skipping logic, and error handling into the `checksdb` package’s test harness. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Log group start"]
@@ -1805,6 +1846,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_ChecksGroup.RunChecks --> func_skipCheck
@@ -1817,9 +1859,11 @@ graph TD
 ```
 
 #### Functions calling `ChecksGroup.RunChecks` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ChecksGroup.RunChecks
 package main
@@ -1860,7 +1904,6 @@ func main() {
 ### ChecksGroup.WithAfterAllFn
 
 **WithAfterAllFn** - Stores a user‑supplied function to be executed after all checks in the group have run. The callback receives the slice of `*Check` objects and may perform validation, cleanup, or aggregation.
-
 
 #### 1) Signature (Go)
 
@@ -1918,7 +1961,6 @@ group = group.WithAfterAllFn(func(checks []*checksdb.Check) error {
 
 **WithAfterEachFn** - Sets the callback that will be invoked after each `Check` is executed, allowing custom post‑processing or cleanup.
 
-
 #### Signature (Go)
 
 ```go
@@ -1970,13 +2012,14 @@ group = group.WithAfterEachFn(func(check *checksdb.Check) error {
 
 **WithBeforeAllFn** - Stores a user‑supplied function that will run once before all checks in the group are executed, allowing preparatory work or validation.
 
-
 #### Signature (Go)
+
 ```go
 func (group *ChecksGroup) WithBeforeAllFn(beforeAllFn func(checks []*Check) error) *ChecksGroup
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Stores a user‑supplied function that will run once before all checks in the group are executed, allowing preparatory work or validation. |
@@ -1987,6 +2030,7 @@ func (group *ChecksGroup) WithBeforeAllFn(beforeAllFn func(checks []*Check) erro
 | **How it fits the package** | Part of the builder pattern for configuring a check group; it enables users to inject logic that runs once before any checks in the group are evaluated. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive beforeAllFn"] --> B{"Assign to group.beforeAllFn"}
@@ -1994,12 +2038,15 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `ChecksGroup.WithBeforeAllFn`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ChecksGroup.WithBeforeAllFn
 group := &checksdb.ChecksGroup{}
@@ -2015,7 +2062,6 @@ group = group.WithBeforeAllFn(func(checks []*Check) error {
 ### ChecksGroup.WithBeforeEachFn
 
 **WithBeforeEachFn** - Stores the supplied function to be run before each `Check` in the group, enabling pre‑processing or validation logic.
-
 
 #### Signature (Go)
 
@@ -2077,7 +2123,6 @@ func main() {
 ### FilterCheckIDs
 
 **FilterCheckIDs** - Iterates over the internal check database (`dbByGroup`), evaluates each check’s labels against a global expression evaluator (`labelsExprEvaluator.Eval`). If the expression matches, the check’s ID is collected. Returns the list of matched IDs.
-
 
 Filters all registered checks by a pre‑initialized label expression evaluator and returns their IDs.
 
@@ -2171,23 +2216,25 @@ func main() {
 
 **GetReconciledResults** - Consolidates the global `resultsDB` store into a plain Go map suitable for inclusion in a Claim output.
 
-
 #### Signature (Go)
+
 ```go
 func GetReconciledResults() map[string]claim.Result
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Consolidates the global `resultsDB` store into a plain Go map suitable for inclusion in a Claim output. |
 | **Parameters** | None |
 | **Return value** | `map[string]claim.Result` – a copy of all entries currently held in `resultsDB`. |
-| **Key dependencies** | * `make(map[string]claim.Result)` – creates the result container.<br>* Iteration over the package‑wide `resultsDB` map. |
+| **Key dependencies** | *`make(map[string]claim.Result)` – creates the result container.<br>* Iteration over the package‑wide `resultsDB` map. |
 | **Side effects** | None; purely functional, no mutation of external state or I/O. |
 | **How it fits the package** | Provides a public API for other packages (e.g., claim construction) to retrieve all recorded check results without exposing internal data structures. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph Init
@@ -2204,6 +2251,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   GetReconciledResults
@@ -2215,12 +2263,14 @@ graph TD
 ```
 
 #### Functions calling `GetReconciledResults` (Mermaid)
+
 ```mermaid
 graph TD
   func_ClaimBuilder.Build --> func_GetReconciledResults
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetReconciledResults
 package main
@@ -2241,7 +2291,6 @@ func main() {
 ### GetResults
 
 **GetResults** - Exposes the in‑memory database of check results to callers.
-
 
 #### Signature (Go)
 
@@ -2297,7 +2346,6 @@ func main() {
 ### GetTestSuites
 
 **GetTestSuites** - Enumerates the keys in the package‑level `resultsDB` map and returns a slice containing each distinct test suite name once.
-
 
 #### Signature (Go)
 
@@ -2364,7 +2412,6 @@ func main() {
 
 **GetTestsCountByState** - Returns how many test results currently hold the specified `state`.
 
-
 #### Signature (Go)
 
 ```go
@@ -2417,13 +2464,13 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 )
 
 func main() {
-	passed := checksdb.GetTestsCountByState("passed")
-	fmt.Printf("Number of passed tests: %d\n", passed)
+ passed := checksdb.GetTestsCountByState("passed")
+ fmt.Printf("Number of passed tests: %d\n", passed)
 }
 ```
 
@@ -2433,13 +2480,14 @@ func main() {
 
 **GetTotalTests** - Provides a quick count of all test entries currently held in the internal `resultsDB`.
 
-
 #### Signature (Go)
+
 ```go
 func GetTotalTests() int
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Provides a quick count of all test entries currently held in the internal `resultsDB`. |
@@ -2450,6 +2498,7 @@ func GetTotalTests() int
 | **How it fits the package** | Serves as a lightweight helper for callers that need to report or validate the size of the test database without exposing internal data structures. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Retrieve resultsDB"}
@@ -2458,28 +2507,31 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetTotalTests --> builtin_len
 ```
 
 #### Functions calling `GetTotalTests` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetTotalTests
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 )
 
 func main() {
-	total := checksdb.GetTotalTests()
-	fmt.Printf("There are %d tests in the database.\n", total)
+ total := checksdb.GetTotalTests()
+ fmt.Printf("There are %d tests in the database.\n", total)
 }
 ```
 
@@ -2488,7 +2540,6 @@ func main() {
 ### InitLabelsExprEvaluator
 
 **InitLabelsExprEvaluator** - Builds and stores a `labels.LabelsExprEvaluator` that can evaluate label expressions supplied to the checks database.
-
 
 Initialises a global label expression evaluator for filtering test cases.
 
@@ -2545,17 +2596,17 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 )
 
 func main() {
-	if err := checksdb.InitLabelsExprEvaluator("common,extended"); err != nil {
-		fmt.Printf("Failed to initialise label evaluator: %v\n", err)
-		return
-	}
-	// The global evaluator is now ready for use by the checks database.
+ if err := checksdb.InitLabelsExprEvaluator("common,extended"); err != nil {
+  fmt.Printf("Failed to initialise label evaluator: %v\n", err)
+  return
+ }
+ // The global evaluator is now ready for use by the checks database.
 }
 ```
 
@@ -2565,23 +2616,25 @@ func main() {
 
 **NewCheck** - Instantiates a `Check` object pre‑configured for use in the checks database. It sets an initial result status and prepares a logger tied to the check’s ID.
 
-
 #### 1) Signature (Go)
+
 ```go
 func NewCheck(id string, labels []string) *Check
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Instantiates a `Check` object pre‑configured for use in the checks database. It sets an initial result status and prepares a logger tied to the check’s ID. |
 | **Parameters** | `id string –` unique identifier of the check<br>`labels []string –` semantic labels describing the check (e.g., severity, category) |
 | **Return value** | `*Check` – pointer to the newly created check instance |
 | **Key dependencies** | • `log.GetMultiLogger()` – obtains a logger that writes to an in‑memory buffer and optionally forwards to CLI sniffer.<br>• `cli.CliCheckLogSniffer` – logger sink used by the multi‑logger. |
-| **Side effects** | * Mutates the new `Check` instance (sets fields).<br>* Configures a logger that captures log output into an internal string builder (`logArchive`). No external I/O or concurrency is triggered during construction. |
+| **Side effects** | *Mutates the new `Check` instance (sets fields).<br>* Configures a logger that captures log output into an internal string builder (`logArchive`). No external I/O or concurrency is triggered during construction. |
 | **How it fits the package** | This constructor is used throughout the test suite to register checks in various check groups (`NewChecksGroup.Add(NewCheck(...))`). It centralises common initialisation logic for all checks. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Start"] --> B{"Create Check struct"}
@@ -2593,6 +2646,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewCheck --> func_GetMultiLogger
@@ -2600,6 +2654,7 @@ graph TD
 ```
 
 #### 5) Functions calling `NewCheck` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks_AccessControl --> func_NewCheck
@@ -2614,6 +2669,7 @@ graph TD
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking NewCheck
 package main
@@ -2637,23 +2693,25 @@ func main() {
 
 **NewChecksGroup** - Returns a singleton `ChecksGroup` for the given name, creating it if absent. It ensures thread‑safe access to the global registry of groups.
 
-
 #### Signature (Go)
+
 ```go
 func NewChecksGroup(groupName string) *ChecksGroup
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a singleton `ChecksGroup` for the given name, creating it if absent. It ensures thread‑safe access to the global registry of groups. |
 | **Parameters** | `groupName string` – Identifier for the checks group (e.g., “accesscontrol”). |
 | **Return value** | `*ChecksGroup` – The existing or newly created group instance. |
-| **Key dependencies** | * `dbLock.Lock()` / `Unlock()` – Mutex guarding the global map.<br>* Global variable `dbByGroup map[string]*ChecksGroup`. |
+| **Key dependencies** | *`dbLock.Lock()` / `Unlock()` – Mutex guarding the global map.<br>* Global variable `dbByGroup map[string]*ChecksGroup`. |
 | **Side effects** | Modifies the shared `dbByGroup` map on first request; otherwise only reads it. No I/O or external state changes. |
 | **How it fits the package** | Central factory for all check groups used by test suites (`LoadChecks`). It guarantees that each group name maps to a single instance, enabling consistent registration and execution of checks across the framework. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Acquire dbLock"] --> B{"Check if dbByGroup is nil"}
@@ -2667,6 +2725,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewChecksGroup --> func_dbLock.Lock
@@ -2674,25 +2733,27 @@ graph TD
 ```
 
 #### Functions calling `NewChecksGroup` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_NewChecksGroup
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewChecksGroup
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 )
 
 func main() {
-	group := checksdb.NewChecksGroup("example")
-	fmt.Printf("Created group: %s with %d checks\n", group.Name, len(group.Checks))
+ group := checksdb.NewChecksGroup("example")
+ fmt.Printf("Created group: %s with %d checks\n", group.Name, len(group.Checks))
 }
 ```
 
@@ -2701,7 +2762,6 @@ func main() {
 ### RunChecks
 
 **RunChecks** - Orchestrates execution of all `ChecksGroup`s, handles global aborts via timeout or OS signals, aggregates failures and errors.
-
 
 #### Signature (Go)
 
@@ -2716,7 +2776,7 @@ func RunChecks(timeout time.Duration) (failedCtr int, err error)
 | **Purpose** | Orchestrates execution of all `ChecksGroup`s, handles global aborts via timeout or OS signals, aggregates failures and errors. |
 | **Parameters** | `timeout` time.Duration – maximum time allowed for the entire run. |
 | **Return value** | `failedCtr int` – total number of failed checks.<br>`err error` – aggregated error if any group returned non‑nil errors. |
-| **Key dependencies** | * Synchronization: `dbLock.Lock/Unlock`<br>* Timing: `time.After(timeout)`<br>* Signal handling: `signal.Notify`, `signal.Stop` with SIGINT/SIGTERM<br>* Group operations: `group.RunChecks`, `group.OnAbort`, `group.RecordChecksResults`<br>* Logging & CLI output: `log.*`, `cli.PrintResultsTable`, `printFailedChecksLog` |
+| **Key dependencies** | *Synchronization: `dbLock.Lock/Unlock`<br>* Timing: `time.After(timeout)`<br>*Signal handling: `signal.Notify`, `signal.Stop` with SIGINT/SIGTERM<br>* Group operations: `group.RunChecks`, `group.OnAbort`, `group.RecordChecksResults`<br>* Logging & CLI output: `log.*`, `cli.PrintResultsTable`, `printFailedChecksLog` |
 | **Side effects** | Locks shared database lock, blocks until all groups finish or abort.<br>Prints summary table and detailed failed‑check logs to stdout. |
 | **How it fits the package** | Entry point for running checks; called by higher‑level command `certsuite.Run`. Manages global coordination across multiple check groups stored in `dbByGroup`. |
 
@@ -2798,11 +2858,13 @@ func main() {
 Collects per‑group counts of passed, failed and skipped checks into a map.
 
 #### Signature (Go)
+
 ```go
 func() map[string][]int
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a summary map where each key is a group name and the value is a slice `[passed, failed, skipped]` reflecting the outcome of all checks in that group. |
@@ -2813,6 +2875,7 @@ func() map[string][]int
 | **How it fits the package** | Used by `RunChecks` to produce a concise summary for CLI output after all checks have executed. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate dbByGroup"}
@@ -2830,30 +2893,33 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getResultsSummary --> func_make
 ```
 
 #### Functions calling `getResultsSummary` (Mermaid)
+
 ```mermaid
 graph TD
   func_RunChecks --> func_getResultsSummary
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getResultsSummary
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 )
 
 func main() {
-	summary := checksdb.RunChecks(30 * time.Second) // Run all checks with a timeout
-	fmt.Println(summary)
+ summary := checksdb.RunChecks(30 * time.Second) // Run all checks with a timeout
+ fmt.Println(summary)
 }
 ```
 
@@ -2862,7 +2928,6 @@ func main() {
 ### onFailure
 
 **onFailure** - Marks the current check as failed, skips all subsequent checks in the group, and returns a generic error describing the failure.
-
 
 #### Signature (Go)
 
@@ -2933,7 +2998,6 @@ if err != nil {
 
 **printCheckResult** - Outputs the result of a single check to the console, formatting the message according to whether the check passed, failed, was skipped, aborted, or errored.
 
-
 #### Signature (Go)
 
 ```go
@@ -3001,7 +3065,6 @@ printCheckResult(check) // prints "[ PASS ] example-check"
 ### printFailedChecksLog
 
 **printFailedChecksLog** - Iterates over every check in the database, and for those that failed, outputs a formatted log header followed by the check’s archived logs.
-
 
 #### Signature (Go)
 
@@ -3072,13 +3135,14 @@ func main() {
 
 **recordCheckResult** - Persists the outcome of a test check into the global `resultsDB`, enriching it with metadata such as timestamps, duration, and catalog classifications.
 
-
 #### Signature (Go)
+
 ```go
 func recordCheckResult(check *Check)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Persists the outcome of a test check into the global `resultsDB`, enriching it with metadata such as timestamps, duration, and catalog classifications. |
@@ -3089,6 +3153,7 @@ func recordCheckResult(check *Check)
 | **How it fits the package** | This helper is invoked by `ChecksGroup.RecordChecksResults()` to batch‑store all check results in the group, enabling later reporting and persistence layers. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Lookup claimID"}
@@ -3100,6 +3165,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_recordCheckResult --> Check.LogDebug
@@ -3113,12 +3179,14 @@ graph TD
 ```
 
 #### Functions calling `recordCheckResult` (Mermaid)
+
 ```mermaid
 graph TD
   ChecksGroup.RecordChecksResults --> recordCheckResult
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking recordCheckResult
 check := &Check{
@@ -3135,7 +3203,6 @@ recordCheckResult(check)
 ### runAfterAllFn
 
 **runAfterAllFn** - Runs the `afterAll` function registered on a `ChecksGroup`. If the hook panics or returns an error, it marks the last check as failed and skips any remaining checks.
-
 
 #### Signature (Go)
 
@@ -3214,13 +3281,14 @@ func example() {
 
 **runAfterEachFn** - Runs a user‑defined `afterEach` callback after a check completes, handling panics and errors.
 
-
 #### Signature (Go)
+
 ```go
 func runAfterEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Runs a user‑defined `afterEach` callback after a check completes, handling panics and errors. |
@@ -3231,6 +3299,7 @@ func runAfterEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) 
 | **How it fits the package** | Part of the lifecycle of a `ChecksGroup`; invoked after each individual check in `RunChecks`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"group.afterEachFn nil?"}
@@ -3243,6 +3312,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_runAfterEachFn --> func_Logger.Debug
@@ -3256,12 +3326,14 @@ graph TD
 ```
 
 #### Functions calling `runAfterEachFn` (Mermaid)
+
 ```mermaid
 graph TD
   func_ChecksGroup.RunChecks --> func_runAfterEachFn
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking runAfterEachFn
 group := &checksdb.ChecksGroup{ /* fields initialized */ }
@@ -3279,7 +3351,6 @@ if err != nil {
 
 **runBeforeAllFn** - Runs the `beforeAllFn` callback defined on a `ChecksGroup`. If the callback is absent, it does nothing. It also safeguards against panics and unexpected errors, converting them into a standardized failure state for the first check and skipping the rest.
 
-
 #### Signature (Go)
 
 ```go
@@ -3294,7 +3365,7 @@ func runBeforeAllFn(group *ChecksGroup, checks []*Check) (err error)
 | **Parameters** | `group *ChecksGroup` – The group whose hook will be executed.<br>`checks []*Check` – Slice of checks that are scheduled to run; used for reporting failures when the hook fails. |
 | **Return value** | `error` – `nil` on success, otherwise an error describing why the hook failed (panic or return error). |
 | **Key dependencies** | • `log.Debug`, `log.Error`<br>• `recover`, `fmt.Sprint`, `runtime/debug.Stack`<br>• `onFailure` helper<br>• `group.beforeAllFn(checks)` |
-| **Side effects** | * Logs debug and error messages.<br>* May recover from a panic, log stack trace.<br>* Calls `onFailure`, which marks the first check as errored and skips all subsequent checks. |
+| **Side effects** | *Logs debug and error messages.<br>* May recover from a panic, log stack trace.<br>* Calls `onFailure`, which marks the first check as errored and skips all subsequent checks. |
 | **How it fits the package** | This function is invoked by `ChecksGroup.RunChecks` before any individual checks are executed, ensuring that group‑wide preconditions are established or appropriately handled. |
 
 #### Internal workflow (Mermaid)
@@ -3351,13 +3422,14 @@ if err := runBeforeAllFn(group, checks); err != nil {
 
 **runBeforeEachFn** - Runs the optional `beforeEach` function defined on a `ChecksGroup`. Handles panics and errors by logging and marking the current check as failed while skipping subsequent checks.
 
-
 #### Signature (Go)
+
 ```go
 func runBeforeEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) (err error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Runs the optional `beforeEach` function defined on a `ChecksGroup`. Handles panics and errors by logging and marking the current check as failed while skipping subsequent checks. |
@@ -3368,6 +3440,7 @@ func runBeforeEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check)
 | **How it fits the package** | Part of the checks execution pipeline; invoked by `ChecksGroup.RunChecks` before each individual check runs. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"group.beforeEachFn exists?"}
@@ -3382,6 +3455,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_runBeforeEachFn --> func_Logger.Debug
@@ -3394,12 +3468,14 @@ graph TD
 ```
 
 #### Functions calling `runBeforeEachFn` (Mermaid)
+
 ```mermaid
 graph TD
   ChecksGroup.RunChecks --> runBeforeEachFn
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking runBeforeEachFn within the same package.
 func example() {
@@ -3418,23 +3494,25 @@ func example() {
 
 **runCheck** - Safely runs an individual `Check`, handling panics and unexpected errors by logging, aborting the current check, and marking subsequent checks as skipped.
 
-
 #### Signature
+
 ```go
 func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Safely runs an individual `Check`, handling panics and unexpected errors by logging, aborting the current check, and marking subsequent checks as skipped. |
 | **Parameters** | `check *Check` – the check to execute.<br>`group *ChecksGroup` – the group containing this check.<br>`remainingChecks []*Check` – checks that follow this one in execution order. |
 | **Return value** | `error` – `nil` if the check ran successfully; otherwise an error describing the failure (panic or runtime error). |
 | **Key dependencies** | • `recover` to catch panics<br>• `fmt`, `runtime/debug` for stack traces<br>• `log.Warn` and `check.LogError` for logging<br>• `onFailure` helper to set results on current and remaining checks |
-| **Side effects** | * Logs warning or error messages.<br>* Sets the result of the current check (error) and marks all remaining checks as skipped.<br>* Triggers a generic error return that propagates up the call stack. |
+| **Side effects** | *Logs warning or error messages.<br>* Sets the result of the current check (error) and marks all remaining checks as skipped.<br>* Triggers a generic error return that propagates up the call stack. |
 | **How it fits the package** | `runCheck` is invoked by `ChecksGroup.RunChecks` for each eligible check, ensuring consistent failure handling across the suite. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start runCheck"] --> B{"Recover block"}
@@ -3450,6 +3528,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_runCheck --> recover
@@ -3464,12 +3543,14 @@ graph TD
 ```
 
 #### Functions calling `runCheck`
+
 ```mermaid
 graph TD
   func_ChecksGroup_RunChecks --> func_runCheck
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking runCheck
 check := &Check{ID: "sample-check"}
@@ -3486,7 +3567,6 @@ if err := runCheck(check, group, remaining); err != nil {
 ### shouldSkipCheck
 
 **shouldSkipCheck** - Evaluates all skip functions attached to a `Check` instance. If any of them indicate that the check must be skipped (based on the configured `SkipMode`), it returns `true` and collects the corresponding reasons. It also safely recovers from panics in individual skip functions, logging details.
-
 
 #### Signature (Go)
 
@@ -3574,13 +3654,14 @@ fmt.Printf("Should skip? %v; Reasons: %v\n", skip, reasons)
 
 **skipAll** - Iterates over a list of checks and marks each one as skipped, providing a uniform reason.
 
-
 #### Signature (Go)
+
 ```go
 func([]*Check, string)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Iterates over a list of checks and marks each one as skipped, providing a uniform reason. |
@@ -3591,6 +3672,7 @@ func([]*Check, string)()
 | **How it fits the package** | Used by higher‑level control flow (e.g., when a failure aborts a group) to cleanly mark remaining checks as skipped without further evaluation. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Receive slice of checks"] --> B{"For each check"}
@@ -3598,18 +3680,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_skipAll --> func_skipCheck
 ```
 
 #### Functions calling `skipAll`
+
 ```mermaid
 graph TD
   func_onFailure --> func_skipAll
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking skipAll
 checks := []*Check{check1, check2, check3}
@@ -3623,13 +3708,14 @@ skipAll(checks, reason)
 
 **skipCheck** - Marks a check as skipped with a given reason, logs the action, and prints the result.
 
-
 #### Signature (Go)
+
 ```go
 func skipCheck(check *Check, reason string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Marks a check as skipped with a given reason, logs the action, and prints the result. |
@@ -3640,6 +3726,7 @@ func skipCheck(check *Check, reason string)
 | **How it fits the package** | Used by control flow functions (`RunChecks`, `skipAll`) to handle checks that should not execute due to label filtering or other preconditions. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive check & reason"] --> B["Log “Skipping check”"]
@@ -3657,6 +3744,7 @@ graph TD
 ```
 
 #### Functions calling `skipCheck` (Mermaid)
+
 ```mermaid
 graph TD
   func_ChecksGroup.RunChecks --> func_skipCheck
@@ -3664,6 +3752,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking skipCheck
 check := &Check{ID: "example-check"}
@@ -3673,4 +3762,3 @@ skipCheck(check, reason)
 ```
 
 ---
-

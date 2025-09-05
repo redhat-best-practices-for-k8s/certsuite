@@ -49,13 +49,14 @@ of the form {key: value}
 
 **FilterArray** - Returns a new slice containing only the elements of `vs` for which `f` evaluates to true.
 
-
 #### 1) Signature (Go)
+
 ```go
 func FilterArray(vs []string, f func(string) bool) []string
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a new slice containing only the elements of `vs` for which `f` evaluates to true. |
@@ -66,6 +67,7 @@ func FilterArray(vs []string, f func(string) bool) []string
 | **How it fits the package** | Utility function in *arrayhelper* used by higher‑level logic to extract relevant items from string collections. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Start"] --> B{"Iterate over vs"}
@@ -78,6 +80,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_FilterArray --> make
@@ -86,12 +89,14 @@ graph TD
 ```
 
 #### 5) Functions calling `FilterArray` (Mermaid)
+
 ```mermaid
 graph TD
   func_getGrubKernelArgs --> func_FilterArray
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking FilterArray
 package main
@@ -116,7 +121,6 @@ func main() {
 ### Unique
 
 **Unique** - Produces a new slice containing each unique element of the input, preserving no particular order.
-
 
 Removes duplicate entries from a string slice and returns the distinct values.
 
@@ -183,4 +187,3 @@ func main() {
 ```
 
 ---
-

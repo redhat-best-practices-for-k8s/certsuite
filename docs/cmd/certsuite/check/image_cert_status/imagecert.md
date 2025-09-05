@@ -16,14 +16,14 @@ The imagecert package provides a Cobra command that registers persistent flags f
 
 ### Key Features
 
-- Registers and enforces flag constraints (required together, mutually exclusive) for image name, registry, tag, digest, and offline DB path using Cobra. 
-- Retrieves and validates user input, then queries the certification database to determine if the specified image is certified. 
+- Registers and enforces flag constraints (required together, mutually exclusive) for image name, registry, tag, digest, and offline DB path using Cobra.
+- Retrieves and validates user input, then queries the certification database to determine if the specified image is certified.
 - Formats console output with colored status indicators via fatih/color for clear visual feedback.
 
 ### Design Notes
 
-- Uses Cobra’s PersistentFlags to apply flags across subcommands, ensuring consistency. 
-- Validates that only one of name/tag/digest can be used at a time, preventing ambiguous queries. 
+- Uses Cobra’s PersistentFlags to apply flags across subcommands, ensuring consistency.
+- Validates that only one of name/tag/digest can be used at a time, preventing ambiguous queries.
 - Outputs human‑readable status; errors are returned to the caller for proper command exit handling.
 
 ### Exported Functions Summary
@@ -43,7 +43,6 @@ The imagecert package provides a Cobra command that registers persistent flags f
 ### NewCommand
 
 **NewCommand** - Registers persistent flags for image name, registry, tag, digest, and offline DB path; sets flag constraints; returns the configured command.
-
 
 Creates and configures the Cobra command for checking an image’s certificate status, returning a fully prepared `*cobra.Command`.
 
@@ -144,7 +143,6 @@ func main() {
 
 **checkImageCertStatus** - Determines if a specified image (by name or digest) is certified, then outputs formatted status.
 
-
 Checks whether a container image is certified by querying a validator database and prints the result.
 
 #### Signature (Go)
@@ -222,4 +220,3 @@ func main() {
 ```
 
 ---
-

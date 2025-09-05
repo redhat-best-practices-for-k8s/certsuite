@@ -86,13 +86,14 @@ The `cli` package supplies terminal‑centric utilities for the Certsuite tool, 
 
 **LineAlignCenter** - Produces a new string of length `w` with the input string `s` horizontally centered. Padding is added on both sides using spaces.
 
-
 #### Signature
+
 ```go
 func LineAlignCenter(s string, w int) string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Produces a new string of length `w` with the input string `s` horizontally centered. Padding is added on both sides using spaces. |
@@ -103,6 +104,7 @@ func LineAlignCenter(s string, w int) string
 | **How it fits the package** | Utility used by the CLI for formatting output boxes, ensuring labels and titles appear centered in terminal tables. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Input string `s`"] --> B{"Calculate padding"}
@@ -112,6 +114,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_LineAlignCenter --> fmt.Sprintf
@@ -119,24 +122,26 @@ graph TD
 ```
 
 #### Functions calling `LineAlignCenter`
+
 ```mermaid
 graph TD
   printTestCaseInfoBox --> func_LineAlignCenter
 ```
 
 #### Usage example
+
 ```go
 // Minimal example invoking LineAlignCenter
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 )
 
 func main() {
-	centered := cli.LineAlignCenter("HELLO", 20)
-	fmt.Println("|" + centered + "|") // prints: |       HELLO        |
+ centered := cli.LineAlignCenter("HELLO", 20)
+ fmt.Println("|" + centered + "|") // prints: |       HELLO        |
 }
 ```
 
@@ -145,7 +150,6 @@ func main() {
 ### LineAlignLeft
 
 **LineAlignLeft** - Returns the input string padded with spaces on the right so that its total length equals `w`. If the string is longer than `w`, it is returned unchanged.
-
 
 #### Signature (Go)
 
@@ -193,15 +197,15 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 )
 
 func main() {
-	s := "Example text"
-	width := 20
-	leftAligned := cli.LineAlignLeft(s, width)
-	fmt.Printf("'%s'\n", leftAligned) // Output: 'Example text       '
+ s := "Example text"
+ width := 20
+ leftAligned := cli.LineAlignLeft(s, width)
+ fmt.Printf("'%s'\n", leftAligned) // Output: 'Example text       '
 }
 ```
 
@@ -227,6 +231,7 @@ func LineColor(s, color string) string
 | **How it fits the package** | Provides a lightweight helper for colouring CLI output used throughout the `cli` package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Return"}
@@ -234,15 +239,18 @@ flowchart TD
 ```
 
 #### Function dependencies  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `LineColor`
+
 ```mermaid
 graph TD
   func_printTestCaseInfoBox --> func_LineColor
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking LineColor
 package main
@@ -263,7 +271,6 @@ func main() {
 ### PrintBanner
 
 **PrintBanner** - Outputs a static banner string (`banner`) to `stdout` using `fmt.Print`.
-
 
 The function displays a pre‑defined ASCII banner to standard output when the Certsuite CLI starts up.
 
@@ -340,13 +347,14 @@ func main() {
 
 **PrintCheckAborted** - Signals that a compliance check has been aborted and displays the check name along with an optional reason.
 
-
 #### Signature (Go)
+
 ```go
 func(string, string)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Signals that a compliance check has been aborted and displays the check name along with an optional reason. |
@@ -357,6 +365,7 @@ func(string, string)()
 | **How it fits the package** | Part of the internal CLI utilities that report check results; invoked when a check terminates prematurely. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Stop line goroutine"}
@@ -366,6 +375,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_PrintCheckAborted --> func_stopCheckLineGoroutine
@@ -373,12 +383,14 @@ graph TD
 ```
 
 #### Functions calling `PrintCheckAborted`
+
 ```mermaid
 graph TD
   printCheckResult --> PrintCheckAborted
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking PrintCheckAborted
 func main() {
@@ -392,13 +404,14 @@ func main() {
 
 **PrintCheckErrored** - Signals that a specific check has finished with an error, stops any ongoing line‑printing goroutine, and outputs a formatted message to the console.
 
-
 #### Signature (Go)
+
 ```go
 func PrintCheckErrored(checkName string) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Signals that a specific check has finished with an error, stops any ongoing line‑printing goroutine, and outputs a formatted message to the console. |
@@ -409,6 +422,7 @@ func PrintCheckErrored(checkName string)
 | **How it fits the package** | Part of the CLI helper set for displaying check results; called by the checks database when a check ends in `CheckResultError`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["PrintCheckErrored"] --> B["stopCheckLineGoroutine"]
@@ -416,6 +430,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_PrintCheckErrored --> func_stopCheckLineGoroutine
@@ -423,22 +438,24 @@ graph TD
 ```
 
 #### Functions calling `PrintCheckErrored` (Mermaid)
+
 ```mermaid
 graph TD
   pkg_checksdb.printCheckResult --> func_PrintCheckErrored
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking PrintCheckErrored
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 )
 
 func main() {
-	cli.PrintCheckErrored("example-check")
+ cli.PrintCheckErrored("example-check")
 }
 ```
 
@@ -447,7 +464,6 @@ func main() {
 ### PrintCheckFailed
 
 **PrintCheckFailed** - Terminates the background line‑printing goroutine and outputs a formatted failure message for the given check.
-
 
 #### Signature (Go)
 
@@ -497,11 +513,11 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 )
 
 func main() {
-	cli.PrintCheckFailed("KubeletRunning")
+ cli.PrintCheckFailed("KubeletRunning")
 }
 ```
 
@@ -510,7 +526,6 @@ func main() {
 ### PrintCheckPassed
 
 **PrintCheckPassed** - Displays a “passed” status for the given check name, prefixed by a clear‑line escape code and a pass tag. It also signals any running line‑progress goroutine to terminate.
-
 
 Prints a formatted message indicating that a check has passed and stops the line‑progress goroutine.
 
@@ -575,11 +590,11 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 )
 
 func main() {
-	cli.PrintCheckPassed("example-check-id")
+ cli.PrintCheckPassed("example-check-id")
 }
 ```
 
@@ -589,13 +604,14 @@ func main() {
 
 **PrintCheckRunning** - Outputs the initial “running” message for a check and launches a background goroutine that periodically updates this line with timing or log information.
 
-
 #### Signature (Go)
+
 ```go
 func PrintCheckRunning(checkName string) ()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Outputs the initial “running” message for a check and launches a background goroutine that periodically updates this line with timing or log information. |
@@ -606,6 +622,7 @@ func PrintCheckRunning(checkName string) ()
 | **How it fits the package** | Part of the CLI helper functions that provide user‑facing status updates during check execution. It is invoked by `Check.Run` before the actual check logic begins. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start PrintCheckRunning"] --> B{"Create Channels"}
@@ -618,6 +635,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_PrintCheckRunning --> make
@@ -627,23 +645,25 @@ graph TD
 ```
 
 #### Functions calling `PrintCheckRunning` (Mermaid)
+
 ```mermaid
 graph TD
   func_Check_Run --> func_PrintCheckRunning
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking PrintCheckRunning
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 )
 
 func main() {
-	cli.PrintCheckRunning("example-check")
-	// The function returns immediately; the status line will be updated by a goroutine.
+ cli.PrintCheckRunning("example-check")
+ // The function returns immediately; the status line will be updated by a goroutine.
 }
 ```
 
@@ -652,7 +672,6 @@ func main() {
 ### PrintCheckSkipped
 
 **PrintCheckSkipped** - Reports that a check was skipped and displays the skip reason.
-
 
 Prints a message indicating that a check has been skipped along with the reason.
 
@@ -730,7 +749,6 @@ func main() {
 
 **PrintResultsTable** - Outputs a human‑readable table summarizing the number of passed, failed, and skipped checks per test suite.
 
-
 #### Signature (Go)
 
 ```go
@@ -744,7 +762,7 @@ func PrintResultsTable(results map[string][]int)
 | **Purpose** | Outputs a human‑readable table summarizing the number of passed, failed, and skipped checks per test suite. |
 | **Parameters** | `results` – mapping from suite name to a slice containing `[passed, failed, skipped]` counts. |
 | **Return value** | None (void). |
-| **Key dependencies** | * `fmt.Printf` – for formatted lines.<br>* `fmt.Println` – for separator lines. |
+| **Key dependencies** | *`fmt.Printf` – for formatted lines.<br>* `fmt.Println` – for separator lines. |
 | **Side effects** | Writes directly to standard output; no state changes within the package. |
 | **How it fits the package** | Used by the CLI layer after all checks have run to present a concise results table to the user. |
 
@@ -805,13 +823,14 @@ func main() {
 
 **WrapLines** - Splits an arbitrary text block into multiple lines so that each line does not exceed `maxWidth` characters. It preserves existing line breaks and wraps long words by splitting on whitespace.
 
-
 #### Signature (Go)
+
 ```go
 func WrapLines(text string, maxWidth int) []string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Splits an arbitrary text block into multiple lines so that each line does not exceed `maxWidth` characters. It preserves existing line breaks and wraps long words by splitting on whitespace. |
@@ -822,6 +841,7 @@ func WrapLines(text string, maxWidth int) []string
 | **How it fits the package** | Used by CLI utilities to format long descriptions, remediation steps, or other multiline strings for display in a terminal table. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Split input on `\n`"}
@@ -841,6 +861,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_WrapLines --> strings.Split
@@ -851,28 +872,30 @@ graph TD
 ```
 
 #### Functions calling `WrapLines` (Mermaid)
+
 ```mermaid
 graph TD
   func_printTestCaseInfoBox --> func_WrapLines
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking WrapLines
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 )
 
 func main() {
-	text := "This is a long line that will be wrapped into multiple lines of maximum width."
-	lines := cli.WrapLines(text, 20)
-	for _, l := range lines {
-		fmt.Println(l)
-	}
+ text := "This is a long line that will be wrapped into multiple lines of maximum width."
+ lines := cli.WrapLines(text, 20)
+ for _, l := range lines {
+  fmt.Println(l)
+ }
 }
 ```
 
@@ -881,7 +904,6 @@ func main() {
 ### cliCheckLogSniffer.Write
 
 **Write** - Provides an `io.Write` implementation that forwards log messages to a channel when running in a terminal, otherwise silently discards them.
-
 
 #### Signature (Go)
 
@@ -932,18 +954,18 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 )
 
 func main() {
-	var sniffer cli.CliCheckLogSniffer // assume exported constructor or zero value
-	data := []byte("example log message")
-	n, err := sniffer.Write(data)
-	if err != nil {
-		fmt.Println("write error:", err)
-	}
-	fmt.Printf("Wrote %d bytes\n", n)
+ var sniffer cli.CliCheckLogSniffer // assume exported constructor or zero value
+ data := []byte("example log message")
+ n, err := sniffer.Write(data)
+ if err != nil {
+  fmt.Println("write error:", err)
+ }
+ fmt.Printf("Wrote %d bytes\n", n)
 }
 ```
 
@@ -955,13 +977,14 @@ func main() {
 
 **cropLogLine** - Removes new‑line characters from the supplied `line` and truncates it so that its length does not exceed `maxAvailableWidth`.
 
-
 #### Signature (Go)
+
 ```go
 func cropLogLine(line string, maxAvailableWidth int) string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Removes new‑line characters from the supplied `line` and truncates it so that its length does not exceed `maxAvailableWidth`. |
@@ -972,6 +995,7 @@ func cropLogLine(line string, maxAvailableWidth int) string
 | **How it fits the package** | Used by `printRunningCheckLine` to display a concise, single‑line log fragment when terminal width is limited. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A(Start) --> B{"Remove newlines"}
@@ -984,6 +1008,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_cropLogLine --> func_ReplaceAll
@@ -991,24 +1016,26 @@ graph TD
 ```
 
 #### Functions calling `cropLogLine` (Mermaid)
+
 ```mermaid
 graph TD
   func_printRunningCheckLine --> func_cropLogLine
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking cropLogLine
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	log := "This is a very long log line that might not fit."
-	cropped := cropLogLine(log, 30)
-	fmt.Println(cropped) // Output: "This is a very long log li"
+ log := "This is a very long log line that might not fit."
+ cropped := cropLogLine(log, 30)
+ fmt.Println(cropped) // Output: "This is a very long log li"
 }
 ```
 
@@ -1017,7 +1044,6 @@ func main() {
 ### getTerminalWidth
 
 **getTerminalWidth** - Obtains the width of the terminal window in columns, allowing other functions to format output appropriately.
-
 
 #### Signature (Go)
 
@@ -1094,6 +1120,7 @@ func isTTY() bool
 | **How it fits the package** | Used by various CLI helpers to adjust output formatting (e.g., line clearing, progress updates) when running in a terminal versus non‑terminal environments. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Call os.Stdin.Fd()"] --> B["int conversion"]
@@ -1102,6 +1129,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_isTTY --> term_IsTerminal
@@ -1110,6 +1138,7 @@ graph TD
 ```
 
 #### Functions calling `isTTY`
+
 ```mermaid
 graph TD
   PrintCheckRunning --> isTTY
@@ -1119,20 +1148,21 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isTTY
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	if isTTY() {
-		fmt.Println("Running in a terminal")
-	} else {
-		fmt.Println("Not running in a terminal")
-	}
+ if isTTY() {
+  fmt.Println("Running in a terminal")
+ } else {
+  fmt.Println("Not running in a terminal")
+ }
 }
 ```
 
@@ -1141,7 +1171,6 @@ func main() {
 ### printRunningCheckLine
 
 **printRunningCheckLine** - Renders a line to the terminal showing a running check’s name, elapsed time and, if space permits, its most recent log message. It handles both TTY (interactive) and non‑TTY environments.
-
 
 ```go
 func printRunningCheckLine(checkName string, startTime time.Time, logLine string) ()
@@ -1198,16 +1227,16 @@ graph TD
 package main
 
 import (
-	"time"
+ "time"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 )
 
 func main() {
-	start := time.Now()
-	checkName := "ValidateCertificates"
-	logMsg := "Checking certificate chain..."
-	cli.printRunningCheckLine(checkName, start, logMsg)
+ start := time.Now()
+ checkName := "ValidateCertificates"
+ logMsg := "Checking certificate chain..."
+ cli.printRunningCheckLine(checkName, start, logMsg)
 }
 ```
 
@@ -1216,7 +1245,6 @@ func main() {
 ### stopCheckLineGoroutine
 
 **stopCheckLineGoroutine** - Signals the goroutine that prints a moving “checking…” line to terminate and disables the channel used for this purpose.
-
 
 #### Signature (Go)
 
@@ -1284,13 +1312,14 @@ func example() {
 
 **updateRunningCheckLine** - Continuously refreshes a status line in the terminal to show elapsed time and the most recent log message for an ongoing check.
 
-
 #### Signature (Go)
+
 ```go
 func(string, <-chan bool)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Continuously refreshes a status line in the terminal to show elapsed time and the most recent log message for an ongoing check. |
@@ -1301,6 +1330,7 @@ func(string, <-chan bool)()
 | **How it fits the package** | Used by `PrintCheckRunning` to provide live feedback during long-running checks. It keeps the terminal line updated without cluttering output when not in a TTY. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   start["Start"] --> init{"Initialize"}
@@ -1316,6 +1346,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_updateRunningCheckLine --> time.Now
@@ -1326,12 +1357,14 @@ graph TD
 ```
 
 #### Functions calling `updateRunningCheckLine` (Mermaid)
+
 ```mermaid
 graph TD
   PrintCheckRunning --> func_updateRunningCheckLine
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking updateRunningCheckLine
 func main() {
@@ -1351,4 +1384,3 @@ func main() {
 ```
 
 ---
-

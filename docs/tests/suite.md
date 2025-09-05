@@ -21,4 +21,3 @@ The `suite` package provides a lightweight framework for executing certificate�
 - Test execution is driven by the Kubernetes client configuration available in the environment; if no kubeconfig is found tests are skipped
 - The framework deliberately keeps side‑effects minimal – it performs only the actions required for each test case and cleans up immediately afterward
 - Users should register tests via the exported `Register` function or by embedding them in a type that implements the `TestCase` interface to ensure deterministic ordering
-

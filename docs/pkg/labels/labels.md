@@ -47,7 +47,7 @@ Transforms a user‑supplied comma‑separated list of label filters into a Go A
 ### LabelsExprEvaluator
 
 <!-- DEBUG: Interface LabelsExprEvaluator exists in bundle but ParsedOK=false -->
-**Purpose**: 
+**Purpose**:
 
 **Methods**:
 
@@ -62,7 +62,6 @@ Transforms a user‑supplied comma‑separated list of label filters into a Go A
 ### NewLabelsExprEvaluator
 
 **NewLabelsExprEvaluator** - Transforms a user‑supplied comma‑separated list of label filters into a Go AST that can be evaluated against test labels. It replaces hyphens with underscores and commas with logical OR (`
-
 
 #### Signature (Go)
 
@@ -116,19 +115,19 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/labels"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/labels"
 )
 
 func main() {
-	evaluator, err := labels.NewLabelsExprEvaluator("tag-a,tag_b")
-	if err != nil {
-		fmt.Printf("Error creating evaluator: %v\n", err)
-		return
-	}
-	// Assume LabelsExprEvaluator has an Eval method:
-	match := evaluator.Eval([]string{"tag_a"}) // example usage
-	fmt.Printf("Match result: %t\n", match)
+ evaluator, err := labels.NewLabelsExprEvaluator("tag-a,tag_b")
+ if err != nil {
+  fmt.Printf("Error creating evaluator: %v\n", err)
+  return
+ }
+ // Assume LabelsExprEvaluator has an Eval method:
+ match := evaluator.Eval([]string{"tag_a"}) // example usage
+ fmt.Printf("Match result: %t\n", match)
 }
 ```
 
@@ -138,13 +137,14 @@ func main() {
 
 **Eval** - Determines whether the provided `labels` satisfy the logical expression stored in `exprParser.astRootNode`.
 
-
 #### Signature (Go)
+
 ```go
 func (exprParser labelsExprParser) Eval(labels []string) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether the provided `labels` satisfy the logical expression stored in `exprParser.astRootNode`. |
@@ -155,6 +155,7 @@ func (exprParser labelsExprParser) Eval(labels []string) bool
 | **How it fits the package** | Provides the core evaluation logic used by higher‑level label filtering utilities in the `labels` package. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Create labelsMap"] --> B{"Iterate over input labels"}
@@ -173,6 +174,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_labelsExprParser.Eval --> make
@@ -182,9 +184,11 @@ graph TD
 ```
 
 #### Functions calling `labelsExprParser.Eval` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking labelsExprParser.Eval
 package main
@@ -205,4 +209,3 @@ func main() {
 ---
 
 ---
-

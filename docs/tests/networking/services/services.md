@@ -36,13 +36,14 @@ Failed to parse JSON response, but content appears to contain package informatio
 
 **GetServiceIPVersion** - Inspects a `*corev1.Service` to decide whether it is single‑stack IPv4, single‑stack IPv6, or dual‑stack. Returns the corresponding `netcommons.IPVersion`.
 
-
 #### Signature (Go)
+
 ```go
 func GetServiceIPVersion(aService *corev1.Service) (result netcommons.IPVersion, err error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Inspects a `*corev1.Service` to decide whether it is single‑stack IPv4, single‑stack IPv6, or dual‑stack. Returns the corresponding `netcommons.IPVersion`. |
@@ -53,6 +54,7 @@ func GetServiceIPVersion(aService *corev1.Service) (result netcommons.IPVersion,
 | **How it fits the package** | Provides core logic for IP‑family compliance checks used by higher‑level tests such as `testDualStackServices`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Get ClusterIP version"}
@@ -68,6 +70,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetServiceIPVersion --> func_GetIPVersion
@@ -78,12 +81,14 @@ graph TD
 ```
 
 #### Functions calling `GetServiceIPVersion` (Mermaid)
+
 ```mermaid
 graph TD
   testDualStackServices --> GetServiceIPVersion
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetServiceIPVersion
 import (
@@ -111,7 +116,6 @@ func main() {
 ### ToString
 
 **ToString** - Produces a concise textual representation of a `corev1.Service` instance, summarizing its namespace, name, cluster IPs, and all cluster IP addresses.
-
 
 #### Signature (Go)
 
@@ -194,7 +198,6 @@ fmt.Println(description)
 
 **ToStringSlice** - Builds a human‑readable multiline string that lists each service’s namespace, name, ClusterIP, and all ClusterIPs.
 
-
 Convert a slice of Kubernetes Service objects into a formatted string representation.
 
 #### Signature (Go)
@@ -262,13 +265,14 @@ func main() {
 
 **isClusterIPsDualStack** - Checks whether the supplied slice of IP address strings includes at least one IPv4 and one IPv6 address, indicating a dual‑stack configuration.
 
-
 #### Signature (Go)
+
 ```go
 func isClusterIPsDualStack(ips []string) (result bool, err error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the supplied slice of IP address strings includes at least one IPv4 and one IPv6 address, indicating a dual‑stack configuration. |
@@ -279,6 +283,7 @@ func isClusterIPsDualStack(ips []string) (result bool, err error)
 | **How it fits the package** | Used by service‑level utilities (`GetServiceIPVersion`) to validate that a Service’s `ClusterIPs` slice satisfies dual‑stack requirements. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over ips"}
@@ -294,6 +299,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_isClusterIPsDualStack --> func_GetIPVersion
@@ -301,34 +307,35 @@ graph TD
 ```
 
 #### Functions calling `isClusterIPsDualStack` (Mermaid)
+
 ```mermaid
 graph TD
   func_GetServiceIPVersion --> func_isClusterIPsDualStack
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isClusterIPsDualStack
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	ips := []string{"10.0.0.1", "fd00::1"}
-	ok, err := isClusterIPsDualStack(ips)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-		return
-	}
-	if ok {
-		fmt.Println("The ClusterIP list is dual‑stack.")
-	} else {
-		fmt.Println("Not a dual‑stack configuration.")
-	}
+ ips := []string{"10.0.0.1", "fd00::1"}
+ ok, err := isClusterIPsDualStack(ips)
+ if err != nil {
+  fmt.Printf("error: %v\n", err)
+  return
+ }
+ if ok {
+  fmt.Println("The ClusterIP list is dual‑stack.")
+ } else {
+  fmt.Println("Not a dual‑stack configuration.")
+ }
 }
 ```
 
 ---
-

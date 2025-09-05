@@ -17,7 +17,7 @@ The `upload` package supplies a Cobra command that serves as the root for upload
 - Provides an exported `NewCommand` function that creates the top‑level upload command and aggregates sub‑commands for handling spreadsheet uploads.
 - Integrates with the `results_spreadsheet` subpackage to perform the actual upload logic.
 - Uses Cobra conventions, enabling easy extension and consistent CLI behavior.
-- 
+-
 
 ### Design Notes
 
@@ -36,7 +36,6 @@ The `upload` package supplies a Cobra command that serves as the root for upload
 ### NewCommand
 
 **NewCommand** - Constructs and returns a Cobra command representing the `upload` sub‑command of certsuite. It aggregates sub‑commands that handle uploading results spreadsheets to cloud storage.
-
 
 #### Signature (Go)
 
@@ -86,14 +85,13 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/upload"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/upload"
 )
 
 func main() {
-	uploadCmd := upload.NewCommand()
-	// uploadCmd can now be added to a root Cobra command or executed directly.
+ uploadCmd := upload.NewCommand()
+ // uploadCmd can now be added to a root Cobra command or executed directly.
 }
 ```
 
 ---
-

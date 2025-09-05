@@ -44,15 +44,16 @@ The feedback package provides a Cobra‑based CLI command that reads a JSON file
 
 **NewCommand** - Builds a CLI command named “generate‑feedback” that reads a JSON feedback source and writes a JavaScript file for use in the CertSuite web UI.
 
-
 Creates and configures the Cobra command that generates a `feedback.js` file from a provided `feedback.json`.
 
 #### Signature (Go)
+
 ```go
 func NewCommand() *cobra.Command
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a CLI command named “generate‑feedback” that reads a JSON feedback source and writes a JavaScript file for use in the CertSuite web UI. |
@@ -63,6 +64,7 @@ func NewCommand() *cobra.Command
 | **How it fits the package** | The function is the public entry point for the *feedback* sub‑command within the CertSuite generate CLI. It is invoked by the top‑level `generate.NewCommand` to compose the full command hierarchy. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Create cobra.Command"] --> B["Add --feedback flag"]
@@ -75,6 +77,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewCommand --> func_StringVarP
@@ -84,25 +87,27 @@ graph TD
 ```
 
 #### Functions calling `NewCommand` (Mermaid)
+
 ```mermaid
 graph TD
   func_generate.NewCommand --> func_feedback.NewCommand
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewCommand
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/feedback"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/feedback"
 )
 
 func main() {
-	cmd := feedback.NewCommand()
-	if err := cmd.Execute(); err != nil {
-		panic(err)
-	}
+ cmd := feedback.NewCommand()
+ if err := cmd.Execute(); err != nil {
+  panic(err)
+ }
 }
 ```
 
@@ -113,7 +118,6 @@ func main() {
 ### runGenerateFeedbackJsFile
 
 **runGenerateFeedbackJsFile** - Reads a JSON feedback file, pretty‑prints its contents as JavaScript by prefixing with `feedback=`, writes the result to `feedback.js` in the output directory, and prints it to stdout.
-
 
 #### 1) Signature (Go)
 
@@ -179,19 +183,18 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/feedback"
-	"github.com/spf13/cobra"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/feedback"
+ "github.com/spf13/cobra"
 )
 
 func main() {
-	cmd := &cobra.Command{}
-	if err := feedback.runGenerateFeedbackJsFile(cmd, nil); err != nil {
-		panic(err)
-	}
+ cmd := &cobra.Command{}
+ if err := feedback.runGenerateFeedbackJsFile(cmd, nil); err != nil {
+  panic(err)
+ }
 }
 ```
 
 ---
 
 ---
-

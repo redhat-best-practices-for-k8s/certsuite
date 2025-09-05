@@ -44,7 +44,6 @@ The sysctlconfig package provides utilities for retrieving and parsing kernel sy
 
 **GetSysctlSettings** - Executes `sysctl --system` inside a probe pod to collect kernel sysctl settings for a specific node and returns them as a key‑value map.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -119,11 +118,13 @@ for k, v := range settings {
 Creates a map of sysctl keys to their values from the output of `sysctl --system`.
 
 #### Signature (Go)
+
 ```go
 func parseSysctlSystemOutput(string) map[string]string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses the multiline string returned by `sysctl --system` and builds a key‑value map of sysctl settings. Lines that are comments or do not match the expected pattern are ignored. |
@@ -134,6 +135,7 @@ func parseSysctlSystemOutput(string) map[string]string
 | **How it fits the package** | Utility used by `GetSysctlSettings` to interpret command output and expose sysctl configuration as a Go data structure for further analysis or validation. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Split output into lines"}
@@ -149,6 +151,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_parseSysctlSystemOutput --> make
@@ -160,29 +163,30 @@ graph TD
 ```
 
 #### Functions calling `parseSysctlSystemOutput` (Mermaid)
+
 ```mermaid
 graph TD
   GetSysctlSettings --> parseSysctlSystemOutput
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking parseSysctlSystemOutput
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	raw := `
+ raw := `
 kernel.yama.ptrace_scope = 0
 *some comment line*
 net.ipv4.ip_forward = 1`
-	settings := parseSysctlSystemOutput(raw)
-	fmt.Println(settings) // map[net.ipv4.ip_forward:1 kernel.yama.ptrace_scope:0]
+ settings := parseSysctlSystemOutput(raw)
+ fmt.Println(settings) // map[net.ipv4.ip_forward:1 kernel.yama.ptrace_scope:0]
 }
 ```
 
 ---
-

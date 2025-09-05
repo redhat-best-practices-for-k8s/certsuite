@@ -46,19 +46,21 @@ Provides utilities for testing Kubernetes pod owner references within the Certsu
 
 ### OwnerReference
 
-
 The `OwnerReference` type encapsulates a Kubernetes Pod and records the outcome of a test that verifies whether the pod’s owner references belong to acceptable resource kinds (`StatefulSet` or `ReplicaSet`).
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `put` | `*corev1.Pod` | Reference to the Pod under test. |
 | `result` | `int` | Numeric status of the test (e.g., success, failure). |
 
 #### Purpose
+
 `OwnerReference` is used in lifecycle tests to assert that a pod’s owner references are of the expected kinds. It stores the pod being examined and the result of the validation, enabling later retrieval via `GetResults()`.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewOwnerReference(put *corev1.Pod) *OwnerReference` | Creates a new instance initialized with the given pod and a default error status. |
@@ -74,7 +76,6 @@ The `OwnerReference` type encapsulates a Kubernetes Pod and records the outcome 
 ### NewOwnerReference
 
 **NewOwnerReference** - Instantiates a new `OwnerReference` struct for the provided Pod, initializing its result status to an error state.
-
 
 #### Signature (Go)
 
@@ -139,7 +140,6 @@ or := ownerreference.NewOwnerReference(pod)
 
 **GetResults** - Returns the integer result currently stored in an `OwnerReference` instance.
 
-
 #### Signature (Go)
 
 ```go
@@ -181,14 +181,14 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/ownerreference"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/ownerreference"
 )
 
 func main() {
-	or := &ownerreference.OwnerReference{result: 42}
-	fmt.Println("Result:", or.GetResults()) // Output: Result: 42
+ or := &ownerreference.OwnerReference{result: 42}
+ fmt.Println("Result:", or.GetResults()) // Output: Result: 42
 }
 ```
 
@@ -198,13 +198,14 @@ func main() {
 
 **RunTest** - Executes a series of checks on the owner references of a pod, logs progress, and records success or failure in `o.result`.
 
-
 #### Signature (Go)
+
 ```go
 func (*OwnerReference) RunTest(*log.Logger)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Executes a series of checks on the owner references of a pod, logs progress, and records success or failure in `o.result`. |
@@ -215,6 +216,7 @@ func (*OwnerReference) RunTest(*log.Logger)
 | **How it fits the package** | Part of the lifecycle tests for owner references; verifies that pods are owned by StatefulSet or ReplicaSet objects. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over OwnerReferences"}
@@ -226,6 +228,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   OwnerReference.RunTest --> logger.Info
@@ -233,28 +236,29 @@ graph TD
 ```
 
 #### Functions calling `OwnerReference.RunTest` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking OwnerReference.RunTest
 package main
 
 import (
-	"log"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/ownerreference"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/ownerreference"
 )
 
 func main() {
-	logger := log.Default()
-	or := &ownerreference.OwnerReference{
-		put:     "mypod",
-		result:  "", // will be set by RunTest
-	}
-	or.RunTest(logger)
+ logger := log.Default()
+ or := &ownerreference.OwnerReference{
+  put:     "mypod",
+  result:  "", // will be set by RunTest
+ }
+ or.RunTest(logger)
 }
 ```
 
 ---
-

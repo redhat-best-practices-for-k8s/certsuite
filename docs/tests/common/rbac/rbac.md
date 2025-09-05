@@ -62,8 +62,8 @@ The rbac package provides utilities for evaluating RBAC configurations and Servi
 
 ### CrdResource
 
-
 #### Fields
+
 | Field        | Type      | Description |
 |--------------|-----------|-------------|
 | `Group`      | `string`  | API group to which the CRD belongs (e.g., `"apps.example.com"`). |
@@ -72,9 +72,11 @@ The rbac package provides utilities for evaluating RBAC configurations and Servi
 | `ShortNames` | `[]string` | Optional list of short names that can be used as aliases when referring to the CRD in commands. |
 
 #### Purpose
+
 `CrdResource` encapsulates the minimal identifying information for a Kubernetes Custom Resource Definition that is needed when evaluating RBAC rules against available resources. It holds the API group, singular and plural names, and any defined short names so that functions can match these against role rules.
 
 #### Related Functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetCrdResources` | Converts a slice of `apiextv1.CustomResourceDefinition` objects into a slice of `CrdResource`, extracting the group and name fields. |
@@ -87,17 +89,19 @@ The rbac package provides utilities for evaluating RBAC configurations and Servi
 
 ### RoleResource
 
-
 #### Fields
+
 | Field | Type   | Description |
 |-------|--------|-------------|
 | Group | string | The API group that defines the role type (`rbac.authorization.k8s.io` for standard roles, `rbac.authorization.k8s.io` for cluster‑roles). If empty, defaults to the core RBAC group. |
 | Name  | string | The name of the specific role or cluster‑role being referenced. |
 
 #### Purpose
+
 `RoleResource` encapsulates a minimal identifier for an RBAC resource (either a `Role` or a `ClusterRole`). It is used throughout the test suite to specify which role should be granted, revoked, or inspected during permission checks.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | *none*   | No direct helper functions are defined for this struct in the current codebase. |
@@ -107,7 +111,6 @@ The rbac package provides utilities for evaluating RBAC configurations and Servi
 ---
 
 ### RoleRule
-
 
 Represents a single permission entry extracted from a Kubernetes RBAC `Role`, specifying which resource group and name a verb applies to.
 
@@ -148,13 +151,14 @@ Each rule in a `Role` can specify multiple API groups, resources, and verbs. By 
 
 **EvaluateAutomountTokens** - Determines whether a Pod is correctly configured to avoid automatic mounting of the ServiceAccount token. The function passes only if the token is explicitly set to `false` either on the Pod or its associated ServiceAccount, or if the configuration defaults to `false`.
 
-
 #### 1) Signature (Go)
+
 ```go
 func EvaluateAutomountTokens(client corev1typed.CoreV1Interface, put *provider.Pod) (bool, string)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether a Pod is correctly configured to avoid automatic mounting of the ServiceAccount token. The function passes only if the token is explicitly set to `false` either on the Pod or its associated ServiceAccount, or if the configuration defaults to `false`. |
@@ -165,6 +169,7 @@ func EvaluateAutomountTokens(client corev1typed.CoreV1Interface, put *provider.P
 | **How it fits the package** | Part of the RBAC checks suite, used to validate that Pods do not unintentionally expose ServiceAccount tokens. |
 
 #### 3) Internal workflow
+
 ```mermaid
 flowchart TD
     A["Start"] --> B{"Pod automountToken set?"}
@@ -178,6 +183,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies
+
 ```mermaid
 graph TD
     func_EvaluateAutomountTokens --> fmt.Sprintf
@@ -186,29 +192,31 @@ graph TD
 ```
 
 #### 5) Functions calling `EvaluateAutomountTokens`
+
 ```mermaid
 graph TD
     testAutomountServiceToken --> EvaluateAutomountTokens
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking EvaluateAutomountTokens
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common/rbac"
-	corev1typed "k8s.io/client-go/kubernetes/typed/core/v1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/common/rbac"
+ corev1typed "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
 func main() {
-	var client corev1typed.CoreV1Interface   // assume initialized
-	var pod *provider.Pod                    // assume populated
+ var client corev1typed.CoreV1Interface   // assume initialized
+ var pod *provider.Pod                    // assume populated
 
-	passed, msg := rbac.EvaluateAutomountTokens(client, pod)
-	if !passed {
-		fmt.Println("Automount check failed:", msg)
-	} else {
-		fmt.Println("Pod automount configuration is compliant.")
-	}
+ passed, msg := rbac.EvaluateAutomountTokens(client, pod)
+ if !passed {
+  fmt.Println("Automount check failed:", msg)
+ } else {
+  fmt.Println("Pod automount configuration is compliant.")
+ }
 }
 ```
 
@@ -218,13 +226,14 @@ func main() {
 
 **FilterRulesNonMatchingResources** - Separates `RoleRule` entries into those that apply to any CRD in the supplied list (`matching`) and those that do not (`nonMatching`).
 
-
 #### 1) Signature (Go)
+
 ```go
 func FilterRulesNonMatchingResources(ruleList []RoleRule, resourceList []CrdResource) (matching, nonMatching []RoleRule)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Separates `RoleRule` entries into those that apply to any CRD in the supplied list (`matching`) and those that do not (`nonMatching`). |
@@ -235,6 +244,7 @@ func FilterRulesNonMatchingResources(ruleList []RoleRule, resourceList []CrdReso
 | **How it fits the package** | Provides core filtering logic used by higher‑level tests (e.g., `testCrdRoles`) to assess role compliance with CRDs. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Start"] --> B{"For each rule"}
@@ -247,6 +257,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_FilterRulesNonMatchingResources --> func_isResourceInRoleRule
@@ -254,12 +265,14 @@ graph TD
 ```
 
 #### 5) Functions calling `FilterRulesNonMatchingResources` (Mermaid)
+
 ```mermaid
 graph TD
   func_testCrdRoles --> func_FilterRulesNonMatchingResources
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking FilterRulesNonMatchingResources
 rules := []RoleRule{
@@ -282,7 +295,6 @@ matching, nonMatching := FilterRulesNonMatchingResources(rules, crds)
 ### GetAllRules
 
 **GetAllRules** - Deconstructs a Kubernetes `rbacv1.Role` into the smallest actionable units, returning one `RoleRule` for each combination of API group, resource, and verb.
-
 
 #### Signature (Go)
 
@@ -335,28 +347,28 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	rbacv1 "k8s.io/api/rbac/v1"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common/rbac"
+ rbacv1 "k8s.io/api/rbac/v1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/common/rbac"
 )
 
 func main() {
-	role := &rbacv1.Role{
-		Rules: []rbacv1.PolicyRule{
-			{
-				APIGroups: []string{"apps"},
-				Resources: []string{"deployments"},
-				Verbs:     []string{"get", "list"},
-			},
-		},
-	}
+ role := &rbacv1.Role{
+  Rules: []rbacv1.PolicyRule{
+   {
+    APIGroups: []string{"apps"},
+    Resources: []string{"deployments"},
+    Verbs:     []string{"get", "list"},
+   },
+  },
+ }
 
-	allRules := rbac.GetAllRules(role)
-	for _, r := range allRules {
-		fmt.Printf("Group=%s, Resource=%s, Verb=%s\n",
-			r.Resource.Group, r.Resource.Name, r.Verb)
-	}
+ allRules := rbac.GetAllRules(role)
+ for _, r := range allRules {
+  fmt.Printf("Group=%s, Resource=%s, Verb=%s\n",
+   r.Resource.Group, r.Resource.Name, r.Verb)
+ }
 }
 ```
 
@@ -365,7 +377,6 @@ func main() {
 ### GetCrdResources
 
 **GetCrdResources** - Transforms a slice of `*apiextv1.CustomResourceDefinition` into a slice of `CrdResource`, extracting group, singular/ plural names and short names for each CRD.
-
 
 #### 1) Signature (Go)
 
@@ -436,7 +447,6 @@ func example() {
 ### SliceDifference
 
 **SliceDifference** - Computes the set difference of two `[]RoleRule` slices – elements that exist in *s1* but not in *s2*.
-
 
 #### Signature (Go)
 
@@ -512,7 +522,6 @@ diff := SliceDifference(rulesA, rulesB)
 
 **isResourceInRoleRule** - Determines whether a custom resource definition (CRD) matches a given RBAC `RoleRule` by comparing the CRD’s API group and plural name against the rule’s resource specification.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -565,27 +574,26 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common/rbac"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/common/rbac"
 )
 
 func main() {
-	crd := rbac.CrdResource{
-		Group:       "apps.example.com",
-		PluralName:  "widgets",
-	}
-	roleRule := rbac.RoleRule{
-		Resource: struct{ Name, Group string }{
-			Name:  "widgets", // could be "widgets/subresource"
-			Group: "apps.example.com",
-		},
-	}
+ crd := rbac.CrdResource{
+  Group:       "apps.example.com",
+  PluralName:  "widgets",
+ }
+ roleRule := rbac.RoleRule{
+  Resource: struct{ Name, Group string }{
+   Name:  "widgets", // could be "widgets/subresource"
+   Group: "apps.example.com",
+  },
+ }
 
-	matches := rbac.isResourceInRoleRule(crd, roleRule)
-	fmt.Printf("Does the CRD match the rule? %t\n", matches)
+ matches := rbac.isResourceInRoleRule(crd, roleRule)
+ fmt.Printf("Does the CRD match the rule? %t\n", matches)
 }
 ```
 
 ---
-

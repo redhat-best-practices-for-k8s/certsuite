@@ -46,14 +46,13 @@ The `performance` package registers a set of runtime checks that validate CNF wo
 | [func testExclusiveCPUPool(check *checksdb.Check, env *provider.TestEnvironment)](#testexclusivecpupool) | Detect pods containing containers that mix exclusive‑CPU and shared‑CPU assignments; flag such pods as non‑compliant. |
 | [func testLimitedUseOfExecProbes(*checksdb.Check, *provider.TestEnvironment)()](#testlimiteduseofexecprobes) | Ensures that a CNF does not exceed the allowed number of exec probes and that each probe’s `PeriodSeconds` is ≥ 10 seconds. |
 | [func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment)](#testrtappsnoexecprobes) | Ensures that containers lacking host PID isolation do not execute exec probes while any process is scheduled with a real‑time policy. It reports compliance or non‑compliance for each container and its processes. |
-| [func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvironment, 	podContainers []*provider.Container, schedulingType string) ()](#testschedulingpolicyincpupool) | Ensures that every process inside each container’s PID namespace satisfies the CPU scheduling policy specified by `schedulingType`. It records compliant and non‑compliant processes in the test result. |
+| [func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvironment,  podContainers []*provider.Container, schedulingType string) ()](#testschedulingpolicyincpupool) | Ensures that every process inside each container’s PID namespace satisfies the CPU scheduling policy specified by `schedulingType`. It records compliant and non‑compliant processes in the test result. |
 
 ## Exported Functions
 
 ### LoadChecks
 
 **LoadChecks** - Registers a set of performance‑related tests in the shared checks DB, attaching setup logic and skip conditions for each check.
-
 
 #### Signature (Go)
 
@@ -130,7 +129,6 @@ func init() {
 ### filterProbeProcesses
 
 **filterProbeProcesses** - Removes processes that are part of a container’s exec probes and returns the remaining processes along with report objects for the excluded ones.
-
 
 #### 1) Signature (Go)
 
@@ -218,13 +216,14 @@ func example() {
 
 **getExecProbesCmds** - Builds a lookup table of the exact command lines that are executed by any `exec` probe (`liveness`, `readiness`, or `startup`) configured in a container. The keys are normalized command strings, and the values are always `true`.
 
-
 #### Signature (Go)
+
 ```go
 func getExecProbesCmds(c *provider.Container) map[string]bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a lookup table of the exact command lines that are executed by any `exec` probe (`liveness`, `readiness`, or `startup`) configured in a container. The keys are normalized command strings, and the values are always `true`. |
@@ -235,6 +234,7 @@ func getExecProbesCmds(c *provider.Container) map[string]bool
 | **How it fits the package** | Used by higher‑level filtering logic (`filterProbeProcesses`) to identify processes that belong to probe execution, allowing them to be excluded from security checks. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["getExecProbesCmds"] --> B{"Check liveness probe"}
@@ -249,6 +249,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getExecProbesCmds --> strings.Join
@@ -256,12 +257,14 @@ graph TD
 ```
 
 #### Functions calling `getExecProbesCmds` (Mermaid)
+
 ```mermaid
 graph TD
   filterProbeProcesses --> func_getExecProbesCmds
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getExecProbesCmds
 package main
@@ -286,7 +289,6 @@ func main() {
 ### testExclusiveCPUPool
 
 **testExclusiveCPUPool** - Detect pods containing containers that mix exclusive‑CPU and shared‑CPU assignments; flag such pods as non‑compliant.
-
 
 The function verifies that all containers within a pod belong to the same CPU pool (exclusive or shared). It logs errors for mixed pools and records compliance results.
 
@@ -359,13 +361,14 @@ testExclusiveCPUPool(check, env)
 
 **testLimitedUseOfExecProbes** - Ensures that a CNF does not exceed the allowed number of exec probes and that each probe’s `PeriodSeconds` is ≥ 10 seconds.
 
-
 #### 1) Signature (Go)
+
 ```go
 func testLimitedUseOfExecProbes(*checksdb.Check, *provider.TestEnvironment)()
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures that a CNF does not exceed the allowed number of exec probes and that each probe’s `PeriodSeconds` is ≥ 10 seconds. |
@@ -376,6 +379,7 @@ func testLimitedUseOfExecProbes(*checksdb.Check, *provider.TestEnvironment)()
 | **How it fits the package** | Implements the *TestLimitedUseOfExecProbes* test in the performance suite, ensuring CNF compliance with probe‑usage policies. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Iterate over Pods"] --> B{"For each Container"}
@@ -395,6 +399,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testLimitedUseOfExecProbes --> func_LogInfo
@@ -406,12 +411,14 @@ graph TD
 ```
 
 #### 5) Functions calling `testLimitedUseOfExecProbes` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testLimitedUseOfExecProbes
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking testLimitedUseOfExecProbes
 package main
@@ -436,7 +443,6 @@ func main() {
 ### testRtAppsNoExecProbes
 
 **testRtAppsNoExecProbes** - Ensures that containers lacking host PID isolation do not execute exec probes while any process is scheduled with a real‑time policy. It reports compliance or non‑compliance for each container and its processes.
-
 
 #### Signature (Go)
 
@@ -521,14 +527,15 @@ func runExample() {
 
 **testSchedulingPolicyInCPUPool** - Ensures that every process inside each container’s PID namespace satisfies the CPU scheduling policy specified by `schedulingType`. It records compliant and non‑compliant processes in the test result.
 
-
 #### Signature (Go)
+
 ```go
 func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvironment,
-	podContainers []*provider.Container, schedulingType string) ()
+ podContainers []*provider.Container, schedulingType string) ()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures that every process inside each container’s PID namespace satisfies the CPU scheduling policy specified by `schedulingType`. It records compliant and non‑compliant processes in the test result. |
@@ -539,6 +546,7 @@ func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvi
 | **How it fits the package** | Part of the performance suite’s CPU‑pool checks; called by higher‑level functions that load and run checks for different scheduling scenarios. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over podContainers"}
@@ -554,6 +562,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testSchedulingPolicyInCPUPool --> func_GetContainerPidNamespace
@@ -563,12 +572,14 @@ graph TD
 ```
 
 #### Functions calling `testSchedulingPolicyInCPUPool` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testSchedulingPolicyInCPUPool
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testSchedulingPolicyInCPUPool
 func runExample() {
@@ -582,4 +593,3 @@ func runExample() {
 ```
 
 ---
-

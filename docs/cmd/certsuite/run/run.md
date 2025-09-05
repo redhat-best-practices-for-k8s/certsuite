@@ -46,13 +46,14 @@ The package implements the `run` sub‑command of certsuite. It parses command�
 
 **NewCommand** - Creates and configures a `cobra.Command` for the `run` sub‑command, adding all required persistent flags.
 
-
 #### Signature (Go)
+
 ```go
 func NewCommand() *cobra.Command
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Creates and configures a `cobra.Command` for the `run` sub‑command, adding all required persistent flags. |
@@ -63,6 +64,7 @@ func NewCommand() *cobra.Command
 | **How it fits the package** | Provides the executable entry point for running tests, exposing configuration options to users of the certsuite CLI. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Configure Flags"}
@@ -97,6 +99,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewCommand --> func_StringP
@@ -106,12 +109,14 @@ graph TD
 ```
 
 #### Functions calling `NewCommand` (Mermaid)
+
 ```mermaid
 graph TD
   func_newRootCmd --> func_NewCommand
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewCommand to obtain the command tree.
 cmd := run.NewCommand()
@@ -128,7 +133,6 @@ if err := cmd.Execute(); err != nil {
 ### initTestParamsFromFlags
 
 **initTestParamsFromFlags** - Reads CLI flag values into the shared `TestParameters` structure and prepares the output directory and timeout value.
-
 
 #### Signature (Go)
 
@@ -193,15 +197,15 @@ graph TD
 package main
 
 import (
-	"github.com/spf13/cobra"
-	cmd "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/run"
+ "github.com/spf13/cobra"
+ cmd "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/run"
 )
 
 func main() {
-	root := &cobra.Command{Use: "certsuite"}
-	if err := cmd.initTestParamsFromFlags(root); err != nil {
-		panic(err)
-	}
+ root := &cobra.Command{Use: "certsuite"}
+ if err := cmd.initTestParamsFromFlags(root); err != nil {
+  panic(err)
+ }
 }
 ```
 
@@ -213,13 +217,14 @@ func main() {
 
 **runTestSuite** - Initializes test parameters from CLI flags and runs the suite either in server mode or as a stand‑alone process.
 
-
 #### Signature (Go)
+
 ```go
 func runTestSuite(cmd *cobra.Command, _ []string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Initializes test parameters from CLI flags and runs the suite either in server mode or as a stand‑alone process. |
@@ -230,6 +235,7 @@ func runTestSuite(cmd *cobra.Command, _ []string) error
 | **How it fits the package** | Entry point for the `certsuite run` command; orchestrates configuration, mode selection, and execution flow. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["initTestParamsFromFlags"]
@@ -242,6 +248,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_runTestSuite --> initTestParamsFromFlags
@@ -253,9 +260,11 @@ graph TD
 ```
 
 #### Functions calling `runTestSuite` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking runTestSuite
 package main
@@ -276,4 +285,3 @@ func main() {
 ---
 
 ---
-

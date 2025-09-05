@@ -48,7 +48,6 @@ The identifiers package defines test identifiers, catalog registration helpers, 
 
 **AddCatalogEntry** - Creates a `claim.TestCaseDescription`, stores it in the global catalog, and records its classification. It returns the unique identifier for the test case.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -157,23 +156,25 @@ This example demonstrates how to register a new test case with default values fo
 
 **GetTestIDAndLabels** - Transforms a `claim.Identifier` into a test identifier suitable for the test framework and collects labels that describe the test. The returned ID is used as the key in check registrations; the labels are later used for filtering or categorisation.
 
-
 #### Signature (Go)
+
 ```go
 func GetTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Transforms a `claim.Identifier` into a test identifier suitable for the test framework and collects labels that describe the test. The returned ID is used as the key in check registrations; the labels are later used for filtering or categorisation. |
 | **Parameters** | `identifier claim.Identifier –` a struct containing fields `Id`, `Suite`, and `Tags`. |
 | **Return value** | `testID string` – the test identifier (`identifier.Id`).<br>`tags []string` – a slice of label strings derived from `identifier.Tags` plus the ID and suite name. |
-| **Key dependencies** | * `strings.Split` – splits comma‑separated tags.<br>* `append` – adds additional labels to the slice.<br>* Assignment to global map `TestIDToClaimID`. |
+| **Key dependencies** | *`strings.Split` – splits comma‑separated tags.<br>* `append` – adds additional labels to the slice.<br>* Assignment to global map `TestIDToClaimID`. |
 | **Side effects** | Stores the mapping from test ID to its original claim identifier in the package‑level map `TestIDToClaimID`; mutates no external state. |
 | **How it fits the package** | The identifiers package centralises conversion between claim data and test metadata. Functions that register checks call this helper to obtain a unique test ID and the labels required for skip logic, categorisation, and reporting. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive claim.Identifier"] --> B{"Split Tags"}
@@ -185,6 +186,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetTestIDAndLabels --> func_Split(strings)
@@ -192,6 +194,7 @@ graph TD
 ```
 
 #### Functions calling `GetTestIDAndLabels` (Mermaid)
+
 ```mermaid
 graph TD
   func_SanitizeClaimFile --> func_GetTestIDAndLabels
@@ -209,26 +212,27 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetTestIDAndLabels
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claim"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/claim"
 )
 
 func main() {
-	id := claim.Identifier{
-		Id:   "SecContextCapabilities",
-		Suite:"accesscontrol",
-		Tags: "security,capabilities",
-	}
-	testID, tags := identifiers.GetTestIDAndLabels(id)
-	fmt.Printf("Test ID: %s\n", testID)          // SecContextCapabilities
-	fmt.Printf("Tags: %v\n", tags)               // [security capabilities SecContextCapabilities accesscontrol]
+ id := claim.Identifier{
+  Id:   "SecContextCapabilities",
+  Suite:"accesscontrol",
+  Tags: "security,capabilities",
+ }
+ testID, tags := identifiers.GetTestIDAndLabels(id)
+ fmt.Printf("Test ID: %s\n", testID)          // SecContextCapabilities
+ fmt.Printf("Tags: %v\n", tags)               // [security capabilities SecContextCapabilities accesscontrol]
 }
 ```
 
@@ -237,7 +241,6 @@ func main() {
 ### InitCatalog
 
 **InitCatalog** - Populates a global catalog with test case descriptions by registering each test identifier via `AddCatalogEntry`. Returns the populated catalog.
-
 
 #### Signature (Go)
 
@@ -310,13 +313,14 @@ func main() {
 
 **init** - Automatically registers a collection of test identifiers when the package is imported. It invokes `InitCatalog()` to populate the internal catalog.
 
-
 #### Signature
+
 ```go
 func init()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Automatically registers a collection of test identifiers when the package is imported. It invokes `InitCatalog()` to populate the internal catalog. |
@@ -327,21 +331,25 @@ func init()
 | **How it fits the package** | Acts as a module‑initialization hook, ensuring that all identifiers are available before any test execution begins. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["init"] --> B["InitCatalog"]
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_init --> func_InitCatalog
 ```
 
 #### Functions calling `init`
+
 None – this function is automatically invoked by the Go runtime when the package is imported.  
 
 #### Usage example (Go)
+
 ```go
 // The init function runs automatically; no explicit call is required.
 // Importing the package triggers registration of identifiers.
@@ -349,4 +357,3 @@ import _ "github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 ```
 
 ---
-

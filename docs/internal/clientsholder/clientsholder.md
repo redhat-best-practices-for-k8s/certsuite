@@ -90,8 +90,8 @@ Provides a central holder for all Kubernetes and OpenShift client interfaces, ut
 
 ### ClientsHolder
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `RestConfig` | `*rest.Config` | REST configuration used by all clients; includes server URL, authentication, and timeout. |
@@ -112,9 +112,11 @@ Provides a central holder for all Kubernetes and OpenShift client interfaces, ut
 | `ApiserverClient` | `apiserverscheme.Interface` | Client for API server scheme registration (used by OLM). |
 
 #### Purpose
+
 `ClientsHolder` aggregates a collection of Kubernetes and OpenShift client interfaces, along with configuration data such as `RestConfig`, `KubeConfig`, and discovery information. It serves as a central access point for performing operations across multiple APIs—ranging from core Kubernetes objects to custom resources and operator lifecycle management—within the CertSuite testing framework.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `ExecCommandContainer` | Executes an arbitrary shell command inside a specified pod container using the holder’s `K8sClient`. |
@@ -128,7 +130,6 @@ Provides a central holder for all Kubernetes and OpenShift client interfaces, ut
 ---
 
 ### CommandMock
-
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -150,7 +151,6 @@ Provides a central holder for all Kubernetes and OpenShift client interfaces, ut
 ---
 
 ### Context
-
 
 Represents the execution context for a command that runs inside a Kubernetes pod container: the target namespace, pod name, and container name.
 
@@ -200,13 +200,14 @@ The `Context` struct encapsulates all information required by client code to loc
 
 **ClearTestClientsHolder** - Resets the global clients holder by clearing its Kubernetes client reference and marking it as not ready.
 
-
 #### 1) Signature (Go)
+
 ```go
 func ClearTestClientsHolder()
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Resets the global clients holder by clearing its Kubernetes client reference and marking it as not ready. |
@@ -217,6 +218,7 @@ func ClearTestClientsHolder()
 | **How it fits the package** | Provides a clean‑up routine used during testing or reinitialisation to ensure subsequent tests start with a pristine client holder. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["ClearTestClientsHolder"] --> B["Set clientsHolder.K8sClient = nil"]
@@ -232,17 +234,18 @@ None – this function is currently not referenced elsewhere in the package.
 None – this function is currently not referenced elsewhere in the package.
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking ClearTestClientsHolder
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 )
 
 func main() {
-	// Assume clients have been configured earlier...
-	clientsholder.ClearTestClientsHolder()
+ // Assume clients have been configured earlier...
+ clientsholder.ClearTestClientsHolder()
 }
 ```
 
@@ -251,7 +254,6 @@ func main() {
 ### ClientsHolder.ExecCommandContainer
 
 **ExecCommandContainer** - Runs a shell command inside the container identified by `ctx` and captures its standard output and error streams.
-
 
 #### Signature (Go)
 
@@ -266,7 +268,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(ctx Context, command st
 | **Purpose** | Runs a shell command inside the container identified by `ctx` and captures its standard output and error streams. |
 | **Parameters** | `clientsholder *ClientsHolder` – receiver providing Kubernetes client configuration.<br>`ctx Context` – contains namespace, pod name, and container name.<br>`command string` – shell command to execute. |
 | **Return value** | `stdout string` – captured standard output.<br>`stderr string` – captured standard error.<br>`err error` – execution or transport error (nil if successful). |
-| **Key dependencies** | * `log.Debug`, `log.Error` for logging.<br>* `Context.GetNamespace()`, `.GetPodName()`, `.GetContainerName()` to build request.<br>* `strings.Join` for command string formatting.<br>* Kubernetes client (`clientsholder.K8sClient.CoreV1().RESTClient()`) and related builders (`Post`, `Namespace`, `Resource`, `Name`, `SubResource`, `VersionedParams`).<br>* `remotecommand.NewSPDYExecutor` and `exec.StreamWithContext` for running the command. |
+| **Key dependencies** | *`log.Debug`, `log.Error` for logging.<br>* `Context.GetNamespace()`, `.GetPodName()`, `.GetContainerName()` to build request.<br>*`strings.Join` for command string formatting.<br>* Kubernetes client (`clientsholder.K8sClient.CoreV1().RESTClient()`) and related builders (`Post`, `Namespace`, `Resource`, `Name`, `SubResource`, `VersionedParams`).<br>* `remotecommand.NewSPDYExecutor` and `exec.StreamWithContext` for running the command. |
 | **Side effects** | No global state mutation; performs network I/O to the Kubernetes API server and streams data over SPDY. Logs debug and error information via the internal logger. |
 | **How it fits the package** | Provides low‑level container interaction functionality used by higher‑level tests or tooling that needs to inspect pod behavior directly from Go code. |
 
@@ -336,13 +338,14 @@ if err != nil {
 
 **ExecCommandContainer** - Stores invocation details of `ExecCommandContainer` and delegates execution to the supplied mock function.
 
-
 #### Signature (Go)
+
 ```go
 func (mock *CommandMock) ExecCommandContainer(context Context, s string) (string, string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Stores invocation details of `ExecCommandContainer` and delegates execution to the supplied mock function. |
@@ -353,6 +356,7 @@ func (mock *CommandMock) ExecCommandContainer(context Context, s string) (string
 | **How it fits the package** | Part of the internal client holder mock used in tests to capture and simulate command execution. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check if ExecCommandContainerFunc is nil"] -->|"yes"| B["panic"]
@@ -365,6 +369,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_CommandMock_ExecCommandContainer --> func_panic
@@ -375,9 +380,11 @@ graph TD
 ```
 
 #### Functions calling `CommandMock.ExecCommandContainer` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CommandMock.ExecCommandContainer
 mock := &clientsholder.CommandMock{
@@ -396,8 +403,8 @@ fmt.Println(out, errOut, err)
 
 **ExecCommandContainerCalls** - Returns a slice containing all recorded calls to `ExecCommandContainer` made on the mock instance. Each entry holds the execution context and the command string supplied during that call.
 
-
 #### Signature (Go)
+
 ```go
 func (mock *CommandMock) ExecCommandContainerCalls() []struct {
     Context Context
@@ -406,6 +413,7 @@ func (mock *CommandMock) ExecCommandContainerCalls() []struct {
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a slice containing all recorded calls to `ExecCommandContainer` made on the mock instance. Each entry holds the execution context and the command string supplied during that call. |
@@ -416,6 +424,7 @@ func (mock *CommandMock) ExecCommandContainerCalls() []struct {
 | **How it fits the package** | Provides test harness functionality for the `clientsholder` mock, enabling callers to assert that expected commands were executed in tests. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Acquire read lock"] --> B["Read calls slice"]
@@ -424,6 +433,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_CommandMock.ExecCommandContainerCalls --> func_RLock
@@ -435,6 +445,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CommandMock.ExecCommandContainerCalls
 
@@ -452,13 +463,14 @@ for _, c := range calls {
 
 **GetContainerName** - Returns the name of the container associated with the current execution context. This value is used when executing commands inside a pod via Kubernetes API calls.
 
-
 #### 1) Signature (Go)
+
 ```go
 func (c *Context) GetContainerName() string
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the name of the container associated with the current execution context. This value is used when executing commands inside a pod via Kubernetes API calls. |
@@ -469,6 +481,7 @@ func (c *Context) GetContainerName() string
 | **How it fits the package** | Provides a simple getter for other functions (e.g., `ClientsHolder.ExecCommandContainer`) to obtain the container name needed for Kubernetes exec requests. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Context"] --> B{"GetContainerName"}
@@ -480,12 +493,14 @@ flowchart TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### 5) Functions calling `Context.GetContainerName` (Mermaid)
+
 ```mermaid
 graph TD
   func_ClientsHolder.ExecCommandContainer --> func_Context.GetContainerName
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking Context.GetContainerName
 ctx := &clientsholder.Context{containerName: "nginx"}
@@ -499,13 +514,14 @@ fmt.Println("Container name:", name)
 
 **GetNamespace** - Returns the Kubernetes namespace associated with the receiver `Context`. This value is used by other client‑side functions to target API calls within a specific namespace.
 
-
 #### Signature (Go)
+
 ```go
 func (c *Context) GetNamespace() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the Kubernetes namespace associated with the receiver `Context`. This value is used by other client‑side functions to target API calls within a specific namespace. |
@@ -516,6 +532,7 @@ func (c *Context) GetNamespace() string
 | **How it fits the package** | The `clientsholder` package encapsulates interactions with Kubernetes resources. `Context.GetNamespace` provides a convenient accessor for the namespace used by commands such as `ExecCommandContainer`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Context object"] --> B{"Get namespace"}
@@ -523,15 +540,18 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `Context.GetNamespace` (Mermaid)
+
 ```mermaid
 graph TD
   func_ClientsHolder.ExecCommandContainer --> func_Context.GetNamespace
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Context.GetNamespace
 ctx := &clientsholder.Context{namespace: "production"}
@@ -548,11 +568,13 @@ fmt.Println("Namespace:", ns) // Output: Namespace: production
 Retrieves the pod name stored in a `Context`.
 
 #### Signature (Go)
+
 ```go
 func (c *Context) GetPodName() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the pod name associated with the context. |
@@ -563,21 +585,25 @@ func (c *Context) GetPodName() string
 | **How it fits the package** | Provides a convenient accessor used by functions such as `ClientsHolder.ExecCommandContainer` to construct API requests targeting a specific pod. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> ReturnPodName["return c.podName"]
 ```
 
 #### Function dependencies  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `Context.GetPodName` (Mermaid)
+
 ```mermaid
 graph TD
   func_ClientsHolder.ExecCommandContainer --> func_Context.GetPodName
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Context.GetPodName
 ctx := &clientsholder.Context{ /* fields initialized elsewhere */ }
@@ -590,7 +616,6 @@ fmt.Println("Target pod:", podName)
 ### GetClientConfigFromRestConfig
 
 **GetClientConfigFromRestConfig** - Builds a `clientcmdapi.Config` object that represents a kubeconfig file, derived from an existing `*rest.Config`. This allows code that expects a kubeconfig to use the in‑cluster configuration.
-
 
 #### Signature (Go)
 
@@ -666,23 +691,25 @@ func main() {
 
 **GetClientsHolder** - Returns a global, lazily‑initialized `*ClientsHolder` that aggregates Kubernetes API clients. If the holder is not yet ready, it is created via `newClientsHolder`.
 
-
 #### 1) Signature (Go)
+
 ```go
 func GetClientsHolder(filenames ...string) *ClientsHolder
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a global, lazily‑initialized `*ClientsHolder` that aggregates Kubernetes API clients. If the holder is not yet ready, it is created via `newClientsHolder`. |
 | **Parameters** | `filenames ...string` – Optional list of kubeconfig file paths used when initializing the holder. |
 | **Return value** | A pointer to a fully initialized `ClientsHolder` instance; panics (via `log.Fatal`) if initialization fails. |
 | **Key dependencies** | • `newClientsHolder(filenames...)` – builds the holder.<br>• `log.Fatal(msg, args…)` – terminates on error. |
-| **Side effects** | * May instantiate numerous Kubernetes clientsets and a discovery client.<br>* On failure, logs a fatal message and exits the process. |
+| **Side effects** | *May instantiate numerous Kubernetes clientsets and a discovery client.<br>* On failure, logs a fatal message and exits the process. |
 | **How it fits the package** | Provides global access to shared clients across the Certsuite codebase, avoiding repeated construction of expensive client objects. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["GetClientsHolder"] --> B{"clientsHolder.ready"}
@@ -694,6 +721,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetClientsHolder --> func_newClientsHolder
@@ -701,6 +729,7 @@ graph TD
 ```
 
 #### 5) Functions calling `GetClientsHolder` (Mermaid)
+
 ```mermaid
 graph TD
   func_crclient.ExecCommandContainerNSEnter --> func_GetClientsHolder
@@ -717,6 +746,7 @@ graph TD
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking GetClientsHolder
 package main
@@ -743,23 +773,25 @@ func main() {
 
 **GetNewClientsHolder** - Instantiates and returns a `*ClientsHolder` populated with Kubernetes clients based on the supplied kubeconfig file. If creation fails, it terminates the process via logging.
 
-
 #### Signature (Go)
+
 ```go
 func GetNewClientsHolder(kubeconfigFile string) *ClientsHolder
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Instantiates and returns a `*ClientsHolder` populated with Kubernetes clients based on the supplied kubeconfig file. If creation fails, it terminates the process via logging. |
 | **Parameters** | `kubeconfigFile string` – Path to a kubeconfig file used for cluster configuration. |
 | **Return value** | `*ClientsHolder` – Reference to the initialized client holder. |
 | **Key dependencies** | • Calls `newClientsHolder(kubeconfigFile)`<br>• Invokes `log.Fatal()` on error |
-| **Side effects** | * Fatal logs a message and exits the program if initialization fails.<br>* No external I/O beyond logging. |
+| **Side effects** | *Fatal logs a message and exits the program if initialization fails.<br>* No external I/O beyond logging. |
 | **How it fits the package** | Provides a public API for other packages to obtain a ready‑to‑use collection of Kubernetes client interfaces, hiding the complex setup performed by `newClientsHolder`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["GetNewClientsHolder"] --> B["newClientsHolder(kubeconfigFile)"]
@@ -769,6 +801,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetNewClientsHolder --> func_newClientsHolder
@@ -776,12 +809,14 @@ graph TD
 ```
 
 #### Functions calling `GetNewClientsHolder` (Mermaid)
+
 ```mermaid
 graph TD
   func_runHandler --> func_GetNewClientsHolder
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNewClientsHolder
 package main
@@ -807,7 +842,6 @@ func main() {
 ### GetTestClientsHolder
 
 **GetTestClientsHolder** - Builds a `ClientsHolder` populated with fake Kubernetes clients that expose only the supplied runtime objects, facilitating isolated unit testing.
-
 
 #### Signature (Go)
 
@@ -877,18 +911,18 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/runtime"
+ "k8s.io/api/core/v1"
+ "k8s.io/apimachinery/pkg/runtime"
 
-	cs "github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+ cs "github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 )
 
 func main() {
-	objects := []runtime.Object{
-		&v1.Pod{ObjectMeta: metav1.ObjectMeta{Name: "test-pod"}},
-	}
-	holder := cs.GetTestClientsHolder(objects)
-	// holder.K8sClient can now be used in tests
+ objects := []runtime.Object{
+  &v1.Pod{ObjectMeta: metav1.ObjectMeta{Name: "test-pod"}},
+ }
+ holder := cs.GetTestClientsHolder(objects)
+ // holder.K8sClient can now be used in tests
 }
 ```
 
@@ -897,7 +931,6 @@ func main() {
 ### NewContext
 
 **NewContext** - Builds and returns a `Context` value that encapsulates the namespace, pod name, and container name needed for subsequent command executions against a probe pod.
-
 
 #### Signature (Go)
 
@@ -967,7 +1000,6 @@ func main() {
 
 **SetTestClientGroupResources** - Stores a slice of API resource lists into the package’s client holder, enabling test clients to reference available Kubernetes group resources.
 
-
 Sets the group resources for the test client holder.
 
 ```go
@@ -984,18 +1016,22 @@ func SetTestClientGroupResources(groupResources []*metav1.APIResourceList)
 | **How it fits the package** | Provides a simple setter used during test initialization to inject mock group resource data into the client holder for subsequent API interactions. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Receive slice of APIResourceList"] --> B["Assign to clientsHolder.GroupResources"]
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `SetTestClientGroupResources`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking SetTestClientGroupResources
 import (
@@ -1017,7 +1053,6 @@ func main() {
 ### SetTestK8sClientsHolder
 
 **SetTestK8sClientsHolder** - Stores the supplied Kubernetes client in the package‑wide `clientsHolder` and marks it as ready, enabling test code to use a fake or mock client.
-
 
 #### Signature (Go)
 
@@ -1082,13 +1117,14 @@ func main() {
 
 **SetTestK8sDynamicClientsHolder** - Sets the internal `DynamicClient` of the global `clientsHolder` to a supplied test client and marks it as ready.
 
-
 #### Signature (Go)
+
 ```go
 func SetTestK8sDynamicClientsHolder(dynamicClient dynamic.Interface)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Sets the internal `DynamicClient` of the global `clientsHolder` to a supplied test client and marks it as ready. |
@@ -1099,6 +1135,7 @@ func SetTestK8sDynamicClientsHolder(dynamicClient dynamic.Interface)
 | **How it fits the package** | Provides a simple API for tests to inject a fake Kubernetes dynamic client into the holder, enabling isolation of test logic from real cluster interactions. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["SetTestK8sDynamicClientsHolder"] --> B{"Assign provided client"}
@@ -1107,12 +1144,15 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `SetTestK8sDynamicClientsHolder` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking SetTestK8sDynamicClientsHolder
 package main
@@ -1134,13 +1174,14 @@ func main() {
 
 **SetupFakeOlmClient** - Replaces the real Operator‑Lifecycle‑Manager client in `clientsHolder` with a fake client that serves the supplied mock objects, enabling unit tests to exercise OLM interactions without a live cluster.
 
-
 #### Signature (Go)
+
 ```go
 func SetupFakeOlmClient(olmMockObjects []runtime.Object)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Replaces the real Operator‑Lifecycle‑Manager client in `clientsHolder` with a fake client that serves the supplied mock objects, enabling unit tests to exercise OLM interactions without a live cluster. |
@@ -1151,6 +1192,7 @@ func SetupFakeOlmClient(olmMockObjects []runtime.Object)
 | **How it fits the package** | Provides a convenient test helper for the `clientsholder` package, allowing other components to obtain an OLM client that behaves deterministically during unit tests. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   SetupFakeOlmClient --> CreateFakeClient["Create fake client with mock objects"]
@@ -1158,6 +1200,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   SetupFakeOlmClient --> NewSimpleClientset["github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake.NewSimpleClientset"]
@@ -1168,6 +1211,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking SetupFakeOlmClient
 import (
@@ -1190,7 +1234,6 @@ SetupFakeOlmClient(mockObjs)
 ### createByteArrayKubeConfig
 
 **createByteArrayKubeConfig** - Serialises a `*clientcmdapi.Config` into YAML‑encoded bytes for use as an in‑memory kubeconfig.
-
 
 #### 1) Signature (Go)
 
@@ -1271,7 +1314,6 @@ func main() {
 
 **getClusterRestConfig** - Determines the appropriate `*rest.Config` for connecting to a Kubernetes cluster. If running inside a pod it uses the in‑cluster service account; otherwise it merges one or more kubeconfig files supplied via `filenames`. The function also generates an in‑memory byte slice of the resulting kubeconfig for downstream use.
 
-
 #### Signature (Go)
 
 ```go
@@ -1286,7 +1328,7 @@ func getClusterRestConfig(filenames ...string) (*rest.Config, error)
 | **Parameters** | `filenames ...string` – Paths to one or more kubeconfig files (used only when not running inside a cluster). |
 | **Return value** | `*rest.Config, error` – The Kubernetes REST configuration and an error if the configuration cannot be constructed. |
 | **Key dependencies** | • `k8s.io/client-go/rest.InClusterConfig`<br>• `github.com/redhat-best-practices-for-k8s/certsuite/internal/log.Logger.Info`<br>• `GetClientConfigFromRestConfig`<br>• `createByteArrayKubeConfig`<br>• `k8s.io/client-go/tools/clientcmd.NewDefaultClientConfigLoadingRules`<br>• `k8s.io/client-go/tools/clientcmd.NewNonInteractiveDeferredLoadingClientConfig`<br>• `clientcmd.RawConfig`<br>• `clientcmd.ClientConfig` |
-| **Side effects** | * Logs informational messages.<br>* Populates the global `clientsHolder.KubeConfig` with a byte slice representing the kubeconfig. |
+| **Side effects** | *Logs informational messages.<br>* Populates the global `clientsHolder.KubeConfig` with a byte slice representing the kubeconfig. |
 | **How it fits the package** | This helper is used by `newClientsHolder` to obtain the REST configuration that underpins all Kubernetes client instances created in the package. |
 
 #### Internal workflow (Mermaid)
@@ -1348,7 +1390,6 @@ if err != nil {
 ### newClientsHolder
 
 **newClientsHolder** - Builds a `ClientsHolder` struct that contains all required Kubernetes and OpenShift clientsets, discovery data, scaling utilities, and networking clients. It determines whether the code is running inside or outside a cluster by obtaining an appropriate `rest.Config`.
-
 
 #### 1) Signature (Go)
 
@@ -1444,4 +1485,3 @@ func demo() {
 ---
 
 ---
-

@@ -152,7 +152,6 @@ The testhelper package supplies utilities for generating and comparing complianc
 
 ### FailureReasonOut
 
-
 Represents the result of a policy check, separating objects that satisfy the rule from those that do not.
 
 #### Fields
@@ -179,12 +178,12 @@ The struct is used by test helpers to capture and compare the outcomes of policy
 
 ### ReportObject
 
-
 A lightweight container that holds a report item’s type and its key‑value metadata.
 
 ---
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `ObjectType` | `string` | Identifier of the resource or object being reported (e.g., “Deployment”, “Node”). |
@@ -197,6 +196,7 @@ A lightweight container that holds a report item’s type and its key‑value me
 
 `ReportObject` aggregates information needed to represent a compliance or non‑compliance finding in the test suite.  
 The struct stores:
+
 1. **Type** – which resource type the report refers to.
 2. **Metadata** – arbitrary key/value pairs that describe attributes of that resource (namespace, name, version, etc.).
 
@@ -205,6 +205,7 @@ Functions create and manipulate `ReportObject` instances; the fields are accesse
 ---
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewReportObject(aReason, aType string, isCompliant bool)` | Initializes a new `ReportObject`, sets its type, and adds either a compliance or non‑compliance reason field. |
@@ -226,13 +227,14 @@ Functions create and manipulate `ReportObject` instances; the fields are accesse
 
 **Equal** - Determines whether two slices of pointers to `ReportObject` contain the same elements in the same order, treating `nil` pointers as equal only when both are `nil`.
 
-
 #### Signature (Go)
+
 ```go
 func Equal(p, other []*ReportObject) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether two slices of pointers to `ReportObject` contain the same elements in the same order, treating `nil` pointers as equal only when both are `nil`. |
@@ -243,6 +245,7 @@ func Equal(p, other []*ReportObject) bool
 | **How it fits the package** | Provides a helper to validate test outputs in the `testhelper` package by comparing expected and actual report objects. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> CheckLength["Check length of slices"]
@@ -261,6 +264,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Equal --> len
@@ -274,6 +278,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Equal
 package main
@@ -297,7 +302,6 @@ func main() {
 ### FailureReasonOut.Equal
 
 **Equal** - Determines if two `FailureReasonOut` instances contain the same compliant and non‑compliant objects.
-
 
 Checks whether two `FailureReasonOut` values are identical by comparing their compliant and non‑compliant object lists.
 
@@ -364,7 +368,6 @@ equal := out1.Equal(out2) // true
 ### FailureReasonOutTestString
 
 **FailureReasonOutTestString** - Generates a deterministic, human‑readable string that represents the contents of a `FailureReasonOut` value for use in tests and debugging.
-
 
 #### 1) Signature (Go)
 
@@ -441,12 +444,12 @@ func main() {
 
 **GetDaemonSetFailedToSpawnSkipFn** - Generates a closure that indicates if the probe daemonset did not start successfully. The returned function can be used as a skip condition in tests.
 
-
 Returns a test skip function that signals whether the probe daemonset failed to spawn.
 
 ---
 
 #### Signature (Go)
+
 ```go
 func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
@@ -454,6 +457,7 @@ func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool
 ---
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Generates a closure that indicates if the probe daemonset did not start successfully. The returned function can be used as a skip condition in tests. |
@@ -466,6 +470,7 @@ func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool
 ---
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph "GetDaemonSetFailedToSpawnSkipFn"
@@ -478,16 +483,19 @@ flowchart TD
 ---
 
 #### Function dependencies  
+
 None – this function is currently not referenced elsewhere in the package.
 
 ---
 
 #### Functions calling `GetDaemonSetFailedToSpawnSkipFn`  
+
 None – this function is currently not referenced elsewhere in the package.
 
 ---
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetDaemonSetFailedToSpawnSkipFn
 
@@ -508,7 +516,6 @@ if shouldSkip {
 ### GetNoAffinityRequiredPodsSkipFn
 
 **GetNoAffinityRequiredPodsSkipFn** - Returns a closure that evaluates whether the test should be skipped because no pods with required affinity are present.
-
 
 #### 1) Signature (Go)
 
@@ -568,13 +575,14 @@ if shouldSkip {
 
 **GetNoBareMetalNodesSkipFn** - Returns a closure that indicates if tests should be skipped because the test environment contains no bare‑metal nodes. The returned function yields `true` and an explanatory message when the condition is met.
 
-
 #### Signature (Go)
+
 ```go
 func (*provider.TestEnvironment)(func() (bool, string))
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a closure that indicates if tests should be skipped because the test environment contains no bare‑metal nodes. The returned function yields `true` and an explanatory message when the condition is met. |
@@ -585,6 +593,7 @@ func (*provider.TestEnvironment)(func() (bool, string))
 | **How it fits the package** | Used in test helpers to conditionally skip tests that require bare‑metal nodes, ensuring tests do not fail when such nodes are absent. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   Start --> CheckBareMetalNodes
@@ -593,6 +602,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetNoBareMetalNodesSkipFn --> len
@@ -600,9 +610,11 @@ graph TD
 ```
 
 #### Functions calling `GetNoBareMetalNodesSkipFn` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoBareMetalNodesSkipFn
 env := &provider.TestEnvironment{ /* ... populate as needed ... */ }
@@ -619,7 +631,6 @@ if shouldSkip {
 ### GetNoCPUPinningPodsSkipFn
 
 **GetNoCPUPinningPodsSkipFn** - Supplies a closure used by tests to skip execution when no CPU‑pinning pods exist.
-
 
 A helper that returns a test‑skipping predicate which determines whether any CPU‑pinning pods are present in the environment.
 
@@ -685,13 +696,14 @@ This demonstrates how the returned function can be used to conditionally skip te
 
 **GetNoCatalogSourcesSkipFn** - Returns a closure that decides whether to skip tests when no catalog sources are available in the test environment.
 
-
 #### Signature (Go)
+
 ```go
 func GetNoCatalogSourcesSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a closure that decides whether to skip tests when no catalog sources are available in the test environment. |
@@ -702,6 +714,7 @@ func GetNoCatalogSourcesSkipFn(env *provider.TestEnvironment) func() (bool, stri
 | **How it fits the package** | Used in test helper utilities to conditionally bypass tests that require catalog sources when none are configured. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Return closure"] --> B{"len(env.AllCatalogSources) == 0"}
@@ -710,15 +723,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetNoCatalogSourcesSkipFn --> builtin_len
 ```
 
 #### Functions calling `GetNoCatalogSourcesSkipFn` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoCatalogSourcesSkipFn
 env := &provider.TestEnvironment{AllCatalogSources: []string{}}
@@ -736,7 +752,6 @@ if skip, reason := skipFn(); skip {
 ### GetNoContainersUnderTestSkipFn
 
 **GetNoContainersUnderTestSkipFn** - Returns a function that evaluates whether a test should be skipped because the test environment contains zero containers. The returned function yields a boolean indicating skip status and an accompanying message.
-
 
 **Determines whether a test should be skipped when no containers are present in the environment.**
 
@@ -796,19 +811,19 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	env := &provider.TestEnvironment{Containers: []string{}}
-	skipFn := testhelper.GetNoContainersUnderTestSkipFn(env)
-	if skip, msg := skipFn(); skip {
-		fmt.Println("Skipping test:", msg)
-	} else {
-		fmt.Println("Proceeding with test")
-	}
+ env := &provider.TestEnvironment{Containers: []string{}}
+ skipFn := testhelper.GetNoContainersUnderTestSkipFn(env)
+ if skip, msg := skipFn(); skip {
+  fmt.Println("Skipping test:", msg)
+ } else {
+  fmt.Println("Proceeding with test")
+ }
 }
 ```
 
@@ -834,6 +849,7 @@ func GetNoCrdsUnderTestSkipFn(env *provider.TestEnvironment)(func() (bool, strin
 | **How it fits the package** | Used by test helpers to conditionally skip tests that require CRDs when none are available in the environment. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Check len(env.Crds)"] --> B{"len == 0"}
@@ -842,15 +858,18 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_GetNoCrdsUnderTestSkipFn --> len
 ```
 
 #### Functions calling `GetNoCrdsUnderTestSkipFn`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoCrdsUnderTestSkipFn
 env := &provider.TestEnvironment{Crds: []string{}}
@@ -867,7 +886,6 @@ if shouldSkip {
 ### GetNoDeploymentsUnderTestSkipFn
 
 **GetNoDeploymentsUnderTestSkipFn** - Returns a closure that signals whether tests requiring deployments should be skipped when the environment contains no deployment objects.
-
 
 #### Signature (Go)
 
@@ -924,7 +942,6 @@ if shouldSkip {
 ### GetNoGuaranteedPodsWithExclusiveCPUsSkipFn
 
 **GetNoGuaranteedPodsWithExclusiveCPUsSkipFn** - Creates a closure that determines whether tests requiring guaranteed pods with exclusive CPUs should be skipped. It returns `true` if none are found, along with an explanatory message.
-
 
 Returns a skip function that signals when there are no guaranteed pods with exclusive CPUs in the test environment.
 
@@ -990,11 +1007,13 @@ if skip, msg := skipFn(); skip {
 Returns a skip function that signals whether tests should be skipped when no pods request huge pages.
 
 #### Signature (Go)
+
 ```go
 func GetNoHugepagesPodsSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Generates a closure that determines if tests requiring huge‑page pods should be skipped. The closure returns `true` and a message when no such pods are present in the test environment. |
@@ -1005,6 +1024,7 @@ func GetNoHugepagesPodsSkipFn(env *provider.TestEnvironment) func() (bool, strin
 | **How it fits the package** | Located in `pkg/testhelper`, this helper supports test suites by providing a standardized skip condition for scenarios that require huge‑page pods. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   GetNoHugepagesPodsSkipFn --> ReturnClosure
@@ -1014,6 +1034,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   GetNoHugepagesPodsSkipFn --> len
@@ -1021,9 +1042,11 @@ graph TD
 ```
 
 #### Functions calling `GetNoHugepagesPodsSkipFn` (Mermaid)  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoHugepagesPodsSkipFn
 import (
@@ -1048,7 +1071,6 @@ func main() {
 ### GetNoIstioSkipFn
 
 **GetNoIstioSkipFn** - Returns a closure that determines if tests requiring Istio should be skipped because no Istio service mesh was detected.
-
 
 The function produces a test‑skipping predicate that checks whether an Istio service mesh is present in the supplied test environment.
 
@@ -1106,21 +1128,21 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	env := &provider.TestEnvironment{IstioServiceMeshFound: false}
-	skipFn := testhelper.GetNoIstioSkipFn(env)
+ env := &provider.TestEnvironment{IstioServiceMeshFound: false}
+ skipFn := testhelper.GetNoIstioSkipFn(env)
 
-	if skip, reason := skipFn(); skip {
-		fmt.Println("Skipping test:", reason)
-	} else {
-		fmt.Println("Running test")
-	}
+ if skip, reason := skipFn(); skip {
+  fmt.Println("Skipping test:", reason)
+ } else {
+  fmt.Println("Running test")
+ }
 }
 ```
 
@@ -1130,13 +1152,14 @@ func main() {
 
 **GetNoNamespacesSkipFn** - Returns a function that evaluates the current `TestEnvironment`. If the environment contains no namespaces, the returned function signals to skip the test with an explanatory message.
 
-
 #### Signature (Go)
+
 ```go
 func GetNoNamespacesSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a function that evaluates the current `TestEnvironment`. If the environment contains no namespaces, the returned function signals to skip the test with an explanatory message. |
@@ -1147,6 +1170,7 @@ func GetNoNamespacesSkipFn(env *provider.TestEnvironment) func() (bool, string)
 | **How it fits the package** | Part of the `testhelper` utilities that provide conditional test execution logic based on environment configuration. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph "Closure Creation"
@@ -1157,15 +1181,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetNoNamespacesSkipFn --> func_len
 ```
 
 #### Functions calling `GetNoNamespacesSkipFn` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoNamespacesSkipFn
 env := &provider.TestEnvironment{Namespaces: []string{}}
@@ -1184,7 +1211,6 @@ if shouldSkip {
 ### GetNoNodesWithRealtimeKernelSkipFn
 
 **GetNoNodesWithRealtimeKernelSkipFn** - Returns a closure that evaluates whether the test environment contains any node with a realtime kernel. If none are found, the closure returns `true` and an explanatory message to skip tests that require such nodes.
-
 
 Retrieves a skip function that indicates whether any node in the test environment uses a realtime kernel; if none do, the returned function signals a skip.
 
@@ -1259,13 +1285,14 @@ if skip, reason := skipFn(); skip {
 
 **GetNoOperatorCrdsSkipFn** - Returns a closure that decides if a test must be skipped because no Operator Custom Resource Definitions (CRDs) are present in the provided test environment.
 
-
 #### Signature (Go)
+
 ```go
 func GetNoOperatorCrdsSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a closure that decides if a test must be skipped because no Operator Custom Resource Definitions (CRDs) are present in the provided test environment. |
@@ -1276,6 +1303,7 @@ func GetNoOperatorCrdsSkipFn(env *provider.TestEnvironment) func() (bool, string
 | **How it fits the package** | Part of the *testhelper* utilities, used to gate tests that require Operator CRDs. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["GetNoOperatorCrdsSkipFn"] --> B["Return closure"]
@@ -1285,15 +1313,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetNoOperatorCrdsSkipFn --> len
 ```
 
 #### Functions calling `GetNoOperatorCrdsSkipFn` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoOperatorCrdsSkipFn
 env := &provider.TestEnvironment{Crds: []string{}}
@@ -1312,7 +1343,6 @@ if shouldSkip {
 ### GetNoOperatorPodsSkipFn
 
 **GetNoOperatorPodsSkipFn** - Returns a closure that checks if the test environment contains any operator pods; if none are present, it signals that tests should be skipped with an explanatory message.
-
 
 #### Signature (Go)
 
@@ -1369,7 +1399,6 @@ fmt.Printf("Should skip: %v; Reason: %s\n", shouldSkip, reason)
 ### GetNoOperatorsSkipFn
 
 **GetNoOperatorsSkipFn** - Creates a predicate function that checks if `env.Operators` is empty and signals whether tests should be skipped with an explanatory message.
-
 
 Return a closure that determines whether to skip tests when no operators are present in the test environment.
 
@@ -1433,13 +1462,14 @@ if shouldSkip {
 
 **GetNoPersistentVolumeClaimsSkipFn** - Returns a closure that signals whether to skip tests due to absence of Persistent Volume Claims in the provided environment.
 
-
 #### Signature (Go)
+
 ```go
 func GetNoPersistentVolumeClaimsSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a closure that signals whether to skip tests due to absence of Persistent Volume Claims in the provided environment. |
@@ -1450,6 +1480,7 @@ func GetNoPersistentVolumeClaimsSkipFn(env *provider.TestEnvironment) func() (bo
 | **How it fits the package** | Utility in `testhelper` for conditionally bypassing tests that require PVCs. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   GetNoPersistentVolumeClaimsSkipFn --> Closure
@@ -1459,15 +1490,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetNoPersistentVolumeClaimsSkipFn --> len
 ```
 
 #### Functions calling `GetNoPersistentVolumeClaimsSkipFn` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoPersistentVolumeClaimsSkipFn
 env := &provider.TestEnvironment{
@@ -1488,7 +1522,6 @@ if shouldSkip {
 ### GetNoPersistentVolumesSkipFn
 
 **GetNoPersistentVolumesSkipFn** - Returns a closure that checks if the `env` contains any persistent volumes. If none are found, the closure reports that the test should be skipped with an explanatory message.
-
 
 Creates a test‑skip function that signals whether any persistent volumes are available in the supplied environment.
 
@@ -1556,7 +1589,6 @@ fmt.Printf("Should skip? %v – Reason: %s\n", shouldSkip, reason)
 ### GetNoPodsUnderTestSkipFn
 
 **GetNoPodsUnderTestSkipFn** - Generates a skip function that evaluates the presence of pods in the supplied test environment. If no pods exist, the test is skipped with an explanatory message.
-
 
 **Returns a closure that determines whether the current test should be skipped because no pods are available to inspect.**
 
@@ -1638,6 +1670,7 @@ Creates a skip function that indicates whether test execution should be skipped 
 ---
 
 #### Signature (Go)
+
 ```go
 func GetNoRolesSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
@@ -1645,6 +1678,7 @@ func GetNoRolesSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ---
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a closure that evaluates whether tests should be skipped due to an empty `Roles` slice in the supplied test environment. |
@@ -1657,6 +1691,7 @@ func GetNoRolesSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ---
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> CheckRoles["Check if `len(env.Roles) == 0`"]
@@ -1669,6 +1704,7 @@ flowchart TD
 ---
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetNoRolesSkipFn --> func_len
@@ -1683,6 +1719,7 @@ None – this function is currently not referenced elsewhere in the package.
 ---
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoRolesSkipFn
 env := &provider.TestEnvironment{Roles: []string{}}
@@ -1701,7 +1738,6 @@ if shouldSkip {
 ### GetNoSRIOVPodsSkipFn
 
 **GetNoSRIOVPodsSkipFn** - Returns a closure that decides if the test suite should be skipped when no SR‑IOV enabled pods are available.
-
 
 #### Signature (Go)
 
@@ -1765,13 +1801,14 @@ if shouldSkip {
 
 **GetNoServicesUnderTestSkipFn** - Supplies a closure that determines whether a test should be skipped because the provided `TestEnvironment` contains no services.
 
-
 #### Signature (Go)
+
 ```go
 func GetNoServicesUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Supplies a closure that determines whether a test should be skipped because the provided `TestEnvironment` contains no services. |
@@ -1782,6 +1819,7 @@ func GetNoServicesUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, s
 | **How it fits the package** | Used by test helpers to conditionally skip tests that require at least one service in the environment. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> CheckLen["Check len(env.Services)"]
@@ -1790,15 +1828,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetNoServicesUnderTestSkipFn --> len
 ```
 
 #### Functions calling `GetNoServicesUnderTestSkipFn` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoServicesUnderTestSkipFn
 env := &provider.TestEnvironment{ /* initialize with or without services */ }
@@ -1820,11 +1861,13 @@ if skip, reason := skipCheck(); skip {
 Provides a test‑skipping predicate that determines whether any StatefulSet resources exist in the supplied test environment.
 
 #### Signature (Go)
+
 ```go
 func GetNoStatefulSetsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a function that signals to skip tests when the test environment contains no StatefulSet objects. |
@@ -1835,6 +1878,7 @@ func GetNoStatefulSetsUnderTestSkipFn(env *provider.TestEnvironment) func() (boo
 | **How it fits the package** | Used by test helpers to conditionally skip tests that require StatefulSet resources, improving test suite efficiency. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph Closure["Returned function"]
@@ -1846,6 +1890,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetNoStatefulSetsUnderTestSkipFn --> len
@@ -1856,6 +1901,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNoStatefulSetsUnderTestSkipFn
 env := &provider.TestEnvironment{
@@ -1875,7 +1921,6 @@ if skip, msg := skipFn(); skip {
 ### GetNoStorageClassesSkipFn
 
 **GetNoStorageClassesSkipFn** - Generates a closure that determines if the test should be skipped due to the absence of storage classes.
-
 
 A factory that returns a test‑skipping function which evaluates whether the current test environment contains any storage classes.
 
@@ -1933,20 +1978,20 @@ None – this function is currently not referenced elsewhere in the package.
 ```go
 // Minimal example invoking GetNoStorageClassesSkipFn
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	env := &provider.TestEnvironment{
-		StorageClassList: []string{}, // or populate with actual storage classes
-	}
-	skipFn := testhelper.GetNoStorageClassesSkipFn(env)
-	if skip, reason := skipFn(); skip {
-		fmt.Println("Skipping test:", reason)
-	} else {
-		fmt.Println("Proceeding with test")
-	}
+ env := &provider.TestEnvironment{
+  StorageClassList: []string{}, // or populate with actual storage classes
+ }
+ skipFn := testhelper.GetNoStorageClassesSkipFn(env)
+ if skip, reason := skipFn(); skip {
+  fmt.Println("Skipping test:", reason)
+ } else {
+  fmt.Println("Proceeding with test")
+ }
 }
 ```
 
@@ -1955,7 +2000,6 @@ func main() {
 ### GetNonOCPClusterSkipFn
 
 **GetNonOCPClusterSkipFn** - Provides a function that returns `true` and a message when the environment is *not* an OCP cluster, allowing tests to be skipped in non‑OCP contexts.
-
 
 Retrieves a test‑skipping callback that signals whether the current cluster is not an OpenShift (OCP) cluster.
 
@@ -2009,7 +2053,6 @@ if shouldSkip {
 ### GetNotEnoughWorkersSkipFn
 
 **GetNotEnoughWorkersSkipFn** - Generates a closure that determines whether to skip a test because the cluster contains fewer worker nodes than `minWorkerNodes`.
-
 
 A helper that returns a skip‑function used in tests to bypass checks when the cluster has fewer worker nodes than required.
 
@@ -2069,7 +2112,6 @@ if skip, msg := skipCheck(); skip {
 
 **GetNotIntrusiveSkipFn** - Creates a closure that indicates whether the current test should be skipped because it is not meant to run in an intrusive environment.
 
-
 #### Signature (Go)
 
 ```go
@@ -2115,18 +2157,18 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	env := provider.NewTestEnvironment()
-	skipFn := testhelper.GetNotIntrusiveSkipFn(env)
-	if skip, reason := skipFn(); skip {
-		println("Skipping test:", reason)
-	} else {
-		println("Running test")
-	}
+ env := provider.NewTestEnvironment()
+ skipFn := testhelper.GetNotIntrusiveSkipFn(env)
+ if skip, reason := skipFn(); skip {
+  println("Skipping test:", reason)
+ } else {
+  println("Running test")
+ }
 }
 ```
 
@@ -2139,11 +2181,13 @@ func main() {
 Creates a skip function for test suites that determines whether to skip tests based on the presence of pods lacking the required affinity label.
 
 #### Signature (Go)
+
 ```go
 func GetPodsWithoutAffinityRequiredLabelSkipFn(env *provider.TestEnvironment) func() (bool, string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a closure that signals whether to skip a test when no pods are found without the required affinity label. |
@@ -2154,6 +2198,7 @@ func GetPodsWithoutAffinityRequiredLabelSkipFn(env *provider.TestEnvironment) fu
 | **How it fits the package** | Part of the test helper utilities; used to conditionally skip tests that require pods without a specific affinity label. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   GetPodsWithoutAffinityRequiredLabelSkipFn --> Closure
@@ -2163,6 +2208,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetPodsWithoutAffinityRequiredLabelSkipFn --> len
@@ -2174,6 +2220,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetPodsWithoutAffinityRequiredLabelSkipFn
 env := provider.NewTestEnvironment()
@@ -2207,6 +2254,7 @@ func GetSharedProcessNamespacePodsSkipFn(env *provider.TestEnvironment) func() (
 | **How it fits the package** | Used in test setup within the `testhelper` package to conditionally skip tests that require shared process namespace pods when none are available. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   Start --> CheckPodsLen
@@ -2215,6 +2263,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   GetSharedProcessNamespacePodsSkipFn --> len
@@ -2222,9 +2271,11 @@ graph TD
 ```
 
 #### Functions calling `GetSharedProcessNamespacePodsSkipFn`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetSharedProcessNamespacePodsSkipFn
 env := provider.NewTestEnvironment()
@@ -2240,7 +2291,6 @@ if skip, reason := skipFn(); skip {
 ### NewCatalogSourceReportObject
 
 **NewCatalogSourceReportObject** - Builds a `*ReportObject` that records the status of a catalog source, including its namespace, name, compliance reason, and type.
-
 
 #### Signature (Go)
 
@@ -2304,7 +2354,6 @@ func main() {
 
 **NewCertifiedContainerReportObject** - Builds a `ReportObject` that records compliance information for a container image identified by its digest, repository, tag, and registry.
 
-
 #### Signature (Go)
 
 ```go
@@ -2352,19 +2401,19 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	imageID := provider.ContainerImageIdentifier{
-		Digest:    "sha256:abcd1234",
-		Repository:"myrepo",
-		Tag:       "v1.0",
-		Registry:  "quay.io",
-	}
-	report := testhelper.NewCertifiedContainerReportObject(imageID, "All checks passed", true)
-	_ = report // use the report object as needed
+ imageID := provider.ContainerImageIdentifier{
+  Digest:    "sha256:abcd1234",
+  Repository:"myrepo",
+  Tag:       "v1.0",
+  Registry:  "quay.io",
+ }
+ report := testhelper.NewCertifiedContainerReportObject(imageID, "All checks passed", true)
+ _ = report // use the report object as needed
 }
 ```
 
@@ -2374,12 +2423,12 @@ func main() {
 
 **NewClusterOperatorReportObject** - Builds a `ReportObject` for a cluster operator, setting its type and compliance reason.
 
-
 Creates a report object that represents the compliance state of a specific cluster operator.
 
 ---
 
 #### Signature (Go)
+
 ```go
 func NewClusterOperatorReportObject(aClusterOperatorName, aReason string, isCompliant bool) (*ReportObject)
 ```
@@ -2387,6 +2436,7 @@ func NewClusterOperatorReportObject(aClusterOperatorName, aReason string, isComp
 ---
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a `ReportObject` for a cluster operator, setting its type and compliance reason. |
@@ -2399,6 +2449,7 @@ func NewClusterOperatorReportObject(aClusterOperatorName, aReason string, isComp
 ---
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Create new ReportObject"] --> B["Set type to ClusterOperatorType"]
@@ -2410,6 +2461,7 @@ flowchart TD
 ---
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewClusterOperatorReportObject --> func_NewReportObject
@@ -2419,24 +2471,26 @@ graph TD
 ---
 
 #### Functions calling `NewClusterOperatorReportObject` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 ---
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewClusterOperatorReportObject
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	report := testhelper.NewClusterOperatorReportObject("csi-driver", "Driver is compliant", true)
-	fmt.Printf("%+v\n", report)
+ report := testhelper.NewClusterOperatorReportObject("csi-driver", "Driver is compliant", true)
+ fmt.Printf("%+v\n", report)
 }
 ```
 
@@ -2445,7 +2499,6 @@ func main() {
 ### NewClusterVersionReportObject
 
 **NewClusterVersionReportObject** - Constructs a `ReportObject` for a cluster’s version and records whether the version meets compliance criteria.
-
 
 Creates a report object that records the version of an OpenShift cluster along with compliance information.
 
@@ -2490,13 +2543,13 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	report := testhelper.NewClusterVersionReportObject("4.12.0", "All patches applied", true)
-	fmt.Printf("%+v\n", report)
+ report := testhelper.NewClusterVersionReportObject("4.12.0", "All patches applied", true)
+ fmt.Printf("%+v\n", report)
 }
 ```
 
@@ -2506,13 +2559,14 @@ func main() {
 
 **NewContainerReportObject** - Builds a `ReportObject` representing the status of a specific container within a pod. It records namespace, pod name, container name, compliance reason, and whether the container complies with policy.
 
-
 #### Signature (Go)
+
 ```go
 func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason string, isCompliant bool) (*ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a `ReportObject` representing the status of a specific container within a pod. It records namespace, pod name, container name, compliance reason, and whether the container complies with policy. |
@@ -2523,6 +2577,7 @@ func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason stri
 | **How it fits the package** | Part of the `testhelper` utilities for generating structured compliance reports used in tests and examples. It provides a convenient wrapper around generic report creation tailored to container entities. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Create base ReportObject via NewReportObject"] --> B["Add namespace field"]
@@ -2532,6 +2587,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewContainerReportObject --> func_NewReportObject
@@ -2543,29 +2599,30 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewContainerReportObject
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	report := testhelper.NewContainerReportObject(
-		"dev-namespace",   // namespace
-		"example-pod",     // pod name
-		"app-container",   // container name
-		"image not signed",// reason
-		false,             // compliance status
-	)
+ report := testhelper.NewContainerReportObject(
+  "dev-namespace",   // namespace
+  "example-pod",     // pod name
+  "app-container",   // container name
+  "image not signed",// reason
+  false,             // compliance status
+ )
 
-	fmt.Printf("Report type: %s\n", report.ObjectType)
-	for i, key := range report.ObjectFieldsKeys {
-		fmt.Printf("%s: %s\n", key, report.ObjectFieldsValues[i])
-	}
+ fmt.Printf("Report type: %s\n", report.ObjectType)
+ for i, key := range report.ObjectFieldsKeys {
+  fmt.Printf("%s: %s\n", key, report.ObjectFieldsValues[i])
+ }
 }
 ```
 
@@ -2577,13 +2634,14 @@ This snippet demonstrates how to generate a container‑specific report object a
 
 **NewCrdReportObject** - Instantiates a `ReportObject` describing a Custom Resource Definition (CRD), embedding its name, version, compliance reason, and status.
 
-
 #### Signature (Go)
+
 ```go
 func NewCrdReportObject(aName, aVersion, aReason string, isCompliant bool) (*ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Instantiates a `ReportObject` describing a Custom Resource Definition (CRD), embedding its name, version, compliance reason, and status. |
@@ -2594,6 +2652,7 @@ func NewCrdReportObject(aName, aVersion, aReason string, isCompliant bool) (*Rep
 | **How it fits the package** | Provides a helper for tests that need CRD‑specific compliance reports, simplifying test setup in `testhelper`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Create base ReportObject"}
@@ -2604,15 +2663,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewCrdReportObject --> func_NewReportObject
 ```
 
 #### Functions calling `NewCrdReportObject` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewCrdReportObject
 package main
@@ -2638,13 +2700,14 @@ func main() {
 
 **NewDeploymentReportObject** - Instantiates a `ReportObject` representing the status of a Kubernetes deployment, embedding namespace, name, compliance reason, and type.
 
-
 #### Signature (Go)
+
 ```go
 func NewDeploymentReportObject(aNamespace, aDeploymentName, aReason string, isCompliant bool) (*ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Instantiates a `ReportObject` representing the status of a Kubernetes deployment, embedding namespace, name, compliance reason, and type. |
@@ -2655,6 +2718,7 @@ func NewDeploymentReportObject(aNamespace, aDeploymentName, aReason string, isCo
 | **How it fits the package** | Provides a convenient constructor for test reports that need deployment context, centralizing field names and type handling within the `testhelper` package. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> CreateObj["Create ReportObject via NewReportObject"]
@@ -2664,6 +2728,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewDeploymentReportObject --> func_NewReportObject
@@ -2675,22 +2740,23 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewDeploymentReportObject
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	report := testhelper.NewDeploymentReportObject(
-		"production",
-		"frontend-app",
-		"All pods are ready and replicas match desired count",
-		true,
-	)
-	// report now contains a fully populated ReportObject
+ report := testhelper.NewDeploymentReportObject(
+  "production",
+  "frontend-app",
+  "All pods are ready and replicas match desired count",
+  true,
+ )
+ // report now contains a fully populated ReportObject
 }
 ```
 
@@ -2700,13 +2766,14 @@ func main() {
 
 **NewHelmChartReportObject** - Constructs a `ReportObject` tailored for a Helm chart, embedding namespace, chart name, compliance reason, and status.
 
-
 #### Signature (Go)
+
 ```go
 func NewHelmChartReportObject(aNamespace, aHelmChartName, aReason string, isCompliant bool) (*ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Constructs a `ReportObject` tailored for a Helm chart, embedding namespace, chart name, compliance reason, and status. |
@@ -2717,6 +2784,7 @@ func NewHelmChartReportObject(aNamespace, aHelmChartName, aReason string, isComp
 | **How it fits the package** | Provides a convenient factory for generating test reports specific to Helm charts within the `testhelper` utilities. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Create base ReportObject"}
@@ -2727,6 +2795,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewHelmChartReportObject --> func_NewReportObject
@@ -2734,9 +2803,11 @@ graph TD
 ```
 
 #### Functions calling `NewHelmChartReportObject` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewHelmChartReportObject
 report := NewHelmChartReportObject("default", "my-chart", "All checks passed", true)
@@ -2748,7 +2819,6 @@ report := NewHelmChartReportObject("default", "my-chart", "All checks passed", t
 ### NewNamespacedNamedReportObject
 
 **NewNamespacedNamedReportObject** - Builds a `ReportObject` pre‑populated with the supplied reason, type and compliance flag, then adds namespace and name fields.
-
 
 Creates a namespaced, named report object with the specified reason, type, compliance status, namespace and name.
 
@@ -2797,20 +2867,20 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	report := testhelper.NewNamespacedNamedReportObject(
-		"All checks passed",
-		"ComplianceCheck",
-		true,
-		"default",
-		"my-app",
-	)
-	fmt.Printf("%+v\n", report)
+ report := testhelper.NewNamespacedNamedReportObject(
+  "All checks passed",
+  "ComplianceCheck",
+  true,
+  "default",
+  "my-app",
+ )
+ fmt.Printf("%+v\n", report)
 }
 ```
 
@@ -2820,13 +2890,14 @@ func main() {
 
 **NewNamespacedReportObject** - Builds a `ReportObject` that records the reason for compliance/non‑compliance, its type, and associates it with a specific Kubernetes namespace.
 
-
 #### Signature (Go)
+
 ```go
 func NewNamespacedReportObject(aReason, aType string, isCompliant bool, aNamespace string) (*ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a `ReportObject` that records the reason for compliance/non‑compliance, its type, and associates it with a specific Kubernetes namespace. |
@@ -2837,6 +2908,7 @@ func NewNamespacedReportObject(aReason, aType string, isCompliant bool, aNamespa
 | **How it fits the package** | In the `testhelper` package, this helper simplifies test data creation by bundling namespace information into a standard report structure. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Create base ReportObject"}
@@ -2846,6 +2918,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewNamespacedReportObject --> func_ReportObject.AddField
@@ -2853,26 +2926,28 @@ graph TD
 ```
 
 #### Functions calling `NewNamespacedReportObject` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewNamespacedReportObject
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	report := testhelper.NewNamespacedReportObject(
-		"All checks passed",
-		"ComplianceCheck",
-		true,
-		"production",
-	)
-	fmt.Printf("Created report: %+v\n", report)
+ report := testhelper.NewNamespacedReportObject(
+  "All checks passed",
+  "ComplianceCheck",
+  true,
+  "production",
+ )
+ fmt.Printf("Created report: %+v\n", report)
 }
 ```
 
@@ -2882,13 +2957,14 @@ func main() {
 
 **NewNodeReportObject** - Instantiates a `ReportObject` representing a Kubernetes node, populating it with the node’s name, compliance status and associated reason.
 
-
 #### Signature (Go)
+
 ```go
 func NewNodeReportObject(aNodeName, aReason string, isCompliant bool) (out *ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Instantiates a `ReportObject` representing a Kubernetes node, populating it with the node’s name, compliance status and associated reason. |
@@ -2899,6 +2975,7 @@ func NewNodeReportObject(aNodeName, aReason string, isCompliant bool) (out *Repo
 | **How it fits the package** | Provides a convenient constructor for node‑level compliance reports used in testing helpers. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> CreateReport["Create ReportObject via NewReportObject"]
@@ -2907,6 +2984,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewNodeReportObject --> func_NewReportObject
@@ -2914,9 +2992,11 @@ graph TD
 ```
 
 #### Functions calling `NewNodeReportObject`  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewNodeReportObject
 package main
@@ -2937,7 +3017,6 @@ func main() {
 ### NewOperatorReportObject
 
 **NewOperatorReportObject** - Instantiates a `ReportObject` for an operator, populating it with namespace, name, and compliance reason.
-
 
 Creates a new `ReportObject` pre‑filled with operator metadata.
 
@@ -3017,7 +3096,6 @@ func main() {
 
 **NewPodReportObject** - Constructs a `ReportObject` that describes compliance for a specific pod. The object includes the namespace, pod name, and a reason indicating whether the pod complies with expected policies.
 
-
 #### Signature (Go)
 
 ```go
@@ -3087,13 +3165,14 @@ func main() {
 
 **NewReportObject** - Instantiates a `ReportObject`, sets its type and attaches a reason field that indicates compliance or non‑compliance.
 
-
 #### Signature (Go)
+
 ```go
 func NewReportObject(aReason, aType string, isCompliant bool) (out *ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Instantiates a `ReportObject`, sets its type and attaches a reason field that indicates compliance or non‑compliance. |
@@ -3104,6 +3183,7 @@ func NewReportObject(aReason, aType string, isCompliant bool) (out *ReportObject
 | **How it fits the package** | Serves as the foundational constructor used by all other “New…ReportObject” helpers in the `testhelper` package, ensuring consistent initialization across report types. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"isCompliant?"}
@@ -3114,12 +3194,14 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewReportObject --> func_ReportObject.AddField
 ```
 
 #### Functions calling `NewReportObject` (Mermaid)
+
 ```mermaid
 graph TD
   func_NewCatalogSourceReportObject --> func_NewReportObject
@@ -3140,6 +3222,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewReportObject
 package main
@@ -3165,7 +3248,6 @@ func main() {
 
 **NewStatefulSetReportObject** - Builds a `ReportObject` representing a StatefulSet, attaching its namespace and name.
 
-
 Creates a new `ReportObject` tailored for a StatefulSet, embedding namespace and name metadata.
 
 ```go
@@ -3182,6 +3264,7 @@ func NewStatefulSetReportObject(aNamespace, aStatefulSetName, aReason string, is
 | **How it fits the package** | Provides a convenience constructor for test helpers that generate compliance reports for StatefulSets. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   Start --> NewReportObject
@@ -3191,6 +3274,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_NewStatefulSetReportObject --> func_NewReportObject
@@ -3198,9 +3282,11 @@ graph TD
 ```
 
 #### Functions calling `NewStatefulSetReportObject`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example
+
 ```go
 // Minimal example invoking NewStatefulSetReportObject
 obj := NewStatefulSetReportObject("prod", "db-cluster", "All pods running", true)
@@ -3212,7 +3298,6 @@ fmt.Printf("%+v\n", obj)
 ### NewTaintReportObject
 
 **NewTaintReportObject** - Instantiates a `ReportObject` that represents the taint status of a node, attaching the node name, the specific taint bit, and an explanation for compliance or non‑compliance.
-
 
 Creates a new `ReportObject` prepopulated with taint‑related fields.
 
@@ -3227,7 +3312,7 @@ func NewTaintReportObject(taintBit, nodeName, aReason string, isCompliant bool) 
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Instantiates a `ReportObject` that represents the taint status of a node, attaching the node name, the specific taint bit, and an explanation for compliance or non‑compliance. |
-| **Parameters** | * `taintBit` (string) – The taint identifier.<br>* `nodeName` (string) – Name of the node being evaluated.<br>* `aReason` (string) – Reason explaining the compliance status.<br>* `isCompliant` (bool) – Flag indicating whether the node satisfies the taint requirement. |
+| **Parameters** | *`taintBit` (string) – The taint identifier.<br>* `nodeName` (string) – Name of the node being evaluated.<br>*`aReason` (string) – Reason explaining the compliance status.<br>* `isCompliant` (bool) – Flag indicating whether the node satisfies the taint requirement. |
 | **Return value** | A pointer to the newly created `ReportObject`. |
 | **Key dependencies** | • Calls `NewReportObject(aReason, TaintType, isCompliant)`<br>• Invokes `AddField(NodeType, nodeName)`<br>• Invokes `AddField(TaintBit, taintBit)` |
 | **Side effects** | None beyond constructing and returning the object. No external I/O or state mutation outside of the returned instance. |
@@ -3262,17 +3347,17 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	report := testhelper.NewTaintReportObject(
-		"node.kubernetes.io/disk-pressure",
-		"worker-01",
-		"The node is compliant with disk pressure taint.",
-		true,
-	)
-	// `report` now contains the populated ReportObject
+ report := testhelper.NewTaintReportObject(
+  "node.kubernetes.io/disk-pressure",
+  "worker-01",
+  "The node is compliant with disk pressure taint.",
+  true,
+ )
+ // `report` now contains the populated ReportObject
 }
 ```
 
@@ -3282,13 +3367,14 @@ func main() {
 
 **AddField** - Appends the supplied key and value to the `ObjectFieldsKeys` and `ObjectFieldsValues` slices of the receiver, then returns the modified object for chaining.
 
-
 #### Signature (Go)
+
 ```go
 func (obj *ReportObject) AddField(aKey, aValue string) (out *ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Appends the supplied key and value to the `ObjectFieldsKeys` and `ObjectFieldsValues` slices of the receiver, then returns the modified object for chaining. |
@@ -3299,6 +3385,7 @@ func (obj *ReportObject) AddField(aKey, aValue string) (out *ReportObject)
 | **How it fits the package** | Provides a fluent interface used by constructors (`NewReportObject`, `NewCatalogSourceReportObject`, etc.) to populate report metadata before returning the object. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Append key"}
@@ -3309,12 +3396,14 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_ReportObject.AddField --> append
 ```
 
 #### Functions calling `ReportObject.AddField`
+
 ```mermaid
 graph TD
   func_NewCatalogSourceReportObject --> func_ReportObject.AddField
@@ -3337,6 +3426,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ReportObject.AddField
 obj := &ReportObject{}
@@ -3349,13 +3439,14 @@ obj.AddField("Status", "Success").AddField("Detail", "All checks passed")
 
 **SetContainerProcessValues** - Adds the scheduling policy, priority, and command line of a container process to the report object and marks its type as `ContainerProcessType`.
 
-
 #### Signature (Go)
+
 ```go
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Adds the scheduling policy, priority, and command line of a container process to the report object and marks its type as `ContainerProcessType`. |
@@ -3366,6 +3457,7 @@ func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandL
 | **How it fits the package** | Provides a convenient builder‑style interface for populating container process information within the test helper reporting system. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   obj --> obj.AddField["AddField(ProcessCommandLine, aCommandLine)"]
@@ -3376,6 +3468,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_ReportObject.SetContainerProcessValues --> func_ReportObject.AddField
@@ -3386,6 +3479,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ReportObject.SetContainerProcessValues
 report := &testhelper.ReportObject{}
@@ -3398,13 +3492,14 @@ report.SetContainerProcessValues("FIFO", "10", "/usr/bin/bash -c 'echo hello'")
 
 **SetType** - Assigns a new value to the `ObjectType` field of the receiver and returns the updated object.
 
-
 #### Signature (Go)
+
 ```go
 func (obj *ReportObject) SetType(aType string) (*ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Assigns a new value to the `ObjectType` field of the receiver and returns the updated object. |
@@ -3415,18 +3510,22 @@ func (obj *ReportObject) SetType(aType string) (*ReportObject)
 | **How it fits the package** | Provides a fluent interface for configuring report objects within the test helper utilities. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   SetType --> Update_ObjectType
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `ReportObject.SetType`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ReportObject.SetType
 obj := &testhelper.ReportObject{}
@@ -3508,7 +3607,6 @@ func main() {
 
 **ReportObjectTestStringPointer** - Produces a formatted string that lists the dereferenced values of each `*ReportObject` in a slice.
 
-
 Generates a human‑readable string representation of a slice of pointers to `ReportObject`.
 
 ---
@@ -3581,16 +3679,16 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	objs := []*testhelper.ReportObject{
-		{ /* populate fields */ },
-		{ /* populate fields */ },
-	}
-	fmt.Println(testhelper.ReportObjectTestStringPointer(objs))
+ objs := []*testhelper.ReportObject{
+  { /* populate fields */ },
+  { /* populate fields */ },
+ }
+ fmt.Println(testhelper.ReportObjectTestStringPointer(objs))
 }
 ```
 
@@ -3599,7 +3697,6 @@ func main() {
 ### ResultObjectsToString
 
 **ResultObjectsToString** - Serialises compliant and non‑compliant report objects into a JSON representation of `FailureReasonOut`.
-
 
 #### Signature (Go)
 
@@ -3671,7 +3768,6 @@ func main() {
 
 **ResultToString** - Translates predefined integer result codes (`SUCCESS`, `FAILURE`, `ERROR`) into human‑readable strings. Unrecognized codes yield an empty string.
 
-
 #### Signature (Go)
 
 ```go
@@ -3725,15 +3821,14 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
 func main() {
-	fmt.Println(testhelper.ResultToString(SUCCESS)) // Output: SUCCESS
+ fmt.Println(testhelper.ResultToString(SUCCESS)) // Output: SUCCESS
 }
 ```
 
 ---
-

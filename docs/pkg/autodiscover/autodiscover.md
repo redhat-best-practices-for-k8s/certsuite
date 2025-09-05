@@ -147,7 +147,7 @@ The autodiscover package queries a running Kubernetes or OpenShift cluster to co
 ### DiscoveredTestData
 
 <!-- DEBUG: Struct DiscoveredTestData exists in bundle but ParsedOK=false, Fields=59 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -217,17 +217,19 @@ The autodiscover package queries a running Kubernetes or OpenShift cluster to co
 
 ### PodStates
 
-
 #### Fields
+
 | Field          | Type            | Description |
 |----------------|-----------------|-------------|
 | `BeforeExecution` | `map[string]int` | Stores counts of pods before a specific operation; the key is typically an identifier (e.g., pod name or namespace), and the value represents how many times that pod was observed. |
 | `AfterExecution`  | `map[string]int` | Records counts of pods after the same operation, using the same key/value scheme as `BeforeExecution`. |
 
 #### Purpose
+
 `PodStates` is a lightweight container used to capture snapshots of pod counts at two distinct moments—prior to and following an execution step. By comparing the two maps, callers can determine how many pods were added, removed, or remained unchanged during that step.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | *none* |  |
@@ -238,18 +240,20 @@ The autodiscover package queries a running Kubernetes or OpenShift cluster to co
 
 ### ScaleObject
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `Scale` | `*scalingv1.Scale` | Pointer to the Kubernetes *scale* subresource, which holds replica count and other scaling information. |
 | `GroupResourceSchema` | `schema.GroupResource` | The group‑resource pair (e.g., `"apps"`, `"deployments"`), identifying the type of resource that owns this scale object. |
 
 #### Purpose
+
 `ScaleObject` bundles together the *scale* subresource and its owning resource’s group/resource identification.  
 It is used by autodiscovery logic to gather scaling information for custom resources that expose a `/scale` endpoint, enabling tools to query or manipulate replica counts programmatically.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetScaleCrUnderTest` | Enumerates all scalable custom resources in given namespaces and returns their corresponding `ScaleObject`s. |
@@ -264,7 +268,6 @@ It is used by autodiscovery logic to gather scaling information for custom resou
 ### CountPodsByStatus
 
 **CountPodsByStatus** - Returns a map with the number of *ready* (`PodRunning` phase) and *non‑ready* pods from a list.
-
 
 #### Signature (Go)
 
@@ -345,7 +348,6 @@ func main() {
 ### CreateLabels
 
 **CreateLabels** - Parses each input string using a predefined regular expression (`labelRegex`) and converts matched key‑value pairs into `labelObject` instances. Invalid strings are logged as errors and skipped.
-
 
 #### Signature (Go)
 
@@ -478,6 +480,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_GetClientsHolder
@@ -518,12 +521,14 @@ graph TD
 ```
 
 #### Functions calling `DoAutoDiscover`
+
 ```mermaid
 graph TD
   func_buildTestEnvironment --> func_DoAutoDiscover
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking DoAutoDiscover
 import (
@@ -546,13 +551,14 @@ func main() {
 
 **FindCrObjectByNameByNamespace** - Looks up a Kubernetes `Scale` subresource for the specified CR (Custom Resource) within a given namespace.
 
-
 #### Signature (Go)
+
 ```go
 func FindCrObjectByNameByNamespace(scale.ScalesGetter, string, string, schema.GroupResource) (*scalingv1.Scale, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Looks up a Kubernetes `Scale` subresource for the specified CR (Custom Resource) within a given namespace. |
@@ -563,6 +569,7 @@ func FindCrObjectByNameByNamespace(scale.ScalesGetter, string, string, schema.Gr
 | **How it fits the package** | Provides a low‑level helper that other components (e.g., provider logic) use to obtain scaling information about arbitrary CRs during autodiscovery. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Receive scalesGetter, ns, name, groupResourceSchema"] --> B["Call Scales(ns).Get(context.TODO(), groupResourceSchema, name, metav1.GetOptions{})"]
@@ -572,6 +579,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_FindCrObjectByNameByNamespace --> func_ScalesGetter.Scales
@@ -581,12 +589,14 @@ graph TD
 ```
 
 #### Functions calling `FindCrObjectByNameByNamespace`
+
 ```mermaid
 graph TD
   func_GetUpdatedCrObject --> func_FindCrObjectByNameByNamespace
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking FindCrObjectByNameByNamespace
 import (
@@ -618,7 +628,6 @@ func main() {
 ### FindDeploymentByNameByNamespace
 
 **FindDeploymentByNameByNamespace** - Fetches a Kubernetes Deployment resource identified by its namespace and name using the AppsV1 client.
-
 
 #### Signature (Go)
 
@@ -692,13 +701,14 @@ func main() {
 
 **FindPodsByLabels** - Enumerates pods in the provided namespaces that match any of the supplied label selectors. It returns two slices: one containing only running (or allowed non‑running) pods and another with all retrieved pods, excluding those marked for deletion.
 
-
 #### Signature (Go)
+
 ```go
 func FindPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, namespaces []string) (runningPods, allPods []corev1.Pod)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Enumerates pods in the provided namespaces that match any of the supplied label selectors. It returns two slices: one containing only running (or allowed non‑running) pods and another with all retrieved pods, excluding those marked for deletion. |
@@ -709,6 +719,7 @@ func FindPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, nam
 | **How it fits the package** | Core part of autodiscovery: used by higher‑level functions such as `DoAutoDiscover` to gather pod information for testing and reporting. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate namespaces"}
@@ -721,6 +732,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_FindPodsByLabels --> func_configuration.GetTestParameters
@@ -731,6 +743,7 @@ graph TD
 ```
 
 #### Functions calling `FindPodsByLabels`
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_FindPodsByLabels
@@ -738,6 +751,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking FindPodsByLabels
 import (
@@ -764,13 +778,14 @@ running, all := FindPodsByLabels(oc, labels, namespaces)
 
 **FindStatefulsetByNameByNamespace** - Fetches a Kubernetes StatefulSet resource identified by its `namespace` and `name`. Returns the object or an error if retrieval fails.
 
-
 #### Signature (Go)
+
 ```go
 func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.StatefulSet, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Fetches a Kubernetes StatefulSet resource identified by its `namespace` and `name`. Returns the object or an error if retrieval fails. |
@@ -781,6 +796,7 @@ func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, nam
 | **How it fits the package** | Utility function used by higher‑level discovery logic to obtain StatefulSet information needed for policy checks and remediation. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Call appClient.StatefulSets(namespace).Get"}
@@ -789,6 +805,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_FindStatefulsetByNameByNamespace --> func_Get
@@ -797,12 +814,14 @@ graph TD
 ```
 
 #### Functions calling `FindStatefulsetByNameByNamespace` (Mermaid)
+
 ```mermaid
 graph TD
   func_GetUpdatedStatefulset --> func_FindStatefulsetByNameByNamespace
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking FindStatefulsetByNameByNamespace
 import (
@@ -834,11 +853,13 @@ func main() {
 Retrieves the subset of cluster Custom Resource Definitions (CRDs) whose names match any configured suffix filter.
 
 #### Signature (Go)
+
 ```go
 func FindTestCrdNames(clusterCrds []*apiextv1.CustomResourceDefinition, crdFilters []configuration.CrdFilter) (targetCrds []*apiextv1.CustomResourceDefinition)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Filters a list of cluster CRDs to only those whose names end with any suffix specified in `crdFilters`. |
@@ -849,6 +870,7 @@ func FindTestCrdNames(clusterCrds []*apiextv1.CustomResourceDefinition, crdFilte
 | **How it fits the package** | Used by `DoAutoDiscover` to determine which cluster CRDs should be considered “under test” based on configuration filters. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check if clusterCrds is empty"] -->|"Yes"| B["Log error & return empty slice"]
@@ -864,6 +886,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_FindTestCrdNames --> log.Error
@@ -873,12 +896,14 @@ graph TD
 ```
 
 #### Functions calling `FindTestCrdNames` (Mermaid)
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_FindTestCrdNames
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking FindTestCrdNames
 import (
@@ -907,23 +932,25 @@ func main() {
 
 **GetScaleCrUnderTest** - For each namespace‑scoped CRD that supports the `scale` subresource, gather all custom resources (CRs) in the provided namespaces and return their scale objects.
 
-
 #### Signature (Go)
+
 ```go
 func GetScaleCrUnderTest(namespaces []string, crds []*apiextv1.CustomResourceDefinition) []ScaleObject
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | For each namespace‑scoped CRD that supports the `scale` subresource, gather all custom resources (CRs) in the provided namespaces and return their scale objects. |
 | **Parameters** | `namespaces []string` – list of target namespace names.<br>`crds []*apiextv1.CustomResourceDefinition` – CRDs to inspect. |
 | **Return value** | `[]ScaleObject` – slice containing a scale object for every discovered scalable CR. |
-| **Key dependencies** | * `clientsholder.GetClientsHolder()` – obtains dynamic client.<br>* `log.Warn`, `log.Info`, `log.Debug`, `log.Fatal` – logging utilities.<br>* `getCrScaleObjects(crs, crd)` – helper that extracts scale objects from a list of CRs. |
+| **Key dependencies** | *`clientsholder.GetClientsHolder()` – obtains dynamic client.<br>* `log.Warn`, `log.Info`, `log.Debug`, `log.Fatal` – logging utilities.<br>* `getCrScaleObjects(crs, crd)` – helper that extracts scale objects from a list of CRs. |
 | **Side effects** | Emits log messages (warn/info/debug/fatal). Does not modify external state. |
 | **How it fits the package** | Used by `autodiscover.DoAutoDiscover` to populate `data.ScaleCrUnderTest`, enabling further analysis of scalable resources during autodiscovery. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Get dynamic client"] --> B{"Iterate CRDs"}
@@ -943,6 +970,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_GetScaleCrUnderTest --> clientsholder.GetClientsHolder
@@ -954,12 +982,14 @@ graph TD
 ```
 
 #### Functions calling `GetScaleCrUnderTest`
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_GetScaleCrUnderTest
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetScaleCrUnderTest
 import (
@@ -987,7 +1017,6 @@ func main() {
 ### findAbnormalEvents
 
 **findAbnormalEvents** - Gathers all Kubernetes events whose `type` is not `"Normal"` from the supplied namespaces.
-
 
 #### Signature (Go)
 
@@ -1069,13 +1098,14 @@ func main() {
 
 **findClusterOperators** - Queries the Kubernetes API for all `ClusterOperator` resources, returning them as a slice of `configv1.ClusterOperator`. If the CR is missing, it logs a debug message and returns `nil, nil`.
 
-
 #### Signature (Go)
+
 ```go
 func findClusterOperators(client clientconfigv1.ClusterOperatorInterface) ([]configv1.ClusterOperator, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Queries the Kubernetes API for all `ClusterOperator` resources, returning them as a slice of `configv1.ClusterOperator`. If the CR is missing, it logs a debug message and returns `nil, nil`. |
@@ -1086,6 +1116,7 @@ func findClusterOperators(client clientconfigv1.ClusterOperatorInterface) ([]con
 | **How it fits the package** | Used by the autodiscovery routine (`DoAutoDiscover`) to gather cluster‑wide operator status before proceeding with further discovery steps. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Call client.List"}
@@ -1098,6 +1129,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_findClusterOperators --> func_List
@@ -1106,32 +1138,34 @@ graph TD
 ```
 
 #### Functions calling `findClusterOperators` (Mermaid)
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_findClusterOperators
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking findClusterOperators
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	clientconfigv1 "github.com/openshift/client-go/config/v1"
-	configv1 "github.com/openshift/api/config/v1"
+ clientconfigv1 "github.com/openshift/client-go/config/v1"
+ configv1 "github.com/openshift/api/config/v1"
 )
 
 func main() {
-	// Assume `client` is an initialized ClusterOperatorInterface.
-	var client clientconfigv1.ClusterOperatorInterface
-	operators, err := findClusterOperators(client)
-	if err != nil {
-		fmt.Printf("Error retrieving operators: %v\n", err)
-		return
-	}
-	fmt.Printf("Found %d cluster operators\n", len(operators))
+ // Assume `client` is an initialized ClusterOperatorInterface.
+ var client clientconfigv1.ClusterOperatorInterface
+ operators, err := findClusterOperators(client)
+ if err != nil {
+  fmt.Printf("Error retrieving operators: %v\n", err)
+  return
+ }
+ fmt.Printf("Found %d cluster operators\n", len(operators))
 }
 ```
 
@@ -1141,13 +1175,14 @@ func main() {
 
 **findDeploymentsByLabels** - Enumerates all deployments in the specified namespaces that contain at least one of the supplied label key/value pairs. If no labels are provided, every deployment in those namespaces is returned.
 
-
 #### Signature (Go)
+
 ```go
 func findDeploymentsByLabels(appClient appv1client.AppsV1Interface, labels []labelObject, namespaces []string) []appsv1.Deployment
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Enumerates all deployments in the specified namespaces that contain at least one of the supplied label key/value pairs. If no labels are provided, every deployment in those namespaces is returned. |
@@ -1158,6 +1193,7 @@ func findDeploymentsByLabels(appClient appv1client.AppsV1Interface, labels []lab
 | **How it fits the package** | Supports autodiscovery of testable deployments by filtering Kubernetes objects according to user‑defined labels, enabling the CNF suite to target relevant workloads. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate namespaces"}
@@ -1178,6 +1214,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_findDeploymentsByLabels --> appClient_Deployments_ns_List
@@ -1189,12 +1226,14 @@ graph TD
 ```
 
 #### Functions calling `findDeploymentsByLabels` (Mermaid)
+
 ```mermaid
 graph TD
   DoAutoDiscover --> findDeploymentsByLabels
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking findDeploymentsByLabels
 import (
@@ -1227,23 +1266,25 @@ func example(client appv1client.AppsV1Interface) {
 
 **findHpaControllers** - Collects every `HorizontalPodAutoscaler` object from the supplied namespaces and returns a slice of pointers to them.
 
-
 #### Signature (Go)
+
 ```go
 func(findHpaControllers)(kubernetes.Interface, []string) []*scalingv1.HorizontalPodAutoscaler
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Collects every `HorizontalPodAutoscaler` object from the supplied namespaces and returns a slice of pointers to them. |
 | **Parameters** | `cs kubernetes.Interface` – client for interacting with the Kubernetes API.<br>`namespaces []string` – list of namespace names to query. |
 | **Return value** | `[]*scalingv1.HorizontalPodAutoscaler` – aggregated HPA objects; empty slice if none found or an error occurs. |
-| **Key dependencies** | * `cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(context.TODO(), metav1.ListOptions{})` – API call to list HPAs.<br>* `log.Error`, `log.Info` – logging utilities for error and info messages. |
+| **Key dependencies** | *`cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(context.TODO(), metav1.ListOptions{})` – API call to list HPAs.<br>* `log.Error`, `log.Info` – logging utilities for error and info messages. |
 | **Side effects** | None beyond reading from the cluster; logs errors or informational messages. |
 | **How it fits the package** | Used by `DoAutoDiscover` to populate the `Hpas` field of the discovered data structure, enabling downstream analysis of autoscaling configurations. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   start(Start) --> iterate{"For each namespace"}
@@ -1257,6 +1298,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_findHpaControllers --> func_List
@@ -1268,12 +1310,14 @@ graph TD
 ```
 
 #### Functions calling `findHpaControllers` (Mermaid)
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_findHpaControllers
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking findHpaControllers
 import (
@@ -1293,7 +1337,6 @@ func example(client kubernetes.Interface) {
 ### findOperatorsByLabels
 
 **findOperatorsByLabels** - Scans each namespace in `namespaces` for ClusterServiceVersions (CSVs). If `labels` are provided, only CSVs that have at least one of those labels are considered; otherwise all CSVs are fetched. It then filters the results to include only those whose controller pods run inside any namespace listed in `namespaces`.
-
 
 #### Signature (Go)
 
@@ -1384,7 +1427,6 @@ func main() {
 
 **findOperatorsMatchingAtLeastOneLabel** - Retrieves all ClusterServiceVersions (CSVs) within the given `namespace` that carry at least one of the supplied label key/value pairs. The function aggregates results across labels and returns a combined list.
 
-
 ```go
 func(v1alpha1.OperatorsV1alpha1Interface, []labelObject, configuration.Namespace)(*olmv1Alpha.ClusterServiceVersionList)
 ```
@@ -1459,7 +1501,6 @@ func example() {
 ### findPodsMatchingAtLeastOneLabel
 
 **findPodsMatchingAtLeastOneLabel** - Builds a `PodList` containing all pods in the specified `namespace` that match at least one label from the provided slice.
-
 
 #### Signature (Go)
 
@@ -1544,7 +1585,6 @@ func main() {
 
 **findStatefulSetsByLabels** - Enumerates all StatefulSets in the supplied namespaces, filtering by label matches when provided. Returns a slice of matching `StatefulSet` objects.
 
-
 #### Signature (Go)
 
 ```go
@@ -1562,7 +1602,7 @@ func findStatefulSetsByLabels(
 | **Purpose** | Enumerates all StatefulSets in the supplied namespaces, filtering by label matches when provided. Returns a slice of matching `StatefulSet` objects. |
 | **Parameters** | `appClient appv1client.AppsV1Interface` – Kubernetes AppsV1 client.<br>`labels []labelObject` – Optional list of key/value pairs used to filter StatefulSets.<br>`namespaces []string` – Namespaces to search within. |
 | **Return value** | Slice of `appsv1.StatefulSet` that satisfy the label criteria (or all if no labels supplied). |
-| **Key dependencies** | * `List` on `StatefulSets(ns)`<br>* `isStatefulSetsMatchingAtLeastOneLabel` helper<br>* Logging functions (`log.Error`, `log.Warn`, `log.Debug`, `log.Info`) |
+| **Key dependencies** | *`List` on `StatefulSets(ns)`<br>* `isStatefulSetsMatchingAtLeastOneLabel` helper<br>* Logging functions (`log.Error`, `log.Warn`, `log.Debug`, `log.Info`) |
 | **Side effects** | No mutation of input arguments.<br>Logs errors and warnings; does not propagate errors to caller. |
 | **How it fits the package** | Used by the autodiscover routine to gather StatefulSet resources that may contain CNF pods for later analysis. |
 
@@ -1639,7 +1679,6 @@ statefulSets := findStatefulSetsByLabels(client, labels, namespaces)
 
 **findSubscriptions** - Collects all `Subscription` objects from the provided list of Kubernetes namespaces using an OLM client.
 
-
 #### Signature (Go)
 
 ```go
@@ -1698,18 +1737,18 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
-	v1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
-	olmv1Alpha "github.com/operator-framework/operator-lifecycle-manager/pkg/api/apis/operators/v1alpha1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
+ v1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
+ olmv1Alpha "github.com/operator-framework/operator-lifecycle-manager/pkg/api/apis/operators/v1alpha1"
 )
 
 func main() {
-	var olmClient v1alpha1.OperatorsV1alpha1Interface // obtain from OLM client set
-	namespaces := []string{"default", "kube-system"}
-	subs := autodiscover.findSubscriptions(olmClient, namespaces)
-	for _, sub := range subs {
-		println(sub.Name, sub.Namespace)
-	}
+ var olmClient v1alpha1.OperatorsV1alpha1Interface // obtain from OLM client set
+ namespaces := []string{"default", "kube-system"}
+ subs := autodiscover.findSubscriptions(olmClient, namespaces)
+ for _, sub := range subs {
+  println(sub.Name, sub.Namespace)
+ }
 }
 ```
 
@@ -1718,7 +1757,6 @@ func main() {
 ### getAllCatalogSources
 
 **getAllCatalogSources** - Collects every `CatalogSource` resource present in the Kubernetes cluster and returns them as a slice of pointers.
-
 
 #### 1) Signature (Go)
 
@@ -1774,16 +1812,16 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
-	v1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/autodiscover"
+ v1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
 func main() {
-	var olmClient v1alpha1.OperatorsV1alpha1Interface // assume initialized elsewhere
-	catalogSources := autodiscover.GetAllCatalogSources(olmClient)
-	for _, cs := range catalogSources {
-		println(cs.Name) // or any other processing
-	}
+ var olmClient v1alpha1.OperatorsV1alpha1Interface // assume initialized elsewhere
+ catalogSources := autodiscover.GetAllCatalogSources(olmClient)
+ for _, cs := range catalogSources {
+  println(cs.Name) // or any other processing
+ }
 }
 ```
 
@@ -1794,7 +1832,6 @@ func main() {
 ### getAllInstallPlans
 
 **getAllInstallPlans** - Collects every `InstallPlan` resource present in the cluster and returns them as a slice of pointers.
-
 
 #### Signature (Go)
 
@@ -1809,7 +1846,7 @@ func getAllInstallPlans(olmClient v1alpha1.OperatorsV1alpha1Interface) (out []*o
 | **Purpose** | Collects every `InstallPlan` resource present in the cluster and returns them as a slice of pointers. |
 | **Parameters** | `olmClient v1alpha1.OperatorsV1alpha1Interface` – OLM client used to query InstallPlans. |
 | **Return value** | `[]*olmv1Alpha.InstallPlan` – Slice containing references to all retrieved InstallPlans; empty if an error occurs. |
-| **Key dependencies** | * `olmClient.InstallPlans("")` – API call to list InstallPlans.<br>* `context.TODO()` – context for the request.<br>* `metav1.ListOptions{}` – default listing options.<br>* `log.Error` – logs failures. |
+| **Key dependencies** | *`olmClient.InstallPlans("")` – API call to list InstallPlans.<br>* `context.TODO()` – context for the request.<br>*`metav1.ListOptions{}` – default listing options.<br>* `log.Error` – logs failures. |
 | **Side effects** | None that modify external state; only logs errors. |
 | **How it fits the package** | Used by `DoAutoDiscover` to gather InstallPlan data for autodiscovery of operator status and relationships. |
 
@@ -1863,13 +1900,14 @@ installPlans := autodiscover.getAllInstallPlans(client)
 
 **getAllNamespaces** - Queries the cluster for every namespace and returns a slice of their names.
 
-
 #### Signature (Go)
+
 ```go
 func getAllNamespaces(oc corev1client.CoreV1Interface) ([]string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Queries the cluster for every namespace and returns a slice of their names. |
@@ -1880,6 +1918,7 @@ func getAllNamespaces(oc corev1client.CoreV1Interface) ([]string, error)
 | **How it fits the package** | Provides a foundational list of namespaces for higher‑level autodiscovery functions that need to iterate over all namespaces (e.g., service discovery, operator enumeration). |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["List namespaces via client"]
@@ -1891,6 +1930,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_getAllNamespaces --> func_List
@@ -1901,12 +1941,14 @@ graph TD
 ```
 
 #### Functions calling `getAllNamespaces`
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_getAllNamespaces
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getAllNamespaces
 import (
@@ -1930,13 +1972,14 @@ func example(client corev1client.CoreV1Interface) {
 
 **getAllOperators** - Fetches every ClusterServiceVersion (CSV) across all namespaces using the supplied OLM client and returns a slice of pointers to those CSV objects.
 
-
 #### 1) Signature (Go)
+
 ```go
 func getAllOperators(olmClient v1alpha1.OperatorsV1alpha1Interface) ([]*olmv1Alpha.ClusterServiceVersion, error)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Fetches every ClusterServiceVersion (CSV) across all namespaces using the supplied OLM client and returns a slice of pointers to those CSV objects. |
@@ -1947,6 +1990,7 @@ func getAllOperators(olmClient v1alpha1.OperatorsV1alpha1Interface) ([]*olmv1Alp
 | **How it fits the package** | Supports the autodiscovery routine by providing a complete list of installed operators for subsequent filtering, mapping to pods, or status checks. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["getAllOperators"] --> B["olmClient.ClusterServiceVersions()"]
@@ -1960,6 +2004,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getAllOperators --> func_List
@@ -1971,12 +2016,14 @@ graph TD
 ```
 
 #### 5) Functions calling `getAllOperators` (Mermaid)
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_getAllOperators
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking getAllOperators
 import (
@@ -2004,13 +2051,14 @@ func main() {
 
 **getAllPackageManifests** - Gathers every `PackageManifest` resource present in the cluster and returns them as a slice of pointers.
 
-
 #### Signature (Go)
+
 ```go
 func getAllPackageManifests(olmPkgClient olmpkgclient.PackageManifestInterface) (out []*olmpkgv1.PackageManifest)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Gathers every `PackageManifest` resource present in the cluster and returns them as a slice of pointers. |
@@ -2021,6 +2069,7 @@ func getAllPackageManifests(olmPkgClient olmpkgclient.PackageManifestInterface) 
 | **How it fits the package** | Used by `DoAutoDiscover` to populate the `AllPackageManifests` field in autodiscovery data. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["List PackageManifests"]
@@ -2032,6 +2081,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getAllPackageManifests --> func_List
@@ -2041,27 +2091,29 @@ graph TD
 ```
 
 #### Functions calling `getAllPackageManifests` (Mermaid)
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_getAllPackageManifests
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getAllPackageManifests
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	olmpkgclient "github.com/operator-framework/olm/pkg/client"
-	olmpkgv1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
+ olmpkgclient "github.com/operator-framework/olm/pkg/client"
+ olmpkgv1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
 func main() {
-	var client olmpkgclient.PackageManifestInterface // obtain via client factory
-	pkgs := getAllPackageManifests(client)
-	fmt.Printf("Found %d package manifests\n", len(pkgs))
+ var client olmpkgclient.PackageManifestInterface // obtain via client factory
+ pkgs := getAllPackageManifests(client)
+ fmt.Printf("Found %d package manifests\n", len(pkgs))
 }
 ```
 
@@ -2070,7 +2122,6 @@ func main() {
 ### getAllStorageClasses
 
 **getAllStorageClasses** - Fetches every `StorageClass` defined in the cluster via the Kubernetes API and returns them as a slice.
-
 
 #### Signature (Go)
 
@@ -2142,13 +2193,14 @@ func example(client storagev1typed.StorageV1Interface) {
 
 **getClusterCrdNames** - Queries the Kubernetes API for every `CustomResourceDefinition` (CRD) in the cluster and returns them as a slice of pointers.
 
-
 #### Signature (Go)
+
 ```go
 func getClusterCrdNames() ([]*apiextv1.CustomResourceDefinition, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Queries the Kubernetes API for every `CustomResourceDefinition` (CRD) in the cluster and returns them as a slice of pointers. |
@@ -2159,6 +2211,7 @@ func getClusterCrdNames() ([]*apiextv1.CustomResourceDefinition, error)
 | **How it fits the package** | Used by `DoAutoDiscover` to gather all cluster‑wide CRDs, which are later filtered and processed for test discovery. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   getClusterCrdNames --> GetClientsHolder
@@ -2186,6 +2239,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getClusterCrdNames
 crds, err := autodiscover.getClusterCrdNames()
@@ -2202,7 +2256,6 @@ for _, crd := range crds {
 ### getClusterRoleBindings
 
 **getClusterRoleBindings** - Fetches every `ClusterRoleBinding` object present in the Kubernetes cluster. These bindings are non‑namespaced and apply cluster‑wide.
-
 
 #### 1) Signature (Go)
 
@@ -2273,7 +2326,6 @@ func example(client rbacv1typed.RbacV1Interface) {
 
 **getCrScaleObjects** - For each custom resource in `crs`, fetch its corresponding Scale subresource via the Kubernetes Scaling API and return a slice of `ScaleObject` structs that bundle the retrieved scale data with its GroupResource schema.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -2340,7 +2392,6 @@ fmt.Printf("Fetched %d scale objects\n", len(scaleObjs))
 ### getHelmList
 
 **getHelmList** - Queries the Kubernetes cluster via Helm client to list all deployed releases per namespace and returns a mapping from namespace name to its release objects.
-
 
 #### Signature (Go)
 
@@ -2422,7 +2473,6 @@ func main() {
 
 **getNetworkAttachmentDefinitions** - Enumerates all `NetworkAttachmentDefinition` resources in the specified Kubernetes namespaces and aggregates them into a single slice.
 
-
 #### Signature (Go)
 
 ```go
@@ -2491,7 +2541,6 @@ fmt.Printf("Retrieved %d NetworkAttachmentDefinitions\n", len(nads))
 ### getNetworkPolicies
 
 **getNetworkPolicies** - Queries the Kubernetes API for all `NetworkPolicy` objects across every namespace and returns them as a slice.
-
 
 #### Signature (Go)
 
@@ -2566,7 +2615,6 @@ func main() {
 ### getOpenshiftVersion
 
 **getOpenshiftVersion** - Fetches the OpenShift API server version by querying the `ClusterOperator` CRD for `openshift-apiserver`. If not found, returns a sentinel value indicating a non‑OpenShift cluster.
-
 
 #### Signature (Go)
 
@@ -2650,7 +2698,6 @@ func main() {
 ### getOperandPodsFromTestCsvs
 
 **getOperandPodsFromTestCsvs** - Filters a pod list to those whose top‑level owner CR is managed by any of the supplied test CSVs.
-
 
 #### 1) Signature (Go)
 
@@ -2736,13 +2783,14 @@ func example() {
 
 **getOperatorCsvPods** - For each ClusterServiceVersion (CSV), fetch the namespace where its operator runs and gather all pods owned by that CSV. Returns a map keyed by `types.NamespacedName` of the CSV to the list of managed pods.
 
-
 #### Signature (Go)
+
 ```go
 func getOperatorCsvPods(csvList []*olmv1Alpha.ClusterServiceVersion) (map[types.NamespacedName][]*corev1.Pod, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | For each ClusterServiceVersion (CSV), fetch the namespace where its operator runs and gather all pods owned by that CSV. Returns a map keyed by `types.NamespacedName` of the CSV to the list of managed pods. |
@@ -2753,6 +2801,7 @@ func getOperatorCsvPods(csvList []*olmv1Alpha.ClusterServiceVersion) (map[types.
 | **How it fits the package** | Used during auto‑discovery (`DoAutoDiscover`) to associate each operator’s CSV with its controller pods, enabling later analysis of operator behavior and health. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["getOperatorCsvPods"] --> B["GetClientsHolder"]
@@ -2765,6 +2814,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getOperatorCsvPods --> func_GetClientsHolder
@@ -2774,12 +2824,14 @@ graph TD
 ```
 
 #### Functions calling `getOperatorCsvPods` (Mermaid)
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_getOperatorCsvPods
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getOperatorCsvPods
 import (
@@ -2809,7 +2861,6 @@ func example() error {
 ### getPersistentVolumeClaims
 
 **getPersistentVolumeClaims** - Queries the Kubernetes API for every PersistentVolumeClaim (PVC) in all namespaces and returns them as a slice.
-
 
 ```go
 func getPersistentVolumeClaims(oc corev1client.CoreV1Interface) ([]corev1.PersistentVolumeClaim, error)
@@ -2882,13 +2933,14 @@ func main() {
 
 **getPersistentVolumes** - Queries the Kubernetes API for all PersistentVolume resources and returns them as a slice.
 
-
 #### Signature (Go)
+
 ```go
 func getPersistentVolumes(oc corev1client.CoreV1Interface) ([]corev1.PersistentVolume, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Queries the Kubernetes API for all PersistentVolume resources and returns them as a slice. |
@@ -2899,6 +2951,7 @@ func getPersistentVolumes(oc corev1client.CoreV1Interface) ([]corev1.PersistentV
 | **How it fits the package** | Provides volume data for autodiscovery, enabling the suite to analyze storage resources in the cluster. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["getPersistentVolumes"] --> B["Create context.TODO()"]
@@ -2909,6 +2962,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   getPersVol --> CoreV1Interface
@@ -2917,12 +2971,14 @@ graph TD
 ```
 
 #### Functions calling `getPersistentVolumes` (Mermaid)
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_getPersistentVolumes
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getPersistentVolumes
 import (
@@ -2946,13 +3002,14 @@ func example(oc corev1client.CoreV1Interface) {
 
 **getPodDisruptionBudgets** - Gathers all `PodDisruptionBudget` resources across the supplied namespaces and returns them as a single slice.
 
-
 #### Signature (Go)
+
 ```go
 func getPodDisruptionBudgets(oc policyv1client.PolicyV1Interface, namespaces []string) ([]policyv1.PodDisruptionBudget, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Gathers all `PodDisruptionBudget` resources across the supplied namespaces and returns them as a single slice. |
@@ -2963,6 +3020,7 @@ func getPodDisruptionBudgets(oc policyv1client.PolicyV1Interface, namespaces []s
 | **How it fits the package** | Supports autodiscovery by collecting cluster resources needed for test analysis; called from `DoAutoDiscover`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["getPodDisruptionBudgets"] --> B["Initialize empty slice"]
@@ -2977,6 +3035,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getPodDisruptionBudgets --> func_List
@@ -2986,12 +3045,14 @@ graph TD
 ```
 
 #### Functions calling `getPodDisruptionBudgets` (Mermaid)
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_getPodDisruptionBudgets
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getPodDisruptionBudgets
 package main
@@ -3022,7 +3083,6 @@ func main() {
 ### getPodsOwnedByCsv
 
 **getPodsOwnedByCsv** - Returns all Pods in `operatorNamespace` whose top‑level owner is the CSV named `csvName`. These are typically operator/controller Pods.
-
 
 #### Signature (Go)
 
@@ -3099,13 +3159,14 @@ func demo() error {
 
 **getResourceQuotas** - Queries Kubernetes for every `ResourceQuota` object across all namespaces and returns them as a slice.
 
-
 #### Signature
+
 ```go
 func getResourceQuotas(oc corev1client.CoreV1Interface) ([]corev1.ResourceQuota, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Queries Kubernetes for every `ResourceQuota` object across all namespaces and returns them as a slice. |
@@ -3116,6 +3177,7 @@ func getResourceQuotas(oc corev1client.CoreV1Interface) ([]corev1.ResourceQuota,
 | **How it fits the package** | Provides the data needed by `DoAutoDiscover` to populate the `ResourceQuotaItems` field of the autodiscovery result. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Build ListOptions"}
@@ -3127,6 +3189,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_getResourceQuotas --> func_List
@@ -3135,12 +3198,14 @@ graph TD
 ```
 
 #### Functions calling `getResourceQuotas`
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_getResourceQuotas
 ```
 
 #### Usage example
+
 ```go
 // Minimal example invoking getResourceQuotas
 package main
@@ -3167,7 +3232,6 @@ func main() {
 ### getRoleBindings
 
 **getRoleBindings** - Collects every `RoleBinding` resource present in the Kubernetes cluster.
-
 
 #### Signature (Go)
 
@@ -3245,7 +3309,6 @@ func main() {
 
 **getRoles** - Enumerates every `Role` resource across all namespaces in a Kubernetes cluster.
 
-
 #### Signature (Go)
 
 ```go
@@ -3322,13 +3385,14 @@ func main() {
 
 **getServiceAccounts** - Retrieves all `ServiceAccount` objects from the provided list of Kubernetes namespaces and returns them as a slice.
 
-
 #### Signature (Go)
+
 ```go
 func getServiceAccounts(oc corev1client.CoreV1Interface, namespaces []string) ([]*corev1.ServiceAccount, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Retrieves all `ServiceAccount` objects from the provided list of Kubernetes namespaces and returns them as a slice. |
@@ -3339,6 +3403,7 @@ func getServiceAccounts(oc corev1client.CoreV1Interface, namespaces []string) ([
 | **How it fits the package** | Used by `DoAutoDiscover` to gather service accounts for both target namespaces and all namespaces, enabling later analysis of roles and permissions. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over namespaces"}
@@ -3351,6 +3416,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_getServiceAccounts --> func_List
@@ -3360,12 +3426,14 @@ graph TD
 ```
 
 #### Functions calling `getServiceAccounts`
+
 ```mermaid
 graph TD
   func_DoAutoDiscover --> func_getServiceAccounts
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getServiceAccounts
 import (
@@ -3396,7 +3464,6 @@ func main() {
 ### getServices
 
 **getServices** - Gathers all `Service` resources from the provided `namespaces`, excluding any whose names appear in `ignoreList`. Returns a slice of pointers to the services and an error if any namespace query fails.
-
 
 #### Signature (Go)
 
@@ -3492,7 +3559,6 @@ func main() {
 
 **getSriovNetworkNodePolicies** - Enumerates all `SriovNetworkNodePolicy` resources across the supplied Kubernetes namespaces using a dynamic client. Returns the combined list or an error if any non‑NotFound issue occurs.
 
-
 #### Signature (Go)
 
 ```go
@@ -3573,7 +3639,6 @@ func main() {
 ### getSriovNetworks
 
 **getSriovNetworks** - Enumerates all `SriovNetwork` custom resources across the provided list of Kubernetes namespaces. Returns a slice of unstructured objects representing each network or an error if any request fails.
-
 
 #### Signature (Go)
 
@@ -3666,7 +3731,6 @@ func main() {
 
 **isDeploymentsPodsMatchingAtLeastOneLabel** - Checks whether the pod template of a given Deployment has a label that matches at least one label supplied in `labels`. If a match is found, the function returns `true`; otherwise it returns `false`.
 
-
 #### Signature (Go)
 
 ```go
@@ -3735,13 +3799,14 @@ fmt.Printf("Deployment matches at least one label: %v\n", matched)
 
 **isIstioServiceMeshInstalled** - Determines whether the Istio service mesh is installed in a cluster by verifying the presence of the `istio-system` namespace and the `istiod` deployment.
 
-
 #### Signature (Go)
+
 ```go
 func(isIstioServiceMeshInstalled)(appv1client.AppsV1Interface, []string) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether the Istio service mesh is installed in a cluster by verifying the presence of the `istio-system` namespace and the `istiod` deployment. |
@@ -3752,6 +3817,7 @@ func(isIstioServiceMeshInstalled)(appv1client.AppsV1Interface, []string) bool
 | **How it fits the package** | Used by `autodiscover.DoAutoDiscover` to flag whether Istio is present when collecting cluster metadata. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check if istio-system namespace exists"] --> B{"Namespace found?"}
@@ -3764,6 +3830,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_isIstioServiceMeshInstalled --> stringhelper_StringInSlice
@@ -3775,12 +3842,14 @@ graph TD
 ```
 
 #### Functions calling `isIstioServiceMeshInstalled` (Mermaid)
+
 ```mermaid
 graph TD
   autodiscover_DoAutoDiscover --> func_isIstioServiceMeshInstalled
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isIstioServiceMeshInstalled
 import (
@@ -3797,7 +3866,6 @@ func checkIstio(client appv1.AppsV1Interface, namespaces []string) bool {
 ### isStatefulSetsMatchingAtLeastOneLabel
 
 **isStatefulSetsMatchingAtLeastOneLabel** - Checks whether the pod template of a given StatefulSet contains at least one label that matches any key/value pair supplied in `labels`. Returns `true` on first match.
-
 
 #### Signature (Go)
 
@@ -3876,7 +3944,6 @@ if match {
 
 **namespacesListToStringList** - Extracts the `Name` field from each `configuration.Namespace` in a slice and returns a new slice of those names.
 
-
 #### Signature (Go)
 
 ```go
@@ -3944,4 +4011,3 @@ func main() {
 ```
 
 ---
-

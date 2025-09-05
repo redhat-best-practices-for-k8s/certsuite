@@ -36,7 +36,6 @@ The postmortem package generates a human‑readable report summarizing the state
 
 **Log** - Builds a human‑readable report containing node taints, pending pods, and abnormal events from the latest test environment.
 
-
 #### Signature (Go)
 
 ```go
@@ -51,7 +50,7 @@ func Log() (out string)
 | **Parameters** | None |
 | **Return value** | `string` – multiline diagnostic text |
 | **Key dependencies** | • `provider.GetTestEnvironment()` <br>• `env.SetNeedsRefresh()` <br>• `fmt.Sprintf` <br>• `p.String()`, `e.String()` methods |
-| **Side effects** | * Reads the current environment (no mutation). <br>* Calls `SetNeedsRefresh` to flag that a fresh snapshot is required. |
+| **Side effects** | *Reads the current environment (no mutation). <br>* Calls `SetNeedsRefresh` to flag that a fresh snapshot is required. |
 | **How it fits the package** | Supplies post‑mortem data for test diagnostics, invoked by tests when they need detailed context after failures. |
 
 #### Internal workflow
@@ -90,15 +89,14 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/postmortem"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/postmortem"
 )
 
 func main() {
-	report := postmortem.Log()
-	fmt.Println(report)
+ report := postmortem.Log()
+ fmt.Println(report)
 }
 ```
 
 ---
-

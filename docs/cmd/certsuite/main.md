@@ -36,13 +36,14 @@ Provides the entry point for the Certsuite CLI by creating a root cobra command 
 
 **main** - Initializes the root command and starts the CLI execution loop, handling errors by logging them and exiting with a non‑zero status.
 
-
 #### Signature (Go)
+
 ```go
 func()()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Initializes the root command and starts the CLI execution loop, handling errors by logging them and exiting with a non‑zero status. |
@@ -53,6 +54,7 @@ func()()
 | **How it fits the package** | Serves as the program’s main function, orchestrating the startup sequence for the `certsuite` command line tool. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   func_main --> func_newRootCmd
@@ -78,6 +80,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking main()
 func main() {
@@ -91,13 +94,14 @@ func main() {
 
 **newRootCmd** - Builds and returns a *cobra.Command that serves as the entry point for the Certsuite CLI, wiring all sub‑commands together.
 
-
 #### Signature (Go)
+
 ```go
 func()(*cobra.Command)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds and returns a *cobra.Command that serves as the entry point for the Certsuite CLI, wiring all sub‑commands together. |
@@ -108,6 +112,7 @@ func()(*cobra.Command)
 | **How it fits the package** | This function is used in `main()` to create the command tree that `cobra.Command.Execute()` will run, enabling the CLI functionality. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Create cobra.Command"] --> B["Set Use and Short"]
@@ -122,6 +127,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_newRootCmd --> cobra.AddCommand
@@ -135,12 +141,14 @@ graph TD
 ```
 
 #### Functions calling `newRootCmd`
+
 ```mermaid
 graph TD
   main --> func_newRootCmd
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking newRootCmd
 func main() {
@@ -152,4 +160,3 @@ func main() {
 ```
 
 ---
-

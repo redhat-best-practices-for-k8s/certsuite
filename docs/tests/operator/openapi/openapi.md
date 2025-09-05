@@ -36,13 +36,14 @@ The package provides utilities for inspecting Custom Resource Definitions (CRDs)
 
 **IsCRDDefinedWithOpenAPI3Schema** - Determines whether any version of a Custom Resource Definition includes an OpenAPI v3 schema declaration.
 
-
 #### Signature (Go)
+
 ```go
 func IsCRDDefinedWithOpenAPI3Schema(crd *apiextv1.CustomResourceDefinition) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether any version of a Custom Resource Definition includes an OpenAPI v3 schema declaration. |
@@ -53,6 +54,7 @@ func IsCRDDefinedWithOpenAPI3Schema(crd *apiextv1.CustomResourceDefinition) bool
 | **How it fits the package** | Provides a helper for tests that need to filter CRDs by schema definition, enabling compliance checks on operator‑provided CRDs. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over crd.Spec.Versions"}
@@ -65,6 +67,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_IsCRDDefinedWithOpenAPI3Schema --> func_Contains
@@ -73,12 +76,14 @@ graph TD
 ```
 
 #### Functions calling `IsCRDDefinedWithOpenAPI3Schema`
+
 ```mermaid
 graph TD
   func_testOperatorCrdOpenAPISpec --> func_IsCRDDefinedWithOpenAPI3Schema
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking IsCRDDefinedWithOpenAPI3Schema
 import (
@@ -96,4 +101,3 @@ func checkCRDSchema(crd *apiextv1.CustomResourceDefinition) {
 ```
 
 ---
-

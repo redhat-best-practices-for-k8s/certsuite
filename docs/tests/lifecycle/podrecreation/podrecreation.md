@@ -52,7 +52,6 @@ This package implements the logic for pod‑recreation tests in CertSuite’s li
 
 **CordonCleanup** - Ensures a Kubernetes node is marked schedulable again after test operations. It attempts to uncordon the node and aborts the test if this fails.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -125,7 +124,6 @@ func example() {
 ### CordonHelper
 
 **CordonHelper** - Sets the *Unschedulable* flag on a Kubernetes node to either cordon or uncordon it.
-
 
 #### 1) Signature (Go)
 
@@ -202,7 +200,6 @@ func main() {
 
 **CountPodsWithDelete** - Counts all deployment or statefulset pods scheduled on a specified node. If `mode` is not `NoDelete`, it initiates deletion of those pods using the appropriate delete mode (`Foreground` or `Background`).
 
-
 #### Signature (Go)
 
 ```go
@@ -259,30 +256,30 @@ graph TD
 package main
 
 import (
-	"fmt"
-	podrecreation "github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/podrecreation"
-	provider "github.com/redhat-best-practices-for-k8s/certsuite/internal/provider"
+ "fmt"
+ podrecreation "github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/podrecreation"
+ provider "github.com/redhat-best-practices-for-k8s/certsuite/internal/provider"
 )
 
 func main() {
-	// Assume pods is populated elsewhere
-	var pods []*provider.Pod
+ // Assume pods is populated elsewhere
+ var pods []*provider.Pod
 
-	node := "worker-1"
+ node := "worker-1"
 
-	// Count pods without deleting
-	count, err := podrecreation.CountPodsWithDelete(pods, node, podrecreation.NoDelete)
-	if err != nil {
-		fmt.Printf("Error counting pods: %v\n", err)
-		return
-	}
-	fmt.Printf("Node %s has %d relevant pods.\n", node, count)
+ // Count pods without deleting
+ count, err := podrecreation.CountPodsWithDelete(pods, node, podrecreation.NoDelete)
+ if err != nil {
+  fmt.Printf("Error counting pods: %v\n", err)
+  return
+ }
+ fmt.Printf("Node %s has %d relevant pods.\n", node, count)
 
-	// Delete pods with foreground mode
-	_, err = podrecreation.CountPodsWithDelete(pods, node, podrecreation.DeleteForeground)
-	if err != nil {
-		fmt.Printf("Error deleting pods: %v\n", err)
-	}
+ // Delete pods with foreground mode
+ _, err = podrecreation.CountPodsWithDelete(pods, node, podrecreation.DeleteForeground)
+ if err != nil {
+  fmt.Printf("Error deleting pods: %v\n", err)
+ }
 }
 ```
 
@@ -293,7 +290,6 @@ func main() {
 ### deletePod
 
 **deletePod** - Removes a pod from the cluster. If the deletion mode is not background, it spawns a goroutine that waits for the pod to be fully deleted before signalling completion via the supplied `WaitGroup`.
-
 
 Delete a Kubernetes pod and optionally wait for its removal based on the deletion mode.
 
@@ -388,13 +384,14 @@ func main() {
 
 **skipDaemonPod** - Determines whether a pod is owned by a DaemonSet and should therefore be exempt from deletion during recreation tests.
 
-
 #### Signature (Go)
+
 ```go
 func skipDaemonPod(pod *corev1.Pod) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether a pod is owned by a DaemonSet and should therefore be exempt from deletion during recreation tests. |
@@ -405,6 +402,7 @@ func skipDaemonPod(pod *corev1.Pod) bool
 | **How it fits the package** | Used by the pod recreation logic to filter out DaemonSet pods, ensuring only user‑managed workloads are targeted for deletion. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive pod"] --> B{"Inspect OwnerReferences"}
@@ -413,35 +411,38 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `skipDaemonPod` (Mermaid)
+
 ```mermaid
 graph TD
   func_CountPodsWithDelete --> func_skipDaemonPod
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking skipDaemonPod
 import (
-	"k8s.io/api/core/v1"
+ "k8s.io/api/core/v1"
 )
 
 func main() {
-	pod := &v1.Pod{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "example",
-			OwnerReferences: []metav1.OwnerReference{
-				{Kind: "DaemonSet", Name: "ds-example"},
-			},
-		},
-	}
-	if skipDaemonPod(pod) {
-		fmt.Println("Skipping pod owned by DaemonSet")
-	} else {
-		fmt.Println("Pod can be deleted")
-	}
+ pod := &v1.Pod{
+  ObjectMeta: metav1.ObjectMeta{
+   Name: "example",
+   OwnerReferences: []metav1.OwnerReference{
+    {Kind: "DaemonSet", Name: "ds-example"},
+   },
+  },
+ }
+ if skipDaemonPod(pod) {
+  fmt.Println("Skipping pod owned by DaemonSet")
+ } else {
+  fmt.Println("Pod can be deleted")
+ }
 }
 ```
 
@@ -450,7 +451,6 @@ func main() {
 ### waitPodDeleted
 
 **waitPodDeleted** - Monitors the specified Kubernetes namespace for the deletion of a pod named `podName`. If the pod is deleted or the watcher signals a deletion event, the function returns. It also times out after `timeout` seconds if no deletion occurs.
-
 
 #### 1) Signature (Go)
 
@@ -465,10 +465,10 @@ func waitPodDeleted(ns string, podName string, timeout int64, watcher watch.Inte
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Monitors the specified Kubernetes namespace for the deletion of a pod named `podName`. If the pod is deleted or the watcher signals a deletion event, the function returns. It also times out after `timeout` seconds if no deletion occurs. |
-| **Parameters** | * `ns string` – Namespace containing the pod.<br>* `podName string` – Name of the pod to watch for deletion.<br>* `timeout int64` – Maximum number of seconds to wait before timing out.<br>* `watcher watch.Interface` – A Kubernetes watch interface that streams pod events. |
+| **Parameters** | *`ns string` – Namespace containing the pod.<br>* `podName string` – Name of the pod to watch for deletion.<br>*`timeout int64` – Maximum number of seconds to wait before timing out.<br>* `watcher watch.Interface` – A Kubernetes watch interface that streams pod events. |
 | **Return value** | None (void). The function signals completion by returning or timing out. |
 | **Key dependencies** | • `log.Debug` and `log.Info` from the internal logging package<br>• `time.After`, `time.Duration` for timeout handling<br>• `watch.Interface.ResultChan()` to receive watch events |
-| **Side effects** | * Stops the provided watcher (`watcher.Stop()`).<br>* Logs debug and info messages via the logger.<br>* No mutation of external state; only logs and internal control flow. |
+| **Side effects** | *Stops the provided watcher (`watcher.Stop()`).<br>* Logs debug and info messages via the logger.<br>* No mutation of external state; only logs and internal control flow. |
 | **How it fits the package** | In `podrecreation`, this helper is invoked after initiating a pod deletion to asynchronously wait for confirmation that the pod has been removed, ensuring subsequent tests run against the correct cluster state. |
 
 ---
@@ -530,4 +530,3 @@ waitPodDeleted(ns, podName, timeoutSeconds, watcher)
 ---
 
 ---
-

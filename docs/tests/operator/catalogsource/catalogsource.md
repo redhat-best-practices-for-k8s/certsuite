@@ -32,7 +32,6 @@ The catalogsource package provides utilities for examining Operator Lifecycle Ma
 
 **SkipPMBasedOnChannel** - Determines if a `PackageManifest` should be excluded from further processing because the desired CSV is already referenced in one of its channel entries.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -112,4 +111,3 @@ func main() {
 ---
 
 ---
-

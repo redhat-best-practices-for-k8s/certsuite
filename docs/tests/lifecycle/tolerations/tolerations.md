@@ -36,13 +36,14 @@ Provides helper utilities for evaluating Kubernetes pod tolerations during tests
 
 **IsTolerationDefault** - Returns `true` when the toleration key contains the substring `"node.kubernetes.io"`, indicating it is one of the default tolerations that Kubernetes automatically adds to a pod.
 
-
 #### Signature (Go)
+
 ```go
 func IsTolerationDefault(t corev1.Toleration) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns `true` when the toleration key contains the substring `"node.kubernetes.io"`, indicating it is one of the default tolerations that Kubernetes automatically adds to a pod. |
@@ -53,6 +54,7 @@ func IsTolerationDefault(t corev1.Toleration) bool
 | **How it fits the package** | Used by higher‑level functions (e.g., `IsTolerationModified`) to quickly exclude default tolerations before performing more detailed checks on their properties. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Receive toleration t"] --> B{"Check if t.Key contains node.kubernetes.io"}
@@ -61,34 +63,37 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_IsTolerationDefault --> func_strings_Contains
 ```
 
 #### Functions calling `IsTolerationDefault`
+
 ```mermaid
 graph TD
   func_IsTolerationModified --> func_IsTolerationDefault
 ```
 
 #### Usage example (Go)
+
 ```go
 import (
-	"k8s.io/api/core/v1"
+ "k8s.io/api/core/v1"
 )
 
 // Minimal example invoking IsTolerationDefault
 func Example() {
-	t := v1.Toleration{
-		Key:   "node.kubernetes.io/not-ready",
-		Value: "",
-	}
-	if IsTolerationDefault(t) {
-		fmt.Println("This is a default toleration.")
-	} else {
-		fmt.Println("Custom toleration detected.")
-	}
+ t := v1.Toleration{
+  Key:   "node.kubernetes.io/not-ready",
+  Value: "",
+ }
+ if IsTolerationDefault(t) {
+  fmt.Println("This is a default toleration.")
+ } else {
+  fmt.Println("Custom toleration detected.")
+ }
 }
 ```
 
@@ -98,23 +103,25 @@ func Example() {
 
 **IsTolerationModified** - Checks whether a given `corev1.Toleration` is *modified* compared to the tolerations automatically injected by Kubernetes. Returns `true` for any non‑default or altered toleration.
 
-
 #### Signature (Go)
+
 ```go
 func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether a given `corev1.Toleration` is *modified* compared to the tolerations automatically injected by Kubernetes. Returns `true` for any non‑default or altered toleration. |
 | **Parameters** | `t corev1.Toleration – the toleration to examine`<br>`qosClass corev1.PodQOSClass – QoS class of the pod (used for memory‑pressure logic)` |
 | **Return value** | `bool – true if the toleration differs from the default set, false otherwise` |
-| **Key dependencies** | * `IsTolerationDefault(t)` – quick check that the key starts with `node.kubernetes.io`<br>* `corev1.TaintEffectNoExecute`, `corev1.TaintEffectNoSchedule`, `corev1.TaintEffectPreferNoSchedule` constants<br>* `corev1.TolerationOpExists` constant |
+| **Key dependencies** | *`IsTolerationDefault(t)` – quick check that the key starts with `node.kubernetes.io`<br>* `corev1.TaintEffectNoExecute`, `corev1.TaintEffectNoSchedule`, `corev1.TaintEffectPreferNoSchedule` constants<br>* `corev1.TolerationOpExists` constant |
 | **Side effects** | None – purely functional; no state mutation or I/O. |
 | **How it fits the package** | Provides core logic for tests that validate pod tolerations against Kubernetes defaults, enabling higher‑level checks to flag non‑compliant pods. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"IsDefaultKey?"}
@@ -135,18 +142,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_IsTolerationModified --> func_IsTolerationDefault
 ```
 
 #### Functions calling `IsTolerationModified` (Mermaid)
+
 ```mermaid
 graph TD
   func_testPodTolerationBypass --> func_IsTolerationModified
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking IsTolerationModified
 import (
@@ -167,4 +177,3 @@ func main() {
 ```
 
 ---
-

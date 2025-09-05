@@ -68,13 +68,14 @@ The `platform` package registers a collection of platform‑alteration tests (e.
 
 **LoadChecks** - Registers a collection of platform‑alteration tests (hyper‑threading, kernel taints, SELinux, etc.) into the checks database under the `common.PlatformAlterationTestKey` group.
 
-
 #### Signature (Go)
+
 ```go
 func LoadChecks() ()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Registers a collection of platform‑alteration tests (hyper‑threading, kernel taints, SELinux, etc.) into the checks database under the `common.PlatformAlterationTestKey` group. |
@@ -85,6 +86,7 @@ func LoadChecks() ()
 | **How it fits the package** | Called by `certsuite.LoadInternalChecksDB` during test suite initialization, populating the platform alteration group of checks that will be executed in tests. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["log.Debug(Loading %s suite checks, common.PlatformAlterationTestKey)"]
@@ -107,6 +109,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> log_Debug
@@ -139,12 +142,14 @@ graph TD
 ```
 
 #### Functions calling `LoadChecks` (Mermaid)
+
 ```mermaid
 graph TD
   certsuite_LoadInternalChecksDB --> func_LoadChecks
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking LoadChecks
 func main() {
@@ -161,13 +166,14 @@ func main() {
 
 **testClusterOperatorHealth** - Determines whether every ClusterOperator on the cluster reports an `Available` status. If any operator is not available, the check fails and records non‑compliant objects.
 
-
 #### Signature (Go)
+
 ```go
 func (*checksdb.Check, *provider.TestEnvironment)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether every ClusterOperator on the cluster reports an `Available` status. If any operator is not available, the check fails and records non‑compliant objects. |
@@ -178,6 +184,7 @@ func (*checksdb.Check, *provider.TestEnvironment)()
 | **How it fits the package** | Part of the platform test suite; executed when the “TestClusterOperatorHealth” check is loaded in `LoadChecks`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start["Start"] --> Loop{"for each ClusterOperator"}
@@ -190,6 +197,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testClusterOperatorHealth --> log_LogInfo
@@ -199,12 +207,14 @@ graph TD
 ```
 
 #### Functions calling `testClusterOperatorHealth` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testClusterOperatorHealth
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testClusterOperatorHealth
 func ExampleTest() {
@@ -222,13 +232,14 @@ func ExampleTest() {
 
 **testContainersFsDiff** - Verifies each container in the environment has an unmodified file system by running a diff against a probe pod and records compliance status.
 
-
 #### Signature (Go)
+
 ```go
 func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Verifies each container in the environment has an unmodified file system by running a diff against a probe pod and records compliance status. |
@@ -239,6 +250,7 @@ func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Called by `LoadChecks` as one of many checks for the platform suite; contributes to overall compliance assessment. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate env.Containers"}
@@ -261,6 +273,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   testContainersFsDiff --> clientsholder.NewContext
@@ -273,12 +286,14 @@ graph TD
 ```
 
 #### Functions calling `testContainersFsDiff` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testContainersFsDiff
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testContainersFsDiff
 package main
@@ -304,13 +319,14 @@ func main() {
 
 **testHugepages** - Verifies that each worker node’s hugepage settings are unchanged and reports compliance.
 
-
 #### Signature (Go)
+
 ```go
 func testHugepages(check *checksdb.Check, env *provider.TestEnvironment)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Verifies that each worker node’s hugepage settings are unchanged and reports compliance. |
@@ -321,6 +337,7 @@ func testHugepages(check *checksdb.Check, env *provider.TestEnvironment)()
 | **How it fits the package** | Part of the platform test suite; invoked by `LoadChecks()` for the “Hugepages not manually manipulated” check. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> IterateNodes["for each node in env.Nodes"]
@@ -338,6 +355,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testHugepages --> func_LogInfo
@@ -351,12 +369,14 @@ graph TD
 ```
 
 #### Functions calling `testHugepages` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testHugepages
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testHugepages
 package main
@@ -381,7 +401,6 @@ func main() {
 
 **testHyperThreadingEnabled** - Checks each bare‑metal node in the environment to determine whether hyper‑threading is enabled, logs the outcome, and records compliant/non‑compliant results.
 
-
 #### Signature (Go)
 
 ```go
@@ -396,7 +415,7 @@ func testHyperThreadingEnabled(check *checksdb.Check, env *provider.TestEnvironm
 | **Parameters** | `check *checksdb.Check` – The check instance used for logging and result reporting.<br>`env *provider.TestEnvironment` – Test environment providing node information. |
 | **Return value** | None (the function reports via `check.SetResult`). |
 | **Key dependencies** | • `env.GetBaremetalNodes()`<br>• `node.IsHyperThreadNode(env)`<br>• `check.LogInfo` / `check.LogError`<br>• `testhelper.NewNodeReportObject`<br>• `check.SetResult` |
-| **Side effects** | * Mutates the supplied `check` by calling `SetResult` with lists of compliant and non‑compliant report objects.<br>* Emits log entries via the check’s logger. |
+| **Side effects** | *Mutates the supplied `check` by calling `SetResult` with lists of compliant and non‑compliant report objects.<br>* Emits log entries via the check’s logger. |
 | **How it fits the package** | Implements the “Hyper‑Threading Enabled” test within the platform test suite; invoked from `LoadChecks` during test registration. |
 
 #### Internal workflow (Mermaid)
@@ -459,13 +478,14 @@ func ExampleTest() {
 
 **testIsRedHatRelease** - Validates each container in the test environment is built from a Red Hat Enterprise Linux base image. It records compliance or non‑compliance for reporting.
 
-
 #### Signature (Go)
+
 ```go
 func testIsRedHatRelease(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Validates each container in the test environment is built from a Red Hat Enterprise Linux base image. It records compliance or non‑compliance for reporting. |
@@ -476,6 +496,7 @@ func testIsRedHatRelease(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Part of the *platform* test suite, this function implements the logic for the “Is Red Hat Release” check (TestID: `TestIsRedHatReleaseIdentifier`). It is invoked by `LoadChecks` when registering the check. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Containers"}
@@ -492,6 +513,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_testIsRedHatRelease --> func_LogInfo
@@ -505,12 +527,14 @@ graph TD
 ```
 
 #### Functions calling `testIsRedHatRelease`
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testIsRedHatRelease
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testIsRedHatRelease
 env := &provider.TestEnvironment{
@@ -527,7 +551,6 @@ testIsRedHatRelease(check, env)
 ### testIsSELinuxEnforcing
 
 **testIsSELinuxEnforcing** - Executes `getenforce` inside each probe pod to confirm SELinux is in *enforcing* state on the host node. Reports compliance per node and aggregates results into the test check.
-
 
 #### 1) Signature (Go)
 
@@ -610,13 +633,14 @@ func runExample() {
 
 **testNodeOperatingSystemStatus** - Ensures every control‑plane node uses RHCOS or CentOS Stream CoreOS and that worker nodes use a supported OS (RHCOS, RHEL, or CSCC). Checks version compatibility against the OpenShift release.
 
-
 #### Signature (Go)
+
 ```go
 func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures every control‑plane node uses RHCOS or CentOS Stream CoreOS and that worker nodes use a supported OS (RHCOS, RHEL, or CSCC). Checks version compatibility against the OpenShift release. |
@@ -627,6 +651,7 @@ func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvi
 | **How it fits the package** | Implements the *TestNodeOperatingSystemIdentifier* check within the platform test suite, ensuring cluster nodes comply with Red Hat operating system requirements before proceeding with further tests. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Iterate over env.Nodes"] --> B{"node.IsControlPlaneNode()"}
@@ -656,6 +681,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testNodeOperatingSystemStatus --> LogInfo
@@ -676,12 +702,14 @@ graph TD
 ```
 
 #### Functions calling `testNodeOperatingSystemStatus` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testNodeOperatingSystemStatus
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testNodeOperatingSystemStatus
 check := checksdb.NewCheck(...)
@@ -695,7 +723,6 @@ testNodeOperatingSystemStatus(check, env)
 ### testOCPStatus
 
 **testOCPStatus** - Inspects `env.OCPStatus` to decide if the cluster’s OpenShift version is in end‑of‑life (EOL). Logs an appropriate message and creates a compliance report object.
-
 
 #### 1) Signature (Go)
 
@@ -784,7 +811,6 @@ func main() {
 
 **testPodHugePagesSize** - Iterates over all huge‑pages pods in the test environment and verifies each pod’s resource requests/limits match the expected page size (`size`). Logs results and records compliant/non‑compliant objects.
 
-
 #### Signature (Go)
 
 ```go
@@ -859,7 +885,6 @@ func ExampleTest() {
 ### testServiceMesh
 
 **testServiceMesh** - Verifies each pod has at least one Istio‑proxy container. Pods lacking the proxy are flagged as non‑compliant; those with it are marked compliant.
-
 
 #### Signature (Go)
 
@@ -942,7 +967,6 @@ func main() {
 ### testSysctlConfigs
 
 **testSysctlConfigs** - Ensures that each node’s runtime sysctl settings match the corresponding kernel arguments defined in its machine config. Non‑compliant nodes are recorded for reporting.
-
 
 #### Signature (Go)
 
@@ -1029,13 +1053,14 @@ func example() {
 
 **testTainted** - Determines whether each node in the environment has kernel taints that are either unapproved or caused by modules not on an allow‑list. It records compliant and non‑compliant findings for reporting.
 
-
 #### Signature (Go)
+
 ```go
 func testTainted(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether each node in the environment has kernel taints that are either unapproved or caused by modules not on an allow‑list. It records compliant and non‑compliant findings for reporting. |
@@ -1046,6 +1071,7 @@ func testTainted(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | This function is invoked by the platform test loader (`LoadChecks`) as part of the “Non‑Tainted Node Kernels” check, ensuring that cluster nodes do not contain unexpected kernel taints. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["testTainted"] --> B["Iterate env.Nodes"]
@@ -1076,6 +1102,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testTainted --> func_LogInfo
@@ -1097,12 +1124,14 @@ graph TD
 ```
 
 #### Functions calling `testTainted` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testTainted
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testTainted
 func ExampleTestTainted() {
@@ -1124,7 +1153,6 @@ func ExampleTestTainted() {
 ### testUnalteredBootParams
 
 **testUnalteredBootParams** - For every distinct node in the test environment, it runs `bootparams.TestBootParamsHelper` to ensure that kernel command‑line arguments are unchanged from their configured MachineConfig values. It records compliant and non‑compliant nodes for reporting.
-
 
 #### Signature (Go)
 
@@ -1196,4 +1224,3 @@ func main() {
 ```
 
 ---
-

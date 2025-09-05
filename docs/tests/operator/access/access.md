@@ -36,13 +36,14 @@ Provides utilities for validating that an Operator's deployment permissions do n
 
 **PermissionsHaveBadRule** - Determines if any `StrategyDeploymentPermissions` contains a rule that allows a service account to access the *securitycontextconstraints* resource in the *security.openshift.io* API group, which is considered insecure.
 
-
 #### Signature (Go)
+
 ```go
 func PermissionsHaveBadRule(clusterPermissions []v1alpha1.StrategyDeploymentPermissions) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines if any `StrategyDeploymentPermissions` contains a rule that allows a service account to access the *securitycontextconstraints* resource in the *security.openshift.io* API group, which is considered insecure. |
@@ -53,6 +54,7 @@ func PermissionsHaveBadRule(clusterPermissions []v1alpha1.StrategyDeploymentPerm
 | **How it fits the package** | Used by tests to flag operators that expose cluster‑level SCC permissions, contributing to compliance validation. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"For each permission"}
@@ -65,40 +67,42 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `PermissionsHaveBadRule` (Mermaid)
+
 ```mermaid
 graph TD
   func_testOperatorInstallationAccessToSCC --> func_PermissionsHaveBadRule
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking PermissionsHaveBadRule
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/access"
-	v1alpha1 "github.com/openshift/api/apps/v1alpha1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/operator/access"
+ v1alpha1 "github.com/openshift/api/apps/v1alpha1"
 )
 
 func main() {
-	perms := []v1alpha1.StrategyDeploymentPermissions{
-		{
-			Rules: []v1alpha1.PolicyRule{
-				{
-					APIGroups:  []string{"security.openshift.io"},
-					Resources: []string{"securitycontextconstraints"},
-				},
-			},
-		},
-	}
-	if access.PermissionsHaveBadRule(perms) {
-		fmt.Println("Operator has insecure SCC permissions")
-	} else {
-		fmt.Println("Operator is compliant with SCC rules")
-	}
+ perms := []v1alpha1.StrategyDeploymentPermissions{
+  {
+   Rules: []v1alpha1.PolicyRule{
+    {
+     APIGroups:  []string{"security.openshift.io"},
+     Resources: []string{"securitycontextconstraints"},
+    },
+   },
+  },
+ }
+ if access.PermissionsHaveBadRule(perms) {
+  fmt.Println("Operator has insecure SCC permissions")
+ } else {
+  fmt.Println("Operator is compliant with SCC rules")
+ }
 }
 ```
 
 ---
-

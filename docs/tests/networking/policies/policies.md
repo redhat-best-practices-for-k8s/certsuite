@@ -37,13 +37,14 @@ Provides helper utilities for testing Kubernetes NetworkPolicy objects, enabling
 
 **IsNetworkPolicyCompliant** - Determines whether a `NetworkPolicy` implements a deny‑all rule for the specified `policyType` (Ingress or Egress).
 
-
 #### Signature (Go)
+
 ```go
 func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType networkingv1.PolicyType) (bool, string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether a `NetworkPolicy` implements a deny‑all rule for the specified `policyType` (Ingress or Egress). |
@@ -54,6 +55,7 @@ func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType network
 | **How it fits the package** | Provides core logic for compliance checks used by higher‑level test functions such as `testNetworkPolicyDenyAll`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> CheckEmptyTypes{"np.Spec.PolicyTypes empty?"}
@@ -72,18 +74,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_IsNetworkPolicyCompliant --> len
 ```
 
 #### Functions calling `IsNetworkPolicyCompliant` (Mermaid)
+
 ```mermaid
 graph TD
   testNetworkPolicyDenyAll --> func_IsNetworkPolicyCompliant
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking IsNetworkPolicyCompliant
 import (
@@ -114,23 +119,25 @@ func main() {
 
 **LabelsMatch** - Checks if the label selector (`podSelectorLabels`) is satisfied by the supplied pod labels (`podLabels`). Returns `true` when all required key‑value pairs are present or when the selector is empty (which matches everything).
 
-
 #### Signature
+
 ```go
 func LabelsMatch(podSelectorLabels v1.LabelSelector, podLabels map[string]string) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks if the label selector (`podSelectorLabels`) is satisfied by the supplied pod labels (`podLabels`). Returns `true` when all required key‑value pairs are present or when the selector is empty (which matches everything). |
-| **Parameters** | * `podSelectorLabels v1.LabelSelector` – The selector to evaluate. <br>* `podLabels map[string]string` – Labels of the pod being tested. |
+| **Parameters** | *`podSelectorLabels v1.LabelSelector` – The selector to evaluate. <br>* `podLabels map[string]string` – Labels of the pod being tested. |
 | **Return value** | `bool` – `true` if the selector matches the pod labels, otherwise `false`. |
 | **Key dependencies** | • Calls `Size()` on `v1.LabelSelector` to determine if it is empty.<br>• Uses standard map iteration and string comparison. |
 | **Side effects** | None; purely functional. |
 | **How it fits the package** | Used by network‑policy compliance checks (e.g., `testNetworkPolicyDenyAll`) to verify that a policy’s pod selector applies to a given pod. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Selector empty?"}
@@ -144,18 +151,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_LabelsMatch --> func_Size
 ```
 
 #### Functions calling `LabelsMatch`
+
 ```mermaid
 graph TD
   func_testNetworkPolicyDenyAll --> func_LabelsMatch
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking LabelsMatch
 import (
@@ -178,4 +188,3 @@ func main() {
 ```
 
 ---
-

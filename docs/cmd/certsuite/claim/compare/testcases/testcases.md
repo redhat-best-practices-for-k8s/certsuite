@@ -77,7 +77,6 @@ is different.
 
 ### TcResultDifference
 
-
 Represents a discrepancy between the results of two claim evaluations for a single test case.
 
 #### Fields
@@ -104,8 +103,8 @@ In a comparison workflow, each test case is evaluated against two different clai
 
 ### TcResultsSummary
 
-
 #### Fields
+
 | Field   | Type | Description |
 |---------|------|-------------|
 | Passed  | int  | Number of test cases that completed successfully. |
@@ -113,9 +112,11 @@ In a comparison workflow, each test case is evaluated against two different clai
 | Failed  | int  | Number of test cases that did not pass. |
 
 #### Purpose
+
 `TcResultsSummary` aggregates the outcome counts of a set of test case executions, providing a quick overview of how many tests passed, were skipped, or failed. It is used to report overall test suite health and to drive decision‑making based on test results.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `getTestCasesResultsSummary` | Computes a `TcResultsSummary` from a map of test case names to result strings by incrementing the appropriate counter (`Passed`, `Skipped`, or `Failed`) for each reported outcome. |
@@ -129,7 +130,6 @@ In a comparison workflow, each test case is evaluated against two different clai
 ### DiffReport.String
 
 **String** - Builds a formatted string containing: <br>• A summary table of passed, skipped, and failed counts for CLAIM‑1 and CLAIM‑2.<br>• A differences table listing each test case name with its result in both claims. If no differences exist, it shows “<none>”.
-
 
 Generates a human‑readable report summarising test case outcomes for two claims and listing differences between them.
 
@@ -198,13 +198,14 @@ fmt.Println(report.String())
 
 **GetDiffReport** - Produces a `DiffReport` comparing test case outcomes from two claim files. Each differing result is recorded, and summary statistics for each claim are included.
 
-
 #### Signature (Go)
+
 ```go
 func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) *DiffReport
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Produces a `DiffReport` comparing test case outcomes from two claim files. Each differing result is recorded, and summary statistics for each claim are included. |
@@ -215,6 +216,7 @@ func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) *DiffRep
 | **How it fits the package** | Central routine in the `testcases` comparison sub‑package, used by higher‑level comparison commands to present test outcome differences between two claim files. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["getTestCasesResultsMap for Claim1"]
@@ -232,6 +234,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetDiffReport --> func_getTestCasesResultsMap
@@ -241,12 +244,14 @@ graph TD
 ```
 
 #### Functions calling `GetDiffReport` (Mermaid)
+
 ```mermaid
 graph TD
   func_claimCompareFilesfunc --> func_GetDiffReport
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetDiffReport
 import (
@@ -271,13 +276,14 @@ func main() {
 
 **getMergedTestCasesNames** - Combines the keys from two result maps into a unique, sorted slice of test‑case names.
 
-
 #### Signature (Go)
+
 ```go
 func getMergedTestCasesNames(results1, results2 map[string]string) []string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Combines the keys from two result maps into a unique, sorted slice of test‑case names. |
@@ -288,6 +294,7 @@ func getMergedTestCasesNames(results1, results2 map[string]string) []string
 | **How it fits the package** | Used by `GetDiffReport` to iterate over every test case when computing differences between two claim results. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph BuildMap["Create unique name map"]
@@ -299,6 +306,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getMergedTestCasesNames --> builtin_append
@@ -306,12 +314,14 @@ graph TD
 ```
 
 #### Functions calling `getMergedTestCasesNames` (Mermaid)
+
 ```mermaid
 graph TD
   func_GetDiffReport --> func_getMergedTestCasesNames
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getMergedTestCasesNames
 resultsA := map[string]string{
@@ -332,7 +342,6 @@ merged := getMergedTestCasesNames(resultsA, resultsB)
 ### getTestCasesResultsMap
 
 **getTestCasesResultsMap** - Builds a map from each test case ID to its result state for quick comparison.
-
 
 #### Signature (Go)
 
@@ -406,7 +415,6 @@ func main() {
 
 **getTestCasesResultsSummary** - Aggregates the outcome of each test case into a `TcResultsSummary` struct, counting passed, skipped and failed cases.
 
-
 #### Signature (Go)
 
 ```go
@@ -468,4 +476,3 @@ fmt.Printf("Passed: %d, Skipped: %d, Failed: %d\n",
 ```
 
 ---
-

@@ -45,7 +45,7 @@ Failed to parse JSON response, but content appears to contain package informatio
 ### Configurations
 
 <!-- DEBUG: Struct Configurations exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -62,6 +62,7 @@ Failed to parse JSON response, but content appears to contain package informatio
 A container for collected information about Kubernetes nodes.
 
 #### Fields
+
 | Field       | Type      | Description |
 |-------------|-----------|-------------|
 | NodesSummary | interface{} | Summary data about the node (e.g., status, resource usage). Populated from JSON field `nodeSummary`. |
@@ -70,27 +71,31 @@ A container for collected information about Kubernetes nodes.
 | CsiDriver    | interface{} | Details about CSI drivers present on the node, linked with JSON field `csiDriver`. |
 
 #### Purpose  
+
 The `Nodes` struct aggregates diverse data collected from a Kubernetes cluster’s nodes. Each field holds opaque data (represented as `interface{}`) that can be marshaled to or unmarshaled from JSON. This structure is used when reporting node‑level metrics, validating infrastructure compliance, or passing node information between components of the certsuite tool.
 
 #### Related functions  
+
 No methods are defined directly on this struct. It is primarily a data holder used by other packages in the `claim` module.
 
 ---
 
 ### Schema
 
-
 Represents the top‑level structure of a claim file, containing configurations, node information, test results and version metadata.
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | Claim | struct{Configurations; Nodes Nodes; Results TestSuiteResults; Versions officialClaimScheme.Versions} | Encapsulates the core data of a claim. `Configurations` holds runtime settings; `Nodes` lists target nodes; `Results` stores test outcomes; `Versions` records schema and component versions. |
 
 #### Purpose
+
 The `Schema` struct models the JSON payload expected by the certsuite tool when loading or generating claim files. It groups all relevant information under a single `claim` key, enabling straightforward marshaling/unmarshaling with Go’s `encoding/json`.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | Parse | Reads a file from disk, unmarshals its JSON contents into a `Schema`, and returns the populated struct or an error. |
@@ -99,10 +104,10 @@ The `Schema` struct models the JSON payload expected by the certsuite tool when 
 
 ### TestCaseID
 
-
 Represents a unique identifier for an individual test case within a certification suite, including its suite association and any tagging information.
 
 #### Fields
+
 | Field | Type   | Description |
 |-------|--------|-------------|
 | `ID`   | string | Unique test‑case identifier (e.g., `"TC001"`). |
@@ -110,6 +115,7 @@ Represents a unique identifier for an individual test case within a certificatio
 | `Tags`  | string | Comma‑separated list of tags applied to the test case for filtering or categorization purposes. |
 
 #### Purpose
+
 The `TestCaseID` struct encapsulates metadata required to reference and locate a specific test case across different suites and tooling contexts. It is typically used when generating reports, mapping results back to source tests, or applying filters based on suite membership or tags.
 
 #### Related functions (none)
@@ -119,7 +125,7 @@ The `TestCaseID` struct encapsulates metadata required to reference and locate a
 ### TestCaseRawResult
 
 <!-- DEBUG: Struct TestCaseRawResult exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -133,7 +139,7 @@ The `TestCaseID` struct encapsulates metadata required to reference and locate a
 ### TestCaseResult
 
 <!-- DEBUG: Struct TestCaseResult exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -157,7 +163,7 @@ The `TestCaseID` struct encapsulates metadata required to reference and locate a
 ### TestOperator
 
 <!-- DEBUG: Struct TestOperator exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -174,7 +180,6 @@ The `TestCaseID` struct encapsulates metadata required to reference and locate a
 ### CheckVersion
 
 **CheckVersion** - Ensures that the supplied claim file version matches the single supported semantic‑version used by the application.
-
 
 #### 1) Signature (Go)
 
@@ -250,7 +255,6 @@ func main() {
 
 **Parse** - Reads the specified file, unmarshals its JSON content into a `Schema` struct and returns it.
 
-
 Parses a JSON claim file into an in‑memory `Schema`.
 
 ```go
@@ -315,4 +319,3 @@ func main() {
 ```
 
 ---
-

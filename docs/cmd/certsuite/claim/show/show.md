@@ -24,7 +24,6 @@ Failed to parse JSON response, but content appears to contain package informatio
 
 **NewCommand** - Creates a Cobra command that aggregates sub‑commands for displaying claim information.
 
-
 #### Signature (Go)
 
 ```go
@@ -77,21 +76,20 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show"
-	"os"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show"
+ "os"
 
-	"github.com/spf13/cobra"
+ "github.com/spf13/cobra"
 )
 
 func main() {
-	cmd := show.NewCommand()
-	if err := cmd.Execute(); err != nil {
-		os.Exit(1)
-	}
+ cmd := show.NewCommand()
+ if err := cmd.Execute(); err != nil {
+  os.Exit(1)
+ }
 }
 ```
 
 ---
 
 ---
-

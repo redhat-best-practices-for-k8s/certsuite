@@ -21,4 +21,3 @@ This package provides functionality related to handling JUnit test results withi
 - Assumes standard JUnit XML schema for compatibility with CI tools
 - Handles missing fields by providing defaults, which may lead to incomplete reports
 - Recommended to use helper functions for creating new test suites rather than manipulating structs directly
-

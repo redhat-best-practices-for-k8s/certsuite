@@ -52,8 +52,8 @@ The podhelper package provides utilities for determining the top‑level ownersh
 
 ### TopOwner
 
-
 #### Fields
+
 | Field | Type   | Description |
 |-------|--------|-------------|
 | `APIVersion` | `string` | API version of the owning resource (e.g., `"v1"` or `"apps/v1"`). |
@@ -62,9 +62,11 @@ The podhelper package provides utilities for determining the top‑level ownersh
 | `Namespace`   | `string` | Namespace where the owner resides; empty for cluster‑scoped resources. |
 
 #### Purpose
+
 The `TopOwner` struct encapsulates the essential identifying information of a pod’s top‑level controller or owning resource. It is constructed during recursive traversal of owner references (via `followOwnerReferences`) and returned by `GetPodTopOwner`. This allows callers to determine which higher‑level object ultimately governs a given pod, regardless of intermediate layers such as ReplicaSets or StatefulSets.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetPodTopOwner` | Initiates the owner reference traversal for a pod and returns a map of top owners keyed by name. |
@@ -79,7 +81,6 @@ The `TopOwner` struct encapsulates the essential identifying information of a po
 ### GetPodTopOwner
 
 **GetPodTopOwner** - Walks a pod’s `OwnerReferences` chain to identify the top‑level resource(s) that ultimately own the pod (e.g., a custom resource or deployment). Returns them as a map keyed by owner name.
-
 
 #### Signature (Go)
 
@@ -171,7 +172,6 @@ func main() {
 
 **followOwnerReferences** - Walks an ownership chain of Kubernetes objects, starting from a set of `ownerRefs`, and records the highest‑level owners in `topOwners`.
 
-
 ```go
 func followOwnerReferences(
     resourceList []*metav1.APIResourceList,
@@ -258,7 +258,6 @@ func main() {
 
 **searchAPIResource** - Looks through a slice of `*metav1.APIResourceList` to find the `APIResource` that matches both the specified `kind` and `apiVersion`. Returns an error if no match is found.
 
-
 #### Signature (Go)
 
 ```go
@@ -272,7 +271,7 @@ func searchAPIResource(kind, apiVersion string, apis []*metav1.APIResourceList) 
 | **Purpose** | Looks through a slice of `*metav1.APIResourceList` to find the `APIResource` that matches both the specified `kind` and `apiVersion`. Returns an error if no match is found. |
 | **Parameters** | `kind string` – Kubernetes object kind.<br>`apiVersion string` – Full API version (e.g., `"v1"` or `"apps/v1"`).<br>`apis []*metav1.APIResourceList` – List of resource lists to search. |
 | **Return value** | `(*metav1.APIResource, error)` – Pointer to the matching resource or an error if not found. |
-| **Key dependencies** | * `fmt.Errorf` – for constructing error messages.<br>* `metav1.APIResourceList` and `metav1.APIResource` types from Kubernetes API machinery. |
+| **Key dependencies** | *`fmt.Errorf` – for constructing error messages.<br>* `metav1.APIResourceList` and `metav1.APIResource` types from Kubernetes API machinery. |
 | **Side effects** | None. Pure function; no mutation of arguments or external state. |
 | **How it fits the package** | Used by higher‑level helper functions (e.g., `followOwnerReferences`) to translate owner references into concrete resource definitions required for dynamic client lookups. |
 
@@ -309,30 +308,29 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+ corev1 "k8s.io/api/core/v1"
+ metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func main() {
-	// Pretend we have a list of API resources (normally fetched from the server)
-	apiList := &metav1.APIResourceList{
-		GroupVersion: "v1",
-		APIResources: []metav1.APIResource{
-			{Name: "pods", Kind: corev1.Pod{}.Kind, Namespaced: true},
-		},
-	}
-	resources := []*metav1.APIResourceList{apiList}
+ // Pretend we have a list of API resources (normally fetched from the server)
+ apiList := &metav1.APIResourceList{
+  GroupVersion: "v1",
+  APIResources: []metav1.APIResource{
+   {Name: "pods", Kind: corev1.Pod{}.Kind, Namespaced: true},
+  },
+ }
+ resources := []*metav1.APIResourceList{apiList}
 
-	resource, err := searchAPIResource("Pod", "v1", resources)
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
-	}
-	fmt.Printf("Found resource: %+v\n", resource)
+ resource, err := searchAPIResource("Pod", "v1", resources)
+ if err != nil {
+  fmt.Printf("Error: %v\n", err)
+  return
+ }
+ fmt.Printf("Found resource: %+v\n", resource)
 }
 ```
 
 ---
-

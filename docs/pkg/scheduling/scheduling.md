@@ -48,13 +48,14 @@ The scheduling package provides utilities for inspecting and validating CPU sche
 
 **GetProcessCPUScheduling** - Executes `chrt -p <pid>` inside the node’s probe pod to read a process’s scheduling policy and priority.
 
-
 #### 1) Signature (Go)
+
 ```go
 func GetProcessCPUScheduling(pid int, testContainer *provider.Container)(string,int,error)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Executes `chrt -p <pid>` inside the node’s probe pod to read a process’s scheduling policy and priority. |
@@ -65,6 +66,7 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container)(string,
 | **How it fits the package** | Central utility for performance tests that need to verify process scheduling constraints within containers. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Log start info"]
@@ -83,6 +85,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetProcessCPUScheduling --> func_logger.Info
@@ -95,12 +98,14 @@ graph TD
 ```
 
 #### 5) Functions calling `GetProcessCPUScheduling` (Mermaid)
+
 ```mermaid
 graph TD
   testRtAppsNoExecProbes --> GetProcessCPUScheduling
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking GetProcessCPUScheduling
 import (
@@ -127,7 +132,6 @@ func demo() {
 ### PolicyIsRT
 
 **PolicyIsRT** - Checks whether the provided scheduling policy name corresponds to one of the real‑time policies (`SCHED_FIFO` or `SCHED_RR`).
-
 
 #### Signature (Go)
 
@@ -175,18 +179,18 @@ The test function `testRtAppsNoExecProbes` from the performance tests calls `Pol
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/scheduling"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/scheduling"
 )
 
 func main() {
-	policy := "SCHED_FIFO" // Example policy name
-	if scheduling.PolicyIsRT(policy) {
-		fmt.Printf("%s is a real‑time scheduling policy.\n", policy)
-	} else {
-		fmt.Printf("%s is NOT a real‑time scheduling policy.\n", policy)
-	}
+ policy := "SCHED_FIFO" // Example policy name
+ if scheduling.PolicyIsRT(policy) {
+  fmt.Printf("%s is a real‑time scheduling policy.\n", policy)
+ } else {
+  fmt.Printf("%s is NOT a real‑time scheduling policy.\n", policy)
+ }
 }
 ```
 
@@ -198,13 +202,14 @@ func main() {
 
 **ProcessPidsCPUScheduling** - Determines whether each process in a container satisfies the CPU scheduling policy specified by `check`. Returns two slices of report objects: compliant and non‑compliant.
 
-
 #### Signature (Go)
+
 ```go
 func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *provider.Container, check string, logger *log.Logger) ([]*testhelper.ReportObject, []*testhelper.ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether each process in a container satisfies the CPU scheduling policy specified by `check`. Returns two slices of report objects: compliant and non‑compliant. |
@@ -215,6 +220,7 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 | **How it fits the package** | Central routine used by tests to enforce CPU scheduling rules on containers’ processes, feeding results into performance checks. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over processes"}
@@ -230,6 +236,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_ProcessPidsCPUScheduling --> func_GetProcessCPUSchedulingFn
@@ -239,12 +246,14 @@ graph TD
 ```
 
 #### Functions calling `ProcessPidsCPUScheduling` (Mermaid)
+
 ```mermaid
 graph TD
   testSchedulingPolicyInCPUPool --> func_ProcessPidsCPUScheduling
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ProcessPidsCPUScheduling
 import (
@@ -272,7 +281,6 @@ func main() {
 ### parseSchedulingPolicyAndPriority
 
 **parseSchedulingPolicyAndPriority** - Extracts the CPU scheduling policy and priority from the text produced by `chrt -p <pid>`; returns them or an error if parsing fails.
-
 
 ```go
 func parseSchedulingPolicyAndPriority(chrtCommandOutput string) (schedPolicy string, schedPriority int, err error)
@@ -340,4 +348,3 @@ if err != nil {
 ```
 
 ---
-

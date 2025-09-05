@@ -75,7 +75,7 @@ The cnffsdiff package provides a tester that runs podman diff against a target c
 ### FsDiff
 
 <!-- DEBUG: Struct FsDiff exists in bundle but ParsedOK=false, Fields=8 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -97,7 +97,7 @@ The cnffsdiff package provides a tester that runs podman diff against a target c
 ### FsDiffFuncs
 
 <!-- DEBUG: Interface FsDiffFuncs exists in bundle but ParsedOK=false -->
-**Purpose**: 
+**Purpose**:
 
 **Methods**:
 
@@ -114,13 +114,14 @@ The cnffsdiff package provides a tester that runs podman diff against a target c
 
 **GetResults** - Returns the integer status code stored in the `FsDiff` instance, representing the outcome of a filesystem diff operation.
 
-
 #### Signature (Go)
+
 ```go
 func (f *FsDiff) GetResults() int
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the integer status code stored in the `FsDiff` instance, representing the outcome of a filesystem diff operation. |
@@ -131,18 +132,22 @@ func (f *FsDiff) GetResults() int
 | **How it fits the package** | Provides external callers with access to the diff result after an `FsDiff` object has performed its analysis. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   f --> result["Retrieve f.result"]
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `FsDiff.GetResults` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking FsDiff.GetResults
 diff := &cnffsdiff.FsDiff{result: 0} // normally populated by diff logic
@@ -155,7 +160,6 @@ fmt.Println("Diff status:", status)
 ### FsDiff.RunTest
 
 **RunTest** - Runs `podman diff` against the specified container, handles custom podman installation, retries on known error codes, parses JSON output, and records changed or deleted folders.
-
 
 #### 1) Signature (Go)
 
@@ -242,7 +246,6 @@ if fsDiff.result == cnffsdiff.SUCCESS {
 
 **NewFsDiffTester** - Instantiates an `FsDiff` tester configured for the specified OpenShift version and client context. Determines whether to use a custom Podman binary based on the cluster’s version.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -313,13 +316,14 @@ fsDiffTester := cnffsdiff.NewFsDiffTester(check, client, ctx, ocpVer)
 
 **createNodeFolder** - Creates a temporary directory (`nodeTmpMountFolder`) inside the probe pod’s filesystem by executing `mkdir` on the target node.
 
-
 #### Signature (Go)
+
 ```go
 func (f *FsDiff) createNodeFolder() error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Creates a temporary directory (`nodeTmpMountFolder`) inside the probe pod’s filesystem by executing `mkdir` on the target node. |
@@ -330,6 +334,7 @@ func (f *FsDiff) createNodeFolder() error
 | **How it fits the package** | Part of the setup phase for `FsDiff`, ensuring a mount point exists before attempting to bind‑mount Podman binaries into it. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Execute `mkdir`"}
@@ -338,18 +343,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_FsDiff.createNodeFolder --> func_FsDiff.execCommandContainer
 ```
 
 #### Functions calling `FsDiff.createNodeFolder` (Mermaid)
+
 ```mermaid
 graph TD
   func_FsDiff.installCustomPodman --> func_FsDiff.createNodeFolder
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking FsDiff.createNodeFolder
 f := &FsDiff{ /* fields initialized elsewhere */ }
@@ -363,7 +371,6 @@ if err := f.createNodeFolder(); err != nil {
 ### FsDiff.deleteNodeFolder
 
 **deleteNodeFolder** - Removes the temporary directory used for mounting podman on the target node. It issues a `rmdir` command inside the container and reports any unexpected output or errors.
-
 
 #### Signature (Go)
 
@@ -428,7 +435,6 @@ func example() {
 ### FsDiff.execCommandContainer
 
 **execCommandContainer** - Runs `cmd` inside the container that hosts the probe pod. Any non‑empty stdout or stderr, or a failure of the underlying execution, causes an error containing the supplied `errorStr` and diagnostic information.
-
 
 #### Signature (Go)
 
@@ -497,13 +503,14 @@ func (f *FsDiff) example() error {
 
 **installCustomPodman** - Creates a temporary directory on the node, mounts the partner’s Podman binary into it, and prepares the environment for subsequent `podman diff` invocations.
 
-
 #### Signature (Go)
+
 ```go
 func (f *FsDiff) installCustomPodman() error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Creates a temporary directory on the node, mounts the partner’s Podman binary into it, and prepares the environment for subsequent `podman diff` invocations. |
@@ -514,6 +521,7 @@ func (f *FsDiff) installCustomPodman() error
 | **How it fits the package** | The function is invoked by `FsDiff.RunTest` when a custom Podman binary must be used to run `podman diff`. It prepares the environment so that subsequent operations can access the correct binary without interfering with the host system. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Log “Creating temp folder”"]
@@ -527,6 +535,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_FsDiff.installCustomPodman --> func_FsDiff.createNodeFolder
@@ -535,12 +544,14 @@ graph TD
 ```
 
 #### Functions calling `FsDiff.installCustomPodman` (Mermaid)
+
 ```mermaid
 graph TD
   func_FsDiff.RunTest --> func_FsDiff.installCustomPodman
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking FsDiff.installCustomPodman
 f := &cnffsdiff.FsDiff{ /* fields initialized elsewhere */ }
@@ -554,7 +565,6 @@ if err := f.installCustomPodman(); err != nil {
 ### FsDiff.intersectTargetFolders
 
 **intersectTargetFolders** - Returns only those folder paths from `src` that match any of the pre‑defined `targetFolders`. Logs a warning for each matched path.
-
 
 #### 1) Signature (Go)
 
@@ -620,7 +630,6 @@ func main() {
 
 **mountProbePodmanFolder** - Binds the `partnerPodmanFolder` inside the probe container to a local temporary folder (`nodeTmpMountFolder`) so that files can be inspected or manipulated from the host.
 
-
 #### Signature (Go)
 
 ```go
@@ -678,13 +687,14 @@ if err := f.mountProbePodmanFolder(); err != nil {
 
 **runPodmanDiff** - Runs `podman diff --format json` for the specified container and returns its JSON output. Handles both system‑wide and custom Podman binaries.
 
-
 #### Signature (Go)
+
 ```go
 func (f *FsDiff) runPodmanDiff(containerUID string) (string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Runs `podman diff --format json` for the specified container and returns its JSON output. Handles both system‑wide and custom Podman binaries. |
@@ -695,6 +705,7 @@ func (f *FsDiff) runPodmanDiff(containerUID string) (string, error)
 | **How it fits the package** | Provides the low‑level diff data that higher‑level methods (`RunTest`) parse to determine file system changes in a container. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Determine podmanPath"] --> B{"Use custom Podman?"}
@@ -710,6 +721,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_FsDiff.runPodmanDiff --> fmt.Sprintf
@@ -718,12 +730,14 @@ graph TD
 ```
 
 #### Functions calling `FsDiff.runPodmanDiff` (Mermaid)
+
 ```mermaid
 graph TD
   FsDiff.RunTest --> func_FsDiff.runPodmanDiff
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking FsDiff.runPodmanDiff
 f := &FsDiff{useCustomPodman: false, clientHolder: someClient}
@@ -740,7 +754,6 @@ fmt.Println("Podman diff output:", output)
 
 **unmountCustomPodman** - Detaches the host mount point that was created for the custom Podman instance and removes its temporary directory. It is invoked automatically when a test finishes using a custom Podman binary.
 
-
 #### Signature (Go)
 
 ```go
@@ -755,7 +768,7 @@ func (f *FsDiff) unmountCustomPodman()
 | **Parameters** | `f *FsDiff` – receiver holding test state, logger, error accumulator, and configuration flags. |
 | **Return value** | None (the function updates the receiver’s fields instead of returning values). |
 | **Key dependencies** | • `LogInfo` – logs progress.<br>• `unmountProbePodmanFolder` – executes `umount` on the mount point.<br>• `deleteNodeFolder` – removes the temporary directory. |
-| **Side effects** | * I/O: runs system commands to unmount and delete a directory.<br>* State mutation: sets `f.Error` and `f.result` if any step fails.<br>* Logging output via `f.check`. |
+| **Side effects** | *I/O: runs system commands to unmount and delete a directory.<br>* State mutation: sets `f.Error` and `f.result` if any step fails.<br>* Logging output via `f.check`. |
 | **How it fits the package** | Part of the cleanup routine for tests that install a custom Podman binary (`FsDiff.installCustomPodman`). It ensures that resources allocated during the test are released, preventing interference with subsequent tests. |
 
 #### Internal workflow (Mermaid)
@@ -801,7 +814,6 @@ func example() {
 ### FsDiff.unmountProbePodmanFolder
 
 **unmountProbePodmanFolder** - Executes an `umount` command inside the target container to detach the temporary probe directory (`nodeTmpMountFolder`).
-
 
 #### Signature (Go)
 
@@ -862,7 +874,6 @@ if err := fd.unmountProbePodmanFolder(); err != nil {
 ### shouldUseCustomPodman
 
 **shouldUseCustomPodman** - Decides whether the probe should run with a custom‑compiled podman binary or rely on the preinstalled podman that ships with OpenShift nodes. The decision is based on the supplied OpenShift (OCP) version.
-
 
 #### Signature (Go)
 
@@ -938,4 +949,3 @@ if useCustom {
 ---
 
 ---
-

@@ -44,18 +44,20 @@ The versions package provides utilities to compare two claim version structures,
 
 ### DiffReport
 
-
 A container that holds the result of comparing two sets of claim versions.
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `Diffs` | `*diff.Diffs` | Pointer to a `diff.Diffs` structure (from the external diff package) representing all detected differences. The JSON tag `differences` indicates how it is marshalled/unmarshalled. |
 
 #### Purpose
+
 `DiffReport` encapsulates the outcome of the `Compare` function, providing an easy way to inspect or serialize the differences between two `officialClaimScheme.Versions` objects.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `Compare(claim1Versions, claim2Versions *officialClaimScheme.Versions) *DiffReport` | Serialises both version sets to JSON, unmarshals them into generic interfaces, and uses the diff package to compute differences. The resulting `Diffs` are stored in a new `DiffReport`. |
@@ -70,7 +72,6 @@ A container that holds the result of comparing two sets of claim versions.
 ### Compare
 
 **Compare** - Serialises two `officialClaimScheme.Versions` structs to JSON, deserialises them into generic maps, and uses a generic diff routine to produce a structured report of differences.
-
 
 #### 1) Signature (Go)
 
@@ -127,16 +128,16 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/versions"
-	officialClaimScheme "github.com/redhat-best-practices-for-k8s/certsuite/pkg/scheme"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/versions"
+ officialClaimScheme "github.com/redhat-best-practices-for-k8s/certsuite/pkg/scheme"
 )
 
 func main() {
-	v1 := &officialClaimScheme.Versions{ /* populate fields */ }
-	v2 := &officialClaimScheme.Versions{ /* populate fields differently */ }
+ v1 := &officialClaimScheme.Versions{ /* populate fields */ }
+ v2 := &officialClaimScheme.Versions{ /* populate fields differently */ }
 
-	diffReport := versions.Compare(v1, v2)
-	fmt.Printf("%+v\n", diffReport)
+ diffReport := versions.Compare(v1, v2)
+ fmt.Printf("%+v\n", diffReport)
 }
 ```
 
@@ -162,6 +163,7 @@ func (d *DiffReport) String() string
 | **How it fits the package** | In the *versions* comparison subsystem, this method enables users and other components to obtain a concise textual summary of the diff report. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   subgraph Receiver["d"]
@@ -172,18 +174,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_DiffReport_String --> func_Diff_Diffs_String
 ```
 
 #### Functions calling `DiffReport.String`
+
 ```mermaid
 graph TD
   func_DiffReport_String_in_versions_pkg --> func_DiffReport_String
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking DiffReport.String
 package main
@@ -201,4 +206,3 @@ func main() {
 ```
 
 ---
-

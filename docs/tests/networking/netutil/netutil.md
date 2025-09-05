@@ -55,15 +55,18 @@ The netutil package supplies helper functions for inspecting the network state o
 A lightweight value type that identifies a network port by its numeric identifier and transport protocol.
 
 #### Fields
+
 | Field      | Type   | Description |
 |------------|--------|-------------|
 | `PortNumber` | `int32` | The integer port number (e.g., 80, 443). |
 | `Protocol`    | `string` | Transport protocol in uppercase (commonly `"TCP"` or `"UDP"`). |
 
 #### Purpose  
+
 `PortInfo` is used to represent an individual listening port discovered within a container. It serves as the key in maps that track which ports are active, allowing functions like `GetListeningPorts` to return a set of all listening sockets.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetListeningPorts` | Executes a command inside a container to list network sockets and returns a map keyed by `PortInfo`. |
@@ -79,13 +82,14 @@ A lightweight value type that identifies a network port by its numeric identifie
 
 **GetListeningPorts** - Executes an `nsenter` command to list active network sockets in a container and parses the output into a map of `PortInfo`.
 
-
 #### Signature (Go)
+
 ```go
 func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Executes an `nsenter` command to list active network sockets in a container and parses the output into a map of `PortInfo`. |
@@ -96,6 +100,7 @@ func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error)
 | **How it fits the package** | Supports networking checks by providing runtime port information used in tests such as SSH daemon detection and undeclared port verification. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Run nsenter command"]
@@ -106,6 +111,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetListeningPorts --> func_ExecCommandContainerNSEnter
@@ -113,6 +119,7 @@ graph TD
 ```
 
 #### Functions calling `GetListeningPorts` (Mermaid)
+
 ```mermaid
 graph TD
   func_testNoSSHDaemonsAllowed --> func_GetListeningPorts
@@ -121,6 +128,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetListeningPorts
 import (
@@ -148,7 +156,6 @@ func main() {
 ### GetSSHDaemonPort
 
 **GetSSHDaemonPort** - Executes a shell pipeline inside the target container to locate the `sshd` process and extract its listening port number.
-
 
 #### Signature (Go)
 
@@ -226,7 +233,6 @@ func example(container *provider.Container) {
 
 **parseListeningPorts** - Converts the raw output of a network‐listing command into a set of `PortInfo` objects representing actively listening ports.
 
-
 #### Signature (Go)
 
 ```go
@@ -297,4 +303,3 @@ for p := range ports {
 ```
 
 ---
-

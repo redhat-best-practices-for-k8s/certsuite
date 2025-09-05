@@ -70,7 +70,6 @@ The scaling package provides utilities and tests for verifying that Kubernetes r
 
 **CheckOwnerReference** - Evaluates whether all owner references of a Kubernetes object refer to CRDs that are marked as scalable in the supplied filter list. Returns `true` if at least one reference matches a scalable CRD; otherwise, returns `false`.
 
-
 #### Signature (Go)
 
 ```go
@@ -152,13 +151,14 @@ func example() {
 
 **GetResourceHPA** - Searches a list of `HorizontalPodAutoscaler` objects for one that targets the specified resource (`name`, `namespace`, and `kind`) and returns it.
 
-
 #### Signature (Go)
+
 ```go
 func GetResourceHPA(hpaList []*scalingv1.HorizontalPodAutoscaler, name, namespace, kind string) *scalingv1.HorizontalPodAutoscaler
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Searches a list of `HorizontalPodAutoscaler` objects for one that targets the specified resource (`name`, `namespace`, and `kind`) and returns it. |
@@ -169,6 +169,7 @@ func GetResourceHPA(hpaList []*scalingv1.HorizontalPodAutoscaler, name, namespac
 | **How it fits the package** | Provides a helper for test functions that need to determine whether a resource is managed by an HPA before performing scaling tests. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over hpaList"}
@@ -177,9 +178,11 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `GetResourceHPA` (Mermaid)
+
 ```mermaid
 graph TD
   func_testDeploymentScaling --> GetResourceHPA
@@ -188,6 +191,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetResourceHPA
 package main
@@ -224,7 +228,6 @@ func main() {
 ### IsManaged
 
 **IsManaged** - Returns `true` if the supplied pod set name is present in the provided slice of `ManagedDeploymentsStatefulsets`; otherwise returns `false`.
-
 
 Checks whether a given pod set name appears in a list of managed deployments or statefulsets.
 
@@ -318,13 +321,14 @@ func main() {
 
 **TestScaleCrd** - Attempts to scale a Custom Resource up and down by one replica, verifying that scaling operations succeed.
 
-
 #### Signature (Go)
+
 ```go
 func (*provider.CrScale, schema.GroupResource, time.Duration, *log.Logger) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Attempts to scale a Custom Resource up and down by one replica, verifying that scaling operations succeed. |
@@ -335,6 +339,7 @@ func (*provider.CrScale, schema.GroupResource, time.Duration, *log.Logger) bool
 | **How it fits the package** | Provides the core logic used by higher‑level test functions (`testScaleCrd`) to validate that a CR supports scaling without HPA. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check crScale not nil"] --> B{"Replicas <= 1"}
@@ -359,6 +364,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestScaleCrd --> clientsholder.GetClientsHolder
@@ -368,12 +374,14 @@ graph TD
 ```
 
 #### Functions calling `TestScaleCrd` (Mermaid)
+
 ```mermaid
 graph TD
   scaling.testScaleCrd --> func_TestScaleCrd
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestScaleCrd
 import (
@@ -406,13 +414,14 @@ func main() {
 
 **TestScaleDeployment** - Determines whether a Kubernetes `Deployment` can be scaled up and down reliably when not managed by a Horizontal Pod Autoscaler. It performs a scale‑up followed by a scale‑down (or vice versa) and reports success or failure.
 
-
 #### Signature (Go)
+
 ```go
 func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration, logger *log.Logger) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether a Kubernetes `Deployment` can be scaled up and down reliably when not managed by a Horizontal Pod Autoscaler. It performs a scale‑up followed by a scale‑down (or vice versa) and reports success or failure. |
@@ -423,6 +432,7 @@ func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration, l
 | **How it fits the package** | Provides core functionality for non‑HPA scaling tests used by higher‑level test orchestration functions such as `testDeploymentScaling`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Determine current replicas"}
@@ -447,6 +457,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestScaleDeployment --> func_GetClientsHolder
@@ -454,12 +465,14 @@ graph TD
 ```
 
 #### Functions calling `TestScaleDeployment` (Mermaid)
+
 ```mermaid
 graph TD
   func_testDeploymentScaling --> func_TestScaleDeployment
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestScaleDeployment
 import (
@@ -489,7 +502,6 @@ func main() {
 ### TestScaleHPACrd
 
 **TestScaleHPACrd** - Validates that a CR can be scaled via its HPA. It performs an up‑scale followed by a down‑scale (or vice versa), then restores the original HPA limits.
-
 
 Performs a scaling test on a Custom Resource (CR) that is managed by a HorizontalPodAutoscaler (HPA). The function scales the CR up and down through the HPA, verifying that the HPA updates correctly and that the CR reaches the desired state.
 
@@ -574,26 +586,26 @@ graph TD
 package main
 
 import (
-	"time"
+ "time"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/scaling"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/provider"
-	"k8s.io/apimachinery/pkg/runtime/schema"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/scaling"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/provider"
+ "k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 func main() {
-	cr := &provider.CrScale{ /* populate fields */ }
-	hpa := &scalingv1.HorizontalPodAutoscaler{ /* populate fields */ }
-	groupRes := schema.GroupResource{Group: "apps", Resource: "deployments"}
-	timeout := 5 * time.Minute
-	logger := log.New(os.Stdout, "", log.LstdFlags)
+ cr := &provider.CrScale{ /* populate fields */ }
+ hpa := &scalingv1.HorizontalPodAutoscaler{ /* populate fields */ }
+ groupRes := schema.GroupResource{Group: "apps", Resource: "deployments"}
+ timeout := 5 * time.Minute
+ logger := log.New(os.Stdout, "", log.LstdFlags)
 
-	success := scaling.TestScaleHPACrd(cr, hpa, groupRes, timeout, logger)
-	if success {
-		fmt.Println("Scaling test passed")
-	} else {
-		fmt.Println("Scaling test failed")
-	}
+ success := scaling.TestScaleHPACrd(cr, hpa, groupRes, timeout, logger)
+ if success {
+  fmt.Println("Scaling test passed")
+ } else {
+  fmt.Println("Scaling test failed")
+ }
 }
 ```
 
@@ -605,13 +617,14 @@ func main() {
 
 **TestScaleHpaDeployment** - Verifies that a Deployment managed by an HPA can be scaled up and down correctly while maintaining its desired replica count.
 
-
 #### Signature (Go)
+
 ```go
 func (*provider.Deployment, *v1autoscaling.HorizontalPodAutoscaler, time.Duration, *log.Logger) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Verifies that a Deployment managed by an HPA can be scaled up and down correctly while maintaining its desired replica count. |
@@ -622,6 +635,7 @@ func (*provider.Deployment, *v1autoscaling.HorizontalPodAutoscaler, time.Duratio
 | **How it fits the package** | Implements core logic used by higher‑level tests (`testDeploymentScaling`) to confirm that HPA‑controlled workloads behave correctly during scale operations. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Retrieve Kubernetes clients"] --> B{"Determine min replicas"}
@@ -651,6 +665,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestScaleHpaDeployment --> func_GetClientsHolder
@@ -659,12 +674,14 @@ graph TD
 ```
 
 #### Functions calling `TestScaleHpaDeployment` (Mermaid)
+
 ```mermaid
 graph TD
   func_testDeploymentScaling --> func_TestScaleHpaDeployment
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestScaleHpaDeployment
 import (
@@ -701,13 +718,14 @@ func main() {
 
 **TestScaleHpaStatefulSet** - Attempts to scale a StatefulSet up and down using its Horizontal Pod Autoscaler (HPA), ensuring the HPA’s `minReplicas`/`maxReplicas` are respected and that the StatefulSet becomes ready after each operation. Returns `true` if all scaling steps succeed.
 
-
 #### Signature (Go)
+
 ```go
 func TestScaleHpaStatefulSet(statefulset *appsv1.StatefulSet, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration, logger *log.Logger) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Attempts to scale a StatefulSet up and down using its Horizontal Pod Autoscaler (HPA), ensuring the HPA’s `minReplicas`/`maxReplicas` are respected and that the StatefulSet becomes ready after each operation. Returns `true` if all scaling steps succeed. |
@@ -718,6 +736,7 @@ func TestScaleHpaStatefulSet(statefulset *appsv1.StatefulSet, hpa *v1autoscaling
 | **How it fits the package** | Part of the lifecycle scaling tests; used by higher‑level test functions to confirm that an HPA‑managed StatefulSet can be scaled reliably. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Get Kubernetes clients"] --> B["Determine hpaName, namespace"]
@@ -744,6 +763,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestScaleHpaStatefulSet --> clientsholder.GetClientsHolder
@@ -752,12 +772,14 @@ graph TD
 ```
 
 #### Functions calling `TestScaleHpaStatefulSet` (Mermaid)
+
 ```mermaid
 graph TD
   testStatefulSetScaling --> TestScaleHpaStatefulSet
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestScaleHpaStatefulSet
 import (
@@ -790,13 +812,14 @@ func main() {
 
 **TestScaleStatefulSet** - Performs a basic scale test on a StatefulSet: scales it up if replicas ≤ 1, otherwise scales down. After each operation it waits for readiness via `scaleStatefulsetHelper`. Returns `true` only when both operations succeed.
 
-
 #### Signature (Go)
+
 ```go
 func TestScaleStatefulSet(statefulset *appsv1.StatefulSet, timeout time.Duration, logger *log.Logger) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Performs a basic scale test on a StatefulSet: scales it up if replicas ≤ 1, otherwise scales down. After each operation it waits for readiness via `scaleStatefulsetHelper`. Returns `true` only when both operations succeed. |
@@ -807,6 +830,7 @@ func TestScaleStatefulSet(statefulset *appsv1.StatefulSet, timeout time.Duration
 | **How it fits the package** | Provides the low‑level scaling routine used by higher‑level tests (e.g., `testStatefulSetScaling`) to verify that a StatefulSet can be scaled when not managed by an HPA. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Get Kubernetes client"] --> B["Retrieve namespace & name"]
@@ -833,6 +857,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestScaleStatefulSet --> func_GetClientsHolder
@@ -840,12 +865,14 @@ graph TD
 ```
 
 #### Functions calling `TestScaleStatefulSet` (Mermaid)
+
 ```mermaid
 graph TD
   func_testStatefulSetScaling --> func_TestScaleStatefulSet
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestScaleStatefulSet
 import (
@@ -879,13 +906,14 @@ func main() {
 
 **scaleCrHelper** - Adjusts the replica count of a CRD instance and waits for the scaling operation to complete.
 
-
 #### 1️⃣ Signature
+
 ```go
 func(scale.ScalesGetter, schema.GroupResource, *provider.CrScale, int32, bool, time.Duration, *log.Logger) bool
 ```
 
 #### 2️⃣ Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Adjusts the replica count of a CRD instance and waits for the scaling operation to complete. |
@@ -896,6 +924,7 @@ func(scale.ScalesGetter, schema.GroupResource, *provider.CrScale, int32, bool, t
 | **How it fits the package** | Supports test harness scaling logic by providing a reusable helper for up‑/down scaling of arbitrary CRDs within the `scaling` test suite. |
 
 #### 3️⃣ Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Start"] --> B{"Scaling direction?"}
@@ -914,6 +943,7 @@ flowchart TD
 ```
 
 #### 4️⃣ Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_scaleCrHelper --> func_retry.RetryOnConflict
@@ -923,12 +953,14 @@ graph TD
 ```
 
 #### 5️⃣ Functions calling `scaleCrHelper` (Mermaid)
+
 ```mermaid
 graph TD
   func_TestScaleCrd --> func_scaleCrHelper
 ```
 
 #### 6️⃣ Usage example (Go)
+
 ```go
 // Minimal example invoking scaleCrHelper
 import (
@@ -962,7 +994,6 @@ func example() {
 ### scaleDeploymentHelper
 
 **scaleDeploymentHelper** - Adjusts a Deployment’s `spec.replicas` to the desired count, handling conflicts via retry and confirming pod readiness within a timeout.
-
 
 #### Signature (Go)
 
@@ -1061,7 +1092,6 @@ func example(client typedappsv1.AppsV1Interface, deployment *appsv1.Deployment) 
 
 **scaleHpaCRDHelper** - Updates the `minReplicas` and `maxReplicas` fields of a HorizontalPodAutoscaler (HPA), retries on conflicts, then waits for the associated CustomResource to reach the desired state. Returns `true` if successful.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -1085,7 +1115,7 @@ func scaleHpaCRDHelper(
 | **Purpose** | Updates the `minReplicas` and `maxReplicas` fields of a HorizontalPodAutoscaler (HPA), retries on conflicts, then waits for the associated CustomResource to reach the desired state. Returns `true` if successful. |
 | **Parameters** | `hpscaler` – HPA client interface<br>`hpaName` – name of the HPA resource<br>`crName` – name of the related custom resource<br>`namespace` – Kubernetes namespace<br>`min`, `max` – desired replica bounds<br>`timeout` – maximum wait time for scaling to complete<br>`groupResourceSchema` – schema of the CRD to query during wait<br>`logger` – logger for error reporting |
 | **Return value** | `bool`: `true` if the scale operation succeeded, otherwise `false`. |
-| **Key dependencies** | * `k8s.io/client-go/util/retry.RetryOnConflict`<br>* `hpscaler.Get`, `hpscaler.Update`<br>* `podsets.WaitForScalingToComplete`<br>* `errors.New` |
+| **Key dependencies** | *`k8s.io/client-go/util/retry.RetryOnConflict`<br>* `hpscaler.Get`, `hpscaler.Update`<br>*`podsets.WaitForScalingToComplete`<br>* `errors.New` |
 | **Side effects** | Mutates the HPA object in the cluster; may block until scaling completes or timeout. Logs errors via `logger`. |
 | **How it fits the package** | Helper used by test functions to perform controlled scaling of HPAs during lifecycle tests, ensuring CRs reflect the new replica counts before proceeding. |
 
@@ -1171,7 +1201,6 @@ if success {
 ### scaleHpaDeploymentHelper
 
 **scaleHpaDeploymentHelper** - Updates a Horizontal Pod Autoscaler (HPA) to new minimum and maximum replica counts, retries on conflict, then waits until the associated deployment becomes ready. Returns `true` if all steps succeed.
-
 
 #### Signature (Go)
 
@@ -1259,7 +1288,6 @@ func demo(hpscaler hps.HorizontalPodAutoscalerInterface, logger *log.Logger) {
 ### scaleHpaStatefulSetHelper
 
 **scaleHpaStatefulSetHelper** - Atomically updates a Horizontal Pod Autoscaler's `MinReplicas` and `MaxReplicas`, then waits until the referenced StatefulSet reaches a ready state. Returns `true` on success, `false` otherwise.
-
 
 #### Signature (Go)
 
@@ -1357,7 +1385,6 @@ func example(hpscaler hps.HorizontalPodAutoscalerInterface) bool {
 
 **scaleStatefulsetHelper** - Scales a StatefulSet to the desired replica count, retrying on conflicts and waiting for readiness.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -1450,4 +1477,3 @@ func main() {
 ```
 
 ---
-

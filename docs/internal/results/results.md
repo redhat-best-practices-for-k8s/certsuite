@@ -69,7 +69,7 @@ The `results` package orchestrates the creation, packaging and upload of test re
 ### CertIDResponse
 
 <!-- DEBUG: Struct CertIDResponse exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -88,7 +88,7 @@ The `results` package orchestrates the creation, packaging and upload of test re
 ### UploadResult
 
 <!-- DEBUG: Struct UploadResult exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -113,13 +113,14 @@ The `results` package orchestrates the creation, packaging and upload of test re
 
 **CompressResultsArtifacts** - Creates a ZIP file in `outputDir` containing each file listed in `filePaths`. The archive is generated as a gzip‑compressed tarball.
 
-
 #### Signature (Go)
+
 ```go
 func CompressResultsArtifacts(outputDir string, filePaths []string) (string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Creates a ZIP file in `outputDir` containing each file listed in `filePaths`. The archive is generated as a gzip‑compressed tarball. |
@@ -130,6 +131,7 @@ func CompressResultsArtifacts(outputDir string, filePaths []string) (string, err
 | **How it fits the package** | Used by `Run` to bundle claim and artifact files before optional upload to Red Hat Connect or local storage. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Generate file name"] --> B["Create ZIP file"]
@@ -147,6 +149,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_CompressResultsArtifacts --> func_generateZipFileName
@@ -166,12 +169,14 @@ graph TD
 ```
 
 #### Functions calling `CompressResultsArtifacts` (Mermaid)
+
 ```mermaid
 graph TD
   func_Run --> func_CompressResultsArtifacts
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CompressResultsArtifacts
 package main
@@ -199,7 +204,6 @@ func main() {
 ### CreateResultsWebFiles
 
 **CreateResultsWebFiles** - Creates all web‑related artifacts required to view and parse a claim file: `claimjson.js`, `results.html`, and the classification script. Returns paths of created files.
-
 
 #### Signature (Go)
 
@@ -283,7 +287,6 @@ func main() {
 
 **GetCertIDFromConnectAPI** - Sends a POST request to the Red Hat Connect API to obtain the certification ID for a given project.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -361,13 +364,14 @@ func main() {
 
 **SendResultsToConnectAPI** - Uploads a ZIP file containing test artifacts to the Red Hat Connect API as an attachment and logs the resulting download URL.
 
-
 #### Signature (Go)
+
 ```go
 func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, proxyPort string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Uploads a ZIP file containing test artifacts to the Red Hat Connect API as an attachment and logs the resulting download URL. |
@@ -378,6 +382,7 @@ func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, 
 | **How it fits the package** | Part of the `results` sub‑package, this function is invoked during the final stage of a CertSuite run to deliver artifacts to Red Hat Connect for certification validation. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Sanitise inputs"] --> B["Open ZIP file"]
@@ -394,6 +399,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_SendResultsToConnectAPI --> func_log.Info
@@ -409,12 +415,14 @@ graph TD
 ```
 
 #### Functions calling `SendResultsToConnectAPI`
+
 ```mermaid
 graph TD
   func_Run --> func_SendResultsToConnectAPI
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking SendResultsToConnectAPI
 import "github.com/redhat-best-practices-for-k8s/certsuite/internal/results"
@@ -439,7 +447,6 @@ func main() {
 ### createClaimJSFile
 
 **createClaimJSFile** - Reads a `claim.json` file and writes its contents into a JavaScript file (`claimjson.js`) that assigns the JSON to a global variable.
-
 
 #### Signature (Go)
 
@@ -508,13 +515,14 @@ fmt.Println("Generated JS file at:", outputPath)
 
 **createFormField** - Adds a simple text field to an existing `multipart.Writer`. The field name is given by `field` and the content by `value`.
 
-
 #### Signature (Go)
+
 ```go
 func createFormField(w *multipart.Writer, field, value string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Adds a simple text field to an existing `multipart.Writer`. The field name is given by `field` and the content by `value`. |
@@ -525,6 +533,7 @@ func createFormField(w *multipart.Writer, field, value string) error
 | **How it fits the package** | Used by higher‑level routines (e.g., `SendResultsToConnectAPI`) to add metadata fields to an HTTP request body before uploading test results. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Create field"}
@@ -534,6 +543,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_createFormField --> CreateFormField
@@ -543,31 +553,33 @@ graph TD
 ```
 
 #### Functions calling `createFormField` (Mermaid)
+
 ```mermaid
 graph TD
   SendResultsToConnectAPI --> createFormField
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking createFormField
 package main
 
 import (
-	"mime/multipart"
-	"os"
+ "mime/multipart"
+ "os"
 )
 
 func main() {
-	var buf bytes.Buffer
-	writer := multipart.NewWriter(&buf)
+ var buf bytes.Buffer
+ writer := multipart.NewWriter(&buf)
 
-	if err := createFormField(writer, "type", "RhocpBestPracticeTestResult"); err != nil {
-		panic(err)
-	}
+ if err := createFormField(writer, "type", "RhocpBestPracticeTestResult"); err != nil {
+  panic(err)
+ }
 
-	// Close writer to finalize the body and send it with an HTTP request.
-	writer.Close()
+ // Close writer to finalize the body and send it with an HTTP request.
+ writer.Close()
 }
 ```
 
@@ -576,7 +588,6 @@ func main() {
 ### generateZipFileName
 
 **generateZipFileName** - Produces a unique file name for the results archive, embedding the current UTC time in a specific layout.
-
 
 #### Signature (Go)
 
@@ -628,13 +639,13 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/results"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/results"
 )
 
 func main() {
-	zipName := results.generateZipFileName()
-	fmt.Println("Generated zip file name:", zipName)
+ zipName := results.generateZipFileName()
+ fmt.Println("Generated zip file name:", zipName)
 }
 ```
 
@@ -646,13 +657,14 @@ func main() {
 
 **getFileTarHeader** - Generates an `*tar.Header` describing the specified file so it can be archived.
 
-
 #### Signature (Go)
+
 ```go
 func getFileTarHeader(file string) (*tar.Header, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Generates an `*tar.Header` describing the specified file so it can be archived. |
@@ -663,6 +675,7 @@ func getFileTarHeader(file string) (*tar.Header, error)
 | **How it fits the package** | Helper used by `CompressResultsArtifacts` to prepare each file’s metadata before writing to a tar archive. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive file path"] --> B["os.Stat(file)"]
@@ -675,6 +688,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getFileTarHeader --> func_Stat
@@ -683,12 +697,14 @@ graph TD
 ```
 
 #### Functions calling `getFileTarHeader` (Mermaid)
+
 ```mermaid
 graph TD
   func_CompressResultsArtifacts --> func_getFileTarHeader
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getFileTarHeader
 header, err := getFileTarHeader("/path/to/file.txt")
@@ -703,7 +719,6 @@ fmt.Printf("Created tar header for file: %+v\n", header)
 ### sendRequest
 
 **sendRequest** - Executes an HTTP request using the supplied client, logs debug information, and ensures a successful 200 OK response.
-
 
 #### Signature (Go)
 
@@ -775,13 +790,14 @@ defer resp.Body.Close()
 
 **setProxy** - If both `proxyURL` and `proxyPort` are non‑empty, builds a full proxy address, parses it, logs debug information, and assigns an HTTP transport that routes requests through the specified proxy.
 
-
 #### Signature (Go)
+
 ```go
 func setProxy(client *http.Client, proxyURL, proxyPort string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | If both `proxyURL` and `proxyPort` are non‑empty, builds a full proxy address, parses it, logs debug information, and assigns an HTTP transport that routes requests through the specified proxy. |
@@ -792,6 +808,7 @@ func setProxy(client *http.Client, proxyURL, proxyPort string)
 | **How it fits the package** | Used by higher‑level API calls (`GetCertIDFromConnectAPI`, `SendResultsToConnectAPI`) to optionally route traffic through an HTTP/HTTPS proxy when interacting with Red Hat Connect endpoints. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check if proxyURL & proxyPort not empty"] -->|"Yes"| B["Log debug: “Proxy is set”"]
@@ -802,6 +819,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_setProxy --> func_log.Debug
@@ -813,6 +831,7 @@ graph TD
 ```
 
 #### Functions calling `setProxy` (Mermaid)
+
 ```mermaid
 graph TD
   func_GetCertIDFromConnectAPI --> func_setProxy
@@ -820,6 +839,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking setProxy
 client := &http.Client{Timeout: 30 * time.Second}
@@ -832,4 +852,3 @@ setProxy(client, proxyHost, proxyPort)
 ```
 
 ---
-

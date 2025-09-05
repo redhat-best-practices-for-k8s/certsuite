@@ -68,19 +68,21 @@ The webserver package provides an HTTP server that serves static client assets a
 
 ### Entry
 
-
 Represents a single test entry in a printable catalog, containing the test name and its identifying information.
 
 #### Fields
+
 | Field      | Type              | Description |
 |------------|-------------------|-------------|
 | `testName` | `string`          | The human‑readable name of the test. |
 | `identifier` | `claim.Identifier` | Metadata that uniquely identifies the test, typically including a URL and version information. |
 
 #### Purpose
+
 The `Entry` struct is used to collect and organize tests by suite when generating printable catalogs. Each entry holds the test’s display name (`testName`) along with its underlying identifier (`identifier`) so that downstream processes can reference or link to the specific test definition.
 
 #### Related functions (if any)
+
 | Function | Purpose |
 |----------|---------|
 | `CreatePrintableCatalogFromIdentifiers` | Builds a map of suite names to slices of `Entry`, grouping tests by their `Suite` field extracted from each `claim.Identifier`. |
@@ -92,7 +94,7 @@ The `Entry` struct is used to collect and organize tests by suite when generatin
 ### RequestedData
 
 <!-- DEBUG: Struct RequestedData exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -129,18 +131,20 @@ The `Entry` struct is used to collect and organize tests by suite when generatin
 
 ### ResponseData
 
-
 A lightweight container for sending textual responses from the web server.
 
 #### Fields
+
 | Field | Type   | Description |
 |-------|--------|-------------|
 | `Message` | `string` | Human‑readable message returned in JSON format (`"message"` key). |
 
 #### Purpose
+
 `ResponseData` encapsulates a simple string payload that the web server marshals into JSON for HTTP responses. It is used to convey status or error messages back to clients.
 
 #### Related functions (none)
+
 | Function | Purpose |
 |----------|---------|
 | — | — |
@@ -153,13 +157,14 @@ A lightweight container for sending textual responses from the web server.
 
 **CreatePrintableCatalogFromIdentifiers** - Organises identifiers by their associated test suite into a printable structure.
 
-
 #### Signature (Go)
+
 ```go
 func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]Entry
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Organises identifiers by their associated test suite into a printable structure. |
@@ -170,6 +175,7 @@ func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][
 | **How it fits the package** | Used by `outputTestCases` to generate a human‑readable classification string from the catalog of test identifiers. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph BuildMap["Create map"]
@@ -180,6 +186,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_CreatePrintableCatalogFromIdentifiers --> make
@@ -187,12 +194,14 @@ graph TD
 ```
 
 #### Functions calling `CreatePrintableCatalogFromIdentifiers` (Mermaid)
+
 ```mermaid
 graph TD
   outputTestCases --> CreatePrintableCatalogFromIdentifiers
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CreatePrintableCatalogFromIdentifiers
 package main
@@ -222,7 +231,6 @@ func main() {
 ### GetSuitesFromIdentifiers
 
 **GetSuitesFromIdentifiers** - Collects all suite names referenced by a slice of `claim.Identifier` values and returns them as a de‑duplicated list.
-
 
 #### Signature (Go)
 
@@ -296,7 +304,6 @@ func main() {
 ### StartServer
 
 **StartServer** - Starts an HTTP server on port 8084 that serves static content and exposes endpoints to run tests, stream logs, and provide test results. The server’s context is enriched with the output folder path for downstream handlers.
-
 
 #### 1) Signature (Go)
 
@@ -374,7 +381,6 @@ func main() {
 ### installReqHandlers
 
 **installReqHandlers** - Binds several HTTP endpoints (`/`, `/submit.js`, `/logs.js`, etc.) to handler functions that return embedded static content or dynamic data.
-
 
 #### Signature (Go)
 
@@ -459,7 +465,6 @@ func main() {
 
 **logStreamHandler** - Upgrades an HTTP connection to a WebSocket and streams the contents of a log file in real‑time to the client. Each line is converted from ANSI escape codes to HTML before transmission.
 
-
 #### Signature (Go)
 
 ```go
@@ -532,7 +537,6 @@ func main() {
 
 **outputTestCases** - Builds a string representation of the test case catalog, formatted as a JavaScript object literal. The string is later written to an HTTP response for client‑side consumption.
 
-
 #### Signature (Go)
 
 ```go
@@ -590,13 +594,13 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/webserver"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/webserver"
 )
 
 func main() {
-	classificationJS := webserver.OutputTestCases()
-	fmt.Println(classificationJS)
+ classificationJS := webserver.OutputTestCases()
+ fmt.Println(classificationJS)
 }
 ```
 
@@ -608,13 +612,14 @@ func main() {
 
 **runHandler** - Processes a multipart/form‑data request containing a kubeconfig file and JSON options, updates the CERTSUITE configuration, runs the test suite, and returns a JSON status message.
 
-
 #### Signature (Go)
+
 ```go
 func runHandler(w http.ResponseWriter, r *http.Request)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Processes a multipart/form‑data request containing a kubeconfig file and JSON options, updates the CERTSUITE configuration, runs the test suite, and returns a JSON status message. |
@@ -625,6 +630,7 @@ func runHandler(w http.ResponseWriter, r *http.Request)
 | **How it fits the package** | Serves as the core HTTP endpoint of the webserver, orchestrating user input handling, configuration updates, test execution, and result reporting in web mode. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Receive HTTP request"] --> B["Initialize log buffer"]
@@ -645,6 +651,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_runHandler --> func_NewBufferString
@@ -666,9 +673,11 @@ graph TD
 ```
 
 #### Functions calling `runHandler`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 package main
 
@@ -689,13 +698,14 @@ func main() {
 
 **toJSONString** - Produces an indented JSON representation of a `map[string]string`. Useful for embedding classification details in output.
 
-
 #### Signature (Go)
+
 ```go
 func(toJSONString data map[string]string) string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Produces an indented JSON representation of a `map[string]string`. Useful for embedding classification details in output. |
@@ -706,6 +716,7 @@ func(toJSONString data map[string]string) string
 | **How it fits the package** | Used by `outputTestCases` to embed category classification data into a larger JSON‑like report. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"MarshalIndent"}
@@ -716,6 +727,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_toJSONString --> func_MarshalIndent
@@ -723,27 +735,29 @@ graph TD
 ```
 
 #### Functions calling `toJSONString` (Mermaid)
+
 ```mermaid
 graph TD
   func_outputTestCases --> func_toJSONString
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking toJSONString
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	data := map[string]string{
-		"category":   "Security",
-		"description": "Ensures proper security configuration.",
-	}
-	jsonStr := toJSONString(data)
-	fmt.Println(jsonStr)
+ data := map[string]string{
+  "category":   "Security",
+  "description": "Ensures proper security configuration.",
+ }
+ jsonStr := toJSONString(data)
+ fmt.Println(jsonStr)
 }
 ```
 
@@ -752,7 +766,6 @@ func main() {
 ### updateTnf
 
 **updateTnf** - Reads a YAML configuration, applies user‑supplied overrides from `*RequestedData`, and returns the updated YAML.
-
 
 #### Signature (Go)
 
@@ -848,4 +861,3 @@ fmt.Printf("Updated YAML:\n%s\n", string(updatedYAML))
 ---
 
 ---
-

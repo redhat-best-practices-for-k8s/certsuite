@@ -109,14 +109,17 @@ The configuration package centralizes reading, parsing and caching test‑suite 
 A lightweight representation of a StatefulSet managed by CertSuite, identified by its Kubernetes name.
 
 #### Fields
+
 | Field | Type   | Description |
 |-------|--------|-------------|
 | Name  | string | The fully qualified or namespace‑scoped name of the StatefulSet. It is used to locate and reference the resource within Kubernetes API calls. |
 
 #### Purpose  
+
 `ManagedDeploymentsStatefulsets` encapsulates a single StatefulSet that CertSuite will monitor, configure, or modify. By storing only the name, it keeps the configuration minimal while still enabling precise targeting of resources in the cluster.
 
 #### Related functions (if any)
+
 | Function | Purpose |
 |----------|---------|
 | *none*   | No direct methods are defined for this struct. |
@@ -125,16 +128,18 @@ A lightweight representation of a StatefulSet managed by CertSuite, identified b
 
 ### Namespace
 
-
 #### Fields
+
 | Field | Type   | Description |
 |-------|--------|-------------|
 | Name  | string | The namespace name as used in Kubernetes and referenced by YAML/JSON configuration. |
 
 #### Purpose
+
 The `Namespace` struct represents a single namespace declaration within the CertSuite configuration. It holds only the namespace identifier, which is serialized/deserialized with `yaml:"name"` and `json:"name"`. This struct is typically instantiated when parsing a configuration file to determine where certificates or resources should be applied.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | *(none)* |  |
@@ -146,7 +151,7 @@ The `Namespace` struct represents a single namespace declaration within the Cert
 ### SkipHelmChartList
 
 <!-- DEBUG: Struct SkipHelmChartList exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -186,10 +191,10 @@ The `Namespace` struct represents a single namespace declaration within the Cert
 
 ### TestConfiguration
 
-
 The configuration holder for test‑execution parameters, including namespaces, labels, CRD filters, deployment states, kernel taint acceptance rules, collector credentials, and API settings.
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `TargetNameSpaces` | `[]Namespace` | Namespaces targeted during testing. |
@@ -212,9 +217,11 @@ The configuration holder for test‑execution parameters, including namespaces, 
 | `ConnectAPIConfig` | `ConnectAPIConfig` | Configuration block for interacting with the Red Hat Connect API. |
 
 #### Purpose
+
 `TestConfiguration` encapsulates all runtime options and environment settings required by Certsuite to perform its tests. It is loaded once from a YAML file (via `LoadConfiguration`) and then consulted throughout the test lifecycle to determine which resources to probe, what labels to match, how to handle scaling scenarios, and where to send results.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `LoadConfiguration` | Reads a YAML configuration file into a `TestConfiguration` instance, applies defaults (e.g., for the probe DaemonSet namespace), and caches the result for subsequent calls. |
@@ -224,7 +231,6 @@ The configuration holder for test‑execution parameters, including namespaces, 
 ---
 
 ### TestParameters
-
 
 A configuration holder used by CertSuite to drive test execution and output behaviour.
 
@@ -287,13 +293,14 @@ A configuration holder used by CertSuite to drive test execution and output beha
 
 **GetTestParameters** - Provides read‑only access to the global `parameters` instance that holds all runtime options for the test suite.
 
-
 #### Signature (Go)
+
 ```go
 func GetTestParameters() *TestParameters
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Provides read‑only access to the global `parameters` instance that holds all runtime options for the test suite. |
@@ -304,15 +311,18 @@ func GetTestParameters() *TestParameters
 | **How it fits the package** | Serves as the central accessor for configuration values used throughout `certsuite`, `autodiscover`, and command‑line initialization logic. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   GetTestParameters --> Return(parameters)
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `GetTestParameters` (Mermaid)
+
 ```mermaid
 graph TD
   initTestParamsFromFlags --> GetTestParameters
@@ -327,18 +337,19 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetTestParameters
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 )
 
 func main() {
-	params := configuration.GetTestParameters()
-	fmt.Printf("Output directory: %s\n", params.OutputDir)
+ params := configuration.GetTestParameters()
+ fmt.Printf("Output directory: %s\n", params.OutputDir)
 }
 ```
 
@@ -348,13 +359,14 @@ func main() {
 
 **LoadConfiguration** - Reads a YAML configuration file, unmarshals it into `TestConfiguration`, applies defaults, and caches the result so subsequent calls return the same instance.
 
-
 #### Signature (Go)
+
 ```go
 func LoadConfiguration(filePath string) (TestConfiguration, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Reads a YAML configuration file, unmarshals it into `TestConfiguration`, applies defaults, and caches the result so subsequent calls return the same instance. |
@@ -365,6 +377,7 @@ func LoadConfiguration(filePath string) (TestConfiguration, error)
 | **How it fits the package** | Provides a singleton access point to the test configuration used by the rest of the `configuration` package and other packages such as the provider’s test environment builder. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Check if config already loaded"] -->|"Yes"| B["Return cached configuration"]
@@ -378,6 +391,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadConfiguration --> func_log.Debug
@@ -388,12 +402,14 @@ graph TD
 ```
 
 #### Functions calling `LoadConfiguration` (Mermaid)
+
 ```mermaid
 graph TD
   func_buildTestEnvironment --> func_LoadConfiguration
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking LoadConfiguration
 config, err := configuration.LoadConfiguration("/etc/certsuite/config.yaml")
@@ -404,4 +420,3 @@ fmt.Printf("Loaded configuration: %+v\n", config)
 ```
 
 ---
-

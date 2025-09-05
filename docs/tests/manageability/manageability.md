@@ -48,7 +48,6 @@ The manageability package defines and registers tests that validate container co
 
 **LoadChecks** - Registers the manageability tests into the global checks database, preparing them for execution.
 
-
 #### Signature (Go)
 
 ```go
@@ -125,7 +124,6 @@ func main() {
 
 **containerPortNameFormatCheck** - Determines whether a container port name follows the partner naming conventions by checking its protocol prefix.
 
-
 #### Signature (Go)
 
 ```go
@@ -176,22 +174,22 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 // Assume allowedProtocolNames is populated elsewhere in the package.
 var allowedProtocolNames = map[string]bool{
-	"http":  true,
-	"https": true,
+ "http":  true,
+ "https": true,
 }
 
 func main() {
-	name := "http-80"
-	if containerPortNameFormatCheck(name) {
-		fmt.Printf("Port name %q is valid.\n", name)
-	} else {
-		fmt.Printf("Port name %q is invalid.\n", name)
-	}
+ name := "http-80"
+ if containerPortNameFormatCheck(name) {
+  fmt.Printf("Port name %q is valid.\n", name)
+ } else {
+  fmt.Printf("Port name %q is invalid.\n", name)
+ }
 }
 ```
 
@@ -200,7 +198,6 @@ func main() {
 ### testContainerPortNameFormat
 
 **testContainerPortNameFormat** - Validates that every port name in each container follows the partner naming conventions and records compliance results.
-
 
 #### 1) Signature (Go)
 
@@ -287,11 +284,13 @@ testContainerPortNameFormat(check, env)
 Evaluates every container in a test environment to verify that an image tag is present, recording compliant and non‑compliant containers.
 
 #### Signature (Go)
+
 ```go
 func (*checksdb.Check, *provider.TestEnvironment)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines if each container has an image tag; logs findings and records them in a compliance report. |
@@ -302,6 +301,7 @@ func (*checksdb.Check, *provider.TestEnvironment)()
 | **How it fits the package** | Implements the *Containers Image Tag* test within the Manageability suite, invoked by `LoadChecks`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   start["Start"] --> iterate{"Iterate over env.Containers"}
@@ -314,6 +314,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testContainersImageTag --> func_LogDebug
@@ -326,12 +327,14 @@ graph TD
 ```
 
 #### Functions calling `testContainersImageTag` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testContainersImageTag
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testContainersImageTag
 env := &provider.TestEnvironment{
@@ -343,4 +346,3 @@ testContainersImageTag(check, env)
 ```
 
 ---
-

@@ -110,8 +110,8 @@ Provides a lightweight logging layer for the Certsuite project that wraps Go’s
 
 ### CustomHandler
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `opts`  | `slog.HandlerOptions` | Configuration options such as the minimum log level, a custom attribute replacer, and time format. |
@@ -120,9 +120,11 @@ Provides a lightweight logging layer for the Certsuite project that wraps Go’s
 | `out`   | `io.Writer`  | Destination stream (e.g., a file or stdout) where formatted log entries are written. |
 
 #### Purpose
+
 `CustomHandler` implements the `slog.Handler` interface, converting structured slog records into human‑readable lines. It serialises each record’s level, time, source location, message and any attached attributes, then writes the result to the configured writer. The handler supports a minimum log level filter, optional attribute replacement logic, and allows adding static attributes via `WithAttrs`. Thread safety is ensured with an internal mutex.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewCustomHandler` | Constructs a new handler, setting defaults for options and initializing the output writer. |
@@ -138,17 +140,19 @@ Provides a lightweight logging layer for the Certsuite project that wraps Go’s
 
 ### Logger
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `l` | `*slog.Logger` | The underlying standard library logger used to emit records. It is the only field; all operations delegate through it. |
 
 #### Purpose
+
 The `Logger` type encapsulates a `*slog.Logger` and provides a small, convenient API for emitting log messages at different severity levels (`Debug`, `Info`, `Warn`, `Error`, `Fatal`).  
 It also supports creating new logger instances that inherit the context of an existing one via `With`.  The struct is stored in a package‑level variable (`globalLogger`) and can be retrieved or replaced through `GetLogger`/`SetLogger`.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `Debug(msg string, args ...any)` | Emits a debug‑level message. |
@@ -168,16 +172,18 @@ It also supports creating new logger instances that inherit the context of an ex
 
 ### MultiHandler
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `handlers` | `[]slog.Handler` | A slice holding the individual handlers that compose this multi‑handler. |
 
 #### Purpose  
+
 `MultiHandler` implements the `slog.Handler` interface by delegating logging responsibilities to a collection of underlying handlers. When a log record is emitted, it forwards the record (cloned for safety) to each contained handler until one returns an error. The handler is considered enabled if any delegate reports that it can handle the given log level.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewMultiHandler` | Constructs a new `MultiHandler` from a variadic list of `slog.Handler` instances. |
@@ -193,7 +199,6 @@ It also supports creating new logger instances that inherit the context of an ex
 ### CloseGlobalLogFile
 
 **CloseGlobalLogFile** - Safely shuts down the global log output by closing the underlying file handle.
-
 
 Closes the globally‑configured log file and returns any error encountered.
 
@@ -240,14 +245,14 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	if err := log.CloseGlobalLogFile(); err != nil {
-		fmt.Fprintf(os.Stderr, "Could not close the log file: %v\n", err)
-	}
+ if err := log.CloseGlobalLogFile(); err != nil {
+  fmt.Fprintf(os.Stderr, "Could not close the log file: %v\n", err)
+ }
 }
 ```
 
@@ -257,13 +262,14 @@ func main() {
 
 **CreateGlobalLogFile** - Deletes any existing log file in `outputDir`, creates a fresh one with permissions defined by `LogFilePermissions`, and sets up the global logger to write to this file.
 
-
 #### Signature (Go)
+
 ```go
 func CreateGlobalLogFile(outputDir, logLevel string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Deletes any existing log file in `outputDir`, creates a fresh one with permissions defined by `LogFilePermissions`, and sets up the global logger to write to this file. |
@@ -274,6 +280,7 @@ func CreateGlobalLogFile(outputDir, logLevel string) error
 | **How it fits the package** | This function is invoked during application startup (e.g., in `certsuite.Startup`) or by the web server to initialise logging before any other component writes logs. It centralises log file handling for the entire suite. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Compute logFilePath"] --> B{"Remove old file"}
@@ -286,6 +293,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_CreateGlobalLogFile --> os.Remove
@@ -296,6 +304,7 @@ graph TD
 ```
 
 #### Functions calling `CreateGlobalLogFile`
+
 ```mermaid
 graph TD
   certsuite.Startup --> func_CreateGlobalLogFile
@@ -303,6 +312,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CreateGlobalLogFile
 package main
@@ -325,7 +335,6 @@ func main() {
 ### CustomHandler.Enabled
 
 **Enabled** - Checks whether the supplied `level` meets or exceeds the handler’s configured minimum logging level.
-
 
 #### 1) Signature (Go)
 
@@ -370,20 +379,20 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"context"
-	"log/slog"
+ "context"
+ "log/slog"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	h := &log.CustomHandler{
-		opts: log.Options{Level: slog.LevelInfo}, // assumed struct for illustration
-	}
-	ctx := context.Background()
-	if h.Enabled(ctx, slog.LevelWarn) {
-		// proceed with logging the warning
-	}
+ h := &log.CustomHandler{
+  opts: log.Options{Level: slog.LevelInfo}, // assumed struct for illustration
+ }
+ ctx := context.Background()
+ if h.Enabled(ctx, slog.LevelWarn) {
+  // proceed with logging the warning
+ }
 }
 ```
 
@@ -393,23 +402,25 @@ func main() {
 
 **Handle** - Formats and writes a single `slog.Record` as a log line: `<LEVEL> [TIME] [SOURCE_FILE] [CUSTOM_ATTRS] MSG\n`.
 
-
 #### Signature (Go)
+
 ```go
 func (h *CustomHandler) Handle(_ context.Context, r slog.Record) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Formats and writes a single `slog.Record` as a log line: `<LEVEL> [TIME] [SOURCE_FILE] [CUSTOM_ATTRS] MSG\n`. |
 | **Parameters** | `_ context.Context – discarded; <br>` `r slog.Record – the record to be logged` |
 | **Return value** | `error – any write error, otherwise nil` |
-| **Key dependencies** | * `h.opts.ReplaceAttr` (optional) <br>* `slog.Any`, `slog.Time`, `slog.String` <br>* `CustomHandler.appendAttr` <br>* `runtime.CallersFrames`, `CallersFrames.Next()` <br>* `fmt.Sprintf`, `filepath.Base` <br>* `bytes.Append` (built‑in) <br>* `h.mu.Lock/Unlock` <br>* `h.out.Write` |
-| **Side effects** | * Mutates internal mutex lock. <br>* Writes formatted bytes to the handler’s output stream. |
+| **Key dependencies** | *`h.opts.ReplaceAttr` (optional) <br>* `slog.Any`, `slog.Time`, `slog.String` <br>*`CustomHandler.appendAttr` <br>* `runtime.CallersFrames`, `CallersFrames.Next()` <br>*`fmt.Sprintf`, `filepath.Base` <br>* `bytes.Append` (built‑in) <br>*`h.mu.Lock/Unlock` <br>* `h.out.Write` |
+| **Side effects** | *Mutates internal mutex lock. <br>* Writes formatted bytes to the handler’s output stream. |
 | **How it fits the package** | Implements the `slog.Handler` interface for a custom log format used throughout the `certsuite/internal/log` package. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start Handle"] --> B["Determine level attribute"]
@@ -432,6 +443,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_CustomHandler_Handle --> func_ReplaceAttr
@@ -448,9 +460,11 @@ graph TD
 ```
 
 #### Functions calling `CustomHandler.Handle` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CustomHandler.Handle
 package main
@@ -490,13 +504,14 @@ func main() {
 
 **WithAttrs** - Produces a new `slog.Handler` that includes the supplied attributes in addition to those already present on the receiver. If no attributes are provided, returns the original handler unchanged.
 
-
 #### Signature (Go)
+
 ```go
 func (h *CustomHandler) WithAttrs(attrs []slog.Attr) slog.Handler
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Produces a new `slog.Handler` that includes the supplied attributes in addition to those already present on the receiver. If no attributes are provided, returns the original handler unchanged. |
@@ -507,6 +522,7 @@ func (h *CustomHandler) WithAttrs(attrs []slog.Attr) slog.Handler
 | **How it fits the package** | Allows callers to extend a custom logging handler with context‑specific attributes while preserving immutability, aligning with the `slog.Handler` interface contract. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> CheckEmpty["if len(attrs)==0"]
@@ -519,6 +535,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_CustomHandler.WithAttrs --> len
@@ -528,9 +545,11 @@ graph TD
 ```
 
 #### Functions calling `CustomHandler.WithAttrs` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CustomHandler.WithAttrs
 import (
@@ -555,13 +574,14 @@ func main() {
 
 **WithGroup** - Provides a placeholder implementation that returns `nil`, effectively discarding any grouping information.
 
-
 #### Signature (Go)
+
 ```go
 func (h *CustomHandler) WithGroup(_ string) slog.Handler
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Provides a placeholder implementation that returns `nil`, effectively discarding any grouping information. |
@@ -572,38 +592,42 @@ func (h *CustomHandler) WithGroup(_ string) slog.Handler
 | **How it fits the package** | Implements the `WithGroup` method required by the `slog.Handler` interface, allowing a `CustomHandler` to satisfy the interface contract while not supporting grouping. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   CustomHandler_WithGroup --> ReturnNil
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `CustomHandler.WithGroup`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CustomHandler.WithGroup
 package main
 
 import (
-	"log/slog"
+ "log/slog"
 )
 
 type CustomHandler struct{}
 
 func (h *CustomHandler) WithGroup(_ string) slog.Handler {
-	return nil
+ return nil
 }
 
 func main() {
-	var h CustomHandler
-	grouped := h.WithGroup("example")
-	if grouped == nil {
-		println("grouping not supported, received nil handler")
-	}
+ var h CustomHandler
+ grouped := h.WithGroup("example")
+ if grouped == nil {
+  println("grouping not supported, received nil handler")
+ }
 }
 ```
 
@@ -613,13 +637,14 @@ func main() {
 
 **Debug** - Emits a log record at the *debug* level using the package’s global logger.
 
-
 #### Signature (Go)
+
 ```go
 func(string, ...any)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Emits a log record at the *debug* level using the package’s global logger. |
@@ -630,12 +655,14 @@ func(string, ...any)()
 | **How it fits the package** | Provides a convenient, zero‑configuration wrapper for emitting debug logs from any package without passing a logger explicitly. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Debug --> Logf
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Debug --> func_Logf
@@ -646,6 +673,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Debug
 package main
@@ -662,7 +690,6 @@ func main() {
 ### Error
 
 **Error** - Emits an error‑level log entry using the package’s global logger.
-
 
 #### Signature (Go)
 
@@ -706,11 +733,11 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	log.Error("Failed to connect to %s: %v", "database", err)
+ log.Error("Failed to connect to %s: %v", "database", err)
 }
 ```
 
@@ -720,13 +747,14 @@ func main() {
 
 **Fatal** - Logs a fatal message at the *LevelFatal* severity and terminates the program with exit code 1.
 
-
 #### Signature (Go)
+
 ```go
 func Fatal(msg string, args ...any)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Logs a fatal message at the *LevelFatal* severity and terminates the program with exit code 1. |
@@ -737,6 +765,7 @@ func Fatal(msg string, args ...any)()
 | **How it fits the package** | Provides a convenience wrapper for emitting critical errors that should stop execution immediately. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Fatal"] -->|"calls Logf(LevelFatal)"| B(Logf)
@@ -745,6 +774,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Fatal --> func_Logf
@@ -755,16 +785,17 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Fatal
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	log.Fatal("unexpected error: %v", err) // logs and exits
+ log.Fatal("unexpected error: %v", err) // logs and exits
 }
 ```
 
@@ -773,7 +804,6 @@ func main() {
 ### GetLogger
 
 **GetLogger** - Provides access to the package‑wide `globalLogger`, enabling callers to log messages without exposing the underlying implementation.
-
 
 Retrieve the globally initialized logger instance used by the package.
 
@@ -791,18 +821,22 @@ func GetLogger() *Logger
 | **How it fits the package** | Serves as the public entry point for obtaining the logger configured elsewhere in the `log` package, promoting encapsulation of logging logic. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   GetLogger --> globalLogger
 ```
 
 #### Function dependencies  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `GetLogger`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetLogger
 package main
@@ -822,7 +856,6 @@ func main() {
 ### GetMultiLogger
 
 **GetMultiLogger** - Builds a `*Logger` that forwards all log entries to every writer supplied, plus any global logger already configured. The logger uses custom attribute formatting for log levels.
-
 
 #### Signature (Go)
 
@@ -879,18 +912,18 @@ graph TD
 package main
 
 import (
-	"os"
+ "os"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	// Log to both standard output and a file.
-	file, _ := os.Create("app.log")
-	defer file.Close()
+ // Log to both standard output and a file.
+ file, _ := os.Create("app.log")
+ defer file.Close()
 
-	logger := log.GetMultiLogger(os.Stdout, file)
-	logger.Info("Application started")
+ logger := log.GetMultiLogger(os.Stdout, file)
+ logger.Info("Application started")
 }
 ```
 
@@ -901,7 +934,6 @@ func main() {
 ### Info
 
 **Info** - Emit an informational log entry by delegating to the package’s `Logf` helper.
-
 
 Logs a message at the *info* level using the global logger.
 
@@ -956,7 +988,6 @@ func main() {
 ### Logf
 
 **Logf** - Formats and records a log entry using the provided `*Logger` at the given textual level. If the logger is nil it falls back to a default instance. It ensures that the call site information is correctly captured for accurate source references.
-
 
 #### Signature (Go)
 
@@ -1049,7 +1080,6 @@ func main() {
 
 **Debug** - Emits a formatted log entry at the *debug* level. The message is forwarded to the underlying `slog.Logger` only if that level is enabled for the current context.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -1104,12 +1134,12 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	logger := log.NewLogger(log.LevelDebug)
-	logger.Debug("Starting process %d with args: %+v", 42, []string{"foo", "bar"})
+ logger := log.NewLogger(log.LevelDebug)
+ logger.Debug("Starting process %d with args: %+v", 42, []string{"foo", "bar"})
 }
 ```
 
@@ -1120,7 +1150,6 @@ This example creates a logger at the debug level and writes a formatted message 
 ### Logger.Error
 
 **Error** - Records an error‑level log entry. It forwards the formatted message to `Logf`, specifying `LevelError`.
-
 
 #### Signature (Go)
 
@@ -1180,19 +1209,19 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	logger := log.NewDefault()
-	err := someOperation()
-	if err != nil {
-		logger.Error("operation failed: %v", err)
-	}
+ logger := log.NewDefault()
+ err := someOperation()
+ if err != nil {
+  logger.Error("operation failed: %v", err)
+ }
 }
 
 func someOperation() error {
-	return fmt.Errorf("example failure")
+ return fmt.Errorf("example failure")
 }
 ```
 
@@ -1203,7 +1232,6 @@ func someOperation() error {
 ### Logger.Fatal
 
 **Fatal** - Emits a fatal log message at level *Fatal*, writes it to standard‑error, and exits the process with status 1.
-
 
 #### Signature (Go)
 
@@ -1276,7 +1304,6 @@ func doSomething() error {
 
 **Info** - Formats a message with optional arguments and records it at the *Info* level via `Logf`.
 
-
 #### Signature (Go)
 
 ```go
@@ -1330,15 +1357,15 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	// Obtain a logger instance (could be the global one)
-	logger := log.GetLogger()
+ // Obtain a logger instance (could be the global one)
+ logger := log.GetLogger()
 
-	// Emit an informational message with formatted arguments
-	logger.Info("Processing %d items, current status: %s", 42, "running")
+ // Emit an informational message with formatted arguments
+ logger.Info("Processing %d items, current status: %s", 42, "running")
 }
 ```
 
@@ -1347,7 +1374,6 @@ func main() {
 ### Logger.Warn
 
 **Warn** - Records a log entry at the warning level using the configured `*slog.Logger`.
-
 
 #### Signature (Go)
 
@@ -1393,12 +1419,12 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	logger := log.NewLogger()
-	logger.Warn("Disk space low: %d%% remaining", 5)
+ logger := log.NewLogger()
+ logger.Warn("Disk space low: %d%% remaining", 5)
 }
 ```
 
@@ -1407,7 +1433,6 @@ func main() {
 ### Logger.With
 
 **With** - Returns a new `*Logger` that inherits the underlying logger but augments it with extra key/value pairs supplied in `args`. This allows adding contextual information to log messages.
-
 
 #### Signature (Go)
 
@@ -1465,7 +1490,6 @@ ctxLogger.Info("User logged in")        // logs: ... "user"=42 ...
 
 **Enabled** - Returns `true` if at least one of the wrapped handlers is enabled for the supplied log level; otherwise returns `false`.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -1513,20 +1537,20 @@ graph TD
 package main
 
 import (
-	"context"
-	"log/slog"
+ "context"
+ "log/slog"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	// Assume mh is a *MultiHandler instance that has been configured elsewhere.
-	var mh *log.MultiHandler
+ // Assume mh is a *MultiHandler instance that has been configured elsewhere.
+ var mh *log.MultiHandler
 
-	ctx := context.Background()
-	if mh.Enabled(ctx, slog.LevelWarn) {
-		// Proceed with logging at warning level
-	}
+ ctx := context.Background()
+ if mh.Enabled(ctx, slog.LevelWarn) {
+  // Proceed with logging at warning level
+ }
 }
 ```
 
@@ -1535,7 +1559,6 @@ func main() {
 ### MultiHandler.Handle
 
 **Handle** - Sends a single `slog.Record` to each handler stored in the receiver’s `handlers` slice. If any handler returns an error, the dispatch stops and that error is propagated.
-
 
 #### Signature (Go)
 
@@ -1618,7 +1641,6 @@ func main() {
 
 **WithAttrs** - Produces a new `slog.Handler` that forwards each log record to all underlying handlers with the supplied attributes appended.
 
-
 #### Signature (Go)
 
 ```go
@@ -1663,6 +1685,7 @@ graph TD
 graph TD
   func_MultiHandler.WithAttrs --> func_MultiHandler.WithAttrs
 ```
+
 (Note: the only caller listed is itself, indicating no external usage within the package.)
 
 #### Usage example (Go)
@@ -1699,7 +1722,6 @@ func main() {
 ### MultiHandler.WithGroup
 
 **WithGroup** - Creates a new handler that prefixes every log record with the specified group name for each underlying handler.
-
 
 #### Signature (Go)
 
@@ -1779,7 +1801,6 @@ func main() {
 
 **NewCustomHandler** - Constructs a `*CustomHandler` that routes log output to the supplied `io.Writer`, applying optional `slog.HandlerOptions`. If no options are provided, defaults are used.
 
-
 #### Signature (Go)
 
 ```go
@@ -1832,19 +1853,19 @@ graph TD
 package main
 
 import (
-	"os"
-	"log"
+ "os"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	writer := os.Stdout
-	opts := &log.slog.HandlerOptions{
-		Level: slog.LevelDebug,
-	}
-	handler := log.NewCustomHandler(writer, opts)
-	log.Printf("Created handler: %v", handler)
+ writer := os.Stdout
+ opts := &log.slog.HandlerOptions{
+  Level: slog.LevelDebug,
+ }
+ handler := log.NewCustomHandler(writer, opts)
+ log.Printf("Created handler: %v", handler)
 }
 ```
 
@@ -1856,13 +1877,14 @@ func main() {
 
 **NewMultiHandler** - Builds a `*MultiHandler` that forwards logging events to multiple underlying handlers.
 
-
 #### Signature (Go)
+
 ```go
 func NewMultiHandler(handlers ...slog.Handler) *MultiHandler
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a `*MultiHandler` that forwards logging events to multiple underlying handlers. |
@@ -1873,43 +1895,47 @@ func NewMultiHandler(handlers ...slog.Handler) *MultiHandler
 | **How it fits the package** | Acts as a factory for the composite handler used by higher‑level loggers (`GetMultiLogger`) and by other `MultiHandler` methods (`WithAttrs`, `WithGroup`). |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   NewMultiHandler --> CreateStruct["Allocate & initialize MultiHandler"]
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `NewMultiHandler` (Mermaid)
+
 ```mermaid
 graph TD
   GetMultiLogger --> NewMultiHandler
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewMultiHandler
 package main
 
 import (
-	"log/slog"
-	"os"
+ "log/slog"
+ "os"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	file, _ := os.Create("app.log")
-	defer file.Close()
+ file, _ := os.Create("app.log")
+ defer file.Close()
 
-	handler1 := slog.NewJSONHandler(file, &slog.HandlerOptions{Level: slog.LevelInfo})
-	handler2 := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug})
+ handler1 := slog.NewJSONHandler(file, &slog.HandlerOptions{Level: slog.LevelInfo})
+ handler2 := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug})
 
-	multi := log.NewMultiHandler(handler1, handler2)
-	logger := slog.New(multi)
+ multi := log.NewMultiHandler(handler1, handler2)
+ logger := slog.New(multi)
 
-	logger.Info("Application started")
+ logger.Info("Application started")
 }
 ```
 
@@ -1919,13 +1945,14 @@ func main() {
 
 **SetLogger** - Stores the supplied `*Logger` in the package‑wide variable `globalLogger`, making it available to all logging helpers.
 
-
 #### Signature (Go)
+
 ```go
 func SetLogger(l *Logger)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Stores the supplied `*Logger` in the package‑wide variable `globalLogger`, making it available to all logging helpers. |
@@ -1936,32 +1963,36 @@ func SetLogger(l *Logger)
 | **How it fits the package** | Provides a public API to inject a custom logger (e.g., for tests or alternative back‑ends) into the internal log package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["SetLogger(l)"] --> B["Assigns l to globalLogger"]
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `SetLogger`
+
 ```mermaid
 graph TD
   runHandler --> SetLogger
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking SetLogger
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	logger := log.NewMultiLogger(nil) // create a logger instance
-	log.SetLogger(logger)             // install it as the global logger
+ logger := log.NewMultiLogger(nil) // create a logger instance
+ log.SetLogger(logger)             // install it as the global logger
 }
 ```
 
@@ -2016,16 +2047,16 @@ graph TD
 package main
 
 import (
-	"os"
+ "os"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	// Use standard output and set level to "info".
-	log.SetupLogger(os.Stdout, "info")
+ // Use standard output and set level to "info".
+ log.SetupLogger(os.Stdout, "info")
 
-	// The global logger can now be used throughout the application.
+ // The global logger can now be used throughout the application.
 }
 ```
 
@@ -2035,13 +2066,14 @@ func main() {
 
 **Warn** - Sends a formatted warning message to the global logger.
 
-
 #### Signature
+
 ```go
 func Warn(msg string, args ...any)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Sends a formatted warning message to the global logger. |
@@ -2052,18 +2084,21 @@ func Warn(msg string, args ...any)
 | **How it fits the package** | Part of the internal logging API; provides a convenient shortcut for emitting warnings without explicitly referencing the logger. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   Warn --> Logf
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Warn --> func_Logf
 ```
 
 #### Functions calling `Warn`
+
 ```mermaid
 graph TD
   func_GetScaleCrUnderTest --> func_Warn
@@ -2074,6 +2109,7 @@ graph TD
 ```
 
 #### Usage example
+
 ```go
 // Minimal example invoking Warn
 func main() {
@@ -2089,7 +2125,6 @@ func main() {
 ### CustomHandler.appendAttr
 
 **appendAttr** - Formats a single `slog.Attr` into the log line and appends it to an existing byte buffer. Handles different attribute kinds (string, time, level, generic).
-
 
 #### 1) Signature (Go)
 
@@ -2150,18 +2185,18 @@ graph TD
 package main
 
 import (
-	"log/slog"
-	"os"
+ "log/slog"
+ "os"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 func main() {
-	h := log.NewCustomHandler(os.Stdout, nil)
-	buf := []byte{}
-	attr := slog.String("user", "alice")
-	buf = h.appendAttr(buf, attr)
-	fmt.Println(string(buf)) // prints: [user: alice] 
+ h := log.NewCustomHandler(os.Stdout, nil)
+ buf := []byte{}
+ attr := slog.String("user", "alice")
+ buf = h.appendAttr(buf, attr)
+ fmt.Println(string(buf)) // prints: [user: alice] 
 }
 ```
 
@@ -2173,23 +2208,25 @@ func main() {
 
 **parseLevel** - Translates a textual log level (e.g., `"debug"`, `"info"`) into the corresponding `slog.Level` value. If the input is not recognized, returns an error.
 
-
 #### Signature (Go)
+
 ```go
 func parseLevel(level string) (slog.Level, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Translates a textual log level (e.g., `"debug"`, `"info"`) into the corresponding `slog.Level` value. If the input is not recognized, returns an error. |
 | **Parameters** | `level string –` the textual representation of the desired log level |
 | **Return value** | `<slog.Level> –` the matching slog level; `<error>` – non‑nil if the input cannot be parsed |
-| **Key dependencies** | * `strings.ToLower` (to make comparison case‑insensitive) <br>* `fmt.Errorf` (for error construction) |
+| **Key dependencies** | *`strings.ToLower` (to make comparison case‑insensitive) <br>* `fmt.Errorf` (for error construction) |
 | **Side effects** | None – purely functional. |
 | **How it fits the package** | Used by higher‑level logging helpers (`Logf`, `SetupLogger`) to interpret user‑supplied level strings into concrete slog levels before configuring or emitting log records. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive input string"] --> B{"Lowercase"}
@@ -2203,6 +2240,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_parseLevel --> func_ToLower
@@ -2210,6 +2248,7 @@ graph TD
 ```
 
 #### Functions calling `parseLevel` (Mermaid)
+
 ```mermaid
 graph TD
   func_Logf --> func_parseLevel
@@ -2217,6 +2256,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking parseLevel
 levelStr := "Warn"
@@ -2228,4 +2268,3 @@ fmt.Printf("Parsed slog.Level: %v\n", lvl) // Output: Parsed slog.Level: 4 (slog
 ```
 
 ---
-

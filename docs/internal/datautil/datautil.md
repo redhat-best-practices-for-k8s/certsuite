@@ -36,7 +36,6 @@ The datautil package provides small helper utilities for working with Go maps, c
 
 **IsMapSubset** - Determines if every key/value pair of `s` is present in `m`. Returns `true` when `s` is a subset of `m`; otherwise `false`.
 
-
 Checks whether one map is a subset of another, i.e., all key/value pairs in the second map exist identically in the first map.
 
 ---
@@ -101,22 +100,21 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/datautil"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/datautil"
 )
 
 func main() {
-	super := map[string]int{"a": 1, "b": 2, "c": 3}
-	sub :=   map[string]int{"a": 1, "c": 3}
+ super := map[string]int{"a": 1, "b": 2, "c": 3}
+ sub :=   map[string]int{"a": 1, "c": 3}
 
-	if datautil.IsMapSubset(super, sub) {
-		fmt.Println("sub is a subset of super")
-	} else {
-		fmt.Println("sub is NOT a subset of super")
-	}
+ if datautil.IsMapSubset(super, sub) {
+  fmt.Println("sub is a subset of super")
+ } else {
+  fmt.Println("sub is NOT a subset of super")
+ }
 }
 ```
 
 ---
-

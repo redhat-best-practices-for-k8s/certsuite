@@ -46,7 +46,6 @@ The pdb package validates Kubernetes PodDisruptionBudget objects against a given
 
 **CheckPDBIsValid** - Determines whether the given `PodDisruptionBudget` (`pdb`) is logically consistent with the supplied replica count. It checks that `minAvailable` and `maxUnavailable` values are within valid ranges.
 
-
 #### Signature (Go)
 
 ```go
@@ -132,7 +131,6 @@ if err != nil {
 
 **intOrStringToValue** - Transforms a Kubernetes `IntOrString` field into an absolute integer, interpreting strings as percentages of a replica count.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -211,23 +209,25 @@ func main() {
 
 **percentageToFloat** - Parses a string representing a percentage (e.g., `"25%"`) and returns its numeric value as a `float64` between 0 and 1.
 
-
 #### Signature (Go)
+
 ```go
 func percentageToFloat(percentage string) (float64, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses a string representing a percentage (e.g., `"25%"`) and returns its numeric value as a `float64` between 0 and 1. |
-| **Parameters** | `percentage string – the input text containing a numeric value followed by `%`. |
+| **Parameters** | `percentage string – the input text containing a numeric value followed by`%`. |
 | **Return value** | `<float64> – the parsed fraction; <error> – if parsing fails. |
 | **Key dependencies** | • `fmt.Sscanf` for format‑based extraction.<br>• Constant `percentageDivisor` (value 100) to convert percent to a fraction. |
 | **Side effects** | None; purely functional. |
 | **How it fits the package** | Used by `intOrStringToValue` in the PDB tests to interpret string values that represent replica percentages. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Parse input"}
@@ -237,6 +237,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_percentageToFloat --> fmt.Sscanf
@@ -244,29 +245,30 @@ graph TD
 ```
 
 #### Functions calling `percentageToFloat` (Mermaid)
+
 ```mermaid
 graph TD
   func_intOrStringToValue --> func_percentageToFloat
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking percentageToFloat
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	value, err := percentageToFloat("42%")
-	if err != nil {
-		fmt.Println("error:", err)
-		return
-	}
-	fmt.Printf("Fraction: %f\n", value) // prints 0.420000
+ value, err := percentageToFloat("42%")
+ if err != nil {
+  fmt.Println("error:", err)
+  return
+ }
+ fmt.Printf("Fraction: %f\n", value) // prints 0.420000
 }
 ```
 
 ---
-

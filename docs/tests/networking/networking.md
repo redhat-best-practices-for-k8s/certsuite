@@ -60,7 +60,6 @@ Provides a suite of network‑related tests for the CertSuite framework, registe
 
 **LoadChecks** - Builds a checks group for the networking suite and registers individual test cases, each with optional skip conditions and check functions.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -143,13 +142,14 @@ func main() {
 
 **testDualStackServices** - Determines whether each Kubernetes Service in the test environment supports IPv6 or is dual‑stack; records compliant and non‑compliant services.
 
-
 #### Signature (Go)
+
 ```go
 func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether each Kubernetes Service in the test environment supports IPv6 or is dual‑stack; records compliant and non‑compliant services. |
@@ -160,6 +160,7 @@ func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Implements the “Dual stack services” test case registered in `LoadChecks`; ensures network services meet IPv6 or dual‑stack requirements for certification compliance. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> ForEachService["Iterate over env.Services"]
@@ -173,6 +174,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testDualStackServices --> services.GetServiceIPVersion
@@ -183,12 +185,14 @@ graph TD
 ```
 
 #### Functions calling `testDualStackServices` (Mermaid)
+
 ```mermaid
 graph TD
   checksGroup.Add --> func_testDualStackServices
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testDualStackServices
 func runExample(env *provider.TestEnvironment) {
@@ -210,13 +214,14 @@ func runExample(env *provider.TestEnvironment) {
 
 **testExecProbDenyAtCPUPinning** - Ensures that every CPU‑pinned pod used for DPDK does not contain an exec probe. An exec probe is disallowed in this context because it can interfere with strict CPU pinning and predictable performance.
 
-
 #### Signature (Go)
+
 ```go
 func testExecProbDenyAtCPUPinning(check *checksdb.Check, dpdkPods []*provider.Pod)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures that every CPU‑pinned pod used for DPDK does not contain an exec probe. An exec probe is disallowed in this context because it can interfere with strict CPU pinning and predictable performance. |
@@ -227,6 +232,7 @@ func testExecProbDenyAtCPUPinning(check *checksdb.Check, dpdkPods []*provider.Po
 | **How it fits the package** | Part of the networking test suite, specifically used by the *DPDK CPU pinning exec probe* test case to enforce best‑practice compliance for high‑performance workloads. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"dpdkPods"}
@@ -245,6 +251,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testExecProbDenyAtCPUPinning --> func_LogInfo
@@ -256,12 +263,14 @@ graph TD
 ```
 
 #### Functions calling `testExecProbDenyAtCPUPinning` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testExecProbDenyAtCPUPinning
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testExecProbDenyAtCPUPinning
 package main
@@ -286,7 +295,6 @@ func main() {
 ### testNetworkAttachmentDefinitionSRIOVUsingMTU
 
 **testNetworkAttachmentDefinitionSRIOVUsingMTU** - Ensures each SR‑I/O‑V pod declares an MTU; records compliance status.
-
 
 #### Signature (Go)
 
@@ -363,23 +371,25 @@ func example() {
 
 **testNetworkConnectivity** - Orchestrates ICMP connectivity tests for a given IP version and interface type. Builds the test context, executes ping checks, and records results in the supplied `Check`.
 
-
 #### 1) Signature (Go)
+
 ```go
 func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommons.IPVersion, aType netcommons.IFType, check *checksdb.Check) 
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Orchestrates ICMP connectivity tests for a given IP version and interface type. Builds the test context, executes ping checks, and records results in the supplied `Check`. |
 | **Parameters** | `env *provider.TestEnvironment` – environment containing pod data; <br>`aIPVersion netcommons.IPVersion` – IPv4 or IPv6; <br>`aType netcommons.IFType` – default or multus interface; <br>`check *checksdb.Check` – test check object to log and store results. |
 | **Return value** | None (side‑effect on `check`). |
 | **Key dependencies** | • `icmp.BuildNetTestContext` – constructs networks-to-test map.<br>• `icmp.RunNetworkingTests` – performs ping operations.<br>• Methods of `checksdb.Check`: `GetLogger`, `LogInfo`, `SetResult`. |
-| **Side effects** | * Mutates the supplied `Check` by setting its result objects. <br>* Logs informational messages via the check’s logger. |
+| **Side effects** | *Mutates the supplied `Check` by setting its result objects. <br>* Logs informational messages via the check’s logger. |
 | **How it fits the package** | This helper is invoked from multiple test cases in `LoadChecks`; each case specifies IP version and interface type, enabling reuse of the same connectivity logic across different scenarios. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["testNetworkConnectivity"] --> B["BuildNetTestContext"]
@@ -390,6 +400,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testNetworkConnectivity --> func_BuildNetTestContext
@@ -400,12 +411,14 @@ graph TD
 ```
 
 #### 5) Functions calling `testNetworkConnectivity` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testNetworkConnectivity
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking testNetworkConnectivity
 env := &provider.TestEnvironment{ /* populate Pods, etc. */ }
@@ -421,13 +434,14 @@ testNetworkConnectivity(env, netcommons.IPv4, netcommons.DEFAULT, check)
 
 **testNetworkPolicyDenyAll** - Ensures each pod in the environment is protected by a NetworkPolicy that denies all ingress and egress traffic. It logs compliance status and records results for reporting.
 
-
 #### Signature (Go)
+
 ```go
 func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironment)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures each pod in the environment is protected by a NetworkPolicy that denies all ingress and egress traffic. It logs compliance status and records results for reporting. |
@@ -438,6 +452,7 @@ func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironme
 | **How it fits the package** | Implements the *Network Policy Deny All* test case registered in `LoadChecks`. It operates on Kubernetes resources exposed by the test environment to validate security posture. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over Pods"}
@@ -461,6 +476,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testNetworkPolicyDenyAll --> func_LogInfo
@@ -472,12 +488,14 @@ graph TD
 ```
 
 #### Functions calling `testNetworkPolicyDenyAll` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testNetworkPolicyDenyAll
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testNetworkPolicyDenyAll
 import (
@@ -499,23 +517,25 @@ func main() {
 
 **testOCPReservedPortsUsage** - Verifies that no pod is listening on ports reserved by OpenShift (22623, 22624).
 
-
 #### Signature (Go)
+
 ```go
 func testOCPReservedPortsUsage(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Verifies that no pod is listening on ports reserved by OpenShift (22623, 22624). |
 | **Parameters** | `check` – test metadata and result collector.<br>`env` – execution context containing cluster state. |
 | **Return value** | None; results are stored via `check.SetResult`. |
-| **Key dependencies** | * `netcommons.TestReservedPortsUsage` – core logic for port checking.<br>* `check.GetLogger()` – logging support.<br>* `check.SetResult` – result reporting. |
+| **Key dependencies** | *`netcommons.TestReservedPortsUsage` – core logic for port checking.<br>* `check.GetLogger()` – logging support.<br>* `check.SetResult` – result reporting. |
 | **Side effects** | Mutates the check’s result state; performs read‑only queries on the environment. No external I/O beyond logging. |
 | **How it fits the package** | Part of the networking test suite; invoked by `LoadChecks` as the OCP reserved ports test case. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Define reserved ports"}
@@ -524,6 +544,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testOCPReservedPortsUsage --> func_TestReservedPortsUsage
@@ -532,12 +553,14 @@ graph TD
 ```
 
 #### Functions calling `testOCPReservedPortsUsage` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testOCPReservedPortsUsage
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testOCPReservedPortsUsage
 func runExample(env *provider.TestEnvironment) {
@@ -553,13 +576,14 @@ func runExample(env *provider.TestEnvironment) {
 
 **testPartnerSpecificTCPPorts** - Confirms that the pods in the test environment are not listening on TCP ports reserved by a partner. The function collects all partner‑reserved ports and reports compliance.
 
-
 #### 1) Signature (Go)
+
 ```go
 func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Confirms that the pods in the test environment are not listening on TCP ports reserved by a partner. The function collects all partner‑reserved ports and reports compliance. |
@@ -570,6 +594,7 @@ func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnviro
 | **How it fits the package** | It is a helper invoked by the *Extended partner ports* test case during suite loading to enforce partner‑specific port restrictions. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Define ReservedPorts map"] --> B["TestReservedPortsUsage"]
@@ -577,6 +602,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
     func_testPartnerSpecificTCPPorts --> netcommons.TestReservedPortsUsage
@@ -584,12 +610,14 @@ graph TD
 ```
 
 #### 5) Functions calling `testPartnerSpecificTCPPorts` (Mermaid)
+
 ```mermaid
 graph TD
     LoadChecks --> testPartnerSpecificTCPPorts
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking testPartnerSpecificTCPPorts
 func example(env *provider.TestEnvironment, check *checksdb.Check) {
@@ -603,7 +631,6 @@ func example(env *provider.TestEnvironment, check *checksdb.Check) {
 ### testRestartOnRebootLabelOnPodsUsingSriov
 
 **testRestartOnRebootLabelOnPodsUsingSriov** - Ensures that every pod using SR‑IOV has the `restart-on-reboot` label set to `"true"`. Pods missing the label or with a different value are marked non‑compliant.
-
 
 #### Signature (Go)
 
@@ -678,13 +705,14 @@ func Example() {
 
 **testUndeclaredContainerPortsUsage** - For each pod, compares the ports actually listening inside containers with those declared in the pod’s container specifications. Flags pods that expose undeclared ports as non‑compliant.
 
-
 #### Signature (Go)
+
 ```go
 func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | For each pod, compares the ports actually listening inside containers with those declared in the pod’s container specifications. Flags pods that expose undeclared ports as non‑compliant. |
@@ -695,6 +723,7 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 | **How it fits the package** | Implements the “Undeclared container ports usage” test case registered in `LoadChecks`. It ensures pods do not expose ports that are not explicitly declared, a key compliance requirement for Kubernetes workloads. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["testUndeclaredContainerPortsUsage"] --> B["Iterate over env.Pods"]
@@ -713,6 +742,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testUndeclaredContainerPortsUsage --> func_GetListeningPorts
@@ -722,12 +752,14 @@ graph TD
 ```
 
 #### Functions calling `testUndeclaredContainerPortsUsage` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testUndeclaredContainerPortsUsage
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testUndeclaredContainerPortsUsage
 package main
@@ -747,4 +779,3 @@ func main() {
 ```
 
 ---
-

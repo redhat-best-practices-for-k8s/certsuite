@@ -59,7 +59,7 @@ func NewCommand() *cobra.Command
 | **Purpose** | Builds a `*cobra.Command` that accepts two file paths (`claim1`, `claim2`) as required flags, then returns it for use in the CLI. |
 | **Parameters** | None |
 | **Return value** | A pointer to a configured `cobra.Command`. If flag validation fails, it logs an error and returns `nil`. |
-| **Key dependencies** | * `StringVarP` – defines string flags.<br>* `Flags` – retrieves the command’s flag set.<br>* `MarkFlagRequired` – enforces required flags.<br>* `log.Error` – reports failures. |
+| **Key dependencies** | *`StringVarP` – defines string flags.<br>* `Flags` – retrieves the command’s flag set.<br>*`MarkFlagRequired` – enforces required flags.<br>* `log.Error` – reports failures. |
 | **Side effects** | Adds two persistent flags to the command; marks them as required; logs errors if marking fails. No external I/O is performed here. |
 | **How it fits the package** | This function supplies the top‑level “compare” subcommand for the `claim` command hierarchy, enabling users to run `certsuite claim compare …`. |
 
@@ -126,7 +126,6 @@ func main() {
 
 **claimCompare** - Invokes the file‑comparison routine for two claim JSON/YAML files specified by global flags and handles errors via logging.
 
-
 #### Signature (Go)
 
 ```go
@@ -189,7 +188,6 @@ func main() {
 ### claimCompareFilesfunc
 
 **claimCompareFilesfunc** - Reads two JSON claim files, unmarshals them into `claim.Schema`, compares their versions, test‑case results, configuration and node data, printing a structured diff report for each category.
-
 
 #### Signature (Go)
 
@@ -281,7 +279,6 @@ func main() {
 
 **unmarshalClaimFile** - Parses raw JSON data from a claim file into the `claim.Schema` structure.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -350,4 +347,3 @@ fmt.Printf("Parsed claim version: %s\n", schema.Claim.Versions[0])
 ```
 
 ---
-

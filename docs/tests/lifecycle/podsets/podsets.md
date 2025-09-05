@@ -58,7 +58,6 @@ The podsets package provides utilities for monitoring and waiting on Kubernetes 
 
 **GetAllNodesForAllPodSets** - Returns a map of node names that host at least one pod whose owner is a ReplicaSet or StatefulSet. The boolean value in the map is always `true`.
 
-
 #### Signature (Go)
 
 ```go
@@ -72,7 +71,7 @@ func GetAllNodesForAllPodSets(pods []*provider.Pod) (nodes map[string]bool)
 | **Purpose** | Returns a map of node names that host at least one pod whose owner is a ReplicaSet or StatefulSet. The boolean value in the map is always `true`. |
 | **Parameters** | `pods []*provider.Pod` – slice of all pods to inspect. |
 | **Return value** | `nodes map[string]bool` – keys are node names; values are `true`. |
-| **Key dependencies** | * `make` (to allocate the map) <br>* Iteration over pod and owner reference data structures |
+| **Key dependencies** | *`make` (to allocate the map) <br>* Iteration over pod and owner reference data structures |
 | **Side effects** | None: pure function, no external state changes or I/O. |
 | **How it fits the package** | Provides a helper for other tests that need to know which nodes contain pods from ReplicaSet or StatefulSet workloads (e.g., node draining tests). |
 
@@ -109,20 +108,20 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/podsets"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/podsets"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/provider"
 )
 
 func main() {
-	// Assume pods is a slice of *provider.Pod populated elsewhere
-	var pods []*provider.Pod
+ // Assume pods is a slice of *provider.Pod populated elsewhere
+ var pods []*provider.Pod
 
-	nodes := podsets.GetAllNodesForAllPodSets(pods)
-	for nodeName := range nodes {
-		fmt.Println("Node hosting RS/STS pod:", nodeName)
-	}
+ nodes := podsets.GetAllNodesForAllPodSets(pods)
+ for nodeName := range nodes {
+  fmt.Println("Node hosting RS/STS pod:", nodeName)
+ }
 }
 ```
 
@@ -131,7 +130,6 @@ func main() {
 ### WaitForAllPodSetsReady
 
 **WaitForAllPodSetsReady** - Repeatedly polls a test environment until all Deployments and StatefulSets are ready or a timeout expires. Returns the remaining not‑ready items.
-
 
 #### Signature (Go)
 
@@ -209,11 +207,13 @@ if len(notReadyDeps) > 0 || len(notReadySts) > 0 {
 Checks a StatefulSet in the specified namespace until it reports readiness or a timeout expires, logging progress throughout.
 
 #### Signature (Go)
+
 ```go
 func WaitForStatefulSetReady(ns string, name string, timeout time.Duration, logger *log.Logger) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Polls the Kubernetes API for a StatefulSet’s status and returns `true` when it becomes ready or `false` if the timeout is reached. |
@@ -224,6 +224,7 @@ func WaitForStatefulSetReady(ns string, name string, timeout time.Duration, logg
 | **How it fits the package** | Utility function used by scaling helpers to ensure a StatefulSet is fully operational after changes. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start["Start"] --> LogDebug["logger.Debug"]
@@ -238,6 +239,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   WaitForStatefulSetReady --> GetClientsHolder
@@ -251,6 +253,7 @@ graph TD
 ```
 
 #### Functions calling `WaitForStatefulSetReady` (Mermaid)
+
 ```mermaid
 graph TD
   scaleHpaStatefulSetHelper --> WaitForStatefulSetReady
@@ -258,6 +261,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking WaitForStatefulSetReady
 import (
@@ -283,7 +287,6 @@ func main() {
 ### getDeploymentsInfo
 
 **getDeploymentsInfo** - Converts each `*provider.Deployment` into a string formatted as `<namespace>:<name>` and returns the collection.
-
 
 #### Signature (Go)
 
@@ -334,21 +337,21 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/podsets"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/podsets"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/provider"
 )
 
 func main() {
-	// Sample deployments (normally provided by the test environment)
-	deployments := []*provider.Deployment{
-		{Namespace: "tnf", Name: "test"},
-		{Namespace: "tnf", Name: "hazelcast-platform-controller-manager"},
-	}
+ // Sample deployments (normally provided by the test environment)
+ deployments := []*provider.Deployment{
+  {Namespace: "tnf", Name: "test"},
+  {Namespace: "tnf", Name: "hazelcast-platform-controller-manager"},
+ }
 
-	info := podsets.GetDeploymentsInfo(deployments) // note: function is unexported; in real use it would be called within the package
-	fmt.Println(info)
+ info := podsets.GetDeploymentsInfo(deployments) // note: function is unexported; in real use it would be called within the package
+ fmt.Println(info)
 }
 ```
 
@@ -357,7 +360,6 @@ func main() {
 ### getNotReadyDeployments
 
 **getNotReadyDeployments** - Iterates over a slice of `Deployment` objects, checks each one's readiness via `isDeploymentReady`, and returns only those that are not ready or whose status could not be determined.
-
 
 #### Signature (Go)
 
@@ -372,7 +374,7 @@ func getNotReadyDeployments(deployments []*provider.Deployment) []*provider.Depl
 | **Purpose** | Iterates over a slice of `Deployment` objects, checks each one's readiness via `isDeploymentReady`, and returns only those that are not ready or whose status could not be determined. |
 | **Parameters** | `deployments []*provider.Deployment` – list to evaluate. |
 | **Return value** | `[]*provider.Deployment` – subset containing non‑ready deployments. |
-| **Key dependencies** | * `isDeploymentReady(name, namespace)` – determines readiness.<br>* `log.Error`, `log.Debug` – logging side effects.<br>* `append` – slice manipulation.<br>* `dep.ToString()` – string representation for logs. |
+| **Key dependencies** | *`isDeploymentReady(name, namespace)` – determines readiness.<br>* `log.Error`, `log.Debug` – logging side effects.<br>*`append` – slice manipulation.<br>* `dep.ToString()` – string representation for logs. |
 | **Side effects** | Logs errors and debug messages; does not modify input slice or external state. |
 | **How it fits the package** | Used by the pod‑set readiness checker (`WaitForAllPodSetsReady`) to iteratively filter out ready deployments until all are confirmed ready or a timeout occurs. |
 
@@ -433,7 +435,6 @@ func main() {
 ### getNotReadyStatefulSets
 
 **getNotReadyStatefulSets** - Iterates over a slice of `*provider.StatefulSet`, determines readiness via `isStatefulSetReady`, and returns only those that are not ready or whose status could not be retrieved.
-
 
 #### Signature (Go)
 
@@ -510,7 +511,6 @@ func example() {
 
 **getStatefulSetsInfo** - Produces a slice of strings, each formatted as `namespace:name`, representing the location and identity of given StatefulSet resources.
 
-
 #### Signature (Go)
 
 ```go
@@ -558,17 +558,17 @@ graph TD
 ```go
 // Minimal example invoking getStatefulSetsInfo
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/podsets"
-	"github.com/redhat-best-practices-for-k8s/certsuite/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/lifecycle/podsets"
+ "github.com/redhat-best-practices-for-k8s/certsuite/provider"
 )
 
 func main() {
-	var sts []*provider.StatefulSet
-	// sts would be populated from a Kubernetes client or test fixture
-	info := podsets.getStatefulSetsInfo(sts)
-	for _, s := range info {
-		fmt.Println(s) // prints namespace:name for each StatefulSet
-	}
+ var sts []*provider.StatefulSet
+ // sts would be populated from a Kubernetes client or test fixture
+ info := podsets.getStatefulSetsInfo(sts)
+ for _, s := range info {
+  fmt.Println(s) // prints namespace:name for each StatefulSet
+ }
 }
 ```
 
@@ -577,7 +577,6 @@ func main() {
 ### isDeploymentReady
 
 **isDeploymentReady** - Determines if the specified Deployment has reached a ready state by delegating to provider logic.
-
 
 #### 1) Signature (Go)
 
@@ -659,6 +658,7 @@ func isStatefulSetReady(name, namespace string) (bool, error)
 | **How it fits the package** | Used by test helpers to filter ready vs. not‑ready StatefulSets during lifecycle tests. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Get K8s AppsV1 client"] --> B["Retrieve updated StatefulSet"]
@@ -666,6 +666,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_isStatefulSetReady --> func_GetClientsHolder
@@ -674,12 +675,14 @@ graph TD
 ```
 
 #### Functions calling `isStatefulSetReady`
+
 ```mermaid
 graph TD
   func_getNotReadyStatefulSets --> func_isStatefulSetReady
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isStatefulSetReady
 ready, err := podsets.isStatefulSetReady("my-statefulset", "default")
@@ -690,4 +693,3 @@ fmt.Printf("StatefulSet ready: %t\n", ready)
 ```
 
 ---
-

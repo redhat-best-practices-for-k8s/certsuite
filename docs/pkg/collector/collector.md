@@ -48,7 +48,6 @@ The collector package builds and transmits an HTTP POST request that uploads a c
 
 **SendClaimFileToCollector** - Builds and sends an HTTP `POST` request containing the claim file and associated metadata to a collector service.
 
-
 #### Signature (Go)
 
 ```go
@@ -100,21 +99,21 @@ graph TD
 package main
 
 import (
-	"log"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/collector"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/collector"
 )
 
 func main() {
-	endpoint := "https://example.com/collect"
-	filePath := "/tmp/claim.json"
-	executedBy := "certsuite-runner"
-	partnerName := "AcmeCorp"
-	password := "secret"
+ endpoint := "https://example.com/collect"
+ filePath := "/tmp/claim.json"
+ executedBy := "certsuite-runner"
+ partnerName := "AcmeCorp"
+ password := "secret"
 
-	if err := collector.SendClaimFileToCollector(endpoint, filePath, executedBy, partnerName, password); err != nil {
-		log.Fatalf("Failed to send claim: %v", err)
-	}
+ if err := collector.SendClaimFileToCollector(endpoint, filePath, executedBy, partnerName, password); err != nil {
+  log.Fatalf("Failed to send claim: %v", err)
+ }
 }
 ```
 
@@ -128,13 +127,14 @@ func main() {
 
 **addClaimFileToPostRequest** - Reads the file at `claimFilePath` and appends it to a multipart form writer as a file field named “claimFile”.
 
-
 #### Signature (Go)
+
 ```go
 func addClaimFileToPostRequest(w *multipart.Writer, claimFilePath string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Reads the file at `claimFilePath` and appends it to a multipart form writer as a file field named “claimFile”. |
@@ -145,6 +145,7 @@ func addClaimFileToPostRequest(w *multipart.Writer, claimFilePath string) error
 | **How it fits the package** | Used by `createSendToCollectorPostRequest` to embed a claim file in an HTTP POST request sent to the collector endpoint. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   OpenFile --> CreateFormField
@@ -169,6 +170,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking addClaimFileToPostRequest
 var buf bytes.Buffer
@@ -190,7 +192,6 @@ w.Close()
 ### addVarFieldsToPostRequest
 
 **addVarFieldsToPostRequest** - Appends three text fields (`executed_by`, `partner_name`, `decoded_password`) to a multipart form‑data writer.
-
 
 #### 1) Signature (Go)
 
@@ -266,7 +267,6 @@ func main() {
 
 **createSendToCollectorPostRequest** - Constructs an `*http.Request` that posts a claim file along with metadata (executed by, partner name, decoded password) to the collector endpoint.
 
-
 ```go
 func createSendToCollectorPostRequest(endPoint, claimFilePath, executedBy, partnerName, password string) (*http.Request, error)
 ```
@@ -319,36 +319,35 @@ graph TD
 package main
 
 import (
-	"log"
-	"net/http"
+ "log"
+ "net/http"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/collector"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/collector"
 )
 
 func main() {
-	endPoint := "https://collector.example.com/upload"
-	claimFilePath := "/tmp/claim.zip"
-	executedBy := "admin"
-	partnerName := "ExamplePartner"
-	password := "secret"
+ endPoint := "https://collector.example.com/upload"
+ claimFilePath := "/tmp/claim.zip"
+ executedBy := "admin"
+ partnerName := "ExamplePartner"
+ password := "secret"
 
-	req, err := collector.CreateSendToCollectorPostRequest(endPoint, claimFilePath, executedBy, partnerName, password)
-	if err != nil {
-		log.Fatalf("Failed to create request: %v", err)
-	}
+ req, err := collector.CreateSendToCollectorPostRequest(endPoint, claimFilePath, executedBy, partnerName, password)
+ if err != nil {
+  log.Fatalf("Failed to create request: %v", err)
+ }
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatalf("Upload failed: %v", err)
-	}
-	defer resp.Body.Close()
+ client := &http.Client{}
+ resp, err := client.Do(req)
+ if err != nil {
+  log.Fatalf("Upload failed: %v", err)
+ }
+ defer resp.Body.Close()
 
-	log.Printf("Response status: %s", resp.Status)
+ log.Printf("Response status: %s", resp.Status)
 }
 ```
 
 *Note:* The exported name `CreateSendToCollectorPostRequest` is used in the example to illustrate public access; internally, the function is unexported (`createSendToCollectorPostRequest`).
 
 ---
-

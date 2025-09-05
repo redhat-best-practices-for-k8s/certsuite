@@ -54,13 +54,14 @@ The `info` package supplies the ``certsuite info`` command that displays metadat
 
 **NewCommand** - Builds and returns a configured `*cobra.Command` that displays information about test cases. It sets up persistent flags, enforces required flags, and handles error reporting.
 
-
 #### 1) Signature (Go)
+
 ```go
 func NewCommand() *cobra.Command
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds and returns a configured `*cobra.Command` that displays information about test cases. It sets up persistent flags, enforces required flags, and handles error reporting. |
@@ -71,6 +72,7 @@ func NewCommand() *cobra.Command
 | **How it fits the package** | Provides the CLI entry point for the *info* sub‑command; used by `newRootCmd` to add the command to the root command tree. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Create infoCmd"] --> B["Add StringP flag “test-label”"]
@@ -82,6 +84,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewCommand --> func_StringP
@@ -92,26 +95,28 @@ graph TD
 ```
 
 #### 5) Functions calling `NewCommand` (Mermaid)
+
 ```mermaid
 graph TD
   func_newRootCmd --> func_NewCommand
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking NewCommand
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
 )
 
 func main() {
-	cmd := info.NewCommand()
-	if cmd == nil {
-		return // handle error if needed
-	}
-	_ = cmd.Execute() // run the command (in real usage, part of a larger CLI)
+ cmd := info.NewCommand()
+ if cmd == nil {
+  return // handle error if needed
+ }
+ _ = cmd.Execute() // run the command (in real usage, part of a larger CLI)
 }
 ```
 
@@ -122,7 +127,6 @@ func main() {
 ### adjustLineMaxWidth
 
 **adjustLineMaxWidth** - Determines the current terminal width and, if it is smaller than the pre‑set maximum line length plus padding, reduces `lineMaxWidth` so that output boxes fit comfortably.
-
 
 #### Signature (Go)
 
@@ -179,11 +183,11 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
 )
 
 func main() {
-	info.adjustLineMaxWidth()
+ info.adjustLineMaxWidth()
 }
 ```
 
@@ -192,7 +196,6 @@ func main() {
 ### getMatchingTestIDs
 
 **getMatchingTestIDs** - Builds a list of internal test‑case IDs whose labels satisfy the supplied expression.
-
 
 #### Signature (Go)
 
@@ -245,20 +248,20 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
 )
 
 func main() {
-	testIDs, err := info.getMatchingTestIDs("security")
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
-	}
-	for _, id := range testIDs {
-		fmt.Println(id)
-	}
+ testIDs, err := info.getMatchingTestIDs("security")
+ if err != nil {
+  fmt.Printf("Error: %v\n", err)
+  return
+ }
+ for _, id := range testIDs {
+  fmt.Println(id)
+ }
 }
 ```
 
@@ -270,13 +273,14 @@ func main() {
 
 **getTestDescriptionsFromTestIDs** - Looks up each provided test‑case ID in the global `identifiers.Catalog` and collects the corresponding `claim.TestCaseDescription` objects.
 
-
 #### Signature (Go)
+
 ```go
 func getTestDescriptionsFromTestIDs([]string) []claim.TestCaseDescription
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Looks up each provided test‑case ID in the global `identifiers.Catalog` and collects the corresponding `claim.TestCaseDescription` objects. |
@@ -287,6 +291,7 @@ func getTestDescriptionsFromTestIDs([]string) []claim.TestCaseDescription
 | **How it fits the package** | Supplies detailed test‑case information to higher‑level functions such as `showInfo`, enabling user‑friendly output and further processing. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over testIDs"}
@@ -297,6 +302,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getTestDescriptionsFromTestIDs --> identifiers.Catalog
@@ -304,12 +310,14 @@ graph TD
 ```
 
 #### Functions calling `getTestDescriptionsFromTestID​s` (Mermaid)
+
 ```mermaid
 graph TD
   func_showInfo --> func_getTestDescriptionsFromTestIDs
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getTestDescriptionsFromTestIDs
 testIDs := []string{"TC001", "TC002"}
@@ -326,13 +334,14 @@ for _, d := range descriptions {
 
 **printTestCaseInfoBox** - Renders a visually distinct box in the terminal containing the identifier, description, remediation, exceptions, and best‑practice reference of a test case. The output is colorized and wrapped to fit the current console width.
 
-
 #### Signature (Go)
+
 ```go
 func printTestCaseInfoBox(testCase *claim.TestCaseDescription)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Renders a visually distinct box in the terminal containing the identifier, description, remediation, exceptions, and best‑practice reference of a test case. The output is colorized and wrapped to fit the current console width. |
@@ -343,6 +352,7 @@ func printTestCaseInfoBox(testCase *claim.TestCaseDescription)
 | **How it fits the package** | Part of the `info` command suite; called by `showInfo` to present detailed information about each selected test case in a user‑friendly format. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Create border string"] --> B["Print top border"]
@@ -359,6 +369,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_printTestCaseInfoBox --> strings.Repeat
@@ -371,29 +382,31 @@ graph TD
 ```
 
 #### Functions calling `printTestCaseInfoBox` (Mermaid)
+
 ```mermaid
 graph TD
   func_showInfo --> func_printTestCaseInfoBox
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking printTestCaseInfoBox
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/claim"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/claim"
 )
 
 func main() {
-	desc := &claim.TestCaseDescription{
-		Identifier:            claim.Identifier{Id: "TC-001"},
-		Description:           "This test verifies X.",
-		Remediation:           "Ensure Y is configured.",
-		ExceptionProcess:      "Exceptions apply when Z.",
-		BestPracticeReference: "See RFC 1234 for details.",
-	}
-	printTestCaseInfoBox(desc)
+ desc := &claim.TestCaseDescription{
+  Identifier:            claim.Identifier{Id: "TC-001"},
+  Description:           "This test verifies X.",
+  Remediation:           "Ensure Y is configured.",
+  ExceptionProcess:      "Exceptions apply when Z.",
+  BestPracticeReference: "See RFC 1234 for details.",
+ }
+ printTestCaseInfoBox(desc)
 }
 ```
 
@@ -402,7 +415,6 @@ func main() {
 ### printTestList
 
 **printTestList** - Outputs a neatly bordered table listing each supplied test ID.
-
 
 #### Signature (Go)
 
@@ -457,12 +469,12 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/info"
 )
 
 func main() {
-	testIDs := []string{"testA", "testB", "testC"}
-	info.printTestList(testIDs)
+ testIDs := []string{"testA", "testB", "testC"}
+ info.printTestList(testIDs)
 }
 ```
 
@@ -474,13 +486,14 @@ func main() {
 
 **showInfo** - Retrieves test case identifiers that match a label expression, optionally prints a list of them, or shows a formatted information box for each matched test case.
 
-
 #### Signature (Go)
+
 ```go
 func showInfo(cmd *cobra.Command, _ []string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Retrieves test case identifiers that match a label expression, optionally prints a list of them, or shows a formatted information box for each matched test case. |
@@ -491,6 +504,7 @@ func showInfo(cmd *cobra.Command, _ []string) error
 | **How it fits the package** | Acts as the main execution routine for the `info` sub‑command of the CertSuite CLI, orchestrating user input parsing, data retrieval, and presentation. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Parse flags: test-label & list"] --> B{"Retrieve matching IDs"}
@@ -512,6 +526,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_showInfo --> func_getMatchingTestIDs
@@ -523,25 +538,26 @@ graph TD
 ```
 
 #### Functions calling `showInfo`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking showInfo
 package main
 
 import (
-	"github.com/spf13/cobra"
+ "github.com/spf13/cobra"
 )
 
 func main() {
-	cmd := &cobra.Command{}
-	// Assume flags are set up elsewhere
-	if err := showInfo(cmd, nil); err != nil {
-		fmt.Println("Error:", err)
-	}
+ cmd := &cobra.Command{}
+ // Assume flags are set up elsewhere
+ if err := showInfo(cmd, nil); err != nil {
+  fmt.Println("Error:", err)
+ }
 }
 ```
 
 ---
-

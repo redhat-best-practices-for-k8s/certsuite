@@ -60,10 +60,10 @@ The results package provides utilities for managing and validating test result d
 
 ### TestCaseList
 
-
 A container for grouping test case identifiers by their execution outcome.
 
 #### Fields
+
 | Field | Type   | Description |
 |-------|--------|-------------|
 | Pass  | []string | Names or IDs of test cases that completed successfully. |
@@ -71,9 +71,11 @@ A container for grouping test case identifiers by their execution outcome.
 | Skip  | []string | Names or IDs of test cases that were intentionally skipped. |
 
 #### Purpose
+
 `TestCaseList` aggregates the results of a test run, separating each case into one of three categories: passed, failed, or skipped. The struct is primarily used to marshal/unmarshal result data in YAML format for reporting and further analysis.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | *None* |  |
@@ -84,16 +86,18 @@ A container for grouping test case identifiers by their execution outcome.
 
 ### TestResults
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | TestCaseList | `TestCaseList` (embedded) | A slice of `TestCase` structures representing each executed test. The embedded field is serialized under the YAML key **testCases**. |
 
 #### Purpose
+
 `TestResults` aggregates all results from a suite of tests into a single structure. It serves as the primary return value for test execution routines, allowing consumers to access the list of individual `TestCase` objects via the embedded `TestCaseList`. The struct is serialized/deserialized with YAML using the key `"testCases"`.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | *none* | No functions directly reference or manipulate this struct in the current codebase. |
@@ -107,7 +111,6 @@ A container for grouping test case identifiers by their execution outcome.
 ### NewCommand
 
 **NewCommand** - Builds and returns a Cobra command that manages result‑related flags for the Certsuite CLI.
-
 
 #### Signature (Go)
 
@@ -185,13 +188,14 @@ func main() {
 
 **checkResults** - Reads actual test outcomes from a log file, optionally generates a YAML reference template, and verifies that the recorded results match an expected set defined in a template. Exits with status 1 on mismatch.
 
-
 #### Signature (Go)
+
 ```go
 func checkResults(cmd *cobra.Command, _ []string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Reads actual test outcomes from a log file, optionally generates a YAML reference template, and verifies that the recorded results match an expected set defined in a template. Exits with status 1 on mismatch. |
@@ -202,6 +206,7 @@ func checkResults(cmd *cobra.Command, _ []string) error
 | **How it fits the package** | Central validation routine for the *results* sub‑command; orchestrates log parsing, optional template generation, and result comparison. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Get flags"] --> B{"Generate template?"}
@@ -217,6 +222,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_checkResults --> func_GetString
@@ -232,27 +238,29 @@ graph TD
 ```
 
 #### Functions calling `checkResults` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking checkResults
 import (
-	"github.com/spf13/cobra"
+ "github.com/spf13/cobra"
 )
 
 func main() {
-	cmd := &cobra.Command{
-		RunE: checkResults,
-	}
-	// Define flags expected by checkResults
-	cmd.Flags().StringP("template", "t", "", "YAML template with expected results")
-	cmd.Flags().BoolP("generate-template", "g", false, "Generate a reference YAML from the log file")
-	cmd.Flags().StringP("log-file", "l", "", "Path to the test log file")
+ cmd := &cobra.Command{
+  RunE: checkResults,
+ }
+ // Define flags expected by checkResults
+ cmd.Flags().StringP("template", "t", "", "YAML template with expected results")
+ cmd.Flags().BoolP("generate-template", "g", false, "Generate a reference YAML from the log file")
+ cmd.Flags().StringP("log-file", "l", "", "Path to the test log file")
 
-	if err := cmd.Execute(); err != nil {
-		panic(err)
-	}
+ if err := cmd.Execute(); err != nil {
+  panic(err)
+ }
 }
 ```
 
@@ -262,23 +270,25 @@ func main() {
 
 **generateTemplateFile** - Builds a `TestResults` struct from the supplied result database, serializes it to YAML, and writes the output to the designated template file.
 
-
 #### Signature (Go)
+
 ```go
 func generateTemplateFile(resultsDB map[string]string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a `TestResults` struct from the supplied result database, serializes it to YAML, and writes the output to the designated template file. |
-| **Parameters** | `resultsDB map[string]string – mapping of test case names to their result status (`resultPass`, `resultSkip`, or `resultFail`). |
+| **Parameters** | `resultsDB map[string]string – mapping of test case names to their result status (`resultPass`,`resultSkip`, or`resultFail`). |
 | **Return value** | `error` – non‑nil if an unknown result is encountered, YAML encoding fails, or the file cannot be written. |
 | **Key dependencies** | • `append` (built‑in) <br>• `fmt.Errorf` (pkg: fmt) <br>• `yaml.NewEncoder`, `SetIndent`, `Encode` (gopkg.in/yaml.v2) <br>• `os.WriteFile` (pkg: os) |
 | **Side effects** | Writes a file named by `TestResultsTemplateFileName`; may log errors via returned error. No global state changes. |
 | **How it fits the package** | Used by the command‑line interface to generate a reference YAML template that represents expected test outcomes. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate resultsDB"}
@@ -299,6 +309,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_generateTemplateFile --> fmt.Errorf
@@ -310,31 +321,33 @@ graph TD
 ```
 
 #### Functions calling `generateTemplateFile` (Mermaid)
+
 ```mermaid
 graph TD
   func_checkResults --> func_generateTemplateFile
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking generateTemplateFile
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/check/results"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/check/results"
 )
 
 func main() {
-	db := map[string]string{
-		"testA": "pass",
-		"testB": "skip",
-		"testC": "fail",
-	}
-	if err := results.generateTemplateFile(db); err != nil {
-		fmt.Printf("Error generating template: %v\n", err)
-	}
+ db := map[string]string{
+  "testA": "pass",
+  "testB": "skip",
+  "testC": "fail",
+ }
+ if err := results.generateTemplateFile(db); err != nil {
+  fmt.Printf("Error generating template: %v\n", err)
+ }
 }
 ```
 
@@ -343,7 +356,6 @@ func main() {
 ### getExpectedTestResults
 
 **getExpectedTestResults** - Reads a YAML template file and returns a map of test case names to their expected result (`pass`, `skip`, or `fail`).
-
 
 #### Signature (Go)
 
@@ -403,19 +415,19 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"log"
+ "fmt"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/check/results"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/check/results"
 )
 
 func main() {
-	templatePath := "expected.yaml" // Path to your YAML template
-	expected, err := results.getExpectedTestResults(templatePath)
-	if err != nil {
-		log.Fatalf("Failed to load expected results: %v", err)
-	}
-	fmt.Printf("Loaded %d expected test cases\n", len(expected))
+ templatePath := "expected.yaml" // Path to your YAML template
+ expected, err := results.getExpectedTestResults(templatePath)
+ if err != nil {
+  log.Fatalf("Failed to load expected results: %v", err)
+ }
+ fmt.Printf("Loaded %d expected test cases\n", len(expected))
 }
 ```
 
@@ -425,13 +437,14 @@ func main() {
 
 **getTestResultsDB** - Reads a log file and builds a map of test‑case names to their recorded results.
 
-
 #### Signature (Go)
+
 ```go
 func getTestResultsDB(logFileName string) (map[string]string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Reads a log file and builds a map of test‑case names to their recorded results. |
@@ -442,6 +455,7 @@ func getTestResultsDB(logFileName string) (map[string]string, error)
 | **How it fits the package** | Provides the core data source for result comparison logic in the `check/results` command. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Open log file"] --> B["Compile regex"]
@@ -456,6 +470,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getTestResultsDB --> os_Open
@@ -467,12 +482,14 @@ graph TD
 ```
 
 #### Functions calling `getTestResultsDB` (Mermaid)
+
 ```mermaid
 graph TD
   checkResults --> getTestResultsDB
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getTestResultsDB
 results, err := getTestResultsDB("test.log")
@@ -490,7 +507,6 @@ for testCase, result := range results {
 ### printTestResultsMismatch
 
 **printTestResultsMismatch** - Displays each mismatched test case in a human‑readable table with columns for the test name, expected result, and actual result.
-
 
 Prints a formatted table of test cases whose expected and actual results differ.
 
@@ -558,4 +574,3 @@ printTestResultsMismatch(mismatched, actual, expected)
 ```
 
 ---
-

@@ -43,38 +43,43 @@ Provides the `certsuite version` CLI subcommand that outputs the binary’s Git�
 
 **NewCommand** - Returns a pre‑configured `*cobra.Command` that implements the `certsuite version` CLI command.
 
-
 #### Signature (Go)
+
 ```go
 func NewCommand() *cobra.Command
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a pre‑configured `*cobra.Command` that implements the `certsuite version` CLI command. |
 | **Parameters** | None |
 | **Return value** | A pointer to a `cobra.Command` instance (`versionCmd`) that is defined elsewhere in this package. |
-| **Key dependencies** | * Uses the global variable `versionCmd` from the same package.<br>* Relies on the Cobra library for command handling. |
+| **Key dependencies** | *Uses the global variable `versionCmd` from the same package.<br>* Relies on the Cobra library for command handling. |
 | **Side effects** | None – simply returns an existing object; no state changes or I/O occur within the function itself. |
 | **How it fits the package** | Provides a public factory used by the root command builder (`newRootCmd`) to register the `version` sub‑command in the CLI application. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   func_NewCommand --> versionCmd
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `NewCommand` (Mermaid)
+
 ```mermaid
 graph TD
   func_newRootCmd --> func_NewCommand
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewCommand
 cmd := version.NewCommand()
@@ -105,6 +110,7 @@ func showVersion(cmd *cobra.Command, _ []string) error
 | **How it fits the package** | Used by the CLI’s “version” sub‑command to expose build information to users. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Print Certsuite version"}
@@ -115,6 +121,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_showVersion --> fmt_Printf
@@ -123,24 +130,25 @@ graph TD
 ```
 
 #### Functions calling `showVersion`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking showVersion
 package main
 
 import (
-	"github.com/spf13/cobra"
+ "github.com/spf13/cobra"
 )
 
 func main() {
-	cmd := &cobra.Command{}
-	if err := showVersion(cmd, nil); err != nil {
-		panic(err)
-	}
+ cmd := &cobra.Command{}
+ if err := showVersion(cmd, nil); err != nil {
+  panic(err)
+ }
 }
 ```
 
 ---
-

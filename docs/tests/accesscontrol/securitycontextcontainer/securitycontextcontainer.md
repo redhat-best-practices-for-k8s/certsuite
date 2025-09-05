@@ -68,8 +68,8 @@ The securitycontextcontainer package evaluates Kubernetes pod and container spec
 
 ### ContainerSCC
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `HostDirVolumePluginPresent` | `OkNok` | Indicates if a host‑path volume is used (true/false). |
@@ -89,9 +89,11 @@ The securitycontextcontainer package evaluates Kubernetes pod and container spec
 | `AllVolumeAllowed` | `OkNok` | Whether all volumes referenced by the pod are allowed by the SCC. |
 
 #### Purpose
+
 `ContainerSCC` aggregates boolean flags (`OkNok`) and a capability category to describe how closely a container’s security context matches the requirements of a given Security Context Constraint (SCC). It is populated during validation, used for comparison against reference categories, and ultimately determines whether a pod can be admitted.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetContainerSCC` | Builds a `ContainerSCC` instance from a container’s spec by inspecting ports, security context fields, capabilities, and volume usage. |
@@ -105,7 +107,7 @@ The securitycontextcontainer package evaluates Kubernetes pod and container spec
 ### PodListCategory
 
 <!-- DEBUG: Struct PodListCategory exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -123,7 +125,6 @@ The securitycontextcontainer package evaluates Kubernetes pod and container spec
 ### AllVolumeAllowed
 
 **AllVolumeAllowed** - Determines whether every volume in a slice satisfies allowed‑type constraints and reports if any host‑path volumes are present.
-
 
 #### 1. Signature (Go)
 
@@ -176,17 +177,17 @@ graph TD
 package main
 
 import (
-	"fmt"
-	corev1 "k8s.io/api/core/v1"
+ "fmt"
+ corev1 "k8s.io/api/core/v1"
 )
 
 func main() {
-	volumes := []corev1.Volume{
-		{Name: "cfg", ConfigMap: &corev1.ConfigMapVolumeSource{}},
-		{Name: "data", EmptyDir: &corev1.EmptyDirVolumeSource{}},
-	}
-	r1, r2 := AllVolumeAllowed(volumes)
-	fmt.Printf("All allowed? %s, HostPath present? %s\n", r1, r2)
+ volumes := []corev1.Volume{
+  {Name: "cfg", ConfigMap: &corev1.ConfigMapVolumeSource{}},
+  {Name: "data", EmptyDir: &corev1.EmptyDirVolumeSource{}},
+ }
+ r1, r2 := AllVolumeAllowed(volumes)
+ fmt.Printf("All allowed? %s, HostPath present? %s\n", r1, r2)
 }
 ```
 
@@ -198,13 +199,14 @@ func main() {
 
 **String** - Returns the textual form of a `CategoryID`.
 
-
 #### Signature
+
 ```go
 func (category CategoryID) String() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the textual form of a `CategoryID`. |
@@ -215,6 +217,7 @@ func (category CategoryID) String() string
 | **How it fits the package** | Provides a convenient way for callers to display or log a category identifier. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"category"}
@@ -233,6 +236,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 ```mermaid
@@ -241,6 +245,7 @@ graph TD
 ```
 
 #### Functions calling `CategoryID.String`
+
 None – this function is currently not referenced elsewhere in the package.
 
 ```mermaid
@@ -249,19 +254,20 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CategoryID.String
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/securitycontextcontainer"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/securitycontextcontainer"
 )
 
 func main() {
-	var cat securitycontextcontainer.CategoryID = securitycontextcontainer.CategoryID1
-	fmt.Println(cat.String()) // prints the string representation of CategoryID1
+ var cat securitycontextcontainer.CategoryID = securitycontextcontainer.CategoryID1
+ fmt.Println(cat.String()) // prints the string representation of CategoryID1
 }
 ```
 
@@ -271,13 +277,14 @@ func main() {
 
 **CheckPod** - Builds a `ContainerSCC` reflecting pod‑level security settings, then categorizes each container in the pod by invoking `checkContainerCategory`.
 
-
 #### Signature
+
 ```go
 func CheckPod(pod *provider.Pod) []PodListCategory
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a `ContainerSCC` reflecting pod‑level security settings, then categorizes each container in the pod by invoking `checkContainerCategory`. |
@@ -288,6 +295,7 @@ func CheckPod(pod *provider.Pod) []PodListCategory
 | **How it fits the package** | Core helper used by tests to determine compliance of Pods against security‑context rules. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Initialize ContainerSCC"}
@@ -300,6 +308,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_CheckPod --> func_AllVolumeAllowed
@@ -307,12 +316,14 @@ graph TD
 ```
 
 #### Functions calling `CheckPod`
+
 ```mermaid
 graph TD
   func_testContainerSCC --> func_CheckPod
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CheckPod
 import (
@@ -355,7 +366,6 @@ func int64Ptr(v int64) *int64 { return &v }
 ### GetContainerSCC
 
 **GetContainerSCC** - Builds and returns a `ContainerSCC` that reflects the security capabilities of the supplied container (`cut`). It flags host port usage, capability categories, privilege escalation, privileged mode, run‑as‑user, read‑only root filesystem, non‑root execution, and SELinux context presence.
-
 
 #### Signature (Go)
 
@@ -419,38 +429,38 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/securitycontextcontainer"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/securitycontextcontainer/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/securitycontextcontainer"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/securitycontextcontainer/provider"
 )
 
 func main() {
-	// Example container (fields omitted for brevity)
-	cut := &provider.Container{
-		Ports: []provider.Port{{HostPort: 0}}, // no host port
-		SecurityContext: &provider.SecurityContext{
-			RunAsUser:               nil,
-			ReadOnlyRootFilesystem: nil,
-			AllowPrivilegeEscalation: nil,
-		},
-	}
+ // Example container (fields omitted for brevity)
+ cut := &provider.Container{
+  Ports: []provider.Port{{HostPort: 0}}, // no host port
+  SecurityContext: &provider.SecurityContext{
+   RunAsUser:               nil,
+   ReadOnlyRootFilesystem: nil,
+   AllowPrivilegeEscalation: nil,
+  },
+ }
 
-	// Initial SCC with all flags set to NOK
-	initSCC := securitycontextcontainer.ContainerSCC{
-		HostPorts:                "NOK",
-		RequiredDropCapabilitiesPresent: "NOK",
-		CapabilitiesCategory:     "unknown",
-		PrivilegeEscalation:      "NOK",
-		PrivilegedContainer:       "NOK",
-		RunAsUserPresent:          "NOK",
-		ReadOnlyRootFilesystem:   "NOK",
-		RunAsNonRoot:              "NOK",
-		SeLinuxContextPresent:    "NOK",
-	}
+ // Initial SCC with all flags set to NOK
+ initSCC := securitycontextcontainer.ContainerSCC{
+  HostPorts:                "NOK",
+  RequiredDropCapabilitiesPresent: "NOK",
+  CapabilitiesCategory:     "unknown",
+  PrivilegeEscalation:      "NOK",
+  PrivilegedContainer:       "NOK",
+  RunAsUserPresent:          "NOK",
+  ReadOnlyRootFilesystem:   "NOK",
+  RunAsNonRoot:              "NOK",
+  SeLinuxContextPresent:    "NOK",
+ }
 
-	finalSCC := securitycontextcontainer.GetContainerSCC(cut, initSCC)
-	fmt.Printf("Updated SCC: %+v\n", finalSCC)
+ finalSCC := securitycontextcontainer.GetContainerSCC(cut, initSCC)
+ fmt.Printf("Updated SCC: %+v\n", finalSCC)
 }
 ```
 
@@ -461,7 +471,6 @@ func main() {
 ### OkNok.String
 
 **String** - Provides a human‑readable string for an `OkNok` status (`OK`, `NOK`, or unknown).
-
 
 The method returns a string representation of the `OkNok` value.
 
@@ -479,6 +488,7 @@ func (okNok OkNok) String() string
 | **How it fits the package** | Implements the `fmt.Stringer` interface for `OkNok`, enabling string formatting in logs and tests within the `securitycontextcontainer` package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   okNok --> switch["Switch on value"]
@@ -488,12 +498,15 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `OkNok.String`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking OkNok.String
 package main
@@ -514,7 +527,6 @@ func main() {
 ### PodListCategory.String
 
 **String** - Returns a human‑readable description containing the container name, pod name, namespace, and category of a `PodListCategory`.
-
 
 Prints the struct fields as a formatted string representation of a pod list category.
 
@@ -573,18 +585,18 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/securitycontextcontainer"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/securitycontextcontainer"
 )
 
 func main() {
-	category := securitycontextcontainer.PodListCategory{
-		Containername: "nginx",
-		Podname:       "web-pod",
-		NameSpace:     "default",
-		Category:      "frontend",
-	}
-	fmt.Println(category.String())
+ category := securitycontextcontainer.PodListCategory{
+  Containername: "nginx",
+  Podname:       "web-pod",
+  NameSpace:     "default",
+  Category:      "frontend",
+ }
+ fmt.Println(category.String())
 }
 ```
 
@@ -595,7 +607,6 @@ func main() {
 ### checkContainCategory
 
 **checkContainCategory** - Determines whether every element in `addCapability` exists within the slice `referenceCategoryAddCapabilities`. Returns `true` only if all elements match; otherwise returns `false`.
-
 
 #### Signature (Go)
 
@@ -670,7 +681,6 @@ func main() {
 
 **checkContainerCategory** - For each container in a pod it builds a security‑context profile (`percontainerSCC`), compares that profile against predefined SCC categories, and returns a slice of `PodListCategory` structs indicating the assigned category.
 
-
 #### Signature (Go)
 
 ```go
@@ -684,7 +694,7 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 | **Purpose** | For each container in a pod it builds a security‑context profile (`percontainerSCC`), compares that profile against predefined SCC categories, and returns a slice of `PodListCategory` structs indicating the assigned category. |
 | **Parameters** | `containers []corev1.Container` – list of containers to analyse.<br>`containerSCC ContainerSCC` – base SCC information derived from the pod itself.<br>`podName string` – name of the pod.<br>`nameSpace string` – namespace of the pod. |
 | **Return value** | `[]PodListCategory` – one entry per container, containing its name, pod name, namespace and the matched category ID (`CategoryID1`, `CategoryID1NoUID0`, `CategoryID2`, `CategoryID3`, or `CategoryID4`). |
-| **Key dependencies** | * `GetContainerSCC(cut, containerSCC)` – enriches per‑container SCC.<br>* `compareCategory(ref, target, id)` – checks if a container matches a specific category. |
+| **Key dependencies** | *`GetContainerSCC(cut, containerSCC)` – enriches per‑container SCC.<br>* `compareCategory(ref, target, id)` – checks if a container matches a specific category. |
 | **Side effects** | None; the function only reads input and constructs new values. |
 | **How it fits the package** | Used by `CheckPod` to produce the final list of categorized containers for security‑context validation tests. |
 
@@ -754,13 +764,14 @@ func example() {
 
 **compareCategory** - Determines whether `containerSCC` satisfies all constraints defined in `refCategory`. Returns `true` if the container matches the reference category; otherwise `false`.
 
-
 #### Signature (Go)
+
 ```go
 func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether `containerSCC` satisfies all constraints defined in `refCategory`. Returns `true` if the container matches the reference category; otherwise `false`. |
@@ -771,6 +782,7 @@ func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) boo
 | **How it fits the package** | Used by `checkContainerCategory` to classify each container into one of several predefined SCC categories, enabling policy validation tests. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Compare fields"}
@@ -780,18 +792,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_compareCategory --> func_log.Debug
 ```
 
 #### Functions calling `compareCategory`
+
 ```mermaid
 graph TD
   func_checkContainerCategory --> func_compareCategory
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking compareCategory
 ref := &ContainerSCC{AllVolumeAllowed: true, RunAsUserPresent: true}
@@ -807,7 +822,6 @@ fmt.Println("Does the container match the category?", matches)
 ### updateCapabilitiesFromContainer
 
 **updateCapabilitiesFromContainer** - Populates `containerSCC` with capability‑related data derived from a Kubernetes container’s security context.
-
 
 #### Signature (Go)
 
@@ -889,4 +903,3 @@ func main() {
 ```
 
 ---
-

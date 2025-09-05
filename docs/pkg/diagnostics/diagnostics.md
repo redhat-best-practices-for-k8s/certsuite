@@ -64,8 +64,8 @@ The diagnostics package gathers node‑level information for a Kubernetes/Opensh
 
 ### NodeHwInfo
 
-
 #### Fields
+
 | Field   | Type          | Description |
 |---------|---------------|-------------|
 | Lscpu   | interface{}   | Raw output from the `lscpu` command; expected to be a JSON‑serializable map containing CPU details. |
@@ -74,9 +74,11 @@ The diagnostics package gathers node‑level information for a Kubernetes/Opensh
 | Lspci   | []string      | Slice of strings representing the text output lines from the `lspci` command (PCI device list). |
 
 #### Purpose
+
 `NodeHwInfo` aggregates low‑level hardware inspection results for a Kubernetes node. Each field holds the raw result of a specific system command (`lscpu`, `ip`, `lsblk`, `lspci`). The struct is populated during diagnostics collection and later used to report or analyze node hardware characteristics.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetHwInfoAllNodes` | Iterates over probe pods, runs system commands on each node, fills a `NodeHwInfo` instance per node, and returns a map keyed by node name. |
@@ -90,7 +92,6 @@ The diagnostics package gathers node‑level information for a Kubernetes/Opensh
 ### GetCniPlugins
 
 **GetCniPlugins** - Executes a command inside probe pods to obtain the list of CNI plugins present on each node and returns it as a JSON‑serialisable map keyed by node name.
-
 
 #### 1. Signature (Go)
 
@@ -159,7 +160,6 @@ for node, plugins := range pluginsByNode {
 
 **GetCsiDriver** - Fetches the list of Container Storage Interface (CSI) drivers from a Kubernetes cluster and returns it as a generic `map[string]interface{}` suitable for JSON serialization.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -224,13 +224,13 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/diagnostics"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/diagnostics"
 )
 
 func main() {
-	csiDrivers := diagnostics.GetCsiDriver()
-	fmt.Printf("CSI Drivers: %+v\n", csiDrivers)
+ csiDrivers := diagnostics.GetCsiDriver()
+ fmt.Printf("CSI Drivers: %+v\n", csiDrivers)
 }
 ```
 
@@ -240,13 +240,14 @@ func main() {
 
 **GetHwInfoAllNodes** - Gathers CPU, memory, network and block device data from each probe pod running on cluster nodes. The result is a map keyed by node name containing a `NodeHwInfo` struct per node.
 
-
 #### Signature (Go)
+
 ```go
 func GetHwInfoAllNodes() (out map[string]NodeHwInfo)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Gathers CPU, memory, network and block device data from each probe pod running on cluster nodes. The result is a map keyed by node name containing a `NodeHwInfo` struct per node. |
@@ -257,6 +258,7 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo)
 | **How it fits the package** | Supplies hardware information for diagnostics and reporting, used by higher‑level helpers such as `GenerateNodes`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Get test env"}
@@ -277,6 +279,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetHwInfoAllNodes --> func_provider.GetTestEnvironment
@@ -287,12 +290,14 @@ graph TD
 ```
 
 #### Functions calling `GetHwInfoAllNodes` (Mermaid)
+
 ```mermaid
 graph TD
   func_GenerateNodes --> func_GetHwInfoAllNodes
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetHwInfoAllNodes
 package main
@@ -320,13 +325,14 @@ func main() {
 
 **GetNodeJSON** - Returns a map representation of the current Kubernetes nodes, mirroring the output of `oc get nodes -json`.
 
-
 #### Signature (Go)
+
 ```go
 func GetNodeJSON() (out map[string]interface{})
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a map representation of the current Kubernetes nodes, mirroring the output of `oc get nodes -json`. |
@@ -337,6 +343,7 @@ func GetNodeJSON() (out map[string]interface{})
 | **How it fits the package** | Supplies node information for diagnostic reports and claim generation within the diagnostics subsystem. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["GetNodeJSON"] --> B{"Retrieve env"}
@@ -352,6 +359,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_GetNodeJSON --> func_GetTestEnvironment
@@ -361,12 +369,14 @@ graph TD
 ```
 
 #### Functions calling `GetNodeJSON`
+
 ```mermaid
 graph TD
   func_GenerateNodes --> func_GetNodeJSON
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetNodeJSON
 package main
@@ -387,7 +397,6 @@ func main() {
 ### GetVersionK8s
 
 **GetVersionK8s** - Returns the Kubernetes (`k8s`) version that is configured in the current test environment.
-
 
 #### 1) Signature (Go)
 
@@ -452,7 +461,6 @@ func main() {
 
 **GetVersionOcClient** - Provides a static string indicating that the package does not use an OC or kubectl client.
 
-
 ```go
 func GetVersionOcClient() (out string)
 ```
@@ -492,14 +500,14 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/diagnostics"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/diagnostics"
 )
 
 func main() {
-	version := diagnostics.GetVersionOcClient()
-	fmt.Println("OC client version:", version)
+ version := diagnostics.GetVersionOcClient()
+ fmt.Println("OC client version:", version)
 }
 ```
 
@@ -509,13 +517,14 @@ func main() {
 
 **GetVersionOcp** - Returns a human‑readable representation of the OpenShift (OCP) cluster version, or an explanatory placeholder if not running on an OCP cluster.
 
-
 #### Signature (Go)
+
 ```go
 func GetVersionOcp() (out string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a human‑readable representation of the OpenShift (OCP) cluster version, or an explanatory placeholder if not running on an OCP cluster. |
@@ -526,6 +535,7 @@ func GetVersionOcp() (out string)
 | **How it fits the package** | Part of the diagnostics utilities that expose environment information to higher‑level components (e.g., claim generation). |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Is OCP cluster?"}
@@ -534,6 +544,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_GetVersionOcp --> func_provider.GetTestEnvironment
@@ -541,12 +552,14 @@ graph TD
 ```
 
 #### Functions calling `GetVersionOcp`
+
 ```mermaid
 graph TD
   func_claimhelper.NewClaimBuilder --> func_GetVersionOcp
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetVersionOcp
 package main
@@ -570,13 +583,14 @@ func main() {
 
 **getHWJsonOutput** - Executes a shell command inside a probe pod, captures its stdout, and unmarshals the output into an `interface{}` (typically a map).
 
-
 #### 1) Signature (Go)
+
 ```go
 func getHWJsonOutput(probePod *corev1.Pod, o clientsholder.Command, cmd string)(interface{}, error)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Executes a shell command inside a probe pod, captures its stdout, and unmarshals the output into an `interface{}` (typically a map). |
@@ -587,6 +601,7 @@ func getHWJsonOutput(probePod *corev1.Pod, o clientsholder.Command, cmd string)(
 | **How it fits the package** | Used by higher‑level diagnostics to collect hardware information (e.g., lscpu, ip, lsblk) from each node’s probe pod. |
 
 #### 3) Internal workflow
+
 ```mermaid
 flowchart TD
   A["Create Context"] --> B{"Run cmd in container"}
@@ -598,6 +613,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies
+
 ```mermaid
 graph TD
   func_getHWJsonOutput --> clientsholder.NewContext
@@ -607,12 +623,14 @@ graph TD
 ```
 
 #### 5) Functions calling `getHWJsonOutput`
+
 ```mermaid
 graph TD
   func_GetHwInfoAllNodes --> func_getHWJsonOutput
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking getHWJsonOutput
 pod := &corev1.Pod{ /* populated elsewhere */ }
@@ -629,7 +647,6 @@ fmt.Printf("Hardware JSON: %+v\n", jsonData)
 ### getHWTextOutput
 
 **getHWTextOutput** - Runs a shell command inside the first container of `probePod` and returns its standard output as an array of lines.
-
 
 #### 1) Signature (Go)
 
@@ -681,25 +698,24 @@ graph TD
 ```go
 // Minimal example invoking getHWTextOutput
 import (
-	"fmt"
+ "fmt"
 
-	corev1 "k8s.io/api/core/v1"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
+ corev1 "k8s.io/api/core/v1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 )
 
 // Assume pod and command are already defined.
 func example(pod *corev1.Pod, cmd string) {
-	var exec clientsholder.Command
-	lines, err := getHWTextOutput(pod, exec, cmd)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-		return
-	}
-	for _, line := range lines {
-		fmt.Println(line)
-	}
+ var exec clientsholder.Command
+ lines, err := getHWTextOutput(pod, exec, cmd)
+ if err != nil {
+  fmt.Printf("error: %v\n", err)
+  return
+ }
+ for _, line := range lines {
+  fmt.Println(line)
+ }
 }
 ```
 
 ---
-

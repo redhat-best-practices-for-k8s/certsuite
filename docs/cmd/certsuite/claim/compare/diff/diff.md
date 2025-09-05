@@ -54,7 +54,6 @@ The diff package provides utilities for comparing two unmarshaled JSON‑like st
 
 ### Diffs
 
-
 | Field | Type | Description |
 |-------|------|-------------|
 | `Name` | `string` | Identifier of the object being compared; used as a header when rendering results. |
@@ -63,13 +62,16 @@ The diff package provides utilities for comparing two unmarshaled JSON‑like st
 | `FieldsInClaim2Only` | `[]string` | List of field paths (with their values) present only in the second object. |
 
 #### Purpose
+
 `Diffs` aggregates all differences discovered when comparing two arbitrary Go structures that were decoded from JSON. It records:
+
 - Which fields differ and shows both values (`FieldDiff`),
 - Which fields exist exclusively in each input.
 
 This struct is primarily used by the `Compare` function to produce a human‑readable report, and it implements `String()` for easy formatting.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `Compare(objectName string, claim1Object, claim2Object interface{}, filters []string) *Diffs` | Walks both objects, populates a `Diffs` instance with differing fields and exclusive fields. |
@@ -100,7 +102,6 @@ that have been found to be different.
 ### Compare
 
 **Compare** - Walks two arbitrary `interface{}` trees (typically unmarshaled JSON), optionally filtering by subtree paths, and returns a `*Diffs` struct summarizing matching fields, differing values, and unique fields in each tree.
-
 
 #### 1) Signature (Go)
 
@@ -212,6 +213,7 @@ func (d *Diffs) String() string
 | **How it fits the package** | Implements the `Stringer` interface for `Diffs`, enabling easy printing of comparison results within the `diff` package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Calculate max widths"}
@@ -223,6 +225,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Diffs.String --> len
@@ -231,9 +234,11 @@ graph TD
 ```
 
 #### Functions calling `Diffs.String`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Diffs.String
 diff := &diff.Diffs{
@@ -255,13 +260,14 @@ fmt.Println(diff.String())
 
 **traverse** - Walks through an arbitrary JSON‑like tree (`map[string]interface{}` or `[]interface{}`), building a flat list of leaf nodes. Each leaf is represented as a `field` containing its full path and value. Optional filters restrict the paths that are returned.
 
-
 #### Signature (Go)
+
 ```go
 func traverse(node interface{}, path string, filters []string) []field
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Walks through an arbitrary JSON‑like tree (`map[string]interface{}` or `[]interface{}`), building a flat list of leaf nodes. Each leaf is represented as a `field` containing its full path and value. Optional filters restrict the paths that are returned. |
@@ -272,6 +278,7 @@ func traverse(node interface{}, path string, filters []string) []field
 | **How it fits the package** | Used by the public `Compare` function to flatten two claim objects into comparable lists of fields before performing a diff. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> CheckNil{"node==nil?"}
@@ -299,6 +306,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_traverse --> make
@@ -309,37 +317,38 @@ graph TD
 ```
 
 #### Functions calling `traverse` (Mermaid)
+
 ```mermaid
 graph TD
   func_Compare --> func_traverse
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking traverse
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	data := map[string]interface{}{
-		"metadata": map[string]interface{}{
-			"name":   "example",
-			"labels": []interface{}{"app", "demo"},
-		},
-		"spec": map[string]interface{}{
-			"replicas": 3,
-		},
-	}
+ data := map[string]interface{}{
+  "metadata": map[string]interface{}{
+   "name":   "example",
+   "labels": []interface{}{"app", "demo"},
+  },
+  "spec": map[string]interface{}{
+   "replicas": 3,
+  },
+ }
 
-	fields := traverse(data, "", nil)
-	for _, f := range fields {
-		fmt.Printf("%s = %v\n", f.Path, f.Value)
-	}
+ fields := traverse(data, "", nil)
+ for _, f := range fields {
+  fmt.Printf("%s = %v\n", f.Path, f.Value)
+ }
 }
 ```
 
 ---
-

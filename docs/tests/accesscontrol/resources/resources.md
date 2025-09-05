@@ -38,7 +38,6 @@ Utility helpers for verifying Kubernetes container resource specifications in te
 
 **HasExclusiveCPUsAssigned** - Checks whether a container’s CPU and memory limits are set in such a way that it will run on an exclusive CPU pool. It returns `true` only when both CPU and memory limits are present, integer‑valued, and match the corresponding requests.
 
-
 #### 1️⃣ Signature (Go)
 
 ```go
@@ -131,7 +130,6 @@ func main() {
 
 **HasRequestsSet** - Determines if a Kubernetes container has CPU and memory requests defined. It logs any missing fields.
 
-
 #### Signature (Go)
 
 ```go
@@ -190,24 +188,23 @@ graph TD
 package main
 
 import (
-	"log"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/resources"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/resources"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/provider"
 )
 
 func main() {
-	logger := log.New(os.Stdout, "", 0)
-	container := &provider.Container{
-		// populate Resources.Requests with CPU and Memory as needed
-	}
-	if resources.HasRequestsSet(container, logger) {
-		fmt.Println("Container has resource requests")
-	} else {
-		fmt.Println("Container is missing resource requests")
-	}
+ logger := log.New(os.Stdout, "", 0)
+ container := &provider.Container{
+  // populate Resources.Requests with CPU and Memory as needed
+ }
+ if resources.HasRequestsSet(container, logger) {
+  fmt.Println("Container has resource requests")
+ } else {
+  fmt.Println("Container is missing resource requests")
+ }
 }
 ```
 
 ---
-

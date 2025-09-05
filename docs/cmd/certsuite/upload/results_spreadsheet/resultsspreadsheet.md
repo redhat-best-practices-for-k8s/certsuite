@@ -78,7 +78,6 @@ Creates a Google Sheets spreadsheet that aggregates raw test results and derives
 
 **CreateSheetsAndDriveServices** - Instantiates authenticated Google Sheets and Google Drive service clients using the supplied credentials file.
 
-
 ```go
 func CreateSheetsAndDriveServices(credentials string) (*sheets.Service, *drive.Service, error)
 ```
@@ -155,23 +154,25 @@ func main() {
 
 **GetHeaderIndicesByColumnNames** - Returns the zero‑based positions of each requested column name within a slice of header strings. If any name is absent, an error is returned.
 
-
 #### Signature (Go)
+
 ```go
 func GetHeaderIndicesByColumnNames(headers, names []string) ([]int, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the zero‑based positions of each requested column name within a slice of header strings. If any name is absent, an error is returned. |
 | **Parameters** | `headers []string` – list of all column headers.<br>`names []string` – column names to locate. |
 | **Return value** | `([]int, error)` – slice containing the index for each requested name or an error if a name cannot be found. |
-| **Key dependencies** | * `fmt.Errorf` – constructs descriptive errors.<br>* Built‑in `append`. |
+| **Key dependencies** | *`fmt.Errorf` – constructs descriptive errors.<br>* Built‑in `append`. |
 | **Side effects** | None; pure function with no state mutation or I/O. |
 | **How it fits the package** | Utility for mapping human‑readable header names to spreadsheet indices, used by higher‑level sheet manipulation functions (e.g., sorting, filtering). |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over requested names"}
@@ -184,12 +185,14 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_GetHeaderIndicesByColumnNames --> fmt_Errorf
 ```
 
 #### Functions calling `GetHeaderIndicesByColumnNames`
+
 ```mermaid
 graph TD
   func_addDescendingSortFilterToSheet --> func_GetHeaderIndicesByColumnNames
@@ -199,26 +202,27 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetHeaderIndicesByColumnNames
 package main
 
 import (
-	"fmt"
-	"log"
+ "fmt"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/upload/results_spreadsheet"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/upload/results_spreadsheet"
 )
 
 func main() {
-	headers := []string{"Name", "Age", "Country"}
-	names   := []string{"Age", "Country"}
+ headers := []string{"Name", "Age", "Country"}
+ names   := []string{"Age", "Country"}
 
-	indices, err := resultsspreadsheet.GetHeaderIndicesByColumnNames(headers, names)
-	if err != nil {
-		log.Fatalf("lookup failed: %v", err)
-	}
-	fmt.Printf("Indices for %v are %v\n", names, indices) // Output: Indices for [Age Country] are [1 2]
+ indices, err := resultsspreadsheet.GetHeaderIndicesByColumnNames(headers, names)
+ if err != nil {
+  log.Fatalf("lookup failed: %v", err)
+ }
+ fmt.Printf("Indices for %v are %v\n", names, indices) // Output: Indices for [Age Country] are [1 2]
 }
 ```
 
@@ -227,7 +231,6 @@ func main() {
 ### GetHeadersFromSheet
 
 **GetHeadersFromSheet** - Returns a slice containing the string values of all cells in the first row (header row) of the supplied sheet.
-
 
 #### Signature (Go)
 
@@ -297,7 +300,6 @@ func main() {
 ### GetHeadersFromValueRange
 
 **GetHeadersFromValueRange** - Returns the column header names from the first row of a Google Sheets value range, converting each cell to its string representation.
-
 
 #### 1. Signature (Go)
 
@@ -371,7 +373,6 @@ func main() {
 ### GetSheetIDByName
 
 **GetSheetIDByName** - Looks up a sheet’s internal ID within a Google Sheets spreadsheet using the sheet’s title.
-
 
 #### Signature (Go)
 
@@ -448,7 +449,6 @@ func main() {
 
 **MoveSpreadSheetToFolder** - Relocates an existing spreadsheet to a target Drive folder by updating its parent references.
 
-
 ```go
 func MoveSpreadSheetToFolder(srv *drive.Service, folder *drive.File, spreadsheet *sheets.Spreadsheet) error
 ```
@@ -463,6 +463,7 @@ func MoveSpreadSheetToFolder(srv *drive.Service, folder *drive.File, spreadsheet
 | **How it fits the package** | Used after a spreadsheet is created to place it under the appropriate folder in the Drive hierarchy. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Get current parents of spreadsheet"] --> B["Store old parent IDs"]
@@ -476,6 +477,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_MoveSpreadSheetToFolder --> func_Do
@@ -490,6 +492,7 @@ graph TD
 ```
 
 #### Functions calling `MoveSpreadSheetToFolder`
+
 ```mermaid
 graph TD
   func_createSingleWorkloadRawResultsSpreadSheet --> func_MoveSpreadSheetToFolder
@@ -497,6 +500,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking MoveSpreadSheetToFolder
 import (
@@ -520,13 +524,14 @@ func example() error {
 
 **NewCommand** - Builds and configures the `uploadResultSpreadSheetCmd` Cobra command, defining its flags and marking required ones.
 
-
 #### Signature (Go)
+
 ```go
 func NewCommand() *cobra.Command
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds and configures the `uploadResultSpreadSheetCmd` Cobra command, defining its flags and marking required ones. |
@@ -537,6 +542,7 @@ func NewCommand() *cobra.Command
 | **How it fits the package** | Provides the CLI entry point for uploading spreadsheets, used by the top‑level upload command. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Define flag: results-file"]
@@ -553,6 +559,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewCommand --> func_StringVarP
@@ -562,12 +569,14 @@ graph TD
 ```
 
 #### Functions calling `NewCommand` (Mermaid)
+
 ```mermaid
 graph TD
   upload.NewCommand --> func_NewCommand
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewCommand
 package main
@@ -590,7 +599,6 @@ func main() {
 ### addBasicFilterToSpreadSheet
 
 **addBasicFilterToSpreadSheet** - Iterates over all sheets within the provided `spreadsheet` and sets a basic filter covering each sheet’s full range. The function ensures that every tab has filtering enabled, enabling later sort or filter operations.
-
 
 #### Signature (Go)
 
@@ -658,13 +666,14 @@ if err := addBasicFilterToSpreadSheet(srv, spreadsheet); err != nil {
 
 **addDescendingSortFilterToSheet** - Sorts a specified column (`colName`) in descending order on the given sheet (`sheetName`) of a Google Sheets document.
 
-
 #### Signature (Go)
+
 ```go
 func addDescendingSortFilterToSheet(srv *sheets.Service, spreadsheet *sheets.Spreadsheet, sheetName, colName string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Sorts a specified column (`colName`) in descending order on the given sheet (`sheetName`) of a Google Sheets document. |
@@ -675,6 +684,7 @@ func addDescendingSortFilterToSheet(srv *sheets.Service, spreadsheet *sheets.Spr
 | **How it fits the package** | Used during result‑sheet generation to ensure the conclusion sheet is sorted by category before being presented to users. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Get sheet values"] --> B["Extract headers"]
@@ -685,6 +695,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_addDescendingSortFilterToSheet --> func_GetHeadersFromValueRange
@@ -695,12 +706,14 @@ graph TD
 ```
 
 #### Functions calling `addDescendingSortFilterToSheet` (Mermaid)
+
 ```mermaid
 graph TD
   func_generateResultsSpreadSheet --> func_addDescendingSortFilterToSheet
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking addDescendingSortFilterToSheet
 srv, _, err := CreateSheetsAndDriveServices(credentials)
@@ -723,7 +736,6 @@ if err = addDescendingSortFilterToSheet(srv, spreadsheet, "Conclusion", "Categor
 ### addFilterByFailedAndMandatoryToSheet
 
 **addFilterByFailedAndMandatoryToSheet** - Applies a basic filter to the specified sheet so that only rows where the *State* column equals `"failed"` and the *Mandatory/Optional* column equals `"Mandatory"` are displayed.
-
 
 #### Signature (Go)
 
@@ -780,20 +792,20 @@ graph TD
 package main
 
 import (
-	"log"
+ "log"
 
-	sheets "google.golang.org/api/sheets/v4"
+ sheets "google.golang.org/api/sheets/v4"
 )
 
 func main() {
-	// Assume srv is an authenticated *sheets.Service and spreadsheet has been created.
-	var srv *sheets.Service      // initialized elsewhere
-	var spreadsheet *sheets.Spreadsheet // previously created
-	sheetName := "results"
+ // Assume srv is an authenticated *sheets.Service and spreadsheet has been created.
+ var srv *sheets.Service      // initialized elsewhere
+ var spreadsheet *sheets.Spreadsheet // previously created
+ sheetName := "results"
 
-	if err := addFilterByFailedAndMandatoryToSheet(srv, spreadsheet, sheetName); err != nil {
-		log.Fatalf("failed to apply filter: %v", err)
-	}
+ if err := addFilterByFailedAndMandatoryToSheet(srv, spreadsheet, sheetName); err != nil {
+  log.Fatalf("failed to apply filter: %v", err)
+ }
 }
 ```
 
@@ -802,7 +814,6 @@ func main() {
 ### createConclusionsSheet
 
 **createConclusionsSheet** - Builds a new Google Sheets tab that lists each unique workload from the raw results, including category, version, OCP version, and a hyperlink to a dedicated results spreadsheet.
-
 
 #### Signature (Go)
 
@@ -905,23 +916,25 @@ func main() {
 
 **createDriveFolder** - Creates a sub‑folder under the specified `parentFolderID` with the name `folderName`. If a folder of that name already exists in the parent, an error is returned.
 
-
 #### Signature (Go)
+
 ```go
 func createDriveFolder(srv *drive.Service, folderName, parentFolderID string) (*drive.File, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Creates a sub‑folder under the specified `parentFolderID` with the name `folderName`. If a folder of that name already exists in the parent, an error is returned. |
-| **Parameters** | *srv – Google Drive service client <br> *folderName – desired folder title <br> *parentFolderID – ID of the parent folder |
+| **Parameters** | *srv – Google Drive service client <br>*folderName – desired folder title <br> *parentFolderID – ID of the parent folder |
 | **Return value** | *drive.File – metadata of the created folder (or `nil` on error) <br> error – description if creation or lookup fails |
 | **Key dependencies** | • `fmt.Sprintf`, `fmt.Errorf` <br> • `srv.Files.List()`, `.Q()`, `.Fields()` <br> • `srv.Files.Create()` <br> • `len(files.Files)` check |
 | **Side effects** | Network calls to Google Drive API: listing existing files and creating a new folder. No local state is mutated. |
 | **How it fits the package** | Utility used by higher‑level spreadsheet generation functions to organize results into folders on Drive before uploading sheets. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Build File metadata"] --> B["Construct query string"]
@@ -933,6 +946,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_createDriveFolder --> fmt.Sprintf
@@ -946,6 +960,7 @@ graph TD
 ```
 
 #### Functions calling `createDriveFolder` (Mermaid)
+
 ```mermaid
 graph TD
   func_createConclusionsSheet --> func_createDriveFolder
@@ -953,28 +968,29 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking createDriveFolder
 package main
 
 import (
-	"log"
+ "log"
 
-	"google.golang.org/api/drive/v3"
+ "google.golang.org/api/drive/v3"
 )
 
 func main() {
-	// Assume srv is an authorized *drive.Service.
-	var srv *drive.Service // placeholder for actual service creation
+ // Assume srv is an authorized *drive.Service.
+ var srv *drive.Service // placeholder for actual service creation
 
-	parentID := "root"      // ID of the folder under which to create
-	folderName := "Results" // Desired sub‑folder name
+ parentID := "root"      // ID of the folder under which to create
+ folderName := "Results" // Desired sub‑folder name
 
-	folder, err := createDriveFolder(srv, folderName, parentID)
-	if err != nil {
-		log.Fatalf("Failed to create folder: %v", err)
-	}
-	log.Printf("Created folder ID: %s", folder.Id)
+ folder, err := createDriveFolder(srv, folderName, parentID)
+ if err != nil {
+  log.Fatalf("Failed to create folder: %v", err)
+ }
+ log.Printf("Created folder ID: %s", folder.Id)
 }
 ```
 
@@ -984,13 +1000,14 @@ func main() {
 
 **createRawResultsSheet** - Reads a CSV file and converts its contents into a `*sheets.Sheet` suitable for inclusion in a Google Spreadsheet.
 
-
 #### Signature (Go)
+
 ```go
 func createRawResultsSheet(fp string) (*sheets.Sheet, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Reads a CSV file and converts its contents into a `*sheets.Sheet` suitable for inclusion in a Google Spreadsheet. |
@@ -1001,6 +1018,7 @@ func createRawResultsSheet(fp string) (*sheets.Sheet, error)
 | **How it fits the package** | Provides the raw results sheet that later functions (e.g., `createConclusionsSheet`) consume to build a full test‑results spreadsheet. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Read CSV"}
@@ -1012,6 +1030,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_createRawResultsSheet --> func_readCSV
@@ -1020,12 +1039,14 @@ graph TD
 ```
 
 #### Functions calling `createRawResultsSheet`
+
 ```mermaid
 graph TD
   func_generateResultsSpreadSheet --> func_createRawResultsSheet
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking createRawResultsSheet
 package main
@@ -1051,7 +1072,6 @@ func main() {
 ### createSingleWorkloadRawResultsSheet
 
 **createSingleWorkloadRawResultsSheet** - Builds a new sheet containing only the rows that belong to `workloadName`. The resulting sheet keeps all original columns from `rawResultsSheet` and prefixes two extra columns: “Owner/TechLead Conclusion” and “Next Step Actions”.
-
 
 #### Signature (Go)
 
@@ -1123,7 +1143,6 @@ if err != nil {
 ### createSingleWorkloadRawResultsSpreadSheet
 
 **createSingleWorkloadRawResultsSpreadSheet** - Builds a new Google Sheets file containing only the rows that belong to `workloadName`, adds two extra columns for conclusions and next‑step AI, applies filtering on failed/mandatory tests, moves the sheet into the specified Drive folder, and returns the created spreadsheet.
-
 
 ```go
 func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, driveService *drive.Service, folder *drive.File, rawResultsSheet *sheets.Sheet, workloadName string) (*sheets.Spreadsheet, error)
@@ -1212,11 +1231,13 @@ func main() {
 Extracts the folder identifier from a Google Drive URL.
 
 #### Signature (Go)
+
 ```go
 func extractFolderIDFromURL(u string) (string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses a Google Drive shareable URL and returns the last path segment, which is the folder ID. |
@@ -1227,6 +1248,7 @@ func extractFolderIDFromURL(u string) (string, error)
 | **How it fits the package** | Utility for locating a root folder in Google Drive before creating or moving spreadsheets. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive URL string"] --> B["Parse URL with net/url.Parse"]
@@ -1238,6 +1260,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_extractFolderIDFromURL --> func_Parse(net/url)
@@ -1246,12 +1269,14 @@ graph TD
 ```
 
 #### Functions calling `extractFolderIDFromURL` (Mermaid)
+
 ```mermaid
 graph TD
   func_generateResultsSpreadSheet --> func_extractFolderIDFromURL
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking extractFolderIDFromURL
 url := "https://drive.google.com/drive/folders/1a2B3cD4e5F6g7H8i9J0"
@@ -1268,13 +1293,14 @@ fmt.Println("Folder ID:", folderID)
 
 **generateResultsSpreadSheet** - Orchestrates the creation of a spreadsheet that stores raw test output and derived conclusions, uploads it to Google Drive, and applies filtering/sorting.
 
-
 #### Signature (Go)
+
 ```go
 func generateResultsSpreadSheet()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Orchestrates the creation of a spreadsheet that stores raw test output and derived conclusions, uploads it to Google Drive, and applies filtering/sorting. |
@@ -1285,6 +1311,7 @@ func generateResultsSpreadSheet()
 | **How it fits the package** | Acts as the entry point for the `resultsspreadsheet` command, wiring together lower‑level helpers to produce a ready‑to‑share artifact. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Create Sheets & Drive services"]
@@ -1301,6 +1328,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_generateResultsSpreadSheet --> CreateSheetsAndDriveServices
@@ -1314,9 +1342,11 @@ graph TD
 ```
 
 #### Functions calling `generateResultsSpreadSheet` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // The function has no exported interface; it is invoked internally when running the command.
 // A minimal example would simply call it from a main routine after setting required globals.
@@ -1334,13 +1364,14 @@ func main() {
 
 **prepareRecordsForSpreadSheet** - Transforms a 2‑D slice of string values (`records`) into a slice of `*sheets.RowData` suitable for populating a Google Sheets spreadsheet. It normalises cell content by truncating overly long strings, replacing line breaks with spaces, and ensuring empty cells contain a single space to avoid layout issues.
 
-
 #### Signature (Go)
+
 ```go
 func prepareRecordsForSpreadSheet(records [][]string) []*sheets.RowData
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Transforms a 2‑D slice of string values (`records`) into a slice of `*sheets.RowData` suitable for populating a Google Sheets spreadsheet. It normalises cell content by truncating overly long strings, replacing line breaks with spaces, and ensuring empty cells contain a single space to avoid layout issues. |
@@ -1351,6 +1382,7 @@ func prepareRecordsForSpreadSheet(records [][]string) []*sheets.RowData
 | **How it fits the package** | Used by `createRawResultsSheet` to prepare data before creating a raw results sheet in the spreadsheet upload process. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate rows"}
@@ -1370,6 +1402,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_prepareRecordsForSpreadSheet --> len
@@ -1378,12 +1411,14 @@ graph TD
 ```
 
 #### Functions calling `prepareRecordsForSpreadSheet`
+
 ```mermaid
 graph TD
   createRawResultsSheet --> func_prepareRecordsForSpreadSheet
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking prepareRecordsForSpreadSheet
 records := [][]string{
@@ -1400,7 +1435,6 @@ rows := prepareRecordsForSpreadSheet(records)
 ### readCSV
 
 **readCSV** - Loads the contents of a CSV file located at the given path and returns all rows as a two‑dimensional slice of strings.
-
 
 #### Signature (Go)
 
@@ -1461,4 +1495,3 @@ fmt.Printf("Read %d rows\n", len(records))
 ```
 
 ---
-

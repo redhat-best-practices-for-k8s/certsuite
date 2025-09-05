@@ -66,19 +66,21 @@ The nodetainted package supplies utilities for inspecting and interpreting kerne
 
 ### KernelTaint
 
-
 A lightweight representation of a Linux kernel taint entry used in node‑tainted tests.
 
 #### Fields
+
 | Field       | Type   | Description |
 |-------------|--------|-------------|
 | `Description` | `string` | Human‑readable explanation of why the node is considered tainted. |
 | `Letters`      | `string` | One or more kernel taint letters that identify the specific taint condition (e.g., `"S"` for bad system call). |
 
 #### Purpose
+
 The `KernelTaint` struct encapsulates information about a kernel taint applied to a node during testing. The `Description` field provides context for test logs, while the `Letters` field holds the canonical taint identifier used by Kubernetes to mark the node’s state.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | *none* | No functions directly interact with this struct in the current codebase. |
@@ -89,17 +91,19 @@ The `KernelTaint` struct encapsulates information about a kernel taint applied t
 
 ### NodeTainted
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `ctx` | `*clientsholder.Context` | Context used to execute commands on the target node; contains client configuration and authentication details. |
 | `node` | `string` | Name or identifier of the Kubernetes node whose taint status is being inspected. |
 
 #### Purpose
+
 The `NodeTainted` struct represents a specific node in a cluster that may be marked as tainted by the Linux kernel. It encapsulates both the node identity and the context required to query the node’s state (e.g., reading `/proc/sys/kernel/tainted` or module taint files). Methods on this type retrieve kernel‑level taint masks, list modules responsible for taints, and filter those modules against an allow‑list.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewNodeTaintedTester(context *clientsholder.Context, node string)` | Creates a new `NodeTainted` instance initialized with the given context and node name. |
@@ -117,13 +121,14 @@ The `NodeTainted` struct represents a specific node in a cluster that may be mar
 
 **DecodeKernelTaintsFromBitMask** - Translates each set bit in a 64‑bit kernel taint mask into its descriptive message using `GetTaintMsg`.
 
-
 #### Signature (Go)
+
 ```go
 func DecodeKernelTaintsFromBitMask(bitmask uint64) []string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Translates each set bit in a 64‑bit kernel taint mask into its descriptive message using `GetTaintMsg`. |
@@ -134,6 +139,7 @@ func DecodeKernelTaintsFromBitMask(bitmask uint64) []string
 | **How it fits the package** | Utility in `nodetainted` for decoding kernel taint information obtained from nodes, used by higher‑level tests to report compliance. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start["Start"] --> Init["taints = []string{}"]
@@ -148,6 +154,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_DecodeKernelTaintsFromBitMask --> append
@@ -155,25 +162,27 @@ graph TD
 ```
 
 #### Functions calling `DecodeKernelTaintsFromBitMask` (Mermaid)
+
 ```mermaid
 graph TD
   testTainted --> DecodeKernelTaintsFromBitMask
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking DecodeKernelTaintsFromBitMask
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
 )
 
 func main() {
-	mask := uint64(0x5) // bits 0 and 2 set
-	messages := nodetainted.DecodeKernelTaintsFromBitMask(mask)
-	fmt.Println(messages) // e.g., ["taint0 (bit 0)", "taint2 (bit 2)"]
+ mask := uint64(0x5) // bits 0 and 2 set
+ messages := nodetainted.DecodeKernelTaintsFromBitMask(mask)
+ fmt.Println(messages) // e.g., ["taint0 (bit 0)", "taint2 (bit 2)"]
 }
 ```
 
@@ -183,13 +192,14 @@ func main() {
 
 **DecodeKernelTaintsFromLetters** - Translates each character in `letters` into a descriptive taint string, including the original letter and its bit index. Unknown letters are reported explicitly.
 
-
 #### Signature (Go)
+
 ```go
 func DecodeKernelTaintsFromLetters(letters string) []string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Translates each character in `letters` into a descriptive taint string, including the original letter and its bit index. Unknown letters are reported explicitly. |
@@ -200,6 +210,7 @@ func DecodeKernelTaintsFromLetters(letters string) []string
 | **How it fits the package** | Used by `NodeTainted.GetTainterModules` and test logic to interpret kernel taint letters returned from nodes into user‑friendly messages for reporting and logging. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over each letter"}
@@ -213,6 +224,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_DecodeKernelTaintsFromLetters --> strings.Contains
@@ -220,6 +232,7 @@ graph TD
 ```
 
 #### Functions calling `DecodeKernelTaintsFromLetters` (Mermaid)
+
 ```mermaid
 graph TD
   nodetainted.GetTainterModules --> func_DecodeKernelTaintsFromLetters
@@ -227,6 +240,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking DecodeKernelTaintsFromLetters
 package main
@@ -253,7 +267,6 @@ func main() {
 ### GetOtherTaintedBits
 
 **GetOtherTaintedBits** - Returns a slice of bit positions that are set in `taintsMask` but are not recorded as being set by any module (i.e., keys absent or false in `taintedBitsByModules`).
-
 
 #### Signature (Go)
 
@@ -332,7 +345,6 @@ func main() {
 
 **GetTaintMsg** - Returns a descriptive string for a kernel taint bit. If the bit is defined in the `kernelTaints` map, the message includes its description; otherwise it indicates that the bit is reserved.
 
-
 #### Signature (Go)
 
 ```go
@@ -398,7 +410,6 @@ func main() {
 ### GetTaintedBitsByModules
 
 **GetTaintedBitsByModules** - For every module name and its associated taint letters, determine the corresponding kernel‑taint bit positions and aggregate them into a single set.
-
 
 Retrieves the set of kernel taint bits that are active for each module in a given map.
 
@@ -467,21 +478,21 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
 )
 
 func main() {
-	modules := map[string]string{
-		"moduleA": "M",
-		"moduleB": "S",
-	}
-	bits, err := nodetainted.GetTaintedBitsByModules(modules)
-	if err != nil {
-		fmt.Println("error:", err)
-		return
-	}
-	fmt.Println("Active taint bits:", bits)
+ modules := map[string]string{
+  "moduleA": "M",
+  "moduleB": "S",
+ }
+ bits, err := nodetainted.GetTaintedBitsByModules(modules)
+ if err != nil {
+  fmt.Println("error:", err)
+  return
+ }
+ fmt.Println("Active taint bits:", bits)
 }
 ```
 
@@ -491,23 +502,25 @@ func main() {
 
 **NewNodeTaintedTester** - Instantiates a `NodeTainted` helper that provides methods for querying kernel taint information on a specific Kubernetes node.
 
-
 #### Signature (Go)
+
 ```go
 func NewNodeTaintedTester(context *clientsholder.Context, node string) *NodeTainted
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Instantiates a `NodeTainted` helper that provides methods for querying kernel taint information on a specific Kubernetes node. |
 | **Parameters** | `context *clientsholder.Context –` the client context used to communicate with the node; <br>`node string –` the name of the target node. |
 | **Return value** | `*NodeTainted –` a pointer to a new `NodeTainted` struct initialized with the supplied context and node name. |
-| **Key dependencies** | * Uses the `clientsholder.Context` type from the test framework.<br>* Stores values in the `NodeTainted` struct (no external calls at construction). |
+| **Key dependencies** | *Uses the `clientsholder.Context` type from the test framework.<br>* Stores values in the `NodeTainted` struct (no external calls at construction). |
 | **Side effects** | None – only creates an object; does not perform I/O or modify global state. |
 | **How it fits the package** | Provides the entry point for all taint‑related checks performed by the *nodetainted* test suite, allowing other functions to retrieve kernel taints and module information via the returned `NodeTainted` instance. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Create NodeTainted"}
@@ -515,34 +528,37 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `NewNodeTaintedTester` (Mermaid)
+
 ```mermaid
 graph TD
   func_testTainted --> nodetainted.NewNodeTaintedTester
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewNodeTaintedTester
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/clientsholder"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/clientsholder"
 )
 
 func main() {
-	ctx := clientsholder.NewContext("namespace", "podName", "containerName")
-	nodeTester := nodetainted.NewNodeTaintedTester(ctx, "worker-node-1")
+ ctx := clientsholder.NewContext("namespace", "podName", "containerName")
+ nodeTester := nodetainted.NewNodeTaintedTester(ctx, "worker-node-1")
 
-	// Use nodeTester to query kernel taints, e.g.:
-	taintsMask, err := nodeTester.GetKernelTaintsMask()
-	if err != nil {
-		panic(err)
-	}
-	println("Kernel taint mask:", taintsMask)
+ // Use nodeTester to query kernel taints, e.g.:
+ taintsMask, err := nodeTester.GetKernelTaintsMask()
+ if err != nil {
+  panic(err)
+ }
+ println("Kernel taint mask:", taintsMask)
 }
 ```
 
@@ -552,13 +568,14 @@ func main() {
 
 **GetKernelTaintsMask** - Reads `/proc/sys/kernel/tainted` to obtain the current kernel taints bitmask and returns it as a `uint64`.
 
-
 #### Signature (Go)
+
 ```go
 func (nt *NodeTainted) GetKernelTaintsMask() (uint64, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Reads `/proc/sys/kernel/tainted` to obtain the current kernel taints bitmask and returns it as a `uint64`. |
@@ -569,6 +586,7 @@ func (nt *NodeTainted) GetKernelTaintsMask() (uint64, error)
 | **How it fits the package** | Provides a helper for tests to determine whether a node is tainted, enabling conditional logic based on kernel state. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Run `cat /proc/sys/kernel/tainted`"] --> B{"Command success?"}
@@ -580,6 +598,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_NodeTainted.GetKernelTaintsMask --> func_runCommand
@@ -589,9 +608,11 @@ graph TD
 ```
 
 #### Functions calling `NodeTainted.GetKernelTaintsMask`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NodeTainted.GetKernelTaintsMask
 ctx := context.Background()
@@ -608,7 +629,6 @@ fmt.Printf("Kernel taints mask: 0x%X\n", mask)
 ### NodeTainted.GetTainterModules
 
 **GetTainterModules** - Gathers all kernel modules that set taint bits on a node, filters out allow‑listed modules, and returns the remaining module names with their taint letters plus a map of all taint bit positions used.
-
 
 #### 1) Signature (Go)
 
@@ -689,13 +709,14 @@ func main() {
 
 **RemoveAllExceptNumbers** - Returns a new string containing only the numeric characters of `incomingStr`. Useful for normalizing taint identifiers that may include letters or punctuation.
 
-
 #### Signature (Go)
+
 ```go
 func RemoveAllExceptNumbers(incomingStr string) string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a new string containing only the numeric characters of `incomingStr`. Useful for normalizing taint identifiers that may include letters or punctuation. |
@@ -706,6 +727,7 @@ func RemoveAllExceptNumbers(incomingStr string) string
 | **How it fits the package** | Used by the taint‑analysis logic to convert taint identifiers like `"bit:10)"` into a clean numeric representation (`"10"`), facilitating further processing and reporting. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Compile regex `\D+`"}
@@ -714,6 +736,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_RemoveAllExceptNumbers --> func_MustCompile
@@ -721,12 +744,14 @@ graph TD
 ```
 
 #### Functions calling `RemoveAllExceptNumbers` (Mermaid)
+
 ```mermaid
 graph TD
   func_testTainted --> func_RemoveAllExceptNumbers
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking RemoveAllExceptNumbers
 package main
@@ -751,13 +776,14 @@ func main() {
 
 **getAllTainterModules** - Executes a shell script to list every kernel module present in `/sys/module`, reads each module’s taint file, and returns a map of module names to their associated taint letters.
 
-
 #### 1) Signature (Go)
+
 ```go
 func (nt *NodeTainted) getAllTainterModules() (map[string]string, error)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Executes a shell script to list every kernel module present in `/sys/module`, reads each module’s taint file, and returns a map of module names to their associated taint letters. |
@@ -768,6 +794,7 @@ func (nt *NodeTainted) getAllTainterModules() (map[string]string, error)
 | **How it fits the package** | Provides low‑level data used by higher‑level APIs (`GetTainterModules`) to filter allowlisted modules and compute taint bits for the node. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Build shell command"] --> B["runCommand(ctx, cmd)"]
@@ -780,6 +807,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NodeTainted.getAllTainterModules --> func_runCommand
@@ -788,12 +816,14 @@ graph TD
 ```
 
 #### 5) Functions calling `NodeTainted.getAllTainterModules` (Mermaid)
+
 ```mermaid
 graph TD
   func_NodeTainted.GetTainterModules --> func_NodeTainted.getAllTainterModules
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking NodeTainted.getAllTainterModules
 nt := &nodetainted.NodeTainted{Ctx: context.Background()}
@@ -814,13 +844,14 @@ for mod, taints := range modules {
 
 **getBitPosFromLetter** - Maps a single‑character taint letter to its corresponding kernel taint bit position (zero‑based). Validates input length and existence of the letter in known taints.
 
-
 #### Signature (Go)
+
 ```go
 func getBitPosFromLetter(letter string) (int, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Maps a single‑character taint letter to its corresponding kernel taint bit position (zero‑based). Validates input length and existence of the letter in known taints. |
@@ -831,6 +862,7 @@ func getBitPosFromLetter(letter string) (int, error)
 | **How it fits the package** | Supports the public helper `GetTaintedBitsByModules`, translating module‑supplied taint letters into bit indices for internal use. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Validate input length"] --> B{"Is single letter?"}
@@ -843,6 +875,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getBitPosFromLetter --> builtin_len
@@ -851,12 +884,14 @@ graph TD
 ```
 
 #### Functions calling `getBitPosFromLetter` (Mermaid)
+
 ```mermaid
 graph TD
   func_GetTaintedBitsByModules --> func_getBitPosFromLetter
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getBitPosFromLetter
 bit, err := getBitPosFromLetter("X")
@@ -868,4 +903,3 @@ if err != nil {
 ```
 
 ---
-

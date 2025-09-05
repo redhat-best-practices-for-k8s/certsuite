@@ -323,7 +323,7 @@ The provider package implements the core logic for gathering and analysing Kuber
 ### CniNetworkInterface
 
 <!-- DEBUG: Struct CniNetworkInterface exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -340,10 +340,10 @@ The provider package implements the core logic for gathering and analysing Kuber
 
 ### Container
 
-
 Represents a Kubernetes container enriched with runtime information and preflight test results for use in certification checks.
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `*corev1.Container` | pointer to corev1.Container | Embedded standard Kubernetes container spec, providing fields such as Name, Image, SecurityContext, Probes, etc. |
@@ -357,9 +357,11 @@ Represents a Kubernetes container enriched with runtime information and prefligh
 | `PreflightResults` | PreflightResultsDB | Cached results of preflight tests performed against the container’s image. |
 
 #### Purpose
+
 The `Container` struct aggregates both declarative (spec) and imperative (status) data about a container, along with computed metadata such as runtime type, UID, and parsed image identifiers. This enriched representation enables the test suite to perform compliance checks, run preflight scans, and report results without repeatedly querying Kubernetes APIs.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetUID` | Extracts and returns the container’s unique ID from its status. |
@@ -397,7 +399,7 @@ The `Container` struct aggregates both declarative (spec) and imperative (status
 ### CrScale
 
 <!-- DEBUG: Struct CrScale exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -410,7 +412,7 @@ The `Container` struct aggregates both declarative (spec) and imperative (status
 ### CsvInstallPlan
 
 <!-- DEBUG: Struct CsvInstallPlan exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -424,16 +426,18 @@ The `Container` struct aggregates both declarative (spec) and imperative (status
 
 ### Deployment
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `*appsv1.Deployment` | *appsv1.Deployment | Embedded Kubernetes Deployment resource providing all standard fields such as Spec, Status, ObjectMeta, etc. |
 
 #### Purpose
+
 The `Deployment` struct serves as a thin wrapper around the core Kubernetes `appsv1.Deployment`. It allows provider-specific methods to be attached while still exposing every field of the underlying Deployment through embedding. This design simplifies access to deployment data and enables adding convenience functions (e.g., readiness checks) without duplicating fields.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `IsDeploymentReady` | Determines whether the wrapped deployment is fully available, matching expected replica counts and status conditions. |
@@ -446,18 +450,20 @@ The `Deployment` struct serves as a thin wrapper around the core Kubernetes `app
 
 ### Event
 
-
 Represents a Kubernetes event enriched with helper methods for stringification and construction.
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `*corev1.Event` | *corev1.Event | Embedded core Kubernetes event containing all standard fields such as `CreationTimestamp`, `InvolvedObject`, `Reason`, and `Message`. The embedding allows direct access to these fields on an `Event` instance. |
 
 #### Purpose
+
 The `Event` type is a thin wrapper around the native `k8s.io/api/core/v1.Event`. It exists to provide convenience methods (e.g., `String`) and factory functions (`NewEvent`) while retaining full compatibility with Kubernetes event structures.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewEvent` | Constructs an `Event` from a pointer to a native `corev1.Event`, initializing the embedded field. |
@@ -470,7 +476,7 @@ The `Event` type is a thin wrapper around the native `k8s.io/api/core/v1.Event`.
 ### MachineConfig
 
 <!-- DEBUG: Struct MachineConfig exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -483,17 +489,19 @@ The `Event` type is a thin wrapper around the native `k8s.io/api/core/v1.Event`.
 
 ### Node
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `Data` | `*corev1.Node` | Pointer to the underlying Kubernetes Node object, containing status, labels, annotations, etc. |
 | `Mc`   | `MachineConfig` | Machine‑Configuration object associated with the node (ignored during JSON marshaling). |
 
 #### Purpose
+
 `Node` encapsulates a Kubernetes node and optionally its machine‑configuration details for use in tests. It provides convenience methods to query operating system type, kernel properties, workload presence, and node role. The struct also implements custom JSON marshalling that serializes only the embedded `corev1.Node`.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetCSCOSVersion` | Returns the CoreOS version string if the node runs CentOS Stream CoreOS. |
@@ -518,6 +526,7 @@ The `Event` type is a thin wrapper around the native `k8s.io/api/core/v1.Event`.
 Represents an installed Kubernetes operator within a cluster, capturing its metadata, deployment status, and test results.
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `Name` | `string` | Operator name. |
@@ -538,15 +547,17 @@ Represents an installed Kubernetes operator within a cluster, capturing its meta
 | `OperandPods` | `map[string]*Pod` | Mapping of operand pod names to their detailed information (populated elsewhere). |
 
 #### Purpose  
+
 The `Operator` struct aggregates all relevant data needed for certification and validation workflows:
-* Identifies which operator is under test.
-* Tracks its installation status, source package, channel, and deployment scope.
-* Holds references to the CSV and install plans for introspection or cleanup.
-* Stores pre‑flight test outcomes to report pass/fail status.
+- Identifies which operator is under test.
+- Tracks its installation status, source package, channel, and deployment scope.
+- Holds references to the CSV and install plans for introspection or cleanup.
+- Stores pre‑flight test outcomes to report pass/fail status.
 
 This struct is used throughout the provider package when collecting operator information from a cluster, performing pre‑flight checks, and generating summaries of certification results.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `SetPreflightResults(env *TestEnvironment)` | Runs pre‑flight container tests against the operator’s bundle image, captures logs, stores the results in `PreflightResults`. |
@@ -562,8 +573,8 @@ This struct is used throughout the provider package when collecting operator inf
 
 ### Pod
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `<embedded> *corev1.Pod` | embedded | Inherits all fields and methods of the standard Kubernetes Pod object, providing access to spec, status, labels, annotations, etc. |
@@ -577,9 +588,11 @@ This struct is used throughout the provider package when collecting operator inf
 | `IsOperand` | `bool` | Marks the pod as an operand of an operator (also used for filtering). |
 
 #### Purpose
+
 The `Pod` struct extends the standard Kubernetes Pod definition with additional fields required by certsuite’s testing framework. It captures runtime metadata, container details, and test‑specific flags to enable fine‑grained selection and validation of pods during security and compliance checks.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewPod(aPod *corev1.Pod) Pod` | Wraps a raw Kubernetes pod into the enriched `Pod` struct, populating Multus interfaces, PCI lists, and test flags. |
@@ -593,8 +606,8 @@ The struct’s methods (e.g., `IsCPUIsolationCompliant`, `HasHugepages`, `GetRun
 
 ### PreflightResultsDB
 
-
 #### Fields
+
 | Field  | Type            | Description |
 |--------|-----------------|-------------|
 | Passed | `[]PreflightTest` | Tests that succeeded during the pre‑flight run. |
@@ -602,9 +615,11 @@ The struct’s methods (e.g., `IsCPUIsolationCompliant`, `HasHugepages`, `GetRun
 | Errors | `[]PreflightTest` | Tests that encountered runtime errors (e.g., container start failures). |
 
 #### Purpose
+
 `PreflightResultsDB` aggregates the outcome of a pre‑flight validation for a container image. Each slice holds `PreflightTest` entries describing individual checks, including their name, description, suggested remediation, and any error message when applicable. The struct is stored on a `Container` instance (`c.PreflightResults`) and cached per image to avoid redundant executions.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetPreflightResultsDB` | Converts raw `plibRuntime.Results` from the pre‑flight library into a `PreflightResultsDB`, separating passed, failed, and errored checks. |
@@ -616,11 +631,11 @@ The struct’s methods (e.g., `IsCPUIsolationCompliant`, `HasHugepages`, `GetRun
 
 ### PreflightTest
 
-
 Represents a single pre‑flight check performed by the certsuite provider.  
 It holds the test’s identity, description of what it verifies, a suggested remediation if the test fails, and any error encountered during execution.
 
 #### Fields
+
 | Field       | Type   | Description |
 |-------------|--------|-------------|
 | `Name`      | string | Human‑readable identifier for the pre‑flight check. |
@@ -629,26 +644,30 @@ It holds the test’s identity, description of what it verifies, a suggested rem
 | `Error`     | error   | Holds any error produced while running the test; `nil` indicates success. |
 
 #### Purpose
+
 The `PreflightTest` struct is used by the provider package to encapsulate the results of individual pre‑flight validations. Each instance records whether the check passed or failed (via the `Error` field) and provides context for users through the descriptive fields.
 
 #### Related functions
+
 No public functions directly reference or manipulate this struct.
 
 ---
 
 ### ScaleObject
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `Scale` | `CrScale` | Represents the desired scale specification for a custom resource instance. The exact semantics depend on the implementation of `CrScale`. |
 | `GroupResourceSchema` | `schema.GroupResource` | Identifies the group and resource (e.g., `"apps/v1", "deployments"`) that this scaling configuration applies to. |
 
 #### Purpose
+
 `ScaleObject` encapsulates all information required to perform a scaling operation on a custom resource. It bundles together the target resource’s schema (`GroupResourceSchema`) with the desired scale state (`Scale`). This struct is typically constructed from raw input (e.g., from an API request) and passed to functions that apply the scaling logic within the provider.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `updateCrUnderTest` | Converts a slice of `autodiscover.ScaleObject` into a slice of internal `ScaleObject`, copying over the scale specification and resource schema for each entry. |
@@ -662,14 +681,17 @@ No public functions directly reference or manipulate this struct.
 A lightweight wrapper around Kubernetes’ native `*appsv1.StatefulSet`, providing convenience methods for status checks and string representation within the certsuite provider package.
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `*appsv1.StatefulSet` | *appsv1.StatefulSet | Embedded field that grants direct access to all fields of the Kubernetes StatefulSet API object (metadata, spec, status, etc.). |
 
 #### Purpose  
+
 The `StatefulSet` struct is used by certsuite’s provider logic to interact with and inspect StatefulSets in a Kubernetes cluster. By embedding the official `appsv1.StatefulSet`, it inherits all standard properties while adding helper methods that simplify readiness checks (`IsStatefulSetReady`) and human‑readable output (`ToString`). It serves as the primary representation of a StatefulSet within this codebase.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetUpdatedStatefulset` | Retrieves a `StatefulSet` by name and namespace, returning an instance of this wrapper around the underlying Kubernetes object. |
@@ -682,8 +704,8 @@ The `StatefulSet` struct is used by certsuite’s provider logic to interact wit
 
 ### TestEnvironment
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `Namespaces` | []string | Namespaces targeted by the test. |
@@ -751,9 +773,11 @@ The `StatefulSet` struct is used by certsuite’s provider logic to interact wit
 | `SkipPreflight` | bool | If true, preflight checks are skipped. |
 
 #### Purpose
+
 `TestEnvironment` aggregates all data required to perform an end‑to‑end test of a Kubernetes/OpenShift cluster. It stores discovery results (pods, nodes, operators, CRDs, etc.), configuration parameters, and runtime state such as collected events or flags indicating special conditions (e.g., presence of Istio). Test logic queries this struct via helper methods (e.g., `GetPodsUsingSRIOV`, `IsSNO`) to filter resources for specific checks.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetTestEnvironment` | Returns the singleton instance, initializing it if not yet loaded. |
@@ -782,13 +806,14 @@ These methods allow test code to query the environment without directly accessin
 
 **AreCPUResourcesWholeUnits** - Determines whether every container in the given `*Pod` specifies CPU requests and limits that are multiples of 1000 milli‑CPUs (i.e., whole cores). If any value is missing or not a multiple of 1000, it logs a debug message and returns `false`.
 
-
 #### Signature (Go)
+
 ```go
 func AreCPUResourcesWholeUnits(p *Pod) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether every container in the given `*Pod` specifies CPU requests and limits that are multiples of 1000 milli‑CPUs (i.e., whole cores). If any value is missing or not a multiple of 1000, it logs a debug message and returns `false`. |
@@ -799,6 +824,7 @@ func AreCPUResourcesWholeUnits(p *Pod) bool
 | **How it fits the package** | Used by higher‑level pod validation logic to enforce CPU isolation rules required for certain workloads (e.g., guaranteed pods with exclusive CPUs). |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over containers"}
@@ -818,6 +844,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_AreCPUResourcesWholeUnits --> func_MilliValue
@@ -827,12 +854,14 @@ graph TD
 ```
 
 #### Functions calling `AreCPUResourcesWholeUnits` (Mermaid)
+
 ```mermaid
 graph TD
   func_Pod.IsPodGuaranteedWithExclusiveCPUs --> AreCPUResourcesWholeUnits
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking AreCPUResourcesWholeUnits
 import (
@@ -858,13 +887,14 @@ func main() {
 
 **AreResourcesIdentical** - Ensures each container in the supplied `*Pod` has matching CPU and memory requests and limits. Returns `true` only if all containers meet this condition; otherwise, it logs a debug message and returns `false`.
 
-
 #### Signature (Go)
+
 ```go
 func AreResourcesIdentical(p *Pod) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures each container in the supplied `*Pod` has matching CPU and memory requests and limits. Returns `true` only if all containers meet this condition; otherwise, it logs a debug message and returns `false`. |
@@ -875,6 +905,7 @@ func AreResourcesIdentical(p *Pod) bool
 | **How it fits the package** | Central helper for pod isolation checks; used by higher‑level predicates such as `Pod.IsPodGuaranteed` and `Pod.IsPodGuaranteedWithExclusiveCPUs`. It encapsulates the logic that guarantees a pod’s CPU and memory configuration is “identical” (requests = limits). |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over containers"}
@@ -889,6 +920,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_AreResourcesIdentical --> len
@@ -901,6 +933,7 @@ graph TD
 ```
 
 #### Functions calling `AreResourcesIdentical` (Mermaid)
+
 ```mermaid
 graph TD
   func_Pod.IsPodGuaranteed --> func_AreResourcesIdentical
@@ -908,33 +941,34 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking AreResourcesIdentical
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	pod := &provider.Pod{
-		Name:      "example",
-		Namespace: "default",
-		Containers: []provider.Container{
-			{
-				Name: "app",
-				Resources: provider.ResourceRequirements{
-					Limits:   map[string]resource.Quantity{"cpu": resource.MustParse("100m"), "memory": resource.MustParse("128Mi")},
-					Requests: map[string]resource.Quantity{"cpu": resource.MustParse("100m"), "memory": resource.MustParse("128Mi")},
-				},
-			},
-		},
-	}
-	if provider.AreResourcesIdentical(pod) {
-		fmt.Println("Pod resources are identical.")
-	} else {
-		fmt.Println("Pod resources differ.")
-	}
+ pod := &provider.Pod{
+  Name:      "example",
+  Namespace: "default",
+  Containers: []provider.Container{
+   {
+    Name: "app",
+    Resources: provider.ResourceRequirements{
+     Limits:   map[string]resource.Quantity{"cpu": resource.MustParse("100m"), "memory": resource.MustParse("128Mi")},
+     Requests: map[string]resource.Quantity{"cpu": resource.MustParse("100m"), "memory": resource.MustParse("128Mi")},
+    },
+   },
+  },
+ }
+ if provider.AreResourcesIdentical(pod) {
+  fmt.Println("Pod resources are identical.")
+ } else {
+  fmt.Println("Pod resources differ.")
+ }
 }
 ```
 
@@ -944,13 +978,14 @@ func main() {
 
 **GetUID** - Extracts the UID of a running container from its status and logs diagnostic information.
 
-
 #### Signature (Go)
+
 ```go
 func (c *Container) GetUID() (string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Extracts the UID of a running container from its status and logs diagnostic information. |
@@ -961,6 +996,7 @@ func (c *Container) GetUID() (string, error)
 | **How it fits the package** | Provides a lightweight helper for callers that need the container’s identifier, e.g., for cleanup or auditing tasks. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["c.Status.ContainerID"] --> B["Split on ://"]
@@ -976,6 +1012,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Container.GetUID --> func_strings.Split
@@ -984,9 +1021,11 @@ graph TD
 ```
 
 #### Functions calling `Container.GetUID`  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Container.GetUID
 c := &provider.Container{
@@ -1009,13 +1048,14 @@ if err != nil {
 
 **HasExecProbes** - Returns `true` when the container defines at least one probe that uses an executable command (`Exec`) for liveness, readiness, or startup checks.
 
-
 #### Signature (Go)
+
 ```go
 func (c *Container) HasExecProbes() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns `true` when the container defines at least one probe that uses an executable command (`Exec`) for liveness, readiness, or startup checks. |
@@ -1026,6 +1066,7 @@ func (c *Container) HasExecProbes() bool
 | **How it fits the package** | In the provider package, this helper assists higher‑level logic in deciding whether a container requires probe execution support during deployment validation. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check LivenessProbe Exec"] --> B{"Exists?"}
@@ -1038,12 +1079,15 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `Container.HasExecProbes` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Container.HasExecProbes
 c := &provider.Container{
@@ -1062,13 +1106,14 @@ if c.HasExecProbes() {
 
 **HasIgnoredContainerName** - Determines if the current container is in an ignore list, including Istio proxy containers.
 
-
 #### Signature (Go)
+
 ```go
 func (c *Container) HasIgnoredContainerName() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines if the current container is in an ignore list, including Istio proxy containers. |
@@ -1079,6 +1124,7 @@ func (c *Container) HasIgnoredContainerName() bool
 | **How it fits the package** | Used by container collection logic to filter out non‑relevant containers before performing policy checks. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"For each ignored name"}
@@ -1091,6 +1137,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Container.HasIgnoredContainerName --> func_Container.IsIstioProxy
@@ -1098,28 +1145,30 @@ graph TD
 ```
 
 #### Functions calling `Container.HasIgnoredContainerName`
+
 ```mermaid
 graph TD
   getPodContainers --> Container.HasIgnoredContainerName
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Container.HasIgnoredContainerName
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	c := provider.Container{Name: "istio-proxy"}
-	if c.HasIgnoredContainerName() {
-		fmt.Println("This container is ignored")
-	} else {
-		fmt.Println("This container will be processed")
-	}
+ c := provider.Container{Name: "istio-proxy"}
+ if c.HasIgnoredContainerName() {
+  fmt.Println("This container is ignored")
+ } else {
+  fmt.Println("This container will be processed")
+ }
 }
 ```
 
@@ -1128,7 +1177,6 @@ func main() {
 ### Container.IsContainerRunAsNonRoot
 
 **IsContainerRunAsNonRoot** - Returns whether the container is configured to run as a non‑root user and explains how that value was derived.
-
 
 #### 1) Signature (Go)
 
@@ -1180,19 +1228,19 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	// Example container with no SecurityContext
-	c := provider.Container{} // placeholder; in real code this would be populated from a PodSpec
+ // Example container with no SecurityContext
+ c := provider.Container{} // placeholder; in real code this would be populated from a PodSpec
 
-	// podRunAsNonRoot is nil, meaning no pod‑level override
-	isNonRoot, reason := c.IsContainerRunAsNonRoot(nil)
+ // podRunAsNonRoot is nil, meaning no pod‑level override
+ isNonRoot, reason := c.IsContainerRunAsNonRoot(nil)
 
-	fmt.Printf("Is non‑root: %t\nReason: %s\n", isNonRoot, reason)
+ fmt.Printf("Is non‑root: %t\nReason: %s\n", isNonRoot, reason)
 }
 ```
 
@@ -1201,7 +1249,6 @@ func main() {
 ### Container.IsContainerRunAsNonRootUserID
 
 **IsContainerRunAsNonRootUserID** - Checks whether the container’s `RunAsUser` security context indicates it runs as a non‑root user. It also explains how pod‑level defaults are applied when the container level is unspecified.
-
 
 #### Signature (Go)
 
@@ -1274,7 +1321,6 @@ func main() {
 
 **IsIstioProxy** - Checks whether the container represents the Istio side‑car proxy by comparing its name to a predefined constant.
 
-
 #### Signature (Go)
 
 ```go
@@ -1328,13 +1374,14 @@ if c.IsIstioProxy() {
 
 **IsReadOnlyRootFilesystem** - Checks whether the `SecurityContext.ReadOnlyRootFilesystem` flag of a container is set to `true`.
 
-
 #### Signature (Go)
+
 ```go
 func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the `SecurityContext.ReadOnlyRootFilesystem` flag of a container is set to `true`. |
@@ -1345,6 +1392,7 @@ func (c *Container) IsReadOnlyRootFilesystem(logger *log.Logger) bool
 | **How it fits the package** | Provides a helper to validate security configuration of containers within the `provider` package. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Is SecurityContext nil?"}
@@ -1355,39 +1403,42 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Container.IsReadOnlyRootFilesystem --> func_logger.Info
 ```
 
 #### Functions calling `Container.IsReadOnlyRootFilesystem`  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Container.IsReadOnlyRootFilesystem
 package main
 
 import (
-	"log"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	logger := log.Default()
-	c := &provider.Container{
-		SecurityContext: &provider.SecurityContext{
-			ReadOnlyRootFilesystem: func(b bool) *bool { return &b }(true),
-		},
-	}
+ logger := log.Default()
+ c := &provider.Container{
+  SecurityContext: &provider.SecurityContext{
+   ReadOnlyRootFilesystem: func(b bool) *bool { return &b }(true),
+  },
+ }
 
-	isRO := c.IsReadOnlyRootFilesystem(logger)
-	if isRO {
-		logger.Println("Container root filesystem is read‑only.")
-	} else {
-		logger.Println("Container root filesystem is writable.")
-	}
+ isRO := c.IsReadOnlyRootFilesystem(logger)
+ if isRO {
+  logger.Println("Container root filesystem is read‑only.")
+ } else {
+  logger.Println("Container root filesystem is writable.")
+ }
 }
 ```
 
@@ -1397,13 +1448,14 @@ func main() {
 
 **IsTagEmpty** - Checks whether the `Tag` field of the container’s image identifier is an empty string, indicating that no specific tag was supplied.
 
-
 #### Signature (Go)
+
 ```go
 func (c *Container) IsTagEmpty() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the `Tag` field of the container’s image identifier is an empty string, indicating that no specific tag was supplied. |
@@ -1414,6 +1466,7 @@ func (c *Container) IsTagEmpty() bool
 | **How it fits the package** | Provides a helper for callers that need to decide whether to apply default tagging logic or validate image specifications. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   C["Container"] -->|"reads"| Tag["c.ContainerImageIdentifier.Tag"]
@@ -1421,12 +1474,15 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `Container.IsTagEmpty` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Container.IsTagEmpty
 package main
@@ -1453,23 +1509,25 @@ func main() {
 
 **SetPreflightResults** - Runs the OpenShift‑preflight checks against a container image, caches the results per image, and stores them in the `Container` instance.
 
-
 #### Signature (Go)
+
 ```go
 func (c *Container) SetPreflightResults(preflightImageCache map[string]PreflightResultsDB, env *TestEnvironment) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Runs the OpenShift‑preflight checks against a container image, caches the results per image, and stores them in the `Container` instance. |
 | **Parameters** | `preflightImageCache map[string]PreflightResultsDB` – cache keyed by image name; `<br>` `env *TestEnvironment` – environment configuration for Docker credentials and insecure‑connection flag. |
 | **Return value** | `error` – non‑nil if the preflight run or result extraction fails. |
 | **Key dependencies** | • `github.com/redhat-openshift-ecosystem/openshift-preflight/container`<br>• `github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts`<br>• `github.com/go-logr/stdr`, `logr`<br>• `bytes`, `context`, `fmt`<br>• internal logging (`internal/log`) |
-| **Side effects** | * Mutates the `Container.PreflightResults` field.<br>* Populates/updates the supplied cache map.<br>* Emits informational logs via the package logger. |
+| **Side effects** | *Mutates the `Container.PreflightResults` field.<br>* Populates/updates the supplied cache map.<br>* Emits informational logs via the package logger. |
 | **How it fits the package** | The `provider.Container` type represents a single image under test; this method performs the core validation logic that other parts of the suite consume when generating reports or deciding on remediation steps. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check cache for image"] -->|"Hit"| B["Use cached results"]
@@ -1485,6 +1543,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Container.SetPreflightResults --> plibContainer.WithDockerConfigJSONFromFile
@@ -1501,9 +1560,11 @@ graph TD
 ```
 
 #### Functions calling `Container.SetPreflightResults` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Container.SetPreflightResults
 package main
@@ -1541,7 +1602,6 @@ func main() {
 ### Container.String
 
 **String** - Generates a concise description of a `Container` instance, including its name, pod name, and namespace.
-
 
 Returns a formatted string describing the container’s identity.
 
@@ -1612,13 +1672,14 @@ fmt.Println(c.String())
 
 **StringLong** - Generates a descriptive string containing key metadata about a Kubernetes container, including node, namespace, pod name, container name, UID, and runtime.
 
-
 #### Signature (Go)
+
 ```go
 func (c *Container) StringLong() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Generates a descriptive string containing key metadata about a Kubernetes container, including node, namespace, pod name, container name, UID, and runtime. |
@@ -1629,6 +1690,7 @@ func (c *Container) StringLong() string
 | **How it fits the package** | Provides a human‑readable representation used in logs, debugging, or UI output within the `provider` package that models Kubernetes resources. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Container"] --> B["fmt.Sprintf"]
@@ -1643,9 +1705,11 @@ graph TD
 ```
 
 #### Functions calling `Container.StringLong` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Container.StringLong
 package main
@@ -1674,13 +1738,14 @@ func main() {
 
 **ConvertArrayPods** - Transforms each `*corev1.Pod` from the Kubernetes API into a corresponding `*Pod` value defined by the provider package, preserving all relevant metadata and network information.
 
-
 #### Signature (Go)
+
 ```go
 func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Transforms each `*corev1.Pod` from the Kubernetes API into a corresponding `*Pod` value defined by the provider package, preserving all relevant metadata and network information. |
@@ -1691,6 +1756,7 @@ func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod)
 | **How it fits the package** | This helper centralizes pod conversion logic, allowing other parts of the provider to work with a uniform Pod representation without repeatedly handling Kubernetes types directly. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   pods --> loop["For each pod"]
@@ -1711,6 +1777,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ConvertArrayPods
 import (
@@ -1737,11 +1804,13 @@ func main() {
 Checks whether a scale object’s desired replica count matches its current status.
 
 #### Signature (Go)
+
 ```go
 func (crScale CrScale) IsScaleObjectReady() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines if the scale object's `Status.Replicas` equals the desired `Spec.Replicas`, indicating readiness. |
@@ -1752,6 +1821,7 @@ func (crScale CrScale) IsScaleObjectReady() bool
 | **How it fits the package** | Part of the `provider` package’s scale object logic, enabling callers to verify that scaling operations have completed successfully. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Get desired replicas"}
@@ -1762,6 +1832,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_CrScale.IsScaleObjectReady --> func_Log.Info
@@ -1772,25 +1843,26 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CrScale.IsScaleObjectReady
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	scale := provider.CrScale{
-		Spec: provider.ScaleSpec{Replicas: 3},
-		Status: provider.ScaleStatus{Replicas: 3},
-	}
-	if scale.IsScaleObjectReady() {
-		fmt.Println("Scale object is ready.")
-	} else {
-		fmt.Println("Scale object is not ready yet.")
-	}
+ scale := provider.CrScale{
+  Spec: provider.ScaleSpec{Replicas: 3},
+  Status: provider.ScaleStatus{Replicas: 3},
+ }
+ if scale.IsScaleObjectReady() {
+  fmt.Println("Scale object is ready.")
+ } else {
+  fmt.Println("Scale object is not ready yet.")
+ }
 }
 ```
 
@@ -1799,7 +1871,6 @@ func main() {
 ### CrScale.ToString
 
 **ToString** - Returns a formatted string that identifies the custom resource scale, showing both its name and namespace.
-
 
 > Provides a human‑readable representation of a `CrScale` instance by concatenating its name and namespace fields.
 
@@ -1866,11 +1937,13 @@ func main() {
 Formats a ClusterServiceVersion into a concise descriptive string.
 
 #### Signature (Go)
+
 ```go
 func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Creates a human‑readable representation of a CSV, showing its name and namespace. |
@@ -1881,6 +1954,7 @@ func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string
 | **How it fits the package** | Utility helper used by other provider functions to log CSV status and debugging information. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive csv"] --> B["Extract Name"]
@@ -1890,36 +1964,39 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_CsvToString --> func_Sprintf["fmt.Sprintf"]
 ```
 
 #### Functions calling `CsvToString` (Mermaid)
+
 ```mermaid
 graph TD
   func_WaitOperatorReady --> func_CsvToString
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking CsvToString
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+ olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
 func main() {
-	csv := &olmv1Alpha.ClusterServiceVersion{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "example-operator.v0.1.0",
-			Namespace: "operators",
-		},
-	}
-	fmt.Println(CsvToString(csv))
+ csv := &olmv1Alpha.ClusterServiceVersion{
+  ObjectMeta: metav1.ObjectMeta{
+   Name:      "example-operator.v0.1.0",
+   Namespace: "operators",
+  },
+ }
+ fmt.Println(CsvToString(csv))
 }
 ```
 
@@ -1928,7 +2005,6 @@ func main() {
 ### Deployment.IsDeploymentReady
 
 **IsDeploymentReady** - Evaluates whether the deployment satisfies all readiness conditions: an `Available` condition is present, replica counts match specifications, and no replicas are marked unavailable.
-
 
 #### Signature (Go)
 
@@ -1996,15 +2072,16 @@ func main() {
 
 **ToString** - Formats the deployment’s `Name` and `Namespace` into a single descriptive string.
 
-
 Provides a human‑readable string representation of a `Deployment`, combining its name and namespace.
 
 #### Signature (Go)
+
 ```go
 func (d *Deployment) ToString() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Formats the deployment’s `Name` and `Namespace` into a single descriptive string. |
@@ -2015,6 +2092,7 @@ func (d *Deployment) ToString() string
 | **How it fits the package** | Offers a convenient, readable representation of deployments for logging or debugging within the `provider` package. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Deployment object"] --> B["fmt.Sprintf(\deployment: %s ns: %s\, d.Name, d.Namespace)"]
@@ -2022,6 +2100,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Deployment_ToString --> fmt_Sprintf
@@ -2032,6 +2111,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Deployment.ToString
 package main
@@ -2059,11 +2139,13 @@ func main() {
 Provides a human‑readable representation of an event by formatting its key fields into a single string.
 
 #### Signature (Go)
+
 ```go
 func (e *Event) String() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a formatted string summarizing the event’s timestamp, involved object, reason, and message. |
@@ -2074,38 +2156,42 @@ func (e *Event) String() string
 | **How it fits the package** | Enables debugging and logging by providing a concise textual snapshot of an event instance within the `provider` package. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Event.String"] --> B["fmt.Sprintf(\timestamp=%s involved object=%s reason=%s message=%s\, e.CreationTimestamp.Time, e.InvolvedObject, e.Reason, e.Message)"]
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Event_String --> func_fmt_Sprintf
 ```
 
 #### Functions calling `Event.String` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Event.String
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	ev := provider.Event{
-		CreationTimestamp: /* populate with a timestamp */,
-		InvolvedObject:    "pod/example",
-		Reason:            "Scheduled",
-		Message:           "Successfully scheduled pod.",
-	}
-	fmt.Println(ev.String())
+ ev := provider.Event{
+  CreationTimestamp: /* populate with a timestamp */,
+  InvolvedObject:    "pod/example",
+  Reason:            "Scheduled",
+  Message:           "Successfully scheduled pod.",
+ }
+ fmt.Println(ev.String())
 }
 ```
 
@@ -2114,7 +2200,6 @@ func main() {
 ### GetAllOperatorGroups
 
 **GetAllOperatorGroups** - Queries the Kubernetes API for all `OperatorGroup` objects in the default namespace and returns a slice of pointers to them. Handles “not found” cases gracefully by returning `nil` without an error.
-
 
 #### Signature (Go)
 
@@ -2173,25 +2258,25 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	operatorGroups, err := provider.GetAllOperatorGroups()
-	if err != nil {
-		fmt.Printf("Failed to fetch OperatorGroups: %v\n", err)
-		return
-	}
-	if operatorGroups == nil {
-		fmt.Println("No OperatorGroups found.")
-		return
-	}
+ operatorGroups, err := provider.GetAllOperatorGroups()
+ if err != nil {
+  fmt.Printf("Failed to fetch OperatorGroups: %v\n", err)
+  return
+ }
+ if operatorGroups == nil {
+  fmt.Println("No OperatorGroups found.")
+  return
+ }
 
-	for _, og := range operatorGroups {
-		fmt.Printf("Found OperatorGroup: %s/%s\n", og.Namespace, og.Name)
-	}
+ for _, og := range operatorGroups {
+  fmt.Printf("Found OperatorGroup: %s/%s\n", og.Namespace, og.Name)
+ }
 }
 ```
 
@@ -2203,13 +2288,14 @@ func main() {
 
 **GetCatalogSourceBundleCount** - Counts the number of bundle images that belong to a given `CatalogSource`. It selects the counting strategy based on the OpenShift version: for ≤ 4.12 it queries a probe container; otherwise it tallies entries from package manifests.
 
-
 #### 1) Signature (Go)
+
 ```go
 func GetCatalogSourceBundleCount(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Counts the number of bundle images that belong to a given `CatalogSource`. It selects the counting strategy based on the OpenShift version: for ≤ 4.12 it queries a probe container; otherwise it tallies entries from package manifests. |
@@ -2220,6 +2306,7 @@ func GetCatalogSourceBundleCount(env *TestEnvironment, cs *olmv1Alpha.CatalogSou
 | **How it fits the package** | Provides bundle counting logic used by compliance checks (e.g., `testOperatorCatalogSourceBundleCount`) to enforce limits on catalog sizes. |
 
 #### 3) Internal workflow
+
 ```mermaid
 flowchart TD
     A["Start"] --> B{"OCP version ≤ 4.12?"}
@@ -2230,6 +2317,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies
+
 ```mermaid
 graph TD
   func_GetCatalogSourceBundleCount --> func_getCatalogSourceBundleCountFromProbeContainer
@@ -2240,12 +2328,14 @@ graph TD
 ```
 
 #### 5) Functions calling `GetCatalogSourceBundleCount`
+
 ```mermaid
 graph TD
   provider_testOperatorCatalogSourceBundleCount --> func_GetCatalogSourceBundleCount
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking GetCatalogSourceBundleCount
 env := &provider.TestEnvironment{
@@ -2263,7 +2353,6 @@ fmt.Printf("Catalog %s has %d bundles\n", cs.Name, bundleCount)
 
 **GetPciPerPod** - Parses the JSON network‑status annotation of a pod and extracts all PCI addresses associated with its network interfaces.
 
-
 ```go
 func GetPciPerPod(annotation string) (pciAddr []string, err error)
 ```
@@ -2273,7 +2362,7 @@ func GetPciPerPod(annotation string) (pciAddr []string, err error)
 | **Purpose** | Parses the JSON network‑status annotation of a pod and extracts all PCI addresses associated with its network interfaces. |
 | **Parameters** | `annotation` – string containing the CNI status JSON (may be empty). |
 | **Return value** | `pciAddr []string` – slice of PCI address strings; `err error` – non‑nil if unmarshalling fails. |
-| **Key dependencies** | * `strings.TrimSpace` – check for empty annotation<br>* `encoding/json.Unmarshal` – decode JSON into `[]CniNetworkInterface`<br>* `fmt.Errorf` – wrap errors<br>* Built‑in `append` – accumulate addresses |
+| **Key dependencies** | *`strings.TrimSpace` – check for empty annotation<br>* `encoding/json.Unmarshal` – decode JSON into `[]CniNetworkInterface`<br>*`fmt.Errorf` – wrap errors<br>* Built‑in `append` – accumulate addresses |
 | **Side effects** | None (pure function). |
 | **How it fits the package** | Provides a helper for `NewPod` to populate each pod’s PCI list from its annotations, enabling PCI‑aware connectivity tests. |
 
@@ -2327,7 +2416,6 @@ fmt.Printf("PCI addresses: %v\n", pci) // Output: PCI addresses: [0000:81:00.0]
 ### GetPodIPsPerNet
 
 **GetPodIPsPerNet** - Parses the `k8s.v1.cni.cncf.io/networks-status` annotation to extract all non‑default network interfaces and their IP addresses for a pod.
-
 
 #### 1) Signature (Go)
 
@@ -2387,21 +2475,21 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	annotation := `[{"name":"net1","ips":[{"address":"10.0.0.5/24"}],"default":false},{"name":"eth0","ips":[{"address":"192.168.1.10/24"}],"default":true}]`
-	ips, err := provider.GetPodIPsPerNet(annotation)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-		return
-	}
-	for netName, iface := range ips {
-		fmt.Printf("Network %s has IPs: %+v\n", netName, iface.IPS)
-	}
+ annotation := `[{"name":"net1","ips":[{"address":"10.0.0.5/24"}],"default":false},{"name":"eth0","ips":[{"address":"192.168.1.10/24"}],"default":true}]`
+ ips, err := provider.GetPodIPsPerNet(annotation)
+ if err != nil {
+  fmt.Printf("error: %v\n", err)
+  return
+ }
+ for netName, iface := range ips {
+  fmt.Printf("Network %s has IPs: %+v\n", netName, iface.IPS)
+ }
 }
 ```
 
@@ -2410,7 +2498,6 @@ func main() {
 ### GetPreflightResultsDB
 
 **GetPreflightResultsDB** - Builds a `PreflightResultsDB` from the raw preflight runtime results, separating passed, failed and error tests into distinct slices.
-
 
 #### Signature (Go)
 
@@ -2487,13 +2574,14 @@ func main() {
 
 **GetRuntimeUID** - Parses the `ContainerID` field of a `ContainerStatus` to separate the runtime prefix and the unique identifier (UID).
 
-
 #### Signature
+
 ```go
 func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses the `ContainerID` field of a `ContainerStatus` to separate the runtime prefix and the unique identifier (UID). |
@@ -2504,6 +2592,7 @@ func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string)
 | **How it fits the package** | Used by container‑listing logic to record runtime and UID for each pod container, aiding diagnostics and reporting. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Input ContainerStatus"] --> B{"Split ContainerID on ://"}
@@ -2514,6 +2603,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_GetRuntimeUID --> strings.Split
@@ -2521,25 +2611,27 @@ graph TD
 ```
 
 #### Functions calling `GetRuntimeUID`
+
 ```mermaid
 graph TD
   getPodContainers --> func_GetRuntimeUID
 ```
 
 #### Usage example
+
 ```go
 // Minimal example invoking GetRuntimeUID
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
-	corev1 "k8s.io/api/core/v1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ corev1 "k8s.io/api/core/v1"
 )
 
 func main() {
-	status := &corev1.ContainerStatus{
-		ContainerID: "docker://abcdef123456",
-	}
-	runtime, uid := provider.GetRuntimeUID(status)
-	fmt.Printf("runtime=%q uid=%q\n", runtime, uid) // → runtime="docker" uid="abcdef123456"
+ status := &corev1.ContainerStatus{
+  ContainerID: "docker://abcdef123456",
+ }
+ runtime, uid := provider.GetRuntimeUID(status)
+ fmt.Printf("runtime=%q uid=%q\n", runtime, uid) // → runtime="docker" uid="abcdef123456"
 }
 ```
 
@@ -2549,13 +2641,14 @@ func main() {
 
 **GetTestEnvironment** - Provides read‑only access to the singleton `env` that holds all runtime discovery data. It lazily builds the environment on first call and then returns the cached instance.
 
-
 #### Signature (Go)
+
 ```go
 func GetTestEnvironment() TestEnvironment
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Provides read‑only access to the singleton `env` that holds all runtime discovery data. It lazily builds the environment on first call and then returns the cached instance. |
@@ -2566,6 +2659,7 @@ func GetTestEnvironment() TestEnvironment
 | **How it fits the package** | Central access point for all components that need cluster state; used by diagnostics, tests, and run logic to avoid repeated discovery work. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check `loaded`"] -->|"false"| B["Call `buildTestEnvironment()`"]
@@ -2575,12 +2669,14 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetTestEnvironment --> func_buildTestEnvironment
 ```
 
 #### Functions calling `GetTestEnvironment` (Mermaid)
+
 ```mermaid
 graph TD
   func_ExecCommandContainerNSEnter --> func_GetTestEnvironment
@@ -2599,6 +2695,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetTestEnvironment
 package main
@@ -2621,7 +2718,6 @@ func main() {
 ### GetUpdatedCrObject
 
 **GetUpdatedCrObject** - Obtains a `scalingv1.Scale` object for the specified custom resource and encapsulates it in a `CrScale`.
-
 
 #### Signature (Go)
 
@@ -2682,13 +2778,14 @@ fmt.Printf("Scale of %s/%s: %+v\n", namespace, name, crScale)
 
 **GetUpdatedDeployment** - Fetches a Kubernetes Deployment by its namespace and name, wraps the result in the package‑specific `Deployment` type, and returns it.
 
-
 #### Signature (Go)
+
 ```go
 func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, name string) (*Deployment, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Fetches a Kubernetes Deployment by its namespace and name, wraps the result in the package‑specific `Deployment` type, and returns it. |
@@ -2699,6 +2796,7 @@ func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, name string
 | **How it fits the package** | Provides a convenient, typed wrapper around raw `appsv1.Deployment` objects so other provider functions can work with the local `Deployment` abstraction. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["GetUpdatedDeployment"] --> B["autodiscover.FindDeploymentByNameByNamespace"]
@@ -2706,18 +2804,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_GetUpdatedDeployment --> func_FindDeploymentByNameByNamespace
 ```
 
 #### Functions calling `GetUpdatedDeployment`
+
 ```mermaid
 graph TD
   func_isDeploymentReady --> func_GetUpdatedDeployment
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetUpdatedDeployment
 import (
@@ -2741,7 +2842,6 @@ func example(ac appv1client.AppsV1Interface, ns, name string) {
 ### GetUpdatedStatefulset
 
 **GetUpdatedStatefulset** - Fetches the latest Kubernetes StatefulSet identified by *namespace* and *name*, wrapping it in the package‑specific `StatefulSet` type for downstream logic.
-
 
 #### Signature (Go)
 
@@ -2812,7 +2912,6 @@ func example(ac appv1client.AppsV1Interface, ns, name string) {
 
 **IsOCPCluster** - Checks whether the test environment represents an OpenShift cluster by comparing the stored version string to a sentinel value for non‑OpenShift clusters.
 
-
 ```go
 func IsOCPCluster() bool
 ```
@@ -2822,7 +2921,7 @@ func IsOCPCluster() bool
 | **Purpose** | Checks whether the test environment represents an OpenShift cluster by comparing the stored version string to a sentinel value for non‑OpenShift clusters. |
 | **Parameters** | None |
 | **Return value** | `bool` – `true` if `env.OpenshiftVersion` differs from `autodiscover.NonOpenshiftClusterVersion`; otherwise `false`. |
-| **Key dependencies** | * `env.OpenshiftVersion` – global test environment variable. <br>* `autodiscover.NonOpenshiftClusterVersion` – sentinel constant indicating a non‑OpenShift cluster. |
+| **Key dependencies** | *`env.OpenshiftVersion` – global test environment variable. <br>* `autodiscover.NonOpenshiftClusterVersion` – sentinel constant indicating a non‑OpenShift cluster. |
 | **Side effects** | None; purely read‑only access to package globals. |
 | **How it fits the package** | Provides a lightweight, reusable guard used throughout the provider and diagnostics code to enable or disable OpenShift‑specific logic. |
 
@@ -2858,17 +2957,17 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	if provider.IsOCPCluster() {
-		fmt.Println("Running OpenShift‑specific tests")
-	} else {
-		fmt.Println("Skipping OpenShift‑only logic")
-	}
+ if provider.IsOCPCluster() {
+  fmt.Println("Running OpenShift‑specific tests")
+ } else {
+  fmt.Println("Skipping OpenShift‑only logic")
+ }
 }
 ```
 
@@ -2877,7 +2976,6 @@ func main() {
 ### LoadBalancingDisabled
 
 **LoadBalancingDisabled** - Determines if both the `cpu-load-balancing.crio.io` and `irq-load-balancing.crio.io` annotations on a pod are set to `"disable"`. If either annotation is missing or has an invalid value, it logs a debug message and returns `false`.
-
 
 ```go
 func LoadBalancingDisabled(p *Pod) bool
@@ -2893,6 +2991,7 @@ func LoadBalancingDisabled(p *Pod) bool
 | **How it fits the package** | Used by the CPU‑isolation compliance check (`Pod.IsCPUIsolationCompliant`) to verify that the pod is correctly annotated to disable load balancing before declaring it compliant. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Check cpu-load-balancing annotation"}
@@ -2906,18 +3005,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_LoadBalancingDisabled --> func_Logger.Debug
 ```
 
 #### Functions calling `LoadBalancingDisabled`
+
 ```mermaid
 graph TD
   func_Pod.IsCPUIsolationCompliant --> func_LoadBalancingDisabled
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking LoadBalancingDisabled
 pod := &provider.Pod{
@@ -2935,7 +3037,6 @@ isDisabled := provider.LoadBalancingDisabled(pod)
 ### NewContainer
 
 **NewContainer** - Initializes a fresh `Container` struct, embedding an empty `corev1.Container` to serve as the foundation for further configuration.
-
 
 Creates and returns a new instance of the `Container` type with an initialized underlying Kubernetes container object.
 
@@ -2979,13 +3080,13 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	c := provider.NewContainer()
-	// c can now be configured or inspected as needed
-	_ = c // placeholder to avoid unused variable error
+ c := provider.NewContainer()
+ // c can now be configured or inspected as needed
+ _ = c // placeholder to avoid unused variable error
 }
 ```
 
@@ -2994,7 +3095,6 @@ func main() {
 ### NewEvent
 
 **NewEvent** - Creates an `Event` wrapper around a Kubernetes core event, preserving the original object for further use.
-
 
 #### Signature (Go)
 
@@ -3063,7 +3163,6 @@ func main() {
 ### NewPod
 
 **NewPod** - Wraps a raw Kubernetes `Pod` into the library’s `Pod` type, enriching it with network interface data and container metadata.
-
 
 #### Signature (Go)
 
@@ -3144,13 +3243,14 @@ wrapped := provider.NewPod(pod)
 
 **GetCSCOSVersion** - Extracts and returns the CoreOS (CentOS Stream CoreOS) version string from a node’s OS image field. It validates that the node is running a supported CoreOS distribution before parsing.
 
-
 #### Signature (Go)
+
 ```go
 func (node *Node) GetCSCOSVersion() (string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Extracts and returns the CoreOS (CentOS Stream CoreOS) version string from a node’s OS image field. It validates that the node is running a supported CoreOS distribution before parsing. |
@@ -3161,6 +3261,7 @@ func (node *Node) GetCSCOSVersion() (string, error)
 | **How it fits the package** | In the *provider* package, this method supports higher‑level logic that needs to know a node’s CoreOS release for compliance checks or version‑specific operations. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Is node CS-COS?"}
@@ -3171,6 +3272,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Node.GetCSCOSVersion --> func_Node.IsCSCOS
@@ -3180,9 +3282,11 @@ graph TD
 ```
 
 #### Functions calling `Node.GetCSCOSVersion` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Node.GetCSCOSVersion
 node := provider.Node{ /* node initialization */ }
@@ -3201,13 +3305,14 @@ fmt.Printf("Node is running CoreOS version %s\n", version)
 
 **GetRHCOSVersion** - Extracts the concise Red Hat Enterprise Linux CoreOS (RHCOS) version from a node’s OS image string. It validates that the node is running RHCOS and converts the full “long” version to its short form.
 
-
 #### Signature (Go)
+
 ```go
 func (node *Node) GetRHCOSVersion() (string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Extracts the concise Red Hat Enterprise Linux CoreOS (RHCOS) version from a node’s OS image string. It validates that the node is running RHCOS and converts the full “long” version to its short form. |
@@ -3218,6 +3323,7 @@ func (node *Node) GetRHCOSVersion() (string, error)
 | **How it fits the package** | Provides a convenient accessor for client code that needs the RHCOS version of a node without exposing parsing logic. It relies on `IsRHCOS` and the external mapping helper. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check IsRHCOS"] -->|"false"| B["Return error invalid OS type"]
@@ -3230,6 +3336,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Node.GetRHCOSVersion --> func_Node.IsRHCOS
@@ -3240,9 +3347,11 @@ graph TD
 ```
 
 #### Functions calling `Node.GetRHCOSVersion` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Node.GetRHCOSVersion
 node := &provider.Node{ /* assume node.Data.Status.NodeInfo.OSImage is populated */ }
@@ -3260,13 +3369,14 @@ if err != nil {
 
 **GetRHELVersion** - Returns the Red Hat Enterprise Linux (RHEL) release number extracted from the node’s OS image string.
 
-
 #### Signature (Go)
+
 ```go
 func (node *Node) GetRHELVersion() (string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the Red Hat Enterprise Linux (RHEL) release number extracted from the node’s OS image string. |
@@ -3277,6 +3387,7 @@ func (node *Node) GetRHELVersion() (string, error)
 | **How it fits the package** | Part of the provider’s node utilities, enabling callers to programmatically determine RHEL releases for compliance checks. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Node.GetRHELVersion"] --> B{"Is node RHEL?"}
@@ -3287,6 +3398,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Node.GetRHELVersion --> func_Node.IsRHEL
@@ -3296,9 +3408,11 @@ graph TD
 ```
 
 #### Functions calling `Node.GetRHELVersion` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Node.GetRHELVersion
 node := &provider.Node{ /* populate node.Data with OS image */ }
@@ -3314,7 +3428,6 @@ fmt.Printf("Node is running RHEL %s\n", version)
 ### Node.HasWorkloadDeployed
 
 **HasWorkloadDeployed** - Returns `true` if at least one Pod in `podsUnderTest` has its `Spec.NodeName` equal to the Node’s name, indicating that a workload is running on this node. Otherwise returns `false`.
-
 
 Checks whether any of the given Pods are scheduled on the receiver Node.
 
@@ -3388,7 +3501,6 @@ fmt.Println("Workload deployed on", node.Data.Name, ":", deployed) // true
 
 **IsCSCOS** - Returns `true` when the node’s operating system image indicates it is running CoreOS. The check trims surrounding whitespace and looks for a predefined identifier (`cscosName`).
 
-
 #### Signature (Go)
 
 ```go
@@ -3446,7 +3558,6 @@ if node.IsCSCOS() {
 
 **IsControlPlaneNode** - Returns `true` if the node has at least one label that matches any of the predefined control‑plane labels.
 
-
 #### Signature (Go)
 
 ```go
@@ -3497,24 +3608,24 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	node := provider.Node{
-		Data: provider.NodeData{
-			Labels: map[string]string{
-				"node-role.kubernetes.io/master": "",
-			},
-		},
-	}
+ node := provider.Node{
+  Data: provider.NodeData{
+   Labels: map[string]string{
+    "node-role.kubernetes.io/master": "",
+   },
+  },
+ }
 
-	if node.IsControlPlaneNode() {
-		fmt.Println("This node is a control plane (master) node.")
-	} else {
-		fmt.Println("Regular worker node.")
-	}
+ if node.IsControlPlaneNode() {
+  fmt.Println("This node is a control plane (master) node.")
+ } else {
+  fmt.Println("Regular worker node.")
+ }
 }
 ```
 
@@ -3524,13 +3635,14 @@ func main() {
 
 **IsHyperThreadNode** - Checks whether the node identified by `node` has more than one thread per core by inspecting its probe pod.
 
-
 #### Signature (Go)
+
 ```go
 func (node *Node) IsHyperThreadNode(env *TestEnvironment) (bool, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the node identified by `node` has more than one thread per core by inspecting its probe pod. |
@@ -3541,6 +3653,7 @@ func (node *Node) IsHyperThreadNode(env *TestEnvironment) (bool, error)
 | **How it fits the package** | Part of the `provider` package, enabling tests to adapt based on node hardware capabilities. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Get ClientsHolder"] --> B["Create Context from probe pod"]
@@ -3553,6 +3666,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Node.IsHyperThreadNode --> func_GetClientsHolder
@@ -3564,9 +3678,11 @@ graph TD
 ```
 
 #### Functions calling `Node.IsHyperThreadNode` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Node.IsHyperThreadNode
 node := &provider.Node{Data: provider.NodeData{Name: "worker-1"}}
@@ -3588,7 +3704,6 @@ fmt.Printf("Node %s has hyper‑threading: %t\n", node.Data.Name, hasHT)
 ### Node.IsRHCOS
 
 **IsRHCOS** - Determines whether the operating system image of a Kubernetes node corresponds to Red Hat Enterprise Linux CoreOS (RHCOS).
-
 
 #### Signature (Go)
 
@@ -3647,13 +3762,14 @@ if node.IsRHCOS() {
 
 **IsRHEL** - Determines whether the node’s operating system image is a Red Hat Enterprise Linux (RHEL) release.
 
-
 #### Signature (Go)
+
 ```go
 func (node *Node) IsRHEL() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether the node’s operating system image is a Red Hat Enterprise Linux (RHEL) release. |
@@ -3664,6 +3780,7 @@ func (node *Node) IsRHEL() bool
 | **How it fits the package** | Provides a quick guard used by other provider utilities (e.g., `GetRHELVersion`) to ensure they operate only on supported OS images. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Trim node.Data.Status.NodeInfo.OSImage"] --> B["Check if contains rhelName"]
@@ -3673,6 +3790,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Node.IsRHEL --> func_strings.TrimSpace
@@ -3680,12 +3798,14 @@ graph TD
 ```
 
 #### Functions calling `Node.IsRHEL`
+
 ```mermaid
 graph TD
   func_Node.GetRHELVersion --> func_Node.IsRHEL
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Node.IsRHEL
 node := &provider.Node{ /* populate node data */ }
@@ -3702,13 +3822,14 @@ if node.IsRHEL() {
 
 **IsRTKernel** - Checks whether the node’s kernel version string contains the substring “rt”, indicating a real‑time kernel.
 
-
 #### Signature (Go)
+
 ```go
 func (node *Node) IsRTKernel() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the node’s kernel version string contains the substring “rt”, indicating a real‑time kernel. |
@@ -3719,6 +3840,7 @@ func (node *Node) IsRTKernel() bool
 | **How it fits the package** | Provides a quick flag for other components to decide if real‑time kernel specific logic should be applied. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Trim node.Data.Status.NodeInfo.KernelVersion"] --> B{"Contains rt"}
@@ -3727,6 +3849,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Node.IsRTKernel --> func_strings.TrimSpace
@@ -3738,6 +3861,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Node.IsRTKernel
 node := &provider.Node{
@@ -3759,7 +3883,6 @@ fmt.Printf("Is real‑time kernel? %t\n", isRT)
 ### Node.IsWorkerNode
 
 **IsWorkerNode** - Returns `true` if the node’s labels contain any key that matches one of the predefined worker‑label identifiers.
-
 
 Determines whether a Kubernetes node is classified as a worker node by inspecting its labels.
 
@@ -3824,7 +3947,6 @@ fmt.Printf("Is worker node? %t\n", isWorker)
 
 **MarshalJSON** - Provides JSON encoding of the `Node.Data` field, enabling a `Node` value to be marshaled directly by `encoding/json`.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -3868,19 +3990,19 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+ "encoding/json"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	node := provider.Node{Data: map[string]string{"role": "worker"}}
-	b, err := node.MarshalJSON()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(string(b)) // {"role":"worker"}
+ node := provider.Node{Data: map[string]string{"role": "worker"}}
+ b, err := node.MarshalJSON()
+ if err != nil {
+  panic(err)
+ }
+ fmt.Println(string(b)) // {"role":"worker"}
 }
 
 // Alternatively, json.Marshal will automatically use the custom method:
@@ -3893,13 +4015,14 @@ b2, _ := json.Marshal(node) // same output
 
 **SetPreflightResults** - Executes a Preflight container check against the operator’s bundle and index images, collects the results, logs output, and assigns them to `op.PreflightResults`. Skips execution if no install plans are present.
 
-
 #### 1) Signature (Go)
+
 ```go
 func (op *Operator) SetPreflightResults(env *TestEnvironment) error
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Executes a Preflight container check against the operator’s bundle and index images, collects the results, logs output, and assigns them to `op.PreflightResults`. Skips execution if no install plans are present. |
@@ -3910,6 +4033,7 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error
 | **How it fits the package** | In the `provider` package, an `Operator` represents a bundle under test. This method gathers quality‑control data for that operator so tests can later assert on pass/fail counts and remediation suggestions. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Check if InstallPlans empty"] -->|"Yes"| B["Log warning & exit"]
@@ -3932,6 +4056,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Operator.SetPreflightResults --> clientsholder.GetClientsHolder
@@ -3948,9 +4073,11 @@ graph TD
 ```
 
 #### 5) Functions calling `Operator.SetPreflightResults` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking Operator.SetPreflightResults
 package main
@@ -3975,7 +4102,6 @@ func main() {
 ### Operator.String
 
 **String** - Formats the fields of an `Operator` instance into a single string for logging or debugging.
-
 
 Returns a human‑readable description of an operator configuration.
 
@@ -4022,18 +4148,18 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	op := provider.Operator{
-		Name:              "my-operator",
-		Namespace:         "operators",
-		SubscriptionName:  "sub-1",
-		TargetNamespaces: []string{"ns-a", "ns-b"},
-	}
-	fmt.Println(op.String())
+ op := provider.Operator{
+  Name:              "my-operator",
+  Namespace:         "operators",
+  SubscriptionName:  "sub-1",
+  TargetNamespaces: []string{"ns-a", "ns-b"},
+ }
+ fmt.Println(op.String())
 }
 ```
 
@@ -4043,13 +4169,14 @@ func main() {
 
 **AffinityRequired** - Checks the pod’s labels for the key `AffinityRequiredKey`. If present, parses its string value as a boolean and returns that result. Defaults to `false` if the label is absent or invalid.
 
-
 #### Signature (Go)
+
 ```go
 func (p *Pod) AffinityRequired() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks the pod’s labels for the key `AffinityRequiredKey`. If present, parses its string value as a boolean and returns that result. Defaults to `false` if the label is absent or invalid. |
@@ -4060,6 +4187,7 @@ func (p *Pod) AffinityRequired() bool
 | **How it fits the package** | Provides a helper for filtering pods based on their affinity requirement, used by `TestEnvironment.GetAffinityRequiredPods` and `GetPodsWithoutAffinityRequiredLabel`. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   p.Labels["AffinityRequiredKey"] --> checkExistence
@@ -4071,6 +4199,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Pod.AffinityRequired --> strconv.ParseBool
@@ -4078,6 +4207,7 @@ graph TD
 ```
 
 #### Functions calling `Pod.AffinityRequired`
+
 ```mermaid
 graph TD
   TestEnvironment.GetAffinityRequiredPods --> func_Pod.AffinityRequired
@@ -4085,6 +4215,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Pod.AffinityRequired
 p := &Pod{
@@ -4104,7 +4235,6 @@ if p.AffinityRequired() {
 ### Pod.CheckResourceHugePagesSize
 
 **CheckResourceHugePagesSize** - Ensures every `hugepages-*` resource request and limit in the pod’s containers matches the supplied `size`. If any huge‑page resource differs, it returns `false`; otherwise `true`.
-
 
 ---
 
@@ -4198,13 +4328,14 @@ if p.CheckResourceHugePagesSize("1Mi") {
 
 **ContainsIstioProxy** - Determines whether any container in the pod has the name specified by `IstioProxyContainerName`.
 
-
 #### Signature (Go)
+
 ```go
 func (p *Pod) ContainsIstioProxy() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether any container in the pod has the name specified by `IstioProxyContainerName`. |
@@ -4215,6 +4346,7 @@ func (p *Pod) ContainsIstioProxy() bool
 | **How it fits the package** | Provides a utility for higher‑level logic that needs to know whether a pod is part of an Istio service mesh. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   Start --> CheckContainers
@@ -4223,12 +4355,15 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `Pod.ContainsIstioProxy`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Pod.ContainsIstioProxy
 pod := provider.Pod{
@@ -4246,7 +4381,6 @@ fmt.Println("Contains Istio proxy:", hasProxy) // Output: Contains Istio proxy: 
 ### Pod.CreatedByDeploymentConfig
 
 **CreatedByDeploymentConfig** - Determines whether the pod originates from an OpenShift `DeploymentConfig` by traversing owner references through a `ReplicationController`.
-
 
 #### Signature (Go)
 
@@ -4316,7 +4450,6 @@ fmt.Printf("Created by DeploymentConfig? %t\n", isDC)
 ### Pod.GetRunAsNonRootFalseContainers
 
 **GetRunAsNonRootFalseContainers** - Returns containers that either have `securityContext.runAsNonRoot` set to false or `securityContext.runAsUser` set to 0 (both indicating a root user). Pod‑level defaults are respected if container values are missing.
-
 
 #### Signature (Go)
 
@@ -4405,13 +4538,14 @@ fmt.Println("Reasons:", reasons)
 
 **GetTopOwner** - Returns a mapping of top‑level owner identifiers to `podhelper.TopOwner` structs for the Pod instance.
 
-
 #### Signature (Go)
+
 ```go
 func (p *Pod) GetTopOwner() (topOwners map[string]podhelper.TopOwner, err error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a mapping of top‑level owner identifiers to `podhelper.TopOwner` structs for the Pod instance. |
@@ -4422,6 +4556,7 @@ func (p *Pod) GetTopOwner() (topOwners map[string]podhelper.TopOwner, err error)
 | **How it fits the package** | Provides a convenient method on the `Pod` type to expose owner information, used by higher‑level analytics or reporting components within the provider package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Pod instance"] --> B["Retrieve Namespace & OwnerReferences"]
@@ -4430,15 +4565,18 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Pod_GetTopOwner --> func_podhelper_GetPodTopOwner
 ```
 
 #### Functions calling `Pod.GetTopOwner`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Pod.GetTopOwner
 pod := &provider.Pod{
@@ -4460,7 +4598,6 @@ for id, owner := range owners {
 ### Pod.HasHugepages
 
 **HasHugepages** - Determines whether any container within the pod requests or limits a hugepage resource.
-
 
 #### 1) Signature (Go)
 
@@ -4516,32 +4653,32 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	pod := provider.Pod{
-		Name:      "example-pod",
-		Namespace: "default",
-		Containers: []provider.Container{
-			{
-				Image: "nginx:latest",
-				Resources: provider.Resources{
-					Requests: map[provider.ResourceName]resource.Quantity{
-						provider.HugePagesResourceName: resource.MustParse("1Gi"),
-					},
-				},
-			},
-		},
-	}
+ pod := provider.Pod{
+  Name:      "example-pod",
+  Namespace: "default",
+  Containers: []provider.Container{
+   {
+    Image: "nginx:latest",
+    Resources: provider.Resources{
+     Requests: map[provider.ResourceName]resource.Quantity{
+      provider.HugePagesResourceName: resource.MustParse("1Gi"),
+     },
+    },
+   },
+  },
+ }
 
-	if pod.HasHugepages() {
-		fmt.Println("Pod uses hugepages")
-	} else {
-		fmt.Println("No hugepage usage detected")
-	}
+ if pod.HasHugepages() {
+  fmt.Println("Pod uses hugepages")
+ } else {
+  fmt.Println("No hugepage usage detected")
+ }
 }
 ```
 
@@ -4567,6 +4704,7 @@ func (p *Pod) HasNodeSelector() bool
 | **How it fits the package** | Part of the provider’s pod abstraction, enabling callers to decide if scheduling constraints exist before further processing or validation. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start["Start"] --> CheckLen{"Is len(p.Spec.NodeSelector) ≠ 0?"}
@@ -4575,15 +4713,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Pod.HasNodeSelector --> builtin_len
 ```
 
 #### Functions calling `Pod.HasNodeSelector`  
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Pod.HasNodeSelector
 p := &provider.Pod{
@@ -4607,11 +4748,13 @@ if p.HasNodeSelector() {
 Checks whether a pod satisfies the required affinity constraints defined in its spec.
 
 #### Signature (Go)
+
 ```go
 func (p *Pod) IsAffinityCompliant() (bool, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Validates that a pod has appropriate affinity rules when an `AffinityRequired` flag is set; returns `true` if compliant, otherwise `false` with descriptive error. |
@@ -4622,6 +4765,7 @@ func (p *Pod) IsAffinityCompliant() (bool, error)
 | **How it fits the package** | Provides a reusable check used by higher‑level validation routines to enforce affinity policies on Kubernetes pods within the provider package. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"p.Spec.Affinity == nil"}
@@ -4634,6 +4778,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Pod.IsAffinityCompliant --> fmt.Errorf
@@ -4645,6 +4790,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Pod.IsAffinityCompliant
 pod := &provider.Pod{
@@ -4665,7 +4811,6 @@ if err != nil {
 ### Pod.IsAutomountServiceAccountSetOnSA
 
 **IsAutomountServiceAccountSetOnSA** - Determines whether the `AutomountServiceAccountToken` field is set for the service account associated with the pod.
-
 
 #### Signature (Go)
 
@@ -4736,7 +4881,6 @@ func boolPtr(b bool) *bool { return &b }
 
 **IsCPUIsolationCompliant** - Checks that the pod has correct annotations for disabling CPU and IRQ load balancing and specifies a runtime class name, indicating compliance with CPU isolation requirements.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -4801,13 +4945,14 @@ if p.IsCPUIsolationCompliant() {
 
 **IsPodGuaranteed** - Checks whether all containers in the pod have identical CPU and memory requests and limits, thereby qualifying the pod for the *Guaranteed* QoS class.
 
-
 #### Signature (Go)
+
 ```go
 func (p *Pod) IsPodGuaranteed() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether all containers in the pod have identical CPU and memory requests and limits, thereby qualifying the pod for the *Guaranteed* QoS class. |
@@ -4818,18 +4963,21 @@ func (p *Pod) IsPodGuaranteed() bool
 | **How it fits the package** | Provides a concise API for other components (e.g., test environments) to filter pods based on QoS guarantees without exposing internal logic. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   Pod.IsPodGuaranteed --> AreResourcesIdentical
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Pod.IsPodGuaranteed --> func_AreResourcesIdentical
 ```
 
 #### Functions calling `Pod.IsPodGuaranteed`
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetGuaranteedPods --> func_Pod.IsPodGuaranteed
@@ -4837,6 +4985,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Pod.IsPodGuaranteed
 p := &provider.Pod{ /* populate pod fields */ }
@@ -4864,11 +5013,12 @@ func (p *Pod) IsPodGuaranteedWithExclusiveCPUs() bool
 | **Purpose** | Checks that all containers in a pod request and limit the same integer number of CPUs (no fractional milli‑CPU values). |
 | **Parameters** | `p` – pointer to the Pod instance invoking the method. |
 | **Return value** | `bool`: `true` if every container satisfies whole‑unit CPU requests/limits and those values are identical; otherwise `false`. |
-| **Key dependencies** | * Calls `AreCPUResourcesWholeUnits(p)` to verify integer CPU specifications.<br>* Calls `AreResourcesIdentical(p)` to ensure request equals limit. |
+| **Key dependencies** | *Calls `AreCPUResourcesWholeUnits(p)` to verify integer CPU specifications.<br>* Calls `AreResourcesIdentical(p)` to ensure request equals limit. |
 | **Side effects** | None; purely read‑only evaluation. |
 | **How it fits the package** | Provides a quick check for pods that are guaranteed exclusive CPUs, used by higher‑level filtering functions in the provider package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Pod.IsPodGuaranteedWithExclusiveCPUs"] --> B{"AreCPUResourcesWholeUnits(p)"}
@@ -4879,6 +5029,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Pod.IsPodGuaranteedWithExclusiveCPUs --> func_AreCPUResourcesWholeUnits
@@ -4886,6 +5037,7 @@ graph TD
 ```
 
 #### Functions calling `Pod.IsPodGuaranteedWithExclusiveCPUs`
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetGuaranteedPodsWithExclusiveCPUs --> func_Pod.IsPodGuaranteedWithExclusiveCPUs
@@ -4893,6 +5045,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Pod.IsPodGuaranteedWithExclusiveCPUs
 p := &provider.Pod{ /* populate pod fields */ }
@@ -4906,7 +5059,6 @@ if p.IsPodGuaranteedWithExclusiveCPUs() {
 ### Pod.IsRunAsUserID
 
 **IsRunAsUserID** - Determines whether the `Pod`’s security context is configured to run as a specific user ID.
-
 
 #### 1) Signature (Go)
 
@@ -4991,6 +5143,7 @@ flowchart TD
 ```
 
 #### Function dependencies  
+
 None – this function is currently not referenced elsewhere in the package.
 
 ```mermaid
@@ -5012,18 +5165,18 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	pod := provider.Pod{ /* assume Spec is populated elsewhere */ }
-	if pod.IsRuntimeClassNameSpecified() {
-		fmt.Println("runtimeClassName is set")
-	} else {
-		fmt.Println("runtimeClassName is not specified")
-	}
+ pod := provider.Pod{ /* assume Spec is populated elsewhere */ }
+ if pod.IsRuntimeClassNameSpecified() {
+  fmt.Println("runtimeClassName is set")
+ } else {
+  fmt.Println("runtimeClassName is not specified")
+ }
 }
 ```
 
@@ -5032,7 +5185,6 @@ func main() {
 ### Pod.IsShareProcessNamespace
 
 **IsShareProcessNamespace** - Determines if a pod is configured to share its process namespace with other pods in the same pod. This is used for selecting pods that have `shareProcessNamespace: true` set in their spec.
-
 
 Checks whether the pod’s specification enables sharing of the process namespace.
 
@@ -5112,7 +5264,6 @@ if pod.IsShareProcessNamespace() {
 
 **IsUsingClusterRoleBinding** - Checks whether the pod’s service account is referenced as a subject in any provided `ClusterRoleBinding`. Returns a flag, the name of the bound role, and an error if logging fails.
 
-
 #### Signature (Go)
 
 ```go
@@ -5180,13 +5331,14 @@ fmt.Printf("Uses cluster‑role binding: %v (role: %s)\n", usingCRB, roleName)
 
 **IsUsingSRIOV** - Returns `true` when at least one of the pod’s attached networks is configured as SR‑I/O‑V. It inspects the pod’s CNCF CNI annotation and checks each referenced NetworkAttachmentDefinition (NAD).
 
-
 #### 1) Signature (Go)
+
 ```go
 func (p *Pod) IsUsingSRIOV() (bool, error)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns `true` when at least one of the pod’s attached networks is configured as SR‑I/O‑V. It inspects the pod’s CNCF CNI annotation and checks each referenced NetworkAttachmentDefinition (NAD). |
@@ -5197,6 +5349,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error)
 | **How it fits the package** | Within the `provider` package, this method lets higher‑level logic (e.g., test environments) filter pods that use SR‑I/O‑V networking for targeted validation or reporting. |
 
 #### 3) Internal workflow
+
 ```mermaid
 flowchart TD
     A["Check pod annotation k8s.v1.cni.cncf.io/networks"] -->|"exists?"| B{"Annotation present"}
@@ -5212,6 +5365,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies
+
 ```mermaid
 graph TD
     func_Pod.IsUsingSRIOV --> func_getCNCFNetworksNamesFromPodAnnotation
@@ -5221,12 +5375,14 @@ graph TD
 ```
 
 #### 5) Functions calling `Pod.IsUsingSRIOV`
+
 ```mermaid
 graph TD
     func_TestEnvironment.GetPodsUsingSRIOV --> func_Pod.IsUsingSRIOV
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking Pod.IsUsingSRIOV
 p := &provider.Pod{
@@ -5246,7 +5402,6 @@ fmt.Printf("Pod uses SR‑I/O‑V: %t\n", usesSRIOV)
 ### Pod.IsUsingSRIOVWithMTU
 
 **IsUsingSRIOVWithMTU** - Returns `true` when any network attachment of the pod is an SR‑IOV type and its MTU has been set via the corresponding `SriovNetworkNodePolicy`.
-
 
 #### Signature (Go)
 
@@ -5318,15 +5473,16 @@ fmt.Printf("Pod uses SR‑IOV with MTU set? %t\n", usingMTU)
 
 **String** - Provide a concise string representation of a `Pod`, useful for logging and debugging.
 
-
 The method returns a human‑readable description of the pod, including its name and namespace.
 
 #### Signature (Go)
+
 ```go
 func (p *Pod) String() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Provide a concise string representation of a `Pod`, useful for logging and debugging. |
@@ -5337,18 +5493,21 @@ func (p *Pod) String() string
 | **How it fits the package** | Used throughout the provider package wherever a pod needs to be referenced in logs, error messages, or debug output. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Pod.String()"] --> B["fmt.Sprintf(\pod: %s ns: %s\, p.Name, p.Namespace)"]
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Pod_String --> func_fmt_Sprintf
 ```
 
 #### Functions calling `Pod.String` (Mermaid)
+
 ```mermaid
 graph TD
   func_AreCPUResourcesWholeUnits --> func_Pod_String
@@ -5357,6 +5516,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Pod.String
 p := &Pod{
@@ -5371,7 +5531,6 @@ fmt.Println(p.String()) // Output: pod: my-pod ns: default
 ### StatefulSet.IsStatefulSetReady
 
 **IsStatefulSetReady** - Determines if the StatefulSet’s current status matches the specified number of replicas. It ensures that all replicas are ready, running, and updated.
-
 
 Checks whether a StatefulSet instance has reached its desired replica state and is fully operational.
 
@@ -5434,20 +5593,20 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	ss := &provider.StatefulSet{
-		Spec: provider.StatefulSetSpec{Replicas: nil},
-		Status: provider.StatefulSetStatus{
-			ReadyReplicas:   1,
-			CurrentReplicas: 1,
-			UpdatedReplicas: 1,
-		},
-	}
-	fmt.Println("Is ready:", ss.IsStatefulSetReady())
+ ss := &provider.StatefulSet{
+  Spec: provider.StatefulSetSpec{Replicas: nil},
+  Status: provider.StatefulSetStatus{
+   ReadyReplicas:   1,
+   CurrentReplicas: 1,
+   UpdatedReplicas: 1,
+  },
+ }
+ fmt.Println("Is ready:", ss.IsStatefulSetReady())
 }
 ```
 
@@ -5456,7 +5615,6 @@ func main() {
 ### StatefulSet.ToString
 
 **ToString** - Produces a human‑readable representation of a StatefulSet, including its name and namespace.
-
 
 #### Signature (Go)
 
@@ -5503,17 +5661,17 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	ss := &provider.StatefulSet{
-		Name:      "my-statefulset",
-		Namespace: "default",
-	}
-	fmt.Println(ss.ToString()) // prints: statefulset: my-statefulset ns: default
+ ss := &provider.StatefulSet{
+  Name:      "my-statefulset",
+  Namespace: "default",
+ }
+ fmt.Println(ss.ToString()) // prints: statefulset: my-statefulset ns: default
 }
 ```
 
@@ -5523,13 +5681,14 @@ func main() {
 
 **GetAffinityRequiredPods** - Returns a slice of `*Pod` objects from the test environment that have an affinity requirement.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetAffinityRequiredPods() []*Pod
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a slice of `*Pod` objects from the test environment that have an affinity requirement. |
@@ -5540,6 +5699,7 @@ func (env *TestEnvironment) GetAffinityRequiredPods() []*Pod
 | **How it fits the package** | Provides a helper for tests and filters to quickly access pods that must be scheduled with affinity constraints. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   start(Start) --> loop["For each pod in env.Pods"]
@@ -5552,6 +5712,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetAffinityRequiredPods --> func_Pod.AffinityRequired
@@ -5563,6 +5724,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetAffinityRequiredPods
 env := &provider.TestEnvironment{
@@ -5581,7 +5743,6 @@ fmt.Printf("Found %d pods requiring affinity\n", len(affinityPods))
 ### TestEnvironment.GetBaremetalNodes
 
 **GetBaremetalNodes** - Filters the `TestEnvironment.Nodes` slice and returns only those whose provider ID indicates a bare‑metal host (`"baremetalhost://"` prefix).
-
 
 #### Signature (Go)
 
@@ -5645,13 +5806,14 @@ fmt.Printf("Found %d bare‑metal node(s)\n", len(baremetalNodes))
 
 **GetCPUPinningPodsWithDpdk** - Retrieves all pods in the test environment that have CPU pinning enabled and are using DPDK for networking.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Retrieves all pods in the test environment that have CPU pinning enabled and are using DPDK for networking. |
@@ -5662,6 +5824,7 @@ func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod
 | **How it fits the package** | Provides a high‑level filter for tests that need to target pods with exclusive CPU resources and DPDK networking, building on lower‑level filtering helpers. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["TestEnvironment"] --> B["GetGuaranteedPodsWithExclusiveCPUs"]
@@ -5670,6 +5833,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetCPUPinningPodsWithDpdk --> func_filterDPDKRunningPods
@@ -5680,6 +5844,7 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetCPUPinningPodsWithDpdk
 env := &provider.TestEnvironment{ /* populate env.Pods as needed */ }
@@ -5693,13 +5858,14 @@ fmt.Printf("Found %d DPDK‑enabled, CPU‑pinned pods\n", len(dpdkPinnedPods))
 
 **GetDockerConfigFile** - Returns the file path to the Docker configuration JSON used for preflight checks.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetDockerConfigFile() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the file path to the Docker configuration JSON used for preflight checks. |
@@ -5710,15 +5876,18 @@ func (env *TestEnvironment) GetDockerConfigFile() string
 | **How it fits the package** | Used by container and operator preflight helpers to supply authentication credentials when interacting with Docker registries. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["GetDockerConfigFile"] --> B["Return env.params.PfltDockerconfig"]
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `TestEnvironment.GetDockerConfigFile` (Mermaid)
+
 ```mermaid
 graph TD
   Container.SetPreflightResults --> TestEnvironment.GetDockerConfigFile
@@ -5726,6 +5895,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetDockerConfigFile
 env := &TestEnvironment{
@@ -5740,7 +5910,6 @@ fmt.Println("Docker config file:", dockerCfgPath)
 ### TestEnvironment.GetGuaranteedPodContainersWithExclusiveCPUs
 
 **GetGuaranteedPodContainersWithExclusiveCPUs** - Returns a slice of `*Container` objects that belong to pods having exclusive CPU guarantees within the test environment.
-
 
 #### Signature (Go)
 
@@ -5798,13 +5967,14 @@ fmt.Printf("Found %d containers with exclusive CPUs\n", len(containers))
 
 **GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID** - Returns a slice of `*Container` objects belonging to pods that are guaranteed to use exclusive CPUs and have the host PID feature disabled.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID() []*Container
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a slice of `*Container` objects belonging to pods that are guaranteed to use exclusive CPUs and have the host PID feature disabled. |
@@ -5815,6 +5985,7 @@ func (env *TestEnvironment) GetGuaranteedPodContainersWithExclusiveCPUsWithoutHo
 | **How it fits the package** | Part of the `provider` package’s filtering utilities; it supplies container sets for tests that require exclusive CPU guarantees without host PID interference. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["TestEnvironment"] --> B["GetGuaranteedPodsWithExclusiveCPUs"]
@@ -5824,6 +5995,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID --> func_GetGuaranteedPodsWithExclusiveCPUs
@@ -5832,9 +6004,11 @@ graph TD
 ```
 
 #### Functions calling `TestEnvironment.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID
 env := &provider.TestEnvironment{
@@ -5851,16 +6025,18 @@ fmt.Printf("Found %d containers that are guaranteed with exclusive CPUs and have
 
 **GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID** - Returns a slice of `*Container` objects belonging to pods that are guaranteed, use isolated CPUs, and do not set the HostPID flag.
 
-
 #### 1) Title
+
 **GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID** – Retrieve containers from guaranteed pods that isolate CPUs and have no HostPID flag.
 
 #### 2) Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID() []*Container
 ```
 
 #### 3) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a slice of `*Container` objects belonging to pods that are guaranteed, use isolated CPUs, and do not set the HostPID flag. |
@@ -5871,6 +6047,7 @@ func (env *TestEnvironment) GetGuaranteedPodContainersWithIsolatedCPUsWithoutHos
 | **How it fits the package** | Part of the `provider` filter utilities that provide high‑level queries over a test environment’s pod collection. |
 
 #### 4) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["TestEnvironment"] --> B["GetGuaranteedPodsWithIsolatedCPUs"]
@@ -5880,6 +6057,7 @@ flowchart TD
 ```
 
 #### 5) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID --> func_getContainers
@@ -5888,9 +6066,11 @@ graph TD
 ```
 
 #### 6) Functions calling `TestEnvironment.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### 7) Usage example (Go)
+
 ```go
 // Minimal example invoking GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID
 env := &provider.TestEnvironment{
@@ -5907,13 +6087,14 @@ fmt.Printf("Found %d qualifying containers\n", len(containers))
 
 **GetGuaranteedPods** - Filters and returns all pods in the test environment that satisfy the “guaranteed” criteria defined by `Pod.IsPodGuaranteed`.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetGuaranteedPods() []*Pod
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Filters and returns all pods in the test environment that satisfy the “guaranteed” criteria defined by `Pod.IsPodGuaranteed`. |
@@ -5924,6 +6105,7 @@ func (env *TestEnvironment) GetGuaranteedPods() []*Pod
 | **How it fits the package** | Provides a convenient accessor for other components (e.g., filters, tests) to work with only guaranteed pods within the `provider` package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Pods"}
@@ -5936,6 +6118,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetGuaranteedPods --> func_Pod.IsPodGuaranteed
@@ -5943,9 +6126,11 @@ graph TD
 ```
 
 #### Functions calling `TestEnvironment.GetGuaranteedPods`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetGuaranteedPods
 env := &provider.TestEnvironment{
@@ -5962,13 +6147,14 @@ fmt.Printf("Found %d guaranteed pods\n", len(guaranteedPods))
 
 **GetGuaranteedPodsWithExclusiveCPUs** - Filters the `TestEnvironment`’s pod list to include only those pods that are guaranteed to have exclusive CPUs.
 
-
 #### 1) Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetGuaranteedPodsWithExclusiveCPUs() []*Pod
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Filters the `TestEnvironment`’s pod list to include only those pods that are guaranteed to have exclusive CPUs. |
@@ -5979,6 +6165,7 @@ func (env *TestEnvironment) GetGuaranteedPodsWithExclusiveCPUs() []*Pod
 | **How it fits the package** | Supplies a foundational set of pods used by other query functions (e.g., CPU pinning, container extraction). |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   env.Pods --> forEachPod["For each pod `p` in `env.Pods`"]
@@ -5989,6 +6176,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetGuaranteedPodsWithExclusiveCPUs --> func_Pod.IsPodGuaranteedWithExclusiveCPUs
@@ -5996,6 +6184,7 @@ graph TD
 ```
 
 #### 5) Functions calling `TestEnvironment.GetGuaranteedPodsWithExclusiveCPUs` (Mermaid)
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetCPUPinningPodsWithDpdk --> func_TestEnvironment.GetGuaranteedPodsWithExclusiveCPUs
@@ -6004,6 +6193,7 @@ graph TD
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetGuaranteedPodsWithExclusiveCPUs
 env := &TestEnvironment{ /* populate env.Pods as needed */ }
@@ -6017,13 +6207,14 @@ fmt.Printf("Found %d guaranteed pods with exclusive CPUs\n", len(guaranteedPods)
 
 **GetGuaranteedPodsWithIsolatedCPUs** - Filters the environment’s pod list to return only those that are guaranteed to run on exclusive CPU units and comply with CPU‑isolation requirements.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetGuaranteedPodsWithIsolatedCPUs() []*Pod
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Filters the environment’s pod list to return only those that are guaranteed to run on exclusive CPU units and comply with CPU‑isolation requirements. |
@@ -6034,6 +6225,7 @@ func (env *TestEnvironment) GetGuaranteedPodsWithIsolatedCPUs() []*Pod
 | **How it fits the package** | Provides a core filtering utility used by higher‑level selectors (e.g., `GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID`) to isolate pods that meet strict CPU isolation policies for testing and validation purposes. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   env.Pods -->|"iterate"| podLoop
@@ -6046,6 +6238,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetGuaranteedPodsWithIsolatedCPUs --> func_Pod.IsPodGuaranteedWithExclusiveCPUs
@@ -6054,12 +6247,14 @@ graph TD
 ```
 
 #### Functions calling `TestEnvironment.GetGuaranteedPodsWithIsolatedCPUs`
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID --> func_TestEnvironment.GetGuaranteedPodsWithIsolatedCPUs
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetGuaranteedPodsWithIsolatedCPUs
 env := &provider.TestEnvironment{
@@ -6077,13 +6272,14 @@ for _, p := range guaranteedPods {
 
 **GetHugepagesPods** - Filters the pods stored in a `TestEnvironment` to return only those that declare huge‑page memory requests or limits.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetHugepagesPods() []*Pod
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Filters the pods stored in a `TestEnvironment` to return only those that declare huge‑page memory requests or limits. |
@@ -6094,6 +6290,7 @@ func (env *TestEnvironment) GetHugepagesPods() []*Pod
 | **How it fits the package** | In the `provider` package, this helper enables callers (e.g., filters or tests) to quickly obtain only the pods that will affect memory‑related metrics or validations involving huge pages. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   start --> iterate{"Iterate over env.Pods"}
@@ -6105,6 +6302,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetHugepagesPods --> func_Pod.HasHugepages
@@ -6112,9 +6310,11 @@ graph TD
 ```
 
 #### Functions calling `TestEnvironment.GetHugepagesPods`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetHugepagesPods
 env := &provider.TestEnvironment{
@@ -6131,13 +6331,14 @@ fmt.Printf("Found %d pods with huge pages\n", len(hugePodList))
 
 **GetMasterCount** - Determines how many nodes in the test environment are designated as master (control‑plane) nodes.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetMasterCount() int
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines how many nodes in the test environment are designated as master (control‑plane) nodes. |
@@ -6148,6 +6349,7 @@ func (env *TestEnvironment) GetMasterCount() int
 | **How it fits the package** | Provides a quick metric used by tests to verify cluster topology (e.g., expecting a specific number of masters). |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Nodes"}
@@ -6160,15 +6362,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetMasterCount --> func_Node.IsControlPlaneNode
 ```
 
 #### Functions calling `TestEnvironment.GetMasterCount`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetMasterCount
 env := &provider.TestEnvironment{
@@ -6187,13 +6392,14 @@ fmt.Printf("Number of master nodes: %d\n", masterCount)
 
 **GetNonGuaranteedPodContainersWithoutHostPID** - Returns a slice of `*Container` objects belonging to pods that are not guaranteed and have the `HostPID` feature disabled.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetNonGuaranteedPodContainersWithoutHostPID() []*Container
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a slice of `*Container` objects belonging to pods that are not guaranteed and have the `HostPID` feature disabled. |
@@ -6204,6 +6410,7 @@ func (env *TestEnvironment) GetNonGuaranteedPodContainersWithoutHostPID() []*Con
 | **How it fits the package** | Part of the provider filtering utilities, enabling tests to focus on specific pod/container subsets. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["TestEnvironment"] --> B["GetNonGuaranteedPods"]
@@ -6213,6 +6420,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetNonGuaranteedPodContainersWithoutHostPID --> func_getContainers
@@ -6221,9 +6429,11 @@ graph TD
 ```
 
 #### Functions calling `TestEnvironment.GetNonGuaranteedPodContainersWithoutHostPID` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetNonGuaranteedPodContainersWithoutHostPID
 env := &provider.TestEnvironment{
@@ -6242,13 +6452,14 @@ for _, c := range containers {
 
 **GetNonGuaranteedPods** - Returns all pods in the environment that are not guaranteed, i.e., whose resource requests do not match limits.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetNonGuaranteedPods() []*Pod
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns all pods in the environment that are not guaranteed, i.e., whose resource requests do not match limits. |
@@ -6259,6 +6470,7 @@ func (env *TestEnvironment) GetNonGuaranteedPods() []*Pod
 | **How it fits the package** | Provides filtering functionality used by higher‑level query helpers (e.g., container selectors) within the *provider* package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Pods"}
@@ -6269,6 +6481,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetNonGuaranteedPods --> func_Pod.IsPodGuaranteed
@@ -6276,12 +6489,14 @@ graph TD
 ```
 
 #### Functions calling `TestEnvironment.GetNonGuaranteedPods`
+
 ```mermaid
 graph TD
   func_TestEnvironment.GetNonGuaranteedPodContainersWithoutHostPID --> func_TestEnvironment.GetNonGuaranteedPods
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetNonGuaranteedPods
 env := &provider.TestEnvironment{
@@ -6300,13 +6515,14 @@ for _, pod := range nonGuaranteedPods {
 
 **GetOfflineDBPath** - Returns the filesystem location of the offline database used by the test environment.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) GetOfflineDBPath() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the filesystem location of the offline database used by the test environment. |
@@ -6317,18 +6533,22 @@ func (env *TestEnvironment) GetOfflineDBPath() string
 | **How it fits the package** | Provides a simple API for other components to locate the offline DB without exposing internal struct fields. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["TestEnvironment"] --> B["Return env.params.OfflineDB"]
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `TestEnvironment.GetOfflineDBPath`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.GetOfflineDBPath
 env := &provider.TestEnvironment{
@@ -6343,7 +6563,6 @@ fmt.Println("Offline DB path:", offlinePath) // Output: /var/lib/offlinedb
 ### TestEnvironment.GetPodsUsingSRIOV
 
 **GetPodsUsingSRIOV** - Returns all `Pod` instances in the test environment that are configured to use SR‑IOV networking.
-
 
 #### Signature (Go)
 
@@ -6421,7 +6640,6 @@ The filtered Pods are returned as a slice.
 
 **GetShareProcessNamespacePods** - Returns all `Pod` instances within the environment whose `Spec.ShareProcessNamespace` flag is set to true.
 
-
 #### Signature (Go)
 
 ```go
@@ -6479,7 +6697,6 @@ fmt.Printf("Found %d pod(s) with shared process namespace\n", len(sharedNSPods))
 
 **GetWorkerCount** - Counts how many nodes within the `TestEnvironment` are designated as worker nodes.
 
-
 ```go
 func (env *TestEnvironment) GetWorkerCount() int
 ```
@@ -6535,7 +6752,6 @@ fmt.Printf("Number of worker nodes: %d\n", workerCount)
 ### TestEnvironment.IsIntrusive
 
 **IsIntrusive** - Exposes whether the current `TestEnvironment` is configured to run intrusive tests.
-
 
 Retrieves the *intrusive* flag from a test environment’s parameters.
 
@@ -6604,13 +6820,14 @@ if env.IsIntrusive() {
 
 **IsPreflightInsecureAllowed** - Returns whether the test environment allows insecure network connections when running Preflight checks.
 
-
 #### Signature (Go)
+
 ```go
 func (env *TestEnvironment) IsPreflightInsecureAllowed() bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns whether the test environment allows insecure network connections when running Preflight checks. |
@@ -6621,6 +6838,7 @@ func (env *TestEnvironment) IsPreflightInsecureAllowed() bool
 | **How it fits the package** | Used by container and operator preflight runners to decide whether to add an insecure connection option when configuring Preflight checks. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["TestEnvironment"] --> B["Return env.params.AllowPreflightInsecure"]
@@ -6631,6 +6849,7 @@ flowchart TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `TestEnvironment.IsPreflightInsecureAllowed` (Mermaid)
+
 ```mermaid
 graph TD
   func_Container.SetPreflightResults --> func_TestEnvironment.IsPreflightInsecureAllowed
@@ -6638,6 +6857,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestEnvironment.IsPreflightInsecureAllowed
 env := &TestEnvironment{
@@ -6652,7 +6872,6 @@ fmt.Println("Insecure Preflight allowed:", allowed)
 ### TestEnvironment.IsSNO
 
 **IsSNO** - Checks whether the current `TestEnvironment` consists of exactly one node, indicating a Single‑Node OpenShift (SNO) configuration.
-
 
 ```go
 func (env *TestEnvironment) IsSNO() bool
@@ -6704,7 +6923,6 @@ fmt.Printf("Is single-node OpenShift? %v\n", isSno)
 
 **SetNeedsRefresh** - Flags that the current test environment has become stale and must be refreshed before subsequent use.
 
-
 #### Signature (Go)
 
 ```go
@@ -6752,7 +6970,6 @@ env.SetNeedsRefresh() // marks environment as needing refresh
 ### addOperandPodsToTestPods
 
 **addOperandPodsToTestPods** - Incorporates operand pods into the environment’s pod collection, ensuring duplicates are avoided and proper flags are set.
-
 
 #### Signature (Go)
 
@@ -6828,13 +7045,14 @@ func main() {
 
 **addOperatorPodsToTestPods** - Ensures that all operator pods are represented in the environment’s pod collection. If a pod is already present it is marked as an operator; otherwise it is appended to the list.
 
-
 #### Signature (Go)
+
 ```go
 func addOperatorPodsToTestPods(operatorPods []*Pod, env *TestEnvironment) {}
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures that all operator pods are represented in the environment’s pod collection. If a pod is already present it is marked as an operator; otherwise it is appended to the list. |
@@ -6845,6 +7063,7 @@ func addOperatorPodsToTestPods(operatorPods []*Pod, env *TestEnvironment) {}
 | **How it fits the package** | Called during test environment construction (`buildTestEnvironment`) to merge operator pods with other discovered pods, ensuring that subsequent tests have access to all relevant pod information. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over operatorPods"}
@@ -6858,6 +7077,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_addOperatorPodsToTestPods --> func_searchPodInSlice
@@ -6866,12 +7086,14 @@ graph TD
 ```
 
 #### Functions calling `addOperatorPodsToTestPods` (Mermaid)
+
 ```mermaid
 graph TD
   buildTestEnvironment --> addOperatorPodsToTestPods
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking addOperatorPodsToTestPods
 env := &TestEnvironment{Pods: []*Pod{}}
@@ -6890,7 +7112,6 @@ addOperatorPodsToTestPods(operatorPods, env)
 ### buildContainerImageSource
 
 **buildContainerImageSource** - Parses the container image URL and the runtime‑reported image ID to populate a `ContainerImageIdentifier` struct with registry, repository, tag, and digest information.
-
 
 #### 1) Signature (Go)
 
@@ -6961,23 +7182,25 @@ fmt.Printf("Registry: %s\nRepository: %s\nTag: %s\nDigest: %s\n",
 
 **buildTestEnvironment** - Initializes global test environment state, loads configuration, deploys probe daemonset (if possible), performs autodiscovery of cluster resources, and populates the `env` variable with all discovered data.
 
-
 #### 1) Signature
+
 ```go
 func buildTestEnvironment()
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Initializes global test environment state, loads configuration, deploys probe daemonset (if possible), performs autodiscovery of cluster resources, and populates the `env` variable with all discovered data. |
 | **Parameters** | None |
 | **Return value** | None – updates package‑level variables (`env`, `loaded`). |
 | **Key dependencies** | <ul><li>time.Now / time.Since</li><li>configuration.GetTestParameters</li><li>configuration.LoadConfiguration</li><li>deployDaemonSet (internal helper)</li><li>autodiscover.DoAutoDiscover</li><li>GetAllOperatorGroups</li><li>createOperators</li><li>NewPod, getPodContainers, addOperatorPodsToTestPods, addOperandPodsToTestPods</li><li>log.Fatal / log.Error / log.Debug / log.Info</li></ul> |
-| **Side effects** | * Modifies global `env` and related maps/arrays.<br>* May exit process via `log.Fatal`.<br>* Creates daemonset if configured. |
+| **Side effects** | *Modifies global `env` and related maps/arrays.<br>* May exit process via `log.Fatal`.<br>* Creates daemonset if configured. |
 | **How it fits the package** | Core routine called by `GetTestEnvironment()` to lazily build the test environment on first request; all other functions rely on data populated here. |
 
 #### 3) Internal workflow
+
 ```mermaid
 flowchart TD
     A["Start"] --> B["Record start time"]
@@ -6992,6 +7215,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies
+
 ```mermaid
 graph TD
   func_buildTestEnvironment --> func_time.Now
@@ -7012,12 +7236,14 @@ graph TD
 ```
 
 #### 5) Functions calling `buildTestEnvironment`
+
 ```mermaid
 graph TD
   func_GetTestEnvironment --> func_buildTestEnvironment
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Obtain the fully built test environment
 env := provider.GetTestEnvironment()
@@ -7032,23 +7258,25 @@ fmt.Printf("Probe set up: %v\n", env.DaemonsetFailedToSpawn)
 
 **createNodes** - Converts a slice of Kubernetes `Node` objects into a map keyed by node name, optionally enriching each entry with its MachineConfig when running on an OpenShift cluster.
 
-
 #### Signature (Go)
+
 ```go
 func createNodes(nodes []corev1.Node) map[string]Node
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Converts a slice of Kubernetes `Node` objects into a map keyed by node name, optionally enriching each entry with its MachineConfig when running on an OpenShift cluster. |
 | **Parameters** | `nodes []corev1.Node` – list of nodes retrieved from the cluster |
 | **Return value** | `map[string]Node` – mapping from node names to wrapper structs containing the original node data and, if applicable, the corresponding MachineConfig |
-| **Key dependencies** | * `IsOCPCluster()` – determines if the environment is OpenShift <br>* `log.Warn`, `log.Info`, `log.Error` – structured logging <br>* `getMachineConfig(mcName string, machineConfigs map[string]MachineConfig)` – fetches and caches MachineConfig resources |
+| **Key dependencies** | *`IsOCPCluster()` – determines if the environment is OpenShift <br>* `log.Warn`, `log.Info`, `log.Error` – structured logging <br>* `getMachineConfig(mcName string, machineConfigs map[string]MachineConfig)` – fetches and caches MachineConfig resources |
 | **Side effects** | Emits log messages; downloads MachineConfig objects (network I/O) when needed; stores fetched configs in a local cache to avoid duplicate requests. No global state is modified. |
 | **How it fits the package** | Used by `buildTestEnvironment` to populate the test environment’s node list, enabling tests that depend on machine configuration data for OpenShift clusters. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over nodes"}
@@ -7063,6 +7291,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_createNodes --> func_IsOCPCluster
@@ -7073,28 +7302,30 @@ graph TD
 ```
 
 #### Functions calling `createNodes`
+
 ```mermaid
 graph TD
   func_buildTestEnvironment --> func_createNodes
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking createNodes
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	corev1 "k8s.io/api/core/v1"
+ corev1 "k8s.io/api/core/v1"
 )
 
 func main() {
-	nodes := []corev1.Node{
-		{ObjectMeta: metav1.ObjectMeta{Name: "node-01"}},
-	}
-	nodeMap := createNodes(nodes)
-	fmt.Printf("Processed %d nodes\n", len(nodeMap))
+ nodes := []corev1.Node{
+  {ObjectMeta: metav1.ObjectMeta{Name: "node-01"}},
+ }
+ nodeMap := createNodes(nodes)
+ fmt.Printf("Processed %d nodes\n", len(nodeMap))
 }
 ```
 
@@ -7103,7 +7334,6 @@ func main() {
 ### createOperators
 
 **createOperators** - Builds a slice of `*Operator` objects that summarize each unique ClusterServiceVersion (CSV). It enriches operators with subscription, install‑plan, and namespace information.
-
 
 #### Signature (Go)
 
@@ -7209,7 +7439,6 @@ func main() {
 
 **deployDaemonSet** - Ensures that the CertSuite probe daemon set is running in the specified Kubernetes namespace. If it already exists and is ready, the function exits immediately; otherwise it creates the daemon set and waits for readiness.
 
-
 #### Signature (Go)
 
 ```go
@@ -7266,15 +7495,15 @@ graph TD
 package main
 
 import (
-	"log"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	if err := provider.DeployDaemonSet("certsuite-probes"); err != nil {
-		log.Fatalf("Failed to deploy probe daemon set: %v", err)
-	}
+ if err := provider.DeployDaemonSet("certsuite-probes"); err != nil {
+  log.Fatalf("Failed to deploy probe daemon set: %v", err)
+ }
 }
 ```
 
@@ -7285,7 +7514,6 @@ func main() {
 ### filterDPDKRunningPods
 
 **filterDPDKRunningPods** - From a list of pods, return only those whose first Multus PCI address contains the DPDK driver `vfio-pci`.
-
 
 #### Signature (Go)
 
@@ -7362,13 +7590,14 @@ dpdkPods := filterDPDKRunningPods(pods)
 
 **filterPodsWithoutHostPID** - Returns a slice containing only the pods from the input list whose `Spec.HostPID` field is false, effectively excluding any pod that shares the host’s PID namespace.
 
-
 #### Signature (Go)
+
 ```go
 func filterPodsWithoutHostPID(pods []*Pod) []*Pod
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a slice containing only the pods from the input list whose `Spec.HostPID` field is false, effectively excluding any pod that shares the host’s PID namespace. |
@@ -7379,6 +7608,7 @@ func filterPodsWithoutHostPID(pods []*Pod) []*Pod
 | **How it fits the package** | Used by test environment helper methods to isolate pod collections that do not use host PID, enabling CPU isolation checks without interference from pods sharing the host namespace. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over input slice"}
@@ -7390,12 +7620,14 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_filterPodsWithoutHostPID --> append
 ```
 
 #### Functions calling `filterPodsWithoutHostPID` (Mermaid)
+
 ```mermaid
 graph TD
   TestEnvironment.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID --> func_filterPodsWithoutHostPID
@@ -7404,6 +7636,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking filterPodsWithoutHostPID
 pods := []*Pod{podA, podB, podC} // assume podB has Spec.HostPID = true
@@ -7417,13 +7650,14 @@ filteredPods := filterPodsWithoutHostPID(pods)
 
 **getAtLeastOneCsv** - Checks whether the provided `InstallPlan` references the specified `ClusterServiceVersion`. It verifies that the CSV name appears in the plan’s list and that the plan has bundle lookup data.
 
-
 #### Signature (Go)
+
 ```go
 func getAtLeastOneCsv(csv *olmv1Alpha.ClusterServiceVersion, installPlan *olmv1Alpha.InstallPlan) (atLeastOneCsv bool)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the provided `InstallPlan` references the specified `ClusterServiceVersion`. It verifies that the CSV name appears in the plan’s list and that the plan has bundle lookup data. |
@@ -7434,6 +7668,7 @@ func getAtLeastOneCsv(csv *olmv1Alpha.ClusterServiceVersion, installPlan *olmv1A
 | **How it fits the package** | Used by higher‑level logic that aggregates install plans for operators, ensuring only valid plans are considered. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["getAtLeastOneCsv"] --> B{"Iterate over CSV names"}
@@ -7446,18 +7681,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getAtLeastOneCsv --> func_Warn
 ```
 
 #### Functions calling `getAtLeastOneCsv` (Mermaid)
+
 ```mermaid
 graph TD
   func_getAtLeastOneInstallPlan --> func_getAtLeastOneCsv
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getAtLeastOneCsv
 import (
@@ -7489,8 +7727,8 @@ func example() {
 
 **getAtLeastOneInstallPlan** - For a given operator, identifies at least one `InstallPlan` that installs the supplied CSV in the operator’s subscription namespace and records it in the operator’s data.
 
-
 #### Signature (Go)
+
 ```go
 func getAtLeastOneInstallPlan(
     op *Operator,
@@ -7501,6 +7739,7 @@ func getAtLeastOneInstallPlan(
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | For a given operator, identifies at least one `InstallPlan` that installs the supplied CSV in the operator’s subscription namespace and records it in the operator’s data. |
@@ -7511,6 +7750,7 @@ func getAtLeastOneInstallPlan(
 | **How it fits the package** | Used during operator discovery (`createOperators`) to enrich each `Operator` with install‑plan details, enabling later reporting of bundle images and indices. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> ScanAllInstallPlans["Loop over allInstallPlans"]
@@ -7527,6 +7767,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getAtLeastOneInstallPlan --> func_getAtLeastOneCsv
@@ -7536,12 +7777,14 @@ graph TD
 ```
 
 #### Functions calling `getAtLeastOneInstallPlan` (Mermaid)
+
 ```mermaid
 graph TD
   func_createOperators --> func_getAtLeastOneInstallPlan
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getAtLeastOneInstallPlan
 op := &Operator{Name: "example-op", SubscriptionNamespace: "operators"}
@@ -7568,7 +7811,6 @@ if found {
 ### getAtLeastOneSubscription
 
 **getAtLeastOneSubscription** - Finds the first subscription whose `InstalledCSV` matches the provided CSV and populates the `Operator` with subscription metadata; retrieves the default channel from a matching package manifest when needed.
-
 
 **Collects the first subscription that matches a given CSV and enriches an `Operator` with its details, including default channel information if missing.**
 
@@ -7670,7 +7912,6 @@ if found {
 
 **getCNCFNetworksNamesFromPodAnnotation** - Parses the value of the `k8s.v1.cni.cncf.io/networks` annotation and returns only the network names. Supports both comma‑separated lists and JSON array of objects.
 
-
 #### Signature (Go)
 
 ```go
@@ -7724,14 +7965,14 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	annotation := `k8s.v1.cni.cncf.io/networks: ["{\"name\":\"net1\"}", "{\"name\":\"net2\"}"]`
-	names := provider.getCNCFNetworksNamesFromPodAnnotation(annotation)
-	fmt.Println(names) // Output: [net1 net2]
+ annotation := `k8s.v1.cni.cncf.io/networks: ["{\"name\":\"net1\"}", "{\"name\":\"net2\"}"]`
+ names := provider.getCNCFNetworksNamesFromPodAnnotation(annotation)
+ fmt.Println(names) // Output: [net1 net2]
 }
 ```
 
@@ -7743,13 +7984,14 @@ func main() {
 
 **getCatalogSourceBundleCountFromPackageManifests** - Determines the number of bundle images that belong to a specific `CatalogSource` by inspecting all package manifests in the test environment.
 
-
 #### Signature (Go)
+
 ```go
 func getCatalogSourceBundleCountFromPackageManifests(env *TestEnvironment, cs *olmv1Alpha.CatalogSource) int
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines the number of bundle images that belong to a specific `CatalogSource` by inspecting all package manifests in the test environment. |
@@ -7760,6 +8002,7 @@ func getCatalogSourceBundleCountFromPackageManifests(env *TestEnvironment, cs *o
 | **How it fits the package** | Used by `GetCatalogSourceBundleCount` to provide an alternative bundle count method when probe container data is unavailable. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate env.AllPackageManifests"}
@@ -7774,18 +8017,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getCatalogSourceBundleCountFromPackageManifests --> len
 ```
 
 #### Functions calling `getCatalogSourceBundleCountFromPackageManifests` (Mermaid)
+
 ```mermaid
 graph TD
   func_GetCatalogSourceBundleCount --> func_getCatalogSourceBundleCountFromPackageManifests
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getCatalogSourceBundleCountFromPackageManifests
 env := &TestEnvironment{
@@ -7801,7 +8047,6 @@ fmt.Printf("Total bundles for %s/%s: %d\n", cs.Namespace, cs.Name, bundleCount)
 ### getCatalogSourceBundleCountFromProbeContainer
 
 **getCatalogSourceBundleCountFromProbeContainer** - Determines the number of bundles in a `CatalogSource` by querying its associated service through a probe pod using `grpcurl`.
-
 
 #### Signature (Go)
 
@@ -7883,7 +8128,6 @@ fmt.Printf("Catalog source %q contains %d bundles\n", cs.Name, bundleCount)
 
 **getCatalogSourceImageIndexFromInstallPlan** - Extracts the `Spec.Image` value of the catalog source that an install plan references. This image is used as the index image for the operator bundle.
 
-
 #### Signature (Go)
 
 ```go
@@ -7955,7 +8199,6 @@ func example() {
 
 **getContainers** - Gathers every `Container` object present in the supplied slice of `*Pod`.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -8018,23 +8261,25 @@ containers := getContainers(pods)
 
 **getMachineConfig** - Fetches an OpenShift `MachineConfig` by name, caches it in the supplied map to avoid duplicate API calls, and parses its raw configuration into a structured `MachineConfig` value.
 
-
 #### Signature (Go)
+
 ```go
 func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (MachineConfig, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Fetches an OpenShift `MachineConfig` by name, caches it in the supplied map to avoid duplicate API calls, and parses its raw configuration into a structured `MachineConfig` value. |
-| **Parameters** | * `mcName string` – The name of the MachineConfig resource.<br>* `machineConfigs map[string]MachineConfig` – Cache mapping names to already‑fetched configs. |
-| **Return value** | * `MachineConfig` – Parsed machine configuration, including its raw Kubernetes object and unmarshaled spec.<br>* `error` – Non‑nil if any API call or JSON unmarshal fails. |
+| **Parameters** | *`mcName string` – The name of the MachineConfig resource.<br>* `machineConfigs map[string]MachineConfig` – Cache mapping names to already‑fetched configs. |
+| **Return value** | *`MachineConfig` – Parsed machine configuration, including its raw Kubernetes object and unmarshaled spec.<br>* `error` – Non‑nil if any API call or JSON unmarshal fails. |
 | **Key dependencies** | • `clientsholder.GetClientsHolder()` – obtains shared k8s client set.<br>• `client.MachineCfg.MachineconfigurationV1().MachineConfigs().Get(...)` – retrieves the resource from the cluster.<br>• `json.Unmarshal` – decodes the raw YAML/JSON spec into Go struct.<br>• `fmt.Errorf` – formats error messages. |
 | **Side effects** | No global state mutation; only local cache lookup and population, and network I/O via the k8s client. |
 | **How it fits the package** | Used by node‑wrapping logic (`createNodes`) to enrich each node with its current MachineConfig, enabling downstream analysis of node configuration. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Cache hit?"}
@@ -8045,6 +8290,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getMachineConfig --> func_GetClientsHolder
@@ -8054,12 +8300,14 @@ graph TD
 ```
 
 #### Functions calling `getMachineConfig` (Mermaid)
+
 ```mermaid
 graph TD
   func_createNodes --> func_getMachineConfig
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getMachineConfig
 import (
@@ -8083,13 +8331,14 @@ func main() {
 
 **getOperatorTargetNamespaces** - Queries the OpenShift Cluster‑Lifecycle‑Manager API to fetch the first `OperatorGroup` in a given namespace and returns its target namespaces.
 
-
 #### 1) Signature (Go)
+
 ```go
 func getOperatorTargetNamespaces(namespace string) ([]string, error)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Queries the OpenShift Cluster‑Lifecycle‑Manager API to fetch the first `OperatorGroup` in a given namespace and returns its target namespaces. |
@@ -8100,6 +8349,7 @@ func getOperatorTargetNamespaces(namespace string) ([]string, error)
 | **How it fits the package** | Used by `createOperators` to determine whether an operator is cluster‑wide or namespace‑specific, influencing subsequent logic for subscription handling. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Start"] --> B{"Get ClientsHolder"}
@@ -8110,6 +8360,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getOperatorTargetNamespaces --> func_GetClientsHolder
@@ -8119,12 +8370,14 @@ graph TD
 ```
 
 #### 5) Functions calling `getOperatorTargetNamespaces` (Mermaid)
+
 ```mermaid
 graph TD
   func_createOperators --> func_getOperatorTargetNamespaces
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking getOperatorTargetNamespaces
 ns := "openshift-operators"
@@ -8142,13 +8395,14 @@ if err != nil {
 
 **getPackageManifestWithSubscription** - Finds and returns the `PackageManifest` that corresponds to a specific `Subscription`. It matches on package name, catalog source namespace, and catalog source.
 
-
 #### Signature (Go)
+
 ```go
 func(*olmv1Alpha.Subscription, []*olmpkgv1.PackageManifest)(*olmpkgv1.PackageManifest)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Finds and returns the `PackageManifest` that corresponds to a specific `Subscription`. It matches on package name, catalog source namespace, and catalog source. |
@@ -8159,6 +8413,7 @@ func(*olmv1Alpha.Subscription, []*olmpkgv1.PackageManifest)(*olmpkgv1.PackageMan
 | **How it fits the package** | Used by higher‑level logic to determine default channels or other metadata when a subscription is processed. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> ForEachIndex
@@ -8169,15 +8424,18 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `getPackageManifestWithSubscription` (Mermaid)
+
 ```mermaid
 graph TD
   func_getAtLeastOneSubscription --> func_getPackageManifestWithSubscription
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getPackageManifestWithSubscription
 package main
@@ -8210,23 +8468,25 @@ func main() {
 
 **getPodContainers** - Builds a slice of `*Container` objects representing each container in the supplied Pod, enriched with status and runtime information. It optionally skips containers that match an ignore list.
 
-
 #### Signature (Go)
+
 ```go
 func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Container)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a slice of `*Container` objects representing each container in the supplied Pod, enriched with status and runtime information. It optionally skips containers that match an ignore list. |
 | **Parameters** | `aPod *corev1.Pod` – the Kubernetes pod from which to extract containers.<br>`useIgnoreList bool` – when true, containers whose names match known ignored patterns are omitted. |
 | **Return value** | `[]*Container` – a slice of container descriptors ready for further processing or testing. |
-| **Key dependencies** | * `GetRuntimeUID` – extracts runtime and UID from a `ContainerStatus`. <br>* `buildContainerImageSource` – parses image reference and ID into a `ContainerImageIdentifier`. <br>* `log.Warn` – logs non‑ready or non‑running containers. <br>* `Container.HasIgnoredContainerName` – determines if a container should be skipped. |
+| **Key dependencies** | *`GetRuntimeUID` – extracts runtime and UID from a `ContainerStatus`. <br>* `buildContainerImageSource` – parses image reference and ID into a `ContainerImageIdentifier`. <br>*`log.Warn` – logs non‑ready or non‑running containers. <br>* `Container.HasIgnoredContainerName` – determines if a container should be skipped. |
 | **Side effects** | Emits warning logs for containers that are not ready or not running; otherwise performs only data extraction. No state mutation outside the returned slice. |
 | **How it fits the package** | Used by `NewPod` and during environment construction to populate the pod’s container list, providing a unified representation of runtime, image, status, and health for subsequent tests. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over Pod.Spec.Containers"}
@@ -8248,6 +8508,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getPodContainers --> GetRuntimeUID
@@ -8257,6 +8518,7 @@ graph TD
 ```
 
 #### Functions calling `getPodContainers` (Mermaid)
+
 ```mermaid
 graph TD
   NewPod --> getPodContainers
@@ -8264,6 +8526,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getPodContainers
 pod := &corev1.Pod{
@@ -8294,7 +8557,6 @@ for _, c := range containers {
 ### getSummaryAllOperators
 
 **getSummaryAllOperators** - Builds a unique, human‑readable summary for each operator, including phase, package name, version, and namespace scope. Returns the summaries sorted alphabetically.
-
 
 #### Signature (Go)
 
@@ -8362,7 +8624,6 @@ for _, s := range summary {
 
 **getUniqueCsvListByName** - Filters a slice of CSV objects so that each distinct `csv.Name` appears only once, then returns the list sorted by name.
 
-
 Creates a deterministic list of ClusterServiceVersions (CSV) that contains only one entry per unique CSV name, sorted alphabetically by the CSV name.
 
 ---
@@ -8382,7 +8643,7 @@ func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Al
 | **Purpose** | Filters a slice of CSV objects so that each distinct `csv.Name` appears only once, then returns the list sorted by name. |
 | **Parameters** | `csvs []*olmv1Alpha.ClusterServiceVersion` – input slice that may contain duplicates. |
 | **Return value** | `[]*olmv1Alpha.ClusterServiceVersion` – unique, alphabetically‑sorted CSV slice. |
-| **Key dependencies** | * `log.Info` from the internal logging package (for debug output).<br>* Built‑in `len`, `append` functions.<br>* `sort.Slice` from the standard library for ordering. |
+| **Key dependencies** | *`log.Info` from the internal logging package (for debug output).<br>* Built‑in `len`, `append` functions.<br>* `sort.Slice` from the standard library for ordering. |
 | **Side effects** | None beyond emitting log messages; does not modify the input slice or any global state. |
 | **How it fits the package** | Used by `createOperators` to deduplicate CSVs before building operator objects, ensuring each operator is represented once per unique name. |
 
@@ -8457,13 +8718,14 @@ func main() {
 
 **isNetworkAttachmentDefinitionConfigTypeSRIOV** - Checks whether the JSON configuration of a NetworkAttachmentDefinition contains an SR‑I/O‑V plugin. It supports both single‑plugin and multi‑plugin CNI specifications.
 
-
 #### Signature (Go)
+
 ```go
 func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the JSON configuration of a NetworkAttachmentDefinition contains an SR‑I/O‑V plugin. It supports both single‑plugin and multi‑plugin CNI specifications. |
@@ -8474,6 +8736,7 @@ func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error
 | **How it fits the package** | Used by `Pod.IsUsingSRIOV` to decide if a pod relies on SR‑I/O‑V networking, enabling subsequent compliance checks. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Parse JSON"}
@@ -8494,6 +8757,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_isNetworkAttachmentDefinitionConfigTypeSRIOV --> func_Unmarshal["encoding/json.Unmarshal"]
@@ -8504,35 +8768,37 @@ graph TD
 ```
 
 #### Functions calling `isNetworkAttachmentDefinitionConfigTypeSRIOV` (Mermaid)
+
 ```mermaid
 graph TD
   func_Pod_IsUsingSRIOV["Pod.IsUsingSRIOV"] --> func_isNetworkAttachmentDefinitionConfigTypeSRIOV
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isNetworkAttachmentDefinitionConfigTypeSRIOV
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	nadJSON := `{
-		"cniVersion": "0.4.0",
-		"name": "sriov-network",
-		"type": "sriov"
-	}`
+ nadJSON := `{
+  "cniVersion": "0.4.0",
+  "name": "sriov-network",
+  "type": "sriov"
+ }`
 
-	isSRIOV, err := provider.isNetworkAttachmentDefinitionConfigTypeSRIOV(nadJSON)
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
-	}
-	fmt.Printf("Is SR‑I/O‑V: %t\n", isSRIOV)
+ isSRIOV, err := provider.isNetworkAttachmentDefinitionConfigTypeSRIOV(nadJSON)
+ if err != nil {
+  fmt.Printf("Error: %v\n", err)
+  return
+ }
+ fmt.Printf("Is SR‑I/O‑V: %t\n", isSRIOV)
 }
 ```
 
@@ -8542,13 +8808,14 @@ func main() {
 
 **isNetworkAttachmentDefinitionSRIOVConfigMTUSet** - Parses a CNI configuration JSON and checks whether any SR‑I/O V plugin declares an MTU value greater than zero.
 
-
 #### Signature (Go)
+
 ```go
 func isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nadConfig string) (bool, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses a CNI configuration JSON and checks whether any SR‑I/O V plugin declares an MTU value greater than zero. |
@@ -8559,6 +8826,7 @@ func isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nadConfig string) (bool, err
 | **How it fits the package** | Used internally by the provider package to validate Network Attachment Definitions before applying network policies or configuration changes. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Parse JSON"}
@@ -8570,6 +8838,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_isNetworkAttachmentDefinitionSRIOVConfigMTUSet --> json_Unmarshal
@@ -8578,38 +8847,40 @@ graph TD
 ```
 
 #### Functions calling `isNetworkAttachmentDefinitionSRIOVConfigMTUSet` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isNetworkAttachmentDefinitionSRIOVConfigMTUSet
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	nadJSON := `{
-		"cniVersion": "0.4.0",
-		"name": "vlan-100",
-		"plugins": [
-			{
-				"type": "sriov",
-				"master": "ext0",
-				"mtu": 1500,
-				"vlanId": 100,
-				"linkInContainer": true,
-				"ipam": {"type":"whereabouts","ipRanges":[{"range":"1.1.1.0/24"}]}
-			}
-		]
-	}`
-	hasMTU, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nadJSON)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	fmt.Printf("SR‑I/O V MTU set? %v\n", hasMTU)
+ nadJSON := `{
+  "cniVersion": "0.4.0",
+  "name": "vlan-100",
+  "plugins": [
+   {
+    "type": "sriov",
+    "master": "ext0",
+    "mtu": 1500,
+    "vlanId": 100,
+    "linkInContainer": true,
+    "ipam": {"type":"whereabouts","ipRanges":[{"range":"1.1.1.0/24"}]}
+   }
+  ]
+ }`
+ hasMTU, err := isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nadJSON)
+ if err != nil {
+  fmt.Println("Error:", err)
+  return
+ }
+ fmt.Printf("SR‑I/O V MTU set? %v\n", hasMTU)
 }
 ```
 
@@ -8619,13 +8890,14 @@ func main() {
 
 **isSkipHelmChart** - Checks whether a Helm chart identified by `helmName` appears in the provided list of charts to skip (`skipHelmChartList`). If found, logs the event and returns `true`; otherwise returns `false`.
 
-
 #### Signature (Go)
+
 ```go
 func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelmChartList) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether a Helm chart identified by `helmName` appears in the provided list of charts to skip (`skipHelmChartList`). If found, logs the event and returns `true`; otherwise returns `false`. |
@@ -8636,6 +8908,7 @@ func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelm
 | **How it fits the package** | Used by `buildTestEnvironment` to filter out Helm releases that should not be considered during test environment construction. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Check if skip list is empty"] -->|"yes"| B["Return false"]
@@ -8648,6 +8921,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_isSkipHelmChart --> builtin_len
@@ -8655,12 +8929,14 @@ graph TD
 ```
 
 #### Functions calling `isSkipHelmChart` (Mermaid)
+
 ```mermaid
 graph TD
   func_buildTestEnvironment --> func_isSkipHelmChart
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isSkipHelmChart
 package main
@@ -8686,13 +8962,14 @@ func main() {
 
 **searchPodInSlice** - Returns the first `*Pod` from `pods` that matches the supplied `name` and `namespace`. If none match, returns `nil`.
 
-
 #### Signature (Go)
+
 ```go
 func searchPodInSlice(name, namespace string, pods []*Pod) *Pod
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the first `*Pod` from `pods` that matches the supplied `name` and `namespace`. If none match, returns `nil`. |
@@ -8703,6 +8980,7 @@ func searchPodInSlice(name, namespace string, pods []*Pod) *Pod
 | **How it fits the package** | Used by helper functions that merge operator and operand pod lists into a test environment, ensuring no duplicate pods are added. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Build map"}
@@ -8716,6 +8994,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 ```mermaid
@@ -8732,6 +9011,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking searchPodInSlice
 pods := []*Pod{
@@ -8752,7 +9032,6 @@ if found != nil {
 ### sriovNetworkUsesMTU
 
 **sriovNetworkUsesMTU** - Determines whether a SriovNetwork identified by `nadName` has an MTU value defined in any corresponding SriovNetworkNodePolicy.
-
 
 #### Signature (Go)
 
@@ -8830,7 +9109,6 @@ func main() {
 
 **updateCrUnderTest** - Transforms a slice of `autodiscover.ScaleObject` into the package’s own `ScaleObject` representation, preserving scaling data and resource schema.
 
-
 #### Signature (Go)
 
 ```go
@@ -8890,4 +9168,3 @@ func main() {
 ```
 
 ---
-

@@ -21,4 +21,3 @@ The `common` package supplies shared configuration and identifiers for the CertS
 - Constants are exported so that all test suites can reference the same identifiers, ensuring consistency in test grouping and reporting.
 - The package intentionally exposes only read‑only globals; mutable state is avoided to keep tests deterministic.
 - Best practice: import this package for any shared configuration needed by a test suite, but avoid adding test logic here to maintain separation of concerns.
-

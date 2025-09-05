@@ -58,7 +58,6 @@ The preflight package orchestrates security scans for containers and operators i
 
 **LoadChecks** - Initiates the pre‑flight test suite, retrieves the test environment, creates a checks group for *Preflight*, runs container and operator tests, and logs progress.
 
-
 #### Signature (Go)
 
 ```go
@@ -133,7 +132,6 @@ func main() {
 ### ShouldRun
 
 **ShouldRun** - Returns `true` if the current environment and labels permit running preflight checks. It prevents unnecessary execution when no relevant tags are present or required configuration is missing.
-
 
 Determines whether the preflight test suite should be executed for a given label expression.
 
@@ -225,7 +223,6 @@ func main() {
 
 **generatePreflightContainerCnfCertTest** - Creates a catalog entry for a specific pre‑flight test and registers a check that evaluates the results of that test across all supplied container objects.
 
-
 #### Signature (Go)
 
 ```go
@@ -307,13 +304,14 @@ func main() {
 
 **generatePreflightOperatorCnfCertTest** - Registers a CNF pre‑flight test into the results catalog and adds a corresponding check that evaluates each operator’s pre‑flight outcomes for that specific test.
 
-
 #### Signature (Go)
+
 ```go
 func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, testName, description, remediation string, operators []*provider.Operator) {}
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Registers a CNF pre‑flight test into the results catalog and adds a corresponding check that evaluates each operator’s pre‑flight outcomes for that specific test. |
@@ -324,6 +322,7 @@ func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, tes
 | **How it fits the package** | Implements the core logic that translates operator pre‑flight outcomes into structured test cases used by the CNF testing framework. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Add catalog entry"] --> B["Create new check"]
@@ -340,6 +339,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_generatePreflightOperatorCnfCertTest --> identifiers.AddCatalogEntry
@@ -354,31 +354,33 @@ graph TD
 ```
 
 #### Functions calling `generatePreflightOperatorCnfCertTest` (Mermaid)
+
 ```mermaid
 graph TD
   testPreflightOperators --> generatePreflightOperatorCnfCertTest
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking generatePreflightOperatorCnfCertTest
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
 )
 
 func main() {
-	var checksGroup *checksdb.ChecksGroup // assume initialized elsewhere
-	testName := "Operator-ConfigValidation"
-	description := "Checks operator configuration validity."
-	remediation := "Verify operator config files."
+ var checksGroup *checksdb.ChecksGroup // assume initialized elsewhere
+ testName := "Operator-ConfigValidation"
+ description := "Checks operator configuration validity."
+ remediation := "Verify operator config files."
 
-	// Example operators slice (normally obtained from the environment)
-	var operators []*provider.Operator
+ // Example operators slice (normally obtained from the environment)
+ var operators []*provider.Operator
 
-	preflight.generatePreflightOperatorCnfCertTest(checksGroup, testName, description, remediation, operators)
+ preflight.generatePreflightOperatorCnfCertTest(checksGroup, testName, description, remediation, operators)
 }
 ```
 
@@ -388,13 +390,14 @@ func main() {
 
 **getUniqueTestEntriesFromContainerResults** - Builds a map keyed by test name containing the first encountered `PreflightTest` result for each unique test across all provided containers.
 
-
 #### Signature (Go)
+
 ```go
 func getUniqueTestEntriesFromContainerResults(containers []*provider.Container) map[string]provider.PreflightTest
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a map keyed by test name containing the first encountered `PreflightTest` result for each unique test across all provided containers. |
@@ -405,6 +408,7 @@ func getUniqueTestEntriesFromContainerResults(containers []*provider.Container) 
 | **How it fits the package** | Used by `testPreflightContainers` to deduplicate test entries when generating container‑based pre‑flight certificates, ensuring each distinct test is processed once even if multiple containers share the same image. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> InitializeMap["Create empty map"]
@@ -420,31 +424,34 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getUniqueTestEntriesFromContainerResults --> make
 ```
 
 #### Functions calling `getUniqueTestEntriesFromContainerResults` (Mermaid)
+
 ```mermaid
 graph TD
   testPreflightContainers --> getUniqueTestEntriesFromContainerResults
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getUniqueTestEntriesFromContainerResults
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
 )
 
 func main() {
-	var containers []*provider.Container // assume populated elsewhere
+ var containers []*provider.Container // assume populated elsewhere
 
-	testMap := preflight.getUniqueTestEntriesFromContainerResults(containers)
-	for name, test := range testMap {
-		fmt.Printf("Test %q: %+v\n", name, test)
-	}
+ testMap := preflight.getUniqueTestEntriesFromContainerResults(containers)
+ for name, test := range testMap {
+  fmt.Printf("Test %q: %+v\n", name, test)
+ }
 }
 ```
 
@@ -454,13 +461,14 @@ func main() {
 
 **getUniqueTestEntriesFromOperatorResults** - Aggregates all pre‑flight test entries (`Passed`, `Failed`, `Errors`) from a slice of operators into a single map keyed by test name, ensuring each test appears only once.
 
-
 #### Signature (Go)
+
 ```go
 func getUniqueTestEntriesFromOperatorResults(operators []*provider.Operator) map[string]provider.PreflightTest
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Aggregates all pre‑flight test entries (`Passed`, `Failed`, `Errors`) from a slice of operators into a single map keyed by test name, ensuring each test appears only once. |
@@ -471,6 +479,7 @@ func getUniqueTestEntriesFromOperatorResults(operators []*provider.Operator) map
 | **How it fits the package** | Used by higher‑level test orchestration to collate operator‑specific pre‑flight results before generating consolidated certificates or logs. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over operators"}
@@ -484,18 +493,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getUniqueTestEntriesFromOperatorResults --> make
 ```
 
 #### Functions calling `getUniqueTestEntriesFromOperatorResults` (Mermaid)
+
 ```mermaid
 graph TD
   func_testPreflightOperators --> func_getUniqueTestEntriesFromOperatorResults
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getUniqueTestEntriesFromOperatorResults
 operators := []*provider.Operator{op1, op2, op3}
@@ -512,13 +524,14 @@ for name, test := range uniqueTests {
 
 **labelsAllowTestRun** - Checks whether any of the *allowed* labels appear within the supplied label filter string. If at least one match is found, it permits the test run.
 
-
 #### Signature (Go)
+
 ```go
 func(labelsFilter string, allowedLabels []string) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether any of the *allowed* labels appear within the supplied label filter string. If at least one match is found, it permits the test run. |
@@ -529,6 +542,7 @@ func(labelsFilter string, allowedLabels []string) bool
 | **How it fits the package** | Used by the internal `ShouldRun` helper to gate execution of preflight tests based on environmental labeling conventions. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> CheckEachLabel
@@ -537,35 +551,38 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_labelsAllowTestRun --> strings.Contains
 ```
 
 #### Functions calling `labelsAllowTestRun` (Mermaid)
+
 ```mermaid
 graph TD
   func_ShouldRun --> func_labelsAllowTestRun
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking labelsAllowTestRun
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	filter := "preflight,performance"
-	allowed := []string{"preflight", "security"}
+ filter := "preflight,performance"
+ allowed := []string{"preflight", "security"}
 
-	if labelsAllowTestRun(filter, allowed) {
-		fmt.Println("Test run permitted.")
-	} else {
-		fmt.Println("Test run denied.")
-	}
+ if labelsAllowTestRun(filter, allowed) {
+  fmt.Println("Test run permitted.")
+ } else {
+  fmt.Println("Test run denied.")
+ }
 }
 
 // Output:
@@ -577,7 +594,6 @@ func main() {
 ### testPreflightContainers
 
 **testPreflightContainers** - Executes Preflight security scans for every container in the supplied `TestEnvironment`, caches image results to avoid duplicate work, logs progress, and converts each unique test result into a CNF‑certified check within the provided checks group.
-
 
 #### 1) Signature (Go)
 
@@ -660,7 +676,6 @@ func main() {
 
 **testPreflightOperators** - Executes pre‑flight diagnostics on every operator present in `env.Operators`, records the results into the checks group, and generates CNF‑certification tests for each unique pre‑flight test discovered.
 
-
 #### Signature (Go)
 
 ```go
@@ -715,17 +730,16 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/checksdb"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/internal/provider"
 )
 
 func main() {
-	checksGroup := checksdb.NewChecksGroup("preflight")
-	env := provider.GetTestEnvironment()
-	preflight.testPreflightOperators(checksGroup, env)
+ checksGroup := checksdb.NewChecksGroup("preflight")
+ env := provider.GetTestEnvironment()
+ preflight.testPreflightOperators(checksGroup, env)
 }
 ```
 
 ---
-

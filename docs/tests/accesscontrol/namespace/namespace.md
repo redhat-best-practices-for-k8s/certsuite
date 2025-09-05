@@ -46,7 +46,6 @@ The namespace package provides utilities for validating that Custom Resources (C
 
 **GetInvalidCRsNum** - Determines how many custom resources (CRs) are not located in their expected namespaces.
 
-
 #### Signature (Go)
 
 ```go
@@ -98,23 +97,23 @@ graph TD
 package main
 
 import (
-	"log"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/namespace"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol/namespace"
 )
 
 func main() {
-	invalidCrs := map[string]map[string][]string{
-		"example.crd": {
-			"default": {"bad-cr-1", "bad-cr-2"},
-			"prod":    {"another-bad-cr"},
-		},
-	}
+ invalidCrs := map[string]map[string][]string{
+  "example.crd": {
+   "default": {"bad-cr-1", "bad-cr-2"},
+   "prod":    {"another-bad-cr"},
+  },
+ }
 
-	logger := log.New(os.Stdout, "", log.LstdFlags)
-	count := namespace.GetInvalidCRsNum(invalidCrs, logger)
+ logger := log.New(os.Stdout, "", log.LstdFlags)
+ count := namespace.GetInvalidCRsNum(invalidCrs, logger)
 
-	fmt.Printf("Found %d invalid CR(s)\n", count)
+ fmt.Printf("Found %d invalid CR(s)\n", count)
 }
 ```
 
@@ -126,13 +125,14 @@ func main() {
 
 **TestCrsNamespaces** - Checks each CRD’s instances to ensure they are only deployed in namespaces supplied by `configNamespaces`. Returns a nested map of offending CRs.
 
-
 #### Signature (Go)
+
 ```go
 func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespaces []string, logger *log.Logger) (invalidCrs map[string]map[string][]string, err error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks each CRD’s instances to ensure they are only deployed in namespaces supplied by `configNamespaces`. Returns a nested map of offending CRs. |
@@ -143,6 +143,7 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 | **How it fits the package** | Part of the *namespace* test suite, enabling checks that all custom resources reside within permitted namespaces before other access control validations. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   start["Start"] --> initMap["Initialize invalidCrs map"]
@@ -159,6 +160,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestCrsNamespaces --> make
@@ -170,12 +172,14 @@ graph TD
 ```
 
 #### Functions calling `TestCrsNamespaces` (Mermaid)
+
 ```mermaid
 graph TD
   testNamespace --> func_TestCrsNamespaces
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestCrsNamespaces
 import (
@@ -206,13 +210,14 @@ func main() {
 
 **getCrsPerNamespaces** - Enumerates all Custom Resource (CR) objects created from the supplied `CustomResourceDefinition` (CRD), grouping them by namespace.
 
-
 #### Signature (Go)
+
 ```go
 func (*apiextv1.CustomResourceDefinition)(map[string][]string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Enumerates all Custom Resource (CR) objects created from the supplied `CustomResourceDefinition` (CRD), grouping them by namespace. |
@@ -223,6 +228,7 @@ func (*apiextv1.CustomResourceDefinition)(map[string][]string, error)
 | **How it fits the package** | Used by test helpers to verify that CRs are deployed in permitted namespaces. It provides the raw data for validation logic elsewhere. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over aCrd.Spec.Versions"}
@@ -240,6 +246,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getCrsPerNamespaces --> func_GetClientsHolder
@@ -251,12 +258,14 @@ graph TD
 ```
 
 #### Functions calling `getCrsPerNamespaces` (Mermaid)
+
 ```mermaid
 graph TD
   func_TestCrsNamespaces --> func_getCrsPerNamespaces
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getCrsPerNamespaces
 import (
@@ -275,4 +284,3 @@ func demo(crd *v1.CustomResourceDefinition) {
 ```
 
 ---
-

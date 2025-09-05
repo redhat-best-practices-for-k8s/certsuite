@@ -71,6 +71,7 @@ Manages validation of huge‑page configuration on a node against the MachineCon
 The `Tester` struct orchestrates validation of a node’s hugepage configuration against the corresponding MachineConfig specifications (either via kernel arguments or systemd unit files).
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `node` | `*provider.Node` | Reference to the target node being tested. |
@@ -80,13 +81,16 @@ The `Tester` struct orchestrates validation of a node’s hugepage configuration
 | `mcSystemdHugepagesByNuma` | `hugepagesByNuma` | Map of NUMA index → (hugepage size → count) parsed from the MachineConfig’s systemd unit files. |
 
 #### Purpose  
+
 `Tester` encapsulates all data and logic required to compare a node’s runtime hugepage allocation against what is declared in its MachineConfig. It supports two comparison modes:  
+
 1. **Kernel arguments** – when the MachineConfig only specifies hugepages via `kernelArguments`.  
 2. **Systemd units** – when the MachineConfig declares per‑NUMA hugepage settings through systemd unit files.
 
 The struct provides methods to perform the comparison, report mismatches, and return a success flag or detailed error information.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewTester` | Constructs a `Tester`, populating node data, context, commander, and loading both node‑side and MachineConfig‑side hugepage configurations. |
@@ -105,7 +109,6 @@ The struct provides methods to perform the comparison, report mismatches, and re
 ### NewTester
 
 **NewTester** - Instantiates a `Tester` that gathers huge‑page information from a node and its MachineConfig.
-
 
 #### Signature (Go)
 
@@ -184,7 +187,6 @@ func example() error {
 
 **HasMcSystemdHugepagesUnits** - Returns `true` if the tester has at least one Systemd hugepage unit mapped to a NUMA node, otherwise `false`.
 
-
 Checks whether the tester has any MachineConfig Systemd hugepage units collected for NUMA nodes.
 
 #### Signature (Go)
@@ -248,13 +250,14 @@ func main() {
 
 **Run** - Orchestrates comparison of MachineConfig (MC) huge‑page settings with the node’s actual configuration, choosing between Systemd units or kernel arguments based on availability.
 
-
 #### Signature (Go)
+
 ```go
 func (tester *Tester) Run() error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Orchestrates comparison of MachineConfig (MC) huge‑page settings with the node’s actual configuration, choosing between Systemd units or kernel arguments based on availability. |
@@ -265,6 +268,7 @@ func (tester *Tester) Run() error
 | **How it fits the package** | Entry point for huge‑page validation tests in the `hugepages` package; decides which comparison routine to invoke based on MC configuration. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Tester.Run --> HasMcSystemdHugepagesUnits
@@ -278,6 +282,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Tester_Run --> func_Tester_HasMcSystemdHugepagesUnits
@@ -288,9 +293,11 @@ graph TD
 ```
 
 #### Functions calling `Tester.Run` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Tester.Run
 package main
@@ -317,13 +324,14 @@ func main() {
 
 **TestNodeHugepagesWithKernelArgs** - Validates that the hugepage sizes and counts declared in a node’s `MachineConfig` kernel arguments match the actual hugepage allocation observed on the node. For each size present in the kernel arguments, the sum of node‑level allocations must equal the specified count; other sizes should have zero allocation.
 
-
 #### 1) Signature (Go)
+
 ```go
 func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Validates that the hugepage sizes and counts declared in a node’s `MachineConfig` kernel arguments match the actual hugepage allocation observed on the node. For each size present in the kernel arguments, the sum of node‑level allocations must equal the specified count; other sizes should have zero allocation. |
@@ -334,6 +342,7 @@ func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error)
 | **How it fits the package** | Part of the *hugepages* test suite, invoked by `Tester.Run()` to verify that a node’s runtime hugepage configuration aligns with its MachineConfig specification. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Parse kernel arguments"] --> B["Validate each node NUMA size exists"]
@@ -346,6 +355,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_Tester.TestNodeHugepagesWithKernelArgs --> func_getMcHugepagesFromMcKernelArguments
@@ -354,12 +364,14 @@ graph TD
 ```
 
 #### 5) Functions calling `Tester.TestNodeHugepagesWithKernelArgs` (Mermaid)
+
 ```mermaid
 graph TD
   func_TestRunner.Run --> func_Tester.TestNodeHugepagesWithKernelArgs
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking Tester.TestNodeHugepagesWithKernelArgs
 tester := &Tester{node: nodeInfo, nodeHugepagesByNuma: numaMap}
@@ -375,7 +387,6 @@ fmt.Println("Hugepage configuration matches kernel arguments.")
 ### Tester.TestNodeHugepagesWithMcSystemd
 
 **TestNodeHugepagesWithMcSystemd** - Validates that each node‑specific hugepage size and count matches the MachineConfig systemd units; ensures missing entries are zeroed.
-
 
 Compare the hugepage configuration reported by a node against the values defined in its MachineConfig systemd units.
 
@@ -469,7 +480,6 @@ if !pass {
 
 **String** - Formats `hugepagesByNuma` as a string where each NUMA node is listed with its page sizes and counts, sorted by node ID.
 
-
 Provides a human‑readable string representation of the mapping from NUMA node IDs to page size counts, used for debugging and logging.
 
 ```go
@@ -535,13 +545,14 @@ fmt.Println(numaPages.String())
 
 **getNodeNumaHugePages** - Reads the node’s current hugepage allocation per NUMA node by executing a command inside the probe pod and parses its output.
 
-
 #### Signature (Go)
+
 ```go
 func (tester *Tester) getNodeNumaHugePages() (hugepages hugepagesByNuma, err error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Reads the node’s current hugepage allocation per NUMA node by executing a command inside the probe pod and parses its output. |
@@ -552,6 +563,7 @@ func (tester *Tester) getNodeNumaHugePages() (hugepages hugepagesByNuma, err err
 | **How it fits the package** | Provides the baseline hugepage configuration used by tests that compare desired vs actual settings on a Kubernetes node. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Execute command inside probe pod"] --> B{"Command succeeded?"}
@@ -568,6 +580,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Tester.getNodeNumaHugePages --> func_ExecCommandContainer
@@ -581,12 +594,14 @@ graph TD
 ```
 
 #### Functions calling `Tester.getNodeNumaHugePages`
+
 ```mermaid
 graph TD
   func_NewTester --> func_Tester.getNodeNumaHugePages
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Tester.getNodeNumaHugePages
 tester, err := NewTester(node, probePod, commander)
@@ -606,13 +621,14 @@ fmt.Printf("Hugepage config: %+v\n", hugepages)
 
 **getMcHugepagesFromMcKernelArguments** - Parses kernel‑argument strings in a `MachineConfig` to build a mapping of hugepage size (in kB) → count, and returns the default hugepage size.
 
-
 #### Signature (Go)
+
 ```go
 func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesPerSize map[int]int, defhugepagesz int)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses kernel‑argument strings in a `MachineConfig` to build a mapping of hugepage size (in kB) → count, and returns the default hugepage size. |
@@ -623,6 +639,7 @@ func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesP
 | **How it fits the package** | Provides a central routine for tests that need to validate kernel‑argument based hugepage settings against node reports. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over mc.Spec.KernelArguments"}
@@ -647,6 +664,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getMcHugepagesFromMcKernelArguments --> strings_Split
@@ -658,12 +676,14 @@ graph TD
 ```
 
 #### Functions calling `getMcHugepagesFromMcKernelArguments` (Mermaid)
+
 ```mermaid
 graph TD
   func_TestNodeHugepagesWithKernelArgs --> func_getMcHugepagesFromMcKernelArguments
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getMcHugepagesFromMcKernelArguments
 import (
@@ -688,13 +708,14 @@ func main() {
 
 **getMcSystemdUnitsHugepagesConfig** - Parses systemd unit files in a MachineConfig to extract huge‑page count, size, and NUMA node information.
 
-
 #### 1) Signature (Go)
+
 ```go
 func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepagesByNuma, error)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses systemd unit files in a MachineConfig to extract huge‑page count, size, and NUMA node information. |
@@ -705,6 +726,7 @@ func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepagesByNu
 | **How it fits the package** | Provides a helper for the huge‑pages tester to compare node‑level values with those declared in MachineConfig. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     Start --> CompileRegex["Compile regex"]
@@ -726,6 +748,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   getMcSystemdUnitsHugepagesConfig --> regexp.MustCompile
@@ -737,12 +760,14 @@ graph TD
 ```
 
 #### 5) Functions calling `getMcSystemdUnitsHugepagesConfig` (Mermaid)
+
 ```mermaid
 graph TD
   NewTester --> getMcSystemdUnitsHugepagesConfig
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking getMcSystemdUnitsHugepagesConfig
 import (
@@ -767,7 +792,6 @@ func main() {
 
 **hugepageSizeToInt** - Parses a string such as `"1M"` or `"2G"` and returns the size in kilobytes. The function supports megabyte (`'M'`) and gigabyte (`'G'`) units, converting them to the appropriate number of kilobytes.
 
-
 ```go
 func hugepageSizeToInt(s string) int
 ```
@@ -782,6 +806,7 @@ func hugepageSizeToInt(s string) int
 | **How it fits the package** | This helper is used by other functions in the *hugepages* test suite (e.g., `getMcHugepagesFromMcKernelArguments`) to interpret kernel argument values that specify huge‑page sizes. It centralizes the unit conversion logic for consistency across tests. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Trim last char"}
@@ -794,6 +819,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_hugepageSizeToInt --> func_Atoi
@@ -802,23 +828,25 @@ graph TD
 ```
 
 #### Functions calling `hugepageSizeToInt`
+
 ```mermaid
 graph TD
   func_getMcHugepagesFromMcKernelArguments --> func_hugepageSizeToInt
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking hugepageSizeToInt
 package main
 
 import (
-	"fmt"
+ "fmt"
 )
 
 func main() {
-	fmt.Println(hugepageSizeToInt("1M")) // 1024
-	fmt.Println(hugepageSizeToInt("2G")) // 2097152
+ fmt.Println(hugepageSizeToInt("1M")) // 1024
+ fmt.Println(hugepageSizeToInt("2G")) // 2097152
 }
 ```
 
@@ -828,13 +856,14 @@ func main() {
 
 **logMcKernelArgumentsHugepages** - Formats and logs the hugepage size‑to‑count mapping along with the default hugepage size extracted from a MachineConfig’s kernel arguments.
 
-
 #### Signature (Go)
+
 ```go
 func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz int) {}
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Formats and logs the hugepage size‑to‑count mapping along with the default hugepage size extracted from a MachineConfig’s kernel arguments. |
@@ -845,6 +874,7 @@ func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz i
 | **How it fits the package** | Used by the hugepages test suite to record parsed kernel argument values for debugging and audit purposes. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Start"] --> B["Create strings.Builder"]
@@ -856,6 +886,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_logMcKernelArgumentsHugepages --> fmt.Sprintf
@@ -864,12 +895,14 @@ graph TD
 ```
 
 #### Functions calling `logMcKernelArgumentsHugepages` (Mermaid)
+
 ```mermaid
 graph TD
   func_getMcHugepagesFromMcKernelArguments --> func_logMcKernelArgumentsHugepages
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking logMcKernelArgumentsHugepages
 package main
@@ -891,4 +924,3 @@ func main() {
 ```
 
 ---
-

@@ -110,7 +110,6 @@ The access‑control test suite registers a collection of checks that validate K
 
 **LoadChecks** - Creates the “Access‑Control” check group, attaches pre‑test setup and registers individual checks that verify security best practices on Kubernetes resources.
 
-
 #### Signature (Go)
 
 ```go
@@ -203,11 +202,11 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
 )
 
 func main() {
-	accesscontrol.LoadChecks()
+ accesscontrol.LoadChecks()
 }
 ```
 
@@ -219,13 +218,14 @@ func main() {
 
 **checkForbiddenCapability** - Determines whether each container in a list uses a disallowed Linux capability. It returns separate slices of report objects for compliant and non‑compliant containers.
 
-
 #### Signature (Go)
+
 ```go
 func checkForbiddenCapability(containers []*provider.Container, capability string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether each container in a list uses a disallowed Linux capability. It returns separate slices of report objects for compliant and non‑compliant containers. |
@@ -236,6 +236,7 @@ func checkForbiddenCapability(containers []*provider.Container, capability strin
 | **How it fits the package** | Used by multiple capability‑checking tests (e.g., `testBpfCapability`, `testNetAdminCapability`) to centralise logic for detecting forbidden capabilities across containers in a pod environment. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over containers"}
@@ -255,6 +256,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_checkForbiddenCapability --> func_Info
@@ -266,6 +268,7 @@ graph TD
 ```
 
 #### Functions calling `checkForbiddenCapability`
+
 ```mermaid
 graph TD
   func_testBpfCapability --> func_checkForbiddenCapability
@@ -276,6 +279,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking checkForbiddenCapability
 containers := []*provider.Container{ /* …populate list… */ }
@@ -297,7 +301,6 @@ for _, obj := range nonCompliant {
 ### getNbOfProcessesInPidNamespace
 
 **getNbOfProcessesInPidNamespace** - Executes `lsns -p <pid> -t pid -n` inside a container to count how many processes share the same PID namespace as the target process.
-
 
 #### Signature (Go)
 
@@ -370,7 +373,6 @@ fmt.Printf("Number of processes in the namespace: %d\n", nb)
 ### isCSVAndClusterWide
 
 **isCSVAndClusterWide** - Determines if the CSV referenced by `aNamespace` and `name` is created by a cluster‑wide operator.
-
 
 Checks whether a CSV identified by namespace and name belongs to a cluster‑wide operator.
 
@@ -452,7 +454,6 @@ ok := isCSVAndClusterWide("openshift-operators", "my-op", env)
 
 **isContainerCapabilitySet** - Determines if a container has the specified capability enabled (or if `"ALL"` is set).
 
-
 Checks whether a specific capability is explicitly granted to a container via the `securityContext.capabilities.add` list, treating `"ALL"` as an implicit match for any capability.
 
 ---
@@ -523,18 +524,18 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	corev1 "k8s.io/api/core/v1"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
+ corev1 "k8s.io/api/core/v1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
 )
 
 func main() {
-	caps := &corev1.Capabilities{
-		Add: []corev1.Capability{"NET_ADMIN", "SYS_NICE"},
-	}
-	hasSysNice := accesscontrol.IsContainerCapabilitySet(caps, "SYS_NICE") // package export is not available; this is a conceptual example.
-	fmt.Printf("Has SYS_NICE? %t\n", hasSysNice)
+ caps := &corev1.Capabilities{
+  Add: []corev1.Capability{"NET_ADMIN", "SYS_NICE"},
+ }
+ hasSysNice := accesscontrol.IsContainerCapabilitySet(caps, "SYS_NICE") // package export is not available; this is a conceptual example.
+ fmt.Printf("Has SYS_NICE? %t\n", hasSysNice)
 }
 ```
 
@@ -545,7 +546,6 @@ func main() {
 ### isInstallModeMultiNamespace
 
 **isInstallModeMultiNamespace** - Determines if any `InstallMode` in the slice has type `AllNamespaces`.
-
 
 Checks whether a CSV’s install modes include **AllNamespaces** (indicating multi‑namespace or cluster‑wide support).
 
@@ -612,7 +612,6 @@ func main() {
 ### ownedByClusterWideOperator
 
 **ownedByClusterWideOperator** - Checks whether any of the provided `topOwners` is a Cluster Service Version (CSV) installed by a cluster‑wide operator. Returns the CSV’s namespace and name if one matches.
-
 
 #### Signature (Go)
 
@@ -682,13 +681,14 @@ func example(env *provider.TestEnvironment, podOwners map[string]podhelper.TopOw
 
 **test1337UIDs** - Verifies each pod in the test environment does not run with `securityContext.runAsUser` set to 1337. Sets compliance results accordingly.
 
-
 #### Signature (Go)
+
 ```go
 func test1337UIDs(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Verifies each pod in the test environment does not run with `securityContext.runAsUser` set to 1337. Sets compliance results accordingly. |
@@ -699,6 +699,7 @@ func test1337UIDs(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Implements the “Test1337UID” check registered in `LoadChecks`; part of the extended access‑control test suite. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Pods"}
@@ -713,6 +714,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_test1337UIDs --> func_LogInfo
@@ -724,12 +726,14 @@ graph TD
 ```
 
 #### Functions calling `test1337UIDs` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_test1337UIDs
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking test1337UIDs
 package main
@@ -753,13 +757,14 @@ func main() {
 
 **testAutomountServiceToken** - Inspects each pod in the test environment to ensure it does not use the default service account and that its `automountServiceAccountToken` setting is explicitly set to `false`. It records compliant or non‑compliant findings.
 
-
 #### Signature (Go)
+
 ```go
 func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Inspects each pod in the test environment to ensure it does not use the default service account and that its `automountServiceAccountToken` setting is explicitly set to `false`. It records compliant or non‑compliant findings. |
@@ -770,6 +775,7 @@ func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironm
 | **How it fits the package** | Part of the *accesscontrol* test suite, specifically implementing the “Pod automount service account” compliance rule. It is invoked by `LoadChecks` when registering this particular check. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["for each pod in env.Pods"] --> B["LogInfo: testing pod"]
@@ -787,6 +793,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   accesscontrol.testAutomountServiceToken --> checksdb.Check.LogInfo
@@ -798,12 +805,14 @@ graph TD
 ```
 
 #### Functions calling `testAutomountServiceToken` (Mermaid)
+
 ```mermaid
 graph TD
   accesscontrol.LoadChecks --> accesscontrol.testAutomountServiceToken
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testAutomountServiceToken
 package main
@@ -833,7 +842,6 @@ func main() {
 ### testBpfCapability
 
 **testBpfCapability** - Determines whether any container in the test environment requests the forbidden `BPF` capability and records compliance status.
-
 
 #### Signature (Go)
 
@@ -910,13 +918,14 @@ func main() {
 
 **testContainerHostPort** - Checks each container in the test environment for configured host‑port mappings and records compliance status.
 
-
 #### Signature (Go)
+
 ```go
 func testContainerHostPort(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks each container in the test environment for configured host‑port mappings and records compliance status. |
@@ -927,6 +936,7 @@ func testContainerHostPort(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Implements one of the access‑control test cases registered in `LoadChecks`; ensures containers avoid exposing host ports, a security best practice. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> ForEachContainer["Iterate over env.Containers"]
@@ -939,6 +949,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   testContainerHostPort --> LogInfo
@@ -952,29 +963,31 @@ graph TD
 ```
 
 #### Functions calling `testContainerHostPort` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testContainerHostPort
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testContainerHostPort
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	check := checksdb.NewCheck("example-id")
-	env := &provider.TestEnvironment{
-		Containers: []*provider.Container{ /* populate with test data */ },
-	}
-	accesscontrol.testContainerHostPort(check, env)
-	// Inspect check results...
+ check := checksdb.NewCheck("example-id")
+ env := &provider.TestEnvironment{
+  Containers: []*provider.Container{ /* populate with test data */ },
+ }
+ accesscontrol.testContainerHostPort(check, env)
+ // Inspect check results...
 }
 ```
 
@@ -983,7 +996,6 @@ func main() {
 ### testContainerSCC
 
 **testContainerSCC** - Scans all pods in the supplied environment, determines each container’s Security Context Constraint (SCC) category via `securitycontextcontainer.CheckPod`, and records compliance results. Containers outside the least‑privileged categories fail the test.
-
 
 #### Signature (Go)
 
@@ -1078,7 +1090,6 @@ func main() {
 
 **testCrdRoles** - Determines which role rules target Custom Resource Definitions (CRDs) included in the current test environment and records compliance results.
 
-
 #### Signature (Go)
 
 ```go
@@ -1157,13 +1168,14 @@ func runTest() {
 
 **testIpcLockCapability** - Ensures no container in the test environment declares the `IPC_LOCK` capability, which is considered a security risk.
 
-
 #### Signature (Go)
+
 ```go
 func testIpcLockCapability(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures no container in the test environment declares the `IPC_LOCK` capability, which is considered a security risk. |
@@ -1174,6 +1186,7 @@ func testIpcLockCapability(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | One of several security‑control checks registered in `LoadChecks`. It specifically targets forbidden capabilities within container specifications. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   testIpcLockCapability --> checkForbiddenCapability
@@ -1181,6 +1194,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testIpcLockCapability --> func_checkForbiddenCapability
@@ -1188,12 +1202,14 @@ graph TD
 ```
 
 #### Functions calling `testIpcLockCapability` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testIpcLockCapability
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testIpcLockCapability
 env := &provider.TestEnvironment{
@@ -1209,7 +1225,6 @@ testIpcLockCapability(check, env)
 ### testNamespace
 
 **testNamespace** - Validates each namespace supplied by the test environment. It checks for disallowed prefixes and verifies that custom resources (CRs) are only deployed in configured namespaces. Results are recorded as compliant or non‑compliant objects.
-
 
 #### Signature (Go)
 
@@ -1291,13 +1306,14 @@ func runExample() {
 
 **testNamespaceResourceQuota** - Verifies that every Pod in the environment runs inside a namespace that has an applied ResourceQuota. Sets compliance results accordingly.
 
-
 #### Signature (Go)
+
 ```go
 func testNamespaceResourceQuota(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Verifies that every Pod in the environment runs inside a namespace that has an applied ResourceQuota. Sets compliance results accordingly. |
@@ -1308,6 +1324,7 @@ func testNamespaceResourceQuota(check *checksdb.Check, env *provider.TestEnviron
 | **How it fits the package** | Implements one of the Access Control suite checks, specifically the *TestNamespaceResourceQuota* test registered in `LoadChecks`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over Pods"}
@@ -1324,6 +1341,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testNamespaceResourceQuota --> func_LogInfo
@@ -1333,12 +1351,14 @@ graph TD
 ```
 
 #### Functions calling `testNamespaceResourceQuota` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testNamespaceResourceQuota
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testNamespaceResourceQuota
 package main
@@ -1367,13 +1387,14 @@ func main() {
 
 **testNetAdminCapability** - Checks each container in the test environment for the presence of the `NET_ADMIN` capability and records compliance results.
 
-
 #### Signature (Go)
+
 ```go
 func testNetAdminCapability(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks each container in the test environment for the presence of the `NET_ADMIN` capability and records compliance results. |
@@ -1384,6 +1405,7 @@ func testNetAdminCapability(check *checksdb.Check, env *provider.TestEnvironment
 | **How it fits the package** | Implements the “TestNetAdminCapability” check used by the Access Control test suite to enforce that containers avoid privileged network capabilities, contributing to overall cluster security compliance. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Call checkForbiddenCapability"}
@@ -1401,12 +1423,14 @@ graph TD
 ```
 
 #### Functions calling `testNetAdminCapability` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testNetAdminCapability
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testNetAdminCapability
 package main
@@ -1432,13 +1456,14 @@ func main() {
 
 **testNetRawCapability** - Detects and reports any container that requests the `NET_RAW` Linux capability, which is considered forbidden for most workloads.
 
-
 #### Signature (Go)
+
 ```go
 func testNetRawCapability(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Detects and reports any container that requests the `NET_RAW` Linux capability, which is considered forbidden for most workloads. |
@@ -1449,6 +1474,7 @@ func testNetRawCapability(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Part of the Access Control test suite; invoked from `LoadChecks` to enforce container security best practices. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Call checkForbiddenCapability"]
@@ -1467,6 +1493,7 @@ graph TD
 ```
 
 #### Functions calling `testNetRawCapability` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testNetRawCapability
@@ -1479,17 +1506,17 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/checksdb"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/provider"
 )
 
 func main() {
-	check := checksdb.NewCheck("test-net-raw")
-	env := &provider.TestEnvironment{
-		Containers: []*provider.Container{}, // populate with test containers
-	}
-	accesscontrol.testNetRawCapability(check, env)
+ check := checksdb.NewCheck("test-net-raw")
+ env := &provider.TestEnvironment{
+  Containers: []*provider.Container{}, // populate with test containers
+ }
+ accesscontrol.testNetRawCapability(check, env)
 }
 ```
 
@@ -1498,7 +1525,6 @@ func main() {
 ### testNoSSHDaemonsAllowed
 
 **testNoSSHDaemonsAllowed** - Determines whether any pod in the environment exposes an SSH daemon and records compliant/non‑compliant results.
-
 
 A compliance check that verifies each pod does **not** run an SSH daemon by inspecting listening ports.
 
@@ -1584,13 +1610,14 @@ func example() {
 
 **testNodePort** - Validates each Kubernetes Service in the test environment; reports services that are of type `NodePort` as non‑compliant and those that are not as compliant.
 
-
 #### Signature (Go)
+
 ```go
 func testNodePort(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Validates each Kubernetes Service in the test environment; reports services that are of type `NodePort` as non‑compliant and those that are not as compliant. |
@@ -1601,6 +1628,7 @@ func testNodePort(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Implements the “ServicesDoNotUseNodeports” test within the access‑control suite; invoked by `LoadChecks`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Services"}
@@ -1618,6 +1646,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testNodePort --> func_LogInfo
@@ -1630,12 +1659,14 @@ graph TD
 ```
 
 #### Functions calling `testNodePort` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> func_testNodePort
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testNodePort
 import (
@@ -1664,13 +1695,14 @@ func main() {
 
 **testOneProcessPerContainer** - Ensures that each non‑Istio‑proxy container runs only one process. Sets the check result with compliant and non‑compliant containers.
 
-
 #### Signature (Go)
+
 ```go
 func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnvironment) {}
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures that each non‑Istio‑proxy container runs only one process. Sets the check result with compliant and non‑compliant containers. |
@@ -1681,6 +1713,7 @@ func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnviron
 | **How it fits the package** | It is one of many compliance checks loaded in `LoadChecks`. The function contributes to the Access Control test suite by validating container isolation at the process level. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Iterate over env.Containers"] --> B{"Is Istio proxy?"}
@@ -1699,6 +1732,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testOneProcessPerContainer --> func_LogInfo
@@ -1712,29 +1746,31 @@ graph TD
 ```
 
 #### Functions calling `testOneProcessPerContainer` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testOneProcessPerContainer
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testOneProcessPerContainer
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/accesscontrol"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
 func main() {
-	check := checksdb.NewCheck("one-process-per-container")
-	env   := &provider.TestEnvironment{
-		Containers: []provider.Container{}, // populate with real containers
-	}
-	accesscontrol.testOneProcessPerContainer(check, env)
-	// Inspect check.Result for compliance information.
+ check := checksdb.NewCheck("one-process-per-container")
+ env   := &provider.TestEnvironment{
+  Containers: []provider.Container{}, // populate with real containers
+ }
+ accesscontrol.testOneProcessPerContainer(check, env)
+ // Inspect check.Result for compliance information.
 }
 ```
 
@@ -1744,13 +1780,14 @@ func main() {
 
 **testPodClusterRoleBindings** - Checks each pod in the environment to ensure it is not bound to a cluster‑role, unless the pod is owned by a cluster‑wide operator.
 
-
 #### Signature (Go)
+
 ```go
 func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks each pod in the environment to ensure it is not bound to a cluster‑role, unless the pod is owned by a cluster‑wide operator. |
@@ -1761,6 +1798,7 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 | **How it fits the package** | Part of the access‑control test suite; invoked by `LoadChecks` for the *TestPodClusterRoleBindingsBestPractices* check. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Iterate over env.Pods"] --> B{"Check if pod uses cluster role"}
@@ -1773,6 +1811,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_testPodClusterRoleBindings --> func_IsUsingClusterRoleBinding
@@ -1782,12 +1821,14 @@ graph TD
 ```
 
 #### Functions calling `testPodClusterRoleBindings`
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testPodClusterRoleBindings
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testPodClusterRoleBindings
 package main
@@ -1813,7 +1854,6 @@ func main() {
 
 **testPodHostIPC** - Confirms each pod in the test environment does **not** set `spec.hostIPC` to `true`.
 
-
 #### Signature (Go)
 
 ```go
@@ -1828,7 +1868,7 @@ func testPodHostIPC(check *checksdb.Check, env *provider.TestEnvironment)
 | **Parameters** | `check *checksdb.Check` – current check context. <br> `env *provider.TestEnvironment` – contains the list of pods to evaluate. |
 | **Return value** | None (side‑effects only). |
 | **Key dependencies** | • `log.LogInfo`, `log.LogError` for diagnostics.<br>• `testhelper.NewPodReportObject` for report creation.<br>• `check.SetResult` to record compliant/non‑compliant pods. |
-| **Side effects** | * Mutates the check result via `SetResult`. <br>* Generates log entries and report objects; no external I/O beyond logging. |
+| **Side effects** | *Mutates the check result via `SetResult`. <br>* Generates log entries and report objects; no external I/O beyond logging. |
 | **How it fits the package** | One of several pod‑level security checks in the access‑control test suite, ensuring Pods do not share IPC namespaces with the host. |
 
 #### Internal workflow (Mermaid)
@@ -1887,13 +1927,14 @@ func main() {
 
 **testPodHostNetwork** - Ensures that `spec.hostNetwork` is not set to `true` for any pod under test. A pod using host networking can expose the node’s network stack to the container, which is a security risk.
 
-
 #### 1) Signature (Go)
+
 ```go
 func testPodHostNetwork(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures that `spec.hostNetwork` is not set to `true` for any pod under test. A pod using host networking can expose the node’s network stack to the container, which is a security risk. |
@@ -1904,6 +1945,7 @@ func testPodHostNetwork(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Part of the *accesscontrol* test suite; invoked by `LoadChecks` to run a pod‑level security rule during the overall test execution. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Pods"}
@@ -1918,6 +1960,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testPodHostNetwork --> check.LogInfo
@@ -1927,12 +1970,14 @@ graph TD
 ```
 
 #### 5) Functions calling `testPodHostNetwork` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testPodHostNetwork
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking testPodHostNetwork
 env := &provider.TestEnvironment{
@@ -1948,7 +1993,6 @@ testPodHostNetwork(check, env)
 ### testPodHostPID
 
 **testPodHostPID** - Ensures each Pod in the environment does **not** have `spec.hostPID` set to true. A compliant pod passes; a non‑compliant pod is reported.
-
 
 #### Signature (Go)
 
@@ -2033,7 +2077,6 @@ func main() {
 
 **testPodHostPath** - Ensures every pod’s volumes either lack a `hostPath` or have an empty path. If any host path is present, the pod is flagged as non‑compliant; otherwise it is compliant.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -2110,7 +2153,6 @@ testPodHostPath(check, env)
 
 **testPodRequests** - Verifies each container in the environment has CPU and memory resource requests set; records compliant and non‑compliant containers.
 
-
 #### Signature (Go)
 
 ```go
@@ -2122,7 +2164,7 @@ func testPodRequests(*checksdb.Check, *provider.TestEnvironment)
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Verifies each container in the environment has CPU and memory resource requests set; records compliant and non‑compliant containers. |
-| **Parameters** | `check` – *checksdb.Check: test context for logging and result storage.<br>`env` – *provider.TestEnvironment: contains the list of containers to evaluate. |
+| **Parameters** | `check` – *checksdb.Check: test context for logging and result storage.<br>`env` –*provider.TestEnvironment: contains the list of containers to evaluate. |
 | **Return value** | None (results are stored via `check.SetResult`). |
 | **Key dependencies** | • `resources.HasRequestsSet(cut, logger)` – checks request presence.<br>• `testhelper.NewContainerReportObject` – creates report entries.<br>• `check.LogInfo`, `check.LogError`, `check.GetLogger`, `check.SetResult`. |
 | **Side effects** | Logs information/errors; updates the check result with two slices of report objects. No external I/O or concurrency. |
@@ -2178,13 +2220,14 @@ testPodRequests(check, env)
 
 **testPodRoleBindings** - Ensures that a pod’s service account does not reference role bindings outside of the allowed CNF namespaces.
 
-
 #### Signature (Go)
+
 ```go
 func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures that a pod’s service account does not reference role bindings outside of the allowed CNF namespaces. |
@@ -2195,6 +2238,7 @@ func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Implements one of the AccessControl test checks, specifically for pod role‑binding best practices. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over Pods"}
@@ -2218,6 +2262,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testPodRoleBindings --> LogInfo
@@ -2228,12 +2273,14 @@ graph TD
 ```
 
 #### Functions calling `testPodRoleBindings` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testPodRoleBindings
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testPodRoleBindings
 env := &provider.TestEnvironment{
@@ -2254,13 +2301,14 @@ testPodRoleBindings(check, env)
 
 **testPodServiceAccount** - Determines whether each Pod in the test environment uses a non‑default ServiceAccount. Logs findings and records compliant or non‑compliant objects.
 
-
 #### Signature (Go)
+
 ```go
 func testPodServiceAccount(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether each Pod in the test environment uses a non‑default ServiceAccount. Logs findings and records compliant or non‑compliant objects. |
@@ -2271,6 +2319,7 @@ func testPodServiceAccount(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | It is one of several pod‑level checks registered in `LoadChecks` for the AccessControl test suite. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate env.Pods"}
@@ -2285,6 +2334,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testPodServiceAccount --> func_LogInfo
@@ -2294,12 +2344,14 @@ graph TD
 ```
 
 #### Functions calling `testPodServiceAccount` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testPodServiceAccount
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testPodServiceAccount
 func runExample() {
@@ -2317,7 +2369,6 @@ func runExample() {
 ### testSYSNiceRealtimeCapability
 
 **testSYSNiceRealtimeCapability** - Determines compliance of each container with respect to the `SYS_NICE` capability when running on a node whose kernel is realtime enabled.
-
 
 #### Signature (Go)
 
@@ -2403,7 +2454,6 @@ func main() {
 
 **testSecConPrivilegeEscalation** - Confirms each container’s `SecurityContext.AllowPrivilegeEscalation` is not set to `true`. Containers violating this rule are reported as non‑compliant.
 
-
 #### Signature (Go)
 
 ```go
@@ -2483,13 +2533,14 @@ func main() {
 
 **testSecConReadOnlyFilesystem** - Determines whether every container in the supplied environment has a read‑only root filesystem and records compliance results.
 
-
 #### Signature (Go)
+
 ```go
 func testSecConReadOnlyFilesystem(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether every container in the supplied environment has a read‑only root filesystem and records compliance results. |
@@ -2500,6 +2551,7 @@ func testSecConReadOnlyFilesystem(check *checksdb.Check, env *provider.TestEnvir
 | **How it fits the package** | Used by the access‑control test suite to validate container security context configuration, specifically the `readOnlyRootFilesystem` field. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over Pods"}
@@ -2513,6 +2565,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testSecConReadOnlyFilesystem --> func_LogInfo
@@ -2524,12 +2577,14 @@ graph TD
 ```
 
 #### Functions calling `testSecConReadOnlyFilesystem` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testSecConReadOnlyFilesystem
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testSecConReadOnlyFilesystem
 package main
@@ -2548,6 +2603,7 @@ func main() {
     accesscontrol_testtestSecConReadOnlyFilesystem(check, env) // internal function call
 }
 ```
+
 (Note: In real usage the function is called indirectly via `LoadChecks` during test execution.)
 
 ---
@@ -2556,13 +2612,14 @@ func main() {
 
 **testSecConRunAsNonRoot** - Confirms each pod’s containers either have `RunAsNonRoot=true` or a non‑zero user ID. Non‑compliant pods and containers are recorded for reporting.
 
-
 #### Signature (Go)
+
 ```go
 func testSecConRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Confirms each pod’s containers either have `RunAsNonRoot=true` or a non‑zero user ID. Non‑compliant pods and containers are recorded for reporting. |
@@ -2573,6 +2630,7 @@ func testSecConRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvironment
 | **How it fits the package** | One of many security context checks registered in `LoadChecks`; specifically addresses the “RunAsNonRoot” best practice for containers. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Pods"}
@@ -2588,6 +2646,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   testSecConRunAsNonRoot --> LogInfo
@@ -2599,12 +2658,14 @@ graph TD
 ```
 
 #### Functions calling `testSecConRunAsNonRoot` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testSecConRunAsNonRoot
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testSecConRunAsNonRoot
 import (
@@ -2626,23 +2687,25 @@ func example() {
 
 **testSysAdminCapability** - Determines whether any container uses the `SYS_ADMIN` Linux capability, which is disallowed for security reasons.
 
-
 #### Signature (Go)
+
 ```go
 func testSysAdminCapability(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether any container uses the `SYS_ADMIN` Linux capability, which is disallowed for security reasons. |
-| **Parameters** | `check` – *checksdb.Check: context and result holder.<br>`env` – *provider.TestEnvironment: contains test data such as containers to evaluate. |
+| **Parameters** | `check` – *checksdb.Check: context and result holder.<br>`env` –*provider.TestEnvironment: contains test data such as containers to evaluate. |
 | **Return value** | None; results are stored via `check.SetResult`. |
 | **Key dependencies** | Calls:<ul><li>`checkForbiddenCapability(env.Containers, "SYS_ADMIN", check.GetLogger())`</li><li>`check.SetResult(compliantObjects, nonCompliantObjects)`</li></ul> |
 | **Side effects** | Logs findings through the provided logger; updates the `Check` object with compliant and non‑compliant container reports. No external I/O beyond logging. |
 | **How it fits the package** | Part of the Access Control test suite; invoked by `LoadChecks` to enforce security best practices around Linux capabilities. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Retrieve logger"}
@@ -2652,6 +2715,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testSysAdminCapability --> func_checkForbiddenCapability
@@ -2660,12 +2724,14 @@ graph TD
 ```
 
 #### Functions calling `testSysAdminCapability` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testSysAdminCapability
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testSysAdminCapability
 func runExample() {
@@ -2683,7 +2749,6 @@ func runExample() {
 ### testSysPtraceCapability
 
 **testSysPtraceCapability** - Determines whether each pod that shares a process namespace also grants at least one container the `SYS_PTRACE` capability. The check records compliant and non‑compliant pods.
-
 
 #### 1. Signature (Go)
 
@@ -2753,4 +2818,3 @@ func ExampleTest() {
 ---
 
 ---
-

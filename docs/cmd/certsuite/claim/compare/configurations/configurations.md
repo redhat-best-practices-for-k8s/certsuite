@@ -49,7 +49,7 @@ Provides utilities to compare two claim configurations, summarizing configuratio
 ### AbnormalEventsCount
 
 <!-- DEBUG: Struct AbnormalEventsCount exists in bundle but ParsedOK=false, Fields=0 -->
-**Purpose**: 
+**Purpose**:
 
 **Fields**:
 
@@ -62,17 +62,19 @@ Provides utilities to compare two claim configurations, summarizing configuratio
 
 ### DiffReport
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `Config` | `*diff.Diffs` | Holds the detailed differences between two Cert Suite configuration objects, produced by the diffing library. |
 | `AbnormalEvents` | `AbnormalEventsCount` | Stores the number of abnormal events observed in each claim (`Claim1` and `Claim2`). |
 
 #### Purpose
+
 `DiffReport` encapsulates a comparison result for two Cert Suite claims. It contains both the structural differences of their configuration sections and the counts of any abnormal events recorded during execution. The struct is used to generate human‑readable summaries (via its `String()` method) and can be serialized as JSON for reporting or further analysis.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetDiffReport` | Creates a new `DiffReport` by comparing the configurations of two claims and counting their abnormal events. |
@@ -87,7 +89,6 @@ Provides utilities to compare two claim configurations, summarizing configuratio
 ### AbnormalEventsCount.String
 
 **String** - Builds a human‑readable table that lists the number of abnormal events detected in two separate claim contexts.
-
 
 Displays a formatted string summarizing abnormal event counts for two claims.
 
@@ -133,14 +134,14 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/configurations"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare/configurations"
 )
 
 func main() {
-	c := configurations.AbnormalEventsCount{Claim1: 3, Claim2: 5}
-	fmt.Print(c.String())
+ c := configurations.AbnormalEventsCount{Claim1: 3, Claim2: 5}
+ fmt.Print(c.String())
 }
 ```
 
@@ -153,11 +154,13 @@ func main() {
 Converts a `DiffReport` into a human‑readable string representation.
 
 #### Signature (Go)
+
 ```go
 func (d *DiffReport) String() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds and returns a formatted text block that lists configuration differences and any abnormal events. |
@@ -168,6 +171,7 @@ func (d *DiffReport) String() string
 | **How it fits the package** | Provides a convenient way to display comparison results in logs or user interfaces within the `configurations` comparison module. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   start("Start") --> init["Initialize string with header"]
@@ -178,6 +182,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_DiffReport_String --> func_Config_String
@@ -185,9 +190,11 @@ graph TD
 ```
 
 #### Functions calling `DiffReport.String` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking DiffReport.String
 report := &configurations.DiffReport{
@@ -202,7 +209,6 @@ fmt.Println(report.String())
 ### GetDiffReport
 
 **GetDiffReport** - Compares two `claim.Configurations` objects and returns a summary of differences in configuration settings and abnormal event counts.
-
 
 #### Signature (Go)
 
@@ -267,4 +273,3 @@ func main() {
 ```
 
 ---
-

@@ -72,16 +72,17 @@ The catalog package generates documentation for the Red Hat Best Practices Tes
 
 ### Entry
 
-
 | Field      | Type           | Description |
 |------------|----------------|-------------|
 | `testName` | `string`       | Human‑readable name of the test, derived from an identifier’s ID. |
 | `identifier` | `claim.Identifier` | The underlying identifier containing metadata such as URL and version; used to locate the test definition. |
 
 #### Purpose  
+
 The `Entry` struct aggregates the information required for generating a printable catalog of tests. Each instance maps a suite name (extracted from an `Identifier`) to its corresponding test details, enabling downstream formatting and output.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `CreatePrintableCatalogFromIdentifiers` | Builds a map from suite names to slices of `Entry`, populating each entry with the test’s ID and identifier. |
@@ -93,7 +94,6 @@ The `Entry` struct aggregates the information required for generating a printabl
 ### CreatePrintableCatalogFromIdentifiers
 
 **CreatePrintableCatalogFromIdentifiers** - Groups identifiers by their `Suite` field to produce a printable catalogue structure.
-
 
 #### 1) Signature (Go)
 
@@ -178,13 +178,14 @@ func main() {
 
 **GetSuitesFromIdentifiers** - Returns a slice containing the distinct `Suite` values found in the supplied `claim.Identifier` list.
 
-
 #### Signature (Go)
+
 ```go
 func GetSuitesFromIdentifiers(keys []claim.Identifier) []string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a slice containing the distinct `Suite` values found in the supplied `claim.Identifier` list. |
@@ -195,6 +196,7 @@ func GetSuitesFromIdentifiers(keys []claim.Identifier) []string
 | **How it fits the package** | Used by catalog generation routines to build a list of test‑suite names for display and summary statistics. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   GetSuitesFromIdentifiers --> iterateKeys
@@ -205,36 +207,39 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_GetSuitesFromIdentifiers --> arrayhelper_Unique
 ```
 
 #### Functions calling `GetSuitesFromIdentifiers` (Mermaid)
+
 ```mermaid
 graph TD
   outputTestCases --> GetSuitesFromIdentifiers
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetSuitesFromIdentifiers
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/claim"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/claim"
 )
 
 func main() {
-	ids := []claim.Identifier{
-		{Suite: "Network"},
-		{Suite: "Security"},
-		{Suite: "Network"},
-	}
-	suites := GetSuitesFromIdentifiers(ids)
-	fmt.Println(suites) // Output: [Network Security]
+ ids := []claim.Identifier{
+  {Suite: "Network"},
+  {Suite: "Security"},
+  {Suite: "Network"},
+ }
+ suites := GetSuitesFromIdentifiers(ids)
+ fmt.Println(suites) // Output: [Network Security]
 }
 ```
 
@@ -244,13 +249,14 @@ func main() {
 
 **NewCommand** - Constructs and returns a `*cobra.Command` that represents the top‑level CLI entry point for generating catalog documentation.
 
-
 #### Signature (Go)
+
 ```go
 func NewCommand() *cobra.Command
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Constructs and returns a `*cobra.Command` that represents the top‑level CLI entry point for generating catalog documentation. |
@@ -261,6 +267,7 @@ func NewCommand() *cobra.Command
 | **How it fits the package** | Provides the command that the higher‑level generate CLI aggregates, enabling catalog‑specific generation features. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["NewCommand"] --> B["Add markdownGenerateCmd to generateCmd"]
@@ -269,18 +276,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_NewCommand --> func_AddCommand
 ```
 
 #### Functions calling `NewCommand` (Mermaid)
+
 ```mermaid
 graph TD
   func_generate.NewCommand --> func_NewCommand
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewCommand
 package main
@@ -303,7 +313,6 @@ func main() {
 ### addPreflightTestsToCatalog
 
 **addPreflightTestsToCatalog** - Gathers all preflight operator and container checks, extracts their metadata, and registers each as a catalog entry for the certsuite test suite.
-
 
 #### Signature (Go)
 
@@ -375,13 +384,14 @@ outputTestCases()   // Internally calls addPreflightTestsToCatalog()
 
 **emitTextFromFile** - Reads the entire content of a given file and writes it directly to standard output, enabling inclusion of static text such as catalog documentation.
 
-
 #### Signature (Go)
+
 ```go
 func emitTextFromFile(filename string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Reads the entire content of a given file and writes it directly to standard output, enabling inclusion of static text such as catalog documentation. |
@@ -392,6 +402,7 @@ func emitTextFromFile(filename string) error
 | **How it fits the package** | Utility helper used during catalog generation to embed static Markdown files (e.g., CATALOG.md) into the generated output without requiring runtime parsing or templating. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Read file"}
@@ -402,6 +413,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_emitTextFromFile --> func_ReadFile
@@ -410,21 +422,23 @@ graph TD
 ```
 
 #### Functions calling `emitTextFromFile`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking emitTextFromFile
 package main
 
 import (
-	"log"
+ "log"
 )
 
 func main() {
-	if err := emitTextFromFile(“example.txt”); err != nil {
-		log.Fatalf(“failed to emit text: %v”, err)
-	}
+ if err := emitTextFromFile(“example.txt”); err != nil {
+  log.Fatalf(“failed to emit text: %v”, err)
+ }
 }
 ```
 
@@ -436,13 +450,14 @@ func main() {
 
 **generateJS** - Produces a JSON representation of the package’s classification identifiers and prints it to standard output.
 
-
 #### Signature (Go)
+
 ```go
 func generateJS(_ *cobra.Command, _ []string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Produces a JSON representation of the package’s classification identifiers and prints it to standard output. |
@@ -453,6 +468,7 @@ func generateJS(_ *cobra.Command, _ []string) error
 | **How it fits the package** | Serves as a sub‑command handler within the `catalog` command group, enabling users to request classification data in JavaScript/JSON form. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["generateJS"] --> B["outputJS"]
@@ -461,15 +477,18 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_generateJS --> func_outputJS
 ```
 
 #### Functions calling `generateJS`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking generateJS
 cmd := &cobra.Command{}
@@ -487,13 +506,14 @@ if err != nil {
 
 **outputIntro** - Builds a static introduction for the Red Hat Best Practices Test Suite catalog, returning it as a single Markdown-formatted string.
 
-
 #### Signature (Go)
+
 ```go
 func outputIntro() (out string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a static introduction for the Red Hat Best Practices Test Suite catalog, returning it as a single Markdown-formatted string. |
@@ -504,6 +524,7 @@ func outputIntro() (out string)
 | **How it fits the package** | Supplies the opening text that precedes all test‑case listings in the generated catalog markdown. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Build header string"}
@@ -516,25 +537,27 @@ flowchart TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `outputIntro` (Mermaid)
+
 ```mermaid
 graph TD
   func_runGenerateMarkdownCmd --> func_outputIntro
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking outputIntro (note: unexported within its package)
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/catalog"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/catalog"
 )
 
 func main() {
-	intro := catalog.outputIntro()
-	fmt.Println(intro)
+ intro := catalog.outputIntro()
+ fmt.Println(intro)
 }
 ```
 
@@ -543,7 +566,6 @@ func main() {
 ### outputJS
 
 **outputJS** - Serialises the global `identifiers.Classification` map to indented JSON, logs an error if marshalling fails, and writes the result to standard output.
-
 
 #### Signature (Go)
 
@@ -605,7 +627,6 @@ func main() {
 
 **outputSccCategories** - Builds a Markdown block that explains the four security context categories used in the generated catalog, including introductory text and detailed descriptions for each category.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -660,13 +681,13 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/catalog"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/catalog"
 )
 
 func main() {
-	sccSection := catalog.OutputSccCategories()
-	fmt.Println(sccSection)
+ sccSection := catalog.OutputSccCategories()
+ fmt.Println(sccSection)
 }
 ```
 
@@ -677,7 +698,6 @@ func main() {
 ### outputTestCases
 
 **outputTestCases** - Builds a Markdown string that documents all test cases in the catalog, including metadata such as ID, description, remediation, best‑practice references, impact statements, tags and scenario classifications. It also compiles statistics on tests per suite and per scenario into a `catalogSummary`.
-
 
 #### Signature (Go)
 
@@ -775,13 +795,14 @@ func main() {
 
 **runGenerateMarkdownCmd** - Creates a complete Markdown document describing the Red Hat Best Practices Test Suite for Kubernetes and writes it to standard output.
 
-
 #### Signature (Go)
+
 ```go
 func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Creates a complete Markdown document describing the Red Hat Best Practices Test Suite for Kubernetes and writes it to standard output. |
@@ -792,6 +813,7 @@ func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error
 | **How it fits the package** | Entry point for the `generate catalog` command; orchestrates sub‑functions that build each section of the catalog. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   runGenerateMarkdownCmd --> outputIntro
@@ -802,6 +824,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_runGenerateMarkdownCmd --> func_outputIntro
@@ -812,9 +835,11 @@ graph TD
 ```
 
 #### Functions calling `runGenerateMarkdownCmd` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking runGenerateMarkdownCmd
 package main
@@ -838,13 +863,14 @@ func main() {
 
 **scenarioIDToText** - Maps known scenario IDs to friendly names; returns `"Unknown Scenario"` for unknown values.
 
-
 #### Signature (Go)
+
 ```go
 func scenarioIDToText(id string) (text string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Maps known scenario IDs to friendly names; returns `"Unknown Scenario"` for unknown values. |
@@ -855,6 +881,7 @@ func scenarioIDToText(id string) (text string)
 | **How it fits the package** | Provides a lookup helper for rendering scenario information in catalog output and summaries. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"switch id"}
@@ -871,15 +898,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `scenarioIDToText` (Mermaid)
+
 ```mermaid
 graph TD
   func_outputTestCases --> func_scenarioIDToText
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking scenarioIDToText
 package main
@@ -899,7 +929,6 @@ func main() {
 ### summaryToMD
 
 **summaryToMD** - Builds a Markdown string summarizing total test cases, suites, and per‑suite/per‑scenario counts for the certsuite catalog.
-
 
 #### Signature (Go)
 
@@ -973,4 +1002,3 @@ func main() {
 ```
 
 ---
-

@@ -44,8 +44,8 @@ The nodes package builds a human‑readable report summarizing differences betwe
 
 ### DiffReport
 
-
 #### Fields
+
 | Field    | Type        | Description |
 |----------|-------------|-------------|
 | `Nodes`  | `*diff.Diffs` | Differences in node roles and summaries, one entry per node that appears in both claim files. If a node exists only in one claim it is marked “not found in claim[1|2]”. |
@@ -54,9 +54,11 @@ The nodes package builds a human‑readable report summarizing differences betwe
 | `Hardware` | `*diff.Diffs` | Differences in hardware information reported by the nodes in each claim. |
 
 #### Purpose
+
 `DiffReport` aggregates the results of comparing node-related data from two Kubernetes cluster claims. It holds separate diff summaries for general node information, CNI networks, CSI drivers, and hardware specs, allowing consumers to inspect which aspects differ between the clusters.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `GetDiffReport` | Creates a new `DiffReport` by comparing corresponding fields of two `claim.Nodes` objects. |
@@ -71,7 +73,6 @@ The nodes package builds a human‑readable report summarizing differences betwe
 ### DiffReport.String
 
 **String** - Creates a human‑readable summary of cluster node differences, including nodes, CNI, CSI and hardware comparisons.
-
 
 Outputs a formatted report of node differences between two claim files.
 
@@ -166,7 +167,6 @@ func main() {
 
 **GetDiffReport** - Builds a `DiffReport` that contains the differences between two sets of claim nodes. It compares node summaries, CNI networks, CSI drivers and hardware information.
 
-
 #### Signature (Go)
 
 ```go
@@ -230,4 +230,3 @@ func main() {
 ```
 
 ---
-

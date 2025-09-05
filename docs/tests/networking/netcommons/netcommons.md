@@ -68,7 +68,6 @@ The netcommons package supplies helper types and functions for networking tests 
 
 ### ContainerIP
 
-
 A lightweight representation of a container’s network identity, combining its IP address with a full container identifier and optional interface name.
 
 #### Fields
@@ -93,7 +92,6 @@ The `ContainerIP` struct aggregates all information required to perform networki
 
 ### NetTestContext
 
-
 | Field | Type | Description |
 |-------|------|-------------|
 | `TesterContainerNodeName` | `string` | Name of the node where the initiating container runs. |
@@ -101,9 +99,11 @@ The `ContainerIP` struct aggregates all information required to perform networki
 | `DestTargets` | `[]ContainerIP` | IP addresses of all other containers on the same subnet that should be pinged by `TesterSource`. |
 
 #### Purpose
+
 `NetTestContext` encapsulates everything needed to perform connectivity tests within a single network attachment (subnet). It identifies the node and container that will initiate traffic (`TesterSource`) and lists every target container’s IP address (`DestTargets`) that must be reachable from it. This struct is used by test runners to generate ping commands, validate reachability, and report results per subnet.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NetTestContext.String` | Returns a human‑readable summary of the tester source and its destination targets for logging or debugging. |
@@ -118,7 +118,6 @@ The `ContainerIP` struct aggregates all information required to perform networki
 ### ContainerIP.String
 
 **String** - Produces a human‑readable representation of a `ContainerIP`, combining its IP address with the long form of its container identifier.
-
 
 #### Signature (Go)
 
@@ -166,16 +165,16 @@ None – this function is currently not referenced elsewhere in the package.
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
 )
 
 func main() {
-	cip := &netcommons.ContainerIP{
-		IP:                "192.168.1.10",
-		ContainerIdentifier: netcommons.ContainerIdentifier{ /* fields */ },
-	}
-	fmt.Println(cip.String())
+ cip := &netcommons.ContainerIP{
+  IP:                "192.168.1.10",
+  ContainerIdentifier: netcommons.ContainerIdentifier{ /* fields */ },
+ }
+ fmt.Println(cip.String())
 }
 ```
 
@@ -184,7 +183,6 @@ func main() {
 ### FilterIPListByIPVersion
 
 **FilterIPListByIPVersion** - Produces a new slice containing only those IP addresses from `ipList` that match the specified `aIPVersion` (IPv4 or IPv6).
-
 
 ```go
 func FilterIPListByIPVersion(ipList []string, aIPVersion IPVersion) []string
@@ -234,19 +232,19 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
 )
 
 func main() {
-	addresses := []string{
-		"192.168.1.10",
-		"fe80::1ff:fe23:4567:890a",
-		"10.0.0.5",
-	}
-	ipv6s := netcommons.FilterIPListByIPVersion(addresses, netcommons.IPv6)
-	fmt.Println("IPv6 addresses:", ipv6s) // Output: IPv6 addresses: [fe80::1ff:fe23:4567:890a]
+ addresses := []string{
+  "192.168.1.10",
+  "fe80::1ff:fe23:4567:890a",
+  "10.0.0.5",
+ }
+ ipv6s := netcommons.FilterIPListByIPVersion(addresses, netcommons.IPv6)
+ fmt.Println("IPv6 addresses:", ipv6s) // Output: IPv6 addresses: [fe80::1ff:fe23:4567:890a]
 }
 ```
 
@@ -255,7 +253,6 @@ func main() {
 ### GetIPVersion
 
 **GetIPVersion** - Determines whether a given IP address string is IPv4 or IPv6, returning an `IPVersion` value.
-
 
 #### Signature (Go)
 
@@ -310,19 +307,19 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
 )
 
 func main() {
-	ip := "192.168.1.1"
-	version, err := netcommons.GetIPVersion(ip)
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
-	}
-	fmt.Printf("The IP %s is of version: %v\n", ip, version)
+ ip := "192.168.1.1"
+ version, err := netcommons.GetIPVersion(ip)
+ if err != nil {
+  fmt.Printf("Error: %v\n", err)
+  return
+ }
+ fmt.Printf("The IP %s is of version: %v\n", ip, version)
 }
 ```
 
@@ -332,13 +329,14 @@ func main() {
 
 **String** - Converts an `IPVersion` enum value into its corresponding string representation (`IPv4`, `IPv6`, `IPv4v6`, or `Undefined`).
 
-
 #### Signature (Go)
+
 ```go
 func (version IPVersion) String() string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Converts an `IPVersion` enum value into its corresponding string representation (`IPv4`, `IPv6`, `IPv4v6`, or `Undefined`). |
@@ -349,6 +347,7 @@ func (version IPVersion) String() string
 | **How it fits the package** | Provides a human‑readable form of the internal IP version representation, useful for logging, error messages, and configuration output within the `netcommons` package. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph Switch["Switch on `version`"]
@@ -361,12 +360,15 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `IPVersion.String` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking IPVersion.String
 package main
@@ -388,7 +390,6 @@ func main() {
 ### NetTestContext.String
 
 **String** - Generates a human‑readable representation of a `NetTestContext`, detailing the initiating container and all target containers to be tested.
-
 
 ```go
 func (testContext *NetTestContext) String() string
@@ -443,16 +444,16 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
 )
 
 func main() {
-	// Assume we have a populated NetTestContext instance `ctx`
-	var ctx netcommons.NetTestContext
-	// Populate fields as needed...
-	fmt.Println(ctx.String())
+ // Assume we have a populated NetTestContext instance `ctx`
+ var ctx netcommons.NetTestContext
+ // Populate fields as needed...
+ fmt.Println(ctx.String())
 }
 ```
 
@@ -463,7 +464,6 @@ func main() {
 ### PodIPsToStringList
 
 **PodIPsToStringList** - Transforms a list of `corev1.PodIP` values into their raw IP string representations.
-
 
 #### Signature (Go)
 
@@ -512,19 +512,19 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	corev1 "k8s.io/api/core/v1"
-	netcommons "github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
+ corev1 "k8s.io/api/core/v1"
+ netcommons "github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
 )
 
 func main() {
-	podIPs := []corev1.PodIP{
-		{IP: "10.0.0.5"},
-		{IP: "10.0.0.6"},
-	}
-	ipStrings := netcommons.PodIPsToStringList(podIPs)
-	fmt.Println(ipStrings) // Output: [10.0.0.5 10.0.0.6]
+ podIPs := []corev1.PodIP{
+  {IP: "10.0.0.5"},
+  {IP: "10.0.0.6"},
+ }
+ ipStrings := netcommons.PodIPsToStringList(podIPs)
+ fmt.Println(ipStrings) // Output: [10.0.0.5 10.0.0.6]
 }
 ```
 
@@ -534,13 +534,14 @@ func main() {
 
 **PrintNetTestContextMap** - Produces a human‑readable string summarizing each network’s test context, including source and destination containers.
 
-
 #### Signature (Go)
+
 ```go
 func PrintNetTestContextMap(netsUnderTest map[string]NetTestContext) string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Produces a human‑readable string summarizing each network’s test context, including source and destination containers. |
@@ -551,6 +552,7 @@ func PrintNetTestContextMap(netsUnderTest map[string]NetTestContext) string
 | **How it fits the package** | Serves as a helper for logging and debugging network test setups within the `netcommons` package. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Is map empty?"}
@@ -563,6 +565,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_PrintNetTestContextMap --> strings.Builder
@@ -571,12 +574,14 @@ graph TD
 ```
 
 #### Functions calling `PrintNetTestContextMap`
+
 ```mermaid
 graph TD
   RunNetworkingTests --> PrintNetTestContextMap
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking PrintNetTestContextMap
 package main
@@ -603,13 +608,14 @@ func main() {
 
 **TestReservedPortsUsage** - Aggregates compliance reports for pods that listen on or declare any reserved port. It delegates the core check to `findRoguePodsListeningToPorts` and then returns the collected results.
 
-
 #### Signature (Go)
+
 ```go
 func TestReservedPortsUsage(env *provider.TestEnvironment, reservedPorts map[int32]bool, portsOrigin string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Aggregates compliance reports for pods that listen on or declare any reserved port. It delegates the core check to `findRoguePodsListeningToPorts` and then returns the collected results. |
@@ -620,6 +626,7 @@ func TestReservedPortsUsage(env *provider.TestEnvironment, reservedPorts map[int
 | **How it fits the package** | Provides a reusable helper for higher‑level tests that need to verify port usage compliance across different environments (e.g., OpenShift, partner‑specific ports). |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Call findRoguePodsListeningToPorts"}
@@ -629,12 +636,14 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_TestReservedPortsUsage --> func_findRoguePodsListeningToPorts
 ```
 
 #### Functions calling `TestReservedPortsUsage` (Mermaid)
+
 ```mermaid
 graph TD
   func_testOCPReservedPortsUsage --> func_TestReservedPortsUsage
@@ -642,6 +651,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking TestReservedPortsUsage
 package main
@@ -673,7 +683,6 @@ func main() {
 ### findRogueContainersDeclaringPorts
 
 **findRogueContainersDeclaringPorts** - Scans each container’s port list and flags those that declare any port present in `portsToTest`. Containers declaring such ports are marked non‑compliant; all others are compliant.
-
 
 #### Signature (Go)
 
@@ -732,40 +741,40 @@ graph TD
 package main
 
 import (
-	"log"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netcommons"
 )
 
 func main() {
-	logger := log.Default()
+ logger := log.Default()
 
-	// Example containers (normally obtained from Kubernetes API)
-	containers := []*provider.Container{
-		{
-			Name:      "app",
-			Namespace: "default",
-			Podname:   "mypod",
-			Ports: []provider.Port{
-				{ContainerPort: 8080, Protocol: provider.ProtocolTCP},
-				{ContainerPort: 443, Protocol: provider.ProtocolTCP},
-			},
-		},
-	}
+ // Example containers (normally obtained from Kubernetes API)
+ containers := []*provider.Container{
+  {
+   Name:      "app",
+   Namespace: "default",
+   Podname:   "mypod",
+   Ports: []provider.Port{
+    {ContainerPort: 8080, Protocol: provider.ProtocolTCP},
+    {ContainerPort: 443, Protocol: provider.ProtocolTCP},
+   },
+  },
+ }
 
-	// Ports considered reserved for the test
-	reserved := map[int32]bool{443: true, 8443: true}
+ // Ports considered reserved for the test
+ reserved := map[int32]bool{443: true, 8443: true}
 
-	compliant, nonCompliant := netcommons.FindRogueContainersDeclaringPorts(
-		containers,
-		reserved,
-		"Istio",
-		logger,
-	)
+ compliant, nonCompliant := netcommons.FindRogueContainersDeclaringPorts(
+  containers,
+  reserved,
+  "Istio",
+  logger,
+ )
 
-	fmt.Println("Compliant:", compliant)
-	fmt.Println("Non‑compliant:", nonCompliant)
+ fmt.Println("Compliant:", compliant)
+ fmt.Println("Non‑compliant:", nonCompliant)
 }
 ```
 
@@ -776,7 +785,6 @@ func main() {
 ### findRoguePodsListeningToPorts
 
 **findRoguePodsListeningToPorts** - Scans a list of pods to determine if any container declares or listens on ports that are reserved. Generates compliance reports for each pod.
-
 
 #### Signature (Go)
 
@@ -864,4 +872,3 @@ func example() {
 ```
 
 ---
-

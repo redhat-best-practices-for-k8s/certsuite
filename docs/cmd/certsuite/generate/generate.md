@@ -36,7 +36,6 @@ The generate package builds a top‑level Cobra command that groups all generati
 
 **NewCommand** - Constructs and returns a Cobra command that aggregates all sub‑commands for the *generate* feature set.
 
-
 #### Signature (Go)
 
 ```go
@@ -93,14 +92,13 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate"
 )
 
 func main() {
-	generateCmd := generate.NewCommand()
-	// The returned command can now be added to a root command or executed directly.
+ generateCmd := generate.NewCommand()
+ // The returned command can now be added to a root command or executed directly.
 }
 ```
 
 ---
-

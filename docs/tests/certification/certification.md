@@ -54,7 +54,6 @@ The certification test package registers and executes checks that verify whether
 
 **LoadChecks** - Populates the internal checks database with all certification‑related checks, attaching pre‑execution hooks and skip conditions.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -131,13 +130,14 @@ func main() {
 
 **getContainersToQuery** - Creates a lookup table indicating which container images should be queried. Each key is a `ContainerImageIdentifier` from the test environment, and every value is set to `true`.
 
-
 #### Signature (Go)
+
 ```go
 func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerImageIdentifier]bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Creates a lookup table indicating which container images should be queried. Each key is a `ContainerImageIdentifier` from the test environment, and every value is set to `true`. |
@@ -148,6 +148,7 @@ func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerI
 | **How it fits the package** | Supplies a quick membership check for other parts of the certification suite that need to determine whether a container image should be processed. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> Allocate["Allocate map with `make`"]
@@ -157,6 +158,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getContainersToQuery --> make
@@ -167,22 +169,23 @@ graph TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getContainersToQuery
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/certification/provider"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/certification/provider"
 )
 
 // Assume env is a pre‑populated *provider.TestEnvironment.
 func main() {
-	env := &provider.TestEnvironment{
-		Containers: []provider.Container{ /* … */ },
-	}
-	containersToQuery := getContainersToQuery(env)
-	fmt.Println(containersToQuery) // map[<identifier> true] ...
+ env := &provider.TestEnvironment{
+  Containers: []provider.Container{ /* … */ },
+ }
+ containersToQuery := getContainersToQuery(env)
+ fmt.Println(containersToQuery) // map[<identifier> true] ...
 }
 ```
 
@@ -192,13 +195,14 @@ func main() {
 
 **testAllOperatorCertified** - Iterates over all operators listed in the test environment and verifies each operator’s certification status for the current OpenShift minor version. Records compliant and non‑compliant operators for reporting.
 
-
 #### Signature (Go)
+
 ```go
 func (*checksdb.Check, *provider.TestEnvironment, certdb.CertificationStatusValidator)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Iterates over all operators listed in the test environment and verifies each operator’s certification status for the current OpenShift minor version. Records compliant and non‑compliant operators for reporting. |
@@ -209,6 +213,7 @@ func (*checksdb.Check, *provider.TestEnvironment, certdb.CertificationStatusVali
 | **How it fits the package** | This function is a core test routine for the *certification* suite; it is invoked by `LoadChecks` to evaluate operator certification compliance across all operators discovered in the environment. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Is OCP cluster?"}
@@ -226,6 +231,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testAllOperatorCertified --> provider_IsOCPCluster
@@ -239,12 +245,14 @@ graph TD
 ```
 
 #### Functions calling `testAllOperatorCertified` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testAllOperatorCertified
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testAllOperatorCertified
 check := checksdb.NewCheck("operator-cert")
@@ -264,7 +272,6 @@ testAllOperatorCertified(check, env, validator)
 ### testContainerCertification
 
 **testContainerCertification** - Determines if a container image is certified by delegating to the `CertificationStatusValidator`.
-
 
 This helper checks whether a container image identified by its registry, repository, tag and digest is certified according to the supplied validator.
 
@@ -327,7 +334,6 @@ func example() {
 ### testContainerCertificationStatusByDigest
 
 **testContainerCertificationStatusByDigest** - Verifies that every container in the test environment has a valid image digest and that this digest is present in the certification database. Containers lacking digests or with unknown digests are marked non‑compliant; otherwise they are considered compliant.
-
 
 #### Signature (Go)
 
@@ -425,7 +431,6 @@ func runExample() {
 
 **testHelmCertified** - Iterates over all Helm chart releases in the test environment and records whether each release is certified according to the provided validator.
 
-
 #### Signature (Go)
 
 ```go
@@ -495,7 +500,6 @@ testHelmCertified(check, env, validator)
 
 **testHelmVersion** - Determines if the cluster uses Helm v3 by searching for Tiller pods. If none are found, all installed Helm charts are marked compliant; otherwise each Tiller pod is flagged non‑compliant.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -557,4 +561,3 @@ testHelmVersion(check)
 ```
 
 ---
-

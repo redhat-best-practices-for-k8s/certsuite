@@ -48,7 +48,6 @@ The bootparams package provides utilities for verifying that the kernel argument
 
 **GetMcKernelArguments** - Converts the list of kernel arguments (`[]string`) from a node’s MachineConfig into a key‑value map for easy lookup.
 
-
 Retrieve the kernel argument map defined in a node’s MachineConfig.
 
 ---
@@ -123,7 +122,6 @@ for key, val := range kernelArgs {
 ### TestBootParamsHelper
 
 **TestBootParamsHelper** - Compares expected kernel arguments from MachineConfig (`GetMcKernelArguments`) against the current command‑line arguments in the container and GRUB configuration, emitting warnings or debug logs for mismatches.
-
 
 Validates that the kernel command line arguments specified in a node’s MachineConfig match those actually present in the running container and in GRUB, logging any discrepancies.
 
@@ -208,13 +206,14 @@ if err := bootparams.TestBootParamsHelper(env, cut, logger); err != nil {
 
 **getCurrentKernelCmdlineArgs** - Executes the `grubKernelArgsCommand` inside a probe pod to capture the current kernel command‑line arguments and returns them as a map of key/value pairs.
 
-
 #### Signature (Go)
+
 ```go
 func getCurrentKernelCmdlineArgs(env *provider.TestEnvironment, nodeName string) (map[string]string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Executes the `grubKernelArgsCommand` inside a probe pod to capture the current kernel command‑line arguments and returns them as a map of key/value pairs. |
@@ -225,6 +224,7 @@ func getCurrentKernelCmdlineArgs(env *provider.TestEnvironment, nodeName string)
 | **How it fits the package** | Provides low‑level data needed for boot parameter validation in the *bootparams* test suite. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["GetClientsHolder"] --> B["NewContext"]
@@ -234,6 +234,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_getCurrentKernelCmdlineArgs --> func_GetClientsHolder
@@ -245,12 +246,14 @@ graph TD
 ```
 
 #### Functions calling `getCurrentKernelCmdlineArgs` (Mermaid)
+
 ```mermaid
 graph TD
   func_TestBootParamsHelper --> func_getCurrentKernelCmdlineArgs
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getCurrentKernelCmdlineArgs
 env := &provider.TestEnvironment{ /* populated elsewhere */ }
@@ -268,7 +271,6 @@ fmt.Printf("Kernel arguments for %s: %+v\n", nodeName, args)
 ### getGrubKernelArgs
 
 **getGrubKernelArgs** - Executes `grub2-editenv list` inside a probe pod to obtain the current GRUB kernel command line arguments and returns them as a key‑value map.
-
 
 #### Signature (Go)
 
@@ -339,4 +341,3 @@ fmt.Printf("GRUB kernel arguments for %s: %+v\n", nodeName, grubArgs)
 ```
 
 ---
-

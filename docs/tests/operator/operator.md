@@ -92,17 +92,19 @@ The operator test suite registers checks that validate Operator Lifecycle Manage
 
 ### CsvResult
 
-
 #### Fields
+
 | Field     | Type   | Description |
 |-----------|--------|-------------|
 | `NameCsv` | `string` | The comma‑separated list of names extracted from the input CSV, after trimming whitespace. |
 | `Namespace` | `string` | The namespace value prefixed with `ns=` in the input; if none is present it remains an empty string. |
 
 #### Purpose
+
 `CsvResult` aggregates the pieces returned by the `SplitCsv` helper: a cleaned list of names and an optional namespace extracted from a CSV‑formatted string.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `SplitCsv` | Parses a CSV string, separates components by commas, trims spaces, assigns values to `NameCsv` or `Namespace`, and returns the populated `CsvResult`. |
@@ -115,13 +117,14 @@ The operator test suite registers checks that validate Operator Lifecycle Manage
 
 **LoadChecks** - Populates the *operator* test group with a series of checks that validate operator installation, configuration, and runtime behaviour.
 
-
 #### 1) Signature (Go)
+
 ```go
 func LoadChecks()
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Populates the *operator* test group with a series of checks that validate operator installation, configuration, and runtime behaviour. |
@@ -132,6 +135,7 @@ func LoadChecks()
 | **How it fits the package** | Called from `pkg/certsuite.LoadInternalChecksDB` to ensure operator‑related tests are available when the test suite runs. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start LoadChecks"] --> B["Log debug message"]
@@ -166,6 +170,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> log_Debug
@@ -189,12 +194,14 @@ graph TD
 ```
 
 #### 5) Functions calling `LoadChecks` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadInternalChecksDB --> func_LoadChecks
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Within the package initialization, ensure operator checks are registered:
 func init() {
@@ -210,14 +217,13 @@ func init() {
 <!-- DEBUG: Function OperatorInstalledMoreThanOnce exists in bundle but ParsedOK=false -->
 **Signature**: `func(*provider.Operator, *provider.Operator)(bool)`
 
-**Purpose**: 
+**Purpose**:
 
 ---
 
 ### SplitCsv
 
 **SplitCsv** - Extracts the CSV name (`NameCsv`) and optional namespace (`Namespace`) from a comma‑separated input string.
-
 
 Splits a CSV‑style string into its component name and namespace values.
 
@@ -326,6 +332,7 @@ flowchart TD
 ```
 
 #### Function dependencies  
+
 None – this function is currently not referenced elsewhere in the package.
 
 ```mermaid
@@ -366,8 +373,8 @@ if operator.checkIfCsvUnderTest(csv) {
 
 **checkValidOperatorInstallation** - Determines whether a namespace is dedicated to single‑ or multi‑namespaced operators, gathers lists of operator CSVs and pods that violate the expected installation rules, and reports any errors encountered.
 
-
 #### Signature (Go)
+
 ```go
 func checkValidOperatorInstallation(namespace string) (
     isDedicatedOperatorNamespace bool,
@@ -380,6 +387,7 @@ func checkValidOperatorInstallation(namespace string) (
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether a namespace is dedicated to single‑ or multi‑namespaced operators, gathers lists of operator CSVs and pods that violate the expected installation rules, and reports any errors encountered. |
@@ -390,6 +398,7 @@ func checkValidOperatorInstallation(namespace string) (
 | **How it fits the package** | This helper supports tests that validate tenant namespace isolation for operators, ensuring that each namespace hosts only approved operator configurations and no stray pods. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Get CSVs in namespace"}
@@ -414,6 +423,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_checkValidOperatorInstallation --> func_getCsvsBy
@@ -426,39 +436,41 @@ graph TD
 ```
 
 #### Functions calling `checkValidOperatorInstallation` (Mermaid)
+
 ```mermaid
 graph TD
   func_testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces --> func_checkValidOperatorInstallation
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking checkValidOperatorInstallation
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/operator"
 )
 
 func main() {
-	namespace := "tenant-namespace"
+ namespace := "tenant-namespace"
 
-	isDedicated, singleOps, nonSingleOps,
-		targetedCSVs, othersNotUnderTest, orphanPods, err :=
-		operator.checkValidOperatorInstallation(namespace)
+ isDedicated, singleOps, nonSingleOps,
+  targetedCSVs, othersNotUnderTest, orphanPods, err :=
+  operator.checkValidOperatorInstallation(namespace)
 
-	if err != nil {
-		fmt.Printf("Error checking namespace %s: %v\n", namespace, err)
-		return
-	}
+ if err != nil {
+  fmt.Printf("Error checking namespace %s: %v\n", namespace, err)
+  return
+ }
 
-	fmt.Printf("Namespace %s dedicated? %t\n", namespace, isDedicated)
-	fmt.Printf("Single/multi‑namespaced ops: %v\n", singleOps)
-	fmt.Printf("Non‑single/multi ops: %v\n", nonSingleOps)
-	fmt.Printf("CSVs targeting namespace: %v\n", targetedCSVs)
-	fmt.Printf("Operators not under test: %v\n", othersNotUnderTest)
-	fmt.Printf("Orphan pods: %v\n", orphanPods)
+ fmt.Printf("Namespace %s dedicated? %t\n", namespace, isDedicated)
+ fmt.Printf("Single/multi‑namespaced ops: %v\n", singleOps)
+ fmt.Printf("Non‑single/multi ops: %v\n", nonSingleOps)
+ fmt.Printf("CSVs targeting namespace: %v\n", targetedCSVs)
+ fmt.Printf("Operators not under test: %v\n", othersNotUnderTest)
+ fmt.Printf("Orphan pods: %v\n", orphanPods)
 }
 ```
 
@@ -467,7 +479,6 @@ func main() {
 ### findPodsNotBelongingToOperators
 
 **findPodsNotBelongingToOperators** - Returns the names of all pods within *namespace* that are not owned by any operator (ClusterServiceVersion) in that same namespace.
-
 
 #### Signature (Go)
 
@@ -533,13 +544,14 @@ fmt.Printf("Pods not owned by an operator in %s: %v\n", namespace, orphanedPods)
 
 **getAllPodsBy** - Filters a slice of pod objects, returning only those whose `Namespace` field matches the supplied namespace.
 
-
 #### Signature (Go)
+
 ```go
 func getAllPodsBy(namespace string, allPods []*provider.Pod) (podsInNamespace []*provider.Pod)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Filters a slice of pod objects, returning only those whose `Namespace` field matches the supplied namespace. |
@@ -550,6 +562,7 @@ func getAllPodsBy(namespace string, allPods []*provider.Pod) (podsInNamespace []
 | **How it fits the package** | Utility helper used by higher‑level functions to isolate pods of a given namespace before further processing (e.g., ownership checks). |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   Start --> ForEachPod["For each pod in allPods"]
@@ -561,18 +574,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_getAllPodsBy --> func_append
 ```
 
 #### Functions calling `getAllPodsBy`
+
 ```mermaid
 graph TD
   func_findPodsNotBelongingToOperators --> func_getAllPodsBy
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getAllPodsBy
 pods := []*provider.Pod{
@@ -590,7 +606,6 @@ filtered := getAllPodsBy(namespace, pods)
 
 **getCsvsBy** - Filters a slice of `ClusterServiceVersion` objects, returning only those whose `Namespace` field matches the supplied namespace.
 
-
 ```go
 func getCsvsBy(namespace string, allCsvs []*v1alpha1.ClusterServiceVersion) (csvsInNamespace []*v1alpha1.ClusterServiceVersion)
 ```
@@ -605,6 +620,7 @@ func getCsvsBy(namespace string, allCsvs []*v1alpha1.ClusterServiceVersion) (csv
 | **How it fits the package** | Supports operator validation by isolating CSVs relevant to a particular namespace before performing further checks. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over allCsvs"}
@@ -616,18 +632,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_getCsvsBy --> func_append
 ```
 
 #### Functions calling `getCsvsBy`
+
 ```mermaid
 graph TD
   func_checkValidOperatorInstallation --> func_getCsvsBy
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking getCsvsBy
 package main
@@ -655,13 +674,14 @@ func main() {
 
 **isCsvInNamespaceClusterWide** - Checks whether the ClusterServiceVersion (CSV) identified by `csvName` targets every namespace in the cluster. It returns `true` if no specific target namespaces are annotated, indicating a cluster‑wide operator.
 
-
 #### Signature (Go)
+
 ```go
 func isCsvInNamespaceClusterWide(csvName string, allCsvs []*v1alpha1.ClusterServiceVersion) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the ClusterServiceVersion (CSV) identified by `csvName` targets every namespace in the cluster. It returns `true` if no specific target namespaces are annotated, indicating a cluster‑wide operator. |
@@ -672,6 +692,7 @@ func isCsvInNamespaceClusterWide(csvName string, allCsvs []*v1alpha1.ClusterServ
 | **How it fits the package** | Used by higher‑level validation logic (e.g., `checkValidOperatorInstallation`) to differentiate between cluster‑wide and namespace‑scoped operators when evaluating operator installation correctness. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"For each CSV in allCsvs"}
@@ -683,37 +704,40 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `isCsvInNamespaceClusterWide`
+
 ```mermaid
 graph TD
   func_checkValidOperatorInstallation --> func_isCsvInNamespaceClusterWide
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isCsvInNamespaceClusterWide
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator"
-	v1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/operator"
+ v1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
 func main() {
-	// Assume we have a slice of CSV objects loaded elsewhere.
-	var allCsvs []*v1alpha1.ClusterServiceVersion
+ // Assume we have a slice of CSV objects loaded elsewhere.
+ var allCsvs []*v1alpha1.ClusterServiceVersion
 
-	csvName := "example-operator.v0.1.0"
+ csvName := "example-operator.v0.1.0"
 
-	if operator.IsCsvInNamespaceClusterWide(csvName, allCsvs) {
-		fmt.Printf("CSV %s is cluster‑wide.\n", csvName)
-	} else {
-		fmt.Printf("CSV %s targets specific namespaces.\n", csvName)
-	}
+ if operator.IsCsvInNamespaceClusterWide(csvName, allCsvs) {
+  fmt.Printf("CSV %s is cluster‑wide.\n", csvName)
+ } else {
+  fmt.Printf("CSV %s targets specific namespaces.\n", csvName)
+ }
 }
 ```
 
@@ -724,7 +748,6 @@ func main() {
 ### isMultiNamespacedOperator
 
 **isMultiNamespacedOperator** - Checks whether a given operator runs across more than one namespace while *excluding* its own namespace from the list of targets.
-
 
 #### 1) Signature (Go)
 
@@ -775,19 +798,19 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/operator"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/operator"
 )
 
 func main() {
-	operatorNS := "operators"
-	targets   := []string{"dev", "prod", "operators"}
+ operatorNS := "operators"
+ targets   := []string{"dev", "prod", "operators"}
 
-	if operator.isMultiNamespacedOperator(operatorNS, targets) {
-		fmt.Println("This operator spans multiple namespaces.")
-	} else {
-		fmt.Println("Not a multi‑namespaced operator.")
-	}
+ if operator.isMultiNamespacedOperator(operatorNS, targets) {
+  fmt.Println("This operator spans multiple namespaces.")
+ } else {
+  fmt.Println("Not a multi‑namespaced operator.")
+ }
 }
 ```
 
@@ -797,15 +820,16 @@ func main() {
 
 **isSingleNamespacedOperator** - Determines if the operator’s *olm.targetNamespaces* annotation specifies exactly one namespace that is different from the operator’s own namespace.
 
-
 Checks whether an operator is intended for a single namespace that differs from its installation namespace.
 
 #### Signature (Go)
+
 ```go
 func isSingleNamespacedOperator(operatorNamespace string, targetNamespaces []string) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines if the operator’s *olm.targetNamespaces* annotation specifies exactly one namespace that is different from the operator’s own namespace. |
@@ -816,6 +840,7 @@ func isSingleNamespacedOperator(operatorNamespace string, targetNamespaces []str
 | **How it fits the package** | Used by `checkValidOperatorInstallation` to classify operators as single‑namespace or multi‑namespace installations during validation of operator deployments. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Evaluate len(targetNamespaces)"]
@@ -828,18 +853,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_isSingleNamespacedOperator --> func_len
 ```
 
 #### Functions calling `isSingleNamespacedOperator` (Mermaid)
+
 ```mermaid
 graph TD
   func_checkValidOperatorInstallation --> func_isSingleNamespacedOperator
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking isSingleNamespacedOperator
 namespace := "operators"
@@ -854,7 +882,6 @@ isSingle := isSingleNamespacedOperator(namespace, targets)
 
 **testMultipleSameOperators** - Validates that each operator’s CSV name appears only once across the cluster; reports compliance or non‑compliance.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -868,7 +895,7 @@ func testMultipleSameOperators(check *checksdb.Check, env *provider.TestEnvironm
 | **Purpose** | Validates that each operator’s CSV name appears only once across the cluster; reports compliance or non‑compliance. |
 | **Parameters** | `check` – test framework check object to log and set results.<br>`env` – environment containing all discovered operators (`AllOperators`). |
 | **Return value** | None (the result is stored in the `check` object). |
-| **Key dependencies** | * `OperatorInstalledMoreThanOnce(op, op2)` – comparison helper.<br>* `testhelper.NewOperatorReportObject()` – creates a report entry.<br>* Logging helpers: `LogInfo`, `LogDebug`.<br>* `check.SetResult()` – finalises the test outcome. |
+| **Key dependencies** | *`OperatorInstalledMoreThanOnce(op, op2)` – comparison helper.<br>* `testhelper.NewOperatorReportObject()` – creates a report entry.<br>*Logging helpers: `LogInfo`, `LogDebug`.<br>* `check.SetResult()` – finalises the test outcome. |
 | **Side effects** | Logs diagnostic messages; mutates the internal state of `check` by setting result objects. No external I/O. |
 | **How it fits the package** | Part of the *operator* test suite; ensures that OLM does not install duplicate CSVs, which would violate best practices. |
 
@@ -926,13 +953,14 @@ testMultipleSameOperators(check, env)
 
 **testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces** - Validates that a namespace dedicated to operator installation contains only single or multi‑namespaced operators and no other operator artifacts (e.g., cluster‑wide CSVs, pods outside the operator’s scope).
 
-
 #### Signature (Go)
+
 ```go
 func testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Validates that a namespace dedicated to operator installation contains only single or multi‑namespaced operators and no other operator artifacts (e.g., cluster‑wide CSVs, pods outside the operator’s scope). |
@@ -943,6 +971,7 @@ func testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces(check *ch
 | **How it fits the package** | Part of the Operator test suite; invoked by `LoadChecks` to enforce namespace‑specific operator installation rules in tenant environments. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Gather operator namespaces"] --> B["Iterate each dedicated namespace"]
@@ -956,6 +985,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces --> func_checkValidOperatorInstallation
@@ -966,12 +996,14 @@ graph TD
 ```
 
 #### Functions calling `testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testOnlySingleOrMultiNamespacedOperatorsAllowedInTenantNamespaces
 func ExampleTest() {
@@ -987,7 +1019,6 @@ func ExampleTest() {
 ### testOperatorCatalogSourceBundleCount
 
 **testOperatorCatalogSourceBundleCount** - Validates that every catalog source used by an operator has a bundle count below 1,000. It logs results and records compliant/non‑compliant objects for reporting.
-
 
 #### Signature (Go)
 
@@ -1077,13 +1108,14 @@ func runExample() {
 
 **testOperatorCrdOpenAPISpec** - Validates that each Custom Resource Definition (CRD) managed by an operator declares an OpenAPI v3 schema in its spec.
 
-
 #### Signature (Go)
+
 ```go
 func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Validates that each Custom Resource Definition (CRD) managed by an operator declares an OpenAPI v3 schema in its spec. |
@@ -1094,6 +1126,7 @@ func testOperatorCrdOpenAPISpec(check *checksdb.Check, env *provider.TestEnviron
 | **How it fits the package** | One of several operator‑specific checks in the `operator` test suite, ensuring CRD schema compliance. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Crds"}
@@ -1107,6 +1140,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testOperatorCrdOpenAPISpec --> func_LogInfo
@@ -1116,12 +1150,14 @@ graph TD
 ```
 
 #### Functions calling `testOperatorCrdOpenAPISpec` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testOperatorCrdOpenAPISpec
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testOperatorCrdOpenAPISpec
 import (
@@ -1145,13 +1181,14 @@ func main() {
 
 **testOperatorCrdVersioning** - Ensures every Custom Resource Definition (CRD) provided by an Operator follows Kubernetes‑style version naming (`v<major>[alpha/beta]…`).
 
-
 #### Signature (Go)
+
 ```go
 func testOperatorCrdVersioning(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures every Custom Resource Definition (CRD) provided by an Operator follows Kubernetes‑style version naming (`v<major>[alpha/beta]…`). |
@@ -1162,6 +1199,7 @@ func testOperatorCrdVersioning(check *checksdb.Check, env *provider.TestEnvironm
 | **How it fits the package** | Part of the Operator test suite, specifically registered in `LoadChecks`. It verifies that Operators expose CRDs with proper semantic versioning, a requirement for Kubernetes compatibility. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over env.Crds"}
@@ -1183,6 +1221,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testOperatorCrdVersioning --> func_LogInfo
@@ -1194,12 +1233,14 @@ graph TD
 ```
 
 #### Functions calling `testOperatorCrdVersioning` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testOperatorCrdVersioning
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testOperatorCrdVersioning
 check := checksdb.NewCheck("example-id")
@@ -1215,7 +1256,6 @@ testOperatorCrdVersioning(check, env)
 ### testOperatorInstallationAccessToSCC
 
 **testOperatorInstallationAccessToSCC** - Verifies that none of an operator’s cluster permissions grant access to Security Context Constraints (SCCs). Operators with such rules are flagged as non‑compliant.
-
 
 #### Signature (Go)
 
@@ -1294,7 +1334,6 @@ func runExample() {
 
 **testOperatorInstallationPhaseSucceeded** - Verifies every operator in the test environment has reached the *Succeeded* status and records compliance results.
 
-
 #### Signature (Go)
 
 ```go
@@ -1369,13 +1408,14 @@ func ExampleTestOperatorInstallation() {
 
 **testOperatorOlmSkipRange** - Confirms every operator in the test environment includes an `olm.skipRange` annotation on its ClusterServiceVersion (CSV).
 
-
 #### Signature (Go)
+
 ```go
 func testOperatorOlmSkipRange(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Confirms every operator in the test environment includes an `olm.skipRange` annotation on its ClusterServiceVersion (CSV). |
@@ -1386,6 +1426,7 @@ func testOperatorOlmSkipRange(check *checksdb.Check, env *provider.TestEnvironme
 | **How it fits the package** | Part of the Operator test suite, executed when the `TestOperatorOlmSkipRange` check is triggered. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate env.Operators"}
@@ -1399,6 +1440,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   testOperatorOlmSkipRange --> LogInfo
@@ -1408,12 +1450,14 @@ graph TD
 ```
 
 #### Functions calling `testOperatorOlmSkipRange` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testOperatorOlmSkipRange
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testOperatorOlmSkipRange
 func example() {
@@ -1431,13 +1475,14 @@ func example() {
 
 **testOperatorOlmSubscription** - Checks whether every operator in the environment has an OLM subscription; records compliant and non‑compliant results.
 
-
 #### Signature (Go)
+
 ```go
 func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnvironment) {}
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether every operator in the environment has an OLM subscription; records compliant and non‑compliant results. |
@@ -1448,6 +1493,7 @@ func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnviro
 | **How it fits the package** | Part of the Operator test suite; invoked by `LoadChecks` to verify OLM‑based installation compliance. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"For each operator in env.Operators"}
@@ -1462,6 +1508,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testOperatorOlmSubscription --> LogInfo
@@ -1473,12 +1520,14 @@ graph TD
 ```
 
 #### Functions calling `testOperatorOlmSubscription` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testOperatorOlmSubscription
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testOperatorOlmSubscription
 import (
@@ -1503,7 +1552,6 @@ func main() {
 ### testOperatorPodsNoHugepages
 
 **testOperatorPodsNoHugepages** - Verifies that none of the operator‑managed pods request huge page memory. If a pod requests huge pages it is marked non‑compliant; otherwise it is compliant.
-
 
 #### Signature (Go)
 
@@ -1574,13 +1622,14 @@ testOperatorPodsNoHugepages(check, env)
 
 **testOperatorSemanticVersioning** - Validates that every operator in the test environment has a version string that conforms to [Semantic Versioning](https://semver.org/).
 
-
 #### Signature (Go)
+
 ```go
 func (*checksdb.Check, *provider.TestEnvironment)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Validates that every operator in the test environment has a version string that conforms to [Semantic Versioning](https://semver.org/). |
@@ -1591,6 +1640,7 @@ func (*checksdb.Check, *provider.TestEnvironment)()
 | **How it fits the package** | Part of the operator test suite; invoked by `LoadChecks` to provide a check named *TestOperatorHasSemanticVersioning*. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   Start --> LogStart["LogInfo: Starting testOperatorSemanticVersioning"]
@@ -1604,6 +1654,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   testOperatorSemanticVersioning --> LogInfo
@@ -1613,12 +1664,14 @@ graph TD
 ```
 
 #### Functions calling `testOperatorSemanticVersioning` (Mermaid)
+
 ```mermaid
 graph TD
   LoadChecks --> testOperatorSemanticVersioning
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testOperatorSemanticVersioning
 check := checksdb.NewCheck("example")
@@ -1633,7 +1686,6 @@ testOperatorSemanticVersioning(check, env)
 ### testOperatorSingleCrdOwner
 
 **testOperatorSingleCrdOwner** - Ensures every CRD declared in the environment’s operators is owned by a single operator. If multiple operators own the same CRD name, the check flags it as non‑compliant.
-
 
 #### Signature (Go)
 
@@ -1699,4 +1751,3 @@ func ExampleTestOperatorSingleCrdOwner() {
 ---
 
 ---
-

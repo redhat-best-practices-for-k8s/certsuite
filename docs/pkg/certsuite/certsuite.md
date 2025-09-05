@@ -52,7 +52,6 @@ Orchestrates the complete CNF Certification Suite run—discovering target resou
 
 **LoadChecksDB** - Loads internal check definitions and, if the supplied label filter allows it, triggers the Pre‑Flight checks.
 
-
 Initialises the checks database and conditionally loads the Pre‑Flight test suite based on a label filter expression.
 
 ```go
@@ -65,7 +64,7 @@ func LoadChecksDB(labelsExpr string)
 | **Parameters** | `labelsExpr` (string) – A logical expression used to decide whether Pre‑Flight tests should run. |
 | **Return value** | None. The function performs side effects only. |
 | **Key dependencies** | • `LoadInternalChecksDB()`<br>• `preflight.ShouldRun(labelsExpr)`<br>• `preflight.LoadChecks()` |
-| **Side effects** | * Modifies the global checks database by calling `LoadInternalChecksDB`.<br>* Conditionally invokes Pre‑Flight test loading, which registers checks in the same database.<br>* No I/O or concurrency is performed directly; logging and check registration happen inside called functions. |
+| **Side effects** | *Modifies the global checks database by calling `LoadInternalChecksDB`.<br>* Conditionally invokes Pre‑Flight test loading, which registers checks in the same database.<br>* No I/O or concurrency is performed directly; logging and check registration happen inside called functions. |
 | **How it fits the package** | It is a central bootstrap routine used by both the CLI startup flow (`Startup`) and the web server handler to prepare the test environment before executing any tests. |
 
 #### Internal workflow
@@ -112,7 +111,6 @@ func main() {
 ### LoadInternalChecksDB
 
 **LoadInternalChecksDB** - Calls `LoadChecks()` from every internal test‑suite package to register all checks in the global check database.
-
 
 Initialises all internal test check groups by invoking the load functions of each test suite package.
 
@@ -191,12 +189,12 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
 )
 
 func main() {
-	certsuite.LoadInternalChecksDB()
-	// At this point all checks are registered and can be queried or executed.
+ certsuite.LoadInternalChecksDB()
+ // At this point all checks are registered and can be queried or executed.
 }
 ```
 
@@ -205,7 +203,6 @@ func main() {
 ### Run
 
 **Run** - Orchestrates a full run of the CNF Certification Suite: discovers target resources, executes checks, builds claim artifacts, optionally sends data to collectors or Red Hat Connect, and cleans up temporary files.
-
 
 #### Signature (Go)
 
@@ -297,18 +294,18 @@ graph TD
 package main
 
 import (
-	"log"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
 )
 
 func main() {
-	labels := "app=web,component=backend"
-	outputDir := "./results"
+ labels := "app=web,component=backend"
+ outputDir := "./results"
 
-	if err := certsuite.Run(labels, outputDir); err != nil {
-		log.Fatalf("Test suite failed: %v", err)
-	}
+ if err := certsuite.Run(labels, outputDir); err != nil {
+  log.Fatalf("Test suite failed: %v", err)
+ }
 }
 ```
 
@@ -320,13 +317,14 @@ This example initiates a certification run that filters tests by the specified l
 
 **Shutdown** - Closes the global log file and terminates the process with an error exit if closing fails.
 
-
 #### Signature (Go)
+
 ```go
 func Shutdown()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Closes the global log file and terminates the process with an error exit if closing fails. |
@@ -337,6 +335,7 @@ func Shutdown()
 | **How it fits the package** | Acts as a cleanup routine called after running tests in stand‑alone mode, ensuring that logging resources are released before program termination. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start Shutdown"] --> B{"Close log file"}
@@ -346,6 +345,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_Shutdown --> func_CloseGlobalLogFile
@@ -354,12 +354,14 @@ graph TD
 ```
 
 #### Functions calling `Shutdown`
+
 ```mermaid
 graph TD
   func_runTestSuite --> func_Shutdown
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking Shutdown
 package main
@@ -379,7 +381,6 @@ func main() {
 ### Startup
 
 **Startup** - Sets up global state for a stand‑alone run of Certsuite: creates log file, label evaluator, client holder, and loads checks.
-
 
 #### Signature (Go)
 
@@ -460,7 +461,6 @@ func main() {
 
 **getK8sClientsConfigFileNames** - Builds a slice of file paths that point to Kubernetes configuration files, prioritising the user‑supplied `kubeconfig` flag and falling back to the default location (`$HOME/.kube/config`) if it exists.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -522,17 +522,16 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
 )
 
 func main() {
-	configFiles := certsuite.GetKubeconfigPaths()
-	fmt.Println("Detected kubeconfig files:", configFiles)
+ configFiles := certsuite.GetKubeconfigPaths()
+ fmt.Println("Detected kubeconfig files:", configFiles)
 }
 ```
 
 *(Note: `GetKubeconfigPaths` is a public wrapper that internally calls `getK8sClientsConfigFileNames`.)*
 
 ---
-

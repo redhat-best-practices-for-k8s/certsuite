@@ -60,13 +60,14 @@ The observability package supplies a collection of checks that validate runtime 
 
 **LoadChecks** - Populates the internal checks database with all observability‑related tests, attaching per‑test setup/skip logic and execution functions.
 
-
 #### Signature (Go)
+
 ```go
 func LoadChecks()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Populates the internal checks database with all observability‑related tests, attaching per‑test setup/skip logic and execution functions. |
@@ -77,6 +78,7 @@ func LoadChecks()
 | **How it fits the package** | This function is called from `pkg/certsuite.LoadInternalChecksDB`, ensuring that all observability tests are available before a test run begins. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start LoadChecks"] --> B["log.Debug(Loading ...)"]
@@ -101,6 +103,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_log.Debug
@@ -118,12 +121,14 @@ graph TD
 ```
 
 #### Functions calling `LoadChecks`
+
 ```mermaid
 graph TD
   func_pkg/certsuite.LoadInternalChecksDB --> func_LoadChecks
 ```
 
 #### Usage example (Go)
+
 ```go
 // During package initialization or before a test run:
 func init() {
@@ -140,13 +145,14 @@ func init() {
 
 **buildServiceAccountToDeprecatedAPIMap** - Creates a nested map where each key is a workload service‑account name and the corresponding value maps API names to their Kubernetes release version in which they will be removed. Only APIs with a non‑empty `status.removedInRelease` field are considered, ensuring that only genuinely deprecated APIs are tracked.
 
-
 #### Signature (Go)
+
 ```go
 func buildServiceAccountToDeprecatedAPIMap([]apiserv1.APIRequestCount, map[string]struct{}) map[string]map[string]string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Creates a nested map where each key is a workload service‑account name and the corresponding value maps API names to their Kubernetes release version in which they will be removed. Only APIs with a non‑empty `status.removedInRelease` field are considered, ensuring that only genuinely deprecated APIs are tracked. |
@@ -157,6 +163,7 @@ func buildServiceAccountToDeprecatedAPIMap([]apiserv1.APIRequestCount, map[strin
 | **How it fits the package** | Used by the API‑compatibility test to determine which APIs a workload’s service accounts are calling that will be removed in future Kubernetes releases, enabling compliance checks against the target OCP/K8s version. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over APIRequestCounts"}
@@ -175,6 +182,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_buildServiceAccountToDeprecatedAPIMap --> make
@@ -183,12 +191,14 @@ graph TD
 ```
 
 #### Functions calling `buildServiceAccountToDeprecatedAPIMap` (Mermaid)
+
 ```mermaid
 graph TD
   testAPICompatibilityWithNextOCPRelease --> buildServiceAccountToDeprecatedAPIMap
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking buildServiceAccountToDeprecatedAPIMap
 import (
@@ -315,8 +325,8 @@ func main() {
 
 **evaluateAPICompliance** - Determines whether each service account’s usage of deprecated APIs will remain valid in the next minor Kubernetes release.
 
-
 #### Signature (Go)
+
 ```go
 func evaluateAPICompliance(
     serviceAccountToDeprecatedAPIs map[string]map[string]string,
@@ -326,6 +336,7 @@ func evaluateAPICompliance(
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether each service account’s usage of deprecated APIs will remain valid in the next minor Kubernetes release. |
@@ -336,6 +347,7 @@ func evaluateAPICompliance(
 | **How it fits the package** | Used by the OpenShift API‑compatibility test to surface which APIs will be removed in the next release and whether the workload remains functional. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Parse current K8s version"] --> B{"Success?"}
@@ -356,6 +368,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_evaluateAPICompliance --> semver.NewVersion
@@ -367,12 +380,14 @@ graph TD
 ```
 
 #### Functions calling `evaluateAPICompliance`
+
 ```mermaid
 graph TD
   func_testAPICompatibilityWithNextOCPRelease --> func_evaluateAPICompliance
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking evaluateAPICompliance
 import (
@@ -407,13 +422,14 @@ func main() {
 
 **extractUniqueServiceAccountNames** - Collects and returns a set of distinct workload‑related service account names found in the supplied test environment.
 
-
 #### Signature (Go)
+
 ```go
 func extractUniqueServiceAccountNames(env *provider.TestEnvironment) map[string]struct{}
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Collects and returns a set of distinct workload‑related service account names found in the supplied test environment. |
@@ -424,6 +440,7 @@ func extractUniqueServiceAccountNames(env *provider.TestEnvironment) map[string]
 | **How it fits the package** | Used by API‑compatibility tests to identify which service accounts should be evaluated against deprecated APIs. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Initialize empty map"]
@@ -434,18 +451,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_extractUniqueServiceAccountNames --> func_make
 ```
 
 #### Functions calling `extractUniqueServiceAccountNames` (Mermaid)
+
 ```mermaid
 graph TD
   func_testAPICompatibilityWithNextOCPRelease --> func_extractUniqueServiceAccountNames
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking extractUniqueServiceAccountNames
 env := &provider.TestEnvironment{
@@ -465,13 +485,14 @@ fmt.Printf("Found %d unique service accounts\n", len(uniqueSAs))
 
 **testAPICompatibilityWithNextOCPRelease** - Determines whether the workload’s service accounts use any APIs that will be removed in the next OpenShift Container Platform (OCP) release and records compliance results.
 
-
 #### 1) Signature (Go)
+
 ```go
 func testAPICompatibilityWithNextOCPRelease(check *checksdb.Check, env *provider.TestEnvironment) {}
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether the workload’s service accounts use any APIs that will be removed in the next OpenShift Container Platform (OCP) release and records compliance results. |
@@ -482,6 +503,7 @@ func testAPICompatibilityWithNextOCPRelease(check *checksdb.Check, env *provider
 | **How it fits the package** | This function is a core test in the *observability* suite, specifically verifying API deprecation compliance for workloads running on OpenShift clusters.
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Test start"] --> B["Check if cluster is OCP"]
@@ -496,6 +518,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testAPICompatibilityWithNextOCPRelease --> func_IsOCPCluster
@@ -508,12 +531,14 @@ graph TD
 ```
 
 #### 5) Functions calling `testAPICompatibilityWithNextOCPRelease` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testAPICompatibilityWithNextOCPRelease
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking testAPICompatibilityWithNextOCPRelease
 check := checksdb.NewCheck("example-check-id")
@@ -530,13 +555,14 @@ testAPICompatibilityWithNextOCPRelease(check, env)
 
 **testContainersLogging** - Iterates over all containers under test (CUTs) in the provided environment, verifies that each emits at least one line to its stdout/stderr stream, and records compliance status.
 
-
 #### Signature (Go)
+
 ```go
 func testContainersLogging(check *checksdb.Check, env *provider.TestEnvironment)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Iterates over all containers under test (CUTs) in the provided environment, verifies that each emits at least one line to its stdout/stderr stream, and records compliance status. |
@@ -547,6 +573,7 @@ func testContainersLogging(check *checksdb.Check, env *provider.TestEnvironment)
 | **How it fits the package** | Part of the Observability test suite; invoked by `LoadChecks` as a check function for the *Logging* test case, ensuring containers produce observable logs. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"For each CUT"}
@@ -563,6 +590,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testContainersLogging --> func_LogInfo
@@ -573,12 +601,14 @@ graph TD
 ```
 
 #### Functions calling `testContainersLogging` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testContainersLogging
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testContainersLogging
 import (
@@ -600,13 +630,14 @@ func example() {
 
 **testCrds** - Verifies that each CRD version defines a `status` property in its OpenAPI schema, reporting compliance or non‑compliance.
 
-
 #### Signature (Go)
+
 ```go
 func testCrds(check *checksdb.Check, env *provider.TestEnvironment) {}
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Verifies that each CRD version defines a `status` property in its OpenAPI schema, reporting compliance or non‑compliance. |
@@ -617,6 +648,7 @@ func testCrds(check *checksdb.Check, env *provider.TestEnvironment) {}
 | **How it fits the package** | Implements one of the observability suite checks; invoked by `LoadChecks` to validate CRD status sub‑resource compliance across deployments. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate env.Crds"}
@@ -631,6 +663,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_testCrds --> func_LogInfo
@@ -642,12 +675,14 @@ graph TD
 ```
 
 #### Functions calling `testCrds` (Mermaid)
+
 ```mermaid
 graph TD
   func_LoadChecks --> func_testCrds
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testCrds
 env := &provider.TestEnvironment{ /* populate env.Crds */ }
@@ -662,13 +697,14 @@ testCrds(check, env)
 
 **testPodDisruptionBudgets** - Ensures each Deployment or StatefulSet in the test environment has an associated PodDisruptionBudget (PDB) that satisfies validation rules. Reports compliant and non‑compliant objects.
 
-
 #### Signature (Go)
+
 ```go
 func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironment) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Ensures each Deployment or StatefulSet in the test environment has an associated PodDisruptionBudget (PDB) that satisfies validation rules. Reports compliant and non‑compliant objects. |
@@ -679,6 +715,7 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 | **How it fits the package** | Part of the observability test suite; invoked by `LoadChecks` to verify PodDisruptionBudget compliance in a cluster snapshot. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate Deployments"}
@@ -709,6 +746,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_testPodDisruptionBudgets --> LogInfo
@@ -725,12 +763,14 @@ graph TD
 ```
 
 #### Functions calling `testPodDisruptionBudgets`
+
 ```mermaid
 graph TD
   LoadChecks --> testPodDisruptionBudgets
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking testPodDisruptionBudgets
 check := checksdb.NewCheck("example")
@@ -747,7 +787,6 @@ testPodDisruptionBudgets(check, &env)
 ### testTerminationMessagePolicy
 
 **testTerminationMessagePolicy** - Ensures each container in the test environment uses `FallbackToLogsOnError` as its termination message policy.
-
 
 #### 1) Signature (Go)
 
@@ -812,4 +851,3 @@ func Example() {
 ```
 
 ---
-

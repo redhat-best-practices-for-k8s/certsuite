@@ -49,7 +49,6 @@ Provides a Cobra command that reads a certsuite claim JSON file, validates it, m
 
 **NewCommand** - Builds and configures a `*cobra.Command` that dumps claim data to CSV. It registers required flags for claim file path, CNF name, CNF type mapping file, and an optional header flag.
 
-
 #### 1. Signature (Go)
 
 ```go
@@ -139,13 +138,14 @@ func main() {
 
 **buildCSV** - Transforms a parsed claim schema into CSV rows, adding remediation, CNF type, and mandatory/optional flags.
 
-
 #### Signature (Go)
+
 ```go
 func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]claimschema.TestCaseDescription) (resultsCSVRecords [][]string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Transforms a parsed claim schema into CSV rows, adding remediation, CNF type, and mandatory/optional flags. |
@@ -156,6 +156,7 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 | **How it fits the package** | Used by `dumpCsv` to produce the CSV output shown to users; central to the CSV generation flow. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"cnfType empty?"}
@@ -182,18 +183,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_buildCSV --> append
 ```
 
 #### Functions calling `buildCSV` (Mermaid)
+
 ```mermaid
 graph TD
   func_dumpCsv --> func_buildCSV
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking buildCSV
 claimScheme, _ := claim.Parse("path/to/claim.yaml")
@@ -211,13 +215,14 @@ csvRows := buildCSV(claimScheme, cnfType, catalogMap)
 
 **buildCatalogByID** - Constructs a mapping from each test case identifier to its corresponding `TestCaseDescription` by iterating over the global catalog.
 
-
 #### Signature (Go)
+
 ```go
 func buildCatalogByID() (catalogMap map[string]claimschema.TestCaseDescription)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Constructs a mapping from each test case identifier to its corresponding `TestCaseDescription` by iterating over the global catalog. |
@@ -228,6 +233,7 @@ func buildCatalogByID() (catalogMap map[string]claimschema.TestCaseDescription)
 | **How it fits the package** | Supplies the catalog lookup table used by CSV generation logic (`dumpCsv`). |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Initialize empty map"]
@@ -237,18 +243,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_buildCatalogByID --> func_make
 ```
 
 #### Functions calling `buildCatalogByID`
+
 ```mermaid
 graph TD
   func_dumpCsv --> func_buildCatalogByID
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking buildCatalogByID
 func main() {
@@ -266,13 +275,14 @@ func main() {
 
 **dumpCsv** - Reads a claim JSON file, validates its version, maps CNF names to types, builds a CSV representation of test results, and writes it to standard output.
 
-
 #### Signature (Go)
+
 ```go
 func dumpCsv(_ *cobra.Command, _ []string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Reads a claim JSON file, validates its version, maps CNF names to types, builds a CSV representation of test results, and writes it to standard output. |
@@ -283,6 +293,7 @@ func dumpCsv(_ *cobra.Command, _ []string) error
 | **How it fits the package** | Serves as the action handler for the “show csv” sub‑command of the certsuite CLI, converting claim results into a consumable tabular format. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Set log output to stderr"] --> B["Parse claim file"]
@@ -308,6 +319,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_dumpCsv --> log.SetOutput
@@ -323,22 +335,24 @@ graph TD
 ```
 
 #### Functions calling `dumpCsv` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking dumpCsv
 import (
-	"github.com/spf13/cobra"
+ "github.com/spf13/cobra"
 )
 
 func main() {
-	cmd := &cobra.Command{
-		RunE: dumpCsv,
-	}
-	if err := cmd.Execute(); err != nil {
-		fmt.Println("Error:", err)
-	}
+ cmd := &cobra.Command{
+  RunE: dumpCsv,
+ }
+ if err := cmd.Execute(); err != nil {
+  fmt.Println("Error:", err)
+ }
 }
 ```
 
@@ -347,7 +361,6 @@ func main() {
 ### loadCNFTypeMap
 
 **loadCNFTypeMap** - Reads a JSON file located at `path` and unmarshals its contents into a `map[string]string` that associates CNF names with their types.
-
 
 #### Signature (Go)
 
@@ -408,22 +421,21 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"log"
+ "fmt"
+ "log"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show/csv"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show/csv"
 )
 
 func main() {
-	cnfMap, err := csv.loadCNFTypeMap("cnf_types.json")
-	if err != nil {
-		log.Fatalf("Failed to load CNF type map: %v", err)
-	}
-	fmt.Println("Loaded mapping:", cnfMap)
+ cnfMap, err := csv.loadCNFTypeMap("cnf_types.json")
+ if err != nil {
+  log.Fatalf("Failed to load CNF type map: %v", err)
+ }
+ fmt.Println("Loaded mapping:", cnfMap)
 }
 ```
 
 ---
 
 ---
-

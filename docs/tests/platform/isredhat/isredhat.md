@@ -57,15 +57,18 @@ Provides utilities for determining whether a container image is an official Red�
 Represents a helper that executes commands inside an OpenShift container to discover the base image of a pod.
 
 #### Fields
+
 | Field       | Type                 | Description |
 |-------------|----------------------|-------------|
 | ClientHolder | `clientsholder.Command` | Holds the client interface used to run shell commands in a container. |
 | OCPContext   | `clientsholder.Context`  | Provides the execution context (e.g., namespace, pod name) for command runs. |
 
 #### Purpose  
+
 The struct encapsulates the dependencies required to interrogate a running container. It is primarily used by test functions that need to determine whether the image inside a pod is based on Red Hat Enterprise Linux. By delegating command execution through `ClientHolder`, it abstracts away the underlying client implementation and keeps tests focused on logic rather than connection details.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `NewBaseImageTester` | Constructs a new `BaseImageInfo` with the provided command executor and context. |
@@ -81,7 +84,6 @@ The struct encapsulates the dependencies required to interrogate a running conta
 ### BaseImageInfo.TestContainerIsRedHatRelease
 
 **TestContainerIsRedHatRelease** - Executes a shell snippet inside the container to read `/etc/redhat-release` and determines if the image is an official Red Hat distribution.
-
 
 Checks whether a container’s base image is an official Red Hat release.
 
@@ -160,13 +162,14 @@ fmt.Printf("Container is Red Hat release: %t\n", isRHEL)
 
 **IsRHEL** - Returns `true` if the supplied text matches patterns that identify an official Red Hat release; otherwise returns `false`.
 
-
 #### Signature (Go)
+
 ```go
 func IsRHEL(output string) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns `true` if the supplied text matches patterns that identify an official Red Hat release; otherwise returns `false`. |
@@ -177,6 +180,7 @@ func IsRHEL(output string) bool
 | **How it fits the package** | Part of the `isredhat` test helper package, used to validate container base images in the Certsuite platform tests. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive output string"] --> B{"Does output contain “Unknown Base Image”?"}
@@ -189,6 +193,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_IsRHEL --> func_MustCompile1:::pkg_regexp
@@ -204,25 +209,27 @@ graph TD
 ```
 
 #### Functions calling `IsRHEL` (Mermaid)
+
 ```mermaid
 graph TD
   func_TestContainerIsRedHatRelease --> func_IsRHEL
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking IsRHEL
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/isredhat"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/isredhat"
 )
 
 func main() {
-	output := "Red Hat Enterprise Linux Server release 7.9 (Maipo)"
-	isRHEL := isredhat.IsRHEL(output)
-	fmt.Printf("Is Red Hat? %t\n", isRHEL)
+ output := "Red Hat Enterprise Linux Server release 7.9 (Maipo)"
+ isRHEL := isredhat.IsRHEL(output)
+ fmt.Printf("Is Red Hat? %t\n", isRHEL)
 }
 ```
 
@@ -231,7 +238,6 @@ func main() {
 ### NewBaseImageTester
 
 **NewBaseImageTester** - Instantiates a `BaseImageInfo` object that holds the necessary context and command executor for testing container base images.
-
 
 #### Signature (Go)
 
@@ -246,7 +252,7 @@ func NewBaseImageTester(client clientsholder.Command, ctx clientsholder.Context)
 | **Purpose** | Instantiates a `BaseImageInfo` object that holds the necessary context and command executor for testing container base images. |
 | **Parameters** | `client` – A `clientsholder.Command` used to run Kubernetes client commands.<br>`ctx` – A `clientsholder.Context` providing namespace, pod name, and container name information. |
 | **Return value** | Pointer to a newly created `BaseImageInfo`. |
-| **Key dependencies** | * `clientsholder.Command` – command execution interface.<br>* `clientsholder.Context` – contextual data holder. |
+| **Key dependencies** | *`clientsholder.Command` – command execution interface.<br>* `clientsholder.Context` – contextual data holder. |
 | **Side effects** | No external state changes; only constructs an in‑memory struct. |
 | **How it fits the package** | Serves as a constructor for the test harness that validates Red‑Hat base images. It is invoked by higher‑level tests (e.g., `testIsRedHatRelease`) to prepare the tester with appropriate context and command capabilities. |
 
@@ -297,7 +303,6 @@ func main() {
 ### BaseImageInfo.runCommand
 
 **runCommand** - Runs an arbitrary shell command in the target container via `ExecCommandContainer`, returning stdout or reporting errors.
-
 
 #### Signature (Go)
 
@@ -359,4 +364,3 @@ fmt.Println("Command output:", output)
 ```
 
 ---
-

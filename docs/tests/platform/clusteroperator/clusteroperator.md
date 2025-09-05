@@ -36,7 +36,6 @@ The clusteroperator package provides utilities for verifying the operational sta
 
 **IsClusterOperatorAvailable** - Checks the operator’s status conditions and returns true when the “Available” condition is present, indicating the operator is functioning correctly.
 
-
 ```go
 func IsClusterOperatorAvailable(co *configv1.ClusterOperator) bool
 ```
@@ -110,4 +109,3 @@ func main() {
 ```
 
 ---
-

@@ -65,6 +65,7 @@ Represents lifecycle dates and supported operating system versions for a specifi
 | `RHELVersionsAccepted` | `[]string` | List of supported RHEL versions, expressed either as specific releases or ranges such as “7.9 or later” or “7.9 and 8.4”. |
 
 #### Purpose  
+
 `VersionInfo` holds the key dates for a product’s support lifecycle along with the operating‑system compatibility constraints. It is used to determine whether a given installation falls within an active support window and which OS versions are allowed.
 
 #### Related functions  
@@ -80,7 +81,6 @@ Represents lifecycle dates and supported operating system versions for a specifi
 ### BetaRHCOSVersionsFoundToMatch
 
 **BetaRHCOSVersionsFoundToMatch** - Determines if the supplied machine and OCP versions are identical beta releases, using only their major‑minor components.
-
 
 Checks whether two beta RHCOS version strings match after normalising to major.minor form.
 
@@ -152,13 +152,14 @@ func main() {
 
 **DetermineOCPStatus** - Classifies an OpenShift release (`version`) into one of four lifecycle states—Pre‑GA, GA, Maintenance Support (MS), or End‑of‑Life (EOL)—based on the supplied `date`. Returns `OCPStatusUnknown` if inputs are invalid or no matching lifecycle data exists.
 
-
 #### Signature (Go)
+
 ```go
 func DetermineOCPStatus(version string, date time.Time) string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Classifies an OpenShift release (`version`) into one of four lifecycle states—Pre‑GA, GA, Maintenance Support (MS), or End‑of‑Life (EOL)—based on the supplied `date`. Returns `OCPStatusUnknown` if inputs are invalid or no matching lifecycle data exists. |
@@ -169,6 +170,7 @@ func DetermineOCPStatus(version string, date time.Time) string
 | **How it fits the package** | Provides lifecycle‑aware decision logic used by autodiscovery to label clusters with their OpenShift support status. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Validate inputs"] --> B{"Empty or zero?"}
@@ -187,6 +189,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_DetermineOCPStatus --> strings.Split
@@ -198,12 +201,14 @@ graph TD
 ```
 
 #### Functions calling `DetermineOCPStatus`
+
 ```mermaid
 graph TD
   DoAutoDiscover --> DetermineOCPStatus
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking DetermineOCPStatus
 import (
@@ -227,13 +232,14 @@ func main() {
 
 **FindMajorMinor** - Returns a string containing only the major and minor parts of a semantic‑style version, e.g. `"4.12"` from `"4.12.3"`.
 
-
 #### Signature (Go)
+
 ```go
 func FindMajorMinor(version string) string
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a string containing only the major and minor parts of a semantic‑style version, e.g. `"4.12"` from `"4.12.3"`. |
@@ -244,6 +250,7 @@ func FindMajorMinor(version string) string
 | **How it fits the package** | Normalises version strings for compatibility checks (used by functions like `IsRHCOSCompatible`). |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Receive input string"] --> B{"Split on ."}
@@ -253,12 +260,14 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_FindMajorMinor --> func_Split
 ```
 
 #### Functions calling `FindMajorMinor`
+
 ```mermaid
 graph TD
   func_BetaRHCOSVersionsFoundToMatch --> func_FindMajorMinor
@@ -266,19 +275,20 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking FindMajorMinor
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/compatibility"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/compatibility"
 )
 
 func main() {
-	version := "4.12.3"
-	fmt.Println(compatibility.FindMajorMinor(version)) // Output: 4.12
+ version := "4.12.3"
+ fmt.Println(compatibility.FindMajorMinor(version)) // Output: 4.12
 }
 ```
 
@@ -288,13 +298,14 @@ func main() {
 
 **GetLifeCycleDates** - Returns the static mapping (`ocpLifeCycleDates`) that contains lifecycle dates and related metadata for each OpenShift version.
 
-
 #### Signature (Go)
+
 ```go
 func GetLifeCycleDates() map[string]VersionInfo
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns the static mapping (`ocpLifeCycleDates`) that contains lifecycle dates and related metadata for each OpenShift version. |
@@ -305,15 +316,18 @@ func GetLifeCycleDates() map[string]VersionInfo
 | **How it fits the package** | Provides a central lookup for lifecycle dates used by other compatibility checks (e.g., determining OCP status or verifying RHEL/RHCOS support). |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   GetLifeCycleDates --> Return(ocpLifeCycleDates)
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `GetLifeCycleDates` (Mermaid)
+
 ```mermaid
 graph TD
   func_DetermineOCPStatus --> func_GetLifeCycleDates
@@ -322,6 +336,7 @@ graph TD
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetLifeCycleDates
 package main
@@ -347,7 +362,6 @@ func main() {
 ### IsRHCOSCompatible
 
 **IsRHCOSCompatible** - Determines whether the supplied RHCOS machine version can run on a given OpenShift (OCP) release. It handles normal releases, beta versions, and validates against lifecycle data.
-
 
 #### Signature (Go)
 
@@ -408,19 +422,19 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/compatibility"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/compatibility"
 )
 
 func main() {
-	machine := "4.12.1"   // RHCOS node version
-	cluster := "4.12.0"   // OpenShift release
+ machine := "4.12.1"   // RHCOS node version
+ cluster := "4.12.0"   // OpenShift release
 
-	if compatibility.IsRHCOSCompatible(machine, cluster) {
-		fmt.Println("Node is compatible with the cluster.")
-	} else {
-		fmt.Println("Node is NOT compatible with the cluster.")
-	}
+ if compatibility.IsRHCOSCompatible(machine, cluster) {
+  fmt.Println("Node is compatible with the cluster.")
+ } else {
+  fmt.Println("Node is NOT compatible with the cluster.")
+ }
 }
 ```
 
@@ -432,13 +446,14 @@ func main() {
 
 **IsRHELCompatible** - Checks whether the supplied RHEL `machineVersion` is compatible with the specified OpenShift (`ocpVersion`) based on internal lifecycle data.
 
-
 #### 1) Signature (Go)
+
 ```go
 func IsRHELCompatible(machineVersion, ocpVersion string) bool
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the supplied RHEL `machineVersion` is compatible with the specified OpenShift (`ocpVersion`) based on internal lifecycle data. |
@@ -449,6 +464,7 @@ func IsRHELCompatible(machineVersion, ocpVersion string) bool
 | **How it fits the package** | Provides core compatibility logic used by tests and potentially runtime checks for node operating systems within CertSuite’s compatibility module. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A["Check empty inputs"] -->|"false"| B{"Retrieve lifecycle info"}
@@ -464,6 +480,7 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_IsRHELCompatible --> func_GetLifeCycleDates
@@ -473,12 +490,14 @@ graph TD
 ```
 
 #### 5) Functions calling `IsRHELCompatible` (Mermaid)
+
 ```mermaid
 graph TD
   testNodeOperatingSystemStatus --> IsRHELCompatible
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking IsRHELCompatible
 package main
@@ -501,4 +520,3 @@ func main() {
 ```
 
 ---
-

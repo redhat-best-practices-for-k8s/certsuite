@@ -47,11 +47,13 @@ The stringhelper package supplies small utilities for working with strings and s
 Checks whether two string slices share at least one identical element.
 
 #### Signature (Go)
+
 ```go
 func HasAtLeastOneCommonElement(s1, s2 []string) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns `true` if any string in `s2` is also present in `s1`; otherwise returns `false`. |
@@ -62,6 +64,7 @@ func HasAtLeastOneCommonElement(s1, s2 []string) bool
 | **How it fits the package** | Provides a simple set intersection test used by other helpers in `stringhelper`. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph HasAtLeastOneCommonElement
@@ -74,15 +77,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_HasAtLeastOneCommonElement --> func_StringInSlice
 ```
 
 #### Functions calling `HasAtLeastOneCommonElement` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 package main
 
@@ -108,7 +114,6 @@ func main() {
 ### PointerToString
 
 **PointerToString** - Provides a default textual form of a value pointed to by `p`, used mainly in log traces for Kubernetes resource pointer fields.
-
 
 A generic helper that converts a pointer value into its string representation, returning `"nil"` when the pointer is nil.
 
@@ -162,20 +167,20 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 )
 
 func main() {
-	var b *bool
-	fmt.Println(stringhelper.PointerToString(b)) // "nil"
+ var b *bool
+ fmt.Println(stringhelper.PointerToString(b)) // "nil"
 
-	bTrue := true
-	fmt.Println(stringhelper.PointerToString(&bTrue)) // "true"
+ bTrue := true
+ fmt.Println(stringhelper.PointerToString(&bTrue)) // "true"
 
-	num := 1984
-	fmt.Println(stringhelper.PointerToString(&num)) // "1984"
+ num := 1984
+ fmt.Println(stringhelper.PointerToString(&num)) // "1984"
 }
 ```
 
@@ -184,7 +189,6 @@ func main() {
 ### RemoveEmptyStrings
 
 **RemoveEmptyStrings** - Returns a new slice containing only non‑empty strings from the input slice.
-
 
 ```go
 func RemoveEmptyStrings(s []string) []string
@@ -200,6 +204,7 @@ func RemoveEmptyStrings(s []string) []string
 | **How it fits the package** | Utility helper for normalizing string slices, used internally wherever clean lists of strings are required. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over s"}
@@ -213,28 +218,31 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_RemoveEmptyStrings --> func_append
 ```
 
 #### Functions calling `RemoveEmptyStrings`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example
+
 ```go
 // Minimal example invoking RemoveEmptyStrings
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 )
 
 func main() {
-	input := []string{"foo", "", "bar", "", "baz"}
-	cleaned := stringhelper.RemoveEmptyStrings(input)
-	fmt.Println(cleaned) // Output: [foo bar baz]
+ input := []string{"foo", "", "bar", "", "baz"}
+ cleaned := stringhelper.RemoveEmptyStrings(input)
+ fmt.Println(cleaned) // Output: [foo bar baz]
 }
 ```
 
@@ -243,7 +251,6 @@ func main() {
 ### StringInSlice
 
 **StringInSlice** - Determines if `str` exists in slice `s`. If `containsCheck` is `false`, the comparison is exact after trimming spaces; otherwise it checks for containment of `str` within each element.
-
 
 Checks whether a given value is present in a slice of comparable string types, optionally performing substring matching.
 
@@ -325,15 +332,15 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 )
 
 func main() {
-	names := []string{"alpha", "beta", "gamma"}
-	fmt.Println(stringhelper.StringInSlice(names, "beta", false))   // true
-	fmt.Println(stringhelper.StringInSlice(names, "b", true))      // true (contains)
-	fmt.Println(stringhelper.StringInSlice(names, "delta", false)) // false
+ names := []string{"alpha", "beta", "gamma"}
+ fmt.Println(stringhelper.StringInSlice(names, "beta", false))   // true
+ fmt.Println(stringhelper.StringInSlice(names, "b", true))      // true (contains)
+ fmt.Println(stringhelper.StringInSlice(names, "delta", false)) // false
 }
 ```
 
@@ -343,13 +350,14 @@ func main() {
 
 **SubSlice** - Determines whether every string in `sub` appears in the slice `s`.
 
-
 #### 1) Signature (Go)
+
 ```go
 func SubSlice(s, sub []string) bool
 ```
 
 #### 2) Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Determines whether every string in `sub` appears in the slice `s`. |
@@ -360,6 +368,7 @@ func SubSlice(s, sub []string) bool
 | **How it fits the package** | Utility for set‑like containment tests, used by other components such as capability validation logic. |
 
 #### 3) Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
     A([Iterate over each element v in sub])
@@ -373,38 +382,40 @@ flowchart TD
 ```
 
 #### 4) Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
     func_SubSlice --> func_StringInSlice["T ~string"]
 ```
 
 #### 5) Functions calling `SubSlice` (Mermaid)
+
 ```mermaid
 graph TD
     func_updateCapabilitiesFromContainer --> func_SubSlice
 ```
 
 #### 6) Usage example (Go)
+
 ```go
 // Minimal example invoking SubSlice
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 )
 
 func main() {
-	s := []string{"read", "write", "execute"}
-	sub := []string{"read", "execute"}
+ s := []string{"read", "write", "execute"}
+ sub := []string{"read", "execute"}
 
-	if stringhelper.SubSlice(s, sub) {
-		fmt.Println("All elements of sub are present in s")
-	} else {
-		fmt.Println("Not all elements of sub are present in s")
-	}
+ if stringhelper.SubSlice(s, sub) {
+  fmt.Println("All elements of sub are present in s")
+ } else {
+  fmt.Println("Not all elements of sub are present in s")
+ }
 }
 ```
 
 ---
-

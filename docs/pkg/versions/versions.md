@@ -38,7 +38,6 @@ Provides utilities for handling version information in CertSuite, including form
 
 **GitVersion** - Returns a formatted string that describes the Git version of the current build. If no release tag is present, it indicates an unreleased post‑build and shows the previous release.
 
-
 Retrieves a human‑readable representation of the current build’s Git state, combining the release tag (or a fallback message) with the commit hash.
 
 #### Signature (Go)
@@ -88,13 +87,13 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 )
 
 func main() {
-	fmt.Println("Current build:", versions.GitVersion())
+ fmt.Println("Current build:", versions.GitVersion())
 }
 ```
 
@@ -104,13 +103,14 @@ func main() {
 
 **IsValidK8sVersion** - Checks whether the supplied string conforms to the accepted Kubernetes semantic‑versioning format used by CRDs (`v<major>[(alpha
 
-
 #### Signature (Go)
+
 ```go
 func IsValidK8sVersion(version string) bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Checks whether the supplied string conforms to the accepted Kubernetes semantic‑versioning format used by CRDs (`v<major>[(alpha|beta)<num>]{0,2}`). |
@@ -121,6 +121,7 @@ func IsValidK8sVersion(version string) bool
 | **How it fits the package** | Provides a reusable validator for Kubernetes version strings used throughout the test suite to enforce CRD versioning best practices. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Input: version string"] --> B["Compile regex r"]
@@ -130,6 +131,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_IsValidK8sVersion --> func_MustCompile
@@ -137,28 +139,30 @@ graph TD
 ```
 
 #### Functions calling `IsValidK8sVersion`
+
 ```mermaid
 graph TD
   func_testOperatorCrdVersioning --> func_IsValidK8sVersion
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking IsValidK8sVersion
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 )
 
 func main() {
-	v := "v1beta2"
-	if versions.IsValidK8sVersion(v) {
-		fmt.Printf("%q is a valid Kubernetes version string\n", v)
-	} else {
-		fmt.Printf("%q is NOT a valid Kubernetes version string\n", v)
-	}
+ v := "v1beta2"
+ if versions.IsValidK8sVersion(v) {
+  fmt.Printf("%q is a valid Kubernetes version string\n", v)
+ } else {
+  fmt.Printf("%q is NOT a valid Kubernetes version string\n", v)
+ }
 }
 ```
 
@@ -167,7 +171,6 @@ func main() {
 ### IsValidSemanticVersion
 
 **IsValidSemanticVersion** - Determines if `version` conforms to semantic‑versioning rules.
-
 
 Checks whether a string is a valid [semantic version](https://semver.org/).
 
@@ -230,22 +233,21 @@ graph TD
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
+ "github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 )
 
 func main() {
-	v := "1.2.3"
-	if versions.IsValidSemanticVersion(v) {
-		fmt.Printf("The version %q is valid.\n", v)
-	} else {
-		fmt.Printf("The version %q is invalid.\n", v)
-	}
+ v := "1.2.3"
+ if versions.IsValidSemanticVersion(v) {
+  fmt.Printf("The version %q is valid.\n", v)
+ } else {
+  fmt.Printf("The version %q is invalid.\n", v)
+ }
 }
 ```
 
 ---
 
 ---
-

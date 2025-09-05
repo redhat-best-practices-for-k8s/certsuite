@@ -94,13 +94,14 @@ Provides a command‑line interface for creating, inspecting and saving a CertSu
 
 **NewCommand** - Returns a pre‑configured `*cobra.Command` that implements the `config` subcommand of the Certsuite generate tool.
 
-
 #### Signature (Go)
+
 ```go
 func() *cobra.Command
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Returns a pre‑configured `*cobra.Command` that implements the `config` subcommand of the Certsuite generate tool. |
@@ -111,21 +112,25 @@ func() *cobra.Command
 | **How it fits the package** | Acts as the public factory function for the configuration subcommand, enabling other packages (e.g., `cmd/certsuite/generate`) to register this command within the overall CLI tree. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   NewCommand --> generateConfigCmd
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `NewCommand` (Mermaid)
+
 ```mermaid
 graph TD
   cmd/certsuite/generate.NewCommand --> config.NewCommand
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewCommand
 package main
@@ -148,13 +153,14 @@ func main() {
 
 **createCertSuiteResourcesConfiguration** - Presents an interactive menu allowing users to specify Kubernetes namespaces, pod/operator labels, CRD filters, and managed deployments/statefulsets for CertSuite runs.
 
-
 #### Signature (Go)
+
 ```go
 func createCertSuiteResourcesConfiguration()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Presents an interactive menu allowing users to specify Kubernetes namespaces, pod/operator labels, CRD filters, and managed deployments/statefulsets for CertSuite runs. |
@@ -165,6 +171,7 @@ func createCertSuiteResourcesConfiguration()
 | **How it fits the package** | Invoked from `createConfiguration` when the user selects the “CertSuite Resources” option, enabling dynamic runtime configuration of what resources CertSuite will evaluate. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Show menu"}
@@ -179,6 +186,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_createCertSuiteResourcesConfiguration --> func_loadNamespaces
@@ -191,12 +199,14 @@ graph TD
 ```
 
 #### Functions calling `createCertSuiteResourcesConfiguration` (Mermaid)
+
 ```mermaid
 graph TD
   func_createConfiguration --> func_createCertSuiteResourcesConfiguration
 ```
 
 #### Usage example (Go)
+
 ```go
 // The function is called indirectly by createConfiguration when the user selects
 // the “CertSuite Resources” menu option. A direct call would simply launch the
@@ -213,7 +223,6 @@ func main() {
 ### createCollectorConfiguration
 
 **createCollectorConfiguration** - Builds a command‑line UI for selecting a collector configuration option, looping until the user selects “previous menu” or an error occurs.
-
 
 Creates an interactive prompt that lets the user choose a collector option from a predefined list and handles the selection loop until the user exits.
 
@@ -277,13 +286,14 @@ func main() {
 
 **createConfiguration** - Launches an interactive prompt that lets users configure various sections of the CertSuite settings.
 
-
 #### Signature (Go)
+
 ```go
 func()()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Launches an interactive prompt that lets users configure various sections of the CertSuite settings. |
@@ -294,6 +304,7 @@ func()()
 | **How it fits the package** | Acts as the entry point for manual configuration within the *config* subpackage, invoked by the higher‑level `generateConfig` routine. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start createConfiguration"] --> B["Build createMenu slice"]
@@ -306,6 +317,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_createConfiguration --> func_createCertSuiteResourcesConfiguration
@@ -314,12 +326,14 @@ graph TD
 ```
 
 #### Functions calling `createConfiguration` (Mermaid)
+
 ```mermaid
 graph TD
   func_generateConfig --> func_createConfiguration
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking createConfiguration
 package main
@@ -340,13 +354,14 @@ func main() {
 
 **createExceptionsConfiguration** - Presents a prompt‑based interface that allows users to configure various exception lists (kernel taints, Helm charts, protocol names, services, non‑scalable deployments and stateful sets). Each selection triggers the loading of user input into the global configuration.
 
-
 #### Signature (Go)
+
 ```go
 func createExceptionsConfiguration()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Presents a prompt‑based interface that allows users to configure various exception lists (kernel taints, Helm charts, protocol names, services, non‑scalable deployments and stateful sets). Each selection triggers the loading of user input into the global configuration. |
@@ -357,6 +372,7 @@ func createExceptionsConfiguration()
 | **How it fits the package** | Part of the `config` sub‑package in the CertSuite command generator; it is called from `createConfiguration()` when the “exceptions” option is chosen, enabling end‑users to tailor exception rules for subsequent test runs. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Build options list"]
@@ -375,6 +391,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_createExceptionsConfiguration --> strings.ReplaceAll
@@ -392,12 +409,14 @@ graph TD
 ```
 
 #### Functions calling `createExceptionsConfiguration` (Mermaid)
+
 ```mermaid
 graph TD
   func_createConfiguration --> func_createExceptionsConfiguration
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking createExceptionsConfiguration
 func main() {
@@ -412,7 +431,6 @@ func main() {
 ### createSettingsConfiguration
 
 **createSettingsConfiguration** - Presents an interactive prompt to configure runtime settings, currently only the Probe DaemonSet namespace.
-
 
 #### Signature (Go)
 
@@ -469,12 +487,12 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
 )
 
 func main() {
-	// The function is part of a larger wizard; calling it directly will start the settings prompt.
-	config.CreateSettingsConfiguration()
+ // The function is part of a larger wizard; calling it directly will start the settings prompt.
+ config.CreateSettingsConfiguration()
 }
 ```
 
@@ -485,7 +503,6 @@ func main() {
 ### generateConfig
 
 **generateConfig** - Provides a command‑line interface that lets the user create, view or save a test configuration for Cert Suite.
-
 
 #### 1) Signature (Go)
 
@@ -552,7 +569,6 @@ func main() {
 
 **getAnswer** - Displays an interactive prompt with styled text, reads a line from standard input, splits it by commas into fields, trims whitespace, and returns the resulting slice.
 
-
 ```go
 func getAnswer(prompt, syntax, example string) []string
 ```
@@ -604,17 +620,17 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
 )
 
 func main() {
-	values := config.GetAnswer(
-		"Enter comma‑separated namespaces:",
-		"<namespace1>,<namespace2>",
-		"myapp,prod",
-	)
-	fmt.Printf("You entered: %v\n", values)
+ values := config.GetAnswer(
+  "Enter comma‑separated namespaces:",
+  "<namespace1>,<namespace2>",
+  "myapp,prod",
+ )
+ fmt.Printf("You entered: %v\n", values)
 }
 ```
 
@@ -625,7 +641,6 @@ func main() {
 ### loadAcceptedKernelTaints
 
 **loadAcceptedKernelTaints** - Stores a list of accepted kernel taint names in the global `certsuiteConfig`.
-
 
 #### Signature (Go)
 
@@ -685,13 +700,14 @@ func main() {
 
 **loadCRDfilters** - Parses user‑supplied CRD filter strings, converts them into `CrdFilter` objects, and stores them in the global configuration.
 
-
 #### Signature (Go)
+
 ```go
 func([]string)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses user‑supplied CRD filter strings, converts them into `CrdFilter` objects, and stores them in the global configuration. |
@@ -702,6 +718,7 @@ func([]string)()
 | **How it fits the package** | Called during interactive configuration to capture CRD filtering options that influence subsequent certificate suite generation. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over crdFilters"}
@@ -715,6 +732,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_loadCRDfilters --> func_strings_Split
@@ -725,12 +743,14 @@ graph TD
 ```
 
 #### Functions calling `loadCRDfilters` (Mermaid)
+
 ```mermaid
 graph TD
   func_createCertSuiteResourcesConfiguration --> func_loadCRDfilters
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking loadCRDfilters
 func main() {
@@ -747,7 +767,6 @@ func main() {
 ### loadHelmCharts
 
 **loadHelmCharts** - Populates the global configuration with a list of Helm chart names that should be excluded from scanning.
-
 
 #### 1) Signature (Go)
 
@@ -807,7 +826,6 @@ func main() {
 
 **loadManagedDeployments** - Populates the global configuration with user‑supplied managed deployment names, resetting any previous entries.
 
-
 #### Signature (Go)
 
 ```go
@@ -864,7 +882,6 @@ loadManagedDeployments(deployments)
 
 **loadManagedStatefulSets** - Stores a list of StatefulSet names that should be considered managed by CertSuite. The function clears any existing entries and replaces them with the supplied slice.
 
-
 #### 1) Signature (Go)
 
 ```go
@@ -879,7 +896,7 @@ func loadManagedStatefulSets(statefulSets []string)
 | **Parameters** | `statefulSets []string` – Slice containing the names of StatefulSets to manage. |
 | **Return value** | None (void). Modifies package‑level configuration state. |
 | **Key dependencies** | • Calls the built‑in `append` function.<br>• Relies on the global variable `certsuiteConfig`. |
-| **Side effects** | * Resets `certsuiteConfig.ManagedStatefulsets` to an empty slice.<br>* Appends new entries, each wrapped in a `configuration.ManagedDeploymentsStatefulsets` struct. |
+| **Side effects** | *Resets `certsuiteConfig.ManagedStatefulsets` to an empty slice.<br>* Appends new entries, each wrapped in a `configuration.ManagedDeploymentsStatefulsets` struct. |
 | **How it fits the package** | Part of the interactive configuration wizard; invoked when the user selects “managed StatefulSets” from the resource picker. It updates the runtime config used later to generate cert‑suite resources. |
 
 #### 3) Internal workflow (Mermaid)
@@ -935,11 +952,13 @@ func main() {
 Collects a list of namespace names, converts them into the package’s configuration type, and stores them in the global configuration object.
 
 #### Signature (Go)
+
 ```go
 func loadNamespaces(namespaces []string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a slice of `configuration.Namespace` objects from raw namespace strings and assigns it to `certsuiteConfig.TargetNameSpaces`. |
@@ -950,6 +969,7 @@ func loadNamespaces(namespaces []string)
 | **How it fits the package** | Used by the interactive configuration flow to record which namespaces should be scanned for certificates. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Clear certsuiteConfig.TargetNameSpaces"]
@@ -960,18 +980,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_loadNamespaces --> func_append
 ```
 
 #### Functions calling `loadNamespaces` (Mermaid)
+
 ```mermaid
 graph TD
   func_createCertSuiteResourcesConfiguration --> func_loadNamespaces
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking loadNamespaces
 namespaces := []string{"default", "kube-system"}
@@ -984,7 +1007,6 @@ loadNamespaces(namespaces)
 ### loadNonScalableDeployments
 
 **loadNonScalableDeployments** - Parses a slice of strings describing non‑scalable deployments and populates the global configuration with structured objects for later use.
-
 
 #### 1️⃣ Signature (Go)
 
@@ -1063,7 +1085,6 @@ func main() {
 
 **loadNonScalableStatefulSets** - Parses a slice of strings describing StatefulSets that should not be subjected to scaling tests and stores them in the global configuration. Each string is expected to contain `name/namespace`.
 
-
 #### Signature (Go)
 
 ```go
@@ -1135,13 +1156,14 @@ func main() {
 
 **loadOperatorLabels** - Stores a slice of operator label strings into the global configuration, replacing any existing list.
 
-
 #### Signature (Go)
+
 ```go
 func loadOperatorLabels(operatorLabels []string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Stores a slice of operator label strings into the global configuration, replacing any existing list. |
@@ -1152,6 +1174,7 @@ func loadOperatorLabels(operatorLabels []string)
 | **How it fits the package** | Used by the interactive prompt workflow to update operator labels after user input, ensuring subsequent resource generation uses the latest values. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive slice of labels"] --> B["Clear existing config"]
@@ -1159,15 +1182,18 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `loadOperatorLabels` (Mermaid)
+
 ```mermaid
 graph TD
   func_createCertSuiteResourcesConfiguration --> func_loadOperatorLabels
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking loadOperatorLabels
 labels := []string{"app=nginx", "tier=backend"}
@@ -1180,7 +1206,6 @@ loadOperatorLabels(labels)
 ### loadPodLabels
 
 **loadPodLabels** - Stores a list of pod labels to be used as filters when selecting pods under test. It replaces any previously stored label set with the new slice.
-
 
 #### Signature (Go)
 
@@ -1226,12 +1251,12 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
 )
 
 func main() {
-	labels := []string{"app=web", "tier=frontend"}
-	config.LoadPodLabels(labels) // Note: the function is unexported; in real usage it is called from within the same package.
+ labels := []string{"app=web", "tier=frontend"}
+ config.LoadPodLabels(labels) // Note: the function is unexported; in real usage it is called from within the same package.
 }
 ```
 
@@ -1242,7 +1267,6 @@ func main() {
 ### loadProbeDaemonSetNamespace
 
 **loadProbeDaemonSetNamespace** - Persists the first element of a string slice as the namespace used by the Probe DaemonSet in the global configuration.
-
 
 ```go
 func loadProbeDaemonSetNamespace(namespace []string)
@@ -1258,21 +1282,25 @@ func loadProbeDaemonSetNamespace(namespace []string)
 | **How it fits the package** | Part of an interactive CLI that gathers settings from the user and writes them into the shared configuration used to generate Kubernetes manifests. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Receive namespace slice"] -->|"set"| B["certsuiteConfig.ProbeDaemonSetNamespace = namespace["0"]"]
 ```
 
 #### Function dependencies
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `loadProbeDaemonSetNamespace`
+
 ```mermaid
 graph TD
   func_createSettingsConfiguration --> func_loadProbeDaemonSetNamespace
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking loadProbeDaemonSetNamespace
 func main() {
@@ -1290,13 +1318,14 @@ func main() {
 
 **loadProtocolNames** - Replaces the current set of valid protocol names in `certsuiteConfig` with a new list supplied by the caller.
 
-
 #### Signature (Go)
+
 ```go
 func loadProtocolNames(protocolNames []string) 
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Replaces the current set of valid protocol names in `certsuiteConfig` with a new list supplied by the caller. |
@@ -1307,6 +1336,7 @@ func loadProtocolNames(protocolNames []string)
 | **How it fits the package** | Part of the interactive configuration builder that collects user‑supplied options and updates the shared configuration object used by subsequent generation logic. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive protocolNames slice"] --> B["Clear certsuiteConfig.ValidProtocolNames"]
@@ -1318,12 +1348,14 @@ flowchart TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### Functions calling `loadProtocolNames` (Mermaid)
+
 ```mermaid
 graph TD
   func_createExceptionsConfiguration --> func_loadProtocolNames
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking loadProtocolNames
 import (
@@ -1348,13 +1380,14 @@ func main() {
 
 **loadServices** - Stores the supplied list of service names in the global configuration, resetting any previous ignore list.
 
-
 #### 1. Signature (Go)
+
 ```go
 func loadServices(services []string)
 ```
 
 #### 2. Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Stores the supplied list of service names in the global configuration, resetting any previous ignore list. |
@@ -1365,6 +1398,7 @@ func loadServices(services []string)
 | **How it fits the package** | Used by the interactive configuration flow to set which services should be excluded from certificate generation. |
 
 #### 3. Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   subgraph Load Services
@@ -1379,12 +1413,14 @@ flowchart TD
 None – this function is currently not referenced elsewhere in the package.
 
 #### 5. Functions calling `loadServices` (Mermaid)
+
 ```mermaid
 graph TD
   func_createExceptionsConfiguration --> func_loadServices
 ```
 
 #### 6. Usage example (Go)
+
 ```go
 // Minimal example invoking loadServices
 servicesToIgnore := []string{"kube-system", "metrics-server"}
@@ -1398,13 +1434,14 @@ loadServices(servicesToIgnore)
 
 **saveConfiguration** - Serialises the current `TestConfiguration`, prompts the user for an output file name, and writes the YAML to that file.
 
-
 #### Signature (Go)
+
 ```go
 func (*configuration.TestConfiguration)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Serialises the current `TestConfiguration`, prompts the user for an output file name, and writes the YAML to that file. |
@@ -1415,6 +1452,7 @@ func (*configuration.TestConfiguration)()
 | **How it fits the package** | Called from the interactive menu in `generateConfig`; allows users to persist their current configuration for later use or sharing. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B["Marshal config to YAML"]
@@ -1431,6 +1469,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_saveConfiguration --> yaml.Marshal
@@ -1442,12 +1481,14 @@ graph TD
 ```
 
 #### Functions calling `saveConfiguration` (Mermaid)
+
 ```mermaid
 graph TD
   func_generateConfig --> func_saveConfiguration
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking saveConfiguration
 package main
@@ -1470,7 +1511,6 @@ func main() {
 ### showConfiguration
 
 **showConfiguration** - Renders the current `TestConfiguration` as a pretty‑printed YAML string and writes it to standard output.
-
 
 #### Signature (Go)
 
@@ -1525,18 +1565,17 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
-	"gitlab.com/example/project/configuration"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
+ "gitlab.com/example/project/configuration"
 )
 
 func main() {
-	cfg := &configuration.TestConfiguration{
-		Name:  "example",
-		Value: "demo",
-	}
-	config.showConfiguration(cfg)
+ cfg := &configuration.TestConfiguration{
+  Name:  "example",
+  Value: "demo",
+ }
+ config.showConfiguration(cfg)
 }
 ```
 
 ---
-

@@ -36,7 +36,6 @@ Provides utilities for mapping Red Hat CoreOS (RHCOS) release strings between lo
 
 **GetRHCOSMappedVersions** - Parses a newline‑separated list of RHCOS version mappings (`short / long`) and returns a map where the short version is the key and the long form is the value.
 
-
 #### Signature (Go)
 
 ```go
@@ -111,13 +110,14 @@ func main() {
 
 **GetShortVersionFromLong** - Looks up the short RHCOS version that corresponds to a supplied long‑form release string. If no match is found it returns a sentinel value.
 
-
 #### Signature (Go)
+
 ```go
 func GetShortVersionFromLong(longVersion string) (string, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Looks up the short RHCOS version that corresponds to a supplied long‑form release string. If no match is found it returns a sentinel value. |
@@ -128,6 +128,7 @@ func GetShortVersionFromLong(longVersion string) (string, error)
 | **How it fits the package** | Provides a helper used by node‑level logic to translate OS image identifiers into concise version tags required elsewhere in the suite. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Retrieve mapping"}
@@ -138,18 +139,21 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_GetShortVersionFromLong --> func_GetRHCOSMappedVersions
 ```
 
 #### Functions calling `GetShortVersionFromLong`
+
 ```mermaid
 graph TD
   func_Node.GetRHCOSVersion --> func_GetShortVersionFromLong
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking GetShortVersionFromLong
 short, err := operatingsystem.GetShortVersionFromLong("410.84.202205031645-0")
@@ -160,4 +164,3 @@ fmt.Printf("short version: %s\n", short) // prints the matching short tag or "ve
 ```
 
 ---
-

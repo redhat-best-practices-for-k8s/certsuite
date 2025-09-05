@@ -33,13 +33,14 @@ The `claim` package builds the Cobra command hierarchy for the top‑level `clai
 
 **NewCommand** - Builds a Cobra command tree for the `claim` sub‑command, adding both comparison and display sub‑commands.
 
-
 #### Signature (Go)
+
 ```go
 func NewCommand() *cobra.Command
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Builds a Cobra command tree for the `claim` sub‑command, adding both comparison and display sub‑commands. |
@@ -50,6 +51,7 @@ func NewCommand() *cobra.Command
 | **How it fits the package** | Serves as the entry point for the *claim* feature, exposing comparison and display functionality under the CLI hierarchy. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   claim.NewCommand --> compare.NewCommand
@@ -57,6 +59,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   claim.NewCommand --> compare.NewCommand
@@ -64,12 +67,14 @@ graph TD
 ```
 
 #### Functions calling `NewCommand` (Mermaid)
+
 ```mermaid
 graph TD
   certsuite.newRootCmd --> claim.NewCommand
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking NewCommand
 package main
@@ -85,4 +90,3 @@ func main() {
 ```
 
 ---
-

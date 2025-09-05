@@ -72,10 +72,10 @@ Handles displaying failed test cases from a claim file in either JSON or plain t
 
 ### FailedTestCase
 
-
 A representation of a test case that has failed during a certification run.
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `TestCaseName` | `string` | The unique identifier for the test case. |
@@ -84,9 +84,11 @@ A representation of a test case that has failed during a certification run.
 | `NonCompliantObjects` | `[]NonCompliantObject` | Optional list of objects that did not satisfy the test’s compliance criteria; each entry provides context for the failure. |
 
 #### Purpose
+
 The `FailedTestCase` struct encapsulates all information related to a single failed certification test. It is used when generating reports or displaying failures to users, allowing consumers to understand which test failed, why it failed, and which Kubernetes objects contributed to the non‑compliance.
 
 #### Related functions (if any)
+
 | Function | Purpose |
 |----------|---------|
 | *none* |  |
@@ -97,17 +99,19 @@ The `FailedTestCase` struct encapsulates all information related to a single fai
 
 ### FailedTestSuite
 
-
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `TestSuiteName` | `string` | The name of the test suite that produced failures. Serialized as JSON key `name`. |
 | `FailingTestCases` | `[]FailedTestCase` | Slice holding each failed test case within this suite. Serialized as JSON key `failures`. |
 
 #### Purpose
+
 The `FailedTestSuite` struct aggregates all failing test cases for a particular test suite. It is used when summarizing claim results, allowing callers to easily report or serialize failures per suite.
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `getFailedTestCasesByTestSuite` | Builds a slice of `FailedTestSuite` objects by iterating over claim results and collecting only failed test cases. |
@@ -136,12 +140,12 @@ the one in claim's test cases' skipReason field.
 
 ### ObjectSpec
 
-
 Represents a generic specification consisting of an arbitrary list of key/value pairs.
 
 ---
 
 #### Fields
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `Fields` | `[]struct{ Key, Value string }` | A slice holding zero or more name–value entries that describe the object. Each entry has a `Key` and a corresponding `Value`, both strings.
@@ -149,11 +153,13 @@ Represents a generic specification consisting of an arbitrary list of key/value 
 ---
 
 #### Purpose
+
 `ObjectSpec` serves as a lightweight container for metadata about an object. By storing arbitrary key/value pairs it can be used to attach additional information without defining a rigid schema. The struct is primarily manipulated through its helper methods, which allow adding fields and serializing the collection into JSON.
 
 ---
 
 #### Related functions
+
 | Function | Purpose |
 |----------|---------|
 | `AddField` | Appends a new key/value pair to the `Fields` slice. |
@@ -168,7 +174,7 @@ Represents a generic specification consisting of an arbitrary list of key/value 
 <!-- DEBUG: Function NewCommand exists in bundle but ParsedOK=false -->
 **Signature**: `func()(*cobra.Command)`
 
-**Purpose**: 
+**Purpose**:
 
 ---
 
@@ -176,13 +182,14 @@ Represents a generic specification consisting of an arbitrary list of key/value 
 
 **AddField** - Adds a field to the `Fields` slice of an `ObjectSpec`, storing a key/value pair.
 
-
 #### Signature (Go)
+
 ```go
 func (spec *ObjectSpec) AddField(key, value string)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Adds a field to the `Fields` slice of an `ObjectSpec`, storing a key/value pair. |
@@ -193,6 +200,7 @@ func (spec *ObjectSpec) AddField(key, value string)
 | **How it fits the package** | Used when building `NonCompliantObject` instances from parsed JSON; each object’s spec is populated with relevant fields that caused non‑compliance. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Receive ObjectSpec pointer"] --> B{"Append new field"}
@@ -202,18 +210,21 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_ObjectSpec.AddField --> func_append
 ```
 
 #### Functions calling `ObjectSpec.AddField` (Mermaid)
+
 ```mermaid
 graph TD
   func_getNonCompliantObjectsFromFailureReason --> func_ObjectSpec.AddField
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ObjectSpec.AddField
 var spec failures.ObjectSpec
@@ -230,13 +241,14 @@ fmt.Printf("%+v\n", spec)
 
 **MarshalJSON** - Converts an `ObjectSpec` into its JSON representation. If the spec has no fields it returns an empty JSON object (`{}`).
 
-
 #### Signature (Go)
+
 ```go
 func (spec *ObjectSpec) MarshalJSON() ([]byte, error)
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Converts an `ObjectSpec` into its JSON representation. If the spec has no fields it returns an empty JSON object (`{}`). |
@@ -247,6 +259,7 @@ func (spec *ObjectSpec) MarshalJSON() ([]byte, error)
 | **How it fits the package** | Used by the failures sub‑package to provide a JSON representation of claim failure objects when displaying results. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Fields exist?"}
@@ -260,6 +273,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_ObjectSpec.MarshalJSON --> builtin_len
@@ -267,9 +281,11 @@ graph TD
 ```
 
 #### Functions calling `ObjectSpec.MarshalJSON` (Mermaid)
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking ObjectSpec.MarshalJSON
 spec := &failures.ObjectSpec{
@@ -293,7 +309,6 @@ fmt.Println(string(data)) // {"name":"example","status":"failed"}
 
 **getFailedTestCasesByTestSuite** - Transforms raw test‑case results into a slice of `FailedTestSuite`, each containing only the failed cases that belong to suites requested by the caller.
 
-
 #### Signature (Go)
 
 ```go
@@ -310,7 +325,7 @@ func getFailedTestCasesByTestSuite(
 | **Purpose** | Transforms raw test‑case results into a slice of `FailedTestSuite`, each containing only the failed cases that belong to suites requested by the caller. |
 | **Parameters** | `claimResultsByTestSuite` – map from suite name to all test‑case results; <br>`targetTestSuites` – optional set of suite names to include (nil means “all”). |
 | **Return value** | Slice of `FailedTestSuite`, each holding the suite name and its failing test cases. |
-| **Key dependencies** | * `getNonCompliantObjectsFromFailureReason` – parses detailed failure reasons.<br>* Standard library: `fmt.Fprintf`, `os.Stderr`. |
+| **Key dependencies** | *`getNonCompliantObjectsFromFailureReason` – parses detailed failure reasons.<br>* Standard library: `fmt.Fprintf`, `os.Stderr`. |
 | **Side effects** | Writes error messages to standard error when a failure reason cannot be parsed. No mutation of input maps. |
 | **How it fits the package** | Used by `showFailures` to prepare data for JSON or text output, filtering out passing cases and non‑relevant suites. |
 
@@ -377,7 +392,6 @@ for _, suite := range failedSuites {
 
 **getNonCompliantObjectsFromFailureReason** - Converts the `checkDetails` string of a failed test case into a slice of `NonCompliantObject`s by decoding JSON and mapping report fields.
 
-
 #### Signature (Go)
 
 ```go
@@ -436,31 +450,31 @@ graph TD
 ```go
 // Minimal example invoking getNonCompliantObjectsFromFailureReason
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show/failures"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show/failures"
 )
 
 func main() {
-	checkDetails := `{
-		"CompliantObjectsOut": [],
-		"NonCompliantObjectsOut": [
-			{
-				"ObjectType": "Pod",
-				"ObjectFieldsKeys": ["name", "namespace"],
-				"ObjectFieldsValues": ["nginx-pod", "default"]
-			}
-		]
-	}`
+ checkDetails := `{
+  "CompliantObjectsOut": [],
+  "NonCompliantObjectsOut": [
+   {
+    "ObjectType": "Pod",
+    "ObjectFieldsKeys": ["name", "namespace"],
+    "ObjectFieldsValues": ["nginx-pod", "default"]
+   }
+  ]
+ }`
 
-	objects, err := failures.getNonCompliantObjectsFromFailureReason(checkDetails)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
+ objects, err := failures.getNonCompliantObjectsFromFailureReason(checkDetails)
+ if err != nil {
+  fmt.Println("Error:", err)
+  return
+ }
 
-	for _, obj := range objects {
-		fmt.Printf("Type: %s, Reason: %s\n", obj.Type, obj.Reason)
-	}
+ for _, obj := range objects {
+  fmt.Printf("Type: %s, Reason: %s\n", obj.Type, obj.Reason)
+ }
 }
 ```
 
@@ -469,7 +483,6 @@ func main() {
 ### parseOutputFormatFlag
 
 **parseOutputFormatFlag** - Validates that the global flag `outputFormatFlag` matches one of the formats listed in `availableOutputFormats`. Returns the format string if valid.
-
 
 #### Signature (Go)
 
@@ -520,18 +533,18 @@ graph TD
 package main
 
 import (
-	"fmt"
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show/failures"
+ "fmt"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show/failures"
 )
 
 func main() {
-	// Assume the global flag has been set elsewhere.
-	format, err := failures.ParseOutputFormatFlag()
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	fmt.Println("Chosen output format:", format)
+ // Assume the global flag has been set elsewhere.
+ format, err := failures.ParseOutputFormatFlag()
+ if err != nil {
+  fmt.Println("Error:", err)
+  return
+ }
+ fmt.Println("Chosen output format:", format)
 }
 ```
 
@@ -543,13 +556,14 @@ func main() {
 
 **parseTargetTestSuitesFlag** - Parses the global flag that lists test suite names, creating a lookup map where each key is a suite name and the value indicates inclusion.
 
-
 #### Signature (Go)
+
 ```go
 func parseTargetTestSuitesFlag() map[string]bool
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses the global flag that lists test suite names, creating a lookup map where each key is a suite name and the value indicates inclusion. |
@@ -560,6 +574,7 @@ func parseTargetTestSuitesFlag() map[string]bool
 | **How it fits the package** | Used by `showFailures` to determine which test suites should be displayed in failure reports. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["Check if flag is empty"] -->|"empty"| B["Return nil"]
@@ -571,6 +586,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_parseTargetTestSuitesFlag --> strings.Split
@@ -578,12 +594,14 @@ graph TD
 ```
 
 #### Functions calling `parseTargetTestSuitesFlag`
+
 ```mermaid
 graph TD
   func_showFailures --> func_parseTargetTestSuitesFlag
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking parseTargetTestSuitesFlag
 suites := parseTargetTestSuitesFlag()
@@ -600,7 +618,6 @@ if suites != nil {
 
 **printFailuresJSON** - Serialises a slice of `FailedTestSuite` into pretty‑printed JSON and writes it to standard output.
 
-
 #### Signature (Go)
 
 ```go
@@ -614,8 +631,8 @@ func printFailuresJSON(testSuites []FailedTestSuite)
 | **Purpose** | Serialises a slice of `FailedTestSuite` into pretty‑printed JSON and writes it to standard output. |
 | **Parameters** | `testSuites []FailedTestSuite` – collection of failed test suites to serialise. |
 | **Return value** | none (void). The function terminates the program on marshal error. |
-| **Key dependencies** | * `encoding/json.MarshalIndent` – formats JSON with indentation.<br>* `log.Fatalf` – logs a fatal error and exits if marshalling fails.<br>* `fmt.Printf` – outputs the resulting JSON string.<br>* `string(bytes)` – converts the byte slice to a string. |
-| **Side effects** | * Writes to stdout via `fmt.Printf`. <br>* Calls `log.Fatalf`, which aborts the process on error. |
+| **Key dependencies** | *`encoding/json.MarshalIndent` – formats JSON with indentation.<br>* `log.Fatalf` – logs a fatal error and exits if marshalling fails.<br>*`fmt.Printf` – outputs the resulting JSON string.<br>* `string(bytes)` – converts the byte slice to a string. |
+| **Side effects** | *Writes to stdout via `fmt.Printf`. <br>* Calls `log.Fatalf`, which aborts the process on error. |
 | **How it fits the package** | Part of the command‑line tool for displaying claim failures; invoked by `showFailures` when JSON output is requested. |
 
 #### Internal workflow (Mermaid)
@@ -652,14 +669,14 @@ graph TD
 package main
 
 import (
-	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show/failures"
+ "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show/failures"
 )
 
 func main() {
-	suites := []failures.FailedTestSuite{
-		{ /* populate fields */ },
-	}
-	failures.printFailuresJSON(suites)
+ suites := []failures.FailedTestSuite{
+  { /* populate fields */ },
+ }
+ failures.printFailuresJSON(suites)
 }
 ```
 
@@ -669,13 +686,14 @@ func main() {
 
 **printFailuresText** - Iterates over failed test suites and prints each suite, its failing test cases, and detailed failure reasons to standard output.
 
-
 #### Signature (Go)
+
 ```go
 func(testSuites []FailedTestSuite)()
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Iterates over failed test suites and prints each suite, its failing test cases, and detailed failure reasons to standard output. |
@@ -686,6 +704,7 @@ func(testSuites []FailedTestSuite)()
 | **How it fits the package** | Serves as the text‑output handler for the *failures* subcommand, called by `showFailures` after parsing claim results. |
 
 #### Internal workflow (Mermaid)
+
 ```mermaid
 flowchart TD
   A["Start"] --> B{"Iterate over testSuites"}
@@ -705,6 +724,7 @@ flowchart TD
 ```
 
 #### Function dependencies (Mermaid)
+
 ```mermaid
 graph TD
   func_printFailuresText --> fmt_Printf
@@ -712,12 +732,14 @@ graph TD
 ```
 
 #### Functions calling `printFailuresText` (Mermaid)
+
 ```mermaid
 graph TD
   showFailures --> func_printFailuresText
 ```
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking printFailuresText
 var suites []FailedTestSuite // assume this is populated elsewhere
@@ -730,13 +752,14 @@ printFailuresText(suites)
 
 **showFailures** - Parses a claim file, validates its format version, extracts failed test cases per suite, and prints them in the requested output format (JSON or plain text).
 
-
 #### Signature (Go)
+
 ```go
 func showFailures(_ *cobra.Command, _ []string) error
 ```
 
 #### Summary Table
+
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Parses a claim file, validates its format version, extracts failed test cases per suite, and prints them in the requested output format (JSON or plain text). |
@@ -747,6 +770,7 @@ func showFailures(_ *cobra.Command, _ []string) error
 | **How it fits the package** | Entry point for the `show failures` subcommand of the `certsuite claim show` CLI, orchestrating parsing, filtering, and output formatting. |
 
 #### Internal workflow
+
 ```mermaid
 flowchart TD
   A["parseOutputFormatFlag"] --> B["claim.Parse"]
@@ -760,6 +784,7 @@ flowchart TD
 ```
 
 #### Function dependencies
+
 ```mermaid
 graph TD
   func_showFailures --> func_parseOutputFormatFlag
@@ -771,9 +796,11 @@ graph TD
 ```
 
 #### Functions calling `showFailures`
+
 None – this function is currently not referenced elsewhere in the package.
 
 #### Usage example (Go)
+
 ```go
 // Minimal example invoking showFailures
 cmd := &cobra.Command{Use: "failures"}
@@ -783,4 +810,3 @@ _ = cmd.Execute() // internally calls showFailures when the subcommand is run
 ---
 
 ---
-
