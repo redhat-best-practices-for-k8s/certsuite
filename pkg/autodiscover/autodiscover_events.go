@@ -25,6 +25,12 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
+// findAbnormalEvents collects non-normal events from specified namespaces
+//
+// The function iterates over each namespace provided, querying the Kubernetes
+// API for events whose type is not Normal. It aggregates these events into a
+// single slice, logging an error and skipping any namespace where the list
+// operation fails. The resulting slice of corev1.Event objects is returned.
 func findAbnormalEvents(oc corev1client.CoreV1Interface, namespaces []string) (abnormalEvents []corev1.Event) {
 	abnormalEvents = []corev1.Event{}
 	for _, ns := range namespaces {

@@ -59,11 +59,26 @@ const (
 	labelTemplate              = "%s/%s"
 )
 
+// PodStates Tracks pod counts before and after execution
+//
+// This structure holds two maps that record the number of pods per namespace or
+// label set before an operation begins and after it completes. The keys
+// represent identifiers such as namespace names, while the values are integer
+// counters. By comparing these maps, callers can determine how many pods were
+// added, removed, or remained unchanged during the execution phase.
 type PodStates struct {
 	BeforeExecution map[string]int
 	AfterExecution  map[string]int
 }
 
+// DiscoveredTestData Contains all resources discovered during test setup
+//
+// The structure holds metadata, configuration parameters, and collections of
+// Kubernetes objects such as pods, services, CRDs, and operator information
+// collected by the autodiscovery routine. It aggregates stateful data like pod
+// statuses, resource quotas, network policies, and role bindings to provide a
+// comprehensive snapshot of the cluster for testing purposes. The fields are
+// used downstream to evaluate test conditions and report results.
 type DiscoveredTestData struct {
 	Env                          configuration.TestParameters
 	PodStates                    PodStates
@@ -126,6 +141,12 @@ type DiscoveredTestData struct {
 	ConnectAPIProxyPort          string
 }
 
+// labelObject Represents a single key/value pair used to identify Kubernetes resources
+//
+// This structure holds the label's key and its corresponding value, allowing
+// code to match or filter objects such as Pods, Deployments, or Operators based
+// on those labels. It is used throughout the discovery logic to build selectors
+// for listing resources that satisfy one or more specified label conditions.
 type labelObject struct {
 	LabelKey   string
 	LabelValue string
@@ -136,6 +157,13 @@ var data = DiscoveredTestData{}
 const labelRegex = `(\S*)\s*:\s*(\S*)`
 const labelRegexMatches = 3
 
+// CreateLabels Parses label expressions into key-value objects
+//
+// The function iterates over a slice of strings, each representing a label in
+// the form "key=value". It uses a regular expression to extract the key and
+// value; if parsing fails it logs an error and skips that entry. Valid pairs
+// are wrapped into labelObject structs and collected into a slice that is
+// returned.
 func CreateLabels(labelStrings []string) (labelObjects []labelObject) {
 	for _, label := range labelStrings {
 		r := regexp.MustCompile(labelRegex)
@@ -153,7 +181,14 @@ func CreateLabels(labelStrings []string) (labelObjects []labelObject) {
 	return labelObjects
 }
 
-// DoAutoDiscover finds objects under test
+// DoAutoDiscover Collects comprehensive Kubernetes and OpenShift discovery data
+//
+// The function gathers a wide range of cluster information such as namespaces,
+// pods, operators, subscriptions, CRDs, storage classes, network policies, role
+// bindings, and more. It uses client holders to query the API, applies label
+// filtering for test objects, handles errors with fatal logging, and populates
+// a DiscoveredTestData structure that is later used to build the test
+// environment.
 //
 //nolint:funlen,gocyclo
 func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData {
@@ -349,6 +384,12 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	return data
 }
 
+// namespacesListToStringList Converts a list of namespace objects to a slice of their names
+//
+// The function iterates over each Namespace in the input slice, extracting its
+// Name field and appending it to a new string slice. It returns this slice of
+// strings representing all namespace names. This conversion is used to provide
+// a simple list for further processing elsewhere in the package.
 func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {
 	for _, ns := range namespaceList {
 		stringList = append(stringList, ns.Name)
@@ -356,6 +397,13 @@ func namespacesListToStringList(namespaceList []configuration.Namespace) (string
 	return stringList
 }
 
+// getOpenshiftVersion retrieves the OpenShift version from the cluster
+//
+// The function queries the openshift-apiserver ClusterOperator resource to
+// obtain its status versions. It searches for a version entry matching a
+// specific label, logs the found version, and returns it. If the operator is
+// missing or no matching version exists, it returns an error or a sentinel
+// value indicating a non‑OpenShift cluster.
 func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, err error) {
 	var clusterOperator *configv1.ClusterOperator
 	clusterOperator, err = oClient.ClusterOperators().Get(context.TODO(), "openshift-apiserver", metav1.GetOptions{})
@@ -381,7 +429,13 @@ func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, 
 	return "", errors.New("could not get openshift version from clusterOperator")
 }
 
-// Get a map of csvs with its managed operator/controller pods from its installation namespace.
+// getOperatorCsvPods Retrieves operator controller pods for each CSV
+//
+// For every ClusterServiceVersion in the list, it looks up the namespace
+// annotation to locate where the operator runs. It then lists all pods in that
+// namespace, filters those owned by the CSV, and builds a map keyed by the
+// CSV’s namespaced name to its managed pods. Errors are returned if
+// annotations or pod retrieval fail.
 func getOperatorCsvPods(csvList []*olmv1Alpha.ClusterServiceVersion) (map[types.NamespacedName][]*corev1.Pod, error) {
 	const nsAnnotation = "olm.operatorNamespace"
 
@@ -405,7 +459,13 @@ func getOperatorCsvPods(csvList []*olmv1Alpha.ClusterServiceVersion) (map[types.
 	return csvToPodsMapping, nil
 }
 
-// This function gets the operator/controller pods of the specified csv name in from the installation namespace.
+// getPodsOwnedByCsv retrieves operator pods owned by a specified CSV
+//
+// The function lists all pods in the given namespace, then checks each pod’s
+// top-level owner references to find those whose owner is a
+// ClusterServiceVersion matching the provided name and namespace. Matching pods
+// are collected into a slice that is returned. If any error occurs while
+// listing pods or determining owners, it returns an error.
 func getPodsOwnedByCsv(csvName, operatorNamespace string, client *clientsholder.ClientsHolder) (managedPods []*corev1.Pod, err error) {
 	// Get all pods from the target namespace
 	podsList, err := client.K8sClient.CoreV1().Pods(operatorNamespace).List(context.TODO(), metav1.ListOptions{})

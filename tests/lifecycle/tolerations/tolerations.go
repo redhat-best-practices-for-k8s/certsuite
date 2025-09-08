@@ -27,6 +27,17 @@ var (
 	tolerationSecondsDefault = 300
 )
 
+// IsTolerationModified Determines if a pod toleration deviates from the Kubernetes defaults
+//
+// The function examines a single toleration in conjunction with the pod's QoS
+// class to see whether it matches one of the three default tolerations that
+// kubelet adds automatically. It first filters out any toleration whose key
+// does not start with "node.kubernetes.io", then checks the effect, key,
+// operator, and optional seconds value against the expected defaults for
+// NoExecute and NoSchedule effects, considering the pod's QoS class for
+// memory‑pressure cases. If a toleration fails these checks or matches a
+// known non‑compliant set, the function returns true to indicate
+// modification; otherwise it returns false.
 func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool {
 	const (
 		notReadyStr       = "node.kubernetes.io/not-ready"
@@ -87,6 +98,15 @@ func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool
 	return false
 }
 
+// IsTolerationDefault Determines whether a toleration is one of the default Kubernetes tolerations
+//
+// This function examines the key field of a toleration and returns true if it
+// includes the substring "node.kubernetes.io", indicating that the toleration
+// originates from the default set added by Kubernetes. It performs this check
+// using a simple string containment test, which covers all standard node taint
+// keys such as not-ready, unreachable, and memory-pressure. The result is a
+// boolean value signifying whether the toleration should be considered
+// unmodified.
 func IsTolerationDefault(t corev1.Toleration) bool {
 	return strings.Contains(t.Key, "node.kubernetes.io")
 }

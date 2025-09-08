@@ -86,6 +86,12 @@ var (
 	}
 )
 
+// NewCommand Creates a command for comparing two claim files
+//
+// It defines flags for the paths of two existing claim files, marks both as
+// required, and handles errors by logging them before returning nil if marking
+// fails. The function then returns the configured command object for use in the
+// CLI.
 func NewCommand() *cobra.Command {
 	claimCompareFiles.Flags().StringVarP(
 		&Claim1FilePathFlag, "claim1", "1", "",
@@ -109,6 +115,13 @@ func NewCommand() *cobra.Command {
 	return claimCompareFiles
 }
 
+// claimCompare compares two claim files for differences
+//
+// This function reads the paths provided by global flags, loads each file,
+// unmarshals them into claim structures, and then generates diff reports for
+// versions, test cases, configurations, and nodes. The resulting diffs are
+// printed to standard output. If any step fails, it logs a fatal error and
+// exits.
 func claimCompare(_ *cobra.Command, _ []string) error {
 	err := claimCompareFilesfunc(Claim1FilePathFlag, Claim2FilePathFlag)
 	if err != nil {
@@ -117,6 +130,13 @@ func claimCompare(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
+// claimCompareFilesfunc Reads two claim files, unmarshals them, and outputs structured comparison reports
+//
+// The function loads the contents of two specified claim files and parses each
+// JSON document into a claim schema structure. It then generates separate diff
+// reports for the claim versions, test case results, configuration differences,
+// and node details, printing each report to standard output. Errors during file
+// reading or unmarshalling are wrapped with context and returned for handling.
 func claimCompareFilesfunc(claim1, claim2 string) error {
 	// readfiles
 	claimdata1, err := os.ReadFile(claim1)
@@ -161,6 +181,12 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	return nil
 }
 
+// unmarshalClaimFile Parses raw claim data into a structured schema
+//
+// This function receives raw JSON bytes representing a claim file, attempts to
+// unmarshal them into the claim.Schema type, and returns either the populated
+// struct or an error if parsing fails. It uses standard library JSON decoding
+// and propagates any unmarshaling errors back to the caller.
 func unmarshalClaimFile(claimdata []byte) (claim.Schema, error) {
 	var claimDataResult claim.Schema
 	err := json.Unmarshal(claimdata, &claimDataResult)

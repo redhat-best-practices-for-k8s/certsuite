@@ -38,6 +38,12 @@ var (
 	}
 )
 
+// labelsAllowTestRun checks whether a test run is permitted based on labels
+//
+// The function receives a string of labels and a list of allowed label
+// identifiers. It scans each allowed identifier to see if it appears within the
+// provided string, returning true upon the first match. If none of the allowed
+// labels are found, it returns false.
 func labelsAllowTestRun(labelFilter string, allowedLabels []string) bool {
 	for _, label := range allowedLabels {
 		if strings.Contains(labelFilter, label) {
@@ -47,13 +53,13 @@ func labelsAllowTestRun(labelFilter string, allowedLabels []string) bool {
 	return false
 }
 
-// Returns true if the preflight checks should run.
-// Conditions: (1) the labels expr should contain any of the preflight tags/labels & (2) the
-// preflight dockerconfig file must exist.
-// This is just a hack to avoid running the preflight.LoadChecks() if it's not necessary
-// since that function is actually running all the preflight lib's checks, which can take some
-// time to finish. When they're finished, a checksdb.Check is created for each preflight lib's
-// check that has run. The CheckFn will simply store the result.
+// ShouldRun Determines whether preflight checks should be executed
+//
+// The function evaluates the provided label expression to see if it includes
+// any preflight-specific tags, then verifies that a Docker configuration file
+// is available. If either condition fails, it returns false or logs a warning
+// and marks the environment to skip preflight tests. When both conditions are
+// satisfied, it signals that the preflight suite may run.
 func ShouldRun(labelsExpr string) bool {
 	env = provider.GetTestEnvironment()
 	preflightAllowedLabels := []string{common.PreflightTestKey, identifiers.TagPreflight}
@@ -72,6 +78,12 @@ func ShouldRun(labelsExpr string) bool {
 	return true
 }
 
+// LoadChecks Initializes the test environment and runs Preflight checks for containers and operators
+//
+// The function sets up logging, retrieves the current test environment, and
+// creates a checks group for Preflight tests. It executes container preflight
+// tests and conditionally runs operator tests if the cluster is OpenShift.
+// Results are recorded in the checks group for later reporting.
 func LoadChecks() {
 	log.Debug("Running %s suite checks", common.PreflightTestKey)
 
@@ -90,6 +102,13 @@ func LoadChecks() {
 	}
 }
 
+// testPreflightOperators Runs preflight checks on all operators and records their outcomes
+//
+// This function iterates over each operator in the test environment, executing
+// its preflight tests and capturing any errors. After collecting results, it
+// logs completion of operator testing. Finally, it creates catalog entries for
+// every unique preflight test found across operators, adding these checks to
+// the provided group so they can be reported.
 func testPreflightOperators(checksGroup *checksdb.ChecksGroup, env *provider.TestEnvironment) {
 	// Loop through all of the operators, run preflight, and set their results into their respective object
 	for _, op := range env.Operators {
@@ -111,6 +130,13 @@ func testPreflightOperators(checksGroup *checksdb.ChecksGroup, env *provider.Tes
 	}
 }
 
+// testPreflightContainers runs Preflight checks on all containers in the test environment
+//
+// The function iterates over each container, executing Preflight diagnostics
+// while caching results per image to avoid duplicate work. It logs any errors
+// encountered during execution and records completion of tests for the entire
+// set. After processing, it aggregates unique test entries from container
+// results and generates corresponding checks in the provided group.
 func testPreflightContainers(checksGroup *checksdb.ChecksGroup, env *provider.TestEnvironment) {
 	// Using a cache to prevent unnecessary processing of images if we already have the results available
 	preflightImageCache := make(map[string]provider.PreflightResultsDB)
@@ -133,7 +159,13 @@ func testPreflightContainers(checksGroup *checksdb.ChecksGroup, env *provider.Te
 	}
 }
 
-// func generatePreflightContainerCnfCertTest(testName, testID string, tags []string, containers []*provider.Container) {
+// generatePreflightContainerCnfCertTest Creates a test entry for each Preflight container check
+//
+// The function registers a catalog entry using the supplied name, description,
+// and remediation, then adds a corresponding check to the checks group. For
+// every container passed in, it examines preflight results and records which
+// containers passed, failed, or errored on that specific test. The outcome is
+// stored as compliant or non‑compliant objects within the check's result.
 func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, testName, description, remediation string, containers []*provider.Container) {
 	// Based on a single test "name", we will be passing/failing in our test framework.
 	// Brute force-ish type of method.
@@ -177,6 +209,13 @@ func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, te
 		}))
 }
 
+// generatePreflightOperatorCnfCertTest Creates a test case that aggregates preflight results across operators
+//
+// The function registers a new test in the catalog, then builds a check that
+// iterates over all operators to collect passed, failed, or errored preflight
+// outcomes for a given test name. It constructs report objects for each
+// operator and sets the overall result accordingly. The check is skipped if no
+// operators are present.
 func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, testName, description, remediation string, operators []*provider.Operator) {
 	// Based on a single test "name", we will be passing/failing in our test framework.
 	// Brute force-ish type of method.
@@ -221,6 +260,13 @@ func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, tes
 		}))
 }
 
+// getUniqueTestEntriesFromContainerResults Collects unique preflight test results from multiple containers
+//
+// This function iterates over a slice of container objects, extracting all
+// passed, failed, and error preflight tests. It aggregates them into a map
+// keyed by test name, ensuring that duplicate entries are overridden with the
+// most recent result. The resulting map contains one entry per unique test
+// across all containers.
 func getUniqueTestEntriesFromContainerResults(containers []*provider.Container) map[string]provider.PreflightTest {
 	// If containers are sharing the same image, they should "presumably" have the same results returned from Preflight.
 	testEntries := make(map[string]provider.PreflightTest)
@@ -240,6 +286,14 @@ func getUniqueTestEntriesFromContainerResults(containers []*provider.Container) 
 	return testEntries
 }
 
+// getUniqueTestEntriesFromOperatorResults collects unique preflight test results from all operators
+//
+// The function iterates over a slice of operator objects, extracting each
+// passed, failed, or errored test result. For every test name it stores the
+// corresponding test entry in a map, ensuring that only one instance per test
+// name is kept even if multiple operators report the same test. The resulting
+// map associates test names with their detailed preflight test information for
+// later use.
 func getUniqueTestEntriesFromOperatorResults(operators []*provider.Operator) map[string]provider.PreflightTest {
 	testEntries := make(map[string]provider.PreflightTest)
 	for _, op := range operators {

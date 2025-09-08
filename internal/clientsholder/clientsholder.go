@@ -60,6 +60,14 @@ const (
 	DefaultTimeout = 10 * time.Second
 )
 
+// ClientsHolder Holds configured Kubernetes API clients for cluster interaction
+//
+// This structure aggregates multiple client interfaces, including core,
+// dynamic, extension, networking, and OLM clients, along with configuration
+// data such as the REST config and kubeconfig bytes. It provides a single point
+// from which tests or utilities can execute commands inside pods, query
+// resources, or manipulate cluster objects. The ready flag indicates whether
+// the holder has been fully initialized.
 type ClientsHolder struct {
 	RestConfig           *rest.Config
 	DynamicClient        dynamic.Interface
@@ -81,16 +89,22 @@ type ClientsHolder struct {
 
 var clientsHolder = ClientsHolder{}
 
-// SetupFakeOlmClient Overrides the OLM client with the fake interface object for unit testing. Loads
-// the mocking objects so olmv interface methods can find them.
+// SetupFakeOlmClient Replaces the real OLM client with a fake for testing
+//
+// This function takes a slice of Kubernetes objects that represent mocked OLM
+// resources. It constructs a new fake client set containing those objects and
+// assigns it to the package's client holder, enabling tests to interact with
+// OLM APIs without contacting an actual cluster.
 func SetupFakeOlmClient(olmMockObjects []runtime.Object) {
 	clientsHolder.OlmClient = olmFakeClient.NewSimpleClientset(olmMockObjects...)
 }
 
-// GetTestClientHolder Overwrites the existing clientholders with a mocked version for unit testing.
-// Only pure k8s interfaces will be available. The runtime objects must be pure k8s ones.
-// For other (OLM, )
-// runtime mocking objects loading, use the proper clientset mocking function.
+// GetTestClientsHolder Creates a mocked client holder for unit tests
+//
+// This function accepts a slice of runtime objects that represent Kubernetes
+// resources and builds separate slices for each supported client type. It then
+// initializes fake clients with these objects, marks the holder as ready, and
+// returns it for use in testing scenarios.
 //
 //nolint:funlen,gocyclo
 func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
@@ -160,26 +174,57 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
 	return &clientsHolder
 }
 
+// SetTestK8sClientsHolder Stores a Kubernetes client for test usage
+//
+// This function assigns the provided Kubernetes interface to an internal holder
+// and marks it as ready. It is intended for tests that require a mock or real
+// client without interacting with a live cluster. After execution, other
+// components can retrieve the stored client from the holder.
 func SetTestK8sClientsHolder(k8sClient kubernetes.Interface) {
 	clientsHolder.K8sClient = k8sClient
 	clientsHolder.ready = true
 }
 
+// SetTestK8sDynamicClientsHolder Assigns a test Kubernetes dynamic client to the internal holder
+//
+// This function stores the provided dynamic client instance in an internal
+// structure used by tests, marking the holder as ready for use. It replaces any
+// existing client reference and enables subsequent code that relies on the
+// dynamic client to operate against this test instance.
 func SetTestK8sDynamicClientsHolder(dynamicClient dynamic.Interface) {
 	clientsHolder.DynamicClient = dynamicClient
 	clientsHolder.ready = true
 }
 
+// SetTestClientGroupResources Stores a list of API resource group definitions
+//
+// This function receives an array of API resource lists and assigns it to the
+// internal holder used by the client package. It updates the shared state that
+// other components reference when interacting with Kubernetes groups. No value
+// is returned, and the operation replaces any previously stored resources.
 func SetTestClientGroupResources(groupResources []*metav1.APIResourceList) {
 	clientsHolder.GroupResources = groupResources
 }
 
+// ClearTestClientsHolder Resets the Kubernetes client and marks holder as not ready
+//
+// This function clears the stored Kubernetes client reference, setting it to
+// nil, and updates an internal flag to indicate that the holder is no longer
+// ready for use. It does not return a value and has no parameters. After
+// calling this, any attempt to access the client will need reinitialization.
 func ClearTestClientsHolder() {
 	clientsHolder.K8sClient = nil
 	clientsHolder.ready = false
 }
 
-// GetClientsHolder returns the singleton ClientsHolder object.
+// GetClientsHolder Returns a cached instance of the Kubernetes clients holder
+//
+// This function checks whether the global ClientsHolder has already been
+// initialized and ready; if so, it returns that instance immediately. If not,
+// it attempts to create a new holder by calling the internal constructor with
+// any provided configuration filenames. Errors during creation are logged as
+// fatal, terminating the program. The resulting holder is returned for use by
+// other parts of the application.
 func GetClientsHolder(filenames ...string) *ClientsHolder {
 	if clientsHolder.ready {
 		return &clientsHolder
@@ -191,6 +236,12 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 	return clientsHolder
 }
 
+// GetNewClientsHolder Creates a Kubernetes clients holder from the provided kubeconfig
+//
+// The function takes a file path to a kubeconfig, uses an internal constructor
+// to instantiate a ClientsHolder with all necessary API clients, and logs a
+// fatal error if construction fails. On success it returns a pointer to the
+// fully initialized holder for use by other components.
 func GetNewClientsHolder(kubeconfigFile string) *ClientsHolder {
 	_, err := newClientsHolder(kubeconfigFile)
 	if err != nil {
@@ -200,6 +251,13 @@ func GetNewClientsHolder(kubeconfigFile string) *ClientsHolder {
 	return &clientsHolder
 }
 
+// createByteArrayKubeConfig Converts a Kubernetes configuration into YAML byte array
+//
+// The function takes a pointer to a client configuration structure and
+// serializes it into its YAML representation using the client-go library. It
+// returns the resulting bytes along with any error that occurs during
+// serialization, allowing callers to use the data as a kubeconfig file in
+// memory.
 func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) {
 	yamlBytes, err := clientcmd.Write(*kubeConfig)
 	if err != nil {
@@ -208,8 +266,13 @@ func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) 
 	return yamlBytes, nil
 }
 
-// Creates a clientcmdapi.Config object from a rest.Config.
-// Based on https://github.com/kubernetes/client-go/issues/711#issuecomment-1666075787
+// GetClientConfigFromRestConfig Creates a kubeconfig configuration from a REST client
+//
+// It accepts a Kubernetes rest.Config pointer and builds an equivalent
+// clientcmdapi.Config structure containing cluster, context, and authentication
+// information. The resulting config includes the server URL, certificate
+// authority path, bearer token, and sets a default cluster and context for use
+// by other components.
 func GetClientConfigFromRestConfig(restConfig *rest.Config) *clientcmdapi.Config {
 	return &clientcmdapi.Config{
 		Kind:       "Config",
@@ -235,6 +298,15 @@ func GetClientConfigFromRestConfig(restConfig *rest.Config) *clientcmdapi.Config
 	}
 }
 
+// getClusterRestConfig Retrieves a Kubernetes REST configuration from in‑cluster or kubeconfig files
+//
+// The function first attempts to obtain an in‑cluster configuration; if
+// successful it converts that config into a kubeconfig byte array for
+// downstream use and returns the rest.Config. If not running inside a cluster,
+// it requires one or more kubeconfig file paths, merges them with precedence
+// rules, creates a temporary kubeconfig representation, extracts the REST
+// client configuration from it, and returns that configuration along with any
+// error encountered.
 func getClusterRestConfig(filenames ...string) (*rest.Config, error) {
 	restConfig, err := rest.InClusterConfig()
 	if err == nil {
@@ -288,7 +360,14 @@ func getClusterRestConfig(filenames ...string) (*rest.Config, error) {
 	return restConfig, nil
 }
 
-// GetClientsHolder instantiate an ocp client
+// newClientsHolder Creates a holder of Kubernetes client interfaces based on provided kubeconfig files
+//
+// It loads a rest configuration from the given kubeconfig paths or in-cluster
+// settings, then initializes numerous typed and dynamic clients for API
+// extensions, OLM, OpenShift, networking, scaling, and CNCF networking. The
+// function also retrieves cluster resource listings and prepares a REST mapper
+// for scale operations. Upon successful setup, it marks the holder as ready and
+// returns it; otherwise an error is returned.
 func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen // this is a special function with lots of assignments
 	log.Info("Creating k8s go-clients holder.")
 
@@ -369,12 +448,25 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	return &clientsHolder, nil
 }
 
+// Context Represents a target container within a pod
+//
+// This structure holds the namespace, pod name, and container name used when
+// executing commands inside Kubernetes pods. It provides accessor methods to
+// retrieve each field value. The context is typically created with NewContext
+// and passed to command execution functions.
 type Context struct {
 	namespace     string
 	podName       string
 	containerName string
 }
 
+// NewContext Creates a context for running commands inside a specific pod container
+//
+// This function takes the namespace, pod name, and container name of a probe
+// pod and returns a Context object that holds those values. The returned
+// Context is used by other components to target the correct container when
+// executing shell commands via the client holder. No additional processing or
+// validation occurs; it simply packages the identifiers into the struct.
 func NewContext(namespace, podName, containerName string) Context {
 	return Context{
 		namespace:     namespace,
@@ -383,14 +475,30 @@ func NewContext(namespace, podName, containerName string) Context {
 	}
 }
 
+// Context.GetNamespace retrieves the namespace from the context
+//
+// This method accesses the internal namespace field of a Context instance and
+// returns it as a string. It does not modify any state or perform additional
+// logic, simply exposing the value stored during context creation.
 func (c *Context) GetNamespace() string {
 	return c.namespace
 }
 
+// Context.GetPodName returns the pod name stored in the context
+//
+// This method retrieves and returns the podName field from a Context instance.
+// It takes no arguments and always yields a string representing the current pod
+// identifier used for Kubernetes API calls.
 func (c *Context) GetPodName() string {
 	return c.podName
 }
 
+// Context.GetContainerName Returns the current pod's container name
+//
+// This method retrieves the container name stored in the Context object. It
+// accesses an internal field that holds the name of the container to which
+// commands will be executed or operations will target. The returned string is
+// used by other components when interacting with Kubernetes pods.
 func (c *Context) GetContainerName() string {
 	return c.containerName
 }

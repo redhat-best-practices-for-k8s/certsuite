@@ -29,6 +29,14 @@ var (
 
 type AbortPanicMsg string
 
+// RunChecks Executes all check groups with timeout and signal handling
+//
+// The function locks the database, starts a timeout timer, and listens for
+// SIGINT or SIGTERM signals. It iterates over each check group, launching a
+// goroutine to run its checks while monitoring for aborts or timeouts. After
+// execution it records results, prints a summary table, logs failures, and
+// returns the count of failed checks or an error if any occurred.
+//
 //nolint:funlen
 func RunChecks(timeout time.Duration) (failedCtr int, err error) {
 	dbLock.Lock()
@@ -106,6 +114,14 @@ func RunChecks(timeout time.Duration) (failedCtr int, err error) {
 	return failedCtr, nil
 }
 
+// recordCheckResult Stores the check result in the results database
+//
+// The function looks up a claim ID for a given test, logs debugging information
+// if none is found, and otherwise records various fields such as state,
+// timestamps, duration, skip reason, captured output, details, category
+// classification, and catalog metadata into the global resultsDB map. It
+// formats strings to uppercase for logging and calculates duration in seconds
+// from start and end times.
 func recordCheckResult(check *Check) {
 	claimID, ok := identifiers.TestIDToClaimID[check.ID]
 	if !ok {
@@ -138,8 +154,13 @@ func recordCheckResult(check *Check) {
 	}
 }
 
-// GetReconciledResults is a function added to aggregate a Claim's results.  Due to the limitations of
-// certsuite-claim's Go Client, results are generalized to map[string]interface{}.
+// GetReconciledResults Aggregates all stored check results into a map
+//
+// The function collects entries from an internal database of test outcomes,
+// mapping each key to its corresponding claim result object. It ensures every
+// key is represented in the returned map, initializing missing entries before
+// assigning the actual data. The resulting map is used by other components to
+// populate the final claim report.
 func GetReconciledResults() map[string]claim.Result {
 	resultMap := make(map[string]claim.Result)
 	for key := range resultsDB {
@@ -159,6 +180,13 @@ const (
 	SKIPPED = 2
 )
 
+// getResultsSummary generates a table of check results per group
+//
+// This function builds a map where each key is the name of a check group and
+// the value is a slice of three integers counting passed, failed, and skipped
+// checks. It iterates over all groups in the database, tallies results for each
+// check according to its status, and stores the counts. The resulting map is
+// returned for use by the CLI output.
 func getResultsSummary() map[string][]int {
 	results := make(map[string][]int)
 	for groupName, group := range dbByGroup {
@@ -180,6 +208,14 @@ func getResultsSummary() map[string][]int {
 
 const nbColorSymbols = 9
 
+// printFailedChecksLog Displays logs for checks that failed
+//
+// This function iterates over all check groups and their individual checks,
+// printing a formatted header and the log content only for those that did not
+// succeed. For each failed check it calculates the appropriate number of dashes
+// to align the header, prints separators, the colored header indicating the
+// check ID, and then either the captured log or a message if no output was
+// recorded. The function writes directly to standard output using fmt.Println.
 func printFailedChecksLog() {
 	for _, group := range dbByGroup {
 		for _, check := range group.checks {
@@ -201,10 +237,23 @@ func printFailedChecksLog() {
 	}
 }
 
+// GetResults Retrieves the current mapping of check identifiers to their results
+//
+// The function returns a map where each key is a string identifier for a
+// specific compliance check, and the corresponding value contains the result
+// data for that check. It simply exposes an internal database that holds all
+// recorded outcomes. No parameters are required or modified during its
+// execution.
 func GetResults() map[string]claim.Result {
 	return resultsDB
 }
 
+// GetTestSuites Retrieves a list of unique test suite identifiers from the database
+//
+// This function iterates over all keys in an internal results map, collecting
+// each distinct test suite name into a slice. It ensures no duplicates by
+// checking membership before appending. The resulting slice of strings is
+// returned for further processing.
 func GetTestSuites() []string {
 	// Collect all of the unique test suites from the resultsDB
 	var suites []string
@@ -217,10 +266,22 @@ func GetTestSuites() []string {
 	return suites
 }
 
+// GetTotalTests Retrieves the number of tests stored in the database
+//
+// This function accesses an internal slice that holds test results and returns
+// its length as an integer. It provides a quick way to determine how many tests
+// are currently recorded without exposing the underlying data structure. The
+// result is returned immediately after calculating the count.
 func GetTotalTests() int {
 	return len(resultsDB)
 }
 
+// GetTestsCountByState Counts tests that match a given state
+//
+// The function iterates over the global results database, incrementing a
+// counter each time an entry’s state equals the provided string. It then
+// returns the total number of matching entries as an integer. This is useful
+// for summarizing how many tests are in a particular status.
 func GetTestsCountByState(state string) int {
 	count := 0
 	for r := range resultsDB {
@@ -231,6 +292,12 @@ func GetTestsCountByState(state string) int {
 	return count
 }
 
+// FilterCheckIDs Retrieves test case identifiers that satisfy the current label filter
+//
+// The function iterates through all check groups in the database, evaluating
+// each check's labels against a global expression evaluator. If a check passes
+// the evaluation, its identifier is appended to a result slice. After
+// processing all checks, the slice of matching IDs is returned with no error.
 func FilterCheckIDs() ([]string, error) {
 	filteredCheckIDs := []string{}
 	for _, group := range dbByGroup {
@@ -244,6 +311,13 @@ func FilterCheckIDs() ([]string, error) {
 	return filteredCheckIDs, nil
 }
 
+// InitLabelsExprEvaluator Creates a label evaluator from a filter expression
+//
+// This function takes a string representing a label filter, expands the special
+// keyword "all" into a comma‑separated list of known tags, then constructs a
+// LabelsExprEvaluator using the helper in the labels package. If construction
+// fails, it returns an error describing the problem; otherwise it stores the
+// evaluator in a global variable for later use by other parts of the program.
 func InitLabelsExprEvaluator(labelsFilter string) error {
 	// Expand the abstract "all" label into actual existing labels
 	if labelsFilter == "all" {

@@ -5,9 +5,13 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
 )
 
-// Structure that holds a summary of nodes roles and a slice of NodeDiffReports,
-// one per node found in both claim files. In case one node only exists in one
-// claim file, it will be marked as "not found in claim[1|2]".
+// DiffReport Summarizes differences between two node claims
+//
+// It aggregates comparison results for nodes, CNI networks, CSI drivers, and
+// hardware information into separate diff objects. Each field holds a report of
+// changes or missing entries between the two provided claim files. The struct
+// provides a consolidated view that can be rendered as a human‑readable
+// string.
 type DiffReport struct {
 	Nodes    *diff.Diffs `json:"nodes"`
 	CNI      *diff.Diffs `json:"CNI"`
@@ -15,9 +19,12 @@ type DiffReport struct {
 	Hardware *diff.Diffs `json:"hardware"`
 }
 
-// Stringer method to show in a table the the differences found on each node
-// appearing on both claim files. If a node only appears in one claim file, it
-// will be flagged as "not found in claim[1|2]"
+// DiffReport.String Formats node differences into a readable table
+//
+// It builds a string starting with a header and separator, then appends the
+// string representations of any non‑nil subreports for Nodes, CNI, CSI, and
+// Hardware, each followed by a newline. The resulting text lists discrepancies
+// found in cluster nodes across two claim files.
 func (d DiffReport) String() string {
 	str := "CLUSTER NODES DIFFERENCES\n"
 	str += "-------------------------\n\n"
@@ -41,8 +48,13 @@ func (d DiffReport) String() string {
 	return str
 }
 
-// Generates a DiffReport from two pointers to claim.Nodes. The report consists
-// of a diff.Diffs object per node's section (CNIs, CSIs & Hardware).
+// GetDiffReport Creates a report of differences between two node claim sets
+//
+// This function takes pointers to two node claim structures and returns a
+// DiffReport containing four diff objects: Nodes, CNIs, CSIs, and Hardware.
+// Each field is produced by calling the Compare helper with appropriate data
+// slices and optional filters for labels and annotations. The resulting report
+// aggregates all differences for downstream display or analysis.
 func GetDiffReport(claim1Nodes, claim2Nodes *claim.Nodes) *DiffReport {
 	return &DiffReport{
 		Nodes:    diff.Compare("Nodes", claim1Nodes.NodesSummary, claim2Nodes.NodesSummary, []string{"labels", "annotations"}),

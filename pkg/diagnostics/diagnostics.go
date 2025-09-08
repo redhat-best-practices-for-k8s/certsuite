@@ -42,10 +42,13 @@ const (
 	cniPluginsCommand = `cat /host/etc/cni/net.d/[0-999]* | jq -s`
 )
 
-// CniPlugin holds info about a CNI plugin
-// The JSON fields come from the jq output
-
-// NodeHwInfo node HW info
+// NodeHwInfo Container for node hardware details
+//
+// This structure stores parsed output from various system utilities, including
+// CPU information, IP configuration, block device layout, and PCI devices. Each
+// field holds the raw or processed data returned by the diagnostics functions.
+// The struct is populated per-node and used to aggregate hardware profiles
+// across a cluster.
 type NodeHwInfo struct {
 	Lscpu    interface{}
 	IPconfig interface{}
@@ -53,7 +56,13 @@ type NodeHwInfo struct {
 	Lspci    []string
 }
 
-// GetCniPlugins gets a json representation of the CNI plugins installed in each nodes
+// GetCniPlugins Retrieves CNI plugin information from probe pods
+//
+// This function gathers the JSON output of a command run inside each probe pod
+// to collect installed CNI plugins for every node. It executes the command,
+// parses the returned JSON into generic interface slices, and maps them by node
+// name. Errors during execution or decoding are logged and that node is
+// skipped.
 func GetCniPlugins() (out map[string][]interface{}) {
 	env := provider.GetTestEnvironment()
 	o := clientsholder.GetClientsHolder()
@@ -76,7 +85,14 @@ func GetCniPlugins() (out map[string][]interface{}) {
 	return out
 }
 
-// GetHwInfoAllNodes gets the Hardware information for each nodes
+// GetHwInfoAllNodes Collects hardware details from all probe pods
+//
+// This function iterates over each probe pod defined in the test environment,
+// executing a series of commands to gather CPU, memory, network, block device,
+// and PCI information. The results are parsed into a structured map keyed by
+// node name, with errors logged but not stopping the collection for other
+// nodes. It returns a map where each entry contains a NodeHwInfo struct holding
+// the gathered data.
 func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 	env := provider.GetTestEnvironment()
 	o := clientsholder.GetClientsHolder()
@@ -112,7 +128,12 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 	return out
 }
 
-// getHWJsonOutput performs a query via probe pod and returns the JSON blob
+// getHWJsonOutput Executes a command in a pod and decodes its JSON output
+//
+// This function runs the supplied shell command inside a specified container of
+// a pod, captures the standard output, and unmarshals it into an interface. If
+// the command fails or returns non‑empty stderr, an error is returned.
+// Successful execution yields the parsed JSON data.
 func getHWJsonOutput(probePod *corev1.Pod, o clientsholder.Command, cmd string) (out interface{}, err error) {
 	ctx := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
@@ -126,7 +147,13 @@ func getHWJsonOutput(probePod *corev1.Pod, o clientsholder.Command, cmd string) 
 	return out, nil
 }
 
-// getHWTextOutput performs a query via debug and returns plaintext lines
+// getHWTextOutput Runs a command in a pod container and returns its output lines
+//
+// The function constructs a context for the specified pod and container, then
+// executes the given command using the client holder. If the command fails or
+// produces error output, it returns an error describing the failure. On
+// success, it splits the standard output by newline characters and returns the
+// resulting slice of strings.
 func getHWTextOutput(probePod *corev1.Pod, o clientsholder.Command, cmd string) (out []string, err error) {
 	ctx := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
@@ -137,7 +164,12 @@ func getHWTextOutput(probePod *corev1.Pod, o clientsholder.Command, cmd string) 
 	return strings.Split(outStr, "\n"), nil
 }
 
-// GetNodeJSON gets the nodes summary in JSON (similar to: oc get nodes -json)
+// GetNodeJSON Retrieves a JSON representation of node information
+//
+// The function obtains the test environment, marshals its Nodes field into
+// JSON, then unmarshals that data back into a generic map structure for use
+// elsewhere. It logs errors if either marshaling or unmarshaling fails and
+// returns the resulting map.
 func GetNodeJSON() (out map[string]interface{}) {
 	env := provider.GetTestEnvironment()
 
@@ -154,7 +186,13 @@ func GetNodeJSON() (out map[string]interface{}) {
 	return out
 }
 
-// GetCsiDriver Gets the CSI driver list
+// GetCsiDriver Retrieves a list of CSI drivers from the Kubernetes cluster
+//
+// This function accesses the Kubernetes client holder to query the StorageV1
+// API for all CSI drivers, encodes the result into JSON, and then unmarshals it
+// into a map. Errors during listing, scheme setup, encoding, or decoding are
+// logged and cause an empty map to be returned. The resulting map contains
+// driver details suitable for inclusion in diagnostic reports.
 func GetCsiDriver() (out map[string]interface{}) {
 	o := clientsholder.GetClientsHolder()
 	csiDriver, err := o.K8sClient.StorageV1().CSIDrivers().List(context.TODO(), apimachineryv1.ListOptions{})
@@ -183,11 +221,23 @@ func GetCsiDriver() (out map[string]interface{}) {
 	return out
 }
 
+// GetVersionK8s Returns the Kubernetes version used in the test environment
+//
+// This function obtains the current test environment configuration and extracts
+// the Kubernetes version string. It accesses the global environment state via
+// provider.and returns the K8sVersion field. The result is a plain string
+// representing the cluster's Kubernetes release.
 func GetVersionK8s() (out string) {
 	env := provider.GetTestEnvironment()
 	return env.K8sVersion
 }
 
+// GetVersionOcp Retrieves the OpenShift version of the current environment
+//
+// This function first obtains test environment data, then checks whether the
+// cluster is an OpenShift instance. If it is not, a placeholder string
+// indicating a non‑OpenShift cluster is returned; otherwise the stored
+// OpenshiftVersion value is provided as output.
 func GetVersionOcp() (out string) {
 	env := provider.GetTestEnvironment()
 	if !provider.IsOCPCluster() {
@@ -196,6 +246,10 @@ func GetVersionOcp() (out string) {
 	return env.OpenshiftVersion
 }
 
+// GetVersionOcClient Returns a placeholder indicating oc client is not used
+//
+// The function simply provides the text "n/a, " to signal that no OpenShift
+// client version information is available in this context.
 func GetVersionOcClient() (out string) {
 	return "n/a, (not using oc or kubectl client)"
 }

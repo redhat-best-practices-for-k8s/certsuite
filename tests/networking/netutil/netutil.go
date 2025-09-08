@@ -33,11 +33,25 @@ const (
 	indexPort            = 4
 )
 
+// PortInfo Describes a network port with number and protocol
+//
+// This structure holds the numeric value of a listening port and the transport
+// protocol used, such as TCP or UDP. It is used to identify unique ports in
+// mappings returned by functions that parse command output for listening
+// sockets.
 type PortInfo struct {
 	PortNumber int32
 	Protocol   string
 }
 
+// parseListeningPorts parses command output into a map of listening ports
+//
+// The function takes the raw string from a network command and splits it line
+// by line, extracting protocol and port number when the state indicates LISTEN.
+// It converts the numeric part to an integer, normalizes the protocol name to
+// upper case, and stores each unique pair in a map keyed by PortInfo with a
+// boolean value of true. Errors during conversion cause an immediate return
+// with an error message.
 func parseListeningPorts(cmdOut string) (map[PortInfo]bool, error) {
 	portSet := make(map[PortInfo]bool)
 
@@ -69,6 +83,12 @@ func parseListeningPorts(cmdOut string) (map[PortInfo]bool, error) {
 	return portSet, nil
 }
 
+// GetListeningPorts Retrieves the set of ports currently listening inside a container
+//
+// The function runs an nsenter command inside the target container to list open
+// sockets, then parses the output into a map keyed by port information. It
+// returns this map along with any error that occurs during execution or
+// parsing.
 func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error) {
 	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(getListeningPortsCmd, cut)
 	if err != nil || errStr != "" {
@@ -78,6 +98,13 @@ func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error) {
 	return parseListeningPorts(outStr)
 }
 
+// GetSSHDaemonPort Retrieves the SSH daemon listening port within a container
+//
+// This function runs a shell command inside the specified container to locate
+// the sshd process and extract its bound TCP port. It executes the command via
+// nsenter, handles any execution errors or non‑empty stderr output, and
+// returns the trimmed port number as a string. If the command fails or returns
+// no output, an error is returned.
 func GetSSHDaemonPort(cut *provider.Container) (string, error) {
 	const findSSHDaemonPort = "ss -tpln | grep sshd | head -1 | awk '{ print $4 }' | awk -F : '{ print $2 }'"
 	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(findSSHDaemonPort, cut)

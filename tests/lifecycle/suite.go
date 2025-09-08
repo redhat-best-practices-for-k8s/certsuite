@@ -63,6 +63,16 @@ var (
 	}
 )
 
+// LoadChecks Registers lifecycle test checks for the certsuite suite
+//
+// This routine initializes a checks group dedicated to lifecycle tests and
+// attaches a series of individual checks such as container
+// pre‑stop/post‑start probes, scaling tests, high availability validations,
+// and storage provisioning rules. Each check is configured with skip functions
+// that prevent execution when required resources are absent or the test
+// environment does not meet prerequisites. The function logs its activity and
+// relies on helper utilities to populate the checks database.
+//
 //nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.LifecycleTestKey)
@@ -236,6 +246,12 @@ func LoadChecks() {
 		}))
 }
 
+// testContainersPreStop Verifies that containers declare a preStop lifecycle hook
+//
+// The routine iterates over all test environment containers, checking whether
+// each has a defined preStop hook. Containers missing the hook are logged as
+// errors and recorded in a non‑compliant list; those with the hook are noted
+// as compliant. Finally, the check result aggregates both lists for reporting.
 func testContainersPreStop(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -253,6 +269,13 @@ func testContainersPreStop(check *checksdb.Check, env *provider.TestEnvironment)
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testContainersPostStart Verifies that each container has a postStart lifecycle hook defined
+//
+// The function iterates over all containers in the test environment, logging
+// information about each one. For containers missing a postStart hook it
+// records a non‑compliant report object; otherwise it records a compliant
+// report with a note on a known upstream bug. Finally, it sets the check result
+// with the lists of compliant and non‑compliant objects.
 func testContainersPostStart(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -272,6 +295,13 @@ func testContainersPostStart(check *checksdb.Check, env *provider.TestEnvironmen
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testContainersImagePolicy Verifies that all containers use IfNotPresent image pull policy
+//
+// The function iterates over each container in the test environment, logging
+// its name and checking whether its ImagePullPolicy equals PullIfNotPresent.
+// Containers not meeting this requirement are recorded as non‑compliant with
+// an error log, while compliant ones are logged positively. Finally, it
+// aggregates the results into two report lists and sets them on the check.
 func testContainersImagePolicy(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -288,6 +318,12 @@ func testContainersImagePolicy(check *checksdb.Check, env *provider.TestEnvironm
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testContainersReadinessProbe Verifies that each container has a readiness probe
+//
+// The routine iterates over all containers in the test environment, logging
+// whether each one defines a readiness probe. Containers lacking this
+// configuration are recorded as non‑compliant, while those with a probe are
+// marked compliant. Finally, the check results are set for reporting.
 func testContainersReadinessProbe(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -304,6 +340,13 @@ func testContainersReadinessProbe(check *checksdb.Check, env *provider.TestEnvir
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testContainersLivenessProbe Verifies that every container has a liveness probe defined
+//
+// The function iterates over all containers in the test environment, logging
+// whether each container includes a liveness probe. Containers lacking this
+// probe are recorded as non‑compliant with an explanatory report object;
+// those that have it are marked compliant. After processing all containers, the
+// results are stored back into the check for reporting.
 func testContainersLivenessProbe(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -320,6 +363,13 @@ func testContainersLivenessProbe(check *checksdb.Check, env *provider.TestEnviro
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testContainersStartupProbe verifies that each container has a StartupProbe configured
+//
+// The function walks through all containers in the test environment, logging
+// information about each one. If a container lacks a StartupProbe it logs an
+// error and records a non‑compliant report object; otherwise it logs success
+// and records a compliant object. Finally, it sets the check result with the
+// lists of compliant and non‑compliant objects.
 func testContainersStartupProbe(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -336,6 +386,13 @@ func testContainersStartupProbe(check *checksdb.Check, env *provider.TestEnviron
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testPodsOwnerReference Verifies that each pod’s owner reference follows best‑practice rules
+//
+// The function iterates over all pods in the test environment, creating an
+// OwnerReference object for each one. It runs a compliance check on the
+// reference; non‑compliant pods are logged and recorded as failures, while
+// compliant ones are noted as successes. Finally, it records the results with
+// the test framework.
 func testPodsOwnerReference(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -354,6 +411,13 @@ func testPodsOwnerReference(check *checksdb.Check, env *provider.TestEnvironment
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testPodNodeSelectorAndAffinityBestPractices Checks that pods do not use node selectors or affinity
+//
+// The routine iterates over a list of pods, logging each one. It flags any pod
+// that specifies a node selector or node affinity as non‑compliant, creating
+// report objects for those cases. Pods lacking both fields are marked compliant
+// and reported accordingly. Finally, it records the results in the supplied
+// check object.
 func testPodNodeSelectorAndAffinityBestPractices(testPods []*provider.Pod, check *checksdb.Check) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -379,6 +443,12 @@ func testPodNodeSelectorAndAffinityBestPractices(testPods []*provider.Pod, check
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// nameInDeploymentSkipList Checks if a deployment is excluded from scaling tests
+//
+// The function iterates through a slice of configuration entries that specify
+// deployments to skip, comparing the supplied name and namespace with each
+// entry. If an exact match is found, it returns true indicating the deployment
+// should be omitted from further testing. Otherwise, it returns false.
 func nameInDeploymentSkipList(name, namespace string, list []configuration.SkipScalingTestDeploymentsInfo) bool {
 	for _, l := range list {
 		if name == l.Name && namespace == l.Namespace {
@@ -388,6 +458,12 @@ func nameInDeploymentSkipList(name, namespace string, list []configuration.SkipS
 	return false
 }
 
+// nameInStatefulSetSkipList checks if a StatefulSet should be excluded from scaling tests
+//
+// The function iterates over a slice of configuration entries, each containing
+// a name and namespace pair. If the provided StatefulSet matches any entry in
+// the list, it returns true indicating that the test should skip this object;
+// otherwise it returns false.
 func nameInStatefulSetSkipList(name, namespace string, list []configuration.SkipScalingTestStatefulSetsInfo) bool {
 	for _, l := range list {
 		if name == l.Name && namespace == l.Namespace {
@@ -397,6 +473,15 @@ func nameInStatefulSetSkipList(name, namespace string, list []configuration.Skip
 	return false
 }
 
+// testDeploymentScaling Verifies deployment scalability via HPA or direct scaling
+//
+// It iterates through all deployments in the test environment, skipping those
+// managed by CRDs or listed in a configuration skip list. For each remaining
+// deployment, it checks if an associated horizontal pod autoscaler exists; if
+// so, it runs the HPA scaling test, otherwise it performs a direct scale test.
+// Results are logged and collected into compliant or non‑compliant report
+// objects for later reporting.
+//
 //nolint:dupl
 func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration, check *checksdb.Check) {
 	defer env.SetNeedsRefresh()
@@ -446,6 +531,13 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration,
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testScaleCrd Evaluates scaling behavior of custom resources
+//
+// This function iterates over all custom resources scheduled for testing,
+// checks if an HPA exists for each, and runs the appropriate scaling test. It
+// records compliant or non‑compliant results in report objects and logs
+// errors when scaling fails. Finally, it stores the outcome in the check
+// result.
 func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration, check *checksdb.Check) {
 	defer env.SetNeedsRefresh()
 	var compliantObjects []*testhelper.ReportObject
@@ -471,6 +563,15 @@ func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration, check *c
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testStatefulSetScaling Verifies scaling behavior of StatefulSets
+//
+// This routine iterates over all StatefulSet resources in the test environment,
+// skipping those that are managed by CRDs or configured to be excluded from
+// scaling tests. For each remaining set it checks whether an HPA controls it;
+// if so, it runs a dedicated HPA scaling test, otherwise it scales the
+// StatefulSet directly. Results of compliant and non‑compliant objects are
+// collected and reported back to the check framework.
+//
 //nolint:dupl
 func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration, check *checksdb.Check) {
 	defer env.SetNeedsRefresh()
@@ -520,7 +621,14 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testHighAvailability
+// testHighAvailability Verifies high availability settings for deployments and statefulsets
+//
+// The function iterates over all deployments and statefulsets in the test
+// environment, checking that each has more than one replica and defines pod
+// anti‑affinity rules unless an "AffinityRequired" label is present. It logs
+// informative messages for compliant objects and error messages for
+// non‑compliant ones, creating report entries accordingly. Finally it sets
+// the check result with lists of compliant and non‑compliant objects.
 func testHighAvailability(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -574,7 +682,14 @@ func testHighAvailability(check *checksdb.Check, env *provider.TestEnvironment) 
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost
+// testPodsRecreation Verifies pods in deployments and statefulsets are recreated after node loss
+//
+// The function drains each node used by pod sets, ensuring that pods belonging
+// to deployments or statefulsets are rescheduled and become ready again. It
+// first confirms all pod sets are initially ready, then iterates over nodes,
+// cordoning them, counting affected pods, performing a safe drain, and finally
+// uncordoning the node. Any failure in readiness or draining results in
+// non‑compliant reports; if all succeed, compliant objects are recorded.
 func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { //nolint:funlen,gocyclo
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -687,6 +802,14 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	needsPostMortemInfo = false
 }
 
+// testPodPersistentVolumeReclaimPolicy Verifies that all pod volumes use persistent volumes with a DELETE reclaim policy
+//
+// The function iterates over each pod in the test environment, examining every
+// volume attached to the pod. For volumes backed by a PersistentVolumeClaim, it
+// checks whether the corresponding PersistentVolume has a reclaim policy of
+// Delete; non‑compliant cases are recorded with detailed fields. Finally,
+// compliant and non‑compliant results are aggregated into the check’s
+// report.
 func testPodPersistentVolumeReclaimPolicy(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -723,6 +846,14 @@ func testPodPersistentVolumeReclaimPolicy(check *checksdb.Check, env *provider.T
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testCPUIsolation Verifies CPU isolation compliance for guaranteed pods
+//
+// The function iterates over all pods that request exclusive CPUs, checking
+// each pod’s resource requests, limits, runtime class name, and annotations
+// to ensure they meet the criteria for CPU isolation. For every pod it logs
+// whether the pod is isolated or not, creating a report object accordingly.
+// After processing all pods, it sets the test result with lists of compliant
+// and non‑compliant objects.
 func testCPUIsolation(check *checksdb.Check, env *provider.TestEnvironment) {
 	// Individual requirements we are looking for:
 	//  - CPU Requests and Limits must be in the form of whole units
@@ -749,6 +880,12 @@ func testCPUIsolation(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testAffinityRequiredPods Verifies pod affinity compliance for pods requiring node selector or affinity rules
+//
+// The routine iterates over all pods flagged as needing affinity, checks each
+// pod's affinity configuration, logs the outcome, and records compliant and
+// non‑compliant cases in report objects. It aggregates results and sets them
+// on the test check to summarize compliance status.
 func testAffinityRequiredPods(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -767,6 +904,14 @@ func testAffinityRequiredPods(check *checksdb.Check, env *provider.TestEnvironme
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testPodTolerationBypass Verifies that pod tolerations remain default
+//
+// The routine iterates over each pod in the test environment, checking every
+// toleration against the Kubernetes default set and whether it has been altered
+// for the pod's QoS class. If a non‑default or modified toleration is found,
+// it records the pod as non‑compliant and logs an error; otherwise it marks
+// the pod compliant. Finally, the check aggregates all compliant and
+// non‑compliant reports into the test result.
 func testPodTolerationBypass(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -795,6 +940,16 @@ func testPodTolerationBypass(check *checksdb.Check, env *provider.TestEnvironmen
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testStorageProvisioner Verifies pod storage provisioning compliance across cluster types
+//
+// The function iterates over all pods, inspecting each volume that references a
+// persistent volume claim. For every matched claim it looks up the associated
+// storage class to determine its provisioner type. Based on whether the
+// environment is single‑node or multi‑node and whether local is used, it
+// logs compliance or non‑compliance and records the outcome in report
+// objects. Finally, it sets the check result with lists of compliant and
+// non‑compliant pods.
+//
 //nolint:funlen
 func testStorageProvisioner(check *checksdb.Check, env *provider.TestEnvironment) {
 	const localStorageProvisioner = "kubernetes.io/no-provisioner"

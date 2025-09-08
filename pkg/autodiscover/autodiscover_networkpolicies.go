@@ -24,6 +24,12 @@ import (
 	networkingv1client "k8s.io/client-go/kubernetes/typed/networking/v1"
 )
 
+// getNetworkPolicies Retrieves all network policies in the cluster
+//
+// The function calls the NetworkingV1 client to list network policies across
+// every namespace by using an empty string for the namespace parameter. It
+// returns a slice of NetworkPolicy objects and any error encountered during the
+// API call.
 func getNetworkPolicies(oc networkingv1client.NetworkingV1Interface) ([]networkingv1.NetworkPolicy, error) {
 	nps, err := oc.NetworkPolicies("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {

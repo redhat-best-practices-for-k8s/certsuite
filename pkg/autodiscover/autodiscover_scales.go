@@ -12,11 +12,23 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
+// ScaleObject represents a scalable custom resource
+//
+// This structure holds the scale subresource of a custom resource, along with
+// its group‑resource identity. It is used to read or modify the replica count
+// for that resource via the Kubernetes scaling API.
 type ScaleObject struct {
 	Scale               *scalingv1.Scale
 	GroupResourceSchema schema.GroupResource
 }
 
+// GetScaleCrUnderTest Retrieves scalable custom resources across specified namespaces
+//
+// It iterates over a list of CustomResourceDefinitions, filtering for
+// namespace-scoped and having a scale subresource. For each qualifying CRD it
+// lists the custom resources in the provided namespaces using a dynamic client,
+// then gathers their scale objects. The result is a slice of ScaleObject
+// containing scaling information for each found resource.
 func GetScaleCrUnderTest(namespaces []string, crds []*apiextv1.CustomResourceDefinition) []ScaleObject {
 	dynamicClient := clientsholder.GetClientsHolder().DynamicClient
 
@@ -62,6 +74,13 @@ func GetScaleCrUnderTest(namespaces []string, crds []*apiextv1.CustomResourceDef
 	return scaleObjects
 }
 
+// getCrScaleObjects Retrieves scaling information for custom resources
+//
+// This function iterates over a list of unstructured custom resources, querying
+// the Kubernetes scaling API to obtain each resource's scale subresource. It
+// constructs a group-resource schema from the CRD metadata and appends each
+// retrieved ScaleObject to a slice. Errors during retrieval are logged fatally,
+// ensuring only successfully fetched scales are returned.
 func getCrScaleObjects(crs []unstructured.Unstructured, crd *apiextv1.CustomResourceDefinition) []ScaleObject {
 	var scaleObjects []ScaleObject
 	clients := clientsholder.GetClientsHolder()

@@ -23,8 +23,13 @@ var (
 	ClaimFormatVersion string
 )
 
-// getGitVersion returns the git display version: the latest previously released
-// build in case this build is not released. Otherwise display the build version
+// GitVersion provides the current build’s git display version
+//
+// The function checks if a release tag is defined; if not it falls back to an
+// unreleased build label combined with the previous release information. It
+// then appends the short commit hash in parentheses and returns the resulting
+// string, which is used throughout the application to report the running
+// version.
 func GitVersion() string {
 	if GitRelease == "" {
 		GitDisplayRelease = "Unreleased build post " + GitPreviousRelease
@@ -35,11 +40,22 @@ func GitVersion() string {
 	return GitDisplayRelease + " (" + GitCommit + ")"
 }
 
+// IsValidSemanticVersion Validates that a string is a proper semantic version
+//
+// The function attempts to parse the input using a semantic version parser. If
+// parsing succeeds without error, it returns true, indicating a valid semantic
+// version; otherwise, it returns false.
 func IsValidSemanticVersion(version string) bool {
 	_, err := semver.NewVersion(version)
 	return err == nil
 }
 
+// IsValidK8sVersion Checks if a string matches Kubernetes version naming conventions
+//
+// The function compiles a regular expression that enforces the pattern for
+// Kubernetes versions, allowing optional pre-release identifiers such as alpha
+// or beta with numeric suffixes. It returns true when the input string conforms
+// to this format and false otherwise.
 func IsValidK8sVersion(version string) bool {
 	r := regexp.MustCompile(`^(v)([1-9]\d*)+((alpha|beta)([1-9]\d*)+){0,2}$`)
 	return r.MatchString(version)
