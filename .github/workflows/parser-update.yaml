@@ -1,0 +1,107 @@
+name: Update parser version references
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update-parser:
+    if: github.repository_owner == 'redhat-best-practices-for-k8s'
+    name: Update parser tag and open PR
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      SHELL: /bin/bash
+      PARSER_RELEASES_URL: https://api.github.com/repos/redhat-best-practices-for-k8s/parser/releases/latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: main
+
+      - name: Set up Go
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
+        with:
+          go-version-file: go.mod
+
+      - name: Determine current and latest parser versions
+        id: versions
+        run: |
+          set -euo pipefail
+
+          CURRENT=$(jq -r '.parserTag' version.json)
+          echo "current=${CURRENT}" >> $GITHUB_OUTPUT
+
+          # Fetch latest release with retry and exponential backoff
+          AUTH_HEADER=""
+          if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+            AUTH_HEADER="Authorization: Bearer ${GITHUB_TOKEN}"
+          fi
+
+          LATEST=""
+          for attempt in {1..5}; do
+            STATUS=$(curl -sS -H "Accept: application/vnd.github+json" ${AUTH_HEADER:+-H "$AUTH_HEADER"} -o /tmp/parser_latest.json -w "%{http_code}" "${PARSER_RELEASES_URL}" || true)
+            if [[ "${STATUS}" == "200" ]]; then
+              LATEST=$(jq -r .tag_name /tmp/parser_latest.json)
+            fi
+
+            if [[ -n "${LATEST}" && "${LATEST}" != "null" ]]; then
+              break
+            fi
+
+            SLEEP=$((2 ** (attempt-1)))
+            echo "Attempt ${attempt} failed (status=${STATUS}). Retrying in ${SLEEP}s..."
+            sleep "${SLEEP}"
+          done
+
+          if [[ -z "${LATEST}" || "${LATEST}" == "null" ]]; then
+            echo "Failed to resolve latest parser tag after retries" >&2
+            exit 1
+          fi
+          echo "latest=${LATEST}" >> $GITHUB_OUTPUT
+
+          if [[ "${CURRENT}" == "${LATEST}" ]]; then
+            echo "Parser already at latest (${LATEST})."; echo "should_update=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_update=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Stop if already up to date
+        if: steps.versions.outputs.should_update == 'false'
+        run: echo "No update needed"
+
+      - name: Update version.json to latest parser version
+        if: steps.versions.outputs.should_update == 'true'
+        run: |
+          set -euo pipefail
+          LATEST=${{ steps.versions.outputs.latest }}
+
+          tmp=$(mktemp)
+          jq --arg tag "${LATEST}" '.parserTag = $tag' version.json > "$tmp" && mv "$tmp" version.json
+
+          echo "Updated version.json to ${LATEST}:"
+          git --no-pager diff -- version.json | cat
+
+      - name: Run unit tests
+        if: steps.versions.outputs.should_update == 'true'
+        run: make test
+
+      - name: Create PR
+        if: steps.versions.outputs.should_update == 'true'
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update parser to ${{ steps.versions.outputs.latest }}"
+          title: "Update parser to ${{ steps.versions.outputs.latest }}"
+          body: |
+            - Bump parser to `${{ steps.versions.outputs.latest }}`
+            - Updated `version.json`
+          branch: update-parser-${{ steps.versions.outputs.latest }}
+
+
