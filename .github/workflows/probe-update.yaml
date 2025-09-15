@@ -33,31 +33,33 @@ jobs:
 
       - name: Determine current and latest probe versions
         id: versions
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
 
           CURRENT=$(jq -r '.debugTag' version.json)
           echo "current=${CURRENT}" >> $GITHUB_OUTPUT
 
-          # Fetch latest release with retry and exponential backoff
-          AUTH_HEADER=""
-          if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-            AUTH_HEADER="Authorization: Bearer ${GITHUB_TOKEN}"
+          # Fetch latest release tag using GitHub CLI with retry and exponential backoff
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "GitHub CLI (gh) not found on PATH" >&2
+            exit 1
           fi
 
           LATEST=""
           for attempt in {1..5}; do
-            STATUS=$(curl -sS -H "Accept: application/vnd.github+json" ${AUTH_HEADER:+-H "$AUTH_HEADER"} -o /tmp/probe_latest.json -w "%{http_code}" "${PROBE_RELEASES_URL}" || true)
-            if [[ "${STATUS}" == "200" ]]; then
-              LATEST=$(jq -r .tag_name /tmp/probe_latest.json)
-            fi
+            set +e
+            LATEST=$(gh release list -R redhat-best-practices-for-k8s/certsuite-probe --limit 1 --json tagName,isLatest --jq '.[] | select(.isLatest) | .tagName')
+            rc=$?
+            set -e
 
-            if [[ -n "${LATEST}" && "${LATEST}" != "null" ]]; then
+            if [[ ${rc} -eq 0 && -n "${LATEST}" ]]; then
               break
             fi
 
             SLEEP=$((2 ** (attempt-1)))
-            echo "Attempt ${attempt} failed (status=${STATUS}). Retrying in ${SLEEP}s..."
+            echo "Attempt ${attempt} failed (rc=${rc}). Retrying in ${SLEEP}s..."
             sleep "${SLEEP}"
           done
 
