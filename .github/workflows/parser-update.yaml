@@ -1,4 +1,4 @@
-name: Update certsuite-probe version references
+name: Update parser version references
 
 on:
   schedule:
@@ -9,17 +9,16 @@ permissions:
   contents: read
 
 jobs:
-  update-probe:
+  update-parser:
     if: github.repository_owner == 'redhat-best-practices-for-k8s'
-    name: Update probe image tag and open PR
+    name: Update parser tag and open PR
     runs-on: ubuntu-24.04
     permissions:
       contents: write
       pull-requests: write
     env:
       SHELL: /bin/bash
-      PROBE_REPO: redhat-best-practices-for-k8s/certsuite-probe
-      PROBE_RELEASES_URL: https://api.github.com/repos/redhat-best-practices-for-k8s/certsuite-probe/releases/latest
+      PARSER_RELEASES_URL: https://api.github.com/repos/redhat-best-practices-for-k8s/parser/releases/latest
     steps:
       - name: Check out code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -31,14 +30,14 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: Determine current and latest probe versions
+      - name: Determine current and latest parser versions
         id: versions
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
 
-          CURRENT=$(jq -r '.debugTag' version.json)
+          CURRENT=$(jq -r '.parserTag' version.json)
           echo "current=${CURRENT}" >> $GITHUB_OUTPUT
 
           # Fetch latest release tag using GitHub CLI with retry and exponential backoff
@@ -50,7 +49,8 @@ jobs:
           LATEST=""
           for attempt in {1..5}; do
             set +e
-            LATEST=$(gh release list -R redhat-best-practices-for-k8s/certsuite-probe --limit 1 --json tagName,isLatest --jq '.[] | select(.isLatest) | .tagName')
+            # Prefer tagName to ensure we capture the actual tag (often 'vX.Y.Z')
+            LATEST=$(gh release list -R redhat-best-practices-for-k8s/parser --limit 1 --json tagName,isLatest --jq '.[] | select(.isLatest) | .tagName')
             rc=$?
             set -e
 
@@ -64,13 +64,13 @@ jobs:
           done
 
           if [[ -z "${LATEST}" || "${LATEST}" == "null" ]]; then
-            echo "Failed to resolve latest probe tag after retries" >&2
+            echo "Failed to resolve latest parser tag after retries" >&2
             exit 1
           fi
           echo "latest=${LATEST}" >> $GITHUB_OUTPUT
 
           if [[ "${CURRENT}" == "${LATEST}" ]]; then
-            echo "Probe already at latest (${LATEST})."; echo "should_update=false" >> $GITHUB_OUTPUT
+            echo "Parser already at latest (${LATEST})."; echo "should_update=false" >> $GITHUB_OUTPUT
           else
             echo "should_update=true" >> $GITHUB_OUTPUT
           fi
@@ -79,24 +79,17 @@ jobs:
         if: steps.versions.outputs.should_update == 'false'
         run: echo "No update needed"
 
-      - name: Update files to latest probe version
+      - name: Update version.json to latest parser version
         if: steps.versions.outputs.should_update == 'true'
         run: |
           set -euo pipefail
           LATEST=${{ steps.versions.outputs.latest }}
 
-          # Update version.json (debugTag)
           tmp=$(mktemp)
-          jq --arg tag "${LATEST}" '.debugTag = $tag' version.json > "$tmp" && mv "$tmp" version.json
+          jq --arg tag "${LATEST}" '.parserTag = $tag' version.json > "$tmp" && mv "$tmp" version.json
 
-          # Update docs/runtime-env.md default image reference
-          sed -i "s|certsuite-probe:v[0-9]\+\.[0-9]\+\.[0-9]\+|certsuite-probe:${LATEST}|" docs/runtime-env.md
-
-          # Update default flag in cmd/certsuite/run/run.go
-          sed -i "s|quay.io/redhat-best-practices-for-k8s/certsuite-probe:v[0-9]\+\.[0-9]\+\.[0-9]\+|quay.io/redhat-best-practices-for-k8s/certsuite-probe:${LATEST}|" cmd/certsuite/run/run.go
-
-          echo "Updated files to ${LATEST}:"
-          git --no-pager diff -- . | cat
+          echo "Updated version.json to ${LATEST}:"
+          git --no-pager diff -- version.json | cat
 
       - name: Run unit tests
         if: steps.versions.outputs.should_update == 'true'
@@ -107,11 +100,11 @@ jobs:
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Update certsuite-probe to ${{ steps.versions.outputs.latest }}"
-          title: "Update probe to ${{ steps.versions.outputs.latest }}"
+          commit-message: "Update parser to ${{ steps.versions.outputs.latest }}"
+          title: "Update parser to ${{ steps.versions.outputs.latest }}"
           body: |
-            - Bump certsuite-probe to `${{ steps.versions.outputs.latest }}`
-            - Updated `version.json`, `docs/runtime-env.md`, and `cmd/certsuite/run/run.go`
-          branch: update-probe-${{ steps.versions.outputs.latest }}
+            - Bump parser to `${{ steps.versions.outputs.latest }}`
+            - Updated `version.json`
+          branch: update-parser-${{ steps.versions.outputs.latest }}
 
 
