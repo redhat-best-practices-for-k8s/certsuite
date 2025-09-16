@@ -130,13 +130,11 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 	if mode == DeleteBackground {
 		return nil
 	}
-	wg.Add(1)
 	podName := pod.Name
 	namespace := pod.Namespace
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		waitPodDeleted(namespace, podName, gracePeriodSeconds, watcher)
-	}()
+	})
 	return nil
 }
 
