@@ -8,7 +8,7 @@ ENV \
 # hadolint ignore=DL3041
 RUN \
 	mkdir ${CERTSUITE_DIR} \
-	&& dnf update --assumeyes --disableplugin=subscription-manager \
+	&& dnf update --assumeyes --disableplugin=subscription-manager --nobest \
 	&& dnf install --assumeyes --disableplugin=subscription-manager \
 		gcc \
 		git \
