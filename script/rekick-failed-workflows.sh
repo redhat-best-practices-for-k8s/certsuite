@@ -73,11 +73,11 @@ for workflow in "${WORKFLOWS_TO_CHECK[@]}"; do
 	echo "Checking workflow: $workflow"
 	# Get workflow runs with date filtering
 	failed_runs=$(
-		gh run list --limit 50 --workflow "$workflow" --json conclusion,databaseId,createdAt |
+		gh run list --limit 200 --workflow "$workflow" --json conclusion,databaseId,createdAt,updatedAt |
 			jq --arg cutoff "$CUTOFF_DATE" -r '
-			.[] | 
-			select(.conclusion == "failure" or .conclusion == "timed_out") | 
-			select(.createdAt >= $cutoff) | 
+			.[] |
+			select(.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "cancelled") |
+			select((.updatedAt != null and .updatedAt >= $cutoff) or (.createdAt != null and .createdAt >= $cutoff)) |
 			.databaseId'
 	)
 
