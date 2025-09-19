@@ -23,6 +23,13 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
+// getServiceAccounts Collects all ServiceAccount objects from specified namespaces
+//
+// The function iterates over each namespace in the input list, querying the
+// Kubernetes API to retrieve the ServiceAccounts present there. Each retrieved
+// account is appended to a slice of pointers that is returned to the caller. If
+// any API call fails, the error is propagated immediately and no further
+// namespaces are processed.
 func getServiceAccounts(oc corev1client.CoreV1Interface, namespaces []string) (servicesAccounts []*corev1.ServiceAccount, err error) {
 	for _, ns := range namespaces {
 		s, err := oc.ServiceAccounts(ns).List(context.TODO(), metav1.ListOptions{})

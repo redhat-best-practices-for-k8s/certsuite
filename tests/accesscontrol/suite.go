@@ -67,7 +67,14 @@ var (
 	}
 )
 
-// LoadChecks loads all the checks.
+// LoadChecks Initialises all access control checks for the test suite
+//
+// This function registers a group of security checks under the access‑control
+// key, attaching pre‑execution logic and a series of check functions that
+// validate container capabilities, pod configurations, namespace policies, and
+// more. Each check is created with identifiers derived from test metadata, may
+// be skipped based on environmental conditions, and logs its progress through a
+// shared logger.
 //
 //nolint:funlen
 func LoadChecks() {
@@ -274,8 +281,13 @@ func LoadChecks() {
 		}))
 }
 
-// isContainerCapabilitySet checks whether a container capability was explicitly set
-// in securityContext.capabilities.add list.
+// isContainerCapabilitySet checks if a capability is explicitly added to a container
+//
+// The function receives a pointer to a capabilities structure and a capability
+// name. It returns true when the Add list contains either the specified
+// capability or the special ALL value, indicating that the capability has been
+// granted. If the capabilities object is nil or its Add list is empty, it
+// returns false.
 func isContainerCapabilitySet(containerCapabilities *corev1.Capabilities, capability string) bool {
 	if containerCapabilities == nil {
 		return false
@@ -293,10 +305,13 @@ func isContainerCapabilitySet(containerCapabilities *corev1.Capabilities, capabi
 	return false
 }
 
-// checkForbiddenCapability checks if containers use a forbidden capability.
-// Returns:
-//   - compliantObjects []*testhelper.ReportObject : Slice containing report objects for containers compliant with the capability restrictions.
-//   - nonCompliantObjects []*testhelper.ReportObject : Slice containing report objects for containers not compliant with the capability restrictions.
+// checkForbiddenCapability determines if containers avoid a specific capability
+//
+// The function iterates over each container, checking whether the specified
+// capability is present in its security context. Containers lacking the
+// capability are recorded as compliant; those with it are flagged
+// non‑compliant and an error logged. The results are returned as two slices
+// of report objects for further processing.
 func checkForbiddenCapability(containers []*provider.Container, capability string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	for _, cut := range containers {
 		logger.Info("Testing Container %q", cut)
@@ -320,32 +335,75 @@ func checkForbiddenCapability(containers []*provider.Container, capability strin
 	return compliantObjects, nonCompliantObjects
 }
 
+// testSysAdminCapability Checks containers for the SYS_ADMIN capability
+//
+// This routine examines each container in the test environment, looking for the
+// SYS_ADMIN capability in its security context. Containers lacking this
+// capability are recorded as compliant; those that include it are flagged
+// non‑compliant with an error log entry. The results are then stored back
+// into the check object.
 func testSysAdminCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "SYS_ADMIN", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testNetAdminCapability Verifies that containers do not use the NET_ADMIN capability
+//
+// The function queries all test containers for the presence of the NET_ADMIN
+// capability using a helper routine, collecting compliant and non‑compliant
+// reports. It then records these results in the provided check object. This
+// ensures that network administration privileges are not granted to container
+// processes.
 func testNetAdminCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_ADMIN", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testNetRawCapability Validates that containers do not use the NET_RAW capability
+//
+// The function examines all container security contexts in the test environment
+// and reports any instance where the NET_RAW capability is granted. It records
+// compliant and non‑compliant findings, attaching relevant details to each
+// report object. Finally, it stores the results in the provided check for later
+// aggregation.
 func testNetRawCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_RAW", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testIpcLockCapability Verifies containers lack the IPC_LOCK capability
+//
+// This function inspects each container in the test environment, checking
+// whether the IPC_LOCK capability is present in its security context.
+// Containers without the capability are marked compliant; those with it are
+// flagged non‑compliant and reported accordingly. The results are stored back
+// into the check object for later aggregation.
 func testIpcLockCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "IPC_LOCK", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
+// testBpfCapability Verifies that containers do not use the BPF kernel capability
+//
+// The function iterates over all test containers, checking whether the "BPF"
+// capability is present in their security context. It records compliant
+// containers where the capability is absent and non‑compliant ones where it
+// appears, attaching appropriate log messages. Finally, it stores the results
+// within the provided check object for reporting.
 func testBpfCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "BPF", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testSecConRunAsNonRoot verifies that containers are not allowed to run as root.
+// testSecConRunAsNonRoot checks that pods do not run containers as root
+//
+// The routine iterates over all test pods, determines which containers are
+// configured to run as root, and records compliance results. For each pod it
+// logs a message, then calls a helper to retrieve non‑compliant containers.
+// If none exist the pod is marked compliant; otherwise each offending container
+// is logged with an error and added to the non‑compliant list. Finally, the
+// check’s result is set with both compliant and non‑compliant report
+// objects.
 func testSecConRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -369,7 +427,13 @@ func testSecConRunAsNonRoot(check *checksdb.Check, env *provider.TestEnvironment
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
+// testSecConPrivilegeEscalation Verifies that containers do not allow privilege escalation
+//
+// The function iterates over each container in the test environment, checking
+// if the SecurityContext's AllowPrivilegeEscalation flag is explicitly set to
+// true. Containers with this setting are marked non‑compliant and logged as
+// errors; those without the flag or with it false are considered compliant.
+// Results are collected into report objects and stored via SetResult.
 func testSecConPrivilegeEscalation(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -393,7 +457,14 @@ func testSecConPrivilegeEscalation(check *checksdb.Check, env *provider.TestEnvi
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testSecConReadOnlyFilesystem verifies that the container has a readonly file system access.
+// testSecConReadOnlyFilesystem verifies that each container mounts a read‑only root filesystem
+//
+// The function iterates over every pod and its containers in the test
+// environment, checking if the container’s root filesystem is set to
+// read‑only using a helper method. Containers that satisfy the requirement
+// are recorded as compliant; those that do not are logged as errors and marked
+// non‑compliant. Finally, the results are aggregated into report objects and
+// passed back via the check’s result setter.
 func testSecConReadOnlyFilesystem(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -414,7 +485,14 @@ func testSecConReadOnlyFilesystem(check *checksdb.Check, env *provider.TestEnvir
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testContainerHostPort tests that containers are not configured with host port privileges
+// testContainerHostPort Verifies that containers do not expose host ports
+//
+// The function iterates over all containers in the test environment, checking
+// each declared port for a non‑zero HostPort value. If such a port is found,
+// it records a non‑compliant report object with details of the offending
+// container and port number; otherwise it logs compliance and records a
+// compliant object. Finally, it sets the check result with the collected
+// reports.
 func testContainerHostPort(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -440,7 +518,13 @@ func testContainerHostPort(check *checksdb.Check, env *provider.TestEnvironment)
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodHostNetwork verifies that the pod hostNetwork parameter is not set to true
+// testPodHostNetwork Checks whether pods enable host networking
+//
+// The routine iterates over all pod objects in the test environment, logging
+// each one. If a pod’s HostNetwork flag is true it records a non‑compliant
+// report object and logs an error; otherwise it records a compliant report
+// object and logs success. Finally, it stores both lists of results on the
+// check instance.
 func testPodHostNetwork(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -458,7 +542,12 @@ func testPodHostNetwork(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodHostPath verifies that the pod hostpath parameter is not set to true
+// testPodHostPath Verifies that pods do not use host path volumes
+//
+// The function iterates over all pods in the test environment, checking each
+// volume for a non-empty HostPath field. If such a path is found, the pod is
+// marked non‑compliant and recorded with details; otherwise it is considered
+// compliant. Results are logged and reported via the check object.
 func testPodHostPath(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -484,7 +573,13 @@ func testPodHostPath(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodHostIPC verifies that the pod hostIpc parameter is not set to true
+// testPodHostIPC Ensures Pod HostIPC is disabled
+//
+// The function iterates over all pods in the test environment, logging each
+// pod’s name. For every pod it checks whether the HostIPC flag is true; if
+// so, it records a non‑compliant report object and logs an error, otherwise
+// it records a compliant report object. Finally, it sets the check result with
+// both lists of objects.
 func testPodHostIPC(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -502,7 +597,13 @@ func testPodHostIPC(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodHostPID verifies that the pod hostPid parameter is not set to true
+// testPodHostPID Checks that no pod uses the host PID namespace
+//
+// The function iterates over all pods in the test environment, logging each
+// one’s status. If a pod has HostPID enabled it records a non‑compliant
+// report object and logs an error; otherwise it records a compliant object and
+// logs informational text. Finally, it sets the check result with the lists of
+// compliant and non‑compliant objects.
 func testPodHostPID(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -520,7 +621,15 @@ func testPodHostPID(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testNamespace Tests namespaces for invalid prefixes and CRs that are not defined in namespaces under test.
+// testNamespace Checks namespace names for disallowed prefixes and validates CR placement
+//
+// The function iterates over all namespaces in the test environment, logging
+// each one. For every namespace it verifies that none of the predefined invalid
+// prefixes are present; if an invalid prefix is found a non‑compliant report
+// object is created. After checking prefixes, it calls helper routines to
+// examine whether custom resources exist in unauthorized namespaces and records
+// any failures as non‑compliant objects. Finally, results for both compliant
+// and non‑compliant cases are set on the check.
 func testNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -559,7 +668,14 @@ func testNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodServiceAccount verifies that the pod utilizes a valid service account
+// testPodServiceAccount checks that pods use non‑default service accounts
+//
+// The function iterates over all pods in the test environment, logging each
+// pod’s name. For every pod it verifies whether the ServiceAccountName equals
+// the default account; if so, it records a non‑compliant report object and
+// logs an error, otherwise it records a compliant report object and logs
+// success. Finally, it sets the check result with the collected compliant and
+// non‑compliant objects.
 func testPodServiceAccount(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -577,7 +693,14 @@ func testPodServiceAccount(check *checksdb.Check, env *provider.TestEnvironment)
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross non-CNF namespaces
+// testPodRoleBindings Checks pod role bindings against CNF namespace rules
+//
+// The routine iterates over each pod in the test environment, verifying that
+// its service account is not default and that any role binding it relies on
+// resides within an approved CNF namespace. If a pod references a role binding
+// outside these namespaces, it is marked non‑compliant and detailed
+// information about the offending binding is recorded. Pods passing all checks
+// are logged as compliant, and results are reported back to the test framework.
 func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -648,7 +771,13 @@ func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodClusterRoleBindings verifies that the pod does not use a cluster role binding
+// testPodClusterRoleBindings Verifies that pods do not use cluster role bindings
+//
+// The function iterates over all pods in the test environment, checking each
+// for usage of a cluster role binding. If a pod uses one but is owned by a
+// cluster‑wide operator, it is considered compliant; otherwise any usage
+// flags the pod as non‑compliant. Results are recorded in report objects and
+// returned via the check result.
 //
 //nolint:dupl
 func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
@@ -694,9 +823,12 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// isCSVAndClusterWide checks if object identified by namespace and name is a CSV created by a cluster-wide operator
-// Return:
-//   - bool : true if object identified by namespace and name is a CSV created by a cluster-wide operator, otherwise return false
+// isCSVAndClusterWide determines if a CSV belongs to a cluster‑wide operator
+//
+// The function inspects all operators in the test environment, checking whether
+// any have a CSV matching the given namespace and name. If the CSV is found and
+// its operator is marked as cluster wide or supports all namespaces, it returns
+// true; otherwise it returns false.
 func isCSVAndClusterWide(aNamespace, name string, env *provider.TestEnvironment) bool {
 	for _, op := range env.Operators {
 		if op.Csv != nil &&
@@ -709,9 +841,12 @@ func isCSVAndClusterWide(aNamespace, name string, env *provider.TestEnvironment)
 	return false
 }
 
-// isInstallModeMultiNamespace checks if CSV install mode contains multi namespaces or all namespaces
-// Return:
-//   - bool : true if CSV install mode contains multi namespaces or all namespaces, otherwise return false
+// isInstallModeMultiNamespace determines whether a CSV install mode includes all namespaces
+//
+// The function iterates over the provided slice of install modes and returns
+// true if any entry indicates an all‑namespace deployment. If none match, it
+// returns false. This result is used to identify cluster‑wide operators in
+// subsequent logic.
 func isInstallModeMultiNamespace(installModes []v1alpha1.InstallMode) bool {
 	for i := 0; i < len(installModes); i++ {
 		if installModes[i].Type == v1alpha1.InstallModeTypeAllNamespaces {
@@ -721,11 +856,13 @@ func isInstallModeMultiNamespace(installModes []v1alpha1.InstallMode) bool {
 	return false
 }
 
-// ownedByClusterWideOperator checks if one of the passed topOwners is a CSV that is installed by a cluster-wide operator.
-// Return:
-//   - bool: true if one of the passed topOwners is a CSV that is installed by a cluster-wide operator, otherwise return false
-//   - name string : the name of the matching object, if found.
-//   - aNamespace string : the namespace of the matching object, if found.
+// ownedByClusterWideOperator Determines if any top owner is a cluster‑wide CSV
+//
+// The function examines each top owner of an object, checking whether the owner
+// is a ClusterServiceVersion that is installed by a cluster‑wide operator. It
+// returns the namespace and name of the matching CSV along with a boolean flag
+// indicating a match. If no such owner exists, empty strings and false are
+// returned.
 func ownedByClusterWideOperator(topOwners map[string]podhelper.TopOwner, env *provider.TestEnvironment) (aNamespace, name string, found bool) {
 	for _, owner := range topOwners {
 		if isCSVAndClusterWide(owner.Namespace, owner.Name, env) {
@@ -735,8 +872,14 @@ func ownedByClusterWideOperator(topOwners map[string]podhelper.TopOwner, env *pr
 	return "", "", false
 }
 
-// testAutomountServiceToken checks if each pod uses the default service account name and if the token is explicitly set in the Pod's spec or if it is inherited from the associated ServiceAccount.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testAutomountServiceToken Verifies pod service account usage and automount token settings
+//
+// The function iterates over all pods in the test environment, checking whether
+// a pod uses the default service account name and evaluating its
+// automountServiceAccountToken configuration via an external helper. It records
+// non-compliant objects when defaults are used or tokens are set to true, and
+// compliant objects otherwise. Results are stored in the check’s report for
+// later reporting.
 func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -763,8 +906,14 @@ func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironm
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testOneProcessPerContainer is a function that checks if each container(except Istio proxy containers) has only one process running.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testOneProcessPerContainer verifies that each container runs only a single process
+//
+// The function iterates over all containers in the test environment, excluding
+// Istio proxy sidecars. For each container it obtains the main PID via the
+// probe pod and counts processes in its namespace. Containers with more than
+// one process are flagged as non‑compliant; otherwise they are marked
+// compliant. The results are aggregated into report objects and set on the
+// check.
 func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -807,8 +956,13 @@ func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnviron
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testSYSNiceRealtimeCapability is a function that checks if each container running on a realtime kernel enabled node has the SYS_NICE capability.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testSYSNiceRealtimeCapability Verifies SYS_NICE capability on containers in realtime kernel nodes
+//
+// The function iterates over all test containers, checks if their node uses a
+// realtime kernel, and then determines whether the container has the SYS_NICE
+// capability set. Containers running on non‑realtime nodes are automatically
+// considered compliant. Results are collected into compliant and
+// non‑compliant lists that are reported back to the test framework.
 func testSYSNiceRealtimeCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -835,8 +989,14 @@ func testSYSNiceRealtimeCapability(check *checksdb.Check, env *provider.TestEnvi
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testSysPtraceCapability is a function that checks if each pod has process namespace sharing enabled and at least one container allowing the SYS_PTRACE capability.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testSysPtraceCapability verifies pods with shared process namespaces contain a container granting SYS_PTRACE
+//
+// The function iterates over all pods that enable shared process namespaces,
+// examining each container’s security context for the SYS_PTRACE capability.
+// If at least one container has this capability it records the pod as
+// compliant; otherwise it logs an error and marks it non‑compliant. Finally,
+// it sets the check result with lists of compliant and non‑compliant report
+// objects.
 func testSysPtraceCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -866,8 +1026,14 @@ func testSysPtraceCapability(check *checksdb.Check, env *provider.TestEnvironmen
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testNamespaceResourceQuota is a function that checks if each pod is running in a namespace that has a ResourceQuota applied.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testNamespaceResourceQuota evaluates pod placement against namespace resource quotas
+//
+// The function iterates through all pods in the test environment, checking
+// whether each pod's namespace has an associated ResourceQuota object. If a
+// matching quota is found, the pod is marked compliant; otherwise it is
+// recorded as non‑compliant and logged with an error message. After
+// processing all pods, the compliance results are stored via the check’s
+// SetResult method.
 func testNamespaceResourceQuota(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -903,8 +1069,14 @@ const (
 	sshServicePortProtocol = "TCP"
 )
 
-// testNoSSHDaemonsAllowed is a function that checks if each pod is running an SSH daemon.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testNoSSHDaemonsAllowed Verifies pods do not run SSH daemons
+//
+// The function iterates over each pod in the test environment, attempting to
+// locate an SSH listening port within its first container. If a port is found,
+// it checks whether that port is actively listening; presence indicates a
+// running SSH daemon and marks the pod non‑compliant. Pods without an SSH
+// port or with no active listener are considered compliant. Results are
+// aggregated into report objects and set as the check outcome.
 func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -955,8 +1127,14 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testPodRequests is a function that checks if each container has resource requests.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testPodRequests Verifies that every container has defined CPU and memory requests
+//
+// The function iterates over all containers in the test environment, checking
+// whether each one specifies resource requests using a helper routine.
+// Containers lacking any request or with zero CPU or memory values are logged
+// as errors and collected into a non‑compliant list; those that pass are
+// recorded as compliant. Finally, it records both lists as the result of the
+// compliance check.
 func testPodRequests(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -976,8 +1154,12 @@ func testPodRequests(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// test1337UIDs is a function that checks if each pod is using securityContext RunAsUser 1337.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// test1337UIDs Checks whether pods run with UID 1337
+//
+// The function iterates over all pods in the test environment, logging each
+// pod’s status. It records a non‑compliant report object for any pod whose
+// securityContext RunAsUser is set to 1337 and a compliant one otherwise.
+// Finally, it sets the check result using these lists.
 func test1337UIDs(check *checksdb.Check, env *provider.TestEnvironment) {
 	// Note this test is only ran as part of the 'extended' test suite.
 	var compliantObjects []*testhelper.ReportObject
@@ -997,9 +1179,14 @@ func test1337UIDs(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testContainerSCC categorizes the containers under test into several categories of increasing privileges based on their SCC.
-// Containers not compliant with the least privileged category fail this test.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testContainerSCC Determines container privilege levels based on SCC analysis
+//
+// The function iterates over all pods in the test environment, applying a
+// security context check to each pod's containers. Containers are classified
+// into categories, with only those in the lowest privileged category considered
+// compliant. It records both compliant and non‑compliant containers, tracks
+// the highest privilege level found, and reports an overall CNF category before
+// setting the test result.
 func testContainerSCC(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -1031,8 +1218,12 @@ func testContainerSCC(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testNodePort is a function that checks for each service type if it is nodePort.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testNodePort Checks services for disallowed nodePort usage
+//
+// The function iterates over all services in the test environment, logging each
+// one. If a service is of type NodePort, it records a non‑compliant report
+// object and logs an error; otherwise it records a compliant report object.
+// Finally, it sets the check result with the two lists.
 func testNodePort(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -1056,8 +1247,14 @@ func testNodePort(check *checksdb.Check, env *provider.TestEnvironment) {
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testCrdRoles is a function that checks for each role applies only to CRDs under test.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
+// testCrdRoles Evaluates whether role rules target only CRDs under test
+//
+// The function iterates over all roles in the environment, filtering by
+// namespace, then extracts each role's API rules. It compares these rules
+// against the list of CRD resources under test to separate matching and
+// non‑matching rules. For each rule it records a report object indicating
+// compliance, and if any role contains mixed rule types it logs an error and
+// marks the role as non‑compliant.
 func testCrdRoles(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject

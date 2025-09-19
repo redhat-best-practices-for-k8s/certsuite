@@ -27,7 +27,13 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
-// NodeTainted holds information about tainted nodes.
+// NodeTainted provides access to kernel taint information for a node
+//
+// It holds the context and node name used to query system files and run shell
+// commands that expose kernel taints. The struct offers methods to retrieve the
+// numeric taint mask, list modules that set taints, and parse those module
+// taints from /sys/module. These functions enable inspection of tainted states
+// on a target node.
 type NodeTainted struct {
 	ctx  *clientsholder.Context
 	node string
@@ -47,7 +53,13 @@ var runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
 	return output, nil
 }
 
-// NewNodeTainted creates a new NodeTainted tester
+// NewNodeTaintedTester Creates a tester for checking kernel taints on a node
+//
+// This function constructs and returns a new instance of the NodeTainted type.
+// It stores the provided client context and node name so that subsequent
+// methods can interact with the node’s kernel taint state via the Kubernetes
+// API. The returned object is used by test logic to retrieve and analyze taints
+// for compliance checks.
 func NewNodeTaintedTester(context *clientsholder.Context, node string) *NodeTainted {
 	return &NodeTainted{
 		ctx:  context,
@@ -55,6 +67,13 @@ func NewNodeTaintedTester(context *clientsholder.Context, node string) *NodeTain
 	}
 }
 
+// NodeTainted.GetKernelTaintsMask Retrieves the kernel taints bitmask from a node
+//
+// This method runs a command to read /proc/sys/kernel/tainted, cleans up any
+// whitespace characters, then parses the resulting string as an unsigned
+// integer in base ten. If parsing fails it returns an error indicating the
+// malformed value. On success it returns the taints mask as a uint64 and a nil
+// error.
 func (nt *NodeTainted) GetKernelTaintsMask() (uint64, error) {
 	output, err := runCommand(nt.ctx, `cat /proc/sys/kernel/tainted`)
 	if err != nil {
@@ -73,6 +92,13 @@ func (nt *NodeTainted) GetKernelTaintsMask() (uint64, error) {
 	return taintsMask, nil
 }
 
+// KernelTaint Represents an individual kernel taint
+//
+// This structure holds the human-readable description of a taint as well as its
+// identifying letters used by the kernel to mark nodes. The Description field
+// explains why the taint exists, while Letters contains the short string that
+// is applied to node metadata. Instances are typically collected and examined
+// when evaluating node health or scheduling constraints.
 type KernelTaint struct {
 	Description string
 	Letters     string
@@ -109,6 +135,12 @@ var kernelTaints = map[int]KernelTaint{
 	31: {"BPF syscall has either been configured or enabled for unprivileged users/programs", "u"},
 }
 
+// GetTaintMsg Retrieves a descriptive message for a kernel taint bit
+//
+// This function looks up the given integer bit in a predefined map of known
+// kernel taints. If found, it returns the taint's description along with the
+// bit number; otherwise it indicates the bit is reserved. The output string is
+// used to label taint information throughout the test suite.
 func GetTaintMsg(bit int) string {
 	if taintMsg, exists := kernelTaints[bit]; exists {
 		return fmt.Sprintf("%s (tainted bit %d)", taintMsg.Description, bit)
@@ -117,6 +149,13 @@ func GetTaintMsg(bit int) string {
 	return fmt.Sprintf("reserved (tainted bit %d)", bit)
 }
 
+// DecodeKernelTaintsFromBitMask Converts a bitmask into human‑readable kernel taint messages
+//
+// The function iterates over all 64 bits of the supplied unsigned integer,
+// checking each bit for a set value. For every bit that is on, it calls a
+// helper to retrieve a descriptive message and appends that string to a slice.
+// The resulting list of strings represents the active kernel taints
+// corresponding to the original mask.
 func DecodeKernelTaintsFromBitMask(bitmask uint64) []string {
 	taints := []string{}
 	for i := 0; i < 64; i++ {
@@ -128,6 +167,12 @@ func DecodeKernelTaintsFromBitMask(bitmask uint64) []string {
 	return taints
 }
 
+// RemoveAllExceptNumbers strips all non-digit characters from a string
+//
+// This function takes an input string, compiles a regular expression that
+// matches any non‑digit sequence, and replaces those sequences with nothing.
+// The result is a new string containing only the numeric characters that were
+// present in the original input.
 func RemoveAllExceptNumbers(incomingStr string) string {
 	// example string ", bit:10)"
 	// return 10
@@ -137,6 +182,13 @@ func RemoveAllExceptNumbers(incomingStr string) string {
 	return re.ReplaceAllString(incomingStr, "")
 }
 
+// DecodeKernelTaintsFromLetters Converts a string of taint letters into descriptive taint strings
+//
+// This routine iterates over each character in the input, matching it against a
+// predefined list of kernel taints. For matched letters it builds a
+// human‑readable description that includes the taint’s name, the letter
+// used, and its bit index. If a letter is unknown it records an "unknown taint"
+// entry. The resulting slice contains one entry per letter.
 func DecodeKernelTaintsFromLetters(letters string) []string {
 	taints := []string{}
 
@@ -163,8 +215,13 @@ func DecodeKernelTaintsFromLetters(letters string) []string {
 	return taints
 }
 
-// getBitPosFromLetter returns the kernel taint bit position (base index 0) of the letter that
-// represents a module's taint.
+// getBitPosFromLetter Finds the bit index of a kernel taint letter
+//
+// The function accepts a single-character string representing a module taint
+// and searches through a predefined list of known kernel taints to determine
+// its corresponding bit position. It returns that integer index if found,
+// otherwise it produces an error indicating the letter is invalid or unknown.
+// Input validation ensures only one character is processed.
 func getBitPosFromLetter(letter string) (int, error) {
 	if letter == "" || len(letter) > 1 {
 		return 0, fmt.Errorf("input string must contain one letter")
@@ -179,7 +236,12 @@ func getBitPosFromLetter(letter string) (int, error) {
 	return 0, fmt.Errorf("letter %s does not belong to any known kernel taint", letter)
 }
 
-// GetTaintedBitsByModules helper function to gets, for each module, the taint bits from its taint letters.
+// GetTaintedBitsByModules Collects kernel taint bits from module letters
+//
+// This function receives a map of modules to their taint letter strings. It
+// iterates over each letter, converts it to the corresponding bit position
+// using a helper, and records that bit as true in a result map. Errors are
+// returned if any letter cannot be mapped to a known taint.
 func GetTaintedBitsByModules(tainters map[string]string) (map[int]bool, error) {
 	taintedBits := map[int]bool{}
 
@@ -199,8 +261,13 @@ func GetTaintedBitsByModules(tainters map[string]string) (map[int]bool, error) {
 	return taintedBits, nil
 }
 
-// GetOtherTaintedBits helper function to get the tainted bits that are not related to
-// any module.
+// GetOtherTaintedBits Identifies kernel taint bits not associated with any module
+//
+// The function examines a 64‑bit mask of currently set kernel taints and
+// compares each bit to a map that records which bits have been set by known
+// modules. It iterates over all possible bit positions, collecting those that
+// are active in the mask but absent from the module record. The result is a
+// slice of integers representing the indices of these orphaned taint bits.
 func GetOtherTaintedBits(taintsMask uint64, taintedBitsByModules map[int]bool) []int {
 	otherTaintedBits := []int{}
 	// Lastly, check that all kernel taint bits come from modules.
@@ -216,6 +283,12 @@ func GetOtherTaintedBits(taintsMask uint64, taintedBitsByModules map[int]bool) [
 	return otherTaintedBits
 }
 
+// NodeTainted.getAllTainterModules Retrieves all kernel modules that are tainting the node
+//
+// The function runs a shell command to list every module in /sys/module, reads
+// each module's taint file if present, and collects non‑empty taints into a
+// map keyed by module name. It returns this mapping or an error if the command
+// fails or parsing encounters duplicate entries or malformed lines.
 func (nt *NodeTainted) getAllTainterModules() (map[string]string, error) {
 	const (
 		command = "modules=`ls /sys/module`; for module_name in $modules; do taint_file=/sys/module/$module_name/taint; " +
@@ -262,12 +335,13 @@ func (nt *NodeTainted) getAllTainterModules() (map[string]string, error) {
 	return tainters, nil
 }
 
-// GetTainterModules runs a command in the node to get all the modules that
-// have set a kernel taint bit. Returns:
-//   - tainters: maps a module to a string of taints letters. Each letter maps
-//     to a single bit in the taint mask. Tainters that appear in the allowlist will not
-//     be added to this map.
-//   - taintBits: bits (pos) of kernel taints caused by all modules (included the allowlisted ones).
+// NodeTainted.GetTainterModules Retrieves non-allowlisted modules that set kernel taint bits
+//
+// The method runs a command on the node to list all modules with taint letters,
+// then filters out those present in an allowlist. It returns a map of module
+// names to their taint letter strings and another map indicating which taint
+// bits are set across all modules. Errors from command execution or parsing are
+// wrapped and returned.
 func (nt *NodeTainted) GetTainterModules(allowList map[string]bool) (tainters map[string]string, taintBits map[int]bool, err error) {
 	// First, get all the modules that are tainting the kernel in this node.
 	allTainters, err := nt.getAllTainterModules()

@@ -23,11 +23,14 @@ import (
 	corev1typed "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-// EvaluateAutomountTokens evaluates whether the automountServiceAccountToken is correctly configured for the given Pod.
-// Checks if the token is explicitly set in the Pod's spec or if it is inherited from the associated ServiceAccount.
-// Returns:
-//   - bool: Indicates whether the Pod passed all checks. if yes- return true, otherwise return false.
-//   - string: Error message if the Pod is misconfigured, otherwise an empty string.
+// EvaluateAutomountTokens Checks if a Pod’s automount service account token is correctly disabled
+//
+// The function inspects the Pod specification for an explicit
+// automountServiceAccountToken setting, returning failure if it is true. If
+// unset, it retrieves the associated ServiceAccount’s setting; a false value
+// or absence of the field indicates compliance, while true triggers failure
+// with a descriptive message. The result consists of a boolean success flag and
+// an error string explaining any misconfiguration.
 //
 //nolint:gocritic
 func EvaluateAutomountTokens(client corev1typed.CoreV1Interface, put *provider.Pod) (bool, string) {

@@ -23,6 +23,13 @@ var (
 	}
 )
 
+// NewCommand Creates the run command with all persistent flags
+//
+// This function builds a cobra.Command that configures numerous persistent
+// options for executing the test suite, such as output location, timeout,
+// configuration files, kubeconfig, server mode, logging, data collection, and
+// integration with external services. It registers each flag with default
+// values and help text, then returns the fully configured command instance.
 func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().StringP("output-dir", "o", "results", "The directory where the output artifacts will be placed")
 	runCmd.PersistentFlags().StringP("label-filter", "l", "none", "Label expression to filter test cases  (e.g. --label-filter 'access-control && !access-control-sys-admin-capability')")
@@ -56,6 +63,14 @@ func NewCommand() *cobra.Command {
 	return runCmd
 }
 
+// initTestParamsFromFlags initializes test configuration from command line flags
+//
+// This function reads a variety of flags provided to the CLI command and stores
+// their values in a shared test parameters structure used throughout the
+// application. It ensures that the output directory exists, creating it if
+// necessary, and parses a timeout value with a default fallback. If any
+// filesystem or parsing errors occur, an error is returned for the caller to
+// handle.
 func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams := configuration.GetTestParameters()
 
@@ -111,6 +126,13 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 
 	return nil
 }
+
+// runTestSuite Initializes test parameters and executes the suite in either server or standalone mode
+//
+// The function reads command flags to set up test configuration, then checks if
+// a web‑server mode is requested. In server mode it starts an HTTP listener
+// serving results; otherwise it runs the certification suite locally, handling
+// startup, execution, shutdown, and error reporting.
 func runTestSuite(cmd *cobra.Command, _ []string) error {
 	err := initTestParamsFromFlags(cmd)
 	if err != nil {

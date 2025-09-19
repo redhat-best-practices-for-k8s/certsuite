@@ -5,9 +5,12 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
-// HasRequestsSet checks if a container has resource requests set.
-// Returns :
-//   - bool : true if resource requests are set for the container, otherwise return false.
+// HasRequestsSet Determines if a container has resource requests defined
+//
+// This function examines the request fields of a container's resource
+// specification. It checks that there is at least one request entry, and that
+// both CPU and memory requests are non‑zero values. If any requirement is
+// missing it logs an error and returns false; otherwise it returns true.
 func HasRequestsSet(cut *provider.Container, logger *log.Logger) bool {
 	passed := true
 
@@ -29,10 +32,13 @@ func HasRequestsSet(cut *provider.Container, logger *log.Logger) bool {
 	return passed
 }
 
-// For more info on cpu management policies see https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/.
-// HasExclusiveCPUsAssigned checks if a container has exclusive CPU's assigned.
-// Returns:
-//   - bool : true if a container has exclusive CPU's assigned, otherwise return false.
+// HasExclusiveCPUsAssigned Determines if a container runs with exclusive CPU allocation
+//
+// The function examines the CPU and memory limits and requests of a container
+// to decide whether it belongs to an exclusive CPU pool. If either limit is
+// missing, non‑integer, or mismatched with its request, the container is
+// considered shared; otherwise it is marked exclusive. The result is returned
+// as a boolean.
 func HasExclusiveCPUsAssigned(cut *provider.Container, logger *log.Logger) bool {
 	cpuLimits := cut.Resources.Limits.Cpu()
 	memLimits := cut.Resources.Limits.Memory()

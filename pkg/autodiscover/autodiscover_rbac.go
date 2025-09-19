@@ -25,7 +25,12 @@ import (
 	rbacv1typed "k8s.io/client-go/kubernetes/typed/rbac/v1"
 )
 
-// getRoleBindings returns all of the rolebindings in the cluster
+// getRoleBindings retrieves all rolebindings across every namespace
+//
+// This function queries the Kubernetes RBAC API for RoleBinding objects in
+// every namespace by using an empty string selector. It returns a slice of
+// RoleBinding instances or an error if the list operation fails, logging the
+// failure before propagating it.
 func getRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.RoleBinding, error) {
 	// Get all of the rolebindings from all namespaces
 	roleList, roleErr := client.RoleBindings("").List(context.TODO(), metav1.ListOptions{})
@@ -36,7 +41,12 @@ func getRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.RoleBinding, 
 	return roleList.Items, nil
 }
 
-// getClusterRoleBindings returns all of the clusterrolebindings in the cluster
+// getClusterRoleBindings retrieves all cluster‑level role bindings
+//
+// This function calls the Kubernetes RBAC API to list every ClusterRoleBinding
+// in the cluster, ignoring namespaces because they are cluster scoped. It
+// returns a slice of the bindings or an error if the request fails, logging any
+// failure for debugging purposes.
 func getClusterRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.ClusterRoleBinding, error) {
 	// Get all of the clusterrolebindings from the cluster
 	// These are not namespaced so we want all of them
@@ -48,7 +58,12 @@ func getClusterRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.Cluste
 	return crbList.Items, nil
 }
 
-// getRoles returns all of the roles in the cluster
+// getRoles retrieves all cluster roles
+//
+// The function queries the Kubernetes RBAC API to list every Role resource
+// across all namespaces, returning a slice of role objects or an error if the
+// request fails. It logs any errors encountered during the API call before
+// propagating them to the caller.
 func getRoles(client rbacv1typed.RbacV1Interface) ([]rbacv1.Role, error) {
 	// Get all of the roles from all namespaces
 	roleList, roleErr := client.Roles("").List(context.TODO(), metav1.ListOptions{})

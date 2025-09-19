@@ -29,11 +29,26 @@ const (
 	replicaSet = "ReplicaSet"
 )
 
+// OwnerReference Tracks a pod's ownership status
+//
+// This structure stores a reference to a pod and an integer indicating the test
+// outcome. The RunTest method examines each owner reference of the pod, logging
+// information or errors based on whether the kind matches expected values such
+// as StatefulSet or ReplicaSet. If any mismatches are found, it records a
+// failure; otherwise, it marks success. GetResults simply returns the stored
+// result value.
 type OwnerReference struct {
 	put    *corev1.Pod
 	result int
 }
 
+// NewOwnerReference Creates a new owner reference checker for a Pod
+//
+// The function accepts a pointer to a Pod object and constructs an
+// OwnerReference instance configured to evaluate the pod's owner references. It
+// sets the initial result status to an error state, indicating that validation
+// has not yet succeeded. The constructed instance is returned as a pointer so
+// it can be used for further testing or result retrieval.
 func NewOwnerReference(put *corev1.Pod) *OwnerReference {
 	o := OwnerReference{
 		put:    put,
@@ -42,8 +57,12 @@ func NewOwnerReference(put *corev1.Pod) *OwnerReference {
 	return &o
 }
 
-// func (o *OwnerReference)  run the tests and store results in
-// o.result
+// OwnerReference.RunTest verifies a pod’s owner references are either stateful set or replica set
+//
+// The method iterates over all owner references attached to the pod. For each
+// reference it logs the kind and marks the test as successful if the kind
+// matches one of the expected types; otherwise it logs an error, records
+// failure, and stops further checks.
 func (o *OwnerReference) RunTest(logger *log.Logger) {
 	for _, k := range o.put.OwnerReferences {
 		if k.Kind == statefulSet || k.Kind == replicaSet {
@@ -57,7 +76,11 @@ func (o *OwnerReference) RunTest(logger *log.Logger) {
 	}
 }
 
-// GetResults return result of the OwnerReference type
+// OwnerReference.GetResults retrieves the stored result value
+//
+// The method returns the integer stored in the OwnerReference instance’s
+// result field. It takes no arguments and simply accesses the private field to
+// provide its current value.
 func (o *OwnerReference) GetResults() int {
 	return o.result
 }

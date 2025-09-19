@@ -36,6 +36,13 @@ var (
 	}
 )
 
+// NewCommand Creates a command for uploading results spreadsheets
+//
+// This function configures flags for the spreadsheet upload command, including
+// paths to the results file, destination URL, optional OCP version, and
+// credentials file. It marks the required flags and handles errors by logging
+// fatal messages if flag validation fails. The configured command is then
+// returned for use in the larger CLI.
 func NewCommand() *cobra.Command {
 	uploadResultSpreadSheetCmd.Flags().StringVarP(&resultsFilePath, "results-file", "f", "", "Required: path to results file")
 	uploadResultSpreadSheetCmd.Flags().StringVarP(&rootFolderURL, "dest-url", "d", "", "Required: Destination drive folder's URL")
@@ -57,6 +64,12 @@ func NewCommand() *cobra.Command {
 	return uploadResultSpreadSheetCmd
 }
 
+// readCSV loads CSV file contents into a two-dimensional string slice
+//
+// The function opens the specified file path, reads all rows using the csv
+// package, and returns them as a slice of records where each record is a slice
+// of fields. It propagates any I/O or parsing errors to the caller. The file is
+// closed automatically via defer before returning.
 func readCSV(fp string) ([][]string, error) {
 	file, err := os.Open(fp)
 	if err != nil {
@@ -72,6 +85,11 @@ func readCSV(fp string) ([][]string, error) {
 	return records, nil
 }
 
+// CreateSheetsAndDriveServices Initializes Google Sheets and Drive services
+//
+// This function takes a path to credentials and uses it to create authenticated
+// clients for both the Sheets and Drive APIs. It returns the two service
+// instances or an error if either creation fails.
 func CreateSheetsAndDriveServices(credentials string) (sheetService *sheets.Service, driveService *drive.Service, err error) {
 	ctx := context.TODO()
 
@@ -88,6 +106,14 @@ func CreateSheetsAndDriveServices(credentials string) (sheetService *sheets.Serv
 	return sheetSrv, driveSrv, nil
 }
 
+// prepareRecordsForSpreadSheet Converts CSV rows into spreadsheet row data
+//
+// This routine takes a two‑dimensional string slice, representing CSV
+// records, and transforms each cell into a CellData object suitable for Google
+// Sheets. It trims overly long content to a predefined limit, replaces empty
+// cells with a single space to preserve layout, and removes line breaks from
+// text. Each processed row is wrapped in a RowData structure; the function
+// returns a slice of these rows for use in sheet creation.
 func prepareRecordsForSpreadSheet(records [][]string) []*sheets.RowData {
 	var rows []*sheets.RowData
 	for _, row := range records {
@@ -114,14 +140,14 @@ func prepareRecordsForSpreadSheet(records [][]string) []*sheets.RowData {
 	return rows
 }
 
-// createSingleWorkloadRawResultsSheet creates a new sheet with test case results of a single workload,
-// extracted from rawResultsSheets (which may contain the results of several workloads).
-// The sheet will use the same header columns as the rawResultsSheet, but will also add two extra columns:
-//   - "Owner/TechLead Conclusion": the partner/user is expected to add the name of the workload owner that should lead the fix
-//     of this test case result.
-//   - "Next Step Actions": the partner/user may use this column to add the follow-up actions to fix this test case result.
+// createSingleWorkloadRawResultsSheet Creates a new sheet containing only the rows for a specified workload
 //
-// Note: the caller of the function is responsible to check that the given rawResultsSheet data is not empty
+// The function filters an existing raw results sheet to include only the test
+// case rows that match the given workload name, adding two empty columns for
+// owner/tech lead conclusion and next step actions. It retains the original
+// header row from the raw sheet while inserting the new headers at the
+// beginning. The resulting sheet is returned along with any error encountered
+// during processing.
 func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workloadName string) (*sheets.Sheet, error) {
 	// Initialize sheet with the two new column headers only.
 	filteredRows := []*sheets.RowData{{Values: []*sheets.CellData{
@@ -164,6 +190,13 @@ func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workload
 	return workloadResultsSheet, nil
 }
 
+// createSingleWorkloadRawResultsSpreadSheet Creates a Google Sheets spreadsheet containing raw results for a specific workload
+//
+// The function builds a new sheet from the provided raw results, then creates a
+// spreadsheet titled with the workload name. It applies a filter to show only
+// failed or mandatory entries and moves the file into the designated Drive
+// folder. Errors are returned if any step fails, and a log message confirms
+// creation.
 func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, driveService *drive.Service, folder *drive.File, rawResultsSheet *sheets.Sheet, workloadName string) (*sheets.Spreadsheet, error) {
 	workloadResultsSheet, err := createSingleWorkloadRawResultsSheet(rawResultsSheet, workloadName)
 	if err != nil {
@@ -195,10 +228,15 @@ func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, dri
 	return workloadResultsSpreadsheet, nil
 }
 
-// createConclusionsSheet creates a new sheet with unique workloads data extracted from rawResultsSheets.
-// The sheet's columns include:
-// "Category" (Telco\Non-Telco workload), "Workload Version", "OCP Version", "Workload Name" and
-// "Results" containing a hyper link leading to the workload's raw results spreadsheet.
+// createConclusionsSheet Creates a conclusion sheet summarizing unique workloads
+//
+// The function builds a new Google Sheets tab that lists each distinct workload
+// from the raw results, along with its category, version, OCP release, and a
+// hyperlink to a dedicated results spreadsheet. It first creates a folder for
+// per‑workload sheets, then iterates over the raw data rows, extracting
+// unique names and assembling row values. For every new workload it generates
+// an individual results file and inserts a link; if any step fails it returns
+// an error.
 //
 //nolint:funlen
 func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.Service, rawResultsSheet *sheets.Sheet, mainResultsFolderID string) (*sheets.Sheet, error) {
@@ -288,6 +326,12 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 	return conclusionSheet, nil
 }
 
+// createRawResultsSheet parses a CSV file into a Google Sheets sheet
+//
+// The function reads the specified CSV file, converts each row into spreadsheet
+// rows while trimming overly long cell content and normalizing empty cells and
+// line breaks. It builds a Sheet object with a title and frozen header row,
+// then returns this sheet or an error if reading fails.
 func createRawResultsSheet(fp string) (*sheets.Sheet, error) {
 	records, err := readCSV(fp)
 	if err != nil {
@@ -307,6 +351,14 @@ func createRawResultsSheet(fp string) (*sheets.Sheet, error) {
 	return rawResultsSheet, nil
 }
 
+// generateResultsSpreadSheet Creates a Google Sheets document with raw results and conclusions
+//
+// This routine establishes Google Sheets and Drive services, extracts the root
+// folder ID from a URL, and creates a main results folder named with the OCP
+// version and timestamp. It then builds a raw results sheet from a CSV file and
+// a conclusions sheet that aggregates workload data, moves the new spreadsheet
+// into the created folder, applies basic filtering, sorts by category, and
+// prints the final URL.
 func generateResultsSpreadSheet() {
 	sheetService, driveService, err := CreateSheetsAndDriveServices(credentials)
 	if err != nil {

@@ -30,6 +30,13 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
 )
 
+// LoadInternalChecksDB Initializes all test suites for internal checks
+//
+// This function calls the LoadChecks functions of each test package,
+// registering their individual tests with the shared checks database. It
+// ensures that all internal test groups are available before any preflight or
+// label filtering occurs. No return value is produced and it performs no error
+// handling itself.
 func LoadInternalChecksDB() {
 	accesscontrol.LoadChecks()
 	certification.LoadChecks()
@@ -42,6 +49,12 @@ func LoadInternalChecksDB() {
 	operator.LoadChecks()
 }
 
+// LoadChecksDB Initializes test checks based on a label expression
+//
+// The function loads internal check definitions, then evaluates whether
+// preflight tests should run for the provided labels. If allowed, it triggers
+// the loading of preflight-specific checks. It performs no return value and
+// relies on side effects to prepare the checks database.
 func LoadChecksDB(labelsExpr string) {
 	LoadInternalChecksDB()
 
@@ -58,6 +71,13 @@ const (
 	noLabelsFilterExpr     = "none"
 )
 
+// getK8sClientsConfigFileNames Collects Kubernetes configuration file paths
+//
+// The function retrieves test parameters to determine if a custom kubeconfig
+// path is specified, then adds it to the list of filenames. It also checks for
+// a default config in the user's home directory under .kube/config, appending
+// it only if the file exists. The resulting slice contains zero or more valid
+// configuration paths used elsewhere to initialize client holders.
 func getK8sClientsConfigFileNames() []string {
 	params := configuration.GetTestParameters()
 	fileNames := []string{}
@@ -81,6 +101,14 @@ func getK8sClientsConfigFileNames() []string {
 	return fileNames
 }
 
+// Startup Initializes the certification suite runtime
+//
+// The function retrieves global test parameters, prepares a label expression
+// evaluator for filtering tests, creates or replaces the log file in the output
+// directory, and warns if no labels are provided. It then loads Kubernetes
+// client configurations, initializes the checks database according to the label
+// filter, and outputs version and configuration information to both the console
+// and log. Finally, it displays a banner before the suite begins execution.
 func Startup() {
 	testParams := configuration.GetTestParameters()
 
@@ -119,6 +147,12 @@ func Startup() {
 	fmt.Printf("\n")
 }
 
+// Shutdown Closes the global log file
+//
+// The function attempts to close the globally opened log file used throughout
+// the test suite. If an error occurs during closure, it writes a message to
+// standard error and terminates the program with a non‑zero exit code. No
+// value is returned.
 func Shutdown() {
 	err := log.CloseGlobalLogFile()
 	if err != nil {
@@ -127,6 +161,17 @@ func Shutdown() {
 	}
 }
 
+// Run Executes the certification test suite and produces results artifacts
+//
+// This function initiates discovery of CNF target resources, runs all
+// configured checks with a timeout, and records pod states before and after
+// execution. It builds a claim file containing check outcomes, optionally
+// generates JUnit XML, sanitizes claims based on label filters, and may send
+// the collected results to an external collector or Red Hat Connect API.
+// Finally it creates HTML artifacts for viewing, compresses all outputs into a
+// zip file if requested, and cleans up temporary files according to user
+// preferences.
+//
 //nolint:funlen,gocyclo
 func Run(labelsFilter, outputFolder string) error {
 	testParams := configuration.GetTestParameters()

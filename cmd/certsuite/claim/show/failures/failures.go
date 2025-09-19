@@ -104,6 +104,13 @@ var availableOutputFormats = []string{
 	outputFormatText, outputFormatJSON,
 }
 
+// NewCommand Creates a command to display claim failures
+//
+// The function builds a Cobra command that requires a path to an existing claim
+// file and optionally accepts a comma‑separated list of test suites to filter
+// the output. It also allows specifying the output format, defaulting to plain
+// text but supporting JSON. Errors during flag configuration are logged
+// fatally, after which the command is returned for registration.
 func NewCommand() *cobra.Command {
 	showFailuresCommand.Flags().StringVarP(&claimFilePathFlag, "claim", "c", "",
 		"Required: Existing claim file path.",
@@ -130,8 +137,13 @@ func NewCommand() *cobra.Command {
 	return showFailuresCommand
 }
 
-// Parses the comma separated list to create a helper map, whose
-// keys are the test suite names.
+// parseTargetTestSuitesFlag Creates a map of test suite names from the flag input
+//
+// This function checks if the global test suites flag is empty; if so, it
+// returns nil. Otherwise, it splits the comma-separated string into individual
+// suite names, trims whitespace from each, and stores them as keys in a boolean
+// map set to true. The resulting map is used elsewhere to quickly determine
+// whether a given test suite should be processed.
 func parseTargetTestSuitesFlag() map[string]bool {
 	if testSuitesFlag == "" {
 		return nil
@@ -145,8 +157,12 @@ func parseTargetTestSuitesFlag() map[string]bool {
 	return targetTestSuites
 }
 
-// Parses the output format flag. Returns error if the format
-// does not appear in the list "availableOutputFormats".
+// parseOutputFormatFlag Validates the output format flag
+//
+// It checks whether the user-specified format matches one of the supported
+// formats listed in "availableOutputFormats". If a match is found, it returns
+// that format string with no error; otherwise it returns an empty string and an
+// error explaining the invalid value and listing the allowed options.
 func parseOutputFormatFlag() (string, error) {
 	for _, outputFormat := range availableOutputFormats {
 		if outputFormat == outputFormatFlag {
@@ -157,8 +173,14 @@ func parseOutputFormatFlag() (string, error) {
 	return "", fmt.Errorf("invalid output format flag %q - available formats: %v", outputFormatFlag, availableOutputFormats)
 }
 
-// Parses the claim's test case's checkDetails field and creates a list
-// of NonCompliantObject's.
+// getNonCompliantObjectsFromFailureReason parses a test case failure payload into non‑compliant objects
+//
+// The function receives the JSON string that represents a test case’s check
+// details, decodes it to extract compliant and non‑compliant report objects,
+// and then builds a slice of NonCompliantObject structures. It returns the
+// constructed list along with an error if the payload cannot be decoded. The
+// output includes each object's type, reason, and any additional specification
+// fields.
 func getNonCompliantObjectsFromFailureReason(checkDetails string) ([]NonCompliantObject, error) {
 	objects := struct {
 		Compliant    []testhelper.ReportObject `json:"CompliantObjectsOut"`
@@ -184,7 +206,13 @@ func getNonCompliantObjectsFromFailureReason(checkDetails string) ([]NonComplian
 	return nonCompliantObjects, nil
 }
 
-// Prints the failures in plain text.
+// printFailuresText Prints a plain text summary of failed test suites and cases
+//
+// The function iterates over each test suite, outputting its name and then
+// details for every failing test case. For each case it shows the name,
+// description, and either a single failure reason or a list of non‑compliant
+// objects with type, reason, and spec fields. The information is formatted
+// using printf statements to produce a readable report.
 func printFailuresText(testSuites []FailedTestSuite) {
 	for _, ts := range testSuites {
 		fmt.Printf("Test Suite: %s\n", ts.TestSuiteName)
@@ -216,7 +244,13 @@ func printFailuresText(testSuites []FailedTestSuite) {
 	}
 }
 
-// Prints the failures in json format.
+// printFailuresJSON Outputs failures as indented JSON
+//
+// The function receives a slice of failure objects, wraps them in a struct with
+// a field named "testSuites", marshals this structure to pretty‑printed JSON,
+// and prints the result. If marshalling fails it logs a fatal error and exits.
+// The output is written to standard output as a single line containing the JSON
+// string.
 func printFailuresJSON(testSuites []FailedTestSuite) {
 	type ClaimFailures struct {
 		Failures []FailedTestSuite `json:"testSuites"`
@@ -231,10 +265,13 @@ func printFailuresJSON(testSuites []FailedTestSuite) {
 	fmt.Printf("%s\n", string(bytes))
 }
 
-// Creates a list of FailingTestSuite from the results parsed from a claim file. The parsed
-// results in claimResultsByTestSuite var maps a test suite name to a list of TestCaseResult,
-// which are processed to create the list of FailingTestSuite, filtering out those test suites
-// that don't exist in the targetTestSuites map.
+// getFailedTestCasesByTestSuite generates a list of failing test suites from parsed claim data
+//
+// The function iterates over test suite results, filtering by the target suites
+// if specified. For each failed test case it extracts details, attempts to
+// parse non‑compliant objects, and records either the parsed objects or the
+// raw failure reason on error. It returns a slice of structures that represent
+// only those test suites containing at least one failing test case.
 func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.TestCaseResult, targetTestSuites map[string]bool) []FailedTestSuite {
 	testSuites := []FailedTestSuite{}
 	for testSuite := range claimResultsByTestSuite {
@@ -277,7 +314,12 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 	return testSuites
 }
 
-// Main function for the `show failures` subcommand.
+// showFailures Displays failed test cases from a claim file
+//
+// The function reads the claim file, validates its format version, groups
+// results by test suite, filters for failures, and outputs them either in JSON
+// or plain text based on a flag. It returns an error if parsing or validation
+// fails.
 func showFailures(_ *cobra.Command, _ []string) error {
 	outputFormat, err := parseOutputFormatFlag()
 	if err != nil {
