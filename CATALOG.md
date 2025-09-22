@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 119
+### Total test cases: 120
 
 ### Total suites: 10
 
@@ -22,7 +22,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |operator|12|[operator](#operator)|
 |performance|6|[performance](#performance)|
 |platform-alteration|14|[platform-alteration](#platform-alteration)|
-|preflight|18|[preflight](#preflight)|
+|preflight|19|[preflight](#preflight)|
 
 ### Extended specific tests only: 13
 
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|---|
 |8|1|
 
-### Non-Telco specific tests only: 70
+### Non-Telco specific tests only: 71
 
 |Mandatory|Optional|
 |---|---|---|
-|43|27|
+|43|28|
 
 ### Telco specific tests only: 27
 
@@ -383,7 +383,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |---|---|
 |Unique ID|access-control-security-context|
 |Description|Checks the security context matches one of the 4 categories|
-|Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 in the [security context categories](#security-context-categories)|
+|Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 [here](#security-context-categories)|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities|
 |Exception Process|no exception needed for optional/extended test|
 |Impact Statement|Incorrect security context configurations can weaken container isolation, enable privilege escalation, and create exploitable attack vectors.|
@@ -1639,8 +1639,8 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Property|Description|
 |---|---|
 |Unique ID|platform-alteration-hugepages-config|
-|Description|Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet. First, the "worker" MachineConfig is polled, and the Hugepage settings are extracted. Next, the underlying Nodes are polled for configured HugePages through inspection of /proc/meminfo. The results are compared, and the test passes only if they are the same.|
-|Suggested Remediation|HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your workload on a Node that is part of the corresponding MachineConfigSet. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet.|
+|Description|Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are labeled as workers with the standard label "node-role.kubernetes.io/worker". First, the MachineConfig is inspected for hugepage settings in systemd units. If not, the MC's .spec.kernelArguments are inspected for hugepage settings. The sizes and page numbers are compared, and the test passes only if they are the same than then ones in node's /sys/kernel/mm/hugepages/hugepages-X folders.|
+|Suggested Remediation|HugePage settings for worker nodes must be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings.|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-huge-pages|
 |Exception Process|No exceptions|
 |Impact Statement|Manual hugepage configuration bypasses cluster management, can cause node instability, and creates configuration drift issues.|
@@ -1812,7 +1812,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |---|---|
 |Unique ID|preflight-BasedOnUbi|
 |Description|Checking if the container's base image is based upon the Red Hat Universal Base Image (UBI)|
-|Suggested Remediation|Change the FROM directive in your Dockerfile or Containerfile to FROM registry.access.redhat.com/ubi8/ubi|
+|Suggested Remediation|Change the FROM directive in your Dockerfile or Containerfile, for the latest list of images and details refer to: https://catalog.redhat.com/software/base-images|
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Non-UBI base images may lack security updates, enterprise support, and compliance certifications required for production use.|
@@ -1908,6 +1908,23 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Non-Telco|Optional|
 |Telco|Optional|
 
+#### preflight-HasNoProhibitedLabels
+
+|Property|Description|
+|---|---|
+|Unique ID|preflight-HasNoProhibitedLabels|
+|Description|Checking if the labels (name, vendor, maintainer) violate Red Hat trademark.|
+|Suggested Remediation|Ensure the name, vendor, and maintainer label on your image do not violate the Red Hat trademark.|
+|Best Practice Reference|No Doc Link|
+|Exception Process|There is no documented exception process for this.|
+|Impact Statement|Misuse of Red Hat trademarks in name, vendor, or maintainer labels creates legal and compliance risks that can block certification and publication.|
+|Tags|common,preflight|
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
 #### preflight-HasNoProhibitedPackages
 
 |Property|Description|
@@ -1947,8 +1964,8 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Property|Description|
 |---|---|
 |Unique ID|preflight-HasRequiredLabel|
-|Description|Checking if the required labels (name, vendor, version, release, summary, description, maintainer) are present in the container metadata and that they do not violate Red Hat trademark.|
-|Suggested Remediation|Add the following labels to your Dockerfile or Containerfile: name, vendor, version, release, summary, description, maintainer and validate that they do not violate Red Hat trademark.|
+|Description|Checking if the required labels (name, vendor, version, release, summary, description, maintainer) are present in the container metadata|
+|Suggested Remediation|Add the following labels to your Dockerfile or Containerfile: name, vendor, version, release, summary, description, maintainer.|
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Missing required labels prevent proper metadata management and can cause deployment and management issues.|

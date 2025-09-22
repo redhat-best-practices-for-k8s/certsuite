@@ -132,8 +132,8 @@ func Test_hugepagesFromKernelArgsFunc(t *testing.T) {
 		mc.Spec.KernelArguments = tc.kernelArgs
 
 		// Call the function under test.
-		hugepagesPerSize, defSize := getMcHugepagesFromMcKernelArguments(&mc)
-
+		hugepagesPerSize, defSize, err := getMcHugepagesFromMcKernelArguments(&mc)
+		assert.NoError(t, err)
 		assert.Equal(t, defSize, tc.expectedHugepagesDefSize)
 		assert.Equal(t, hugepagesPerSize, tc.expectedHugepagesPerSize)
 	}
@@ -584,6 +584,14 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:16`,
 			mcKernelArgs: []string{"hugepagesz=1G", "hugepages=16", "hugepagesz=2M", "hugepages=256"},
 		},
+		// Node has two numas and one size in kB units.
+		{
+			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:0
+									 /host/sys/devices/system/node/node0/hugepages/hugepages-1048576kB/nr_hugepages count:15
+									 /host/sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages count:0
+									 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:15`,
+			mcKernelArgs: []string{"hugepagesz=1048576kB", "hugepages=30"},
+		},
 	}
 
 	// instantiate the fakeClient so we can mock the output from each command to get the node's hugepages files.
@@ -680,6 +688,24 @@ func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:0`,
 			mcKernelArgs:     []string{"hugepagesz=1G", "hugepages=8", "hugepagesz=2M", "hugepages=256"},
 			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 1048576 will not match (node count=16, expected=8)",
+		},
+		// Node has two numas and one size in kB units but total pages (35) will not match kernelArgs (30).
+		{
+			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:0
+											 /host/sys/devices/system/node/node0/hugepages/hugepages-1048576kB/nr_hugepages count:15
+											 /host/sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages count:0
+											 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:20`,
+			mcKernelArgs:     []string{"hugepagesz=1048576kB", "hugepages=30"},
+			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: total hugepages of size 1048576 will not match (node count=35, expected=30)",
+		},
+		// Invalid kernelArgs size: not a multiple of 1024.
+		{
+			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:0
+											 /host/sys/devices/system/node/node0/hugepages/hugepages-1048576kB/nr_hugepages count:15
+											 /host/sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages count:0
+											 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:20`,
+			mcKernelArgs:     []string{"hugepagesz=1045", "hugepages=30"},
+			expectedErrorMsg: "failed to compare machineConfig KernelArguments with node ones, err: failed to get kernelArguments hugepages config, err: failed to convert hugepage size (1045) to int, err: parsed size 1045 is not a multiple of 1024",
 		},
 	}
 

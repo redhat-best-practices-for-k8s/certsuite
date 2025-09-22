@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -63,17 +64,53 @@ type Tester struct {
 	mcSystemdHugepagesByNuma hugepagesByNuma
 }
 
-func hugepageSizeToInt(s string) int {
-	num, _ := strconv.Atoi(s[:len(s)-1])
-	unit := s[len(s)-1]
-	switch unit {
-	case 'M':
-		num *= 1024
-	case 'G':
-		num *= 1024 * 1024
+// hugepageSizeToInt converts a hugepage size string to an integer.
+// The output is always in kilobytes.
+// It supports the following units: K, M, G, and T.
+// If no unit provided, it returns the size as is.
+func hugepageSizeToInt(s string) (int, error) {
+	// Remove any trailing 'B' or 'b' if present, as in "2048kB" or "1MB"
+	s = strings.TrimRight(s, "Bb")
+	lastChar := s[len(s)-1]
+
+	var sizeStr string
+
+	isLastCharDigit := unicode.IsDigit(rune(lastChar))
+	if isLastCharDigit {
+		sizeStr = s
+	} else {
+		// Get the number without the unit suffix letter.
+		sizeStr = s[:len(s)-1]
 	}
 
-	return num
+	size, err := strconv.Atoi(sizeStr)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse int %s, err: %w", sizeStr, err)
+	}
+
+	// If no unit provided, return the size in kilobytes.
+	if isLastCharDigit {
+		if size%1024 != 0 {
+			return 0, fmt.Errorf("parsed size %d is not a multiple of 1024", size)
+		}
+		return size / 1024, nil
+	}
+
+	// Get the unit (last character) and the numeric part
+	unit := strings.ToUpper(string(lastChar))
+
+	switch unit {
+	case "K":
+		return size, nil
+	case "M":
+		return size * 1024, nil
+	case "G":
+		return size * 1024 * 1024, nil
+	case "T":
+		return size * 1024 * 1024 * 1024, nil
+	}
+
+	return 0, fmt.Errorf("unsupported hugepage size unit: %s", s)
 }
 
 func NewTester(node *provider.Node, probePod *corev1.Pod, commander clientsholder.Command) (*Tester, error) {
@@ -173,7 +210,10 @@ func (tester *Tester) TestNodeHugepagesWithMcSystemd() (bool, error) {
 // The total count of hugepages of the size defined in the kernelArguments must match the kernArgs' hugepages value.
 // For other sizes, the sum should be 0.
 func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
-	kernelArgsHpCountBySize, _ := getMcHugepagesFromMcKernelArguments(&tester.node.Mc)
+	kernelArgsHpCountBySize, _, err := getMcHugepagesFromMcKernelArguments(&tester.node.Mc)
+	if err != nil {
+		return false, fmt.Errorf("failed to get kernelArguments hugepages config, err: %w", err)
+	}
 
 	// First, check that all the actual hp sizes across all numas exist in the kernelArguments.
 	for nodeNumaIdx, nodeCountBySize := range tester.nodeHugepagesByNuma {
@@ -286,7 +326,7 @@ func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages hug
 
 func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz int) {
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("MC KernelArguments hugepages config: default_hugepagesz=%d-kB", defhugepagesz))
+	sb.WriteString(fmt.Sprintf("MC KernelArguments hugepages config: default_hugepagesz=%dkB", defhugepagesz))
 	for size, count := range hugepagesPerSize {
 		sb.WriteString(fmt.Sprintf(", size=%dkB - count=%d", size, count))
 	}
@@ -294,7 +334,7 @@ func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz i
 }
 
 // getMcHugepagesFromMcKernelArguments gets the hugepages params from machineconfig's kernelArguments
-func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesPerSize map[int]int, defhugepagesz int) {
+func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesPerSize map[int]int, defhugepagesz int, err error) {
 	defhugepagesz = RhelDefaultHugepagesz
 	hugepagesPerSize = map[int]int{}
 
@@ -319,13 +359,21 @@ func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesP
 		}
 
 		if key == HugepageszParam && value != "" {
-			hugepagesz = hugepageSizeToInt(value)
+			var err error
+			hugepagesz, err = hugepageSizeToInt(value)
+			if err != nil {
+				return map[int]int{}, defhugepagesz, fmt.Errorf("failed to convert hugepage size (%s) to int, err: %w", value, err)
+			}
 			// Create new map entry for this size
 			hugepagesPerSize[hugepagesz] = 0
 		}
 
 		if key == DefaultHugepagesz && value != "" {
-			defhugepagesz = hugepageSizeToInt(value)
+			var err error
+			defhugepagesz, err = hugepageSizeToInt(value)
+			if err != nil {
+				return map[int]int{}, defhugepagesz, fmt.Errorf("failed to convert hugepage size (%s) to int, err: %w", value, err)
+			}
 			// In case only default_hugepagesz and hugepages values are provided. The actual value should be
 			// parsed next and this default value overwritten.
 			hugepagesPerSize[defhugepagesz] = RhelDefaultHugepages
@@ -339,5 +387,5 @@ func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesP
 	}
 
 	logMcKernelArgumentsHugepages(hugepagesPerSize, defhugepagesz)
-	return hugepagesPerSize, defhugepagesz
+	return hugepagesPerSize, defhugepagesz, nil
 }
