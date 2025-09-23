@@ -20,8 +20,12 @@ import (
 	"strings"
 )
 
-// ArgListToMap takes a list of strings of the form "key=value" and translate it into a map
-// of the form {key: value}
+// ArgListToMap Converts key=value strings into a map
+//
+// It receives an array of strings, each representing a kernel argument or
+// configuration pair. For every entry it removes surrounding quotes, splits on
+// the first equals sign, and stores the key with its corresponding in a new
+// map. The resulting map is returned for further processing.
 func ArgListToMap(lst []string) map[string]string {
 	retval := make(map[string]string)
 	for _, arg := range lst {
@@ -36,7 +40,11 @@ func ArgListToMap(lst []string) map[string]string {
 	return retval
 }
 
-// FilterArray takes a list and a predicate and returns a list of all elements for whom the predicate returns true
+// FilterArray Filters elements of a slice based on a predicate
+//
+// It iterates over each string in the input slice, applies the provided
+// function to decide if an element should be kept, and collects those that
+// satisfy the condition into a new slice which is then returned.
 func FilterArray(vs []string, f func(string) bool) []string {
 	vsf := make([]string, 0)
 	for _, v := range vs {
@@ -47,6 +55,12 @@ func FilterArray(vs []string, f func(string) bool) []string {
 	return vsf
 }
 
+// Unique Eliminates duplicate strings from a slice
+//
+// The function receives a slice of strings and returns a new slice containing
+// each distinct element exactly once. It builds a map to track seen values,
+// then collects the unique keys into a result slice. The order of elements is
+// not preserved.
 func Unique(slice []string) []string {
 	// create a map with all the values as key
 	uniqMap := make(map[string]struct{})

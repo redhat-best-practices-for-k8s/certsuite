@@ -24,6 +24,14 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
+// getResourceQuotas Retrieves all resource quotas from the cluster
+//
+// The function queries the Kubernetes API for every ResourceQuota object across
+// all namespaces by calling List on the client’s ResourceQuotas interface
+// with an empty namespace and default list options. It returns a slice
+// containing each quota found and propagates any error that occurs during the
+// request. The result is used to populate autodiscovery data about cluster
+// limits.
 func getResourceQuotas(oc corev1client.CoreV1Interface) ([]corev1.ResourceQuota, error) {
 	rql, err := oc.ResourceQuotas("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {

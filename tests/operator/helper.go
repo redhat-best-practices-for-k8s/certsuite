@@ -31,13 +31,24 @@ import (
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
-// CsvResult holds the results of the splitCsv function.
+// CsvResult contains the parsed CSV components
+//
+// This structure holds the two parts produced by splitting a comma-separated
+// string: one part is stored as NameCsv and the other, if prefixed with "ns=",
+// is stored as Namespace. It is used to return values from the SplitCsv
+// function.
 type CsvResult struct {
 	NameCsv   string
 	Namespace string
 }
 
-// splitCsv splits the input string to extract namecsv and namespace.
+// SplitCsv Separates a CSV string into its name and namespace components
+//
+// This function takes a comma‑delimited string, splits it into parts, trims
+// whitespace, and assigns the portion prefixed with "ns=" to the Namespace
+// field while the remaining part becomes NameCsv. It returns a CsvResult struct
+// containing these two fields. If no namespace prefix is present, Namespace
+// remains empty.
 func SplitCsv(csv string) CsvResult {
 	// Split by comma to separate components
 	parts := strings.Split(csv, ",")
@@ -55,6 +66,13 @@ func SplitCsv(csv string) CsvResult {
 	return result
 }
 
+// OperatorInstalledMoreThanOnce Detects if the same operator appears more than once
+//
+// The function compares two operator instances by examining their CSV names and
+// versions. It first removes the version suffix from each CSV name, then checks
+// that the base names match while the versions differ. If both conditions hold,
+// it reports that the operator is installed multiple times; otherwise it
+// returns false.
 func OperatorInstalledMoreThanOnce(operator1, operator2 *provider.Operator) bool {
 	// Safeguard against nil operators (should not happen)
 	if operator1 == nil || operator2 == nil {
@@ -88,6 +106,13 @@ func OperatorInstalledMoreThanOnce(operator1, operator2 *provider.Operator) bool
 	return false
 }
 
+// getAllPodsBy Filters pods by namespace
+//
+// The function iterates over a slice of pod objects, selecting only those whose
+// Namespace field matches the provided namespace string. Matching pods are
+// appended to a new slice that is returned to the caller. This helper
+// simplifies gathering all pods within a specific namespace for further
+// processing.
 func getAllPodsBy(namespace string, allPods []*provider.Pod) (podsInNamespace []*provider.Pod) {
 	for i := range allPods {
 		pod := allPods[i]
@@ -98,6 +123,12 @@ func getAllPodsBy(namespace string, allPods []*provider.Pod) (podsInNamespace []
 	return podsInNamespace
 }
 
+// getCsvsBy Filters CSVs to a specific namespace
+//
+// This function iterates over all provided ClusterServiceVersion objects,
+// selecting only those whose Namespace field matches the supplied string. The
+// matching CSVs are collected into a slice that is returned to the caller. If
+// no CSVs match, an empty slice is returned.
 func getCsvsBy(namespace string, allCsvs []*v1alpha1.ClusterServiceVersion) (csvsInNamespace []*v1alpha1.ClusterServiceVersion) {
 	for _, csv := range allCsvs {
 		if csv.Namespace == namespace {
@@ -107,14 +138,34 @@ func getCsvsBy(namespace string, allCsvs []*v1alpha1.ClusterServiceVersion) (csv
 	return csvsInNamespace
 }
 
+// isSingleNamespacedOperator Determines if an operator is single‑namespace scoped but targets a different namespace
+//
+// The function checks that the targetNamespaces slice contains exactly one
+// entry and that this entry differs from the operatorNamespace. If both
+// conditions hold, it returns true indicating the operator runs in its own
+// namespace yet serves another namespace; otherwise it returns false.
 func isSingleNamespacedOperator(operatorNamespace string, targetNamespaces []string) bool {
 	return len(targetNamespaces) == 1 && operatorNamespace != targetNamespaces[0]
 }
 
+// isMultiNamespacedOperator determines if an operator targets multiple namespaces excluding its own
+//
+// This function checks whether the list of target namespaces for an operator
+// contains more than one entry and that the operator’s own namespace is not
+// among them. It returns true only when the operator is intended to operate
+// across several distinct namespaces, indicating a multi‑namespaced
+// deployment scenario.
 func isMultiNamespacedOperator(operatorNamespace string, targetNamespaces []string) bool {
 	return len(targetNamespaces) > 1 && !stringhelper.StringInSlice(targetNamespaces, operatorNamespace, false)
 }
 
+// checkIfCsvUnderTest determines if a CSV is part of the test set
+//
+// The function iterates through the global list of operators defined for
+// testing, checking whether any entry’s CSV name matches that of the supplied
+// object. If a match is found it returns true; otherwise false. This boolean
+// indicates whether the given CSV should be considered under test in subsequent
+// validation logic.
 func checkIfCsvUnderTest(csv *v1alpha1.ClusterServiceVersion) bool {
 	for _, testOperator := range env.Operators {
 		if testOperator.Csv.Name == csv.Name {
@@ -124,6 +175,13 @@ func checkIfCsvUnderTest(csv *v1alpha1.ClusterServiceVersion) bool {
 	return false
 }
 
+// isCsvInNamespaceClusterWide determines if a CSV is cluster‑wide based on its annotations
+//
+// The function scans all provided ClusterServiceVersions for the one matching
+// the given name. It checks whether that CSV has a nonempty
+// "olm.targetNamespaces" annotation; if so, it marks the CSV as not
+// cluster‑wide. The result is returned as a boolean indicating whether the
+// operator applies across the entire cluster.
 func isCsvInNamespaceClusterWide(csvName string, allCsvs []*v1alpha1.ClusterServiceVersion) bool {
 	isClusterWide := true
 	for _, eachCsv := range allCsvs {
@@ -138,6 +196,13 @@ func isCsvInNamespaceClusterWide(csvName string, allCsvs []*v1alpha1.ClusterServ
 	return isClusterWide
 }
 
+// checkValidOperatorInstallation Determines if a namespace hosts only valid single or multi‑namespace operators
+//
+// The function inspects all ClusterServiceVersions in the specified namespace,
+// categorising them as installed under test, not under test, or targeting other
+// namespaces. It also checks for non‑operator pods that do not belong to any
+// operator. The return values indicate whether the namespace is dedicated to
+// valid operators and provide lists of any problematic objects.
 func checkValidOperatorInstallation(namespace string) (isDedicatedOperatorNamespace bool, singleOrMultiNamespaceOperators,
 	nonSingleOrMultiNamespaceOperators, csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators []string, err error) {
 	// 1. operator installation checks
@@ -184,6 +249,14 @@ func checkValidOperatorInstallation(namespace string) (isDedicatedOperatorNamesp
 	return isValid, singleOrMultiNamespaceOperators, nonSingleOrMultiNamespaceOperators, csvsTargetingNamespace, operatorsFoundButNotUnderTest, podsNotBelongingToOperators, nil
 }
 
+// findPodsNotBelongingToOperators identifies pods that are not managed by any operator in the given namespace
+//
+// The function retrieves all pods within a namespace, then for each pod
+// determines its top-level owners using helper logic. It checks whether any
+// owner is a ClusterServiceVersion belonging to the same namespace; if none
+// exist, the pod name is added to the result list. The returned slice contains
+// names of pods that are not controlled by an operator, along with an error if
+// ownership resolution fails.
 func findPodsNotBelongingToOperators(namespace string) (podsBelongingToNoOperators []string, err error) {
 	allPods := getAllPodsBy(namespace, env.AllPods)
 	for index := range allPods {

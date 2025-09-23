@@ -7,20 +7,37 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
 )
 
+// TcResultsSummary provides a count of test case outcomes
+//
+// This structure holds three integer counters: how many tests passed, were
+// skipped, and failed. It is populated by iterating over result strings and
+// incrementing the corresponding field. The counts can be used to report
+// overall test performance.
 type TcResultsSummary struct {
 	Passed  int
 	Skipped int
 	Failed  int
 }
 
+// TcResultDifference Represents a discrepancy between two claim results
+//
+// This structure holds the name of a test case along with the outcomes from two
+// different claims. By comparing Claim1Result and Claim2Result, users can
+// identify mismatches or confirm consistency across claim evaluations.
 type TcResultDifference struct {
 	Name         string
 	Claim1Result string
 	Claim2Result string
 }
 
-// Holds the results summary and the list of test cases whose result
-// is different.
+// DiffReport Summarizes test result differences between two claim files
+//
+// This structure holds a summary of passed, skipped, and failed tests for each
+// claim file, along with a list of individual test cases whose outcomes differ.
+// It tracks the total number of differing test cases and provides a string
+// representation that lists both the overall status counts and the specific
+// differences. The data is used to report and compare results between two sets
+// of claim executions.
 type DiffReport struct {
 	Claim1ResultsSummary TcResultsSummary `json:"claimFile1ResultsSummary"`
 	Claim2ResultsSummary TcResultsSummary `json:"claimFile2ResultsSummary"`
@@ -29,8 +46,12 @@ type DiffReport struct {
 	DifferentTestCasesResults int                  `json:"differentTestCasesResults"`
 }
 
-// Helper function that iterates over resultsByTestSuite, which maps a test suite name to a list
-// of test case results, to create a map with test case results.
+// getTestCasesResultsMap Creates a map from test case identifiers to their execution state
+//
+// This helper traverses the provided test suite results, extracting each test
+// case's unique ID and its current . It builds a string-to-string mapping where
+// keys are the IDs and values are the states. The resulting map is used by
+// other functions to compare outcomes between different claim results.
 func getTestCasesResultsMap(testSuiteResults claim.TestSuiteResults) map[string]string {
 	testCaseResults := map[string]string{}
 
@@ -41,10 +62,12 @@ func getTestCasesResultsMap(testSuiteResults claim.TestSuiteResults) map[string]
 	return testCaseResults
 }
 
-// Given two results helper maps whose keys are test case names, returns a slice of
-// all the test cases (sorted) names found in both maps, without repetitions.
-// If one test case appears in both map, it will only appear once in the
-// output slice.
+// getMergedTestCasesNames Collects all unique test case names from two result maps
+//
+// The function iterates over each input map, adding every key to a temporary
+// set to eliminate duplicates. After gathering the keys, it converts the set
+// into a slice and sorts the entries alphabetically. The sorted list of test
+// case names is returned for further processing.
 func getMergedTestCasesNames(results1, results2 map[string]string) []string {
 	testCasesNamesMap := map[string]struct{}{}
 
@@ -66,7 +89,12 @@ func getMergedTestCasesNames(results1, results2 map[string]string) []string {
 	return names
 }
 
-// Helper function to fill a TcResultsSummary struct from a results map (tc name -> result).
+// getTestCasesResultsSummary Aggregates test case results into a summary count
+//
+// The function iterates over a mapping of test case names to result strings and
+// tallies the number of passed, skipped, and failed cases. It increments
+// counters in a TcResultsSummary structure based on predefined result
+// constants. The populated summary is then returned for use elsewhere.
 func getTestCasesResultsSummary(results map[string]string) TcResultsSummary {
 	summary := TcResultsSummary{}
 
@@ -84,9 +112,13 @@ func getTestCasesResultsSummary(results map[string]string) TcResultsSummary {
 	return summary
 }
 
-// Process the results from different claim files and return the DiffReport.
-// In case one tc name does not exist in the other claim file, the result will
-// be marked as "not found" in the table.
+// GetDiffReport Creates a report of differences between two sets of test results
+//
+// The function compares test case outcomes from two claim files, marking any
+// missing cases as "not found". It builds a list of differing results, counts
+// the number of discrepancies, and summarizes each claim’s passed, skipped,
+// and failed totals. The returned DiffReport contains this information for
+// further analysis.
 func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) *DiffReport {
 	const tcResultNotFound = "not found"
 
@@ -128,20 +160,12 @@ func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) *DiffRep
 	return &report
 }
 
-// Stringer method for the DiffReport. Will return a string with two tables:
-// Test cases summary table:
-// STATUS         # in CLAIM-1        # in CLAIM-2
-// passed         22                  21
-// skipped        62                  62
-// failed         3                   4
+// DiffReport.String Formats a detailed report of test case comparisons
 //
-// Test cases with different results table:
-// TEST CASE NAME                                              CLAIM-1   CLAIM-2
-// access-control-net-admin-capability-check                   failed    passed
-// access-control-pod-automount-service-account-token          passed    failed
-// access-control-pod-role-bindings                            passed    failed
-// access-control-pod-service-account                          passed    failed
-// ...
+// The method builds a human‑readable string containing two tables: one
+// summarizing the count of passed, skipped and failed cases for each claim, and
+// another listing individual test cases that differ between the claims. It uses
+// formatted printing to align columns and returns the combined text.
 func (r *DiffReport) String() string {
 	const (
 		tcDiffRowFmt          = "%-60s%-10s%-s\n"

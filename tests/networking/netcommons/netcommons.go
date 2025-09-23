@@ -48,6 +48,12 @@ const (
 	DEFAULT         IFType = "Default"
 )
 
+// IPVersion.String Returns the textual form of an IP version
+//
+// The method examines the value of the receiver and maps each predefined
+// constant to its corresponding string. It covers IPv4, IPv6, combined
+// IPv4/IPv6, and an undefined case. If none match, it defaults to the undefined
+// string.
 func (version IPVersion) String() string {
 	switch version {
 	case IPv4:
@@ -62,9 +68,13 @@ func (version IPVersion) String() string {
 	return UndefinedString
 }
 
-// netTestContext this is a data structure describing a network test context for a given subnet (e.g. network attachment)
-// The test context defines a tester or test initiator, that is initiating the pings. It is selected randomly (first container in the list)
-// It also defines a list of destination ping targets corresponding to the other containers IPs on this subnet
+// NetTestContext Describes a network test setup for a subnet
+//
+// This structure holds information about which container initiates ping tests
+// on a given network, the node it runs on, and the list of target containers to
+// be pinged. The tester source is chosen randomly from available containers. It
+// provides a string representation that lists the initiating container followed
+// by all destination targets.
 type NetTestContext struct {
 	// testerContainerNodeOc session context to access the node running the container selected to initiate tests
 	TesterContainerNodeName string
@@ -74,7 +84,13 @@ type NetTestContext struct {
 	DestTargets []ContainerIP
 }
 
-// containerIP holds a container identification and its IP for networking tests.
+// ContainerIP Formats a container's IP address with its identifier
+//
+// This method returns a human‑readable representation that combines the
+// container’s IP address and a long form of its identifier. It concatenates
+// the two strings with parentheses to clearly separate the network address from
+// the container details. The output is useful for logging or debugging
+// networking tests.
 type ContainerIP struct {
 	// ip address of the target container
 	IP string
@@ -84,7 +100,13 @@ type ContainerIP struct {
 	InterfaceName string
 }
 
-// String displays the NetTestContext data structure
+// NetTestContext.String Formats the network test context for display
+//
+// This method builds a multi-line string describing the container that
+// initiates the tests and each target container it will communicate with. It
+// first writes the source container, then lists all destination containers or
+// indicates when none are present. The resulting string is returned for logging
+// or debugging purposes.
 func (testContext *NetTestContext) String() string {
 	var sb strings.Builder
 	sb.WriteString(fmt.Sprintf("From initiating container: %s\n", testContext.TesterSource.String()))
@@ -97,7 +119,12 @@ func (testContext *NetTestContext) String() string {
 	return sb.String()
 }
 
-// String Displays the ContainerIP data structure
+// ContainerIP.String Formats the container IP address with its identifier
+//
+// This method constructs a string that shows the IP address followed by the
+// long form of the container’s identifier in parentheses. It uses formatting
+// utilities to combine the two pieces into a single readable representation,
+// which is returned as a string.
 func (cip *ContainerIP) String() string {
 	return fmt.Sprintf("%s ( %s )",
 		cip.IP,
@@ -105,7 +132,14 @@ func (cip *ContainerIP) String() string {
 	)
 }
 
-// PrintNetTestContextMap displays the NetTestContext full map
+// PrintNetTestContextMap Formats a map of network test contexts into a readable string
+//
+// This function iterates over a mapping from network names to NetTestContext
+// objects, building a multi-line string that begins with a header for each
+// network and then includes the detailed output of the context’s String
+// method. If no networks are provided it returns a short message indicating
+// there is nothing to test. The resulting string is used by other parts of the
+// test suite to log or display current test conditions.
 func PrintNetTestContextMap(netsUnderTest map[string]NetTestContext) string {
 	var sb strings.Builder
 	if len(netsUnderTest) == 0 {
@@ -118,7 +152,13 @@ func PrintNetTestContextMap(netsUnderTest map[string]NetTestContext) string {
 	return sb.String()
 }
 
-// PodIPsToStringList converts a list of corev1.PodIP objects into a list of strings
+// PodIPsToStringList Transforms a slice of PodIP structures into plain IP address strings
+//
+// The function iterates over each corev1.PodIP element, extracts the IP string
+// field, and appends it to a new slice. It returns this list of string
+// addresses for use elsewhere in the package. The operation is linear in the
+// number of input items and requires no additional dependencies beyond standard
+// Go append.
 func PodIPsToStringList(ips []corev1.PodIP) (ipList []string) {
 	for _, ip := range ips {
 		ipList = append(ipList, ip.IP)
@@ -126,7 +166,13 @@ func PodIPsToStringList(ips []corev1.PodIP) (ipList []string) {
 	return ipList
 }
 
-// GetIPVersion parses a ip address from a string and returns its version
+// GetIPVersion determines whether a string represents an IPv4 or IPv6 address
+//
+// The function attempts to parse the input as an IP address using the standard
+// library. If parsing fails, it reports that the string is not a valid IP. It
+// then distinguishes between IPv4 and IPv6 by checking if the parsed address
+// can be converted to a four‑byte form; the result is returned along with any
+// error.
 func GetIPVersion(aIP string) (IPVersion, error) {
 	ip := net.ParseIP(aIP)
 	if ip == nil {
@@ -138,9 +184,12 @@ func GetIPVersion(aIP string) (IPVersion, error) {
 	return IPv6, nil
 }
 
-// FilterIPListByIPVersion filters a list of ip strings by the provided version
-// e.g. a list of mixed ipv4 and ipv6 when filtered with ipv6 version will return a list with
-// the ipv6 addresses
+// FilterIPListByIPVersion Selects addresses matching a specified IP version
+//
+// The function receives a slice of string IPs and an IP version to filter by.
+// It iterates over the list, determines each address’s version, and keeps
+// only those that match the requested type. The resulting slice contains only
+// IPv4 or IPv6 addresses as requested.
 func FilterIPListByIPVersion(ipList []string, aIPVersion IPVersion) []string {
 	var filteredIPList []string
 	for _, aIP := range ipList {
@@ -151,6 +200,12 @@ func FilterIPListByIPVersion(ipList []string, aIPVersion IPVersion) []string {
 	return filteredIPList
 }
 
+// findRogueContainersDeclaringPorts identifies containers that declare prohibited ports
+//
+// The function scans a list of containers, checking each declared port against
+// a set of reserved ports. For every match it records a non‑compliant report;
+// otherwise it logs compliance and creates a compliant report object. It
+// returns slices of these report objects for further processing.
 func findRogueContainersDeclaringPorts(containers []*provider.Container, portsToTest map[int32]bool, portsOrigin string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	for _, cut := range containers {
 		logger.Info("Testing Container %q", cut)
@@ -191,6 +246,14 @@ var ReservedIstioPorts = map[int32]bool{
 	15000: true, // Envoy admin port (commands/diagnostics)
 }
 
+// findRoguePodsListeningToPorts Detects pods that are listening on or declaring reserved ports
+//
+// The function iterates over each pod, checking its containers for declared
+// ports and actual listening sockets against a set of prohibited port numbers.
+// It logs detailed information and generates report objects indicating
+// compliance status for both container declarations and pod-level listening
+// behavior. Non‑compliant pods are reported with the specific port and
+// protocol that violates the reservation rules.
 func findRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]bool, portsOrigin string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	for _, put := range pods {
 		logger.Info("Testing Pod %q", put)
@@ -247,6 +310,13 @@ func findRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 	return compliantObjects, nonCompliantObjects
 }
 
+// TestReservedPortsUsage checks pods for listening on or declaring reserved ports
+//
+// The function receives a test environment, a map of port numbers that are
+// considered reserved, an origin label for those ports, and a logger. It scans
+// all pods in the environment to find any containers listening on or declaring
+// these ports, excluding known Istio proxy exceptions. The result is two slices
+// of report objects indicating compliant and non‑compliant findings.
 func TestReservedPortsUsage(env *provider.TestEnvironment, reservedPorts map[int32]bool, portsOrigin string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	compliantObjectsEntries, nonCompliantObjectsEntries := findRoguePodsListeningToPorts(env.Pods, reservedPorts, portsOrigin, logger)
 	compliantObjects = append(compliantObjects, compliantObjectsEntries...)

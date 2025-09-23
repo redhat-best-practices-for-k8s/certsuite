@@ -46,6 +46,13 @@ const (
 	istioDeploymentName = "istiod"
 )
 
+// isIstioServiceMeshInstalled checks for an installed Istio service mesh
+//
+// The function verifies that the special Istio namespace exists in the cluster
+// and then looks for a Deployment named istiod within that namespace. If either
+// the namespace or deployment is missing, it logs appropriate messages and
+// returns false; otherwise it confirms detection with an info log and returns
+// true.
 func isIstioServiceMeshInstalled(appClient appv1client.AppsV1Interface, allNs []string) bool {
 	// The Istio namespace must be present
 	if !stringhelper.StringInSlice(allNs, istioNamespace, false) {
@@ -68,6 +75,14 @@ func isIstioServiceMeshInstalled(appClient appv1client.AppsV1Interface, allNs []
 	return true
 }
 
+// findOperatorsMatchingAtLeastOneLabel Retrieves operators whose CSVs match any of the provided labels
+//
+// The function queries the OLM client for ClusterServiceVersions in a specific
+// namespace, filtering by each label in turn and aggregating all matching CSV
+// items into a single list. It logs debug information for each search attempt
+// and records errors if a query fails, continuing with remaining labels. The
+// returned list contains every CSV that satisfies at least one of the supplied
+// label selectors.
 func findOperatorsMatchingAtLeastOneLabel(olmClient v1alpha1.OperatorsV1alpha1Interface, labels []labelObject, namespace configuration.Namespace) *olmv1Alpha.ClusterServiceVersionList {
 	csvList := &olmv1Alpha.ClusterServiceVersionList{}
 	for _, l := range labels {
@@ -84,6 +99,14 @@ func findOperatorsMatchingAtLeastOneLabel(olmClient v1alpha1.OperatorsV1alpha1In
 	return csvList
 }
 
+// findOperatorsByLabels Retrieves operator CSVs matching given labels across specified namespaces
+//
+// The function iterates over each target namespace, collecting
+// ClusterServiceVersions that either match provided label selectors or are
+// listed without filters when no labels exist. It then verifies the
+// operator’s controller pod resides in a configured test namespace by
+// checking an annotation and includes only those CSVs in the result set. Each
+// discovered CSV is logged for visibility before being returned as a slice.
 func findOperatorsByLabels(olmClient v1alpha1.OperatorsV1alpha1Interface, labels []labelObject, namespaces []configuration.Namespace) (csvs []*olmv1Alpha.ClusterServiceVersion) {
 	const nsAnnotation = "olm.operatorNamespace"
 
@@ -129,6 +152,12 @@ func findOperatorsByLabels(olmClient v1alpha1.OperatorsV1alpha1Interface, labels
 	return csvs
 }
 
+// getAllNamespaces Retrieves the names of all namespaces in a cluster
+//
+// The function queries the Kubernetes API for every namespace, collects each
+// name into a slice, and returns that list. If the list request fails, it wraps
+// the error with context before returning. The returned slice contains plain
+// string names and may be empty if no namespaces exist.
 func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err error) {
 	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -140,6 +169,12 @@ func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err erro
 	return allNs, nil
 }
 
+// getAllOperators Retrieves all operator CSVs from every namespace
+//
+// The function queries the OLM client for ClusterServiceVersion objects across
+// all namespaces, collecting them into a slice. It logs each found CSV name and
+// namespace for visibility. Errors during listing are wrapped with context and
+// returned to the caller.
 func getAllOperators(olmClient v1alpha1.OperatorsV1alpha1Interface) ([]*olmv1Alpha.ClusterServiceVersion, error) {
 	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 
@@ -157,6 +192,14 @@ func getAllOperators(olmClient v1alpha1.OperatorsV1alpha1Interface) ([]*olmv1Alp
 	return csvs, nil
 }
 
+// findSubscriptions Collects operator subscriptions across specified namespaces
+//
+// This routine iterates over a list of namespace identifiers, querying the
+// OpenShift Operator Lifecycle Manager for Subscription objects in each. It
+// logs debug information for each namespace, handles errors by logging them and
+// skipping problematic ones, and aggregates all found subscriptions into a
+// single slice. After gathering, it emits informational logs detailing each
+// subscription’s name and namespace before returning the compiled collection.
 func findSubscriptions(olmClient v1alpha1.OperatorsV1alpha1Interface, namespaces []string) []olmv1Alpha.Subscription {
 	subscriptions := []olmv1Alpha.Subscription{}
 	for _, ns := range namespaces {
@@ -179,6 +222,12 @@ func findSubscriptions(olmClient v1alpha1.OperatorsV1alpha1Interface, namespaces
 	return subscriptions
 }
 
+// getHelmList Collects deployed Helm releases from given namespaces
+//
+// The function creates a Helm client for each namespace using the provided REST
+// configuration, then retrieves all deployed releases in that namespace.
+// Results are stored in a map keyed by namespace name. If client creation fails
+// it panics; otherwise the mapping of namespace to release slices is returned.
 func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*release.Release {
 	helmChartReleases := map[string][]*release.Release{}
 	for _, ns := range namespaces {
@@ -204,7 +253,12 @@ func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*rel
 	return helmChartReleases
 }
 
-// getAllInstallPlans is a helper function to get the all the installPlans in a cluster.
+// getAllInstallPlans Retrieves all operator install plans from the cluster
+//
+// The function queries the OpenShift Operator Lifecycle Manager for every
+// InstallPlan resource across all namespaces. If the API call fails, it logs an
+// error and returns an empty slice; otherwise it collects pointers to each
+// InstallPlan item into a new slice and returns that list.
 func getAllInstallPlans(olmClient v1alpha1.OperatorsV1alpha1Interface) (out []*olmv1Alpha.InstallPlan) {
 	installPlanList, err := olmClient.InstallPlans("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -217,7 +271,12 @@ func getAllInstallPlans(olmClient v1alpha1.OperatorsV1alpha1Interface) (out []*o
 	return out
 }
 
-// getAllCatalogSources is a helper function to get the all the CatalogSources in a cluster.
+// getAllCatalogSources Retrieves all CatalogSource objects from the cluster
+//
+// The function queries the operator lifecycle manager for catalog sources in
+// every namespace, handling any errors by logging them and returning an empty
+// slice. It iterates over the returned list, appending pointers to each item
+// into a result slice which is then returned.
 func getAllCatalogSources(olmClient v1alpha1.OperatorsV1alpha1Interface) (out []*olmv1Alpha.CatalogSource) {
 	catalogSourcesList, err := olmClient.CatalogSources("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -230,7 +289,13 @@ func getAllCatalogSources(olmClient v1alpha1.OperatorsV1alpha1Interface) (out []
 	return out
 }
 
-// getAllPackageManifests is a helper function to get the all the PackageManifests in a cluster.
+// getAllPackageManifests Retrieves all PackageManifest resources from the cluster
+//
+// The function calls the client’s List method to obtain a list of
+// PackageManifests, handling any error by logging it and returning an empty
+// slice. It then iterates over the returned items, appending pointers to each
+// manifest into a new slice. The resulting slice of pointers is returned to the
+// caller.
 func getAllPackageManifests(olmPkgClient olmpkgclient.PackageManifestInterface) (out []*olmpkgv1.PackageManifest) {
 	packageManifestsList, err := olmPkgClient.List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -243,7 +308,12 @@ func getAllPackageManifests(olmPkgClient olmpkgclient.PackageManifestInterface) 
 	return out
 }
 
-// getOperandPodsFromTestCsvs returns a subset of pods whose owner CRs are managed by any of the testCsvs.
+// getOperandPodsFromTestCsvs Identifies pods whose owner custom resources are managed by the provided operators
+//
+// The function scans each supplied operator CSV to build a map of the CRDs it
+// owns, then iterates through all pods, retrieving their top‑level owners. If
+// a pod’s owning CRD matches one in the map, that pod is added to the result
+// list. It returns the filtered slice and an error if any step fails.
 func getOperandPodsFromTestCsvs(testCsvs []*olmv1Alpha.ClusterServiceVersion, pods []corev1.Pod) ([]*corev1.Pod, error) {
 	// Helper var to store all the managed crds from the operators under test
 	// They map key is "Kind.group/version" or "Kind.APIversion", which should be the same.

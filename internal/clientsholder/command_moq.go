@@ -11,21 +11,12 @@ import (
 // If this is not the case, regenerate this file with moq.
 var _ Command = &CommandMock{}
 
-// CommandMock is a mock implementation of Command.
+// CommandMock Provides a mock implementation of Command for testing
 //
-//	func TestSomethingThatUsesCommand(t *testing.T) {
-//
-//		// make and configure a mocked Command
-//		mockedCommand := &CommandMock{
-//			ExecCommandContainerFunc: func(context Context, s string) (string, string, error) {
-//				panic("mock out the ExecCommandContainer method")
-//			},
-//		}
-//
-//		// use mockedCommand in code that requires Command
-//		// and then make assertions.
-//
-//	}
+// The struct holds a function field that replaces the real ExecCommandContainer
+// method, allowing tests to supply custom behavior. It records each call with
+// its context and string arguments in an internal slice protected by a
+// read‑write mutex. A helper returns the recorded calls for assertions.
 type CommandMock struct {
 	// ExecCommandContainerFunc mocks the ExecCommandContainer method.
 	ExecCommandContainerFunc func(context Context, s string) (string, string, error)
@@ -43,7 +34,12 @@ type CommandMock struct {
 	lockExecCommandContainer sync.RWMutex
 }
 
-// ExecCommandContainer calls ExecCommandContainerFunc.
+// CommandMock.ExecCommandContainer invokes a user-defined function to execute container commands
+//
+// This method records the call arguments, ensures thread safety with locks, and
+// then delegates execution to the mock's ExecCommandContainerFunc. If no
+// implementation is provided it panics to signal misuse. The return values are
+// the stdout, stderr output strings and an error from the underlying function.
 func (mock *CommandMock) ExecCommandContainer(context Context, s string) (string, string, error) {
 	if mock.ExecCommandContainerFunc == nil {
 		panic("CommandMock.ExecCommandContainerFunc: method is nil but Command.ExecCommandContainer was just called")
@@ -61,10 +57,14 @@ func (mock *CommandMock) ExecCommandContainer(context Context, s string) (string
 	return mock.ExecCommandContainerFunc(context, s)
 }
 
-// ExecCommandContainerCalls gets all the calls that were made to ExecCommandContainer.
-// Check the length with:
+// CommandMock.ExecCommandContainerCalls retrieves every ExecCommandContainer call that has been logged
 //
-//	len(mockedCommand.ExecCommandContainerCalls())
+// This method gathers all the calls made to ExecCommandContainer into a slice
+// of structures containing the execution context and the string argument used.
+// It acquires a read lock on the internal mutex to safely access the stored
+// calls, then releases the lock before returning the slice. The result allows
+// callers to inspect or assert how many times and with what parameters
+// ExecCommandContainer was invoked.
 func (mock *CommandMock) ExecCommandContainerCalls() []struct {
 	Context Context
 	S       string

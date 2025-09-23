@@ -27,12 +27,25 @@ import (
 	"k8s.io/kubectl/pkg/scheme"
 )
 
+// Command Executes a command inside a container
+//
+// This method runs the given shell command within a specified container context
+// and captures both its standard output and error streams. It returns the
+// captured stdout, stderr, and an error value that indicates whether the
+// execution succeeded or failed.
+//
 //go:generate moq -out command_moq.go . Command
 type Command interface {
 	ExecCommandContainer(Context, string) (string, string, error)
 }
 
-// ExecCommand runs command in the pod and returns buffer output.
+// ClientsHolder.ExecCommandContainer Runs a shell command inside a specific pod container
+//
+// The function builds an exec request to the Kubernetes API, targeting the
+// namespace, pod, and container provided by the context. It streams the command
+// output into buffers, returning both standard output and error as strings
+// along with any execution error. Logging is performed for debugging and error
+// tracing.
 func (clientsholder *ClientsHolder) ExecCommandContainer(
 	ctx Context, command string) (stdout, stderr string, err error) {
 	commandStr := []string{"sh", "-c", command}

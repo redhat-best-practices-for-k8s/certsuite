@@ -11,7 +11,12 @@ import (
 	"k8s.io/client-go/dynamic"
 )
 
-// Structure to describe a top owner of a pod
+// TopOwner represents the highest-level resource owning a pod
+//
+// The structure holds identifying information about a pod's ultimate owner,
+// including its API version, kind, name, and namespace. It is used by helper
+// functions to map pods back to the root resource that created them. The fields
+// are all strings and can be populated from Kubernetes object metadata.
 type TopOwner struct {
 	APIVersion string
 	Kind       string
@@ -19,7 +24,14 @@ type TopOwner struct {
 	Namespace  string
 }
 
-// Get the list of top owners of pods
+// GetPodTopOwner Finds the highest-level owners of a pod
+//
+// This function starts with the namespace and owner references of a pod, then
+// walks through each reference to resolve the actual resource objects via
+// dynamic client calls. It recursively follows owner chains until it reaches
+// resources without further owners, recording those as top owners in a map
+// keyed by name. The result is returned along with any errors encountered
+// during resolution.
 func GetPodTopOwner(podNamespace string, podOwnerReferences []metav1.OwnerReference) (topOwners map[string]TopOwner, err error) {
 	topOwners = make(map[string]TopOwner)
 	err = followOwnerReferences(
@@ -34,7 +46,14 @@ func GetPodTopOwner(podNamespace string, podOwnerReferences []metav1.OwnerRefere
 	return topOwners, nil
 }
 
-// Recursively follow the ownership tree to find the top owners
+// followOwnerReferences traverses owner references to discover top‑level resources
+//
+// The routine walks the chain of OwnerReference objects for a given Kubernetes
+// resource, querying each referenced object until it reaches those without
+// further owners. It records these highest-level owners in a map keyed by name,
+// storing API version, kind, and namespace information. Errors during lookup or
+// parsing are returned to allow callers to handle missing or malformed
+// references.
 func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient dynamic.Interface, topOwners map[string]TopOwner, namespace string, ownerRefs []metav1.OwnerReference) (err error) {
 	for _, ownerRef := range ownerRefs {
 		apiResource, err := searchAPIResource(ownerRef.Kind, ownerRef.APIVersion, resourceList)
@@ -82,8 +101,13 @@ func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient
 	return nil
 }
 
-// searchAPIResource is a helper func that returns the metav1.APIResource pointer of the resource by kind and apiVersion.
-// from a metav1.APIResourceList.
+// searchAPIResource Finds an API resource by kind and version
+//
+// The function iterates through a list of APIResourceList objects, matching the
+// supplied group-version string to each list's GroupVersion field. Within each
+// matching list it scans the contained resources for one whose Kind equals the
+// provided kind value. If found, it returns a pointer to that resource;
+// otherwise it reports an error indicating no match was located.
 func searchAPIResource(kind, apiVersion string, apis []*metav1.APIResourceList) (*metav1.APIResource, error) {
 	for _, api := range apis {
 		if api.GroupVersion != apiVersion {

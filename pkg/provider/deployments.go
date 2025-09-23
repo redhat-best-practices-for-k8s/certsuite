@@ -24,10 +24,22 @@ import (
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 )
 
+// Deployment Represents a Kubernetes deployment with helper methods
+//
+// This type wraps the standard appsv1.Deployment object to provide convenient
+// operations such as checking readiness and generating a string representation.
+// It exposes the embedded Deployment fields directly while adding methods that
+// evaluate status conditions and replica counts for quick health checks.
 type Deployment struct {
 	*appsv1.Deployment
 }
 
+// Deployment.IsDeploymentReady Determines whether a deployment has reached the desired state
+//
+// It inspects the deployment’s status conditions to see if an available
+// condition is present, then compares replica counts from the spec with various
+// status fields such as unavailable, ready, available, and updated replicas. If
+// any of these checks fail, it returns false; otherwise true.
 func (d *Deployment) IsDeploymentReady() bool {
 	notReady := true
 
@@ -58,6 +70,11 @@ func (d *Deployment) IsDeploymentReady() bool {
 	return true
 }
 
+// Deployment.ToString Formats deployment details into a human‑readable string
+//
+// This method creates a concise representation of a Deployment by combining its
+// name and namespace. It uses standard formatting to return the result as a
+// single string, which can be printed or logged for debugging purposes.
 func (d *Deployment) ToString() string {
 	return fmt.Sprintf("deployment: %s ns: %s",
 		d.Name,
@@ -65,6 +82,12 @@ func (d *Deployment) ToString() string {
 	)
 }
 
+// GetUpdatedDeployment Retrieves the latest state of a Kubernetes deployment
+//
+// The function queries the cluster for a specific deployment in a given
+// namespace, then wraps the result in a custom Deployment type that exposes
+// helper methods. It returns a pointer to this wrapper and an error if the
+// lookup fails or the API call encounters an issue.
 func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, name string) (*Deployment, error) {
 	result, err := autodiscover.FindDeploymentByNameByNamespace(ac, namespace, name)
 	return &Deployment{

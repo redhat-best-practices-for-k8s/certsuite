@@ -42,6 +42,15 @@ const (
 	IstioProxyContainerName = "istio-proxy"
 )
 
+// Pod Represents a Kubernetes pod with extended metadata and helper methods
+//
+// This structure embeds the corev1.Pod type and adds fields that track
+// additional information such as service account mappings, container lists,
+// network interface data, PCI device references, and flags indicating whether
+// the pod is an operator or operand. It also provides boolean indicators for
+// skipping certain tests. The struct’s methods offer utilities for examining
+// resource guarantees, CPU isolation compliance, affinity requirements,
+// SR‑IOV usage, and other security and configuration checks.
 type Pod struct {
 	*corev1.Pod
 	AllServiceAccountsMap   *map[string]*corev1.ServiceAccount
@@ -54,6 +63,15 @@ type Pod struct {
 	IsOperand               bool
 }
 
+// NewPod Creates a Pod wrapper with network and container details
+//
+// The function takes a Kubernetes pod object, extracts its annotations to
+// determine Multus network interfaces and PCI addresses, logs missing or empty
+// annotations, and handles errors gracefully. It also inspects labels to decide
+// whether to skip connectivity tests and populates the list of containers from
+// the pod specification. The resulting Pod structure includes the original pod
+// pointer, network interface maps, PCI information, container slice, and flags
+// controlling test behavior.
 func NewPod(aPod *corev1.Pod) (out Pod) {
 	var err error
 	out.Pod = aPod
@@ -89,6 +107,14 @@ func NewPod(aPod *corev1.Pod) (out Pod) {
 	return out
 }
 
+// ConvertArrayPods Transforms a slice of core Kubernetes pods into provider-specific pod wrappers
+//
+// The function iterates over each input pod, creates a new wrapper object with
+// the helper constructor, and collects pointers to these wrappers in a result
+// slice. Each wrapper contains additional fields such as network interfaces,
+// PCI devices, and test skip flags based on pod annotations and labels. The
+// returned slice provides an enriched representation suitable for downstream
+// connectivity testing.
 func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
 	for i := range pods {
 		aPodWrapper := NewPod(pods[i])
@@ -97,14 +123,30 @@ func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
 	return out
 }
 
+// Pod.IsPodGuaranteed Determines if the pod meets guaranteed resource conditions
+//
+// The method checks whether every container in the pod has defined CPU and
+// memory limits that match their requests, indicating a guaranteed QoS class.
+// It delegates this logic to AreResourcesIdentical, which verifies consistency
+// across all containers. The result is returned as a boolean.
 func (p *Pod) IsPodGuaranteed() bool {
 	return AreResourcesIdentical(p)
 }
 
+// Pod.IsPodGuaranteedWithExclusiveCPUs Determines if a pod’s CPU requests and limits are whole units and match exactly
+//
+// It checks that each container in the pod specifies CPU resources as whole and
+// that the request equals the limit for both CPU and memory. If all containers
+// satisfy these conditions, it returns true; otherwise false.
 func (p *Pod) IsPodGuaranteedWithExclusiveCPUs() bool {
 	return AreCPUResourcesWholeUnits(p) && AreResourcesIdentical(p)
 }
 
+// Pod.IsCPUIsolationCompliant Determines whether a pod meets CPU isolation requirements
+//
+// The method checks that the pod has annotations disabling both CPU and IRQ
+// load balancing, and verifies a runtime class name is set. If either condition
+// fails it logs a debug message and returns false; otherwise true.
 func (p *Pod) IsCPUIsolationCompliant() bool {
 	isCPUIsolated := true
 
@@ -121,6 +163,12 @@ func (p *Pod) IsCPUIsolationCompliant() bool {
 	return isCPUIsolated
 }
 
+// Pod.String Formats pod name and namespace into a readable string
+//
+// This method constructs a human‑readable representation of a Pod by
+// combining its name and namespace. It uses formatting to produce the pattern
+// "pod: <name> ns: <namespace>", which is helpful for logging or debugging
+// output throughout the provider package.
 func (p *Pod) String() string {
 	return fmt.Sprintf("pod: %s ns: %s",
 		p.Name,
@@ -128,6 +176,12 @@ func (p *Pod) String() string {
 	)
 }
 
+// Pod.AffinityRequired Determines if a pod requires affinity based on its labels
+//
+// The method looks for the key that indicates whether affinity is required in
+// the pod's label set. If present, it attempts to interpret the value as a
+// boolean string; on parsing failure it logs a warning and returns false. When
+// the key is absent or parsing succeeds, it returns the parsed boolean result.
 func (p *Pod) AffinityRequired() bool {
 	if val, ok := p.Labels[AffinityRequiredKey]; ok {
 		result, err := strconv.ParseBool(val)
@@ -140,7 +194,12 @@ func (p *Pod) AffinityRequired() bool {
 	return false
 }
 
-// returns true if at least one container in the pod has a resource name containing "hugepage", return false otherwise
+// Pod.HasHugepages determines if any container requests or limits hugepage resources
+//
+// The method scans each container’s resource requests and limits for a name
+// containing the substring "hugepage". If such a resource is found, it
+// immediately returns true; otherwise, after all containers are checked, it
+// returns false.
 func (p *Pod) HasHugepages() bool {
 	for _, cut := range p.Containers {
 		for name := range cut.Resources.Requests {
@@ -157,6 +216,12 @@ func (p *Pod) HasHugepages() bool {
 	return false
 }
 
+// Pod.CheckResourceHugePagesSize Verifies that all huge page resources match the specified size
+//
+// The method iterates over each container in a pod, checking both requested and
+// limited resources for any huge page entries. If a huge page resource is found
+// but its name differs from the supplied size, the function returns false
+// immediately. When no mismatches are detected, it returns true.
 func (p *Pod) CheckResourceHugePagesSize(size string) bool {
 	for _, cut := range p.Containers {
 		// Resources must be specified
@@ -177,6 +242,13 @@ func (p *Pod) CheckResourceHugePagesSize(size string) bool {
 	return true
 }
 
+// Pod.IsAffinityCompliant checks whether a pod has required affinity rules
+//
+// The method examines the pod's specification to determine if it contains any
+// affinity configuration. If no affinity is present, or if anti‑affinity
+// rules exist, or if neither pod nor node affinity are defined, it returns
+// false along with an explanatory error. Otherwise it reports success by
+// returning true and a nil error.
 func (p *Pod) IsAffinityCompliant() (bool, error) {
 	if p.Spec.Affinity == nil {
 		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but is missing corresponding affinity rules", p.String())
@@ -190,10 +262,21 @@ func (p *Pod) IsAffinityCompliant() (bool, error) {
 	return true, nil
 }
 
+// Pod.IsShareProcessNamespace determines if a pod shares its process namespace
+//
+// The method checks the pod specification for the ShareProcessNamespace field.
+// If the field exists and is set to true, it returns true; otherwise it returns
+// false.
 func (p *Pod) IsShareProcessNamespace() bool {
 	return p.Spec.ShareProcessNamespace != nil && *p.Spec.ShareProcessNamespace
 }
 
+// Pod.ContainsIstioProxy Detects the presence of an Istio side‑car container in a pod
+//
+// The method scans each container defined in the pod, comparing its name
+// against the predefined Istio proxy container identifier. If it finds a match,
+// it immediately returns true; otherwise, after examining all containers, it
+// returns false.
 func (p *Pod) ContainsIstioProxy() bool {
 	for _, container := range p.Containers {
 		if container.Name == IstioProxyContainerName {
@@ -203,6 +286,14 @@ func (p *Pod) ContainsIstioProxy() bool {
 	return false
 }
 
+// Pod.CreatedByDeploymentConfig Determines if a pod originates from an OpenShift DeploymentConfig
+//
+// This method examines each owner reference of the pod, looking for a
+// ReplicationController that itself references a DeploymentConfig. It retrieves
+// replication controller objects via the Kubernetes client and checks their
+// owners to find a matching deployment config name. The function returns true
+// if such a relationship exists, otherwise false, along with any error
+// encountered during API calls.
 func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
 	oc := clientsholder.GetClientsHolder()
 	for _, podOwner := range p.GetOwnerReferences() {
@@ -221,31 +312,36 @@ func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
 	return false, nil
 }
 
+// Pod.HasNodeSelector Indicates if the pod specifies a node selector
+//
+// The method examines the pod's specification for a non‑empty nodeSelector
+// map. It returns true when at least one key/value pair is present, meaning the
+// pod has constraints on which nodes it can run. If the map is empty or nil,
+// the function returns false.
 func (p *Pod) HasNodeSelector() bool {
 	// Checks whether or not the pod has a nodeSelector or a NodeName supplied
 	return len(p.Spec.NodeSelector) != 0
 }
 
+// Pod.IsRuntimeClassNameSpecified checks whether a pod has a runtime class specified
+//
+// The method returns true when the pod’s specification includes a
+// runtimeClassName field, indicating that a runtime class has been assigned. If
+// the field is nil, it returns false, implying no runtime class is set for the
+// pod.
 func (p *Pod) IsRuntimeClassNameSpecified() bool {
 	return p.Spec.RuntimeClassName != nil
 }
 
-// Helper function to parse CNCF's networks annotation, retrieving
-// the names only. It's a custom and simplified version of:
-// https://github.com/k8snetworkplumbingwg/multus-cni/blob/e692127d19623c8bdfc4d391224ea542658b584c/pkg/k8sclient/k8sclient.go#L185
+// getCNCFNetworksNamesFromPodAnnotation Extracts network names from a pod's CNCF annotation
 //
-// The cncf netwoks annotation has two different formats:
-//
-//	  a) list of network names: k8s.v1.cni.cncf.io/networks: <network>[,<network>,...]
-//	  b) json array of network objects:
-//	    k8s.v1.cni.cncf.io/networks: |-
-//			[
-//				{
-//				"name": "<network>",
-//				"namespace": "<namespace>",
-//				"default-route": ["<default-route>"]
-//				}
-//			]
+// The function receives the raw value of the k8s.v1.cni.cncf.io/networks
+// annotation, which can be either a comma‑separated list or a JSON array of
+// objects. It attempts to unmarshal the JSON; if that succeeds it collects the
+// "name" field from each object. If unmarshalling fails, it falls back to
+// splitting the string on commas and trimming spaces, returning all non‑empty
+// names. The result is a slice of strings containing only the network
+// identifiers.
 func getCNCFNetworksNamesFromPodAnnotation(networksAnnotation string) []string {
 	// Each CNCF network has many more fields, but here we only need to unmarshal the name.
 	// See https://github.com/k8snetworkplumbingwg/multus-cni/blob/e692127d19623c8bdfc4d391224ea542658b584c/pkg/types/types.go#L127
@@ -299,6 +395,14 @@ func getCNCFNetworksNamesFromPodAnnotation(networksAnnotation string) []string {
 		]
 	}
 */
+
+// isNetworkAttachmentDefinitionSRIOVConfigMTUSet determines whether a SR-IOV plugin specifies an MTU
+//
+// The function parses the JSON network attachment definition string into a CNI
+// configuration structure, verifies that it contains multiple plugins, and then
+// iterates over those plugins to find one of type "sriov" with a positive MTU
+// value. If such a plugin is found, it returns true; otherwise false. Errors
+// are returned for malformed JSON or missing plugin list.
 func isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nadConfig string) (bool, error) {
 	const (
 		typeSriov = "sriov"
@@ -335,34 +439,13 @@ func isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nadConfig string) (bool, err
 	return false, nil
 }
 
-// isNetworkAttachmentDefinitionConfigTypeSRIOV is a helper function to check whether a CNI
-// config string has any config for sriov plugin.
-// CNI config has two modes: single CNI plugin, or multi-plugins:
-// Single CNI plugin config sample:
+// isNetworkAttachmentDefinitionConfigTypeSRIOV checks if a CNI configuration string contains an SR-IOV plugin
 //
-//	{
-//		"cniVersion": "0.4.0",
-//		"name": "sriov-network",
-//		"type": "sriov",
-//		...
-//	}
-//
-// Multi-plugin CNI config sample:
-//
-//	{
-//		"cniVersion": "0.4.0",
-//		"name": "sriov-network",
-//		"plugins": [
-//			{
-//				"type": "sriov",
-//				"device": "eth1",
-//				...
-//			},
-//			{
-//				"type": "firewall"
-//				...
-//			}
-//		]
+// The function parses the JSON-formatted CNI config, handling both
+// single-plugin and multi-plugin layouts. It looks for a "type" field or
+// iterates through the plugins array to find an entry with type "sriov",
+// returning true if found. Errors are produced for malformed JSON or unexpected
+// structures.
 func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error) {
 	const (
 		typeSriov = "sriov"
@@ -404,9 +487,13 @@ func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error
 	return false, nil
 }
 
-// IsUsingSRIOV returns true if any of the pod's interfaces is a sriov one.
-// First, it retrieves the list of networks names from the CNFC annotation and then
-// checks the config of the corresponding network-attachment definition (NAD).
+// Pod.IsUsingSRIOV determines whether a pod has any SR‑IOV network interfaces
+//
+// The method inspects the pod’s annotations for CNCF network names, retrieves
+// each corresponding NetworkAttachmentDefinition, and checks if its CNI
+// configuration type is "sriov". If at least one definition matches, it returns
+// true; otherwise false. Errors from annotation parsing or API calls are
+// propagated to the caller.
 func (p *Pod) IsUsingSRIOV() (bool, error) {
 	const (
 		cncfNetworksAnnotation = "k8s.v1.cni.cncf.io/networks"
@@ -445,7 +532,13 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 	return false, nil
 }
 
-// IsUsingSRIOVWithMTU returns true if any of the pod's interfaces is a sriov one with MTU set.
+// Pod.IsUsingSRIOVWithMTU determines if the pod has any SR-IOV interface configured with an MTU
+//
+// The method inspects the pod's annotations to find declared CNCF networks,
+// then retrieves each corresponding NetworkAttachmentDefinition. For every
+// network it checks whether a SriovNetwork and matching SriovNetworkNodePolicy
+// exist that specify an MTU value; if so it returns true. If no such
+// configuration is found, it returns false without error.
 func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 	const (
 		cncfNetworksAnnotation = "k8s.v1.cni.cncf.io/networks"
@@ -483,6 +576,13 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 	return false, nil
 }
 
+// sriovNetworkUsesMTU Checks whether a SriovNetwork has an MTU configured
+//
+// The function iterates through all provided SriovNetworks and matches one by
+// name to the given NetworkAttachmentDefinition. For each match it looks for a
+// SriovNetworkNodePolicy in the same namespace that shares the same
+// resourceName, then examines its spec for an MTU value greater than zero. If
+// such a policy is found, true is returned; otherwise false.
 func sriovNetworkUsesMTU(sriovNetworks, sriovNetworkNodePolicies []unstructured.Unstructured, nadName string) bool {
 	for _, sriovNetwork := range sriovNetworks {
 		networkName := sriovNetwork.GetName()
@@ -535,6 +635,14 @@ func sriovNetworkUsesMTU(sriovNetworks, sriovNetworkNodePolicies []unstructured.
 	return false
 }
 
+// Pod.IsUsingClusterRoleBinding Checks if a pod’s service account is linked to any cluster role binding
+//
+// The function receives a list of cluster role bindings and logs the pod being
+// examined. It iterates through each binding, comparing the pod’s service
+// account name and namespace with the subjects in the binding. If a match is
+// found, it reports true along with the role reference name; otherwise it
+// returns false.
+//
 //nolint:gocritic
 func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding,
 	logger *log.Logger) (bool, string, error) {
@@ -558,6 +666,12 @@ func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRole
 	return false, "", nil
 }
 
+// Pod.IsRunAsUserID Checks if the pod runs as a specific user ID
+//
+// The method inspects the pod's security context, returning false if it is nil
+// or if no RunAsUser value is set. If a run-as-user value exists, it compares
+// that value to the supplied uid and returns true when they match. This allows
+// callers to verify whether the pod will execute with the given user identity.
 func (p *Pod) IsRunAsUserID(uid int64) bool {
 	if p.Spec.SecurityContext == nil || p.Spec.SecurityContext.RunAsUser == nil {
 		return false
@@ -565,10 +679,14 @@ func (p *Pod) IsRunAsUserID(uid int64) bool {
 	return *p.Spec.SecurityContext.RunAsUser == uid
 }
 
-// Returns the list of containers that have the securityContext.runAsNonRoot set to false and securityContext.runAsUser set to zero.
-// Both parameteters are checked first at the pod level and acts as a default value
-// for the container configuration, if it is not present.
-// See: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+// Pod.GetRunAsNonRootFalseContainers identifies containers violating non-root security policies
+//
+// This method examines each container in a pod to determine if it inherits or
+// sets runAsNonRoot to false or runs as user ID zero, indicating a root
+// context. It skips any containers listed in the provided map and aggregates
+// those that fail the checks along with explanatory reasons. The function
+// returns two slices: one of non-compliant containers and another containing
+// the corresponding justification strings.
 func (p *Pod) GetRunAsNonRootFalseContainers(knownContainersToSkip map[string]bool) (nonCompliantContainers []*Container, nonComplianceReasons []string) {
 	// Check pod-level security context this will be set by default for containers
 	// If not already configured at the container level
@@ -603,15 +721,23 @@ func (p *Pod) GetRunAsNonRootFalseContainers(knownContainersToSkip map[string]bo
 	return nonCompliantContainers, nonComplianceReasons
 }
 
-// Get the list of top owners of pods
+// Pod.GetTopOwner Retrieves the top-level owners of a pod
+//
+// The method returns a map keyed by owner kind, containing information about
+// each top-level resource that owns the pod. It calls an internal helper to
+// resolve all owner references, following chains up to the root. The result is
+// returned along with any error encountered during resolution.
 func (p *Pod) GetTopOwner() (topOwners map[string]podhelper.TopOwner, err error) {
 	return podhelper.GetPodTopOwner(p.Namespace, p.OwnerReferences)
 }
 
-// AutomountServiceAccountSetOnSA checks if the AutomountServiceAccountToken field is set on the pod's ServiceAccount.
-// Returns:
-//   - A boolean pointer indicating whether the AutomountServiceAccountToken field is set.
-//   - An error if any occurred during the operation.
+// Pod.IsAutomountServiceAccountSetOnSA Determines if a pod’s service account has automount enabled
+//
+// The method inspects the pod’s associated service account to see whether its
+// AutomountServiceAccountToken field is set. It first validates that the
+// service account map exists and contains an entry for the pod’s namespace
+// and name, returning errors otherwise. If found, it returns a pointer to the
+// boolean value indicating automount status along with nil error.
 func (p *Pod) IsAutomountServiceAccountSetOnSA() (isSet *bool, err error) {
 	if p.AllServiceAccountsMap == nil {
 		return isSet, fmt.Errorf("AllServiceAccountsMap is not initialized for pod with ns: %s and name %s", p.Namespace, p.Name)

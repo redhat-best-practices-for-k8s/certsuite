@@ -31,7 +31,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// getClusterCrdNames returns a list of crd names found in the cluster.
+// getClusterCrdNames Retrieves all CustomResourceDefinition objects from the cluster
+//
+// The function obtains a client holder, lists CRDs via the API extensions
+// client, and returns a slice of pointers to each CustomResourceDefinition. If
+// listing fails it wraps the error with context. The result is used by
+// autodiscovery to filter relevant CRDs.
 func getClusterCrdNames() ([]*apiextv1.CustomResourceDefinition, error) {
 	oc := clientsholder.GetClientsHolder()
 	crds, err := oc.APIExtClient.ApiextensionsV1().CustomResourceDefinitions().List(context.TODO(), metav1.ListOptions{})
@@ -46,7 +51,12 @@ func getClusterCrdNames() ([]*apiextv1.CustomResourceDefinition, error) {
 	return crdList, nil
 }
 
-// FindTestCrdNames gets a list of CRD names based on configured groups.
+// FindTestCrdNames Selects CRDs that match configured suffixes
+//
+// The function scans a list of cluster CRDs, comparing each name against a set
+// of suffix filters defined in the configuration. When a CRD’s name ends with
+// any specified suffix, it is added to the result slice. If no CRDs are
+// present, an error is logged and an empty slice is returned.
 func FindTestCrdNames(clusterCrds []*apiextv1.CustomResourceDefinition, crdFilters []configuration.CrdFilter) (targetCrds []*apiextv1.CustomResourceDefinition) {
 	if len(clusterCrds) == 0 {
 		log.Error("Cluster does not have any CRDs")

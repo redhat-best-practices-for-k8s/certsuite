@@ -24,6 +24,13 @@ import (
 	policyv1client "k8s.io/client-go/kubernetes/typed/policy/v1"
 )
 
+// getPodDisruptionBudgets Collects pod disruption budgets across specified namespaces
+//
+// The function iterates over a list of namespace names, requesting the pod
+// disruption budgets present in each one via the Kubernetes policy client. It
+// aggregates all retrieved items into a single slice and returns them along
+// with any error that occurs during listing. If an error is encountered for a
+// namespace, the function aborts immediately and propagates the error.
 func getPodDisruptionBudgets(oc policyv1client.PolicyV1Interface, namespaces []string) ([]policyv1.PodDisruptionBudget, error) {
 	podDisruptionBudgets := []policyv1.PodDisruptionBudget{}
 	for _, ns := range namespaces {

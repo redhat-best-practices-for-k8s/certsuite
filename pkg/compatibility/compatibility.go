@@ -40,6 +40,14 @@ const (
 	OCPStatusPreGA   = "pre-general-availability"
 )
 
+// VersionInfo Holds release cycle dates and supported OS versions
+//
+// This structure stores the General Availability, Full Support Ends, and
+// Maintenance Support Ends dates along with minimum supported RHCOS version and
+// a list of accepted RHEL versions. The date fields are time.Time values that
+// indicate key lifecycle milestones for an OpenShift product. The string slice
+// records which Red Hat Enterprise Linux releases are compatible, allowing
+// callers to validate platform compatibility.
 type VersionInfo struct {
 	GADate  time.Time // General Availability Date
 	FSEDate time.Time // Full Support Ends Date
@@ -235,10 +243,24 @@ var (
 	}
 )
 
+// GetLifeCycleDates Retrieves a map of OpenShift version lifecycle information
+//
+// This function returns a predefined mapping that associates each major.minor
+// OpenShift release with its lifecycle dates, minimum supported RHEL versions,
+// and accepted RHEL releases. The returned data structure is used by other
+// functions to determine compatibility status for clusters, machines, and
+// operating systems. No parameters are required, and the map is returned
+// directly from an internal variable.
 func GetLifeCycleDates() map[string]VersionInfo {
 	return ocpLifeCycleDates
 }
 
+// BetaRHCOSVersionsFoundToMatch Determines if both machine and OCP versions are beta releases that match
+//
+// The function reduces each input to its major.minor form and checks whether
+// these truncated versions appear in a predefined list of beta releases. If
+// either version is not listed, it returns false. When both are present, it
+// confirms they are identical and returns true.
 func BetaRHCOSVersionsFoundToMatch(machineVersion, ocpVersion string) bool {
 	ocpVersion = FindMajorMinor(ocpVersion)
 	machineVersion = FindMajorMinor(machineVersion)
@@ -252,6 +274,14 @@ func BetaRHCOSVersionsFoundToMatch(machineVersion, ocpVersion string) bool {
 	return ocpVersion == machineVersion
 }
 
+// IsRHELCompatible Determines if a machine’s RHEL version is supported for a given OpenShift release
+//
+// The function takes the short RHEL version of a node and an OpenShift cluster
+// version, then checks against a lifecycle database to see if that RHEL release
+// is accepted. If multiple RHEL versions are listed for the OpenShift release
+// it requires an exact match; otherwise it compares major.minor numbers to
+// ensure the machine version is not older. It returns true only when the
+// version criteria are satisfied, otherwise false.
 func IsRHELCompatible(machineVersion, ocpVersion string) bool {
 	if machineVersion == "" || ocpVersion == "" {
 		return false
@@ -279,11 +309,25 @@ func IsRHELCompatible(machineVersion, ocpVersion string) bool {
 	return false
 }
 
+// FindMajorMinor Extracts the major and minor components of a version string
+//
+// The function splits an input string on periods, then concatenates the first
+// two segments separated by a dot to form a "major.minor" representation. It is
+// used to normalize full version strings before comparison or lookup. The
+// returned value is a plain string containing only the major and minor parts.
 func FindMajorMinor(version string) string {
 	splitVersion := strings.Split(version, ".")
 	return splitVersion[0] + "." + splitVersion[1]
 }
 
+// IsRHCOSCompatible Determines if a machine’s RHCOS version is supported for a given OpenShift release
+//
+// The function checks whether the supplied machine version meets the minimum
+// required RHCOS version for the specified OpenShift version. It first handles
+// beta releases by comparing major.minor versions, then looks up lifecycle data
+// to retrieve the minimum acceptable RHCOS version and verifies compatibility
+// using semantic version comparison. If any validation fails, it logs an error
+// and returns false.
 func IsRHCOSCompatible(machineVersion, ocpVersion string) bool {
 	if machineVersion == "" || ocpVersion == "" {
 		return false
@@ -318,6 +362,14 @@ func IsRHCOSCompatible(machineVersion, ocpVersion string) bool {
 	return false
 }
 
+// DetermineOCPStatus Determine the support status of an OpenShift version based on lifecycle dates
+//
+// The function accepts a version string and a date, normalizes the version to
+// major.minor form, looks up lifecycle information from a local map, then
+// compares the provided date against GA, FSE, and MSE milestones. It returns
+// one of several status strings indicating whether the version is pre‑GA,
+// generally available, in maintenance support, or end‑of‑life. If the input
+// is empty or not found in the map, an unknown status is returned.
 func DetermineOCPStatus(version string, date time.Time) string {
 	// Safeguard against empty values being passed in
 	if version == "" || date.IsZero() {

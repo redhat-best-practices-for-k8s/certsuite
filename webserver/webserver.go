@@ -65,6 +65,13 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
+// logStreamHandler Streams log output to a WebSocket client
+//
+// When called, the function upgrades an HTTP request to a WebSocket connection.
+// It then continuously reads lines from a log source, converts each line to
+// HTML-safe format, appends a line break, and sends it over the socket. The
+// loop sleeps briefly between messages and logs any errors that occur during
+// reading or transmission.
 func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -94,6 +101,13 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// RequestedData Holds user‑supplied configuration options for updating a test framework
+//
+// This structure aggregates all settings that can be specified in the UI or
+// command line, such as namespaces, labels, deployment names, and API
+// credentials. Each field is a slice of strings to allow multiple values, with
+// optional fields omitted from JSON if empty. The data is consumed by updateTnf
+// to rebuild the YAML configuration for the test environment.
 type RequestedData struct {
 	SelectedOptions                      []string `json:"selectedOptions"`
 	TargetNameSpaces                     []string `json:"targetNameSpaces"`
@@ -122,10 +136,23 @@ type RequestedData struct {
 	ConnectAPIProxyURL                   []string `json:"proxyURL,omitempty"`
 	ConnectAPIProxyPort                  []string `json:"proxyPort,omitempty"`
 }
+
+// ResponseData Holds a response message
+//
+// This struct contains a single field that stores a text message to be returned
+// in HTTP responses. The JSON tag ensures the field is serialized with the key
+// "message" when the struct is encoded to JSON.
 type ResponseData struct {
 	Message string `json:"message"`
 }
 
+// installReqHandlers Registers HTTP routes for static content and classification data
+//
+// This function sets up several URL handlers that serve embedded HTML,
+// JavaScript, and classification information. Each handler writes the
+// appropriate content type header before sending the precompiled bytes or
+// generated JSON string. Errors during writing result in a 500 response to the
+// client.
 func installReqHandlers() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Set the content type to "text/html".
@@ -198,6 +225,13 @@ func installReqHandlers() {
 	http.HandleFunc("/logstream", logStreamHandler)
 }
 
+// StartServer Starts an HTTP server that serves test results and static assets
+//
+// The function creates a server listening on port 8084, attaches context with
+// the output folder path, registers handlers for static files and runFunction,
+// then begins serving requests. It logs the server address and panics if
+// ListenAndServe returns an error. The server provides endpoints for HTML,
+// JavaScript, and log streaming used by the web interface.
 func StartServer(outputFolder string) {
 	ctx := context.TODO()
 	server := &http.Server{
@@ -219,7 +253,13 @@ func StartServer(outputFolder string) {
 	}
 }
 
-// Define an HTTP handler that triggers CERTSUITE tests
+// runHandler Triggers Cert Suite tests from an HTTP request
+//
+// The handler reads form data containing JSON options and a kubeconfig file,
+// writes the config to a temporary file, updates the test configuration YAML,
+// and then runs the Cert Suite with the supplied labels filter. It logs
+// progress, handles errors by writing HTTP error responses or logging fatal
+// messages, and finally returns a JSON success message.
 //
 //nolint:funlen
 func runHandler(w http.ResponseWriter, r *http.Request) {
@@ -330,6 +370,15 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// updateTnf Updates a YAML configuration with user-provided data
+//
+// This function parses an existing YAML configuration into a struct, then
+// overwrites numerous fields such as namespaces, labels, deployment lists,
+// filters, and connection settings based on the supplied RequestedData. After
+// all updates are applied, it serializes the struct back to YAML and returns
+// the byte slice. Errors during unmarshalling or marshalling cause fatal log
+// entries that terminate the program.
+//
 //nolint:funlen,gocyclo
 func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	// Unmarshal the YAML data into a Config struct
@@ -438,7 +487,13 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	return newData
 }
 
-// outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
+// outputTestCases Creates a Markdown-formatted classification list for test cases
+//
+// The function collects all identifiers from the catalog, sorts them by ID,
+// groups them by suite name, and then builds a string containing each test’s
+// description, remediation, best practice reference, and category
+// classification in JSON-like format. The resulting string is returned for use
+// as a JavaScript variable in the web UI.
 func outputTestCases() (outString string) {
 	// Building a separate data structure to store the key order for the map
 	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
@@ -478,6 +533,12 @@ func outputTestCases() (outString string) {
 	outString += "}"
 	return outString
 }
+
+// toJSONString Formats a map into an indented JSON string
+//
+// The function takes a key/value map of strings, marshals it with indentation
+// to produce readable JSON, and returns the result as a string. If marshalling
+// fails, it simply returns an empty string.
 func toJSONString(data map[string]string) string {
 	// Convert the map to a JSON-like string
 	jsonbytes, err := json.MarshalIndent(data, "", "  ")
@@ -487,6 +548,13 @@ func toJSONString(data map[string]string) string {
 
 	return string(jsonbytes)
 }
+
+// GetSuitesFromIdentifiers Retrieves unique suite names from a list of identifiers
+//
+// The function iterates over each identifier, collects its suite field into a
+// slice, then removes duplicates using a helper that returns only distinct
+// values. It returns a string slice containing the unique suite names present
+// in the input.
 func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	var suites []string
 	for _, i := range keys {
@@ -495,11 +563,23 @@ func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	return arrayhelper.Unique(suites)
 }
 
+// Entry Represents a test case entry in the printable catalog
+//
+// Each instance holds the name of a test and its identifying information,
+// including URL and version details. The struct is used to build a mapping from
+// suite names to collections of tests when generating a printable catalog.
 type Entry struct {
 	testName   string
 	identifier claim.Identifier // {url and version}
 }
 
+// CreatePrintableCatalogFromIdentifiers Organizes identifiers into a map keyed by suite names
+//
+// The function receives a slice of identifier objects and constructs a mapping
+// from each identifier's suite to a list of entries containing the test name
+// and the full identifier. It initializes an empty map, iterates over the input
+// slice, appends a new entry for each identifier, and returns the populated
+// map. If no identifiers are provided, it simply returns an empty map.
 func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]Entry {
 	catalog := make(map[string][]Entry)
 	// we need the list of suite's names
