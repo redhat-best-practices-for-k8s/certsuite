@@ -59,7 +59,7 @@ const (
 
 	PodHostPIDRemediation = `Set the spec.HostPid parameter to false in the pod configuration. Workloads should avoid accessing host resources - spec.HostPid should be false.`
 
-	HugepagesNotManuallyManipulatedRemediation = `HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your workload on a Node that is part of the corresponding MachineConfigSet. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet.`
+	HugepagesNotManuallyManipulatedRemediation = `HugePage settings for worker nodes must be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings.`
 
 	ICMPv4ConnectivityRemediation = `Ensure that the workload is able to communicate via the Default OpenShift network. In some rare cases, workloads may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the redhat-best-practices-for-k8s.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`
 

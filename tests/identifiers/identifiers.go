@@ -748,7 +748,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestHugepagesNotManuallyManipulated = AddCatalogEntry(
 		"hugepages-config",
 		common.PlatformAlterationTestKey,
-		`Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet. First, the "worker" MachineConfig is polled, and the Hugepage settings are extracted. Next, the underlying Nodes are polled for configured HugePages through inspection of /proc/meminfo. The results are compared, and the test passes only if they are the same.`, //nolint:lll
+		`Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are labeled as workers with the standard label "node-role.kubernetes.io/worker". First, the MachineConfig is inspected for hugepage settings in systemd units. If not, the MC's .spec.kernelArguments are inspected for hugepage settings. The sizes and page numbers are compared, and the test passes only if they are the same than then ones in node's /sys/kernel/mm/hugepages/hugepages-X folders.`, //nolint:lll
 		HugepagesNotManuallyManipulatedRemediation,
 		NoExceptions,
 		TestHugepagesNotManuallyManipulatedDocLink,
