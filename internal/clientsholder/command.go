@@ -20,6 +20,7 @@ import (
 	"bytes"
 	"context"
 	"strings"
+	"time"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	corev1 "k8s.io/api/core/v1"
@@ -31,6 +32,11 @@ import (
 type Command interface {
 	ExecCommandContainer(Context, string) (string, string, error)
 }
+
+const (
+	// ExecCommandTimeout defines the maximum duration allowed for a single container exec
+	ExecCommandTimeout = 30 * time.Second
+)
 
 // ExecCommand runs command in the pod and returns buffer output.
 func (clientsholder *ClientsHolder) ExecCommandContainer(
@@ -60,7 +66,11 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 		log.Error("%v", err)
 		return stdout, stderr, err
 	}
-	err = exec.StreamWithContext(context.TODO(), remotecommand.StreamOptions{
+	// enforce an execution timeout for the remote command
+	goCtx, cancel := context.WithTimeout(context.TODO(), ExecCommandTimeout)
+	defer cancel()
+
+	err = exec.StreamWithContext(goCtx, remotecommand.StreamOptions{
 		Stdout: &buffOut,
 		Stderr: &buffErr,
 	})
