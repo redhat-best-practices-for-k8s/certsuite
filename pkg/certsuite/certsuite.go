@@ -28,6 +28,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/performance"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
+	k8sPrivilegedDs "github.com/redhat-best-practices-for-k8s/privileged-daemonset"
 )
 
 func LoadInternalChecksDB() {
@@ -299,6 +300,14 @@ func Run(labelsFilter, outputFolder string) error {
 			if err != nil {
 				log.Fatal("Failed to remove web file %s: %v", file, err)
 			}
+		}
+	}
+
+	// If unique probe name is enabled, remove the probe daemonset
+	if configuration.GetTestParameters().UniqueProbeName {
+		err = k8sPrivilegedDs.DeleteDaemonSet(env.ProbeDaemonsetName, env.Config.ProbeDaemonSetNamespace)
+		if err != nil {
+			log.Fatal("Failed to remove unique probe daemonset: %v", err)
 		}
 	}
 

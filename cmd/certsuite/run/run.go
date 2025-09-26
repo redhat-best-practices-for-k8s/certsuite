@@ -52,6 +52,10 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().String("connect-api-base-url", "", "Base URL for Red Hat Connect API")
 	runCmd.PersistentFlags().String("connect-api-proxy-url", "", "Proxy URL for Red Hat Connect API")
 	runCmd.PersistentFlags().String("connect-api-proxy-port", "", "Proxy port for Red Hat Connect API")
+	// When enabled, certsuite will deploy a uniquely named probe daemonset per run
+	runCmd.PersistentFlags().Bool("unique-probe-name", false, "Deploy a uniquely named probe daemonset per run")
+	// Hide this development-only flag from help output
+	_ = runCmd.PersistentFlags().MarkHidden("unique-probe-name")
 
 	return runCmd
 }
@@ -86,6 +90,7 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams.ConnectAPIBaseURL, _ = cmd.Flags().GetString("connect-api-base-url")
 	testParams.ConnectAPIProxyURL, _ = cmd.Flags().GetString("connect-api-proxy-url")
 	testParams.ConnectAPIProxyPort, _ = cmd.Flags().GetString("connect-api-proxy-port")
+	testParams.UniqueProbeName, _ = cmd.Flags().GetBool("unique-probe-name")
 	timeoutStr, _ := cmd.Flags().GetString("timeout")
 
 	// Check if the output directory exists and, if not, create it
