@@ -140,4 +140,6 @@ type TestParameters struct {
 	ConnectAPIProxyPort           string
 	// AllowNonRunning determines whether autodiscovery includes non-Running pods
 	AllowNonRunning bool
+	// UniqueProbeName when true, appends a random suffix to the probe DaemonSet name per run
+	UniqueProbeName bool
 }

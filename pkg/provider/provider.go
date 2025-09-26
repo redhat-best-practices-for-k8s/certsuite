@@ -49,6 +49,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	utilrand "k8s.io/apimachinery/pkg/util/rand"
 )
 
 // CentOS Stream CoreOS starts being used instead of rhcos from OCP 4.13 latest.
@@ -56,6 +57,7 @@ const (
 	AffinityRequiredKey              = "AffinityRequired"
 	containerName                    = "container-00"
 	DaemonSetName                    = "certsuite-probe"
+	UniqueProbeSuffixLength          = 6
 	probePodsTimeout                 = 5 * time.Minute
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/network-status"
 	skipConnectivityTestsLabel       = "redhat-best-practices-for-k8s.com/skip_connectivity_tests"
@@ -145,6 +147,7 @@ type TestEnvironment struct { // rename this with testTarget
 	ConnectAPIProxyURL           string
 	ConnectAPIProxyPort          string
 	SkipPreflight                bool
+	ProbeDaemonsetName           string
 }
 
 type MachineConfig struct {
@@ -200,18 +203,23 @@ var (
 	loaded = false
 )
 
-func deployDaemonSet(namespace string) error {
+func deployDaemonSet(namespace string) (string, error) {
 	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
 
 	dsImage := env.params.CertSuiteProbeImage
-	if k8sPrivilegedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
-		return nil
+	if !env.params.UniqueProbeName && k8sPrivilegedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
+		return DaemonSetName, nil
 	}
 
+	// Optionally append a random suffix to the daemonset name for uniqueness per run
+	deployedName := DaemonSetName
+	if env.params.UniqueProbeName {
+		deployedName = fmt.Sprintf("%s-%s", DaemonSetName, utilrand.String(UniqueProbeSuffixLength))
+	}
 	matchLabels := make(map[string]string)
-	matchLabels["name"] = DaemonSetName
+	matchLabels["name"] = deployedName
 	matchLabels["redhat-best-practices-for-k8s.com/app"] = DaemonSetName
-	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, probePodsTimeout,
+	_, err := k8sPrivilegedDs.CreateDaemonSet(deployedName, namespace, containerName, dsImage, matchLabels, probePodsTimeout,
 		configuration.GetTestParameters().DaemonsetCPUReq,
 		configuration.GetTestParameters().DaemonsetCPULim,
 		configuration.GetTestParameters().DaemonsetMemReq,
@@ -219,14 +227,14 @@ func deployDaemonSet(namespace string) error {
 		corev1.PullIfNotPresent,
 	)
 	if err != nil {
-		return fmt.Errorf("could not deploy certsuite daemonset, err=%v", err)
+		return "", fmt.Errorf("could not deploy certsuite daemonset, err=%v", err)
 	}
-	err = k8sPrivilegedDs.WaitDaemonsetReady(namespace, DaemonSetName, probePodsTimeout)
+	err = k8sPrivilegedDs.WaitDaemonsetReady(namespace, deployedName, probePodsTimeout)
 	if err != nil {
-		return fmt.Errorf("timed out waiting for certsuite daemonset, err=%v", err)
+		return "", fmt.Errorf("timed out waiting for certsuite daemonset, err=%v", err)
 	}
 
-	return nil
+	return deployedName, nil
 }
 
 func buildTestEnvironment() { //nolint:funlen,gocyclo
@@ -241,14 +249,16 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	log.Debug("CERTSUITE configuration: %+v", config)
 
 	// Wait for the probe pods to be ready before the autodiscovery starts.
-	if err := deployDaemonSet(config.ProbeDaemonSetNamespace); err != nil {
+	deployedName, err := deployDaemonSet(config.ProbeDaemonSetNamespace)
+	if err != nil {
 		log.Error("The TNF daemonset could not be deployed, err: %v", err)
 		// Because of this failure, we are only able to run a certain amount of tests that do not rely
 		// on the existence of the daemonset probe pods.
 		env.DaemonsetFailedToSpawn = true
 	}
 
-	data := autodiscover.DoAutoDiscover(&config)
+	data := autodiscover.DoAutoDiscover(&config, deployedName)
+	env.ProbeDaemonsetName = deployedName
 	// OpenshiftVersion needs to be set asap, as other helper functions will use it here.
 	env.OpenshiftVersion = data.OpenshiftVersion
 	env.Config = config

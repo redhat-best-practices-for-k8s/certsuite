@@ -96,6 +96,12 @@ The following is a non-exhaustive list of the most common flags that the `certsu
 
     See the [OCT tool](https://github.com/redhat-best-practices-for-k8s/oct) for more information on how to create this DB.
 
+* `--unique-probe-name`: Deploy a uniquely named probe DaemonSet per run.
+
+!!! note
+
+    Development only: This flag is intended for development and troubleshooting to avoid sharing probe pods across concurrent runs. It should not be required in normal operation.
+
 ## Using the container image
 
 The only prerequisite for running the Test Suite in container mode is having Docker or Podman installed.

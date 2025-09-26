@@ -156,7 +156,7 @@ func CreateLabels(labelStrings []string) (labelObjects []labelObject) {
 // DoAutoDiscover finds objects under test
 //
 //nolint:funlen,gocyclo
-func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData {
+func DoAutoDiscover(config *configuration.TestConfiguration, deployedDaemonsetName string) DiscoveredTestData {
 	oc := clientsholder.GetClientsHolder()
 
 	var err error
@@ -190,7 +190,14 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Pods, data.AllPods = FindPodsByLabels(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.PodStates.BeforeExecution = CountPodsByStatus(data.AllPods)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
-	probeLabels := []labelObject{{LabelKey: probeHelperPodsLabelName, LabelValue: probeHelperPodsLabelValue}}
+	// If a specific daemonset name was deployed for this run, select pods by name label.
+	// Otherwise, fallback to the default app label.
+	var probeLabels []labelObject
+	if strings.TrimSpace(deployedDaemonsetName) != "" {
+		probeLabels = []labelObject{{LabelKey: "name", LabelValue: deployedDaemonsetName}}
+	} else {
+		probeLabels = []labelObject{{LabelKey: probeHelperPodsLabelName, LabelValue: probeHelperPodsLabelValue}}
+	}
 	probeNS := []string{config.ProbeDaemonSetNamespace}
 	data.ProbePods, _ = FindPodsByLabels(oc.K8sClient.CoreV1(), probeLabels, probeNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
