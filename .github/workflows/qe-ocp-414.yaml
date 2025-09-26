@@ -16,32 +16,28 @@ env:
   ENABLE_CERTSUITE_MEMORY_LIMIT: true
 
 jobs:
-  pull-unstable-image:
+  build-and-store:
     if: github.repository_owner == 'redhat-best-practices-for-k8s'
     runs-on: qe-ocp-414
-    env:
-      SHELL: /bin/bash
-      FORCE_DOWNLOAD_UNSTABLE: true
     steps:
       - name: Check out code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           ref: ${{ github.sha }}
 
-      - name: Clone the QE repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          repository: ${{ env.QE_REPO }}
-          path: certsuite-qe
+      - name: Build the binary
+        run: make build-certsuite-tool
 
-      - name: Run the script to pull the unstable image
-        run: ./scripts/download-unstable.sh
-        working-directory: certsuite-qe
+      - name: Store binary as artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: certsuite-binary
+          path: ./certsuite
 
   qe-ocp-414-testing:
     runs-on: qe-ocp-414
-    needs: pull-unstable-image
-    if: needs.pull-unstable-image.result == 'success'
+    needs: build-and-store
+    if: needs.build-and-store.result == 'success'
     strategy:
       fail-fast: false
       matrix: 
@@ -50,8 +46,6 @@ jobs:
       SHELL: /bin/bash
       KUBECONFIG: '/home/labuser2/.kube/config'
       PFLT_DOCKERCONFIG: '/home/labuser2/.docker/config'
-      CERTSUITE_IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite
-      TEST_CERTSUITE_IMAGE_TAG: unstable
       DOCKER_CONFIG_DIR: '/home/labuser2/.docker'
       CERTSUITE_CONFIG_DIR: '/home/labuser2/certsuite_config'
       CERTSUITE_REPORT_DIR: '/home/labuser2/tnf_report'
@@ -88,13 +82,6 @@ jobs:
           sudo rm -rf ${{env.CERTSUITE_CONFIG_DIR}}
           sudo rm -rf ${{env.CERTSUITE_REPORT_DIR}}
 
-      - name: Run the tests (against image)
-        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
-        with:
-          timeout_minutes: 150
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
-
       - name: Build the binary
         run: make build-certsuite-tool
 
@@ -104,9 +91,6 @@ jobs:
           timeout_minutes: 150
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
-
-      - name: Cleanup self-hosted runner images
-        run: docker image prune -f
       
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
