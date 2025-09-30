@@ -16,32 +16,48 @@ env:
   ENABLE_CERTSUITE_MEMORY_LIMIT: true
 
 jobs:
-  pull-unstable-image:
+  build-and-store:
     if: github.repository_owner == 'redhat-best-practices-for-k8s'
+    # build and store the image
     runs-on: qe-ocp-417
-    env:
-      SHELL: /bin/bash
-      FORCE_DOWNLOAD_UNSTABLE: true
+    strategy:
+      fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.sha }}
 
-      - name: Clone the QE repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          repository: ${{ env.QE_REPO }}
-          path: certsuite-qe
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
 
-      - name: Run the script to pull the unstable image
-        run: ./scripts/download-unstable.sh
-        working-directory: certsuite-qe
+      - name: Build temporary image tag for this PR
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: quay.io/redhat-best-practices-for-k8s/certsuite:localtest-417
+          outputs: type=docker,dest=/tmp/testimage.tar
+
+      - name: Build the binary
+        run: make build-certsuite-tool
+
+      - name: Store image as artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: testimage
+          path: /tmp/testimage.tar
+
+      - name: Store binary as artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: certsuite-binary
+          path: ./certsuite
 
   qe-ocp-417-intrusive-testing:
     runs-on: qe-ocp-417
-    needs: pull-unstable-image
-    if: needs.pull-unstable-image.result == 'success'
+    needs: build-and-store
+    if: needs.build-and-store.result == 'success'
     strategy:
       fail-fast: false
       matrix: 
@@ -52,7 +68,7 @@ jobs:
       KUBECONFIG: '/home/labuser4/.kube/config'
       PFLT_DOCKERCONFIG: '/home/labuser4/.docker/config'
       CERTSUITE_IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite
-      TEST_CERTSUITE_IMAGE_TAG: unstable
+      TEST_CERTSUITE_IMAGE_TAG: localtest-417
       DOCKER_CONFIG_DIR: '/home/labuser4/.docker'
       CERTSUITE_CONFIG_DIR: '/home/labuser4/certsuite_config'
       CERTSUITE_REPORT_DIR: '/home/labuser4/tnf_report'
@@ -89,6 +105,15 @@ jobs:
           sudo rm -rf ${{env.CERTSUITE_CONFIG_DIR}}
           sudo rm -rf ${{env.CERTSUITE_REPORT_DIR}}
 
+      - name: Download image from artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: testimage
+          path: /tmp
+
+      - name: Load image into docker
+        run: docker load --input /tmp/testimage.tar
+
       - name: Run the tests (against image)
         uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
         with:
@@ -96,8 +121,14 @@ jobs:
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} CERTSUITE_IMAGE=${{env.CERTSUITE_IMAGE_NAME}} CERTSUITE_IMAGE_TAG=${{env.TEST_CERTSUITE_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 
-      - name: Build the binary
-        run: make build-certsuite-tool
+      - name: Download binary from artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: certsuite-binary
+          path: .
+
+      - name: Make binary executable
+        run: chmod +x ./certsuite
 
       - name: Run the tests (against binary)
         uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
