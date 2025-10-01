@@ -37,7 +37,7 @@ jobs:
           context: .
           file: ./Dockerfile
           tags: quay.io/redhat-best-practices-for-k8s/certsuite:localtest-414
-          outputs: type=docker,dest=/tmp/testimage.tar
+          outputs: type=docker,dest=${{ runner.temp }}/testimage-414.tar
 
       - name: Build the binary
         run: make build-certsuite-tool
@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: testimage
-          path: /tmp/testimage.tar
+          path: ${{ runner.temp }}/testimage-414.tar
 
       - name: Store binary as artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -109,10 +109,10 @@ jobs:
         uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: testimage
-          path: /tmp
+          path: ${{ runner.temp }}
 
       - name: Load image into docker
-        run: docker load --input /tmp/testimage.tar
+        run: docker load --input ${{ runner.temp }}/testimage-414.tar
 
       - name: Run the tests (against image)
         uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
