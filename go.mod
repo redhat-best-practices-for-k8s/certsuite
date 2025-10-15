@@ -18,8 +18,8 @@ require (
 	github.com/operator-framework/api v0.35.0
 	github.com/operator-framework/operator-lifecycle-manager v0.36.0
 	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.59
-	github.com/redhat-best-practices-for-k8s/oct v0.0.48
-	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.59
+	github.com/redhat-best-practices-for-k8s/oct v0.0.49
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.60
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20250812183411-436b6cd740f4
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/spf13/cobra v1.10.1
@@ -27,12 +27,12 @@ require (
 	golang.org/x/term v0.36.0
 	google.golang.org/api v0.249.0
 	gopkg.in/yaml.v3 v3.0.1
-	helm.sh/helm/v3 v3.18.6
+	helm.sh/helm/v3 v3.19.0
 	k8s.io/api v0.34.1
 	k8s.io/apiextensions-apiserver v0.34.1
 	k8s.io/apimachinery v0.34.1
 	k8s.io/client-go v0.34.1
-	k8s.io/kubectl v0.33.4
+	k8s.io/kubectl v0.34.0
 	k8s.io/utils v0.0.0-20251002143259-bc988d571ff4
 )
 
@@ -100,7 +100,6 @@ require (
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-containerregistry v0.20.6 // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
-	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.6 // indirect
 	github.com/googleapis/gax-go/v2 v2.15.0 // indirect
@@ -196,7 +195,7 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	k8s.io/apiserver v0.34.1 // indirect
-	k8s.io/cli-runtime v0.33.4 // indirect
+	k8s.io/cli-runtime v0.34.0 // indirect
 	k8s.io/component-base v0.34.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20250910181357-589584f1c912 // indirect
@@ -208,8 +207,8 @@ require (
 	sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.33.0 // indirect
 	sigs.k8s.io/controller-runtime v0.22.2 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
-	sigs.k8s.io/kustomize/api v0.19.0 // indirect
-	sigs.k8s.io/kustomize/kyaml v0.19.0 // indirect
+	sigs.k8s.io/kustomize/api v0.20.1 // indirect
+	sigs.k8s.io/kustomize/kyaml v0.20.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.0 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
