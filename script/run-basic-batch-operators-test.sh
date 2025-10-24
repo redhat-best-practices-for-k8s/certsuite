@@ -22,7 +22,7 @@ CATALOG_SOURCE_TEMPLATE="$(pwd)"/CatalogSource.yaml.template
 DOCKER_CONFIG=config.json
 
 # Location of telco/non-telco classification file
-CNF_TYPE=cmd/certsuite/claim/show/csv/cnf-type.json
+CNF_TYPE_DIR="$(pwd)"cmd/certsuite/claim/show/csv
 
 # Operator catalog name
 OPERATOR_CATALOG_NAME="operator-catalog"
@@ -649,23 +649,6 @@ while IFS=, read -r package_name catalog_index; do
 		oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
 	} >>"$LOG_FILE_PATH" 2>&1
 
-	# Get latest certsuite container image
-	echo_color "$BLUE" "Get latest certsuite executable from image: ${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}"
-	{
-		podman pull "${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}" || true
-		podman run --replace -d --name temp-container "${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}" || true
-		# sleep for a while to allow the container to come up and exit
-		sleep 2
-		podman cp temp-container:/usr/certsuite/certsuite . || true
-		podman rm -f temp-container || true
-	} >>"$LOG_FILE_PATH" 2>&1
-
-	if [ ! -f "./certsuite" ]; then
-		echo_color "$RED" "Could not download latest certsuite executable, continue"
-		report_failure "$status" "$ns" "$package_name" "Could not download latest certsuite, skipping test"
-		continue
-	fi
-
 	# Run certsuite container
 	echo_color "$BLUE" "run CNF suite"
 
@@ -675,11 +658,16 @@ while IFS=, read -r package_name catalog_index; do
 	cp "$DOCKER_CONFIG" "$config_dir"/dockerconfig
 	cp "$config_yaml" "$config_dir"/certsuite_config.yaml
 
-	./certsuite run \
-		--kubeconfig="$config_dir"/kubeconfig \
-		--preflight-dockerconfig="$config_dir"/dockerconfig \
-		--config-file="$config_dir"/certsuite_config.yaml \
-		--output-dir="$report_dir" \
+	podman run --rm \
+		--network=host \
+		-v "${config_dir}:/config:Z" \
+		-v "${report_dir}:/reports:Z" \
+		"${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}" \
+		/usr/local/bin/certsuite run \
+		--kubeconfig=/config/kubeconfig \
+		--preflight-dockerconfig=/config/dockerconfig \
+		--config-file=/config/certsuite_config.yaml \
+		--output-dir=/reports \
 		--label-filter=all >>"$LOG_FILE_PATH" 2>&1 || {
 		report_failure "$status" "$ns" "$package_name" "CNF suite exited with errors"
 		continue
@@ -712,7 +700,12 @@ while IFS=, read -r package_name catalog_index; do
 
 	# merge claim.json from each operator to a single csv file
 	echo_color "$BLUE" "add claim.json from this operator to the csv file"
-	if ! ./certsuite claim show csv -c "$report_dir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$add_headers" >>"$REPORT_FOLDER"/results.csv; then
+	if ! podman run --rm \
+		-v "${report_dir}:/reports:Z" \
+		-v "${CNF_TYPE_DIR}:/cnftype:Z" \
+		"${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}" \
+		/usr/local/bin/certsuite claim \
+		show csv -t /cnftype/cnf-type.json -c /reports/claim.json -n "$package_name" "$add_headers" >>"$REPORT_FOLDER"/results.csv; then
 		echo_color "$RED" "failed to parse claim file"
 	fi
 
