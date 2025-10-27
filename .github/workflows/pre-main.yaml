@@ -255,7 +255,7 @@ jobs:
         run: ./certsuite claim show failures -c certsuite-out/claim.json
 
       - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         if: always()
         with:
           name: smoke-tests
@@ -272,7 +272,7 @@ jobs:
         run: ./certsuite run --label-filter=preflight --log-level="${SMOKE_TESTS_LOG_LEVEL}"
 
       - name: Upload preflight smoke test results as an artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         if: always()
         with:
           name: preflight-smoke-tests
@@ -381,7 +381,7 @@ jobs:
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         if: always()
         with:
           name: smoke-tests-container
