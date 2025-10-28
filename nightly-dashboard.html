@@ -910,20 +910,6 @@
                     </div>
                 </div>
 
-                <!-- OCP 4.15 Regular -->
-                <div class="ocp-card">
-                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-415.yaml" 
-                       target="_blank" 
-                       class="ocp-version-link"
-                       title="View QE OCP 4.15 Testing workflow runs on GitHub">
-                        OpenShift 4.15
-                    </a>
-                    <div id="ocp-415-regular-content" class="loading">
-                        <div class="spinner"></div>
-                        Loading...
-                    </div>
-                </div>
-
                 <!-- OCP 4.16 Regular -->
                 <div class="ocp-card">
                     <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-416.yaml" 
@@ -1025,20 +1011,6 @@
                         OpenShift 4.14
                     </a>
                     <div id="ocp-414-intrusive-content" class="loading">
-                        <div class="spinner"></div>
-                        Loading...
-                    </div>
-                </div>
-
-                <!-- OCP 4.15 Intrusive -->
-                <div class="ocp-card">
-                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-415-intrusive.yaml" 
-                       target="_blank" 
-                       class="ocp-version-link"
-                       title="View QE OCP 4.15 Intrusive Testing workflow runs on GitHub">
-                        OpenShift 4.15
-                    </a>
-                    <div id="ocp-415-intrusive-content" class="loading">
                         <div class="spinner"></div>
                         Loading...
                     </div>
@@ -1474,10 +1446,6 @@
                 regular: 'QE OCP 4.14 Testing',
                 intrusive: 'QE OCP 4.14 Intrusive Testing'
             },
-            '4.15': {
-                regular: 'QE OCP 4.15 Testing',
-                intrusive: 'QE OCP 4.15 Intrusive Testing'
-            },
             '4.16': {
                 regular: 'QE OCP 4.16 Testing',
                 intrusive: 'QE OCP 4.16 Intrusive Testing'
@@ -1606,8 +1574,6 @@
         const WORKFLOW_FILE_MAP = {
             'QE OCP 4.14 Testing': 'qe-ocp-414.yaml',
             'QE OCP 4.14 Intrusive Testing': 'qe-ocp-414-intrusive.yaml',
-            'QE OCP 4.15 Testing': 'qe-ocp-415.yaml',
-            'QE OCP 4.15 Intrusive Testing': 'qe-ocp-415-intrusive.yaml',
             'QE OCP 4.16 Testing': 'qe-ocp-416.yaml',
             'QE OCP 4.16 Intrusive Testing': 'qe-ocp-416-intrusive.yaml',
             'QE OCP 4.17 Testing': 'qe-ocp-417.yaml',
