@@ -370,14 +370,6 @@ func Test_shouldUseCustomPodman(t *testing.T) {
 			expected: false,
 		},
 		{
-			name: "ocp version 4.15",
-			args: args{
-				check:      &checksdb.Check{},
-				ocpVersion: "4.15",
-			},
-			expected: false,
-		},
-		{
 			name: "ocp version 5.0",
 			args: args{
 				check:      &checksdb.Check{},

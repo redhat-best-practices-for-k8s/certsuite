@@ -56,7 +56,7 @@ type VersionInfo struct {
 }
 
 var (
-	ocpBetaVersions   = []string{"4.13", "4.14", "4.15", "4.16", "4.17", "4.18", "4.19", "4.20", "4.21"}
+	ocpBetaVersions   = []string{"4.13", "4.14", "4.16", "4.17", "4.18", "4.19", "4.20", "4.21"}
 	ocpLifeCycleDates = map[string]VersionInfo{
 		// TODO: Adjust all of these periodically to make sure they are up to date with the lifecycle
 		// update documentation.
