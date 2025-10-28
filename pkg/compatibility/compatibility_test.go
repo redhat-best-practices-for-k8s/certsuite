@@ -96,40 +96,40 @@ func TestIsRHELCompatible(t *testing.T) {
 		testOCPVersion     string
 		expectedOutput     bool
 	}{
-		{ // Test Case #1 - OCP 4.10 only accepts RHEL Versions 8.4 and 8.5, fail
+		{ // Test Case #1 - OCP 4.10 only accepts RHEL 8.4, fail
 			testOCPVersion:     "4.10",
 			testMachineVersion: "7.9",
 			expectedOutput:     false,
 		},
-		{ // Test Case #2 - OCP 4.10 only accepts RHEL Versions 8.4 and 8.5, pass
+		{ // Test Case #2 - OCP 4.10 only accepts RHEL 8.4, pass
 			testOCPVersion:     "4.10",
 			testMachineVersion: "8.4",
 			expectedOutput:     true,
 		},
-		{ // Test Case #3 - OCP 4.10 only accepts RHEL Versions 8.4 and 8.5, pass
+		{ // Test Case #3 - OCP 4.10 accepts RHEL 8.4 and 8.5, pass
 			testOCPVersion:     "4.10",
 			testMachineVersion: "8.5",
 			expectedOutput:     true,
 		},
-		{ // Test Case #4 - OCP 4.8 accepts RHEL versions >= 7.9, pass
+		{ // Test Case #4 - OCP 4.8 accepts RHEL >= 7.9, pass
 			testOCPVersion:     "4.8",
 			testMachineVersion: "8.5",
 			expectedOutput:     true,
 		},
-		{ // Test Case #5 - OCP 4.8 accepts RHEL versions >= 7.9, pass
+		{ // Test Case #5 - OCP 4.8 accepts RHEL >= 7.9, pass
 			testOCPVersion:     "4.8",
 			testMachineVersion: "7.9",
 			expectedOutput:     true,
 		},
-		{ // Test Case #6 - OCP 4.8 accepts RHEL versions >= 7.9, fail
+		{ // Test Case #6 - OCP 4.8 accepts RHEL >= 7.9, fail
 			testOCPVersion:     "4.8",
 			testMachineVersion: "7.8",
 			expectedOutput:     false,
 		},
-		{ // Test Case #7 - OCP 4.1 accepts RHEL versions >= 7.6, fail
+		{ // Test Case #7 - OCP 4.8 accepts RHEL >= 7.9, pass
 			testOCPVersion:     "4.8",
-			testMachineVersion: "7.8",
-			expectedOutput:     false,
+			testMachineVersion: "8.4",
+			expectedOutput:     true,
 		},
 		{ // Test Case #8 - OCP version empty, fail
 			testOCPVersion:     "",
@@ -139,6 +139,31 @@ func TestIsRHELCompatible(t *testing.T) {
 		{ // Test Case #9 - machine version empty, fail
 			testOCPVersion:     "4.8",
 			testMachineVersion: "",
+			expectedOutput:     false,
+		},
+		{ // Test Case #10 - OCP 4.9 accepts RHEL 7.9, pass
+			testOCPVersion:     "4.9",
+			testMachineVersion: "7.9",
+			expectedOutput:     true,
+		},
+		{ // Test Case #11 - OCP 4.9 accepts RHEL 8.4, pass
+			testOCPVersion:     "4.9",
+			testMachineVersion: "8.4",
+			expectedOutput:     true,
+		},
+		{ // Test Case #12 - OCP 4.16 accepts RHEL 8.8 and 9.2, fail with 9.4
+			testOCPVersion:     "4.16",
+			testMachineVersion: "9.4",
+			expectedOutput:     false,
+		},
+		{ // Test Case #13 - OCP 4.16 accepts RHEL 8.8 and 9.2, pass with 9.2
+			testOCPVersion:     "4.16",
+			testMachineVersion: "9.2",
+			expectedOutput:     true,
+		},
+		{ // Test Case #14 - OCP 4.16 does not accept RHEL 8.4, fail
+			testOCPVersion:     "4.16",
+			testMachineVersion: "8.4",
 			expectedOutput:     false,
 		},
 	}

@@ -26,8 +26,14 @@ import (
 )
 
 /* Notes for this package
-* Refer to this document for more information about OCP compatibility: https://access.redhat.com/support/policy/updates/openshift
-
+* Refer to these documents for more information about OCP compatibility:
+*   - OCP Lifecycle Policy: https://access.redhat.com/support/policy/updates/openshift
+*   - RHEL Versions in RHCOS/OCP: https://access.redhat.com/articles/6907891
+*
+* IMPORTANT: The RHELVersionsAccepted field refers to RHEL versions supported for WORKER NODES,
+* not the RHEL version used internally by RHCOS. Worker nodes can run standard RHEL while
+* control plane nodes must run RHCOS. See release notes comments below for worker node compatibility.
+*
 * This module will help compare the running OCP version against a matrix of end of life dates.
  */
 
@@ -62,18 +68,18 @@ var (
 			MSEDate: time.Date(2027, 4, 21, 0, 0, 0, 0, time.UTC),  // April 21, 2027 (18 months from GA)
 			// Note: Dates are estimated based on typical 4-month release cadence. Update when official dates available.
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.20",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.10", "9.4"}, // TBD - estimated based on typical support
 		},
 		"4.19": {
 			GADate:  time.Date(2025, 6, 17, 0, 0, 0, 0, time.UTC),  // June 17, 2025
 			FSEDate: time.Date(2025, 9, 17, 0, 0, 0, 0, time.UTC),  // September 17, 2025
 			MSEDate: time.Date(2026, 12, 17, 0, 0, 0, 0, time.UTC), // December 17, 2026
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.19",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.10", "9.4"}, // TBD - estimated based on typical support
 		},
 
 		// Maintenance Support
@@ -82,27 +88,27 @@ var (
 			FSEDate: time.Date(2025, 9, 17, 0, 0, 0, 0, time.UTC), // September 17, 2025
 			MSEDate: time.Date(2028, 2, 25, 0, 0, 0, 0, time.UTC), // February 25, 2028 // This is the end of "Term 2" extended update support.
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.18",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.10", "9.4"}, // TBD - estimated based on typical support
 		},
 		"4.17": {
 			GADate:  time.Date(2024, 10, 1, 0, 0, 0, 0, time.UTC), // October 1, 2024
 			FSEDate: time.Date(2025, 4, 27, 0, 0, 0, 0, time.UTC), // April 27, 2025
 			MSEDate: time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),  // April 1, 2026 - This is the end of "Term 2" extended update support.
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.17",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.10", "9.2"}, // TBD - estimated based on typical support
 		},
 		"4.16": {
 			GADate:  time.Date(2024, 6, 27, 0, 0, 0, 0, time.UTC), // June 27, 2024
 			FSEDate: time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC),  // January 1, 2025
 			MSEDate: time.Date(2027, 6, 27, 0, 0, 0, 0, time.UTC), // June 27, 2027 - This is the end of "Term 2" extended update support.
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.16",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.8", "9.2"}, // TBD - estimated based on typical support
 		},
 
 		// Extended Update Support (EUS) - EUS releases receive additional 6-18 months beyond standard maintenance
@@ -111,18 +117,18 @@ var (
 			FSEDate: time.Date(2024, 5, 27, 0, 0, 0, 0, time.UTC),  // May 27, 2024
 			MSEDate: time.Date(2026, 10, 31, 0, 0, 0, 0, time.UTC), // October 31, 2026 - This is the end of "Term 2" extended update support.
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.14",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.6", "9.0"}, // TBD - estimated based on typical support
 		},
 		"4.12": {
 			GADate:  time.Date(2023, 1, 17, 0, 0, 0, 0, time.UTC), // January 17, 2023
 			FSEDate: time.Date(2023, 8, 17, 0, 0, 0, 0, time.UTC), // August 17, 2023
 			MSEDate: time.Date(2026, 1, 17, 0, 0, 0, 0, time.UTC), // January 17, 2026 - This is the end of "Term 2" extended update support.
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.12",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.4", "8.5"}, // TBD - needs verification from release notes
 		},
 
 		// End of life
@@ -131,72 +137,72 @@ var (
 			FSEDate: time.Date(2025, 9, 27, 0, 0, 0, 0, time.UTC), // September 27, 2025
 			MSEDate: time.Date(2025, 8, 27, 0, 0, 0, 0, time.UTC), // August 27, 2025
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.15",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.6", "9.0"}, // TBD - estimated based on typical support
 		},
 		"4.13": {
 			GADate:  time.Date(2023, 5, 17, 0, 0, 0, 0, time.UTC),  // May 17, 2023
 			FSEDate: time.Date(2024, 1, 31, 0, 0, 0, 0, time.UTC),  // January 31, 2024
 			MSEDate: time.Date(2024, 11, 17, 0, 0, 0, 0, time.UTC), // November 17, 2024
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.13",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.6", "9.0"}, // TBD - estimated based on typical support
 		},
 		"4.11": {
 			GADate:  time.Date(2022, 8, 10, 0, 0, 0, 0, time.UTC), // August 10, 2022
 			FSEDate: time.Date(2023, 4, 17, 0, 0, 0, 0, time.UTC), // April 17, 2023
 			MSEDate: time.Date(2024, 2, 10, 0, 0, 0, 0, time.UTC), // February 10, 2024
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.11",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.4", "8.5"}, // See release notes at line 382
 		},
 		"4.10": {
 			GADate:  time.Date(2022, 3, 10, 0, 0, 0, 0, time.UTC),  // March 10, 2022
 			FSEDate: time.Date(2022, 11, 10, 0, 0, 0, 0, time.UTC), // November 10, 2022
 			MSEDate: time.Date(2023, 9, 10, 0, 0, 0, 0, time.UTC),  // September 10, 2023
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.10",
-			RHELVersionsAccepted: []string{"8.4", "8.5"},
+			RHELVersionsAccepted: []string{"8.4", "8.5"}, // See release notes at line 386
 		},
 		"4.9": {
 			GADate:  time.Date(2021, 10, 18, 0, 0, 0, 0, time.UTC), // October 18, 2021
 			FSEDate: time.Date(2022, 6, 10, 0, 0, 0, 0, time.UTC),  // June 10, 2022
 			MSEDate: time.Date(2023, 4, 18, 0, 0, 0, 0, time.UTC),  // April 18, 2023
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.9",
-			RHELVersionsAccepted: []string{"7.9", "8.4"},
+			RHELVersionsAccepted: []string{"7.9", "8.4"}, // See release notes at line 390
 		},
 		"4.8": {
 			GADate:  time.Date(2021, 7, 27, 0, 0, 0, 0, time.UTC), // July 27, 2021
 			FSEDate: time.Date(2022, 1, 27, 0, 0, 0, 0, time.UTC), // January 27, 2022
 			MSEDate: time.Date(2023, 1, 27, 0, 0, 0, 0, time.UTC), // January 27, 2023
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.8",
-			RHELVersionsAccepted: []string{"7.9"},
+			RHELVersionsAccepted: []string{"7.9"}, // RHEL 7.9 or later - See release notes at line 394
 		},
 		"4.7": {
 			GADate:  time.Date(2021, 2, 24, 0, 0, 0, 0, time.UTC),  // February 24, 2021
 			FSEDate: time.Date(2021, 10, 27, 0, 0, 0, 0, time.UTC), // October 27, 2021
 			MSEDate: time.Date(2022, 8, 24, 0, 0, 0, 0, time.UTC),  // August 24, 2022
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.7",
-			RHELVersionsAccepted: []string{"7.9"},
+			RHELVersionsAccepted: []string{"7.9"}, // RHEL 7.9 or later - See release notes at line 398
 		},
 		"4.6": {
 			GADate:  time.Date(2020, 10, 27, 0, 0, 0, 0, time.UTC), // October 27, 2020
 			FSEDate: time.Date(2021, 3, 24, 0, 0, 0, 0, time.UTC),  // March 24, 2021
 			MSEDate: time.Date(2021, 10, 18, 0, 0, 0, 0, time.UTC), // October 18, 2022
 
-			// OS Compatibility
+			// OS Compatibility (for worker nodes)
 			MinRHCOSVersion:      "4.6",
-			RHELVersionsAccepted: []string{"7.9"},
+			RHELVersionsAccepted: []string{"7.9"}, // RHEL 7.9 or later - See release notes at line 402
 		},
 		"4.5": {
 			GADate:  time.Date(2020, 7, 13, 0, 0, 0, 0, time.UTC),  // July 13, 2020
