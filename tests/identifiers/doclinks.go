@@ -11,7 +11,6 @@ const (
 	TestICMPv4ConnectivityIdentifierDocLink             = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ipv4-&-ipv6"
 	TestNetworkPolicyDenyAllIdentifierDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-vrfs-aka-routing-instances"
 	TestReservedExtendedPartnerPortsDocLink             = NoDocLinkExtended
-	TestDpdkCPUPinningExecProbeDocLink                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-manager-pinning"
 	TestRestartOnRebootLabelOnPodsUsingSRIOVDocLink     = NoDocLinkFarEdge
 	TestNetworkAttachmentDefinitionSRIOVUsingMTUDocLink = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-multus-sr-iov---macvlan"
 	TestLimitedUseOfExecProbesIdentifierDocLink         = NoDocLinkFarEdge
@@ -101,6 +100,7 @@ const (
 	TestExclusiveCPUPoolSchedulingPolicyDocLink = NoDocLinkFarEdge
 	TestIsolatedCPUPoolSchedulingPolicyDocLink  = NoDocLinkFarEdge
 	TestRtAppNoExecProbesDocLink                = NoDocLinkFarEdge
+	TestCPUPinningNoExecProbesDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-manager-pinning"
 
 	// Operator Test Suite
 	DocOperatorRequirement                                                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-operator-requirements"
