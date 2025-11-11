@@ -22,7 +22,7 @@ CATALOG_SOURCE_TEMPLATE="$(pwd)"/CatalogSource.yaml.template
 DOCKER_CONFIG=config.json
 
 # Location of telco/non-telco classification file
-CNF_TYPE_DIR="$(pwd)"cmd/certsuite/claim/show/csv
+CNF_TYPE_DIR="$(pwd)"/cmd/certsuite/claim/show/csv
 
 # Operator catalog name
 OPERATOR_CATALOG_NAME="operator-catalog"
@@ -99,17 +99,52 @@ cleanup() {
 	# Leftovers specific to certain operators
 	oc delete Validating_webhook_configuration sriov-operator-webhook-config || true
 	oc delete Mutating_webhook_configuration sriov-operator-webhook-config || true
+
+	# Remove all test labels from all namespaces
+	echo_color "$BLUE" "Removing test labels from all resources in all namespaces"
+
+	# Remove operator labels from CSVs in all namespaces
+	oc get csv --all-namespaces -o json 2>/dev/null |
+		jq -r '.items[] | select(.metadata.labels."redhat-best-practices-for-k8s.com/operator" != null) | .metadata.namespace + " " + .metadata.name' 2>/dev/null |
+		while read -r ns name; do
+			[ -n "$ns" ] && [ -n "$name" ] && oc label csv -n "$ns" "$name" redhat-best-practices-for-k8s.com/operator- 2>/dev/null || true
+		done
+
+	# Remove generic labels from deployments in all namespaces
+	oc get deployment --all-namespaces -o json 2>/dev/null |
+		jq -r '.items[] | select(.metadata.labels."redhat-best-practices-for-k8s.com/generic" != null) | .metadata.namespace + " " + .metadata.name' 2>/dev/null |
+		while read -r ns name; do
+			[ -n "$ns" ] && [ -n "$name" ] && oc label deployment -n "$ns" "$name" redhat-best-practices-for-k8s.com/generic- 2>/dev/null || true
+		done
+
+	# Remove generic labels from statefulsets in all namespaces
+	oc get statefulset --all-namespaces -o json 2>/dev/null |
+		jq -r '.items[] | select(.metadata.labels."redhat-best-practices-for-k8s.com/generic" != null) | .metadata.namespace + " " + .metadata.name' 2>/dev/null |
+		while read -r ns name; do
+			[ -n "$ns" ] && [ -n "$name" ] && oc label statefulset -n "$ns" "$name" redhat-best-practices-for-k8s.com/generic- 2>/dev/null || true
+		done
+
+	# Remove generic labels from pods in all namespaces
+	oc get pods --all-namespaces -o json 2>/dev/null |
+		jq -r '.items[] | select(.metadata.labels."redhat-best-practices-for-k8s.com/generic" != null) | .metadata.namespace + " " + .metadata.name' 2>/dev/null |
+		while read -r ns name; do
+			[ -n "$ns" ] && [ -n "$name" ] && oc label pod -n "$ns" "$name" redhat-best-practices-for-k8s.com/generic- 2>/dev/null || true
+		done
 }
 
 wait_delete_namespace() {
 	local namespace_deleting=$1
 	# Wait for the namespace to be removed
-	if [ "$namespace_deleting" != "openshift-operators" ]; then
+	if [ "$namespace_deleting" != "openshift-operators" ] && [ "$namespace_deleting" != "openshift-storage" ]; then
 
 		echo_color "$BLUE" "non openshift-operators namespace = $namespace_deleting, deleting "
 		with_retry 2 0 oc wait namespace "$namespace_deleting" --for=delete --timeout=60s || true
 
 		force_delete_namespace_if_present "$namespace_deleting" >>"$LOG_FILE_PATH" 2>&1 || true
+	else
+		if [ "$namespace_deleting" = "openshift-storage" ]; then
+			echo_color "$BLUE" "Skipping deletion of openshift-storage namespace"
+		fi
 	fi
 }
 
@@ -286,7 +321,6 @@ wait_for_csv_to_appear_and_label() {
 	local start_time=0
 	local current_time=0
 	local elapsed_time=0
-	local command=""
 	local status=0
 
 	start_time=$(date +%s)
@@ -311,12 +345,21 @@ wait_for_csv_to_appear_and_label() {
 	done
 
 	# Label CSV with "redhat-best-practices-for-k8s.com/operator=target"
-	command=$(with_retry 5 10 oc get csv -n "$csv_namespace" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | grep -v openshift-operator-lifecycle-manager | sed '/^ *$/d' | awk '{print "  with_retry 5 10 oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/operator=target "}')
-	eval "$command"
+	# Label each CSV individually to handle errors better
+	oc get csv -n "$csv_namespace" -o name 2>>"$LOG_FILE_PATH" | while read -r csv; do
+		if oc label "$csv" -n "$csv_namespace" redhat-best-practices-for-k8s.com/operator=target --overwrite 2>>"$LOG_FILE_PATH"; then
+			echo_color "$BLUE" "Labeled $csv"
+		else
+			echo_color "$GREY" "Failed to label $csv (may not exist in this namespace)"
+		fi
+	done
+
+	# Wait a bit for labels to propagate
+	sleep 2
 
 	# Wait for the CSV to be succeeded
 	echo_color "$BLUE" "Wait for CSV to be succeeded"
-	with_retry 30 0 oc wait csv -l redhat-best-practices-for-k8s.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=5s || status="$?"
+	with_retry 60 5 oc wait csv -l redhat-best-practices-for-k8s.com/operator=target -n "$csv_namespace" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=10s || status="$?"
 	return $status
 }
 
@@ -324,8 +367,8 @@ force_delete_namespace_if_present() {
 	local a_namespace=$1
 	local pid=0
 
-	# Do not delete the redhat-operators namespace
-	if [ "$a_namespace" = "openshift-operators" ]; then
+	# Do not delete the openshift-operators or openshift-storage namespaces
+	if [ "$a_namespace" = "openshift-operators" ] || [ "$a_namespace" = "openshift-storage" ]; then
 		return 0
 	fi
 
@@ -364,9 +407,17 @@ report_failure() {
 	local status=$1
 	local ns=$2
 	local package_name=$3
-	local message=$4
+	local skip_cleanup=$4
+	local message=$5
 
-	with_retry 3 5 oc operator uninstall -X "$package_name" -n "$ns" || true
+	# Skip uninstall for operators with + suffix or legacy lvms/odf operators
+	if [ "$skip_cleanup" = true ] || [ "$package_name" = "lvms-operator" ] || [ "$package_name" = "odf-operator" ]; then
+		echo_color "$BLUE" "Skipping uninstall and namespace deletion for $package_name"
+	else
+		with_retry 3 5 oc operator uninstall -X "$package_name" -n "$ns" || true
+		wait_delete_namespace "$ns"
+	fi
+
 	# Add per operator links
 	{
 		# Add error message
@@ -379,8 +430,6 @@ report_failure() {
 		# New line
 		echo "<br>"
 	} >>"$REPORT_FOLDER"/"$INDEX_FILE"
-
-	wait_delete_namespace "$ns"
 }
 
 get_suggested_namespace() {
@@ -573,23 +622,59 @@ while IFS=, read -r package_name catalog_index; do
 
 	echo_color "$GREY" "********* package= $package_name catalog index= $catalog_index **********"
 
+	# Check for suffix indicators (+ or -)
+	skip_cleanup=false
+	force_test_namespace=false
+	actual_package_name="$package_name"
+
+	if [[ "$package_name" == *+ ]]; then
+		# + suffix means skip uninstall and namespace deletion
+		skip_cleanup=true
+		actual_package_name="${package_name%+}"
+		echo_color "$BLUE" "Package has + suffix: will skip cleanup for $actual_package_name"
+	elif [[ "$package_name" == *- ]]; then
+		# - suffix means use test-<packagename> namespace with normal processing
+		force_test_namespace=true
+		actual_package_name="${package_name%-}"
+		echo_color "$BLUE" "Package has - suffix: will use test-$actual_package_name namespace"
+	fi
+
 	# Wait for the cluster to be reachable
 	echo_color "$BLUE" "Wait for cluster to be reachable"
 	wait_cluster_ok
 
 	# Wait for package to be reachable
-	echo_color "$BLUE" "Wait for package $package_name to be reachable"
-	wait_package_ok "$package_name"
+	echo_color "$BLUE" "Wait for package $actual_package_name to be reachable"
+	wait_package_ok "$actual_package_name"
 
 	# Variable to hold return status
 	status=0
 
-	ns=$(get_suggested_namespace "$package_name")
-	if [ "$ns" = "" ] || [ "$ns" = "openshift-operators" ]; then
-		echo_color "$BLUE" "no suggested namespace for $package_name, using: test-operator"
-		ns="test-operator"
+	# Determine namespace based on suffix and suggested namespace
+	# Special case: odf-csi-addons-operator and mcg-operator always use openshift-storage
+	if [ "$actual_package_name" = "odf-csi-addons-operator" ] || [ "$actual_package_name" = "mcg-operator" ]; then
+		ns="openshift-storage"
+		echo_color "$BLUE" "using openshift-storage namespace for $actual_package_name"
+	elif [ "$force_test_namespace" = true ]; then
+		# - suffix: always use test-<packagename>
+		ns="test-$actual_package_name"
+		echo_color "$BLUE" "using forced test namespace for $actual_package_name: $ns"
 	else
-		echo_color "$BLUE" "using suggested namespace for $package_name: $ns "
+		# Normal logic or + suffix
+		ns=$(get_suggested_namespace "$actual_package_name")
+		if [ "$ns" = "" ] || [ "$ns" = "openshift-operators" ]; then
+			if [ "$skip_cleanup" = true ]; then
+				# + suffix with no suggested namespace: use test-<packagename>
+				ns="test-$actual_package_name"
+				echo_color "$BLUE" "no suggested namespace for $actual_package_name, using: $ns"
+			else
+				# No suffix with no suggested namespace: use test-operator
+				ns="test-operator"
+				echo_color "$BLUE" "no suggested namespace for $actual_package_name, using: test-operator"
+			fi
+		else
+			echo_color "$BLUE" "using suggested namespace for $actual_package_name: $ns"
+		fi
 	fi
 	echo_color "$GREY" "namespace= $ns"
 
@@ -598,24 +683,50 @@ while IFS=, read -r package_name catalog_index; do
 		echo_color "$RED" "Warning, cluster cleanup failed"
 	fi
 
-	# If a namespace is present, it is probably stuck deleting from previous runs. Force delete it.
-	echo_color "$BLUE" "Remove namespace if present"
-	if ! force_delete_namespace_if_present "$ns" >>"$LOG_FILE_PATH" 2>&1; then
-		echo_color "$RED" "Error, force deleting namespace failed"
-	fi
+	# Skip namespace creation for openshift-storage
+	if [ "$ns" = "openshift-storage" ]; then
+		echo_color "$BLUE" "Skipping namespace creation for openshift-storage (using existing namespace)"
+	elif [ "$skip_cleanup" = true ]; then
+		# For operators with + suffix, preserve existing namespace if present
+		if oc get namespace "$ns" &>/dev/null; then
+			echo_color "$BLUE" "Namespace $ns already exists, preserving it (+ suffix)"
+		else
+			echo_color "$BLUE" "Creating namespace $ns"
+			if ! oc create namespace "$ns"; then
+				echo_color "$RED" "Error, creating namespace $ns failed"
+			fi
+		fi
+	else
+		# Normal processing: force delete namespace if present, then create it
+		echo_color "$BLUE" "Remove namespace if present"
+		if ! force_delete_namespace_if_present "$ns" >>"$LOG_FILE_PATH" 2>&1; then
+			echo_color "$RED" "Error, force deleting namespace failed"
+		fi
 
-	if ! oc create namespace "$ns"; then
-		echo_color "$RED" "Error, creating namespace $ns failed"
+		if ! oc create namespace "$ns"; then
+			echo_color "$RED" "Error, creating namespace $ns failed"
+		fi
 	fi
 
 	# Install the operator in a custom namespace
 	echo_color "$BLUE" "install operator"
-	if ! oc operator install --create-operator-group "$package_name" -n "$ns"; then
-		echo_color "$RED" "Operator installation failed but will still waiting for CSV"
+	install_status=0
+	install_output=$(oc operator install --create-operator-group "$actual_package_name" -n "$ns" 2>&1) || install_status=$?
+
+	if [ "$install_status" -ne 0 ]; then
+		# Check if it's a "already exists" error and we're using + suffix
+		if [ "$skip_cleanup" = true ] && echo "$install_output" | grep -q "already exists"; then
+			echo_color "$BLUE" "Operator subscription already exists (expected with + suffix), continuing..."
+		else
+			echo_color "$RED" "Operator installation failed but will still waiting for CSV"
+			echo "$install_output" >>"$LOG_FILE_PATH"
+		fi
+	else
+		echo "$install_output"
 	fi
 
 	# Setting report directory
-	report_dir="$REPORT_FOLDER"/"$package_name"
+	report_dir="$REPORT_FOLDER"/"$actual_package_name"
 
 	# Store the results of CNF test in a new directory
 	if ! mkdir -p "$report_dir"; then
@@ -631,11 +742,29 @@ while IFS=, read -r package_name catalog_index; do
 	echo_color "$BLUE" "Wait for CSV to appear and label resources unde test"
 	if ! wait_for_csv_to_appear_and_label "$ns"; then
 		echo_color "$RED" "Operator failed to install, continue"
-		report_failure "$status" "$ns" "$package_name" "Operator installation failed, skipping test"
+		report_failure "$status" "$ns" "$actual_package_name" "$skip_cleanup" "Operator installation failed, skipping test"
 		continue
 	fi
 
-	echo_color "$BLUE" "operator $package_name installed"
+	echo_color "$BLUE" "operator $actual_package_name installed"
+
+	# Special handling for multicluster-engine operator with + suffix
+	if [ "$actual_package_name" = "multicluster-engine" ] && [ "$skip_cleanup" = true ]; then
+		echo_color "$BLUE" "Creating MultiClusterEngine custom resource"
+		if cat <<EOF | oc apply -f - >>"$LOG_FILE_PATH" 2>&1; then
+apiVersion: multicluster.openshift.io/v1
+kind: MultiClusterEngine
+metadata:
+  name: multiclusterengine
+spec: {}
+EOF
+			echo_color "$BLUE" "MultiClusterEngine custom resource created successfully"
+			echo_color "$BLUE" "Waiting for MultiClusterEngine to be ready..."
+			sleep 30
+		else
+			echo_color "$RED" "Failed to create MultiClusterEngine CR"
+		fi
+	fi
 
 	echo_color "$BLUE" "Wait to ensure all pods are running"
 	# Extra wait to ensure that all pods are running
@@ -669,7 +798,7 @@ while IFS=, read -r package_name catalog_index; do
 		--config-file=/config/certsuite_config.yaml \
 		--output-dir=/reports \
 		--label-filter=all >>"$LOG_FILE_PATH" 2>&1 || {
-		report_failure "$status" "$ns" "$package_name" "CNF suite exited with errors"
+		report_failure "$status" "$ns" "$actual_package_name" "$skip_cleanup" "CNF suite exited with errors"
 		continue
 	}
 
@@ -679,20 +808,30 @@ while IFS=, read -r package_name catalog_index; do
 		echo_color "$RED" "Error, failed to unlabel the operator"
 	fi
 
-	# remove the operator
-	echo_color "$BLUE" "Remove operator"
-	if ! oc operator uninstall -X "$package_name" -n "$ns"; then
-		echo_color "$RED" "Operator failed to un-install, continue"
-	fi
+	# Check if cleanup should be skipped (+ suffix or legacy lvms/odf operators)
+	if [ "$skip_cleanup" = true ] || [ "$actual_package_name" = "lvms-operator" ] || [ "$actual_package_name" = "odf-operator" ]; then
+		echo_color "$BLUE" "Skipping uninstall and namespace deletion for $actual_package_name"
+	else
+		# remove the operator
+		echo_color "$BLUE" "Remove operator"
+		if ! oc operator uninstall -X "$actual_package_name" -n "$ns"; then
+			echo_color "$RED" "Operator failed to un-install, continue"
+		fi
 
-	# Delete the namespace
-	if ! oc delete namespace "$ns" --wait=false; then
-		echo_color "$RED" "Error, failed to delete namespace: $ns"
-	fi
+		# Skip namespace deletion for openshift-storage
+		if [ "$ns" = "openshift-storage" ]; then
+			echo_color "$BLUE" "Skipping namespace deletion for openshift-storage"
+		else
+			# Delete the namespace
+			if ! oc delete namespace "$ns" --wait=false; then
+				echo_color "$RED" "Error, failed to delete namespace: $ns"
+			fi
 
-	echo_color "$BLUE" "Wait for cleanup to finish"
-	if ! wait_delete_namespace "$ns"; then
-		echo_color "$RED" "Error, fail to wait for the namespace to be deleted"
+			echo_color "$BLUE" "Wait for cleanup to finish"
+			if ! wait_delete_namespace "$ns"; then
+				echo_color "$RED" "Error, fail to wait for the namespace to be deleted"
+			fi
+		fi
 	fi
 
 	# Check parsing claim file
@@ -705,7 +844,7 @@ while IFS=, read -r package_name catalog_index; do
 		-v "${CNF_TYPE_DIR}:/cnftype:Z" \
 		"${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG}" \
 		/usr/local/bin/certsuite claim \
-		show csv -t /cnftype/cnf-type.json -c /reports/claim.json -n "$package_name" "$add_headers" >>"$REPORT_FOLDER"/results.csv; then
+		show csv -t /cnftype/cnf-type.json -c /reports/claim.json -n "$actual_package_name" "$add_headers" >>"$REPORT_FOLDER"/results.csv; then
 		echo_color "$RED" "failed to parse claim file"
 	fi
 
@@ -718,16 +857,16 @@ while IFS=, read -r package_name catalog_index; do
 	# Add per operator links
 	{
 		# Add parser link
-		echo "Results for: <b>$package_name</b>,  parsed details:"
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/results.html?claimfile=/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/claim.json">'"link"'</a>'
+		echo "Results for: <b>$actual_package_name</b>,  parsed details:"
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$actual_package_name"'/results.html?claimfile=/'"$REPORT_FOLDER_RELATIVE"'/'"$actual_package_name"'/claim.json">'"link"'</a>'
 
 		# Add log link
 		echo ", log: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/certsuite.log">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$actual_package_name"'/certsuite.log">'"link"'</a>'
 
 		# Add certsuite_config link
 		echo ", certsuite_config: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/certsuite_config.yml">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$actual_package_name"'/certsuite_config.yml">'"link"'</a>'
 
 		# new line
 		echo "<br>"
