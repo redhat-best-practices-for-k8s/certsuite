@@ -27,7 +27,7 @@ const (
 	TestICMPv4ConnectivityIdentifierImpact             = `Failure indicates potential network isolation issues that could prevent workload components from communicating, leading to service degradation or complete application failure.`
 	TestNetworkPolicyDenyAllIdentifierImpact           = `Without default deny-all network policies, workloads are exposed to lateral movement attacks and unauthorized network access, compromising security posture and potentially enabling data breaches.`
 	TestReservedExtendedPartnerPortsImpact             = `Using reserved ports can cause port conflicts with essential platform services, leading to service startup failures and unpredictable application behavior.`
-	TestDpdkCPUPinningExecProbeImpact                  = `Exec probes on CPU-pinned DPDK workloads can cause performance degradation, interrupt real-time operations, and potentially crash applications due to resource contention.`
+	TestCPUPinningNoExecProbesImpact                   = `Exec probes on workloads with CPU pinning (exclusive CPUs) can cause performance degradation, interrupt latency-sensitive operations, and potentially crash applications due to resource contention. Any workload requiring exclusive CPUs inherently needs non-interruptible task execution.`
 	TestRestartOnRebootLabelOnPodsUsingSRIOVImpact     = `Without restart-on-reboot labels, SRIOV-enabled pods may fail to recover from a race condition between kubernetes services startup and SR-IOV device plugin configuration on StarlingX AIO systems, causing SR-IOV devices to disappear from running pods when FPGA devices are reset.`
 	TestNetworkAttachmentDefinitionSRIOVUsingMTUImpact = `Incorrect MTU settings can cause packet fragmentation, network performance issues, and connectivity failures in high-performance networking scenarios.`
 	TestLimitedUseOfExecProbesIdentifierImpact         = `Excessive exec probes can overwhelm system resources, degrade performance, and interfere with critical application operations in resource-constrained environments.`
@@ -169,7 +169,7 @@ var ImpactMap = map[string]string{
 	"networking-icmpv4-connectivity":                     TestICMPv4ConnectivityIdentifierImpact,
 	"networking-network-policy-deny-all":                 TestNetworkPolicyDenyAllIdentifierImpact,
 	"networking-reserved-partner-ports":                  TestReservedExtendedPartnerPortsImpact,
-	"networking-dpdk-cpu-pinning-exec-probe":             TestDpdkCPUPinningExecProbeImpact,
+	"performance-cpu-pinning-no-exec-probes":             TestCPUPinningNoExecProbesImpact,
 	"networking-restart-on-reboot-sriov-pod":             TestRestartOnRebootLabelOnPodsUsingSRIOVImpact,
 	"networking-network-attachment-definition-sriov-mtu": TestNetworkAttachmentDefinitionSRIOVUsingMTUImpact,
 	"performance-max-resources-exec-probes":              TestLimitedUseOfExecProbesIdentifierImpact,

@@ -126,6 +126,14 @@ func LoadChecks() {
 			testLimitedUseOfExecProbes(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestCPUPinningNoExecProbes)).
+		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithExclusiveCPUs).
+		WithCheckFn(func(c *checksdb.Check) error {
+			cpuPinnedPods := env.GetGuaranteedPodsWithExclusiveCPUs()
+			testCPUPinningNoExecProbes(c, cpuPinnedPods)
+			return nil
+		}))
 }
 
 //nolint:funlen
@@ -382,4 +390,27 @@ func filterProbeProcesses(allProcesses []*crclient.Process, cut *provider.Contai
 		notExecProbeProcesses = append(notExecProbeProcesses, p)
 	}
 	return notExecProbeProcesses, compliantObjects
+}
+
+func testCPUPinningNoExecProbes(check *checksdb.Check, cpuPinnedPods []*provider.Pod) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, cpuPinnedPod := range cpuPinnedPods {
+		execProbeFound := false
+		for _, cut := range cpuPinnedPod.Containers {
+			check.LogInfo("Testing Container %q", cut)
+			if cut.HasExecProbes() {
+				check.LogError("Container %q defines an exec probe", cut)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(cpuPinnedPod.Namespace, cpuPinnedPod.Name, "Exec probe is not allowed on CPU-pinned pods", false))
+				execProbeFound = true
+			}
+		}
+
+		if !execProbeFound {
+			check.LogInfo("Pod %q does not define any exec probe", cpuPinnedPod)
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(cpuPinnedPod.Namespace, cpuPinnedPod.Name, "No exec probes found", true))
+		}
+	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
