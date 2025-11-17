@@ -966,6 +966,20 @@
                     </div>
                 </div>
 
+                <!-- OCP 4.20 Regular -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-420.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.20 Testing workflow runs on GitHub">
+                        OpenShift 4.20
+                    </a>
+                    <div id="ocp-420-regular-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
                 <!-- ARM64 & Hosted - COMMENTED OUT FOR NOW -->
                 <!--
                 <div class="ocp-card">
@@ -1067,6 +1081,20 @@
                         OpenShift 4.19
                     </a>
                     <div id="ocp-419-intrusive-content" class="loading">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- OCP 4.20 Intrusive -->
+                <div class="ocp-card">
+                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-420-intrusive.yaml" 
+                       target="_blank" 
+                       class="ocp-version-link"
+                       title="View QE OCP 4.20 Intrusive Testing workflow runs on GitHub">
+                        OpenShift 4.20
+                    </a>
+                    <div id="ocp-420-intrusive-content" class="loading">
                         <div class="spinner"></div>
                         Loading...
                     </div>
@@ -1461,6 +1489,10 @@
             '4.19': {
                 regular: 'QE OCP 4.19 Testing',
                 intrusive: 'QE OCP 4.19 Intrusive Testing'
+            },
+            '4.20': {
+                regular: 'QE OCP 4.20 Testing',
+                intrusive: 'QE OCP 4.20 Intrusive Testing'
             }
         };
 
@@ -1582,6 +1614,8 @@
             'QE OCP 4.18 Intrusive Testing': 'qe-ocp-418-intrusive.yaml',
             'QE OCP 4.19 Testing': 'qe-ocp-419.yaml',
             'QE OCP 4.19 Intrusive Testing': 'qe-ocp-419-intrusive.yaml',
+            'QE OCP 4.20 Testing': 'qe-ocp-420.yaml',
+            'QE OCP 4.20 Intrusive Testing': 'qe-ocp-420-intrusive.yaml',
             'OCP ARM64 4.16 QE Testing': 'qe-ocp-arm-416.yaml',
             'QE Testing (Ubuntu-hosted on AMD64)': 'qe-hosted.yml',
             'QE Testing (Ubuntu-hosted on ARM64)': 'qe-hosted-arm.yml'
