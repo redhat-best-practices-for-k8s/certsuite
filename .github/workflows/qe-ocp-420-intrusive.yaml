@@ -1,4 +1,4 @@
-name: QE OCP 4.19 Intrusive Testing
+name: QE OCP 4.20 Intrusive Testing
 
 on:
   # pull_request:
@@ -58,8 +58,8 @@ jobs:
           name: certsuite-binary
           path: ./certsuite
 
-  qe-ocp-419-intrusive-testing:
-    name: QE OCP 4.19 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
+  qe-ocp-420-intrusive-testing:
+    name: QE OCP 4.20 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
     runs-on: ubuntu-24.04
     needs: build-and-store
     if: needs.build-and-store.result == 'success'
@@ -107,7 +107,7 @@ jobs:
         with:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
-          desiredOCPVersion: 4.19
+          desiredOCPVersion: 4.20
           waitForOperatorsReady: true
         env:
           OCP_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
@@ -166,5 +166,6 @@ jobs:
           GITHUB_REPO: https://github.com/redhat-best-practices-for-k8s/certsuite
         run: |
           curl -X POST --data "{
-              \"text\": \"🚨⚠️  Failed to run intrusive OCP 4.19 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+              \"text\": \"🚨⚠️  Failed to run intrusive OCP 4.20 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
           }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'
+
