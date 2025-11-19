@@ -18,10 +18,6 @@ package provider
 
 import (
 	"fmt"
-	"strings"
-
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 )
 
 // GetGuaranteedPodsWithExclusiveCPUs returns a slice of Pod objects that are guaranteed to have exclusive CPUs.
@@ -113,11 +109,6 @@ func (env *TestEnvironment) GetHugepagesPods() []*Pod {
 	return filteredPods
 }
 
-// GetCPUPinningPodsWithDpdk returns a slice of Pods that have CPU pinning enabled with DPDK.
-func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod {
-	return filterDPDKRunningPods(env.GetGuaranteedPodsWithExclusiveCPUs())
-}
-
 func filterPodsWithoutHostPID(pods []*Pod) []*Pod {
 	var withoutHostPIDPods []*Pod
 
@@ -128,31 +119,6 @@ func filterPodsWithoutHostPID(pods []*Pod) []*Pod {
 		withoutHostPIDPods = append(withoutHostPIDPods, pod)
 	}
 	return withoutHostPIDPods
-}
-
-func filterDPDKRunningPods(pods []*Pod) []*Pod {
-	var filteredPods []*Pod
-	const (
-		dpdkDriver           = "vfio-pci"
-		findDeviceSubCommand = "find /sys -name"
-	)
-	o := clientsholder.GetClientsHolder()
-	for _, pod := range pods {
-		if len(pod.MultusPCIs) == 0 {
-			continue
-		}
-		ctx := clientsholder.NewContext(pod.Namespace, pod.Name, pod.Spec.Containers[0].Name)
-		findCommand := fmt.Sprintf("%s '%s'", findDeviceSubCommand, pod.MultusPCIs[0])
-		outStr, errStr, err := o.ExecCommandContainer(ctx, findCommand)
-		if err != nil || errStr != "" {
-			log.Error("Failed to execute command %s in probe %s, errStr: %s, err: %v", findCommand, pod.String(), errStr, err)
-			continue
-		}
-		if strings.Contains(outStr, dpdkDriver) {
-			filteredPods = append(filteredPods, pod)
-		}
-	}
-	return filteredPods
 }
 
 // GetShareProcessNamespacePods returns a slice of Pod objects that have the ShareProcessNamespace flag set to true.

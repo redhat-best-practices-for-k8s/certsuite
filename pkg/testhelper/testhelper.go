@@ -446,16 +446,6 @@ func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool
 	}
 }
 
-func GetNoCPUPinningPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
-	return func() (bool, string) {
-		if len(env.GetCPUPinningPodsWithDpdk()) == 0 {
-			return true, "no CPU pinning pods to check found"
-		}
-
-		return false, ""
-	}
-}
-
 func GetNoSRIOVPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		pods, err := env.GetPodsUsingSRIOV()
