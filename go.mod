@@ -18,8 +18,8 @@ require (
 	github.com/operator-framework/api v0.36.0
 	github.com/operator-framework/operator-lifecycle-manager v0.36.0
 	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.61
-	github.com/redhat-best-practices-for-k8s/oct v0.0.52
-	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.63
+	github.com/redhat-best-practices-for-k8s/oct v0.0.53
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.64
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20250812183411-436b6cd740f4
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/spf13/cobra v1.10.1
@@ -27,7 +27,7 @@ require (
 	golang.org/x/term v0.37.0
 	google.golang.org/api v0.255.0
 	gopkg.in/yaml.v3 v3.0.1
-	helm.sh/helm/v3 v3.19.0
+	helm.sh/helm/v3 v3.19.2
 	k8s.io/api v0.34.2
 	k8s.io/apiextensions-apiserver v0.34.2
 	k8s.io/apimachinery v0.34.2
@@ -61,7 +61,7 @@ require (
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/containerd/platforms v0.2.1 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.16.3 // indirect
-	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
+	github.com/cyphar/filepath-securejoin v0.6.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/docker/cli v29.0.1+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
