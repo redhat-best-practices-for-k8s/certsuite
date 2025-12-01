@@ -143,6 +143,7 @@ var (
 	TestStatefulSetScalingIdentifier                                 claim.Identifier
 	TestImagePullPolicyIdentifier                                    claim.Identifier
 	TestPodRecreationIdentifier                                      claim.Identifier
+	TestTopologySpreadConstraint                                     claim.Identifier
 	TestPodRoleBindingsBestPracticesIdentifier                       claim.Identifier
 	TestPodServiceAccountBestPracticesIdentifier                     claim.Identifier
 	TestPodAutomountServiceAccountIdentifier                         claim.Identifier
@@ -1228,6 +1229,22 @@ that Node's kernel may not have the same hacks.'`,
 			Extended: Mandatory,
 		},
 		TagCommon)
+
+	TestTopologySpreadConstraint = AddCatalogEntry(
+		"topology-spread-constraint",
+		common.LifecycleTestKey,
+		`Ensures that Deployments using TopologySpreadConstraints include constraints for both hostname and zone topology keys. This helps telco workloads avoid needing to tweak PodDisruptionBudgets before platform upgrades. If TopologySpreadConstraints is not defined, the test passes as Kubernetes scheduler implicitly uses hostname and zone constraints.`+NotApplicableSNO, //nolint:lll
+		TopologySpreadConstraintRemediation,
+		NoDocumentedProcess,
+		TestTopologySpreadConstraintDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Optional,
+		},
+		TagTelco)
 
 	TestPodRoleBindingsBestPracticesIdentifier = AddCatalogEntry(
 		"pod-role-bindings",
