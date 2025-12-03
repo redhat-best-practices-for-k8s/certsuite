@@ -41,6 +41,7 @@ testCases:
     - lifecycle-pod-toleration-bypass
     - lifecycle-readiness-probe
     - lifecycle-startup-probe
+    - lifecycle-topology-spread-constraint
     - manageability-container-port-name-format
     - manageability-containers-image-tag
     - networking-dual-stack-service
