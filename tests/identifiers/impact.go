@@ -101,6 +101,7 @@ const (
 	TestStatefulSetScalingIdentifierImpact            = `StatefulSet scaling issues can prevent proper data persistence and ordered deployment of stateful applications.`
 	TestImagePullPolicyIdentifierImpact               = `Incorrect image pull policies can cause deployment failures when image registries are unavailable or during network issues.`
 	TestPodRecreationIdentifierImpact                 = `Failed pod recreation indicates poor high availability configuration, leading to potential service outages during node failures.`
+	TestTopologySpreadConstraintImpact                = `Without proper topology spread constraints, pods may cluster on nodes causing PodDisruptionBudgets to block platform upgrades, requiring manual PDB adjustments and increasing operational complexity during maintenance windows.`
 	TestLivenessProbeIdentifierImpact                 = `Missing liveness probes prevent Kubernetes from detecting and recovering from application deadlocks and hangs.`
 	TestReadinessProbeIdentifierImpact                = `Missing readiness probes can cause traffic to be routed to non-ready pods, resulting in failed requests and poor user experience.`
 	TestStartupProbeIdentifierImpact                  = `Missing startup probes can cause slow-starting applications to be killed prematurely, preventing successful application startup.`
@@ -243,6 +244,7 @@ var ImpactMap = map[string]string{
 	"lifecycle-statefulset-scaling":              TestStatefulSetScalingIdentifierImpact,
 	"lifecycle-image-pull-policy":                TestImagePullPolicyIdentifierImpact,
 	"lifecycle-pod-recreation":                   TestPodRecreationIdentifierImpact,
+	"lifecycle-topology-spread-constraint":       TestTopologySpreadConstraintImpact,
 	"lifecycle-liveness-probe":                   TestLivenessProbeIdentifierImpact,
 	"lifecycle-readiness-probe":                  TestReadinessProbeIdentifierImpact,
 	"lifecycle-startup-probe":                    TestStartupProbeIdentifierImpact,

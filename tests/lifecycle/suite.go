@@ -17,6 +17,7 @@
 package lifecycle
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -232,6 +233,16 @@ func LoadChecks() {
 			testhelper.GetNoPersistentVolumeClaimsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testStorageProvisioner(c, &env)
+			return nil
+		}))
+
+	// Topology Spread Constraint test
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestTopologySpreadConstraint)).
+		WithSkipCheckFn(
+			testhelper.GetNoDeploymentsUnderTestSkipFn(&env),
+			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testTopologySpreadConstraint(c, &env)
 			return nil
 		}))
 }
@@ -881,5 +892,74 @@ func testStorageProvisioner(check *checksdb.Check, env *provider.TestEnvironment
 			}
 		}
 	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+const (
+	hostnameTopologyKey = "kubernetes.io/hostname"
+	zoneTopologyKey     = "topology.kubernetes.io/zone"
+)
+
+func testTopologySpreadConstraint(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, deployment := range env.Deployments {
+		check.LogInfo("Testing Deployment %q", deployment)
+
+		// Get the topology spread constraints from the pod template
+		tsc := deployment.Spec.Template.Spec.TopologySpreadConstraints
+
+		// Case 1: No TSC defined - PASS (implicit k8s behavior)
+		if len(tsc) == 0 {
+			check.LogInfo("Deployment %q does not define TopologySpreadConstraints (implicit scheduling is acceptable)", deployment)
+			compliantObjects = append(compliantObjects,
+				testhelper.NewDeploymentReportObject(deployment.Namespace, deployment.Name,
+					"TopologySpreadConstraints not defined (implicit Kubernetes scheduling behavior)", true))
+			continue
+		}
+
+		// Case 2: TSC is defined - must include both hostname and zone
+		check.LogInfo("Deployment %q defines TopologySpreadConstraints, checking for required topology keys", deployment)
+
+		hasHostname := false
+		hasZone := false
+
+		// Check if both required topology keys are present
+		for _, constraint := range tsc {
+			if constraint.TopologyKey == hostnameTopologyKey {
+				hasHostname = true
+				check.LogInfo("Deployment %q has hostname topology key: %s", deployment, hostnameTopologyKey)
+			}
+			if constraint.TopologyKey == zoneTopologyKey {
+				hasZone = true
+				check.LogInfo("Deployment %q has zone topology key: %s", deployment, zoneTopologyKey)
+			}
+		}
+
+		// Both hostname and zone must be present
+		if hasHostname && hasZone {
+			check.LogInfo("Deployment %q has both required topology keys (hostname and zone)", deployment)
+			compliantObjects = append(compliantObjects,
+				testhelper.NewDeploymentReportObject(deployment.Namespace, deployment.Name,
+					"TopologySpreadConstraints includes both hostname and zone topology keys", true))
+		} else {
+			// Missing one or both required keys
+			missingKeys := []string{}
+			if !hasHostname {
+				missingKeys = append(missingKeys, hostnameTopologyKey)
+			}
+			if !hasZone {
+				missingKeys = append(missingKeys, zoneTopologyKey)
+			}
+
+			check.LogError("Deployment %q TopologySpreadConstraints is missing required topology keys: %v", deployment, missingKeys)
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewDeploymentReportObject(deployment.Namespace, deployment.Name,
+					"TopologySpreadConstraints must include both hostname and zone topology keys when defined", false).
+					AddField("MissingTopologyKeys", fmt.Sprintf("%v", missingKeys)))
+		}
+	}
+
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
