@@ -54,7 +54,7 @@ jobs:
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Checkout generic working branch of the current version
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
           fetch-depth: '0'
@@ -110,7 +110,7 @@ jobs:
         run: echo "Tag '$PROBE_IMAGE_VERSION' does not exist on remote $PROBE_IMAGE_SRC_URL"
 
       - name: Checkout the version tag
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: ${{ env.CERTSUITE_VERSION }}
 
@@ -176,7 +176,7 @@ jobs:
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Checkout generic working branch of the current version
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
           fetch-depth: '0'
@@ -232,7 +232,7 @@ jobs:
         run: echo "Tag '$PROBE_IMAGE_VERSION' does not exist on remote $PROBE_IMAGE_SRC_URL"
 
       - name: Checkout the version tag
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: ${{ env.CERTSUITE_VERSION }}
 
