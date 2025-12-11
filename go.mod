@@ -18,8 +18,8 @@ require (
 	github.com/operator-framework/api v0.36.0
 	github.com/operator-framework/operator-lifecycle-manager v0.36.0
 	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.61
-	github.com/redhat-best-practices-for-k8s/oct v0.0.53
-	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.64
+	github.com/redhat-best-practices-for-k8s/oct v0.0.54
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.65
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20250812183411-436b6cd740f4
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/spf13/cobra v1.10.2
