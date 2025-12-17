@@ -127,6 +127,8 @@ const (
 
 	PodRecreationRemediation = `Ensure that the workloads Pods utilize a configuration that supports High Availability. Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.`
 
+	TopologySpreadConstraintRemediation = `If using TopologySpreadConstraints in your Deployment, ensure you include constraints for both 'kubernetes.io/hostname' and 'topology.kubernetes.io/zone' topology keys. Alternatively, you can omit TopologySpreadConstraints entirely to let Kubernetes scheduler use implicit hostname and zone constraints. This helps maintain workload availability during platform upgrades without manually adjusting PodDisruptionBudgets.`
+
 	SysctlConfigsRemediation = `You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes`
 
 	ServiceMeshRemediation = `Ensure all the workload pods are using service mesh if the cluster provides it.`
@@ -188,8 +190,6 @@ const (
 
 	ContainerPortNameFormatRemediation = `Ensure that the container's ports name follow our partner naming conventions`
 
-	DpdkCPUPinningExecProbeRemediation = "If the workload is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually."
-
 	CheckStorageProvisionerRemediation = `Use a non-local storage (e.g. no kubernetes.io/no-provisioner and no topolvm.io provisioners) in multinode clusters. Local storage are recommended for single node clusters only, but a single local provisioner should be installed.`
 
 	ExclusiveCPUPoolRemediation = `Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool`
@@ -201,6 +201,8 @@ const (
 	IsolatedCPUPoolSchedulingPolicyRemediation = `Ensure that the workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy (such as SCHED_FIFO/SCHED_RR) with High priority.`
 
 	RtAppNoExecProbesRemediation = `Ensure that if one container runs a real time application exec probes are not used`
+
+	CPUPinningNoExecProbesRemediation = `Workloads that use CPU pinning (Guaranteed QoS with exclusive CPUs) should not use exec probes. Use httpGet or tcpSocket probes instead, as exec probes can interfere with latency-sensitive workloads requiring non-interruptible task execution.`
 
 	SRIOVPodsRestartOnRebootLabelRemediation = `Ensure that the label restart-on-reboot exists on pods that use SRIOV network interfaces.`
 

@@ -133,15 +133,6 @@ func LoadChecks() {
 			return nil
 		}))
 
-	// DPDK CPU pinning exec probe test case
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestDpdkCPUPinningExecProbe)).
-		WithSkipCheckFn(testhelper.GetNoCPUPinningPodsSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			dpdkPods := env.GetCPUPinningPodsWithDpdk()
-			testExecProbDenyAtCPUPinning(c, dpdkPods)
-			return nil
-		}))
-
 	// Restart on reboot label test case
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestRestartOnRebootLabelOnPodsUsingSRIOV)).
 		WithSkipCheckFn(testhelper.GetNoSRIOVPodsSkipFn(&env)).
@@ -166,29 +157,6 @@ func LoadChecks() {
 			testNetworkAttachmentDefinitionSRIOVUsingMTU(c, sriovPods)
 			return nil
 		}))
-}
-
-func testExecProbDenyAtCPUPinning(check *checksdb.Check, dpdkPods []*provider.Pod) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	for _, cpuPinnedPod := range dpdkPods {
-		execProbeFound := false
-		for _, cut := range cpuPinnedPod.Containers {
-			check.LogInfo("Testing Container %q", cut)
-			if cut.HasExecProbes() {
-				check.LogError("Container %q defines an exec probe", cut)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(cpuPinnedPod.Namespace, cpuPinnedPod.Name, "Exec prob is not allowed", false))
-				execProbeFound = true
-			}
-		}
-
-		if !execProbeFound {
-			check.LogInfo("Pod %q does not define any exec probe", cpuPinnedPod)
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(cpuPinnedPod.Namespace, cpuPinnedPod.Name, "Exec prob is allowed", true))
-		}
-	}
-	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 //nolint:funlen

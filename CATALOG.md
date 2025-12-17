@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 120
+### Total test cases: 121
 
 ### Total suites: 10
 
@@ -15,12 +15,12 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|---|
 |access-control|28|[access-control](#access-control)|
 |affiliated-certification|4|[affiliated-certification](#affiliated-certification)|
-|lifecycle|18|[lifecycle](#lifecycle)|
+|lifecycle|19|[lifecycle](#lifecycle)|
 |manageability|2|[manageability](#manageability)|
-|networking|12|[networking](#networking)|
+|networking|11|[networking](#networking)|
 |observability|5|[observability](#observability)|
 |operator|12|[operator](#operator)|
-|performance|6|[performance](#performance)|
+|performance|7|[performance](#performance)|
 |platform-alteration|14|[platform-alteration](#platform-alteration)|
 |preflight|19|[preflight](#preflight)|
 
@@ -42,11 +42,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|---|
 |43|28|
 
-### Telco specific tests only: 27
+### Telco specific tests only: 28
 
 |Mandatory|Optional|
 |---|---|---|
-|26|1|
+|27|1|
 
 ## Test Case list
 
@@ -908,6 +908,23 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
 
+#### lifecycle-topology-spread-constraint
+
+|Property|Description|
+|---|---|
+|Unique ID|lifecycle-topology-spread-constraint|
+|Description|Ensures that Deployments using TopologySpreadConstraints include constraints for both hostname and zone topology keys. This helps telco workloads avoid needing to tweak PodDisruptionBudgets before platform upgrades. If TopologySpreadConstraints is not defined, the test passes as Kubernetes scheduler implicitly uses hostname and zone constraints. Not applicable to SNO applications.|
+|Suggested Remediation|If using TopologySpreadConstraints in your Deployment, ensure you include constraints for both 'kubernetes.io/hostname' and 'topology.kubernetes.io/zone' topology keys. Alternatively, you can omit TopologySpreadConstraints entirely to let Kubernetes scheduler use implicit hostname and zone constraints. This helps maintain workload availability during platform upgrades without manually adjusting PodDisruptionBudgets.|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations|
+|Exception Process|There is no documented exception process for this.|
+|Impact Statement|Without proper topology spread constraints, pods may cluster on nodes causing PodDisruptionBudgets to block platform upgrades, requiring manual PDB adjustments and increasing operational complexity during maintenance windows.|
+|Tags|telco,lifecycle|
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Mandatory|
+
 ### manageability
 
 #### manageability-container-port-name-format
@@ -945,23 +962,6 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Telco|Optional|
 
 ### networking
-
-#### networking-dpdk-cpu-pinning-exec-probe
-
-|Property|Description|
-|---|---|
-|Unique ID|networking-dpdk-cpu-pinning-exec-probe|
-|Description|If a workload is doing CPU pinning, exec probes may not be used.|
-|Suggested Remediation|If the workload is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually.|
-|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-manager-pinning|
-|Exception Process|There is no documented exception process for this.|
-|Impact Statement|Exec probes on CPU-pinned DPDK workloads can cause performance degradation, interrupt real-time operations, and potentially crash applications due to resource contention.|
-|Tags|telco,networking|
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Optional|
-|Telco|Mandatory|
 
 #### networking-dual-stack-service
 
@@ -1444,6 +1444,23 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Telco|Optional|
 
 ### performance
+
+#### performance-cpu-pinning-no-exec-probes
+
+|Property|Description|
+|---|---|
+|Unique ID|performance-cpu-pinning-no-exec-probes|
+|Description|Workloads utilizing CPU pinning (Guaranteed QoS with exclusive CPUs) should not use exec probes. Exec probes run a command within the container, which could interfere with latency-sensitive workloads and cause performance degradation.|
+|Suggested Remediation|Workloads that use CPU pinning (Guaranteed QoS with exclusive CPUs) should not use exec probes. Use httpGet or tcpSocket probes instead, as exec probes can interfere with latency-sensitive workloads requiring non-interruptible task execution.|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-manager-pinning|
+|Exception Process|There is no documented exception process for this.|
+|Impact Statement|Exec probes on workloads with CPU pinning (exclusive CPUs) can cause performance degradation, interrupt latency-sensitive operations, and potentially crash applications due to resource contention. Any workload requiring exclusive CPUs inherently needs non-interruptible task execution.|
+|Tags|telco,performance|
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Optional|
+|Telco|Mandatory|
 
 #### performance-exclusive-cpu-pool
 

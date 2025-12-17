@@ -27,7 +27,7 @@ const (
 	TestICMPv4ConnectivityIdentifierImpact             = `Failure indicates potential network isolation issues that could prevent workload components from communicating, leading to service degradation or complete application failure.`
 	TestNetworkPolicyDenyAllIdentifierImpact           = `Without default deny-all network policies, workloads are exposed to lateral movement attacks and unauthorized network access, compromising security posture and potentially enabling data breaches.`
 	TestReservedExtendedPartnerPortsImpact             = `Using reserved ports can cause port conflicts with essential platform services, leading to service startup failures and unpredictable application behavior.`
-	TestDpdkCPUPinningExecProbeImpact                  = `Exec probes on CPU-pinned DPDK workloads can cause performance degradation, interrupt real-time operations, and potentially crash applications due to resource contention.`
+	TestCPUPinningNoExecProbesImpact                   = `Exec probes on workloads with CPU pinning (exclusive CPUs) can cause performance degradation, interrupt latency-sensitive operations, and potentially crash applications due to resource contention. Any workload requiring exclusive CPUs inherently needs non-interruptible task execution.`
 	TestRestartOnRebootLabelOnPodsUsingSRIOVImpact     = `Without restart-on-reboot labels, SRIOV-enabled pods may fail to recover from a race condition between kubernetes services startup and SR-IOV device plugin configuration on StarlingX AIO systems, causing SR-IOV devices to disappear from running pods when FPGA devices are reset.`
 	TestNetworkAttachmentDefinitionSRIOVUsingMTUImpact = `Incorrect MTU settings can cause packet fragmentation, network performance issues, and connectivity failures in high-performance networking scenarios.`
 	TestLimitedUseOfExecProbesIdentifierImpact         = `Excessive exec probes can overwhelm system resources, degrade performance, and interfere with critical application operations in resource-constrained environments.`
@@ -101,6 +101,7 @@ const (
 	TestStatefulSetScalingIdentifierImpact            = `StatefulSet scaling issues can prevent proper data persistence and ordered deployment of stateful applications.`
 	TestImagePullPolicyIdentifierImpact               = `Incorrect image pull policies can cause deployment failures when image registries are unavailable or during network issues.`
 	TestPodRecreationIdentifierImpact                 = `Failed pod recreation indicates poor high availability configuration, leading to potential service outages during node failures.`
+	TestTopologySpreadConstraintImpact                = `Without proper topology spread constraints, pods may cluster on nodes causing PodDisruptionBudgets to block platform upgrades, requiring manual PDB adjustments and increasing operational complexity during maintenance windows.`
 	TestLivenessProbeIdentifierImpact                 = `Missing liveness probes prevent Kubernetes from detecting and recovering from application deadlocks and hangs.`
 	TestReadinessProbeIdentifierImpact                = `Missing readiness probes can cause traffic to be routed to non-ready pods, resulting in failed requests and poor user experience.`
 	TestStartupProbeIdentifierImpact                  = `Missing startup probes can cause slow-starting applications to be killed prematurely, preventing successful application startup.`
@@ -169,7 +170,7 @@ var ImpactMap = map[string]string{
 	"networking-icmpv4-connectivity":                     TestICMPv4ConnectivityIdentifierImpact,
 	"networking-network-policy-deny-all":                 TestNetworkPolicyDenyAllIdentifierImpact,
 	"networking-reserved-partner-ports":                  TestReservedExtendedPartnerPortsImpact,
-	"networking-dpdk-cpu-pinning-exec-probe":             TestDpdkCPUPinningExecProbeImpact,
+	"performance-cpu-pinning-no-exec-probes":             TestCPUPinningNoExecProbesImpact,
 	"networking-restart-on-reboot-sriov-pod":             TestRestartOnRebootLabelOnPodsUsingSRIOVImpact,
 	"networking-network-attachment-definition-sriov-mtu": TestNetworkAttachmentDefinitionSRIOVUsingMTUImpact,
 	"performance-max-resources-exec-probes":              TestLimitedUseOfExecProbesIdentifierImpact,
@@ -243,6 +244,7 @@ var ImpactMap = map[string]string{
 	"lifecycle-statefulset-scaling":              TestStatefulSetScalingIdentifierImpact,
 	"lifecycle-image-pull-policy":                TestImagePullPolicyIdentifierImpact,
 	"lifecycle-pod-recreation":                   TestPodRecreationIdentifierImpact,
+	"lifecycle-topology-spread-constraint":       TestTopologySpreadConstraintImpact,
 	"lifecycle-liveness-probe":                   TestLivenessProbeIdentifierImpact,
 	"lifecycle-readiness-probe":                  TestReadinessProbeIdentifierImpact,
 	"lifecycle-startup-probe":                    TestStartupProbeIdentifierImpact,

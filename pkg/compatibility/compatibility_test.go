@@ -214,6 +214,21 @@ func TestIsRHCOSCompatible(t *testing.T) {
 			testMachineVersion: "4.16.0-rc.1",
 			expectedOutput:     true,
 		},
+		{ // Test Case #8 - OCP 4.20.2 accepts RHCOS version 4.20.2, pass
+			testOCPVersion:     "4.20.2",
+			testMachineVersion: "4.20.2",
+			expectedOutput:     true,
+		},
+		{ // Test Case #9 - OCP 4.20.2 accepts RHCOS version 4.20.0, pass
+			testOCPVersion:     "4.20.2",
+			testMachineVersion: "4.20.0",
+			expectedOutput:     true,
+		},
+		{ // Test Case #10 - OCP 4.20.0 accepts RHCOS version 4.20.2, pass
+			testOCPVersion:     "4.20.0",
+			testMachineVersion: "4.20.2",
+			expectedOutput:     true,
+		},
 	}
 
 	for _, tc := range testCases {

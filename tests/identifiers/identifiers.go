@@ -89,7 +89,6 @@ var (
 	TestAffinityRequiredPods                                         claim.Identifier
 	TestContainerPostStartIdentifier                                 claim.Identifier
 	TestContainerPrestopIdentifier                                   claim.Identifier
-	TestDpdkCPUPinningExecProbe                                      claim.Identifier
 	TestSysAdminIdentifier                                           claim.Identifier
 	TestNetAdminIdentifier                                           claim.Identifier
 	TestNetRawIdentifier                                             claim.Identifier
@@ -101,6 +100,7 @@ var (
 	TestExclusiveCPUPoolSchedulingPolicy                             claim.Identifier
 	TestIsolatedCPUPoolSchedulingPolicy                              claim.Identifier
 	TestRtAppNoExecProbes                                            claim.Identifier
+	TestCPUPinningNoExecProbes                                       claim.Identifier
 	TestRestartOnRebootLabelOnPodsUsingSRIOV                         claim.Identifier
 	TestSecConNonRootUserIDIdentifier                                claim.Identifier
 	TestNetworkAttachmentDefinitionSRIOVUsingMTU                     claim.Identifier
@@ -143,6 +143,7 @@ var (
 	TestStatefulSetScalingIdentifier                                 claim.Identifier
 	TestImagePullPolicyIdentifier                                    claim.Identifier
 	TestPodRecreationIdentifier                                      claim.Identifier
+	TestTopologySpreadConstraint                                     claim.Identifier
 	TestPodRoleBindingsBestPracticesIdentifier                       claim.Identifier
 	TestPodServiceAccountBestPracticesIdentifier                     claim.Identifier
 	TestPodAutomountServiceAccountIdentifier                         claim.Identifier
@@ -393,22 +394,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagTelco)
 
-	TestDpdkCPUPinningExecProbe = AddCatalogEntry(
-		"dpdk-cpu-pinning-exec-probe",
-		common.NetworkingTestKey,
-		`If a workload is doing CPU pinning, exec probes may not be used.`,
-		DpdkCPUPinningExecProbeRemediation,
-		NoDocumentedProcess,
-		TestDpdkCPUPinningExecProbeDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Optional,
-			Extended: Mandatory,
-		},
-		TagTelco)
-
 	TestNetAdminIdentifier = AddCatalogEntry(
 		"net-admin-capability-check",
 		common.AccessControlTestKey,
@@ -568,6 +553,22 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Extended: Optional,
 		},
 		TagFarEdge)
+
+	TestCPUPinningNoExecProbes = AddCatalogEntry(
+		"cpu-pinning-no-exec-probes",
+		common.PerformanceTestKey,
+		`Workloads utilizing CPU pinning (Guaranteed QoS with exclusive CPUs) should not use exec probes. Exec probes run a command within the container, which could interfere with latency-sensitive workloads and cause performance degradation.`,
+		CPUPinningNoExecProbesRemediation,
+		NoDocumentedProcess,
+		TestCPUPinningNoExecProbesDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
+		},
+		TagTelco)
 
 	TestRestartOnRebootLabelOnPodsUsingSRIOV = AddCatalogEntry(
 		"restart-on-reboot-sriov-pod",
@@ -1228,6 +1229,22 @@ that Node's kernel may not have the same hacks.'`,
 			Extended: Mandatory,
 		},
 		TagCommon)
+
+	TestTopologySpreadConstraint = AddCatalogEntry(
+		"topology-spread-constraint",
+		common.LifecycleTestKey,
+		`Ensures that Deployments using TopologySpreadConstraints include constraints for both hostname and zone topology keys. This helps telco workloads avoid needing to tweak PodDisruptionBudgets before platform upgrades. If TopologySpreadConstraints is not defined, the test passes as Kubernetes scheduler implicitly uses hostname and zone constraints.`+NotApplicableSNO, //nolint:lll
+		TopologySpreadConstraintRemediation,
+		NoDocumentedProcess,
+		TestTopologySpreadConstraintDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Optional,
+		},
+		TagTelco)
 
 	TestPodRoleBindingsBestPracticesIdentifier = AddCatalogEntry(
 		"pod-role-bindings",

@@ -41,6 +41,7 @@ testCases:
     - lifecycle-pod-toleration-bypass
     - lifecycle-readiness-probe
     - lifecycle-startup-probe
+    - lifecycle-topology-spread-constraint
     - manageability-container-port-name-format
     - manageability-containers-image-tag
     - networking-dual-stack-service
@@ -70,7 +71,7 @@ testCases:
     - platform-alteration-isredhat-release
     - platform-alteration-tainted-node-kernel
   fail:
-    - affiliated-certification-container-is-certified-digest     # test container image is not certified
+    - affiliated-certification-container-is-certified-digest # test container image is not certified
   skip:
     - access-control-sys-ptrace-capability
     - access-control-sys-nice-realtime-capability
@@ -80,7 +81,6 @@ testCases:
     - lifecycle-cpu-isolation
     - lifecycle-statefulset-scaling
     - lifecycle-storage-provisioner
-    - networking-dpdk-cpu-pinning-exec-probe
     - networking-icmpv6-connectivity
     - networking-restart-on-reboot-sriov-pod
     - networking-network-attachment-definition-sriov-mtu
@@ -94,6 +94,7 @@ testCases:
     - operator-pods-no-hugepages
     - operator-multiple-same-operators
     - operator-catalogsource-bundle-count
+    - performance-cpu-pinning-no-exec-probes
     - performance-exclusive-cpu-pool-rt-scheduling-policy
     - performance-isolated-cpu-pool-rt-scheduling-policy
     - performance-shared-cpu-pool-non-rt-scheduling-policy

@@ -11,7 +11,6 @@ const (
 	TestICMPv4ConnectivityIdentifierDocLink             = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ipv4-&-ipv6"
 	TestNetworkPolicyDenyAllIdentifierDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-vrfs-aka-routing-instances"
 	TestReservedExtendedPartnerPortsDocLink             = NoDocLinkExtended
-	TestDpdkCPUPinningExecProbeDocLink                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-manager-pinning"
 	TestRestartOnRebootLabelOnPodsUsingSRIOVDocLink     = NoDocLinkFarEdge
 	TestNetworkAttachmentDefinitionSRIOVUsingMTUDocLink = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-multus-sr-iov---macvlan"
 	TestLimitedUseOfExecProbesIdentifierDocLink         = NoDocLinkFarEdge
@@ -86,6 +85,7 @@ const (
 	TestStatefulSetScalingIdentifierDocLink            = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations"
 	TestImagePullPolicyIdentifierDocLink               = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-use-imagepullpolicy:-ifnotpresent"
 	TestPodRecreationIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-upgrade-expectations"
+	TestTopologySpreadConstraintDocLink                = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations"
 	TestLivenessProbeIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes"
 	TestReadinessProbeIdentifierDocLink                = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes"
 	TestStartupProbeIdentifierDocLink                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-liveness-readiness-and-startup-probes"
@@ -101,6 +101,7 @@ const (
 	TestExclusiveCPUPoolSchedulingPolicyDocLink = NoDocLinkFarEdge
 	TestIsolatedCPUPoolSchedulingPolicyDocLink  = NoDocLinkFarEdge
 	TestRtAppNoExecProbesDocLink                = NoDocLinkFarEdge
+	TestCPUPinningNoExecProbesDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cpu-manager-pinning"
 
 	// Operator Test Suite
 	DocOperatorRequirement                                                  = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-operator-requirements"

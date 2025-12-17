@@ -2,7 +2,6 @@
 
 ![build](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/merge.yaml/badge.svg)
 [![QE OCP 4.14 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-414.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-414.yaml)
-[![QE OCP 4.15 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-415.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-415.yaml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/redhat-best-practices-for-k8s/certsuite/badge)](https://scorecard.dev/viewer/?uri=github.com/)
 [![go-doc](https://godoc.org/github.com/?status.svg)](https://godoc.org/github.com/)
 [![release)](https://img.shields.io/github/v/release/redhat-best-practices-for-k8s/certsuite?color=blue&label=%20&logo=semver&logoColor=white&style=flat)](https://github.com/redhat-best-practices-for-k8s/certsuite/releases)
