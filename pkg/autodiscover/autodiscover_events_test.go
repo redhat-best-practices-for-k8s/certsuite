@@ -51,7 +51,7 @@ func TestFindAbnormalEvents(t *testing.T) {
 		}
 
 		// Create fake client
-		client := k8sfake.NewSimpleClientset(runtimeObjects...)
+		client := k8sfake.NewClientset(runtimeObjects...)
 		abnormalEvents := findAbnormalEvents(client.CoreV1(), []string{"test-namespace"})
 		assert.Len(t, abnormalEvents, len(testCase.expectedEvents))
 

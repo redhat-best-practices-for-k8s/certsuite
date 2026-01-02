@@ -152,8 +152,8 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
 	}
 
 	// Add the objects to their corresponding API Clients
-	clientsHolder.K8sClient = k8sFakeClient.NewSimpleClientset(k8sClientObjects...)
-	clientsHolder.APIExtClient = apiextv1fake.NewSimpleClientset(k8sExtClientObjects...)
+	clientsHolder.K8sClient = k8sFakeClient.NewClientset(k8sClientObjects...)
+	clientsHolder.APIExtClient = apiextv1fake.NewClientset(k8sExtClientObjects...)
 	clientsHolder.CNCFNetworkingClient = cncfNetworkAttachmentFake.NewSimpleClientset(k8sPlumbingObjects...)
 
 	clientsHolder.ready = true

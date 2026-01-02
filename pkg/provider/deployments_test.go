@@ -61,7 +61,7 @@ func TestGetUpdatedDeployment(t *testing.T) {
 			})
 		}
 
-		fakeClient := k8sfake.NewSimpleClientset(runtimeObjects...)
+		fakeClient := k8sfake.NewClientset(runtimeObjects...)
 
 		deployment, err := GetUpdatedDeployment(fakeClient.AppsV1(), "testNS", "test1")
 
