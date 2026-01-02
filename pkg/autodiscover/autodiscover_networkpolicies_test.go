@@ -49,7 +49,7 @@ func TestGetNetworkPolicies(t *testing.T) {
 		}
 
 		// Create fake client
-		client := k8sfake.NewSimpleClientset(runtimeObjects...)
+		client := k8sfake.NewClientset(runtimeObjects...)
 		networkPolicies, err := getNetworkPolicies(client.NetworkingV1())
 		assert.Nil(t, err)
 		assert.Len(t, networkPolicies, len(testCase.expectedNetworkPolicies))

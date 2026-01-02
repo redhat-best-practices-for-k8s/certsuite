@@ -87,7 +87,7 @@ func TestGetServiceIPVersion(t *testing.T) {
 	}
 }
 
-func createService(ips []string, aFp corev1.IPFamilyPolicyType) (aService *corev1.Service) {
+func createService(ips []string, aFp corev1.IPFamilyPolicy) (aService *corev1.Service) {
 	aService = &corev1.Service{}
 	aService.Name = "test-service"
 	aService.Namespace = "tnf"

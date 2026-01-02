@@ -54,7 +54,7 @@ func TestGetAllNamespaces(t *testing.T) {
 			testRuntimeObjects = append(testRuntimeObjects, n)
 		}
 
-		clientSet := fake.NewSimpleClientset(testRuntimeObjects...)
+		clientSet := fake.NewClientset(testRuntimeObjects...)
 		namespaces, err := getAllNamespaces(clientSet.CoreV1())
 		assert.Nil(t, err)
 		assert.Equal(t, tc.expectedNamespaces, namespaces)
@@ -266,7 +266,7 @@ func TestIsIstioServiceMeshInstalled(t *testing.T) {
 
 	for _, tc := range testCases {
 		// Generate the deployment for the test
-		clientSet := fake.NewSimpleClientset(tc.testDeployment)
+		clientSet := fake.NewClientset(tc.testDeployment)
 		result := isIstioServiceMeshInstalled(clientSet.AppsV1(), []string{"istio-system"})
 		assert.Equal(t, tc.expectedResult, result)
 	}
