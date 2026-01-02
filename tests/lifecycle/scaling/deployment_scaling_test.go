@@ -158,7 +158,7 @@ func TestScaleHpaDeploymentFunc(t *testing.T) {
 
 		var runtimeObjects []runtime.Object
 		runtimeObjects = append(runtimeObjects, tempDP, hpatest)
-		c := k8sfake.NewSimpleClientset(runtimeObjects...)
+		c := k8sfake.NewClientset(runtimeObjects...)
 		c.AddReactor("get", "horizontalpodautoscalers", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
 			return true, hpatest, nil
 		})

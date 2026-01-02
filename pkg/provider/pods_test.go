@@ -657,7 +657,7 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 			testRuntimeObjects = append(testRuntimeObjects, &crbTemp)
 		}
 
-		c := k8sfake.NewSimpleClientset(testRuntimeObjects...)
+		c := k8sfake.NewClientset(testRuntimeObjects...)
 		clientsholder.SetTestK8sClientsHolder(c)
 		var logArchive strings.Builder
 		log.SetupLogger(&logArchive, "INFO")
