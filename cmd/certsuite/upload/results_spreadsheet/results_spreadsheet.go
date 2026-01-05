@@ -75,17 +75,12 @@ func readCSV(fp string) ([][]string, error) {
 func CreateSheetsAndDriveServices(credentials string) (sheetService *sheets.Service, driveService *drive.Service, err error) {
 	ctx := context.TODO()
 
-	credentialsJSON, err := os.ReadFile(credentials)
-	if err != nil {
-		return nil, nil, fmt.Errorf("unable to read credentials file: %v", err)
-	}
-
-	sheetSrv, err := sheets.NewService(ctx, option.WithCredentialsJSON(credentialsJSON))
+	sheetSrv, err := sheets.NewService(ctx, option.WithAuthCredentialsFile(option.ServiceAccount, credentials))
 	if err != nil {
 		return nil, nil, fmt.Errorf("unable to retrieve Sheets service: %v", err)
 	}
 
-	driveSrv, err := drive.NewService(ctx, option.WithCredentialsJSON(credentialsJSON))
+	driveSrv, err := drive.NewService(ctx, option.WithAuthCredentialsFile(option.ServiceAccount, credentials))
 	if err != nil {
 		return nil, nil, fmt.Errorf("unable to retrieve Drive service: %v", err)
 	}
