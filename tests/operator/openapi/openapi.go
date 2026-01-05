@@ -1,3 +1,4 @@
+// Copyright (C) 2025-2026 Red Hat, Inc.
 package openapi
 
 import (
