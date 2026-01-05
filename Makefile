@@ -29,7 +29,6 @@ IMAGE_TAG?=localtest
 	coverage-html \
 	fmt \
 	generate \
-	install-moq \
 	lint \
 	markdownlint \
 	update-rhcos-versions \
@@ -144,11 +143,7 @@ vet:
 fmt:
 	go fmt ${GO_PACKAGES}
 
-install-moq:
-	go install github.com/matryer/moq@latest
-
-generate: install-moq
-	find . | grep _moq.go | xargs rm
+generate:
 	go generate ./...
 
 update-rhcos-versions:

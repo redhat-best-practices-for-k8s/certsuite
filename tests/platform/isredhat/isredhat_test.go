@@ -100,9 +100,9 @@ func TestTestContainerIsRedHatRelease(t *testing.T) {
 
 	for _, tc := range testCases {
 		ctx := clientsholder.NewContext("testNamespace", "testPodName", "testContainer")
-		bit := NewBaseImageTester(&clientsholder.CommandMock{
+		bit := NewBaseImageTester(&clientsholder.MockCommand{
 			// Mock out the return values from actually running the command.
-			ExecCommandContainerFunc: func(context clientsholder.Context, s string) (string, string, error) {
+			ExecFunc: func(context clientsholder.Context, s string) (string, string, error) {
 				return tc.resultStdOut, tc.resultStdErr, tc.resultErr
 			}}, ctx)
 

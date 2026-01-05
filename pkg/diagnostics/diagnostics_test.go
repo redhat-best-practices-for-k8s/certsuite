@@ -85,8 +85,8 @@ func TestGetHWJsonOutput(t *testing.T) {
 					},
 				},
 			},
-		}, &clientsholder.CommandMock{
-			ExecCommandContainerFunc: func(context clientsholder.Context, s string) (string, string, error) {
+		}, &clientsholder.MockCommand{
+			ExecFunc: func(context clientsholder.Context, s string) (string, string, error) {
 				return tc.execStdout, tc.execStderr, nil
 			},
 		}, "does not matter")
@@ -147,8 +147,8 @@ func TestGetHWTextOutput(t *testing.T) {
 					},
 				},
 			},
-		}, &clientsholder.CommandMock{
-			ExecCommandContainerFunc: func(context clientsholder.Context, s string) (string, string, error) {
+		}, &clientsholder.MockCommand{
+			ExecFunc: func(context clientsholder.Context, s string) (string, string, error) {
 				return tc.execStdout, tc.execStderr, nil
 			},
 		}, lspciCommand)
