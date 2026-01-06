@@ -1,4 +1,4 @@
-// Copyright (C) 2023-2024 Red Hat, Inc.
+// Copyright (C) 2023-2026 Red Hat, Inc.
 
 package autodiscover
 

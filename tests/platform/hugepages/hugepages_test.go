@@ -1,3 +1,4 @@
+// Copyright (C) 2022-2026 Red Hat, Inc.
 package hugepages
 
 import (
