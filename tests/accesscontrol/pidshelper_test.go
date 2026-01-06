@@ -81,8 +81,8 @@ func TestGetNbOfProcessesInPidNamespace(t *testing.T) {
 
 	for _, tc := range testCases {
 		// Setup a mock version of the clientsHolder so we can "run" commands
-		ch := &clientsholder.CommandMock{
-			ExecCommandContainerFunc: func(context clientsholder.Context, s string) (string, string, error) {
+		ch := &clientsholder.MockCommand{
+			ExecFunc: func(context clientsholder.Context, s string) (string, string, error) {
 				return tc.execOutStr, tc.execErrStr, tc.execErr
 			},
 		}
@@ -92,6 +92,6 @@ func TestGetNbOfProcessesInPidNamespace(t *testing.T) {
 		// assertions
 		assert.Equal(t, tc.expectedResult, result)
 		assert.Equal(t, tc.expectedErr, err)
-		assert.Equal(t, tc.expectedExecFuncCalls, len(ch.ExecCommandContainerCalls()))
+		assert.Equal(t, tc.expectedExecFuncCalls, ch.CallCount())
 	}
 }
