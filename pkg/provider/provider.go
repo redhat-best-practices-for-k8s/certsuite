@@ -229,6 +229,26 @@ func deployDaemonSet(namespace string) error {
 	return nil
 }
 
+// CleanupProbeDaemonset deletes the probe daemonset and its namespace if requested.
+func CleanupProbeDaemonset(namespace string) error {
+	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
+
+	log.Info("Cleaning up probe daemonset %q in namespace %q", DaemonSetName, namespace)
+	err := k8sPrivilegedDs.DeleteDaemonSet(DaemonSetName, namespace)
+	if err != nil {
+		return fmt.Errorf("failed to delete probe daemonset %q in namespace %q: %v", DaemonSetName, namespace, err)
+	}
+
+	log.Info("Cleaning up namespace %q", namespace)
+	err = k8sPrivilegedDs.DeleteNamespaceIfPresent(namespace)
+	if err != nil {
+		return fmt.Errorf("failed to delete namespace %q: %v", namespace, err)
+	}
+
+	log.Info("Probe daemonset cleanup completed")
+	return nil
+}
+
 func buildTestEnvironment() { //nolint:funlen,gocyclo
 	start := time.Now()
 	env = TestEnvironment{}

@@ -303,5 +303,12 @@ func Run(labelsFilter, outputFolder string) error {
 		}
 	}
 
+	// Cleanup probe daemonset if requested
+	if configuration.GetTestParameters().CleanupProbe {
+		if err := provider.CleanupProbeDaemonset(env.Config.ProbeDaemonSetNamespace); err != nil {
+			log.Error("Failed to cleanup probe daemonset: %v", err)
+		}
+	}
+
 	return nil
 }

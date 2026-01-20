@@ -140,4 +140,6 @@ type TestParameters struct {
 	ConnectAPIProxyPort           string
 	// AllowNonRunning determines whether autodiscovery includes non-Running pods
 	AllowNonRunning bool
+	// CleanupProbe determines whether to delete the probe daemonset at the end of the run
+	CleanupProbe bool
 }
