@@ -315,51 +315,46 @@ get_packages() {
 		wc -w
 }
 
+# CSV-based labeling: labels only the specific operator's CSV (not all CSVs in namespace)
 wait_for_csv_to_appear_and_label() {
 	local csv_namespace=$1
+	local operator_package=$2
 	local timeout_seconds=100
 	local start_time=0
 	local current_time=0
 	local elapsed_time=0
+	local csv_name=""
 	local status=0
 
 	start_time=$(date +%s)
 	while true; do
-		csvs=$(oc get csv -n "$csv_namespace" 2>>"$LOG_FILE_PATH") || true
-		if [ "$csvs" != "" ]; then
-			# If any CSV is present, break
+		# Wait for the specific operator's CSV (name starts with package name)
+		csv_name=$(oc get csv -n "$csv_namespace" -o custom-columns=':.metadata.name' --no-headers 2>/dev/null | grep "^${operator_package}\." | head -1)
+		if [ -n "$csv_name" ]; then
+			# Found the CSV for this operator
 			break
 		else
 			current_time=$(date +%s)
 			elapsed_time=$((current_time - start_time))
 			# If elapsed time is greater than the timeout report failure
 			if [ "$elapsed_time" -ge "$timeout_seconds" ]; then
-				echo_color "$BLUE" "Timeout reached $timeout_seconds seconds waiting for CSV."
+				echo_color "$BLUE" "Timeout reached $timeout_seconds seconds waiting for CSV for $operator_package."
 				return 1
 			fi
 
 			# Otherwise wait a bit
-			echo_color "$BLUE" "Waiting for csv to be created in namespace $csv_namespace ..."
+			echo_color "$BLUE" "Waiting for csv for $operator_package to be created in namespace $csv_namespace ..."
 			sleep 5
 		fi
 	done
 
-	# Label CSV with "redhat-best-practices-for-k8s.com/operator=target"
-	# Label each CSV individually to handle errors better
-	oc get csv -n "$csv_namespace" -o name 2>>"$LOG_FILE_PATH" | while read -r csv; do
-		if oc label "$csv" -n "$csv_namespace" redhat-best-practices-for-k8s.com/operator=target --overwrite 2>>"$LOG_FILE_PATH"; then
-			echo_color "$BLUE" "Labeled $csv"
-		else
-			echo_color "$GREY" "Failed to label $csv (may not exist in this namespace)"
-		fi
-	done
-
-	# Wait a bit for labels to propagate
-	sleep 2
+	# Label only the specific CSV for this operator with "redhat-best-practices-for-k8s.com/operator=target"
+	echo_color "$GREY" "Labeling CSV: $csv_name"
+	with_retry 5 10 oc label csv -n "$csv_namespace" "$csv_name" redhat-best-practices-for-k8s.com/operator=target --overwrite 2>>"$LOG_FILE_PATH" || true
 
 	# Wait for the CSV to be succeeded
 	echo_color "$BLUE" "Wait for CSV to be succeeded"
-	with_retry 60 5 oc wait csv -l redhat-best-practices-for-k8s.com/operator=target -n "$csv_namespace" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=10s || status="$?"
+	with_retry 60 5 oc wait csv "$csv_name" -n "$csv_namespace" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=10s || status="$?"
 	return $status
 }
 
@@ -573,7 +568,7 @@ targetNameSpaces:
 podsUnderTestLabels:
   - "redhat-best-practices-for-k8s.com/generic: target"
 operatorsUnderTestLabels:
-  - "redhat-best-practices-for-k8s.com/operator: target" 
+  - "redhat-best-practices-for-k8s.com/operator: target"
 EOF
 
 OPERATOR_PAGE='<!DOCTYPE html>
@@ -738,9 +733,9 @@ while IFS=, read -r package_name catalog_index; do
 	# Change the target_name_space in certsuite_config file
 	sed "s/\$ns/$ns/" "$CONFIG_YAML_TEMPLATE" >"$config_yaml"
 
-	# Wait for the CSV to appear
-	echo_color "$BLUE" "Wait for CSV to appear and label resources unde test"
-	if ! wait_for_csv_to_appear_and_label "$ns"; then
+	# Wait for the CSV to appear and label only the specific operator's CSV
+	echo_color "$BLUE" "Wait for CSV to appear and label resources under test"
+	if ! wait_for_csv_to_appear_and_label "$ns" "$actual_package_name"; then
 		echo_color "$RED" "Operator failed to install, continue"
 		report_failure "$status" "$ns" "$actual_package_name" "$skip_cleanup" "Operator installation failed, skipping test"
 		continue
@@ -770,13 +765,33 @@ EOF
 	# Extra wait to ensure that all pods are running
 	sleep 30
 
-	echo_color "$BLUE" "Label deployments, statefulsets, pods"
-	# Label deployments, statefulsets and pods with "redhat-best-practices-for-k8s.com/generic=target"
-	{
+	# CSV-based labeling: label only operator-specific deployments and pods
+	echo_color "$BLUE" "Label operator-specific deployments and pods"
+	# Get the CSV name for the operator under test (already labeled earlier)
+	csv_name=$(oc get csv -n "$ns" -l redhat-best-practices-for-k8s.com/operator=target -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
+
+	if [ -n "$csv_name" ]; then
+		# Extract deployment names from CSV's spec.install.spec.deployments
+		deployment_names=$(oc get csv "$csv_name" -n "$ns" -o jsonpath='{.spec.install.spec.deployments[*].name}' 2>/dev/null)
+
+		# Label only the deployments defined in the CSV
+		for dep_name in $deployment_names; do
+			echo_color "$GREY" "Labeling deployment: $dep_name"
+			oc label deployment -n "$ns" "$dep_name" redhat-best-practices-for-k8s.com/generic=target 2>>"$LOG_FILE_PATH" || true
+
+			# Label pods belonging to this deployment (using deployment's selector)
+			selector=$(oc get deployment "$dep_name" -n "$ns" -o jsonpath='{.spec.selector.matchLabels}' 2>/dev/null | jq -r 'to_entries | map("\(.key)=\(.value)") | join(",")' 2>/dev/null)
+			if [ -n "$selector" ]; then
+				oc label pods -n "$ns" -l "$selector" redhat-best-practices-for-k8s.com/generic=target 2>>"$LOG_FILE_PATH" || true
+			fi
+		done
+	else
+		echo_color "$RED" "Warning: Could not find labeled CSV, falling back to namespace-wide labeling"
+		# Fallback to original behavior
 		oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
 		oc get statefulset -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
 		oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
-	} >>"$LOG_FILE_PATH" 2>&1
+	fi
 
 	# Run certsuite container
 	echo_color "$BLUE" "run CNF suite"
