@@ -53,7 +53,7 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().String("connect-api-base-url", "", "Base URL for Red Hat Connect API")
 	runCmd.PersistentFlags().String("connect-api-proxy-url", "", "Proxy URL for Red Hat Connect API")
 	runCmd.PersistentFlags().String("connect-api-proxy-port", "", "Proxy port for Red Hat Connect API")
-	runCmd.PersistentFlags().Bool("cleanup-probe", false, "Delete the probe daemonset at the end of the test run")
+	runCmd.PersistentFlags().Bool("cleanup-probe", true, "Delete the probe daemonset at the end of the test run")
 
 	return runCmd
 }
