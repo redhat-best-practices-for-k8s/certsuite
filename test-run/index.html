@@ -1180,6 +1180,23 @@ following:</p>
 <p class="admonition-title">Note</p>
 <p>See the <a href="https://github.com/redhat-best-practices-for-k8s/oct">OCT tool</a> for more information on how to create this DB.</p>
 </div>
+<ul>
+<li><code>--cleanup-probe</code>: Controls whether the probe daemonset and its namespace are deleted at the end of the test run. By default (true), the probe daemonset is cleaned up after tests complete. Set to <code>--cleanup-probe=false</code> to keep the probe daemonset running on the cluster for debugging or repeated test runs.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>certsuite<span class="w"> </span>run<span class="w"> </span>--cleanup-probe<span class="o">=</span><span class="nb">false</span>
+</code></pre></div>
+<p>When running in container mode, add the flag to the certsuite command:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/config:/usr/certsuite/config:Z<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>&lt;path-to-local-dir&gt;/results:/usr/certsuite/results:Z<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>quay.io/redhat-best-practices-for-k8s/certsuite:latest<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>certsuite<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--kubeconfig<span class="o">=</span>/usr/certsuite/config/kubeconfig<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config-file<span class="o">=</span>/usr/certsuite/config/certsuite_config.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-dir<span class="o">=</span>/usr/certsuite/results<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--label-filter<span class="o">=</span>all<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cleanup-probe<span class="o">=</span><span class="nb">false</span>
+</code></pre></div>
 <h2 id="using-the-container-image">Using the container image<a class="headerlink" href="#using-the-container-image" title="Permanent link">&para;</a></h2>
 <p>The only prerequisite for running the Test Suite in container mode is having Docker or Podman installed.</p>
 <h3 id="pull-the-test-image">Pull the test image<a class="headerlink" href="#pull-the-test-image" title="Permanent link">&para;</a></h3>
