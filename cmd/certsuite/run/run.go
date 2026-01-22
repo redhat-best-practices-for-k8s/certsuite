@@ -53,6 +53,7 @@ func NewCommand() *cobra.Command {
 	runCmd.PersistentFlags().String("connect-api-base-url", "", "Base URL for Red Hat Connect API")
 	runCmd.PersistentFlags().String("connect-api-proxy-url", "", "Proxy URL for Red Hat Connect API")
 	runCmd.PersistentFlags().String("connect-api-proxy-port", "", "Proxy port for Red Hat Connect API")
+	runCmd.PersistentFlags().Bool("cleanup-probe", true, "Delete the probe daemonset at the end of the test run")
 
 	return runCmd
 }
@@ -87,6 +88,7 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams.ConnectAPIBaseURL, _ = cmd.Flags().GetString("connect-api-base-url")
 	testParams.ConnectAPIProxyURL, _ = cmd.Flags().GetString("connect-api-proxy-url")
 	testParams.ConnectAPIProxyPort, _ = cmd.Flags().GetString("connect-api-proxy-port")
+	testParams.CleanupProbe, _ = cmd.Flags().GetBool("cleanup-probe")
 	timeoutStr, _ := cmd.Flags().GetString("timeout")
 
 	// Check if the output directory exists and, if not, create it

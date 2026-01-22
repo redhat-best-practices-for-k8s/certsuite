@@ -96,6 +96,27 @@ The following is a non-exhaustive list of the most common flags that the `certsu
 
     See the [OCT tool](https://github.com/redhat-best-practices-for-k8s/oct) for more information on how to create this DB.
 
+* `--cleanup-probe`: Controls whether the probe daemonset and its namespace are deleted at the end of the test run. By default (true), the probe daemonset is cleaned up after tests complete. Set to `--cleanup-probe=false` to keep the probe daemonset running on the cluster for debugging or repeated test runs.
+
+```shell
+certsuite run --cleanup-probe=false
+```
+
+When running in container mode, add the flag to the certsuite command:
+
+```shell
+docker run --rm --network host \
+  -v <path-to-local-dir>/config:/usr/certsuite/config:Z \
+  -v <path-to-local-dir>/results:/usr/certsuite/results:Z \
+  quay.io/redhat-best-practices-for-k8s/certsuite:latest \
+  certsuite run \
+  --kubeconfig=/usr/certsuite/config/kubeconfig \
+  --config-file=/usr/certsuite/config/certsuite_config.yml \
+  --output-dir=/usr/certsuite/results \
+  --label-filter=all \
+  --cleanup-probe=false
+```
+
 ## Using the container image
 
 The only prerequisite for running the Test Suite in container mode is having Docker or Podman installed.
