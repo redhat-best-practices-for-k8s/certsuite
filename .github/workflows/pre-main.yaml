@@ -166,7 +166,7 @@ jobs:
 
   precheck-images:
     name: Precheck Images
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     env:
       SHELL: /bin/bash
     steps:
@@ -524,7 +524,7 @@ jobs:
 
   check-all-dependencies-are-merged:
     name: Check all the PR dependencies are merged
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     steps:
 
       - name: Checkout code

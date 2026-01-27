@@ -11,7 +11,7 @@ jobs:
   do-not-merge:
     if: ${{ contains(github.event.*.labels.*.name, 'do not merge') }}
     name: Prevent Merging
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     steps:
       - name: Check for label
         run: |
@@ -38,7 +38,7 @@ jobs:
 
   close_job:
     if: github.event.pull_request.merged == false
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     steps:
       - run: |
           echo PR #${{ github.event.number }} has been closed without being merged
