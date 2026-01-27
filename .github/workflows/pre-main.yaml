@@ -166,7 +166,7 @@ jobs:
 
   precheck-images:
     name: Precheck Images
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
     steps:
