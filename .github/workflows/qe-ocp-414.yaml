@@ -64,8 +64,10 @@ jobs:
     if: needs.build-and-store.result == 'success'
     strategy:
       fail-fast: false
-      matrix: 
-        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+      matrix:
+        # Suites with -ocp suffix run only OCP-required tests
+        # 100% OCP-required suites don't need suffix but use it for consistency
+        suite: [affiliatedcertification-ocp, performance-ocp, platformalteration1-ocp, platformalteration2-ocp, platformalteration3-ocp, platformalteration4-ocp]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/labuser2/.kube/config'

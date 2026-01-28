@@ -100,7 +100,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+        # Suites with -k8s suffix exclude OCP-required tests (run only K8S-compatible tests)
+        # OCP-required suites (affiliatedcertification, performance, platformalteration) run on qe-ocp-*.yaml workflows
+        suite: [accesscontrol1-k8s, accesscontrol2-k8s, accesscontrol3-k8s, accesscontrol4-k8s, accesscontrol5-k8s, accesscontrol6-k8s, accesscontrol7-k8s, accesscontrol8-k8s, accesscontrol9-k8s, accesscontrol10-k8s, accesscontrol11-k8s, accesscontrol12-k8s, accesscontrol13-k8s, manageability, networking1-k8s, networking2-k8s, networking3-k8s, lifecycle1-k8s, lifecycle2-k8s, lifecycle3-k8s, lifecycle4-k8s, lifecycle5-k8s, lifecycle6-k8s, lifecycle7-k8s, lifecycle8-k8s, lifecycle9-k8s, observability-k8s, operator-k8s]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
