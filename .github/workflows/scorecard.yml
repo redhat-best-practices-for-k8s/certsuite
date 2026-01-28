@@ -21,7 +21,7 @@ jobs:
   analysis:
     if: github.repository_owner == 'redhat-best-practices-for-k8s'
     name: Scorecard analysis
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-24.04
     permissions:
       # Needed to upload the results to code-scanning dashboard.
       security-events: write
