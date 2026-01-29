@@ -268,7 +268,7 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 		env.DaemonsetFailedToSpawn = true
 	}
 
-	data := autodiscover.DoAutoDiscover(&config)
+	data := autodiscover.DoAutoDiscoverParallel(&config)
 	// OpenshiftVersion needs to be set asap, as other helper functions will use it here.
 	env.OpenshiftVersion = data.OpenshiftVersion
 	env.Config = config

@@ -157,6 +157,7 @@ func CreateLabels(labelStrings []string) (labelObjects []labelObject) {
 //
 //nolint:funlen,gocyclo
 func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData {
+	start := time.Now()
 	oc := clientsholder.GetClientsHolder()
 
 	var err error
@@ -345,6 +346,8 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.ConnectProjectID = config.ConnectAPIConfig.ProjectID
 	data.ConnectAPIProxyURL = config.ConnectAPIConfig.ProxyURL
 	data.ConnectAPIProxyPort = config.ConnectAPIConfig.ProxyPort
+
+	log.Info("Sequential autodiscovery completed in %v", time.Since(start))
 
 	return data
 }
