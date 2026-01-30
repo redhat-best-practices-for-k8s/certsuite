@@ -5,6 +5,10 @@ inputs:
   make-command:
     description: 'The make command to run.'
     required: true
+  num-worker-nodes:
+    description: 'Number of worker nodes for the cluster.'
+    required: false
+    default: '2'
 
 runs:
   using: 'composite'
@@ -20,7 +24,7 @@ runs:
       with:
         disableDefaultCni: true
         numControlPlaneNodes: 1
-        numWorkerNodes: 2
+        numWorkerNodes: ${{ inputs.num-worker-nodes }}
         installOLM: true
         removeDefaultStorageClass: true
         removeControlPlaneTaint: true

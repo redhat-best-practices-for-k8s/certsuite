@@ -102,7 +102,66 @@ jobs:
       matrix:
         # Suites with -k8s suffix exclude OCP-required tests (run only K8S-compatible tests)
         # OCP-required suites (affiliatedcertification, performance, platformalteration) run on qe-ocp-*.yaml workflows
-        suite: [accesscontrol1-k8s, accesscontrol2-k8s, accesscontrol3-k8s, accesscontrol4-k8s, accesscontrol5-k8s, accesscontrol6-k8s, accesscontrol7-k8s, accesscontrol8-k8s, accesscontrol9-k8s, accesscontrol10-k8s, accesscontrol11-k8s, accesscontrol12-k8s, accesscontrol13-k8s, manageability, networking1-k8s, networking2-k8s, networking3-k8s, lifecycle1-k8s, lifecycle2-k8s, lifecycle3-k8s, lifecycle4-k8s, lifecycle5-k8s, lifecycle6-k8s, lifecycle7-k8s, lifecycle8-k8s, lifecycle9-k8s, observability-k8s, operator-k8s]
+        # workerNodes: 1 for most suites, 2 for suites with multi-node tests
+        include:
+          # Suites requiring 2 workers (have multi-node tests)
+          - suite: lifecycle2-k8s
+            workerNodes: 2  # deployment_scaling uses IsCRCCluster skip
+          - suite: lifecycle3-k8s
+            workerNodes: 2  # storage_provisioner checks GetNumberOfNodes
+          - suite: lifecycle7-k8s
+            workerNodes: 2  # pod_scheduling checks GetNumberOfNodes
+          - suite: networking1-k8s
+            workerNodes: 2  # default_network checks GetNumberOfNodes
+          # Suites that can run with 1 worker
+          - suite: accesscontrol1-k8s
+            workerNodes: 1
+          - suite: accesscontrol2-k8s
+            workerNodes: 1
+          - suite: accesscontrol3-k8s
+            workerNodes: 1
+          - suite: accesscontrol4-k8s
+            workerNodes: 1
+          - suite: accesscontrol5-k8s
+            workerNodes: 1
+          - suite: accesscontrol6-k8s
+            workerNodes: 1
+          - suite: accesscontrol7-k8s
+            workerNodes: 1
+          - suite: accesscontrol8-k8s
+            workerNodes: 1
+          - suite: accesscontrol9-k8s
+            workerNodes: 1
+          - suite: accesscontrol10-k8s
+            workerNodes: 1
+          - suite: accesscontrol11-k8s
+            workerNodes: 1
+          - suite: accesscontrol12-k8s
+            workerNodes: 1
+          - suite: accesscontrol13-k8s
+            workerNodes: 1
+          - suite: manageability
+            workerNodes: 1
+          - suite: networking2-k8s
+            workerNodes: 1
+          - suite: networking3-k8s
+            workerNodes: 1
+          - suite: lifecycle1-k8s
+            workerNodes: 1
+          - suite: lifecycle4-k8s
+            workerNodes: 1
+          - suite: lifecycle5-k8s
+            workerNodes: 1
+          - suite: lifecycle6-k8s
+            workerNodes: 1
+          - suite: lifecycle8-k8s
+            workerNodes: 1
+          - suite: lifecycle9-k8s
+            workerNodes: 1
+          - suite: observability-k8s
+            workerNodes: 1
+          - suite: operator-k8s
+            workerNodes: 1
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -127,6 +186,7 @@ jobs:
         uses: ./.github/actions/setup-partner-cluster
         with:
           make-command: 'install-for-qe'
+          num-worker-nodes: ${{ matrix.workerNodes }}
 
       - name: Download image from artifact
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
