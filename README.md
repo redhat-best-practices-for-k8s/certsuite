@@ -23,6 +23,35 @@ Please contact us in case the documentation is broken.
 
 * The catalog of all the available test cases can be found in the [test catalog](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md).
 
+## Why Use Certsuite?
+
+Deploying workloads to Kubernetes and OpenShift requires adherence to many best
+practices that are easy to overlook. Certsuite helps you catch issues early by
+validating your CNF deployments against proven standards:
+
+* **Catch Problems Before Production** - Identify misconfigurations, security
+  issues, and anti-patterns during development rather than discovering them
+  after deployment.
+
+* **Comprehensive Coverage** - Validates across multiple categories including
+  networking, security, lifecycle management, operators, and platform
+  compatibility.
+
+* **Red Hat Expertise Built In** - Leverages Red Hat's deep knowledge of
+  OpenShift and Kubernetes to codify years of operational experience into
+  automated checks.
+
+* **Certification Ready** - Helps prepare workloads for Red Hat certification
+  by verifying compliance with container, operator, and Helm chart requirements.
+
+* **Flexible Deployment** - Run as a standalone binary or container, in
+  connected or disconnected environments, integrated into CI/CD pipelines or
+  executed manually.
+
+* **Actionable Results** - Generates detailed claim files with pass/fail status,
+  failure reasons, and configuration snapshots to help you understand exactly
+  what needs to be fixed.
+
 ## Demo
 
 <!-- markdownlint-disable MD033 MD045 -->
