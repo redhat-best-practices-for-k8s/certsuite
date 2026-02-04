@@ -80,7 +80,7 @@ echo_color() {
 	# shellcheck disable=SC2059
 	printf "$color$format$ENDCOLOR\n" "$@"
 	# shellcheck disable=SC2059
-	printf "$format" "$@" >>"$LOG_FILE_PATH"
+	printf "$format\n" "$@" >>"$LOG_FILE_PATH"
 }
 
 # VARIABLES
@@ -329,7 +329,14 @@ wait_for_csv_to_appear_and_label() {
 	start_time=$(date +%s)
 	while true; do
 		# Wait for the specific operator's CSV (name starts with package name)
-		csv_name=$(oc get csv -n "$csv_namespace" -o custom-columns=':.metadata.name' --no-headers 2>/dev/null | grep "^${operator_package}\." | head -1)
+		# Try to get CSV name from subscription status first
+		csv_name=$(oc get subscription "$operator_package" -n "$csv_namespace" -o jsonpath='{.status.installedCSV}' 2>/dev/null)
+		
+		# If subscription.status.installedCSV is empty (e.g., for + operators with conflicts),
+		# fall back to querying CSV directly by pattern matching
+		if [ -z "$csv_name" ] || [ "$csv_name" = "<none>" ]; then
+			csv_name=$(oc get csv -n "$csv_namespace" -o custom-columns=':.metadata.name' --no-headers 2>/dev/null | grep -i "$operator_package" | head -1)
+		fi
 		if [ -n "$csv_name" ]; then
 			# Found the CSV for this operator
 			break
@@ -706,7 +713,23 @@ while IFS=, read -r package_name catalog_index; do
 	# Install the operator in a custom namespace
 	echo_color "$BLUE" "install operator"
 	install_status=0
-	install_output=$(oc operator install --create-operator-group "$actual_package_name" -n "$ns" 2>&1) || install_status=$?
+	
+	# For + suffix operators, check if subscription already exists before attempting install
+	if [ "$skip_cleanup" = true ]; then
+		existing_subscription=$(oc get subscription "$actual_package_name" -n "$ns" -o name 2>/dev/null || true)
+		
+		if [ -n "$existing_subscription" ]; then
+			echo_color "$BLUE" "Operator subscription already exists for + suffix operator, skipping oc operator install"
+			echo_color "$BLUE" "Existing subscription: $existing_subscription"
+			install_output="Subscription already exists, skipped oc operator install"
+		else
+			# Subscription does not exist, proceed with install
+			install_output=$(oc operator install --create-operator-group "$actual_package_name" -n "$ns" 2>&1) || install_status=$?
+		fi
+	else
+		# Normal operator (no + suffix), always run install
+		install_output=$(oc operator install --create-operator-group "$actual_package_name" -n "$ns" 2>&1) || install_status=$?
+	fi
 
 	if [ "$install_status" -ne 0 ]; then
 		# Check if it's a "already exists" error and we're using + suffix
@@ -719,7 +742,6 @@ while IFS=, read -r package_name catalog_index; do
 	else
 		echo "$install_output"
 	fi
-
 	# Setting report directory
 	report_dir="$REPORT_FOLDER"/"$actual_package_name"
 
