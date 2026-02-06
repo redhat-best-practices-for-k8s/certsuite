@@ -56,12 +56,22 @@ type VersionInfo struct {
 }
 
 var (
-	ocpBetaVersions   = []string{"4.13", "4.14", "4.16", "4.17", "4.18", "4.19", "4.20", "4.21"}
+	ocpBetaVersions   = []string{"4.13", "4.14", "4.16", "4.17", "4.18", "4.19", "4.20"}
 	ocpLifeCycleDates = map[string]VersionInfo{
 		// TODO: Adjust all of these periodically to make sure they are up to date with the lifecycle
 		// update documentation.
 
 		// Full Support
+		"4.21": {
+			GADate:  time.Date(2026, 2, 3, 0, 0, 0, 0, time.UTC),  // February 3, 2026 (estimated)
+			FSEDate: time.Date(2026, 5, 3, 0, 0, 0, 0, time.UTC),  // May 3, 2026 (90 days after next release, estimated)
+			MSEDate: time.Date(2027, 8, 3, 0, 0, 0, 0, time.UTC),  // August 3, 2027 (18 months from GA)
+			// Note: Dates are estimated based on typical 4-month release cadence. Update when official dates available.
+
+			// OS Compatibility (for worker nodes)
+			MinRHCOSVersion:      "4.21",
+			RHELVersionsAccepted: []string{"8.10", "9.4"}, // TBD - estimated based on typical support
+		},
 		"4.20": {
 			GADate:  time.Date(2025, 10, 21, 0, 0, 0, 0, time.UTC), // October 21, 2025 (estimated)
 			FSEDate: time.Date(2026, 1, 21, 0, 0, 0, 0, time.UTC),  // January 21, 2026 (90 days after next release, estimated)
