@@ -1,0 +1,50 @@
+name: Update OCP lifecycle dates
+
+on:
+  # Triggers the workflow every day at 6 AM UTC
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  update-ocp-lifecycle:
+    if: github.repository_owner == 'redhat-best-practices-for-k8s'
+    permissions:
+      contents: write  # for peter-evans/create-pull-request to create branch
+      pull-requests: write  # for peter-evans/create-pull-request to create a PR
+    name: Update OCP lifecycle dates from endoflife.date API
+    runs-on: ubuntu-24.04
+    env:
+      SHELL: /bin/bash
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: main
+
+      - name: Execute `make update-ocp-lifecycle`
+        run: make update-ocp-lifecycle
+
+      - name: Set up Go
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
+        with:
+          go-version-file: go.mod
+
+        # This prevents any failures due to the updated lifecycle data from
+        # making it into the PR phase.
+      - name: Run unit tests
+        run: make test
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPDATE_CERTIFIED_DB_TOKEN }}
+        with:
+          commit-message: Update OCP lifecycle dates
+          title: Update OCP lifecycle dates
+          body: |
+            - OCP lifecycle dates update from endoflife.date API
+          branch: update-ocp-lifecycle

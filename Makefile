@@ -31,6 +31,7 @@ IMAGE_TAG?=localtest
 	generate \
 	lint \
 	markdownlint \
+	update-ocp-lifecycle \
 	update-rhcos-versions \
 	vet \
 	yamllint
@@ -145,6 +146,10 @@ fmt:
 
 generate:
 	go generate ./...
+
+# Updates OCP lifecycle dates from endoflife.date API
+update-ocp-lifecycle:
+	curl -sL --retry 5 --retry-delay 10 https://endoflife.date/api/openshift.json -o pkg/compatibility/data/openshift_lifecycle.json
 
 update-rhcos-versions:
 	./script/rhcos_versions.sh

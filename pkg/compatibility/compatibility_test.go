@@ -17,6 +17,7 @@
 package compatibility
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -229,9 +230,104 @@ func TestIsRHCOSCompatible(t *testing.T) {
 			testMachineVersion: "4.20.2",
 			expectedOutput:     true,
 		},
+		{ // Test Case #11 - OCP 4.21.2 accepts RHCOS version 4.21.2, pass
+			testOCPVersion:     "4.21.2",
+			testMachineVersion: "4.21.2",
+			expectedOutput:     true,
+		},
+		{ // Test Case #12 - OCP 4.21.2 accepts RHCOS version 4.21.0, pass
+			testOCPVersion:     "4.21.2",
+			testMachineVersion: "4.21.0",
+			expectedOutput:     true,
+		},
+		{ // Test Case #13 - OCP 4.21.0 accepts RHCOS version 4.21.2, pass
+			testOCPVersion:     "4.21.0",
+			testMachineVersion: "4.21.2",
+			expectedOutput:     true,
+		},
 	}
 
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expectedOutput, IsRHCOSCompatible(tc.testMachineVersion, tc.testOCPVersion))
 	}
+}
+
+func TestParseDateOrBool(t *testing.T) {
+	testCases := []struct {
+		name         string
+		input        json.RawMessage
+		expectedTime time.Time
+		expectedOk   bool
+	}{
+		{
+			name:         "date string",
+			input:        json.RawMessage(`"2025-09-17"`),
+			expectedTime: time.Date(2025, 9, 17, 0, 0, 0, 0, time.UTC),
+			expectedOk:   true,
+		},
+		{
+			name:         "boolean true (still in full support)",
+			input:        json.RawMessage(`true`),
+			expectedTime: time.Time{},
+			expectedOk:   false,
+		},
+		{
+			name:         "boolean false (no extended support)",
+			input:        json.RawMessage(`false`),
+			expectedTime: time.Time{},
+			expectedOk:   false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result, ok := parseDateOrBool(tc.input)
+			assert.Equal(t, tc.expectedOk, ok)
+			assert.Equal(t, tc.expectedTime, result)
+		})
+	}
+}
+
+func TestParseLifecycleData(t *testing.T) {
+	dates := GetLifeCycleDates()
+
+	// 4.18: support="2025-09-17" (date), extendedSupport="2027-02-25" (EUS date)
+	v418, ok := dates["4.18"]
+	assert.True(t, ok)
+	assert.Equal(t, time.Date(2025, 2, 25, 0, 0, 0, 0, time.UTC), v418.GADate)
+	assert.Equal(t, time.Date(2025, 9, 17, 0, 0, 0, 0, time.UTC), v418.FSEDate)
+	assert.Equal(t, time.Date(2027, 2, 25, 0, 0, 0, 0, time.UTC), v418.MSEDate) // EUS end date
+
+	// 4.20: support=true (boolean), extendedSupport=false (boolean)
+	v420, ok := dates["4.20"]
+	assert.True(t, ok)
+	assert.Equal(t, time.Date(2025, 10, 21, 0, 0, 0, 0, time.UTC), v420.GADate)
+	assert.True(t, v420.FSEDate.IsZero(), "FSEDate should be zero when support is boolean true")
+	assert.Equal(t, time.Date(2027, 4, 21, 0, 0, 0, 0, time.UTC), v420.MSEDate) // falls back to eol
+
+	// 4.17: support="2025-05-25" (date), extendedSupport=false (no EUS)
+	v417, ok := dates["4.17"]
+	assert.True(t, ok)
+	assert.Equal(t, time.Date(2025, 5, 25, 0, 0, 0, 0, time.UTC), v417.FSEDate)
+	assert.Equal(t, time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC), v417.MSEDate) // standard eol, not EUS
+}
+
+func TestIsRHELCompatibleEmptyRHELVersions(t *testing.T) {
+	// A version in the lifecycle data but not in rhel_compat.json should return false, not panic
+	// We test this by checking an unknown OCP version which has no RHEL compat entry
+	result := IsRHELCompatible("8.4", "99.99")
+	assert.False(t, result)
+}
+
+func TestPreGAVersionFromRHELCompat(t *testing.T) {
+	// 4.21 is in rhel_compat.json but not in the API data yet.
+	// It should still appear in the lifecycle dates with RHEL versions populated.
+	dates := GetLifeCycleDates()
+	v421, ok := dates["4.21"]
+	assert.True(t, ok, "4.21 should be present from rhel_compat.json")
+	assert.Equal(t, "4.21", v421.MinRHCOSVersion)
+	assert.Equal(t, []string{"8.10", "9.4"}, v421.RHELVersionsAccepted)
+
+	// RHCOS beta matching should work for 4.21
+	assert.True(t, BetaRHCOSVersionsFoundToMatch("4.21", "4.21"))
 }
