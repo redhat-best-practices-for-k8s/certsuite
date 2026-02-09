@@ -58,14 +58,16 @@ WORKFLOWS_TO_CHECK=(
 	"QE OCP 4.18 Testing"
 	"QE OCP 4.19 Testing"
 	"QE OCP 4.20 Testing"
-	"QE OCP 4.21 Testing"
+	# TODO: Enable when quick-ocp supports it
+	# "QE OCP 4.21 Testing"
 	"QE OCP 4.14 Intrusive Testing"
 	"QE OCP 4.16 Intrusive Testing"
 	"QE OCP 4.17 Intrusive Testing"
 	"QE OCP 4.18 Intrusive Testing"
 	"QE OCP 4.19 Intrusive Testing"
 	"QE OCP 4.20 Intrusive Testing"
-	"QE OCP 4.21 Intrusive Testing"
+	# TODO: Enable when quick-ocp supports it
+	# "QE OCP 4.21 Intrusive Testing"
 	"OCP ARM64 4.16 QE Testing"
 	"qe-ocp-hosted.yml"
 )
