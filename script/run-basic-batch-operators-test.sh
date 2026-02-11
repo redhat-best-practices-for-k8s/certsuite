@@ -787,26 +787,46 @@ EOF
 	# Extra wait to ensure that all pods are running
 	sleep 30
 
-	# CSV-based labeling: label only operator-specific deployments and pods
-	echo_color "$BLUE" "Label operator-specific deployments and pods"
+	# CSV-based labeling: label only operator-specific deployments, statefulsets, and pods
+	echo_color "$BLUE" "Label operator-specific deployments, statefulsets, and pods"
 	# Get the CSV name for the operator under test (already labeled earlier)
 	csv_name=$(oc get csv -n "$ns" -l redhat-best-practices-for-k8s.com/operator=target -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
 
 	if [ -n "$csv_name" ]; then
+		# Get the CSV UID for owner reference matching
+		csv_uid=$(oc get csv "$csv_name" -n "$ns" -o jsonpath='{.metadata.uid}' 2>/dev/null)
+
 		# Extract deployment names from CSV's spec.install.spec.deployments
 		deployment_names=$(oc get csv "$csv_name" -n "$ns" -o jsonpath='{.spec.install.spec.deployments[*].name}' 2>/dev/null)
 
 		# Label only the deployments defined in the CSV
 		for dep_name in $deployment_names; do
 			echo_color "$GREY" "Labeling deployment: $dep_name"
-			oc label deployment -n "$ns" "$dep_name" redhat-best-practices-for-k8s.com/generic=target 2>>"$LOG_FILE_PATH" || true
+			oc label deployment -n "$ns" "$dep_name" redhat-best-practices-for-k8s.com/generic=target --overwrite 2>>"$LOG_FILE_PATH" || true
 
 			# Label pods belonging to this deployment (using deployment's selector)
 			selector=$(oc get deployment "$dep_name" -n "$ns" -o jsonpath='{.spec.selector.matchLabels}' 2>/dev/null | jq -r 'to_entries | map("\(.key)=\(.value)") | join(",")' 2>/dev/null)
 			if [ -n "$selector" ]; then
-				oc label pods -n "$ns" -l "$selector" redhat-best-practices-for-k8s.com/generic=target 2>>"$LOG_FILE_PATH" || true
+				oc label pods -n "$ns" -l "$selector" redhat-best-practices-for-k8s.com/generic=target --overwrite 2>>"$LOG_FILE_PATH" || true
 			fi
 		done
+
+		# Find and label statefulsets owned by the CSV (via ownerReferences)
+		if [ -n "$csv_uid" ]; then
+			echo_color "$GREY" "Looking for statefulsets owned by CSV: $csv_name"
+			statefulset_names=$(oc get statefulset -n "$ns" -o json 2>/dev/null | jq -r --arg uid "$csv_uid" '.items[] | select(.metadata.ownerReferences[]?.uid == $uid) | .metadata.name' 2>/dev/null)
+
+			for sts_name in $statefulset_names; do
+				echo_color "$GREY" "Labeling statefulset: $sts_name"
+				oc label statefulset -n "$ns" "$sts_name" redhat-best-practices-for-k8s.com/generic=target --overwrite 2>>"$LOG_FILE_PATH" || true
+
+				# Label pods belonging to this statefulset (using statefulset's selector)
+				selector=$(oc get statefulset "$sts_name" -n "$ns" -o jsonpath='{.spec.selector.matchLabels}' 2>/dev/null | jq -r 'to_entries | map("\(.key)=\(.value)") | join(",")' 2>/dev/null)
+				if [ -n "$selector" ]; then
+					oc label pods -n "$ns" -l "$selector" redhat-best-practices-for-k8s.com/generic=target --overwrite 2>>"$LOG_FILE_PATH" || true
+				fi
+			done
+		fi
 	else
 		echo_color "$RED" "Warning: Could not find labeled CSV, falling back to namespace-wide labeling"
 		# Fallback to original behavior
