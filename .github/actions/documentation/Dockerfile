@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/python-39:9.7@sha256:b9cab177ccea1acd7b1df9a23dcfa280177c7c66615dd7567036adb7820f49b3
+FROM registry.access.redhat.com/ubi9/python-39:9.7@sha256:c871688f22d2ac783a37703b1944fd94d8d2707aac8a3363fd1a039141b365f6
 
 # Pin versions in pip.
 # hadolint ignore=DL3013
