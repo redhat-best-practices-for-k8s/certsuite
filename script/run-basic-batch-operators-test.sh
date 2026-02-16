@@ -685,9 +685,16 @@ while IFS=, read -r package_name catalog_index; do
 		echo_color "$RED" "Warning, cluster cleanup failed"
 	fi
 
-	# Skip namespace creation for openshift-storage
+	# Handle openshift-storage namespace - create if it doesn't exist, but never delete it
 	if [ "$ns" = "openshift-storage" ]; then
-		echo_color "$BLUE" "Skipping namespace creation for openshift-storage (using existing namespace)"
+		if oc get namespace "$ns" &>/dev/null; then
+			echo_color "$BLUE" "Namespace openshift-storage already exists, using it"
+		else
+			echo_color "$BLUE" "Creating namespace openshift-storage"
+			if ! oc create namespace "$ns"; then
+				echo_color "$RED" "Error, creating namespace openshift-storage failed"
+			fi
+		fi
 	elif [ "$skip_cleanup" = true ]; then
 		# For operators with + suffix, preserve existing namespace if present
 		if oc get namespace "$ns" &>/dev/null; then
