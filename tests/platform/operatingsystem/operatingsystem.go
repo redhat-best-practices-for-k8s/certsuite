@@ -54,19 +54,35 @@ func GetRHCOSMappedVersions(rhcosVersionMap string) (map[string]string, error) {
 	return capturedInfo, nil
 }
 
+// GetShortVersionFromLong returns the first matching OCP version for a given RHCOS long version.
+// Deprecated: Use GetAllShortVersionsFromLong instead, as the same RHCOS version may map to multiple OCP versions.
 func GetShortVersionFromLong(longVersion string) (string, error) {
-	capturedVersions, err := GetRHCOSMappedVersions(rhcosVersionMap)
+	versions, err := GetAllShortVersionsFromLong(longVersion)
 	if err != nil {
 		return "", err
 	}
+	if len(versions) == 0 {
+		return NotFoundStr, nil
+	}
+	return versions[0], nil
+}
 
-	// search through all available rhcos versions for a match
+// GetAllShortVersionsFromLong returns all matching OCP versions for a given RHCOS long version.
+// The same RHCOS build can be used by multiple OCP versions (e.g., 9.6.20251125-1 maps to both 4.19.20 and 4.20.6).
+// This function returns all matching versions to allow proper compatibility checking.
+func GetAllShortVersionsFromLong(longVersion string) ([]string, error) {
+	capturedVersions, err := GetRHCOSMappedVersions(rhcosVersionMap)
+	if err != nil {
+		return nil, err
+	}
+
+	var matchingVersions []string
+	// search through all available rhcos versions for matches
 	for s, l := range capturedVersions {
 		if l == longVersion {
-			return s, nil
+			matchingVersions = append(matchingVersions, s)
 		}
 	}
 
-	// return "version-not-found" if the short version cannot be found
-	return NotFoundStr, nil
+	return matchingVersions, nil
 }

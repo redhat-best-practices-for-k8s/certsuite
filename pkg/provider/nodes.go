@@ -92,6 +92,27 @@ func (node *Node) GetRHCOSVersion() (string, error) {
 	return shortVersion, nil
 }
 
+// GetRHCOSVersions returns all matching OCP versions for the node's RHCOS version.
+// The same RHCOS build can be used by multiple OCP versions, so this returns all matches.
+func (node *Node) GetRHCOSVersions() ([]string, error) {
+	// Check if the node is running CoreOS or not
+	if !node.IsRHCOS() {
+		return nil, fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
+	}
+
+	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
+	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhcosName)
+	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
+
+	// Get all matching short versions from the long version string
+	shortVersions, err := operatingsystem.GetAllShortVersionsFromLong(longVersionSplit[0])
+	if err != nil {
+		return nil, err
+	}
+
+	return shortVersions, nil
+}
+
 func (node *Node) GetCSCOSVersion() (string, error) {
 	// Check if the node is running CoreOS or not
 	if !node.IsCSCOS() {
