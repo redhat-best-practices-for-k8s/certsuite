@@ -331,7 +331,7 @@ wait_for_csv_to_appear_and_label() {
 		# Wait for the specific operator's CSV (name starts with package name)
 		# Try to get CSV name from subscription status first
 		csv_name=$(oc get subscription "$operator_package" -n "$csv_namespace" -o jsonpath='{.status.installedCSV}' 2>/dev/null)
-		
+
 		# If subscription.status.installedCSV is empty (e.g., for + operators with conflicts),
 		# fall back to querying CSV directly by pattern matching
 		if [ -z "$csv_name" ] || [ "$csv_name" = "<none>" ]; then
@@ -720,11 +720,11 @@ while IFS=, read -r package_name catalog_index; do
 	# Install the operator in a custom namespace
 	echo_color "$BLUE" "install operator"
 	install_status=0
-	
+
 	# For + suffix operators, check if subscription already exists before attempting install
 	if [ "$skip_cleanup" = true ]; then
 		existing_subscription=$(oc get subscription "$actual_package_name" -n "$ns" -o name 2>/dev/null || true)
-		
+
 		if [ -n "$existing_subscription" ]; then
 			echo_color "$BLUE" "Operator subscription already exists for + suffix operator, skipping oc operator install"
 			echo_color "$BLUE" "Existing subscription: $existing_subscription"
