@@ -55,6 +55,7 @@ func GetRHCOSMappedVersions(rhcosVersionMap string) (map[string]string, error) {
 }
 
 // GetShortVersionFromLong returns the first matching OCP version for a given RHCOS long version.
+//
 // Deprecated: Use GetAllShortVersionsFromLong instead, as the same RHCOS version may map to multiple OCP versions.
 func GetShortVersionFromLong(longVersion string) (string, error) {
 	versions, err := GetAllShortVersionsFromLong(longVersion)
