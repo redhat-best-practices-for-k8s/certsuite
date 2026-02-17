@@ -51,6 +51,7 @@ testCases:
     - networking-network-policy-deny-all
     - networking-ocp-reserved-ports-usage
     - networking-reserved-partner-ports
+    - networking-tls-minimum-version
     - networking-undeclared-container-ports-usage
     - observability-container-logging
     - observability-crd-status

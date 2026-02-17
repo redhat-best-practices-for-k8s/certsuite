@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 121
+### Total test cases: 122
 
 ### Total suites: 10
 
@@ -17,18 +17,18 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |affiliated-certification|4|[affiliated-certification](#affiliated-certification)|
 |lifecycle|19|[lifecycle](#lifecycle)|
 |manageability|2|[manageability](#manageability)|
-|networking|11|[networking](#networking)|
+|networking|12|[networking](#networking)|
 |observability|5|[observability](#observability)|
 |operator|12|[operator](#operator)|
 |performance|7|[performance](#performance)|
 |platform-alteration|14|[platform-alteration](#platform-alteration)|
 |preflight|19|[preflight](#preflight)|
 
-### Extended specific tests only: 13
+### Extended specific tests only: 14
 
 |Mandatory|Optional|
 |---|---|---|
-|10|3|
+|10|4|
 
 ### Far-Edge specific tests only: 9
 
@@ -1130,6 +1130,23 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
 |Far-Edge|Mandatory|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### networking-tls-minimum-version
+
+|Property|Description|
+|---|---|
+|Unique ID|networking-tls-minimum-version|
+|Description|Checks that TLS-enabled services in target namespaces honor the cluster's TLS security profile. On OpenShift, the profile is read from the APIServer CR (default: Intermediate, min TLS 1.2). On non-OpenShift clusters, Intermediate is used as default. Validates both minimum TLS version and cipher suite compliance. Non-TLS ports are reported as informational only.|
+|Suggested Remediation|Configure workload services to honor the cluster's TLS security profile. On OpenShift, the minimum TLS version and allowed ciphers are determined by the APIServer CR's TLSSecurityProfile (default: Intermediate, min TLS 1.2). Ensure server TLS settings enforce at least the profile's minimum version and only accept ciphers from the profile's allowed list.|
+|Best Practice Reference|No Doc Link - Extended|
+|Exception Process|No exception needed for optional/extended tests.|
+|Impact Statement|Services accepting TLS versions below 1.3 are vulnerable to known protocol attacks (BEAST, POODLE, Lucky13) and may fail security compliance audits required for telco/CNF deployments.|
+|Tags|extended,networking|
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
 
