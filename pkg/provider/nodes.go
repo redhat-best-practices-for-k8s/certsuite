@@ -73,23 +73,18 @@ func (node *Node) IsRTKernel() bool {
 	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.KernelVersion), "rt")
 }
 
+// GetRHCOSVersion returns the first matching OCP version for the node's RHCOS version.
+//
+// Deprecated: Use GetRHCOSVersions instead, as the same RHCOS build can map to multiple OCP versions.
 func (node *Node) GetRHCOSVersion() (string, error) {
-	// Check if the node is running CoreOS or not
-	if !node.IsRHCOS() {
-		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
-	}
-
-	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
-	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhcosName)
-	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
-
-	// Get the short version string from the long version string
-	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0])
+	versions, err := node.GetRHCOSVersions()
 	if err != nil {
 		return "", err
 	}
-
-	return shortVersion, nil
+	if len(versions) == 0 {
+		return operatingsystem.NotFoundStr, nil
+	}
+	return versions[0], nil
 }
 
 // GetRHCOSVersions returns all matching OCP versions for the node's RHCOS version.
