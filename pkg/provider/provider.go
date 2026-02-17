@@ -63,6 +63,8 @@ const (
 	rhcosName                        = "Red Hat Enterprise Linux CoreOS"
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
+	// ZoneTopologyKey is the standard Kubernetes label for zone topology
+	ZoneTopologyKey                  = "topology.kubernetes.io/zone"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
@@ -649,6 +651,24 @@ func (env *TestEnvironment) GetMasterCount() int {
 
 func (env *TestEnvironment) IsSNO() bool {
 	return len(env.Nodes) == 1
+}
+
+// GetWorkerZoneCount returns the number of unique zones that worker nodes are distributed across.
+// This is used for zone-aware PDB validation to ensure workloads can survive zone failures.
+func (env *TestEnvironment) GetWorkerZoneCount() int {
+	zones := make(map[string]struct{})
+	for _, node := range env.Nodes {
+		if node.IsWorkerNode() {
+			if zone, ok := node.Data.Labels[ZoneTopologyKey]; ok && zone != "" {
+				zones[zone] = struct{}{}
+			}
+		}
+	}
+	// If no zones found (e.g., single-zone cluster or no zone labels), return 1
+	if len(zones) == 0 {
+		return 1
+	}
+	return len(zones)
 }
 
 func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (MachineConfig, error) {

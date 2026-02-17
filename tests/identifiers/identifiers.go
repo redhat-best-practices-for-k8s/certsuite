@@ -1665,7 +1665,8 @@ that Node's kernel may not have the same hacks.'`,
 	TestPodDisruptionBudgetIdentifier = AddCatalogEntry(
 		"pod-disruption-budget",
 		common.ObservabilityTestKey,
-		`Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable`,
+		`Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable, `+
+			`and verifies that PDBs are zone-aware (can tolerate an entire zone going offline during platform upgrades)`,
 		PodDisruptionBudgetRemediation,
 		NoExceptions,
 		TestPodDisruptionBudgetIdentifierDocLink,

@@ -135,7 +135,7 @@ const (
 	TestLoggingIdentifierImpact                            = `Improper logging configuration prevents log aggregation and monitoring, making troubleshooting and debugging difficult.`
 	TestTerminationMessagePolicyIdentifierImpact           = `Incorrect termination message policies can prevent proper error reporting and make failure diagnosis difficult.`
 	TestCrdsStatusSubresourceIdentifierImpact              = `Missing status subresources prevent proper monitoring and automation based on custom resource states.`
-	TestPodDisruptionBudgetIdentifierImpact                = `Improper disruption budgets can prevent necessary maintenance operations or allow too many pods to be disrupted simultaneously.`
+	TestPodDisruptionBudgetIdentifierImpact                = `Improper disruption budgets can prevent necessary maintenance operations or allow too many pods to be disrupted simultaneously. Non-zone-aware PDBs can block platform upgrades when all workers in a zone need to be drained.`
 	TestAPICompatibilityWithNextOCPReleaseIdentifierImpact = `Deprecated API usage can cause applications to break during OpenShift upgrades, requiring emergency fixes.`
 
 	// Manageability Test Suite Impact Statements

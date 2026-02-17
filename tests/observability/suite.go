@@ -199,6 +199,10 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
+	// Get the number of zones for zone-aware PDB validation
+	numZones := env.GetWorkerZoneCount()
+	check.LogInfo("Cluster has %d worker zone(s)", numZones)
+
 	// Loop through all of the of Deployments and StatefulSets and check if the PDBs are valid
 	for _, d := range env.Deployments {
 		check.LogInfo("Testing Deployment %q", d.ToString())
@@ -216,6 +220,7 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 			}
 			if pdbSelector.Matches(deploymentSelector) {
 				pdbFound = true
+				// First, check basic PDB validity
 				if ok, err := pdbv1.CheckPDBIsValid(pdb, d.Spec.Replicas); !ok {
 					check.LogError("PDB %q is not valid for Deployment %q, err: %v", pdb.Name, d.Name, err)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.DeploymentType, false).
@@ -223,11 +228,21 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 						AddField(testhelper.Namespace, d.Namespace).
 						AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
 				} else {
-					check.LogInfo("PDB %q is valid for Deployment: %q", pdb.Name, d.Name)
-					compliantObjects = append(compliantObjects, testhelper.NewReportObject("Deployment: references PodDisruptionBudget", testhelper.DeploymentType, true).
-						AddField(testhelper.DeploymentName, d.Name).
-						AddField(testhelper.Namespace, d.Namespace).
-						AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
+					// Basic check passed, now check zone-awareness
+					zoneResult := pdbv1.CheckPDBIsZoneAware(pdb, d.Spec.Replicas, numZones)
+					if !zoneResult.IsValid {
+						check.LogError("PDB %q is not zone-aware for Deployment %q: %v", pdb.Name, d.Name, zoneResult.ZoneCheckError)
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("PodDisruptionBudget is not zone-aware: %v", zoneResult.ZoneCheckError), testhelper.DeploymentType, false).
+							AddField(testhelper.DeploymentName, d.Name).
+							AddField(testhelper.Namespace, d.Namespace).
+							AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
+					} else {
+						check.LogInfo("PDB %q is valid and zone-aware for Deployment: %q", pdb.Name, d.Name)
+						compliantObjects = append(compliantObjects, testhelper.NewReportObject("Deployment: references valid and zone-aware PodDisruptionBudget", testhelper.DeploymentType, true).
+							AddField(testhelper.DeploymentName, d.Name).
+							AddField(testhelper.Namespace, d.Namespace).
+							AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
+					}
 				}
 			}
 		}
@@ -255,6 +270,7 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 			}
 			if pdbSelector.Matches(statefulSetSelector) {
 				pdbFound = true
+				// First, check basic PDB validity
 				if ok, err := pdbv1.CheckPDBIsValid(pdb, s.Spec.Replicas); !ok {
 					check.LogError("PDB %q is not valid for StatefulSet %q, err: %v", pdb.Name, s.Name, err)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.StatefulSetType, false).
@@ -262,11 +278,21 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 						AddField(testhelper.Namespace, s.Namespace).
 						AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
 				} else {
-					check.LogInfo("PDB %q is valid for StatefulSet: %q", pdb.Name, s.Name)
-					compliantObjects = append(compliantObjects, testhelper.NewReportObject("StatefulSet: references PodDisruptionBudget", testhelper.StatefulSetType, true).
-						AddField(testhelper.StatefulSetName, s.Name).
-						AddField(testhelper.Namespace, s.Namespace).
-						AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
+					// Basic check passed, now check zone-awareness
+					zoneResult := pdbv1.CheckPDBIsZoneAware(pdb, s.Spec.Replicas, numZones)
+					if !zoneResult.IsValid {
+						check.LogError("PDB %q is not zone-aware for StatefulSet %q: %v", pdb.Name, s.Name, zoneResult.ZoneCheckError)
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("PodDisruptionBudget is not zone-aware: %v", zoneResult.ZoneCheckError), testhelper.StatefulSetType, false).
+							AddField(testhelper.StatefulSetName, s.Name).
+							AddField(testhelper.Namespace, s.Namespace).
+							AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
+					} else {
+						check.LogInfo("PDB %q is valid and zone-aware for StatefulSet: %q", pdb.Name, s.Name)
+						compliantObjects = append(compliantObjects, testhelper.NewReportObject("StatefulSet: references valid and zone-aware PodDisruptionBudget", testhelper.StatefulSetType, true).
+							AddField(testhelper.StatefulSetName, s.Name).
+							AddField(testhelper.Namespace, s.Namespace).
+							AddField(testhelper.PodDisruptionBudgetReference, pdb.Name))
+					}
 				}
 			}
 		}
