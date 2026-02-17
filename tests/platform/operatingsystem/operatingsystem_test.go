@@ -94,3 +94,70 @@ func TestGetShortVersionFromLong(t *testing.T) {
 		assert.Equal(t, tc.expectedShortVersion, result)
 	}
 }
+
+func TestGetAllShortVersionsFromLong(t *testing.T) {
+	testCases := []struct {
+		name                  string
+		testLongVersion       string
+		expectedShortVersions []string
+		expectedErr           error
+	}{
+		{
+			name:                  "single version found",
+			testLongVersion:       "49.84.202202081504-0",
+			expectedShortVersions: []string{"4.9.21"},
+			expectedErr:           nil,
+		},
+		{
+			name:                  "invalid long version, not found in file",
+			testLongVersion:       "1.3.1337",
+			expectedShortVersions: []string{},
+			expectedErr:           nil,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result, err := GetAllShortVersionsFromLong(tc.testLongVersion)
+			if tc.expectedErr != nil {
+				assert.Error(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
+			// For single match, check the result contains expected version
+			if len(tc.expectedShortVersions) > 0 {
+				assert.Contains(t, result, tc.expectedShortVersions[0])
+			} else {
+				assert.Empty(t, result)
+			}
+		})
+	}
+}
+
+func TestGetAllShortVersionsFromLongWithDuplicates(t *testing.T) {
+	// Test with a version map that has duplicates
+	versionMap := `4.9.21 / 49.84.202202081504-0
+4.9.25 / 49.84.202203112054-0
+4.10.14 / 410.84.202205031645-0
+4.19.20 / 9.6.20251125-1
+4.20.6 / 9.6.20251125-1`
+
+	capturedVersions, err := GetRHCOSMappedVersions(versionMap)
+	assert.Nil(t, err)
+
+	// The duplicate version should be in the map (last one wins in map)
+	// but GetAllShortVersionsFromLong should find all matching versions
+	longVersion := "9.6.20251125-1"
+
+	var matchingVersions []string
+	for s, l := range capturedVersions {
+		if l == longVersion {
+			matchingVersions = append(matchingVersions, s)
+		}
+	}
+
+	// Should find both 4.19.20 and 4.20.6
+	assert.Len(t, matchingVersions, 2)
+	assert.Contains(t, matchingVersions, "4.19.20")
+	assert.Contains(t, matchingVersions, "4.20.6")
+}

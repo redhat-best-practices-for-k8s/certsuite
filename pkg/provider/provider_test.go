@@ -684,6 +684,43 @@ func TestGetRHCOSVersion(t *testing.T) {
 	}
 }
 
+func TestGetRHCOSVersions(t *testing.T) {
+	testCases := []struct {
+		testImageName string
+		expectErr     bool
+	}{
+		{
+			testImageName: "Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)",
+			expectErr:     false,
+		},
+		{
+			testImageName: "Ubuntu 20.04",
+			expectErr:     true,
+		},
+	}
+
+	for _, tc := range testCases {
+		node := Node{
+			Data: &corev1.Node{
+				Status: corev1.NodeStatus{
+					NodeInfo: corev1.NodeSystemInfo{
+						OSImage: tc.testImageName,
+					},
+				},
+			},
+		}
+
+		result, err := node.GetRHCOSVersions()
+		if tc.expectErr {
+			assert.Error(t, err)
+		} else {
+			assert.Nil(t, err)
+			// Should return at least one version for valid RHCOS
+			assert.NotEmpty(t, result)
+		}
+	}
+}
+
 func TestGetCSCOSVersion(t *testing.T) {
 	testCases := []struct {
 		testImageName  string

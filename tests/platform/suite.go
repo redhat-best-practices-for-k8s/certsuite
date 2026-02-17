@@ -34,8 +34,6 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/cnffsdiff"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/hugepages"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/isredhat"
-
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/operatingsystem"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/sysctlconfig"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
@@ -623,8 +621,9 @@ func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvi
 		if node.IsWorkerNode() {
 			//nolint:gocritic
 			if node.IsRHCOS() {
-				// Get the short version from the node
-				shortVersion, err := node.GetRHCOSVersion()
+				// Get all matching short versions from the node
+				// The same RHCOS build can map to multiple OCP versions (e.g., 9.6.20251125-1 maps to both 4.19.20 and 4.20.6)
+				shortVersions, err := node.GetRHCOSVersions()
 				if err != nil {
 					check.LogError("Node %q failed to gather RHCOS version, err: %v", nodeName, err)
 					failedWorkerNodes = append(failedWorkerNodes, nodeName)
@@ -632,21 +631,32 @@ func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvi
 					continue
 				}
 
-				if shortVersion == operatingsystem.NotFoundStr {
+				if len(shortVersions) == 0 {
 					check.LogInfo("Node %q has an RHCOS operating system that is not found in our internal database. Skipping as to not cause failures due to database mismatch.", nodeName)
 					continue
 				}
 
-				// If the node's RHCOS version and the OpenShift version are not compatible, the node fails.
-				check.LogDebug("Comparing RHCOS shortVersion %q to openshiftVersion %q", shortVersion, env.OpenshiftVersion)
-				if !compatibility.IsRHCOSCompatible(shortVersion, env.OpenshiftVersion) {
-					check.LogError("Worker node %q has been found to be running an incompatible version of RHCOS %q", nodeName, shortVersion)
+				// Check if ANY of the matching RHCOS versions is compatible with the OpenShift version
+				// This handles the case where the same RHCOS build is used by multiple OCP versions
+				check.LogDebug("Comparing RHCOS versions %v to openshiftVersion %q", shortVersions, env.OpenshiftVersion)
+				isCompatible := false
+				var compatibleVersion string
+				for _, shortVersion := range shortVersions {
+					if compatibility.IsRHCOSCompatible(shortVersion, env.OpenshiftVersion) {
+						isCompatible = true
+						compatibleVersion = shortVersion
+						break
+					}
+				}
+
+				if !isCompatible {
+					check.LogError("Worker node %q has been found to be running an incompatible version of RHCOS %v", nodeName, shortVersions)
 					failedWorkerNodes = append(failedWorkerNodes, nodeName)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node has been found to be running an incompatible OS", false).
 						AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
 					continue
 				}
-				check.LogInfo("Worker node %q has been found to be running a compatible version of RHCOS %q", nodeName, shortVersion)
+				check.LogInfo("Worker node %q has been found to be running a compatible version of RHCOS %q", nodeName, compatibleVersion)
 				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node has been found to be running a compatible OS", true).
 					AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
 			} else if node.IsCSCOS() {
