@@ -87,12 +87,12 @@ type ContainerIP struct {
 // String displays the NetTestContext data structure
 func (testContext *NetTestContext) String() string {
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("From initiating container: %s\n", testContext.TesterSource.String()))
+	fmt.Fprintf(&sb, "From initiating container: %s\n", testContext.TesterSource.String())
 	if len(testContext.DestTargets) == 0 {
 		sb.WriteString("--> No target containers to test for this network")
 	}
 	for _, target := range testContext.DestTargets {
-		sb.WriteString(fmt.Sprintf("--> To target container: %s\n", target.String()))
+		fmt.Fprintf(&sb, "--> To target container: %s\n", target.String())
 	}
 	return sb.String()
 }
@@ -112,8 +112,8 @@ func PrintNetTestContextMap(netsUnderTest map[string]NetTestContext) string {
 		sb.WriteString("No networks to test.\n")
 	}
 	for netName, netUnderTest := range netsUnderTest {
-		sb.WriteString(fmt.Sprintf("***Test for Network attachment: %s\n", netName))
-		sb.WriteString(fmt.Sprintf("%s\n", netUnderTest.String()))
+		fmt.Fprintf(&sb, "***Test for Network attachment: %s\n", netName)
+		fmt.Fprintf(&sb, "%s\n", netUnderTest.String())
 	}
 	return sb.String()
 }
