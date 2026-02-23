@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.sha }}
 
@@ -90,7 +90,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.sha }}
 
@@ -103,7 +103,7 @@ jobs:
           exit 1
 
       - name: Deploy the OCP Cluster
-        uses: palmsoftware/quick-ocp@v0.0.25
+        uses: palmsoftware/quick-ocp@8be2b2ca321e0827467e1acc0a79084f66fc69e5 # v0.0.25
         with:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
