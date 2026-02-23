@@ -67,7 +67,7 @@ type ManagedDeploymentsStatefulsets struct {
 // ConnectAPIConfig contains the configuration for the Red Hat Connect API
 type ConnectAPIConfig struct {
 	// APIKey is the API key for the Red Hat Connect
-	APIKey string `yaml:"apiKey" json:"apiKey"`
+	APIKey string `yaml:"apiKey" json:"apiKey"` //nolint:gosec // G117: field holds an API key by design
 	// ProjectID is the project ID for the Red Hat Connect
 	ProjectID string `yaml:"projectID" json:"projectID"`
 	// BaseURL is the base URL for the Red Hat Connect API

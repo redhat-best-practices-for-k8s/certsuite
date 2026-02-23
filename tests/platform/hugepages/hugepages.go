@@ -48,9 +48,9 @@ func (numaHps hugepagesByNuma) String() string {
 	var sb strings.Builder
 	for _, numaIdx := range numaIndexes {
 		sizeCounts := numaHps[numaIdx]
-		sb.WriteString(fmt.Sprintf("Numa=%d ", numaIdx))
+		fmt.Fprintf(&sb, "Numa=%d ", numaIdx)
 		for size, count := range sizeCounts {
-			sb.WriteString(fmt.Sprintf("[Size=%dkB Count=%d] ", size, count))
+			fmt.Fprintf(&sb, "[Size=%dkB Count=%d] ", size, count)
 		}
 	}
 	return sb.String()
@@ -327,9 +327,9 @@ func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages hug
 
 func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz int) {
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("MC KernelArguments hugepages config: default_hugepagesz=%dkB", defhugepagesz))
+	fmt.Fprintf(&sb, "MC KernelArguments hugepages config: default_hugepagesz=%dkB", defhugepagesz)
 	for size, count := range hugepagesPerSize {
-		sb.WriteString(fmt.Sprintf(", size=%dkB - count=%d", size, count))
+		fmt.Fprintf(&sb, ", size=%dkB - count=%d", size, count)
 	}
 	log.Info("%s", sb.String())
 }
