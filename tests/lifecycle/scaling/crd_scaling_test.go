@@ -49,6 +49,7 @@ func (f *fakeScaleImpl) Get(_ context.Context, _ schema.GroupResource, _ string,
 	return f.getResult, f.getErr
 }
 
+//nolint:gocritic
 func (f *fakeScaleImpl) Update(_ context.Context, _ schema.GroupResource, s *v1autoscaling.Scale, _ metav1.UpdateOptions) (*v1autoscaling.Scale, error) {
 	if f.updateErr != nil {
 		return nil, f.updateErr
@@ -56,6 +57,7 @@ func (f *fakeScaleImpl) Update(_ context.Context, _ schema.GroupResource, s *v1a
 	return s, nil
 }
 
+//nolint:gocritic
 func (f *fakeScaleImpl) Patch(_ context.Context, _ schema.GroupVersionResource, _ string, _ types.PatchType, _ []byte, _ metav1.PatchOptions) (*v1autoscaling.Scale, error) {
 	return nil, nil
 }
