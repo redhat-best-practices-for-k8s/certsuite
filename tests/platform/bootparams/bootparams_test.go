@@ -19,9 +19,9 @@ package bootparams
 import (
 	"testing"
 
+	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/stretchr/testify/assert"
-	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 )
 
 func TestGetMcKernelArguments_SingleKeyValue(t *testing.T) {
