@@ -73,7 +73,7 @@ var WaitForScalingToComplete = func(ns, name string, timeout time.Duration, grou
 	return false
 }
 
-func WaitForStatefulSetReady(ns, name string, timeout time.Duration, logger *log.Logger) bool {
+var WaitForStatefulSetReady = func(ns, name string, timeout time.Duration, logger *log.Logger) bool {
 	logger.Debug("Check if statefulset %s:%s is ready", ns, name)
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
