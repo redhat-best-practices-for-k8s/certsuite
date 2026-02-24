@@ -41,6 +41,8 @@ const (
 	SchedulingFirstInFirstOut = "SCHED_FIFO"
 
 	InvalidPriority = -1
+
+	NoProcessFoundErrMsg = "No such process"
 )
 
 var (
@@ -89,8 +91,18 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 		logger.Debug("Testing process %q", process)
 		schedulePolicy, schedulePriority, err := GetProcessCPUSchedulingFn(process.Pid, testContainer)
 		if err != nil {
-			logger.Error("Unable to get the scheduling policy and priority : %v", err)
-			return compliantContainerPids, nonCompliantContainerPids
+			if strings.Contains(err.Error(), NoProcessFoundErrMsg) {
+				logger.Warn("Process %q in Container %q disappeared (pid no longer exists), treating as compliant", process, testContainer)
+				aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process disappeared", true).
+					SetContainerProcessValues("", "", process.Args)
+				compliantContainerPids = append(compliantContainerPids, aPidOut)
+				continue
+			}
+			logger.Error("Unable to get the scheduling policy and priority for process %q: %v", process, err)
+			aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "could not determine scheduling policy", false).
+				SetContainerProcessValues("", "", process.Args)
+			nonCompliantContainerPids = append(nonCompliantContainerPids, aPidOut)
+			continue
 		}
 
 		switch check {

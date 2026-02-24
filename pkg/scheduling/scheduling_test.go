@@ -401,6 +401,115 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 			},
 
 			compliant: []testhelper.ReportObject{}},
+		{
+			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
+				if pid == 101 {
+					return "", InvalidPriority, fmt.Errorf("command failed: %s", NoProcessFoundErrMsg)
+				}
+				return "SCHED_OTHER", 0, nil
+			},
+			check: SharedCPUScheduling + "_disappeared",
+			compliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFieldsKeys: []string{
+						testhelper.ReasonForCompliance,
+						"Namespace",
+						testhelper.PodName,
+						testhelper.ContainerName,
+						testhelper.ProcessCommandLine,
+						testhelper.SchedulingPolicy,
+						testhelper.SchedulingPriority,
+					},
+					ObjectFieldsValues: []string{
+						"process disappeared",
+						"",
+						"",
+						"",
+						"tbd command line",
+						"",
+						"",
+					},
+				},
+			},
+			nonCompliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFieldsKeys: []string{
+						testhelper.ReasonForNonCompliance,
+						"Namespace",
+						testhelper.PodName,
+						testhelper.ContainerName,
+						testhelper.ProcessCommandLine,
+						testhelper.SchedulingPolicy,
+						testhelper.SchedulingPriority,
+					},
+					ObjectFieldsValues: []string{
+						"process does not satisfy: ",
+						"",
+						"",
+						"",
+						"tbd command line",
+						"SCHED_OTHER",
+						"0",
+					},
+				},
+			},
+		},
+		{
+			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
+				if pid == 101 {
+					return "", InvalidPriority, fmt.Errorf("connection refused")
+				}
+				return "SCHED_OTHER", 0, nil
+			},
+			check:     SharedCPUScheduling + "_other_error",
+			compliant: []testhelper.ReportObject{},
+			nonCompliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFieldsKeys: []string{
+						testhelper.ReasonForNonCompliance,
+						"Namespace",
+						testhelper.PodName,
+						testhelper.ContainerName,
+						testhelper.ProcessCommandLine,
+						testhelper.SchedulingPolicy,
+						testhelper.SchedulingPriority,
+					},
+					ObjectFieldsValues: []string{
+						"could not determine scheduling policy",
+						"",
+						"",
+						"",
+						"tbd command line",
+						"",
+						"",
+					},
+				},
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFieldsKeys: []string{
+						testhelper.ReasonForNonCompliance,
+						"Namespace",
+						testhelper.PodName,
+						testhelper.ContainerName,
+						testhelper.ProcessCommandLine,
+						testhelper.SchedulingPolicy,
+						testhelper.SchedulingPriority,
+					},
+					ObjectFieldsValues: []string{
+						"process does not satisfy: ",
+						"",
+						"",
+						"",
+						"tbd command line",
+						"SCHED_OTHER",
+						"0",
+					},
+				},
+			},
+		},
 	}
 	var logArchive strings.Builder
 	log.SetupLogger(&logArchive, "INFO")
