@@ -27,7 +27,7 @@ const (
 )
 
 type TestCaseList struct {
-	Pass []string `yaml:"pass"` //nolint:gosec // G117: not a secret, this is a test result category
+	Pass []string `yaml:"pass"`
 	Fail []string `yaml:"fail"`
 	Skip []string `yaml:"skip"`
 }

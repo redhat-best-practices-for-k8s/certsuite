@@ -252,7 +252,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 
 	defer func() {
 		log.Info("Removing temporary kubeconfig file %s", kubeconfigTempFile.Name())
-		err = os.Remove(kubeconfigTempFile.Name()) //nolint:gosec // G703: removing a temp file we created via os.CreateTemp
+		err = os.Remove(kubeconfigTempFile.Name())
 		if err != nil {
 			log.Error("Failed to remove temp kubeconfig file %s", kubeconfigTempFile.Name())
 		}

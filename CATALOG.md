@@ -383,7 +383,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |---|---|
 |Unique ID|access-control-security-context|
 |Description|Checks the security context matches one of the 4 categories|
-|Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 [here](#security-context-categories)|
+|Suggested Remediation|Exception possible if a workload uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in [Requirement ID 94118](#security-context-categories)|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities|
 |Exception Process|no exception needed for optional/extended test|
 |Impact Statement|Incorrect security context configurations can weaken container isolation, enable privilege escalation, and create exploitable attack vectors.|

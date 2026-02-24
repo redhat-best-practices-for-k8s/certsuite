@@ -28,11 +28,11 @@ Suite|Test Spec Description|Minimum OpenShift Version
 ---|---|---
 `access-control`|The access-control test suite is used to test  service account, namespace and cluster/pod role binding for the pods under test. It also tests the pods/containers configuration.|4.6.0
 `affiliated-certification`|The affiliated-certification test suite verifies that the containers and operators discovered or listed in the configuration file are certified by Redhat|4.6.0
-`lifecycle`| The lifecycle test suite verifies the pods deployment, creation, shutdown and  survivability. |4.6.0
+`lifecycle`|The lifecycle test suite verifies the pods deployment, creation, shutdown and survivability.|4.6.0
 `networking`|The networking test suite contains tests that check connectivity and networking config related best practices.|4.6.0
 `operator`|The operator test suite is designed to test basic Kubernetes Operator functionality.|4.6.0
-`platform-alteration`| verifies that key platform configuration is not modified by the workload under test|4.6.0
-`observability`|  the observability test suite contains tests that check workload logging is following best practices and that CRDs have status fields|4.6.0
+`platform-alteration`|verifies that key platform configuration is not modified by the workload under test|4.6.0
+`observability`|the observability test suite contains tests that check workload logging is following best practices and that CRDs have status fields|4.6.0
 
 !!! info
 

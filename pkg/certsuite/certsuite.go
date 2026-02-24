@@ -70,7 +70,7 @@ func getK8sClientsConfigFileNames() []string {
 	if homeDir != "" {
 		kubeConfigFilePath := filepath.Join(homeDir, ".kube", "config")
 		// Check if the kubeconfig path exists
-		if _, err := os.Stat(kubeConfigFilePath); err == nil { //nolint:gosec // G703: path is constructed from $HOME/.kube/config, not user input
+		if _, err := os.Stat(kubeConfigFilePath); err == nil {
 			log.Info("kubeconfig path %s is present", kubeConfigFilePath)
 			// Only add the kubeconfig to the list of paths if it exists, since it is not added by the user
 			fileNames = append(fileNames, kubeConfigFilePath)
