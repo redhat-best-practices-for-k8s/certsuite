@@ -99,6 +99,28 @@ func intOrStringToValue(intOrStr *intstr.IntOrString, replicas int32) (int, erro
 	return 0, fmt.Errorf("invalid type: neither int nor percentage")
 }
 
+// isZoneAwareForDraining checks if the PDB's constraints allow draining all pods in a single zone.
+// For percentage values, intOrStringToValue() converts them to absolute values (e.g., "60%" with 5 replicas → 3).
+// A PDB typically specifies EITHER maxUnavailable OR minAvailable (not both).
+// The check passes if the specified constraint allows zone draining.
+func isZoneAwareForDraining(pdb *policyv1.PodDisruptionBudget, maxReplicasPerZone int,
+	minAvailableValue, maxUnavailableValue int, replicaCount int32) bool {
+	if pdb.Spec.MaxUnavailable != nil {
+		if maxUnavailableValue >= maxReplicasPerZone {
+			return true
+		}
+	}
+
+	if pdb.Spec.MinAvailable != nil {
+		maxAllowedMinAvailable := int(replicaCount) - maxReplicasPerZone
+		if minAvailableValue <= maxAllowedMinAvailable {
+			return true
+		}
+	}
+
+	return false
+}
+
 // CheckPDBIsZoneAware validates that a PDB can tolerate an entire zone going offline.
 // This is important during platform upgrades where all workers in a zone may be unavailable.
 //
@@ -171,42 +193,7 @@ func CheckPDBIsZoneAware(pdb *policyv1.PodDisruptionBudget, replicas *int32, num
 		result.MaxUnavailableValue = maxUnavailableValue
 	}
 
-	// Check zone-awareness:
-	// The PDB must allow draining all pods in a single zone during platform upgrades.
-	//
-	// For percentage values, intOrStringToValue() converts them to absolute values:
-	//   e.g., "60%" with 5 replicas → 0.60 * 5 = 3
-	// This is mathematically equivalent to comparing percentages directly:
-	//   (percentage/100) * replicas >= maxReplicasPerZone
-	//   ⟺ percentage >= (maxReplicasPerZone / replicas) * 100
-	//
-	// A PDB typically specifies EITHER maxUnavailable OR minAvailable (not both).
-	// The check passes if the specified constraint allows zone draining.
-
-	isZoneAware := false
-
-	if pdb.Spec.MaxUnavailable != nil {
-		// maxUnavailable check:
-		//   Integer: maxUnavailable >= max_replicas_per_zone
-		//   Percentage: maxUnavailable >= (max_replicas_per_zone / nr_replicas) * 100
-		// Both are handled by comparing the converted absolute value.
-		if maxUnavailableValue >= maxReplicasPerZone {
-			isZoneAware = true
-		}
-	}
-
-	if pdb.Spec.MinAvailable != nil {
-		// minAvailable check:
-		//   Integer: minAvailable <= (nr_replicas - max_replicas_per_zone)
-		//   Percentage: minAvailable <= ((nr_replicas - max_replicas_per_zone) / nr_replicas) * 100
-		// Both are handled by comparing the converted absolute value.
-		maxAllowedMinAvailable := int(replicaCount) - maxReplicasPerZone
-		if minAvailableValue <= maxAllowedMinAvailable {
-			isZoneAware = true
-		}
-	}
-
-	if !isZoneAware {
+	if !isZoneAwareForDraining(pdb, maxReplicasPerZone, minAvailableValue, maxUnavailableValue, replicaCount) {
 		minAllowedMaxUnavailable := maxReplicasPerZone
 		maxAllowedMinAvailable := int(replicaCount) - maxReplicasPerZone
 		result.ZoneCheckError = fmt.Errorf(

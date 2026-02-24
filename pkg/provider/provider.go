@@ -64,7 +64,7 @@ const (
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
 	// ZoneTopologyKey is the standard Kubernetes label for zone topology
-	ZoneTopologyKey                  = "topology.kubernetes.io/zone"
+	ZoneTopologyKey = "topology.kubernetes.io/zone"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
