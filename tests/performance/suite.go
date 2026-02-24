@@ -272,6 +272,7 @@ func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvi
 			check.LogError("Unable to get PIDs from PID namespace %q for Container %q, err: %v", pidNamespace, cut, err)
 			nonCompliantContainersPids = append(nonCompliantContainersPids,
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Internal error, err=%s", err), false))
+			continue
 		}
 
 		compliantPids, nonCompliantPids := scheduling.ProcessPidsCPUScheduling(processes, cut, schedulingType, check.GetLogger())
@@ -308,8 +309,6 @@ func getExecProbesCmds(c *provider.Container) map[string]bool {
 	return cmds
 }
 
-const noProcessFoundErrMsg = "No such process"
-
 func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -338,7 +337,7 @@ func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment
 			if err != nil {
 				// If the process does not exist anymore it means that it has finished since the time the process list
 				// was retrieved. In this case, just ignore the error and continue processing the rest of the processes.
-				if strings.Contains(err.Error(), noProcessFoundErrMsg) {
+				if strings.Contains(err.Error(), scheduling.NoProcessFoundErrMsg) {
 					check.LogWarn("Container process %q disappeared", p)
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container process disappeared", true).
 						AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
