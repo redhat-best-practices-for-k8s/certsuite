@@ -163,7 +163,9 @@ const (
 
 	NamespaceResourceQuotaRemediation = `Apply a ResourceQuota to the namespace your workload is running in. The workload's namespace should have resource quota defined.`
 
-	PodDisruptionBudgetRemediation = `Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica`
+	PodDisruptionBudgetRemediation = `Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica. ` +
+		`For multi-zone clusters, also ensure the PDB is zone-aware: set maxUnavailable >= ceil(replicas/zones) ` +
+		`or minAvailable <= replicas - ceil(replicas/zones) to allow draining all pods in one zone during platform upgrades.`
 
 	APICompatibilityWithNextOCPReleaseRemediation = `Ensure the APIs the workload uses are compatible with the next OCP version`
 
