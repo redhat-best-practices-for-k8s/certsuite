@@ -351,7 +351,7 @@ func TestCheckPDBIsZoneAware(t *testing.T) {
 			},
 			replicas:     int32Ptr(6),
 			numZones:     3,
-			expectedPass: false, // minAvailable(5) > replicas(6) - maxReplicasPerZone(2) = 4
+			expectedPass: false, // minAvailable(5) exceeds replicas(6) minus maxReplicasPerZone(2)
 		},
 		{
 			// Test Case #7 - 3 zones, 5 replicas, maxUnavailable=2 - PASS
@@ -367,7 +367,7 @@ func TestCheckPDBIsZoneAware(t *testing.T) {
 			},
 			replicas:     int32Ptr(5),
 			numZones:     3,
-			expectedPass: true, // maxUnavailable(2) >= ceil(5/3) = 2
+			expectedPass: true, // maxUnavailable(2) meets ceil(5/3) threshold
 		},
 		{
 			// Test Case #8 - percentage based: 3 zones, 9 replicas, maxUnavailable=34% (rounds to 3) - PASS
@@ -431,7 +431,7 @@ func TestCheckPDBIsZoneAware(t *testing.T) {
 			},
 			replicas:     int32Ptr(4),
 			numZones:     2,
-			expectedPass: true, // minAvailable(2) <= replicas(4) - maxReplicasPerZone(2) = 2
+			expectedPass: true, // minAvailable(2) within replicas(4) minus maxReplicasPerZone(2) limit
 		},
 		{
 			// Test Case #12 - 2 zones, 4 replicas, minAvailable=3 - FAIL
@@ -447,7 +447,7 @@ func TestCheckPDBIsZoneAware(t *testing.T) {
 			},
 			replicas:     int32Ptr(4),
 			numZones:     2,
-			expectedPass: false, // minAvailable(3) > replicas(4) - maxReplicasPerZone(2) = 2
+			expectedPass: false, // minAvailable(3) exceeds replicas(4) minus maxReplicasPerZone(2)
 		},
 		{
 			// Test Case #13 - numZones=0 should be treated as single zone
@@ -513,7 +513,7 @@ func TestCheckPDBIsZoneAware(t *testing.T) {
 			},
 			replicas:     int32Ptr(5),
 			numZones:     2,
-			expectedPass: true, // minAvailable(2) <= replicas(5) - max_replicas_per_zone(3) = 2
+			expectedPass: true, // minAvailable(2) within replicas(5) minus max_replicas_per_zone(3) limit
 		},
 		{
 			// Example 1: 2 zones, 5 replicas, max_replicas_per_zone=ceil(5/2)=3
@@ -529,7 +529,7 @@ func TestCheckPDBIsZoneAware(t *testing.T) {
 			},
 			replicas:     int32Ptr(5),
 			numZones:     2,
-			expectedPass: false, // minAvailable(3) > replicas(5) - max_replicas_per_zone(3) = 2
+			expectedPass: false, // minAvailable(3) exceeds replicas(5) minus max_replicas_per_zone(3)
 		},
 		{
 			// Example 2: 3 zones, 9 replicas, max_replicas_per_zone=9/3=3
@@ -593,7 +593,7 @@ func TestCheckPDBIsZoneAware(t *testing.T) {
 			},
 			replicas:     int32Ptr(9),
 			numZones:     3,
-			expectedPass: true, // minAvailable(6) <= replicas(9) - max_replicas_per_zone(3) = 6
+			expectedPass: true, // minAvailable(6) within replicas(9) minus max_replicas_per_zone(3) limit
 		},
 		{
 			// Example 2: 3 zones, 9 replicas, max_replicas_per_zone=9/3=3
@@ -609,7 +609,7 @@ func TestCheckPDBIsZoneAware(t *testing.T) {
 			},
 			replicas:     int32Ptr(9),
 			numZones:     3,
-			expectedPass: false, // minAvailable(7) > replicas(9) - max_replicas_per_zone(3) = 6
+			expectedPass: false, // minAvailable(7) exceeds replicas(9) minus max_replicas_per_zone(3)
 		},
 		// ======================================================================
 		// OR logic test cases: when BOTH minAvailable AND maxUnavailable are specified
