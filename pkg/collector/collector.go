@@ -97,7 +97,7 @@ func SendClaimFileToCollector(endPoint, claimFilePath, executedBy, partnerName, 
 	client := &http.Client{
 		Timeout: collectorUploadTimeout, // 30 second timeout for collector uploads
 	}
-	resp, err := client.Do(postReq) //nolint:gosec // G704: URL is constructed from a configured collector endpoint, not arbitrary user input
+	resp, err := client.Do(postReq)
 	if err != nil {
 		return err
 	}

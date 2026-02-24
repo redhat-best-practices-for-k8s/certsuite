@@ -215,7 +215,7 @@ func sendRequest(req *http.Request, client *http.Client) (*http.Response, error)
 	// print the request
 	log.Debug("Sending request to %s", req.URL)
 
-	res, err := client.Do(req) //nolint:gosec // G704: URL is constructed from a configured API endpoint, not arbitrary user input
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to send post request: %v", err)
 	}
