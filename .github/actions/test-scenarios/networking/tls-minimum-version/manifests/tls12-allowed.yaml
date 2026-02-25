@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tls12-allowed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tls12-allowed
+      tls-test: target
+  template:
+    metadata:
+      labels:
+        app: tls12-allowed
+        tls-test: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          ports:
+            - containerPort: 8443
+          volumeMounts:
+            - name: tls
+              mountPath: /etc/tls
+              readOnly: true
+            - name: conf
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: tls
+          secret:
+            secretName: tls-test-cert
+        - name: conf
+          configMap:
+            name: nginx-tls12-allowed
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tls12-allowed-svc
+spec:
+  selector:
+    app: tls12-allowed
+  ports:
+    - port: 443
+      targetPort: 8443
