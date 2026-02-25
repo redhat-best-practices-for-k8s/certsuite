@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI coding agents when working with code in this repository.
 
 ## Repository Overview
 
@@ -22,7 +22,7 @@ make coverage-html      # Generate and view HTML coverage report
 
 ### Linting
 ```bash
-make lint               # Run all linters (golangci-lint, hadolint, shfmt, markdownlint, yamllint, shellcheck)
+make lint               # Run all linters (golangci-lint, hadolint, shfmt, markdownlint, yamllint, shellcheck, typos)
 make markdownlint       # Run markdown linter only
 make yamllint           # Run YAML linter only
 ```
@@ -147,7 +147,7 @@ targetCrdFilters:
 ## Development Guidelines
 
 ### Go Version
-This repository uses Go 1.25.5. Ensure your local environment matches this version.
+This repository uses Go 1.26.0. Ensure your local environment matches this version.
 
 ### Testing and Mocks
 The codebase uses native Go structs for mocking interfaces in tests. Mock implementations are hand-written and located alongside the interfaces they mock (e.g., `internal/clientsholder/command_mock.go`). This approach avoids external dependencies and makes the code easier to understand and maintain.
@@ -160,6 +160,7 @@ All code must pass the configured linters before submission. Use `make lint` to 
 - `markdownlint` (Markdown formatting)
 - `yamllint` (YAML validation)
 - `shellcheck` (Shell script analysis)
+- `typos` (Spelling checker)
 
 ### Code Organization
 - **cmd/**: Main applications and CLI tools
