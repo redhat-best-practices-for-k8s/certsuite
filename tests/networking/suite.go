@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
@@ -31,6 +32,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/netutil"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/policies"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/services"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/networking/tlsversion"
 	networkingv1 "k8s.io/api/networking/v1"
 )
 
@@ -155,6 +157,14 @@ func LoadChecks() {
 				return fmt.Errorf("failure getting pods using SRIOV: %v", err)
 			}
 			testNetworkAttachmentDefinitionSRIOVUsingMTU(c, sriovPods)
+			return nil
+		}))
+
+	// TLS minimum version test case
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestTLSMinimumVersionIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoServicesUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testTLSMinimumVersion(c, &env)
 			return nil
 		}))
 }
@@ -414,4 +424,12 @@ func testNetworkAttachmentDefinitionSRIOVUsingMTU(check *checksdb.Check, sriovPo
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testTLSMinimumVersion(check *checksdb.Check, env *provider.TestEnvironment) {
+	oc := clientsholder.GetClientsHolder()
+	policy := tlsversion.GetClusterTLSPolicy(oc.OcpClient, provider.IsOCPCluster())
+	check.LogInfo("Using TLS profile %q (min version: %s)", policy.ProfileType, tlsversion.TLSVersionName(policy.MinTLSVersion))
+	compliant, nonCompliant := tlsversion.CheckServiceTLSCompliance(check, env, policy)
+	check.SetResult(compliant, nonCompliant)
 }

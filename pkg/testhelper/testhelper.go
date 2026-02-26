@@ -171,6 +171,10 @@ const (
 	PortNumber   = "Port Number"
 	PortProtocol = "Port Protocol"
 
+	// TLS
+	TLSVersion = "TLS Version"
+	TLSCipher  = "TLS Cipher"
+
 	// OLM
 	SubscriptionName = "Subscription Name"
 	OperatorPhase    = "Operator Phase"
