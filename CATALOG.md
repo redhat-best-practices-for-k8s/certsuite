@@ -1208,11 +1208,11 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Property|Description|
 |---|---|
 |Unique ID|observability-pod-disruption-budget|
-|Description|Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable|
-|Suggested Remediation|Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica|
+|Description|Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable, and verifies that PDBs are zone-aware (can tolerate an entire zone going offline during platform upgrades)|
+|Suggested Remediation|Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica. For multi-zone clusters, also ensure the PDB is zone-aware: set maxUnavailable >= ceil(replicas/zones) or minAvailable <= replicas - ceil(replicas/zones) to allow draining all pods in one zone during platform upgrades.|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-upgrade-expectations|
 |Exception Process|No exceptions|
-|Impact Statement|Improper disruption budgets can prevent necessary maintenance operations or allow too many pods to be disrupted simultaneously.|
+|Impact Statement|Improper disruption budgets can prevent necessary maintenance operations or allow too many pods to be disrupted simultaneously. Non-zone-aware PDBs can block platform upgrades when all workers in a zone need to be drained.|
 |Tags|common,observability|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
