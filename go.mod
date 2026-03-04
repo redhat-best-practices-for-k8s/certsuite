@@ -15,7 +15,7 @@ require (
 	github.com/mittwald/go-helm-client v0.12.19
 	github.com/openshift/api v0.0.0-20251118143053-b6fddd3c8174
 	github.com/openshift/client-go v0.0.0-20251015124057-db0dee36e235
-	github.com/operator-framework/api v0.40.0
+	github.com/operator-framework/api v0.41.0
 	github.com/operator-framework/operator-lifecycle-manager v0.36.0
 	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.63
 	github.com/redhat-best-practices-for-k8s/oct v0.0.57
