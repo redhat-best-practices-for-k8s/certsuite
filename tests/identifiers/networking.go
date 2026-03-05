@@ -32,6 +32,7 @@ var (
 	TestReservedExtendedPartnerPorts             claim.Identifier
 	TestRestartOnRebootLabelOnPodsUsingSRIOV     claim.Identifier
 	TestServiceDualStackIdentifier               claim.Identifier
+	TestTLSMinimumVersionIdentifier              claim.Identifier
 	TestUndeclaredContainerPortsUsage            claim.Identifier
 )
 
@@ -193,6 +194,27 @@ func init() {
 			Telco:    Optional,
 			NonTelco: Optional,
 			Extended: Mandatory,
+		},
+		TagExtended)
+
+	TestTLSMinimumVersionIdentifier = AddCatalogEntry(
+		"tls-minimum-version",
+		common.NetworkingTestKey,
+		`Checks that TLS-enabled services in target namespaces honor the cluster's TLS security profile. `+
+			`On OpenShift, the profile is read from the APIServer CR (default: Intermediate, min TLS 1.2). `+
+			`On non-OpenShift clusters, Intermediate is used as default. `+
+			`Validates both minimum TLS version and cipher suite compliance. `+
+			`Non-TLS ports are reported as informational only. `+
+			`Note: this test is skipped on OpenShift clusters running versions below 4.22.`,
+		TLSMinimumVersionRemediation,
+		NoExceptionProcessForExtendedTests,
+		TestTLSMinimumVersionIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagExtended)
 
