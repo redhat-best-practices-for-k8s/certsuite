@@ -80,7 +80,7 @@ echo_color() {
 	# shellcheck disable=SC2059
 	printf "$color$format$ENDCOLOR\n" "$@"
 	# shellcheck disable=SC2059
-	printf "$format" "$@" >>"$LOG_FILE_PATH"
+	printf "$format\n" "$@" >>"$LOG_FILE_PATH"
 }
 
 # VARIABLES
@@ -315,51 +315,53 @@ get_packages() {
 		wc -w
 }
 
+# CSV-based labeling: labels only the specific operator's CSV (not all CSVs in namespace)
 wait_for_csv_to_appear_and_label() {
 	local csv_namespace=$1
+	local operator_package=$2
 	local timeout_seconds=100
 	local start_time=0
 	local current_time=0
 	local elapsed_time=0
+	local csv_name=""
 	local status=0
 
 	start_time=$(date +%s)
 	while true; do
-		csvs=$(oc get csv -n "$csv_namespace" 2>>"$LOG_FILE_PATH") || true
-		if [ "$csvs" != "" ]; then
-			# If any CSV is present, break
+		# Wait for the specific operator's CSV (name starts with package name)
+		# Try to get CSV name from subscription status first
+		csv_name=$(oc get subscription "$operator_package" -n "$csv_namespace" -o jsonpath='{.status.installedCSV}' 2>/dev/null)
+
+		# If subscription.status.installedCSV is empty (e.g., for + operators with conflicts),
+		# fall back to querying CSV directly by pattern matching
+		if [ -z "$csv_name" ] || [ "$csv_name" = "<none>" ]; then
+			csv_name=$(oc get csv -n "$csv_namespace" -o custom-columns=':.metadata.name' --no-headers 2>/dev/null | grep -i "$operator_package" | head -1)
+		fi
+		if [ -n "$csv_name" ]; then
+			# Found the CSV for this operator
 			break
 		else
 			current_time=$(date +%s)
 			elapsed_time=$((current_time - start_time))
 			# If elapsed time is greater than the timeout report failure
 			if [ "$elapsed_time" -ge "$timeout_seconds" ]; then
-				echo_color "$BLUE" "Timeout reached $timeout_seconds seconds waiting for CSV."
+				echo_color "$BLUE" "Timeout reached $timeout_seconds seconds waiting for CSV for $operator_package."
 				return 1
 			fi
 
 			# Otherwise wait a bit
-			echo_color "$BLUE" "Waiting for csv to be created in namespace $csv_namespace ..."
+			echo_color "$BLUE" "Waiting for csv for $operator_package to be created in namespace $csv_namespace ..."
 			sleep 5
 		fi
 	done
 
-	# Label CSV with "redhat-best-practices-for-k8s.com/operator=target"
-	# Label each CSV individually to handle errors better
-	oc get csv -n "$csv_namespace" -o name 2>>"$LOG_FILE_PATH" | while read -r csv; do
-		if oc label "$csv" -n "$csv_namespace" redhat-best-practices-for-k8s.com/operator=target --overwrite 2>>"$LOG_FILE_PATH"; then
-			echo_color "$BLUE" "Labeled $csv"
-		else
-			echo_color "$GREY" "Failed to label $csv (may not exist in this namespace)"
-		fi
-	done
-
-	# Wait a bit for labels to propagate
-	sleep 2
+	# Label only the specific CSV for this operator with "redhat-best-practices-for-k8s.com/operator=target"
+	echo_color "$GREY" "Labeling CSV: $csv_name"
+	with_retry 5 10 oc label csv -n "$csv_namespace" "$csv_name" redhat-best-practices-for-k8s.com/operator=target --overwrite 2>>"$LOG_FILE_PATH" || true
 
 	# Wait for the CSV to be succeeded
 	echo_color "$BLUE" "Wait for CSV to be succeeded"
-	with_retry 60 5 oc wait csv -l redhat-best-practices-for-k8s.com/operator=target -n "$csv_namespace" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=10s || status="$?"
+	with_retry 60 5 oc wait csv "$csv_name" -n "$csv_namespace" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=10s || status="$?"
 	return $status
 }
 
@@ -573,7 +575,7 @@ targetNameSpaces:
 podsUnderTestLabels:
   - "redhat-best-practices-for-k8s.com/generic: target"
 operatorsUnderTestLabels:
-  - "redhat-best-practices-for-k8s.com/operator: target" 
+  - "redhat-best-practices-for-k8s.com/operator: target"
 EOF
 
 OPERATOR_PAGE='<!DOCTYPE html>
@@ -683,9 +685,16 @@ while IFS=, read -r package_name catalog_index; do
 		echo_color "$RED" "Warning, cluster cleanup failed"
 	fi
 
-	# Skip namespace creation for openshift-storage
+	# Handle openshift-storage namespace - create if it doesn't exist, but never delete it
 	if [ "$ns" = "openshift-storage" ]; then
-		echo_color "$BLUE" "Skipping namespace creation for openshift-storage (using existing namespace)"
+		if oc get namespace "$ns" &>/dev/null; then
+			echo_color "$BLUE" "Namespace openshift-storage already exists, using it"
+		else
+			echo_color "$BLUE" "Creating namespace openshift-storage"
+			if ! oc create namespace "$ns"; then
+				echo_color "$RED" "Error, creating namespace openshift-storage failed"
+			fi
+		fi
 	elif [ "$skip_cleanup" = true ]; then
 		# For operators with + suffix, preserve existing namespace if present
 		if oc get namespace "$ns" &>/dev/null; then
@@ -711,7 +720,23 @@ while IFS=, read -r package_name catalog_index; do
 	# Install the operator in a custom namespace
 	echo_color "$BLUE" "install operator"
 	install_status=0
-	install_output=$(oc operator install --create-operator-group "$actual_package_name" -n "$ns" 2>&1) || install_status=$?
+
+	# For + suffix operators, check if subscription already exists before attempting install
+	if [ "$skip_cleanup" = true ]; then
+		existing_subscription=$(oc get subscription "$actual_package_name" -n "$ns" -o name 2>/dev/null || true)
+
+		if [ -n "$existing_subscription" ]; then
+			echo_color "$BLUE" "Operator subscription already exists for + suffix operator, skipping oc operator install"
+			echo_color "$BLUE" "Existing subscription: $existing_subscription"
+			install_output="Subscription already exists, skipped oc operator install"
+		else
+			# Subscription does not exist, proceed with install
+			install_output=$(oc operator install --create-operator-group "$actual_package_name" -n "$ns" 2>&1) || install_status=$?
+		fi
+	else
+		# Normal operator (no + suffix), always run install
+		install_output=$(oc operator install --create-operator-group "$actual_package_name" -n "$ns" 2>&1) || install_status=$?
+	fi
 
 	if [ "$install_status" -ne 0 ]; then
 		# Check if it's a "already exists" error and we're using + suffix
@@ -724,7 +749,6 @@ while IFS=, read -r package_name catalog_index; do
 	else
 		echo "$install_output"
 	fi
-
 	# Setting report directory
 	report_dir="$REPORT_FOLDER"/"$actual_package_name"
 
@@ -738,9 +762,9 @@ while IFS=, read -r package_name catalog_index; do
 	# Change the target_name_space in certsuite_config file
 	sed "s/\$ns/$ns/" "$CONFIG_YAML_TEMPLATE" >"$config_yaml"
 
-	# Wait for the CSV to appear
-	echo_color "$BLUE" "Wait for CSV to appear and label resources unde test"
-	if ! wait_for_csv_to_appear_and_label "$ns"; then
+	# Wait for the CSV to appear and label only the specific operator's CSV
+	echo_color "$BLUE" "Wait for CSV to appear and label resources under test"
+	if ! wait_for_csv_to_appear_and_label "$ns" "$actual_package_name"; then
 		echo_color "$RED" "Operator failed to install, continue"
 		report_failure "$status" "$ns" "$actual_package_name" "$skip_cleanup" "Operator installation failed, skipping test"
 		continue
@@ -770,13 +794,53 @@ EOF
 	# Extra wait to ensure that all pods are running
 	sleep 30
 
-	echo_color "$BLUE" "Label deployments, statefulsets, pods"
-	# Label deployments, statefulsets and pods with "redhat-best-practices-for-k8s.com/generic=target"
-	{
+	# CSV-based labeling: label only operator-specific deployments, statefulsets, and pods
+	echo_color "$BLUE" "Label operator-specific deployments, statefulsets, and pods"
+	# Get the CSV name for the operator under test (already labeled earlier)
+	csv_name=$(oc get csv -n "$ns" -l redhat-best-practices-for-k8s.com/operator=target -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
+
+	if [ -n "$csv_name" ]; then
+		# Get the CSV UID for owner reference matching
+		csv_uid=$(oc get csv "$csv_name" -n "$ns" -o jsonpath='{.metadata.uid}' 2>/dev/null)
+
+		# Extract deployment names from CSV's spec.install.spec.deployments
+		deployment_names=$(oc get csv "$csv_name" -n "$ns" -o jsonpath='{.spec.install.spec.deployments[*].name}' 2>/dev/null)
+
+		# Label only the deployments defined in the CSV
+		for dep_name in $deployment_names; do
+			echo_color "$GREY" "Labeling deployment: $dep_name"
+			oc label deployment -n "$ns" "$dep_name" redhat-best-practices-for-k8s.com/generic=target --overwrite 2>>"$LOG_FILE_PATH" || true
+
+			# Label pods belonging to this deployment (using deployment's selector)
+			selector=$(oc get deployment "$dep_name" -n "$ns" -o jsonpath='{.spec.selector.matchLabels}' 2>/dev/null | jq -r 'to_entries | map("\(.key)=\(.value)") | join(",")' 2>/dev/null)
+			if [ -n "$selector" ]; then
+				oc label pods -n "$ns" -l "$selector" redhat-best-practices-for-k8s.com/generic=target --overwrite 2>>"$LOG_FILE_PATH" || true
+			fi
+		done
+
+		# Find and label statefulsets owned by the CSV (via ownerReferences)
+		if [ -n "$csv_uid" ]; then
+			echo_color "$GREY" "Looking for statefulsets owned by CSV: $csv_name"
+			statefulset_names=$(oc get statefulset -n "$ns" -o json 2>/dev/null | jq -r --arg uid "$csv_uid" '.items[] | select(.metadata.ownerReferences[]?.uid == $uid) | .metadata.name' 2>/dev/null)
+
+			for sts_name in $statefulset_names; do
+				echo_color "$GREY" "Labeling statefulset: $sts_name"
+				oc label statefulset -n "$ns" "$sts_name" redhat-best-practices-for-k8s.com/generic=target --overwrite 2>>"$LOG_FILE_PATH" || true
+
+				# Label pods belonging to this statefulset (using statefulset's selector)
+				selector=$(oc get statefulset "$sts_name" -n "$ns" -o jsonpath='{.spec.selector.matchLabels}' 2>/dev/null | jq -r 'to_entries | map("\(.key)=\(.value)") | join(",")' 2>/dev/null)
+				if [ -n "$selector" ]; then
+					oc label pods -n "$ns" -l "$selector" redhat-best-practices-for-k8s.com/generic=target --overwrite 2>>"$LOG_FILE_PATH" || true
+				fi
+			done
+		fi
+	else
+		echo_color "$RED" "Warning: Could not find labeled CSV, falling back to namespace-wide labeling"
+		# Fallback to original behavior
 		oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
 		oc get statefulset -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
 		oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " redhat-best-practices-for-k8s.com/generic=target "}' | bash || true
-	} >>"$LOG_FILE_PATH" 2>&1
+	fi
 
 	# Run certsuite container
 	echo_color "$BLUE" "run CNF suite"
