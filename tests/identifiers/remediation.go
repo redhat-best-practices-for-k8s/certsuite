@@ -223,4 +223,6 @@ const (
 	ContainerPostStartIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`
 
 	ContainerPrestopIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`
+
+	TLSMinimumVersionRemediation = `Configure workload services to honor the cluster's TLS security profile. On OpenShift, the minimum TLS version and allowed ciphers are determined by the APIServer CR's TLSSecurityProfile (default: Intermediate, min TLS 1.2). Ensure server TLS settings enforce at least the profile's minimum version and only accept ciphers from the profile's allowed list.`
 )

@@ -21,6 +21,7 @@ const (
 	TestServiceDualStackIdentifierDocLink               = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ipv4-&-ipv6"
 	TestUndeclaredContainerPortsUsageDocLink            = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-requirements-cnf-reqs"
 	TestOCPReservedPortsUsageDocLink                    = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ports-reserved-by-openshift"
+	TestTLSMinimumVersionIdentifierDocLink              = NoDocLinkExtended
 
 	// Access Control Suite
 	Test1337UIDIdentifierDocLink                             = NoDocLinkExtended
