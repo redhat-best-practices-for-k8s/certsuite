@@ -1,0 +1,29 @@
+[
+  {
+    "name": "TLS 1.3 Only (non-compliant with Intermediate)",
+    "description": "Deploys an nginx server configured to accept only TLS 1.3 connections. Under the Intermediate profile (the default on non-OCP clusters), the server must accept all versions from TLS 1.2 upward. A TLS 1.3-only server rejects TLS 1.2 and is therefore non-compliant. This scenario verifies that overly restrictive servers are correctly flagged.",
+    "label_filter": "networking-tls-minimum-version",
+    "path": "networking/tls-minimum-version",
+    "manifest": "tls13-only.yaml",
+    "expected_result": "failed",
+    "output_dir": "tls13-only-results"
+  },
+  {
+    "name": "TLS 1.2 Allowed (compliant with Intermediate profile)",
+    "description": "Deploys an nginx server configured to accept both TLS 1.2 and TLS 1.3 connections, restricted to only the cipher suites allowed by the Intermediate TLS security profile. On non-OpenShift clusters (including CI), the test defaults to the Intermediate profile (min TLS 1.2). Since this server meets both the minimum version and cipher requirements, it is compliant. Note: this same server would be non-compliant under a Modern profile (which requires TLS 1.3), but that is covered by unit tests rather than CI scenarios.",
+    "label_filter": "networking-tls-minimum-version",
+    "path": "networking/tls-minimum-version",
+    "manifest": "tls12-allowed.yaml",
+    "expected_result": "passed",
+    "output_dir": "tls12-allowed-results"
+  },
+  {
+    "name": "Plain HTTP (compliant)",
+    "description": "Deploys a plain HTTP server with no TLS configured. Non-TLS services are reported as informational only and are not considered a compliance failure. The test verifies that the certsuite does not penalize services that do not use TLS at all, since they are outside the scope of TLS version enforcement.",
+    "label_filter": "networking-tls-minimum-version",
+    "path": "networking/tls-minimum-version",
+    "manifest": "plain-http.yaml",
+    "expected_result": "passed",
+    "output_dir": "plain-http-results"
+  }
+]
