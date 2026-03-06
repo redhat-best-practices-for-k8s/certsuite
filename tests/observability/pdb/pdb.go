@@ -24,6 +24,14 @@ type ZoneAwareCheckResult struct {
 	MaxUnavailableValue int
 }
 
+// replicaCountOrDefault dereferences replicas, defaulting to 1 if nil.
+func replicaCountOrDefault(replicas *int32) int32 {
+	if replicas != nil {
+		return *replicas
+	}
+	return 1
+}
+
 // percentageToFloat converts a percentage string to a float
 func percentageToFloat(percentage string) (float64, error) {
 	var percentageFloat float64
@@ -35,12 +43,7 @@ func percentageToFloat(percentage string) (float64, error) {
 }
 
 func CheckPDBIsValid(pdb *policyv1.PodDisruptionBudget, replicas *int32) (bool, error) {
-	var replicaCount int32
-	if replicas != nil {
-		replicaCount = *replicas
-	} else {
-		replicaCount = 1 // default value
-	}
+	replicaCount := replicaCountOrDefault(replicas)
 
 	var minAvailableValue int
 	var maxUnavailableValue int
@@ -105,10 +108,8 @@ func intOrStringToValue(intOrStr *intstr.IntOrString, replicas int32) (int, erro
 // The check passes if the specified constraint allows zone draining.
 func isZoneAwareForDraining(pdb *policyv1.PodDisruptionBudget, maxReplicasPerZone int,
 	minAvailableValue, maxUnavailableValue int, replicaCount int32) bool {
-	if pdb.Spec.MaxUnavailable != nil {
-		if maxUnavailableValue >= maxReplicasPerZone {
-			return true
-		}
+	if pdb.Spec.MaxUnavailable != nil && maxUnavailableValue >= maxReplicasPerZone {
+		return true
 	}
 
 	if pdb.Spec.MinAvailable != nil {
@@ -150,12 +151,7 @@ func CheckPDBIsZoneAware(pdb *policyv1.PodDisruptionBudget, replicas *int32, num
 		NumZones: numZones,
 	}
 
-	var replicaCount int32
-	if replicas != nil {
-		replicaCount = *replicas
-	} else {
-		replicaCount = 1 // default value
-	}
+	replicaCount := replicaCountOrDefault(replicas)
 	result.Replicas = int(replicaCount)
 
 	// Skip zone-aware check for single-zone clusters or SNO

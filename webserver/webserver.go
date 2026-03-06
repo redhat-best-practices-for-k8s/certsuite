@@ -228,6 +228,10 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	// The log output will be written to the log file and to this buffer buf
 	log.SetLogger(log.GetMultiLogger(buf))
 
+	// Limit request body size to 32 MB to prevent memory exhaustion (gosec G120)
+	const maxBodySize = 32 << 20 // 32 MB
+	r.Body = http.MaxBytesReader(w, r.Body, maxBodySize)
+
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
 	var data RequestedData
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
