@@ -35,19 +35,19 @@ import (
 	k8stesting "k8s.io/client-go/testing"
 )
 
-func TestScaleStatefulSetFunc(t *testing.T) {
-	generateStatefulSet := func(name string, replicas *int32) *appsv1.StatefulSet {
-		return &appsv1.StatefulSet{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      name,
-				Namespace: "namespace1",
-			},
-			Spec: appsv1.StatefulSetSpec{
-				Replicas: replicas,
-			},
-		}
+func generateStatefulSet(name string, replicas *int32) *appsv1.StatefulSet {
+	return &appsv1.StatefulSet{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      name,
+			Namespace: "namespace1",
+		},
+		Spec: appsv1.StatefulSetSpec{
+			Replicas: replicas,
+		},
 	}
+}
 
+func TestScaleStatefulSetFunc(t *testing.T) {
 	testCases := []struct {
 		statefulSetName string
 		replicaCount    int
@@ -90,18 +90,6 @@ func TestScaleStatefulSetFunc(t *testing.T) {
 }
 
 func TestScaleHpaStatefulSetFunc(t *testing.T) {
-	generateStatefulSet := func(name string, replicas *int32) *appsv1.StatefulSet {
-		return &appsv1.StatefulSet{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      name,
-				Namespace: "namespace1",
-			},
-			Spec: appsv1.StatefulSetSpec{
-				Replicas: replicas,
-			},
-		}
-	}
-
 	testCases := []struct {
 		statefulSetName      string
 		replicaCount         int
