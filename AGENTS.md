@@ -147,7 +147,7 @@ targetCrdFilters:
 ## Development Guidelines
 
 ### Go Version
-This repository uses Go 1.26.0. Ensure your local environment matches this version.
+This repository uses Go 1.26.1. Ensure your local environment matches this version.
 
 ### Testing and Mocks
 The codebase uses native Go structs for mocking interfaces in tests. Mock implementations are hand-written and located alongside the interfaces they mock (e.g., `internal/clientsholder/command_mock.go`). This approach avoids external dependencies and makes the code easier to understand and maintain.
