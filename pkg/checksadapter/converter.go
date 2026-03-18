@@ -18,6 +18,8 @@ package checksadapter
 
 import (
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	olmpackagev1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/checks"
 	appsv1 "k8s.io/api/apps/v1"
@@ -33,7 +35,15 @@ func ConvertToDiscoveredResources(env *provider.TestEnvironment) *checks.Discove
 		ProbeExecutor: &ProbeExecutorAdapter{env: env},
 	}
 
-	// Convert pods (unwrap provider.Pod -> corev1.Pod)
+	convertWorkloads(resources, env)
+	convertRBACAndPolicies(resources, env)
+	convertClusterResources(resources, env)
+	convertCertificationResources(resources, env)
+
+	return resources
+}
+
+func convertWorkloads(resources *checks.DiscoveredResources, env *provider.TestEnvironment) {
 	resources.Pods = make([]corev1.Pod, len(env.Pods))
 	for i, pod := range env.Pods {
 		if pod.Pod != nil {
@@ -41,7 +51,6 @@ func ConvertToDiscoveredResources(env *provider.TestEnvironment) *checks.Discove
 		}
 	}
 
-	// Convert deployments
 	resources.Deployments = make([]appsv1.Deployment, len(env.Deployments))
 	for i, dep := range env.Deployments {
 		if dep.Deployment != nil {
@@ -49,7 +58,6 @@ func ConvertToDiscoveredResources(env *provider.TestEnvironment) *checks.Discove
 		}
 	}
 
-	// Convert statefulsets
 	resources.StatefulSets = make([]appsv1.StatefulSet, len(env.StatefulSets))
 	for i, sts := range env.StatefulSets {
 		if sts.StatefulSet != nil {
@@ -57,13 +65,19 @@ func ConvertToDiscoveredResources(env *provider.TestEnvironment) *checks.Discove
 		}
 	}
 
-	// Convert services
 	resources.Services = convertServicePointers(env.Services)
-
-	// Convert service accounts
 	resources.ServiceAccounts = convertServiceAccountPointers(env.ServiceAccounts)
+	resources.CRDs = convertCRDPointers(env.Crds)
 
-	// Direct assignments (already correct type)
+	resources.CSVs = make([]olmv1Alpha.ClusterServiceVersion, 0, len(env.AllCsvs))
+	for _, csv := range env.AllCsvs {
+		if csv != nil {
+			resources.CSVs = append(resources.CSVs, *csv)
+		}
+	}
+}
+
+func convertRBACAndPolicies(resources *checks.DiscoveredResources, env *provider.TestEnvironment) {
 	resources.Roles = env.Roles
 	resources.RoleBindings = env.RoleBindings
 	resources.ClusterRoleBindings = env.ClusterRoleBindings
@@ -71,26 +85,33 @@ func ConvertToDiscoveredResources(env *provider.TestEnvironment) *checks.Discove
 	resources.ResourceQuotas = env.ResourceQuotas
 	resources.PodDisruptionBudgets = env.PodDisruptionBudgets
 	resources.StorageClasses = env.StorageClassList
+}
 
-	// Convert CRDs
-	resources.CRDs = convertCRDPointers(env.Crds)
-
-	// Convert CSVs (from pointers to values)
-	resources.CSVs = make([]olmv1Alpha.ClusterServiceVersion, 0, len(env.AllCsvs))
-	for _, csv := range env.AllCsvs {
-		if csv != nil {
-			resources.CSVs = append(resources.CSVs, *csv)
-		}
-	}
-
-
-	// Convert nodes
+func convertClusterResources(resources *checks.DiscoveredResources, env *provider.TestEnvironment) {
 	resources.Nodes = convertNodes(env.Nodes)
-
-	// Convert persistent volumes
 	resources.PersistentVolumes = env.PersistentVolumes
+	resources.ClusterOperators = env.ClusterOperators
 
-	return resources
+	// OLM resources
+	resources.CatalogSources = convertCatalogSourcePointers(env.AllCatalogSources)
+	resources.PackageManifests = convertPackageManifestPointers(env.AllPackageManifests)
+	resources.Subscriptions = env.AllSubscriptions
+
+	// Networking
+	resources.NetworkAttachmentDefinitions = env.NetworkAttachmentDefinitions
+	resources.SriovNetworks = env.AllSriovNetworks
+	resources.SriovNetworkNodePolicies = env.AllSriovNetworkNodePolicies
+
+	// Cluster metadata
+	resources.K8sVersion = env.K8sVersion
+	resources.OpenshiftVersion = env.OpenshiftVersion
+	resources.OCPStatus = env.OCPStatus
+}
+
+func convertCertificationResources(resources *checks.DiscoveredResources, env *provider.TestEnvironment) {
+	resources.HelmChartReleases = convertHelmReleases(env)
+	resources.K8sClientset = clientsholder.GetClientsHolder().K8sClient
+	resources.CertValidator = NewCertValidator(env.GetOfflineDBPath())
 }
 
 // Helper functions to convert pointer slices to value slices
@@ -131,6 +152,41 @@ func convertNodes(nodeMap map[string]provider.Node) []corev1.Node {
 		if node.Data != nil {
 			result = append(result, *node.Data)
 		}
+	}
+	return result
+}
+
+func convertCatalogSourcePointers(sources []*olmv1Alpha.CatalogSource) []olmv1Alpha.CatalogSource {
+	result := make([]olmv1Alpha.CatalogSource, 0, len(sources))
+	for _, cs := range sources {
+		if cs != nil {
+			result = append(result, *cs)
+		}
+	}
+	return result
+}
+
+func convertPackageManifestPointers(manifests []*olmpackagev1.PackageManifest) []olmpackagev1.PackageManifest {
+	result := make([]olmpackagev1.PackageManifest, 0, len(manifests))
+	for _, pm := range manifests {
+		if pm != nil {
+			result = append(result, *pm)
+		}
+	}
+	return result
+}
+
+func convertHelmReleases(env *provider.TestEnvironment) []checks.HelmChartRelease {
+	result := make([]checks.HelmChartRelease, 0, len(env.HelmChartReleases))
+	for _, rel := range env.HelmChartReleases {
+		if rel == nil || rel.Chart == nil || rel.Chart.Metadata == nil {
+			continue
+		}
+		result = append(result, checks.HelmChartRelease{
+			Name:      rel.Name,
+			Namespace: rel.Namespace,
+			Version:   rel.Chart.Metadata.Version,
+		})
 	}
 	return result
 }

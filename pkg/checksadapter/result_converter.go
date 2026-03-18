@@ -73,6 +73,8 @@ func convertDetailToReportObject(detail checks.ResourceDetail) *testhelper.Repor
 		objType = testhelper.NodeType
 	case "CatalogSource":
 		objType = testhelper.CatalogSourceType
+	case "HelmRelease":
+		objType = testhelper.HelmVersionType
 	default:
 		objType = testhelper.UndefinedType
 	}

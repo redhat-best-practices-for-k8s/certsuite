@@ -52,6 +52,7 @@ github.com/bombsimon/logrusr/v4 v4.1.0 h1:uZNPbwusB0eUXlO8hIUwStE6Lr5bLN6IgYgG+7
 github.com/bombsimon/logrusr/v4 v4.1.0/go.mod h1:pjfHC5e59CvjTBIU3V3sGhFWFAnsnhOR03TRc6im0l8=
 github.com/bshuster-repo/logrus-logstash-hook v1.0.0 h1:e+C0SB5R1pu//O4MQ3f9cFuPGoOVeF2fE4Og9otCc70=
 github.com/bshuster-repo/logrus-logstash-hook v1.0.0/go.mod h1:zsTqEiSzDgAa/8GZR7E1qaXrhYNDKBYy5/dWPTIflbk=
+github.com/bshuster-repo/logrus-logstash-hook v1.1.0 h1:o2FzZifLg+z/DN1OFmzTWzZZx/roaqt8IPZCIVco8r4=
 github.com/cenkalti/backoff/v5 v5.0.3 h1:ZN+IMa753KfX5hd8vVaMixjnqRZ3y8CuJKRKj1xcsSM=
 github.com/cenkalti/backoff/v5 v5.0.3/go.mod h1:rkhZdG3JZukswDf7f0cwqPNk4K0sa+F97BxZthm/crw=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
@@ -417,6 +418,8 @@ github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.63 h1:Ew2ZQymqa9Ud
 github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.63/go.mod h1:KTb5w7CO88AlnCQSrelIyLyARj7KhipFzgqtt+D3jLg=
 github.com/redhat-best-practices-for-k8s/checks v0.0.2 h1:puOdY6F9eEaT0WfHbuqFSUKWpJ9bveCp2iv59oCyPzA=
 github.com/redhat-best-practices-for-k8s/checks v0.0.2/go.mod h1:piuEpLdDf/Zxndr+Ll5O6UmGE0z7ZObukvNlu0nfa6I=
+github.com/redhat-best-practices-for-k8s/checks v0.0.3-0.20260318171651-27a300d4ddaa h1:b3E+nDrbc5nR8LgyWP/L5N+87eKW6chnIdFnVBDkj9g=
+github.com/redhat-best-practices-for-k8s/checks v0.0.3-0.20260318171651-27a300d4ddaa/go.mod h1:J2qHq9lMh0b5rpZw8z0JCAnOSmIH81rPu6d7isJqIIk=
 github.com/redhat-best-practices-for-k8s/oct v0.0.57 h1:U+PIanzlSqDlwLrpyzqqfuOa2AX0XPiuji0JXF8la3Y=
 github.com/redhat-best-practices-for-k8s/oct v0.0.57/go.mod h1:B9EUge5TBvz4WkokfgLvbk6dGBo1cHDi/lmjxw7xSQo=
 github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.68 h1:OHYCJEMpBsb/PDGZfSLXBzbwC8etb4szAHp7RQv7yxw=
@@ -643,6 +646,8 @@ google.golang.org/genproto/googleapis/api v0.0.0-20260202165425-ce8ad4cf556b h1:
 google.golang.org/genproto/googleapis/api v0.0.0-20260202165425-ce8ad4cf556b/go.mod h1:ZdbssH/1SOVnjnDlXzxDHK2MCidiqXtbYccJNzNYPEE=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20260226221140-a57be14db171 h1:ggcbiqK8WWh6l1dnltU4BgWGIGo+EVYxCaAPih/zQXQ=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20260226221140-a57be14db171/go.mod h1:4Hqkh8ycfw05ld/3BWL7rJOSfebL2Q+DVDeRgYgxUU8=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20260316180232-0b37fe3546d5 h1:aJmi6DVGGIStN9Mobk/tZOOQUBbj0BPjZjjnOdoZKts=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20260316180232-0b37fe3546d5/go.mod h1:4Hqkh8ycfw05ld/3BWL7rJOSfebL2Q+DVDeRgYgxUU8=
 google.golang.org/grpc v1.79.2 h1:fRMD94s2tITpyJGtBBn7MkMseNpOZU8ZxgC3MMBaXRU=
 google.golang.org/grpc v1.79.2/go.mod h1:KmT0Kjez+0dde/v2j9vzwoAScgEPx/Bw1CYChhHLrHQ=
 google.golang.org/protobuf v1.36.11 h1:fV6ZwhNocDyBLK0dj+fg8ektcVegBBuEolpbTQyBNVE=
