@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"reflect"
 
+	goversion "github.com/hashicorp/go-version"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
 
@@ -170,6 +171,10 @@ const (
 	// Listening ports
 	PortNumber   = "Port Number"
 	PortProtocol = "Port Protocol"
+
+	// TLS
+	TLSVersion = "TLS Version"
+	TLSCipher  = "TLS Cipher"
 
 	// OLM
 	SubscriptionName = "Subscription Name"
@@ -422,6 +427,36 @@ func GetNonOCPClusterSkipFn() func() (bool, string) {
 		if !provider.IsOCPCluster() {
 			return true, "non-OCP cluster detected"
 		}
+		return false, ""
+	}
+}
+
+func GetOCPVersionBelowSkipFn(env *provider.TestEnvironment, minVersion string) func() (bool, string) {
+	// Parse minVersion once at closure creation since it is constant.
+	minimum, minErr := goversion.NewVersion(minVersion)
+
+	return func() (bool, string) {
+		if !provider.IsOCPCluster() {
+			return false, ""
+		}
+
+		if minErr != nil {
+			return true, fmt.Sprintf("failed to parse minimum version %q: %v", minVersion, minErr)
+		}
+
+		if env.OpenshiftVersion == "" {
+			return true, "OCP version is empty"
+		}
+
+		current, err := goversion.NewVersion(env.OpenshiftVersion)
+		if err != nil {
+			return true, fmt.Sprintf("failed to parse OCP version %q: %v", env.OpenshiftVersion, err)
+		}
+
+		if current.LessThan(minimum) {
+			return true, fmt.Sprintf("OCP version %q is below %s", env.OpenshiftVersion, minVersion)
+		}
+
 		return false, ""
 	}
 }

@@ -37,6 +37,7 @@ const (
 	TestServiceDualStackIdentifierImpact               = `Single-stack IPv4 services limit network architecture flexibility and prevent migration to modern dual-stack infrastructures.`
 	TestUndeclaredContainerPortsUsageImpact            = `Undeclared ports can be blocked by security policies, causing unexpected connectivity issues and making troubleshooting difficult.`
 	TestOCPReservedPortsUsageImpact                    = `Using OpenShift-reserved ports can cause critical platform services to fail, potentially destabilizing the entire cluster.`
+	TestTLSMinimumVersionIdentifierImpact              = `Services accepting TLS versions below 1.3 are vulnerable to known protocol attacks (BEAST, POODLE, Lucky13) and may fail security compliance audits required for telco/CNF deployments.`
 
 	// Access Control Suite Impact Statements
 	Test1337UIDIdentifierImpact                             = `UID 1337 is reserved for use by Istio service mesh components; using it for applications can cause conflicts with Istio sidecars and break service mesh functionality.`
@@ -180,6 +181,7 @@ var ImpactMap = map[string]string{
 	"networking-dual-stack-service":                      TestServiceDualStackIdentifierImpact,
 	"networking-undeclared-container-ports-usage":        TestUndeclaredContainerPortsUsageImpact,
 	"networking-ocp-reserved-ports-usage":                TestOCPReservedPortsUsageImpact,
+	"networking-tls-minimum-version":                     TestTLSMinimumVersionIdentifierImpact,
 
 	// Access Control Suite
 	"access-control-no-1337-uid":                             Test1337UIDIdentifierImpact,
