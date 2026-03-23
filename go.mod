@@ -5,7 +5,7 @@ go 1.26.1
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
 	github.com/blang/semver/v4 v4.0.0
-	github.com/fatih/color v1.18.0
+	github.com/fatih/color v1.19.0
 	github.com/go-logr/logr v1.4.3
 	github.com/go-logr/stdr v1.2.2
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
