@@ -111,7 +111,7 @@ jobs:
           exit 1
 
       - name: Deploy the OCP Cluster
-        uses: palmsoftware/quick-ocp@88f6e55e86f0f3449d7044918fd04a92536fe481 # v0.0.27
+        uses: palmsoftware/quick-ocp@80090ce0d0ea039d76337704f4447078c0be1a93 # v0.0.29
         with:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
@@ -151,7 +151,7 @@ jobs:
 
       - name: Run the tests (against image)
         if: matrix.run-type == 'image'
-        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
           timeout_minutes: 90
           max_attempts: 2
@@ -159,7 +159,7 @@ jobs:
 
       - name: Run the tests (against binary)
         if: matrix.run-type == 'binary'
-        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
           timeout_minutes: 90
           max_attempts: 2
