@@ -60,7 +60,7 @@ jobs:
 
   qe-ocp-417-intrusive-testing:
     runs-on: qe-ocp-417
-    timeout-minutes: 240
+    timeout-minutes: 300
     needs: build-and-store
     if: needs.build-and-store.result == 'success'
     strategy:

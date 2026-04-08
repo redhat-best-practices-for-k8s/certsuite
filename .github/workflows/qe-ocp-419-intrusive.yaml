@@ -61,7 +61,7 @@ jobs:
   qe-ocp-419-intrusive-testing:
     name: QE OCP 4.19 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
     runs-on: ubuntu-24.04
-    timeout-minutes: 240
+    timeout-minutes: 300
     needs: build-and-store
     if: needs.build-and-store.result == 'success'
     strategy:
