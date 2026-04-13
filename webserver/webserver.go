@@ -18,14 +18,12 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/arrayhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/checks"
 	"github.com/robert-nix/ansihtml"
 
 	yaml "gopkg.in/yaml.v3"
@@ -443,41 +441,48 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	return newData
 }
 
-// outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
+// outputTestCases outputs the classification data for test cases from the checks library.
 func outputTestCases() (outString string) {
-	// Building a separate data structure to store the key order for the map
-	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
-	for k := range identifiers.Catalog {
-		keys = append(keys, k)
-	}
-
-	// Sorting the map by identifier ID
-	sort.Slice(keys, func(i, j int) bool {
-		return keys[i].Id < keys[j].Id
+	allChecks := checks.All()
+	sort.Slice(allChecks, func(i, j int) bool {
+		return allChecks[i].Name < allChecks[j].Name
 	})
 
-	catalog := CreatePrintableCatalogFromIdentifiers(keys)
-	if catalog == nil {
-		return
+	// Group by category
+	type entry struct {
+		name                   string
+		description            string
+		remediation            string
+		bestPracticeReference  string
+		categoryClassification map[string]string
 	}
-	// we need the list of suite's names
-	suites := GetSuitesFromIdentifiers(keys)
+	byCat := make(map[string][]entry)
+	for i := range allChecks {
+		info := &allChecks[i]
+		byCat[info.Category] = append(byCat[info.Category], entry{
+			name:                   info.Name,
+			description:            info.Description,
+			remediation:            info.Remediation,
+			bestPracticeReference:  info.BestPracticeReference,
+			categoryClassification: info.CategoryClassification,
+		})
+	}
 
-	// Sort the list of suite names
+	suites := make([]string, 0, len(byCat))
+	for s := range byCat {
+		suites = append(suites, s)
+	}
 	sort.Strings(suites)
 
-	// Iterating the map by test and suite names
 	outString = "classification= {\n"
 	for _, suite := range suites {
-		for _, k := range catalog[suite] {
+		for _, e := range byCat[suite] {
 			classificationString := "\"categoryClassification\": "
-			// Every paragraph starts with a new line.
-
-			outString += fmt.Sprintf("%q: [\n{\n", k.identifier.Id)
-			outString += fmt.Sprintf("\"description\": %q,\n", strings.ReplaceAll(strings.ReplaceAll(identifiers.Catalog[k.identifier].Description, "\n", " "), "\"", " "))
-			outString += fmt.Sprintf("\"remediation\": %q,\n", strings.ReplaceAll(strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "), "\"", " "))
-			outString += fmt.Sprintf("\"bestPracticeReference\": %q,\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
-			outString += classificationString + toJSONString(identifiers.Catalog[k.identifier].CategoryClassification) + ",\n}\n]\n,"
+			outString += fmt.Sprintf("%q: [\n{\n", e.name)
+			outString += fmt.Sprintf("\"description\": %q,\n", strings.ReplaceAll(strings.ReplaceAll(e.description, "\n", " "), "\"", " "))
+			outString += fmt.Sprintf("\"remediation\": %q,\n", strings.ReplaceAll(strings.ReplaceAll(e.remediation, "\n", " "), "\"", " "))
+			outString += fmt.Sprintf("\"bestPracticeReference\": %q,\n", strings.ReplaceAll(e.bestPracticeReference, "\n", " "))
+			outString += classificationString + toJSONString(e.categoryClassification) + ",\n}\n]\n,"
 		}
 	}
 	outString += "}"
@@ -491,28 +496,4 @@ func toJSONString(data map[string]string) string {
 	}
 
 	return string(jsonbytes)
-}
-func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
-	var suites []string
-	for _, i := range keys {
-		suites = append(suites, i.Suite)
-	}
-	return arrayhelper.Unique(suites)
-}
-
-type Entry struct {
-	testName   string
-	identifier claim.Identifier // {url and version}
-}
-
-func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]Entry {
-	catalog := make(map[string][]Entry)
-	// we need the list of suite's names
-	for _, i := range keys {
-		catalog[i.Suite] = append(catalog[i.Suite], Entry{
-			testName:   i.Id,
-			identifier: i,
-		})
-	}
-	return catalog
 }
