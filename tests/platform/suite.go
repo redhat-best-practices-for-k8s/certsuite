@@ -17,28 +17,13 @@
 package platform
 
 import (
-	"fmt"
-	"strconv"
-	"strings"
-
-	clientsholder "github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksadapter"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/compatibility"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/bootparams"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/clusteroperator"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/cnffsdiff"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/hugepages"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/isredhat"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/sysctlconfig"
-
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
-
-	corev1 "k8s.io/api/core/v1"
+	checksfn "github.com/redhat-best-practices-for-k8s/checks/platform"
 )
 
 var (
@@ -57,665 +42,80 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.PlatformAlterationTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHyperThreadEnable)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-hyperthread-enable")).
 		WithSkipCheckFn(
 			testhelper.GetNoBareMetalNodesSkipFn(&env),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testHyperThreadingEnabled(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckHyperthreadEnable).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-base-image")).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env),
 			testhelper.GetNoContainersUnderTestSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testContainersFsDiff(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckUnalteredBaseImage).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-tainted-node-kernel")).
 		WithSkipCheckFn(testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testTainted(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckTainted).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-isredhat-release")).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testIsRedHatRelease(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckIsRedHatRelease).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestIsSELinuxEnforcingIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-is-selinux-enforcing")).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testIsSELinuxEnforcing(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckSELinuxEnforcing).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHugepagesNotManuallyManipulated)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-hugepages-config")).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testHugepages(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckHugepages).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestUnalteredStartupBootParamsIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-boot-params")).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testUnalteredBootParams(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckBootParams).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSysctlConfigsIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-sysctl-config")).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testSysctlConfigs(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckSysctl).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestServiceMeshIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-service-mesh-usage")).
 		WithSkipCheckFn(
 			testhelper.GetNoIstioSkipFn(&env),
 			testhelper.GetNoPodsUnderTestSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testServiceMesh(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckServiceMeshUsage).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOCPLifecycleIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-ocp-lifecycle")).
 		WithSkipCheckFn(testhelper.GetNonOCPClusterSkipFn()).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testOCPStatus(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckOCPLifecycle).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestNodeOperatingSystemIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-ocp-node-os-lifecycle")).
 		WithSkipCheckFn(testhelper.GetNonOCPClusterSkipFn()).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testNodeOperatingSystemStatus(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckOCPNodeOSLifecycle).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodHugePages2M)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-hugepages-2m-only")).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetNoHugepagesPodsSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testPodHugePagesSize(c, &env, provider.HugePages2Mi)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckHugepages2MiOnly).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodHugePages1G)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-hugepages-1g-only")).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetNoHugepagesPodsSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testPodHugePagesSize(c, &env, provider.HugePages1Gi)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckHugepages1GiOnly).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestClusterOperatorHealth)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("platform-alteration-cluster-operator-health")).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 		).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testClusterOperatorHealth(c, &env)
-			return nil
-		}))
-}
-
-func testHyperThreadingEnabled(check *checksdb.Check, env *provider.TestEnvironment) {
-	baremetalNodes := env.GetBaremetalNodes()
-	checksdb.ForEachParallel(check, baremetalNodes, 0, func(check *checksdb.Check, node provider.Node, result *checksdb.ParallelResult) {
-		nodeName := node.Data.Name
-		check.LogInfo("Testing node %q", nodeName)
-		enable, err := node.IsHyperThreadNode(env)
-		//nolint:gocritic
-		if enable {
-			check.LogInfo("Node %q has hyperthreading enabled", nodeName)
-			result.AddCompliantObject(testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading enabled", true))
-		} else if err != nil {
-			check.LogError("Hyperthreading check fail for node %q, err: %v", nodeName, err)
-			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Error with executing the check for hyperthreading: "+err.Error(), false))
-		} else {
-			check.LogError("Node %q has hyperthreading disabled", nodeName)
-			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading disabled ", false))
-		}
-	})
-}
-
-func testServiceMesh(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, put := range env.Pods {
-		check.LogInfo("Testing Pod %q", put)
-		istioProxyFound := false
-		for _, cut := range put.Containers {
-			if cut.IsIstioProxy() {
-				check.LogInfo("Istio proxy container found on Pod %q (Container %q)", put, cut)
-				istioProxyFound = true
-				break
-			}
-		}
-		if !istioProxyFound {
-			check.LogError("Pod %q found without service mesh", put)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod found without service mesh container", false))
-		} else {
-			check.LogInfo("Pod %q found with service mesh", put)
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod found with service mesh container", true))
-		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
-}
-
-// testContainersFsDiff test that all CUT did not install new packages are starting
-func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) {
-	// podman diff is resource-heavy; limit concurrency to avoid OOM on probe pods
-
-	// We also need a per-node map of mutexes to limit the concurrency per node on ocp < 4.13
-	// This avoids conflicts while mounting/unmounting and deleting the podman temp folder on the node.
-	mutexPerNode := env.NewPerNodeMutexMap()
-
-	checksdb.ForEachParallel(check, env.Containers, len(env.ProbePods), func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
-		check.LogInfo("Testing Container %q (node %q)", cut, cut.NodeName)
-		probePod := env.ProbePods[cut.NodeName]
-
-		if probePod == nil {
-			check.LogError("Probe Pod not found for node %q", cut.NodeName)
-			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "certsuite probe pod not found", false))
-			return
-		}
-
-		if len(probePod.Spec.Containers) == 0 {
-			check.LogError("Probe Pod %q has no containers", probePod)
-			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "certsuite probe pod has no containers", false))
-			return
-		}
-
-		nodeMutex, ok := mutexPerNode[cut.NodeName]
-		if !ok {
-			check.LogError("No mutex found for node %q", cut.NodeName)
-			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "node not found in environment", false))
-			return
-		}
-
-		nodeMutex.Lock()
-		defer nodeMutex.Unlock()
-
-		ctxt := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
-		fsDiffTester := cnffsdiff.NewFsDiffTester(check, clientsholder.GetClientsHolder(), ctxt, env.OpenshiftVersion)
-		fsDiffTester.RunTest(cut.UID)
-		switch fsDiffTester.GetResults() {
-		case testhelper.SUCCESS:
-			check.LogInfo("Container %q is not modified", cut)
-			result.AddCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not modified", true))
-		case testhelper.FAILURE:
-			check.LogError("Container %q modified (changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
-			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is modified", false).
-				AddField("ChangedFolders", strings.Join(fsDiffTester.ChangedFolders, ",")).
-				AddField("DeletedFolders", strings.Join(fsDiffTester.DeletedFolders, ",")))
-		case testhelper.ERROR:
-			check.LogError("Could not run fs-diff in Container %q, err: %v", cut, fsDiffTester.Error)
-			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Error while running fs-diff", false).AddField(testhelper.Error, fsDiffTester.Error.Error()))
-		}
-	})
-}
-
-//nolint:funlen
-func testTainted(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("Modules allowlist: %+v", env.Config.AcceptedKernelTaints)
-	allowListedModules := map[string]bool{}
-	for _, module := range env.Config.AcceptedKernelTaints {
-		allowListedModules[module.Module] = true
-	}
-
-	// Filter to nodes with workload deployed before parallelizing.
-	var workloadNodes []provider.Node
-	for _, n := range env.Nodes {
-		if n.HasWorkloadDeployed(env.Pods) {
-			workloadNodes = append(workloadNodes, n)
-		} else {
-			check.LogInfo("Node %q has no workload deployed on it. Skipping tainted kernel check.", n.Data.Name)
-		}
-	}
-
-	checksdb.ForEachParallel(check, workloadNodes, 0, func(check *checksdb.Check, n provider.Node, result *checksdb.ParallelResult) {
-		nodeName := n.Data.Name
-		check.LogInfo("Testing node %q", nodeName)
-
-		dp := env.ProbePods[nodeName]
-
-		ocpContext := clientsholder.NewContext(dp.Namespace, dp.Name, dp.Spec.Containers[0].Name)
-		tf := nodetainted.NewNodeTaintedTester(&ocpContext, nodeName)
-
-		taintsMask, err := tf.GetKernelTaintsMask()
-		if err != nil {
-			check.LogError("Failed to retrieve kernel taint information from node %q, err: %v", nodeName, err)
-			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Failed to retrieve kernel taint information from node", false).
-				AddField(testhelper.Error, err.Error()))
-			return
-		}
-
-		if taintsMask == 0 {
-			check.LogInfo("Node %q has no non-approved kernel taints.", nodeName)
-			result.AddCompliantObject(testhelper.NewNodeReportObject(nodeName, "Node has no non-approved kernel taints", true))
-			return
-		}
-
-		check.LogInfo("Node %q kernel is tainted. Taints mask=%d - Decoded taints: %v",
-			nodeName, taintsMask, nodetainted.DecodeKernelTaintsFromBitMask(taintsMask))
-
-		if len(allowListedModules) == 0 {
-			taintsMaskStr := strconv.FormatUint(taintsMask, 10)
-			taintsStr := strings.Join(nodetainted.DecodeKernelTaintsFromBitMask(taintsMask), ",")
-			check.LogError("Node %q contains taints not covered by module allowlist. Taints: %q (mask=%q)", nodeName, taintsStr, taintsMaskStr)
-			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Node contains taints not covered by module allowlist", false).
-				AddField(testhelper.TaintMask, taintsMaskStr).
-				AddField(testhelper.Taints, taintsStr))
-			return
-		}
-
-		tainters, taintBitsByAllModules, err := tf.GetTainterModules(allowListedModules)
-		if err != nil {
-			check.LogError("Could not get tainter modules from node %q, err: %v", nodeName, err)
-			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Failed to get tainter modules", false).
-				AddField(testhelper.Error, err.Error()))
-			return
-		}
-
-		compliantNode := true
-
-		for moduleName, taintsLetters := range tainters {
-			moduleTaints := nodetainted.DecodeKernelTaintsFromLetters(taintsLetters)
-			for _, taint := range moduleTaints {
-				check.LogError("Node %q - module %q taints kernel: %q", nodeName, moduleName, taint)
-				result.AddNonCompliantObject(testhelper.NewTaintReportObject(nodetainted.RemoveAllExceptNumbers(taint), nodeName, taint, false).AddField(testhelper.ModuleName, moduleName))
-				compliantNode = false
-			}
-		}
-
-		otherKernelTaints := nodetainted.GetOtherTaintedBits(taintsMask, taintBitsByAllModules)
-		for _, taintedBit := range otherKernelTaints {
-			check.LogError("Node %q - taint bit %d is set but it is not caused by any module.", nodeName, taintedBit)
-			result.AddNonCompliantObject(testhelper.NewTaintReportObject(strconv.Itoa(taintedBit), nodeName, nodetainted.GetTaintMsg(taintedBit), false).
-				AddField(testhelper.ModuleName, "N/A"))
-			compliantNode = false
-		}
-
-		if compliantNode {
-			check.LogInfo("Node %q passed the tainted kernel check", nodeName)
-			result.AddCompliantObject(testhelper.NewNodeReportObject(nodeName, "Passed the tainted kernel check", true))
-		}
-	})
-}
-
-func testIsRedHatRelease(check *checksdb.Check, env *provider.TestEnvironment) {
-	checksdb.ForEachParallel(check, env.Containers, 0, func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
-		check.LogInfo("Testing Container %q", cut)
-		baseImageTester := isredhat.NewBaseImageTester(clientsholder.GetClientsHolder(), clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name))
-
-		passed, err := baseImageTester.TestContainerIsRedHatRelease()
-		if err != nil {
-			check.LogError("Could not collect release information from Container %q, err=%v", cut, err)
-		}
-		if !passed {
-			check.LogError("Container %q has failed the RHEL release check", cut)
-			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Failed the RHEL release check", false))
-		} else {
-			check.LogInfo("Container %q has passed the RHEL release check", cut)
-			result.AddCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Passed the RHEL release check", true))
-		}
-	})
-}
-
-func testIsSELinuxEnforcing(check *checksdb.Check, env *provider.TestEnvironment) {
-	const (
-		getenforceCommand = `chroot /host getenforce`
-		enforcingString   = "Enforcing\n"
-	)
-
-	probePods := make([]*corev1.Pod, 0, len(env.ProbePods))
-	for _, p := range env.ProbePods {
-		probePods = append(probePods, p)
-	}
-
-	checksdb.ForEachParallel(check, probePods, 0, func(check *checksdb.Check, probePod *corev1.Pod, result *checksdb.ParallelResult) {
-		o := clientsholder.GetClientsHolder()
-		ctx := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
-		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
-		if err != nil || errStr != "" {
-			check.LogError("Could not execute command %q in Probe Pod %q, errStr: %q, err: %v", getenforceCommand, probePod, errStr, err)
-			result.AddNonCompliantObject(testhelper.NewPodReportObject(probePod.Namespace, probePod.Name, "Failed to execute command", false))
-			return
-		}
-		if outStr != enforcingString {
-			check.LogError("Node %q is not running SELinux, %s command returned: %s", probePod.Spec.NodeName, getenforceCommand, outStr)
-			result.AddNonCompliantObject(testhelper.NewNodeReportObject(probePod.Spec.NodeName, "SELinux is not enforced", false))
-		} else {
-			check.LogInfo("Node %q is running SELinux", probePod.Spec.NodeName)
-			result.AddCompliantObject(testhelper.NewNodeReportObject(probePod.Spec.NodeName, "SELinux is enforced", true))
-		}
-	})
-}
-
-func testHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for i := range env.Nodes {
-		node := env.Nodes[i]
-		nodeName := node.Data.Name
-		check.LogInfo("Testing node %q", nodeName)
-		if !node.IsWorkerNode() {
-			check.LogInfo("Node %q is not a worker node", nodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Not a worker node", true))
-			continue
-		}
-
-		probePod, exist := env.ProbePods[nodeName]
-		if !exist {
-			check.LogError("Could not find a Probe Pod in node %q.", nodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "tnf probe pod not found", false))
-			continue
-		}
-
-		hpTester, err := hugepages.NewTester(&node, probePod, clientsholder.GetClientsHolder())
-		if err != nil {
-			check.LogError("Unable to get node hugepages tester for node %q, err: %v", nodeName, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Unable to get node hugepages tester", false))
-		}
-
-		if err := hpTester.Run(); err != nil {
-			check.LogError("Hugepages check failed for node %q, err: %v", nodeName, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, err.Error(), false))
-		} else {
-			check.LogInfo("Node %q passed the hugepages check", nodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Passed the hugepages check", true))
-		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
-}
-
-func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	alreadyCheckedNodes := map[string]bool{}
-	for _, cut := range env.Containers {
-		check.LogInfo("Testing Container %q", cut)
-		if alreadyCheckedNodes[cut.NodeName] {
-			check.LogInfo("Skipping node %q: already checked.", cut.NodeName)
-			continue
-		}
-		alreadyCheckedNodes[cut.NodeName] = true
-
-		err := bootparams.TestBootParamsHelper(env, cut, check.GetLogger())
-		if err != nil {
-			check.LogError("Node %q failed the boot params check", cut.NodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false).
-				AddField(testhelper.ProbePodName, env.ProbePods[cut.NodeName].Name))
-		} else {
-			check.LogInfo("Node %q passed the boot params check", cut.NodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true).
-				AddField(testhelper.ProbePodName, env.ProbePods[cut.NodeName].Name))
-		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
-}
-
-func testSysctlConfigs(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	alreadyCheckedNodes := map[string]bool{}
-	for _, cut := range env.Containers {
-		check.LogInfo("Testing Container %q", cut)
-		if alreadyCheckedNodes[cut.NodeName] {
-			continue
-		}
-		alreadyCheckedNodes[cut.NodeName] = true
-		probePod := env.ProbePods[cut.NodeName]
-		if probePod == nil {
-			check.LogError("Probe Pod not found for node %q", cut.NodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "tnf probe pod not found", false))
-			continue
-		}
-
-		sysctlSettings, err := sysctlconfig.GetSysctlSettings(env, cut.NodeName)
-		if err != nil {
-			check.LogError("Could not get sysctl settings for node %q, error: %v", cut.NodeName, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Could not get sysctl settings", false))
-			continue
-		}
-
-		mcKernelArgumentsMap := bootparams.GetMcKernelArguments(env, cut.NodeName)
-		validSettings := true
-		for key, sysctlConfigVal := range sysctlSettings {
-			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
-				if mcVal != sysctlConfigVal {
-					check.LogError("Kernel config mismatch in node %q for %q (sysctl value: %q, machine config value: %q)",
-						cut.NodeName, key, sysctlConfigVal, mcVal)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, fmt.Sprintf("Kernel config mismatch for %s", key), false))
-					validSettings = false
-				}
-			}
-		}
-		if validSettings {
-			check.LogInfo("Node %q passed the sysctl config check", cut.NodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the sysctl config check", true))
-		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
-}
-
-func testOCPStatus(check *checksdb.Check, env *provider.TestEnvironment) {
-	clusterIsInEOL := false
-	switch env.OCPStatus {
-	case compatibility.OCPStatusEOL:
-		check.LogError("OCP Version %q has been found to be in end of life", env.OpenshiftVersion)
-		clusterIsInEOL = true
-	case compatibility.OCPStatusMS:
-		check.LogInfo("OCP Version %q has been found to be in maintenance support", env.OpenshiftVersion)
-	case compatibility.OCPStatusGA:
-		check.LogInfo("OCP Version %q has been found to be in general availability", env.OpenshiftVersion)
-	case compatibility.OCPStatusPreGA:
-		check.LogInfo("OCP Version %q has been found to be in pre-general availability", env.OpenshiftVersion)
-	default:
-		check.LogInfo("OCP Version %q was unable to be found in the lifecycle compatibility matrix", env.OpenshiftVersion)
-	}
-
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	if clusterIsInEOL {
-		nonCompliantObjects = []*testhelper.ReportObject{testhelper.NewClusterVersionReportObject(env.OpenshiftVersion, "Openshift Version is in End Of Life (EOL)", false)}
-	} else {
-		compliantObjects = []*testhelper.ReportObject{testhelper.NewClusterVersionReportObject(env.OpenshiftVersion, "Openshift Version is not in End Of Life (EOL)", true)}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
-}
-
-//nolint:funlen
-func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvironment) {
-	failedControlPlaneNodes := []string{}
-	failedWorkerNodes := []string{}
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, node := range env.Nodes {
-		nodeName := node.Data.Name
-		check.LogInfo("Testing node %q", nodeName)
-		// Get the OSImage which should tell us what version of operating system the node is running.
-		check.LogInfo("Node %q is running operating system %q", nodeName, node.Data.Status.NodeInfo.OSImage)
-
-		// Control plane nodes must be RHCOS (also CentOS Stream starting in OCP 4.13)
-		// Per the release notes from OCP documentation:
-		// "You must use RHCOS machines for the control plane, and you can use either RHCOS or RHEL for compute machines."
-		if node.IsControlPlaneNode() {
-			if !node.IsRHCOS() && !node.IsCSCOS() {
-				check.LogError("Control plane node %q has been found to be running an incompatible operating system %q", nodeName, node.Data.Status.NodeInfo.OSImage)
-				failedControlPlaneNodes = append(failedControlPlaneNodes, nodeName)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Control plane node has been found to be running an incompatible OS", false).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-			} else {
-				check.LogInfo("Control plane node %q has been found to be running a compatible OS %q", nodeName, node.Data.Status.NodeInfo.OSImage)
-				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Control plane node has been found to be running a compatible OS", true).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-			}
-			if !node.IsWorkerNode() {
-				continue
-			}
-		}
-
-		// Worker nodes can either be RHEL or RHCOS
-		if node.IsWorkerNode() {
-			//nolint:gocritic
-			if node.IsRHCOS() {
-				// Get all matching short versions from the node
-				// The same RHCOS build can map to multiple OCP versions (e.g., 9.6.20251125-1 maps to both 4.19.20 and 4.20.6)
-				shortVersions, err := node.GetRHCOSVersions()
-				if err != nil {
-					check.LogError("Node %q failed to gather RHCOS version, err: %v", nodeName, err)
-					failedWorkerNodes = append(failedWorkerNodes, nodeName)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to gather RHCOS version", false))
-					continue
-				}
-
-				if len(shortVersions) == 0 {
-					check.LogInfo("Node %q has an RHCOS operating system that is not found in our internal database. Skipping as to not cause failures due to database mismatch.", nodeName)
-					compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node is running RHCOS but the version was not found in the internal database", true).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-					continue
-				}
-
-				// Check if ANY of the matching RHCOS versions is compatible with the OpenShift version
-				// This handles the case where the same RHCOS build is used by multiple OCP versions
-				check.LogDebug("Comparing RHCOS versions %v to openshiftVersion %q", shortVersions, env.OpenshiftVersion)
-				isCompatible := false
-				var compatibleVersion string
-				for _, shortVersion := range shortVersions {
-					if compatibility.IsRHCOSCompatible(shortVersion, env.OpenshiftVersion) {
-						isCompatible = true
-						compatibleVersion = shortVersion
-						break
-					}
-				}
-
-				if !isCompatible {
-					check.LogError("Worker node %q has been found to be running an incompatible version of RHCOS %v", nodeName, shortVersions)
-					failedWorkerNodes = append(failedWorkerNodes, nodeName)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node has been found to be running an incompatible OS", false).
-						AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-					continue
-				}
-				check.LogInfo("Worker node %q has been found to be running a compatible version of RHCOS %q", nodeName, compatibleVersion)
-				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node has been found to be running a compatible OS", true).
-					AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-			} else if node.IsCSCOS() {
-				// Get the short version from the node
-				shortVersion, err := node.GetCSCOSVersion()
-				if err != nil {
-					check.LogError("Node %q failed to gather CentOS Stream CoreOS version, err: %v", nodeName, err)
-					failedWorkerNodes = append(failedWorkerNodes, nodeName)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to gather CentOS Stream CoreOS version", false))
-					continue
-				}
-
-				// Warning: CentOS Stream CoreOS has not been released yet in any
-				// OCP RC/GA versions, so for the moment, we cannot compare the
-				// version with the OCP one, or retrieve it on the internal database
-				msg := `
-					Node %s is using CentOS Stream CoreOS %s, which is not being used yet in any
-					OCP RC/GA version. Relaxing the conditions to check the OS as a result.
-					`
-				check.LogDebug(msg, nodeName, shortVersion)
-				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node is running CentOS Stream CoreOS (not yet validated against OCP versions)", true).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-			} else if node.IsRHEL() {
-				// Get the short version from the node
-				shortVersion, err := node.GetRHELVersion()
-				if err != nil {
-					check.LogError("Node %q failed to gather RHEL version, err: %v", nodeName, err)
-					failedWorkerNodes = append(failedWorkerNodes, nodeName)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to gather RHEL version", false))
-					continue
-				}
-
-				// If the node's RHEL version and the OpenShift version are not compatible, the node fails.
-				check.LogDebug("Comparing RHEL shortVersion %q to openshiftVersion %q", shortVersion, env.OpenshiftVersion)
-				if !compatibility.IsRHELCompatible(shortVersion, env.OpenshiftVersion) {
-					check.LogError("Worker node %q has been found to be running an incompatible version of RHEL %q", nodeName, shortVersion)
-					failedWorkerNodes = append(failedWorkerNodes, nodeName)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node has been found to be running an incompatible OS", false).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-				} else {
-					check.LogInfo("Worker node %q has been found to be running a compatible version of RHEL %q", nodeName, shortVersion)
-					compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node has been found to be running a compatible OS", true).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-				}
-			} else {
-				check.LogError("Worker node %q has been found to be running an incompatible operating system %q", nodeName, node.Data.Status.NodeInfo.OSImage)
-				failedWorkerNodes = append(failedWorkerNodes, nodeName)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node has been found to be running an incompatible OS", false).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-			}
-		}
-	}
-
-	if n := len(failedControlPlaneNodes); n > 0 {
-		check.LogError("Number of control plane nodes running non-RHCOS based operating systems: %d", n)
-	}
-
-	if n := len(failedWorkerNodes); n > 0 {
-		check.LogError("Number of worker nodes running non-RHCOS or non-RHEL based operating systems: %d", n)
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
-}
-
-func testPodHugePagesSize(check *checksdb.Check, env *provider.TestEnvironment, size string) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, put := range env.GetHugepagesPods() {
-		check.LogInfo("Testing Pod %q", put)
-		result := put.CheckResourceHugePagesSize(size)
-		if !result {
-			check.LogError("Pod %q has been found to be running with an incorrect hugepages size (expected size %q)", put, size)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found to be running with an incorrect hugepages size", false))
-		} else {
-			check.LogInfo("Pod %q has been found to be running with a correct hugepages size %q", put, size)
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found to be running with a correct hugepages size", true))
-		}
-	}
-	check.SetResult(compliantObjects, nonCompliantObjects)
-}
-
-func testClusterOperatorHealth(check *checksdb.Check, env *provider.TestEnvironment) {
-	// Checks the various ClusterOperator(s) to see if they are all in an 'Available' state.
-	// If they are not in an 'Available' state, the check will fail.
-	// Note: This check is only applicable to OCP clusters and is skipped for non-OCP clusters.
-
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	// Loop through the ClusterOperators and check their status.
-	for i := range env.ClusterOperators {
-		check.LogInfo("Testing ClusterOperator %q to ensure it is in an 'Available' state.", env.ClusterOperators[i].Name)
-
-		if clusteroperator.IsClusterOperatorAvailable(&env.ClusterOperators[i]) {
-			compliantObjects = append(compliantObjects, testhelper.NewClusterOperatorReportObject(env.ClusterOperators[i].Name, "ClusterOperator is in an 'Available' state", true))
-		} else {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewClusterOperatorReportObject(env.ClusterOperators[i].Name, "ClusterOperator is not in an 'Available' state", false))
-		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckClusterOperatorHealth).MakeCheckFn(&env)))
 }

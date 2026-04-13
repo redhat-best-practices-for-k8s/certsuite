@@ -17,16 +17,12 @@
 package certification
 
 import (
-	"context"
-	"fmt"
 	"strings"
 
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksadapter"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	checksfn "github.com/redhat-best-practices-for-k8s/checks/certification"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
@@ -41,18 +37,10 @@ const (
 )
 
 var (
-	env       provider.TestEnvironment
-	validator certdb.CertificationStatusValidator
+	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
 		env = provider.GetTestEnvironment()
-
-		var err error
-		validator, err = certdb.GetValidator(env.GetOfflineDBPath())
-		if err != nil {
-			return fmt.Errorf("cannot access the certification DB, err: %v", err)
-		}
-
 		return nil
 	}
 
@@ -79,33 +67,21 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.AffiliatedCertTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHelmVersionIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("affiliated-certification-helm-version")).
 		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
-		WithCheckFn(func(check *checksdb.Check) error {
-			testHelmVersion(check)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckHelmVersion).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("affiliated-certification-operator-is-certified")).
 		WithSkipCheckFn(skipIfNoOperatorsFn).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testAllOperatorCertified(c, &env, validator)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckOperatorCertified).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("affiliated-certification-helmchart-is-certified")).
 		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testHelmCertified(c, &env, validator)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckHelmChartCertified).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("affiliated-certification-container-is-certified-digest")).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testContainerCertificationStatusByDigest(c, &env, validator)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckContainerCertified).MakeCheckFn(&env)))
 }
 
 func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerImageIdentifier]bool {
@@ -201,35 +177,6 @@ func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provid
 				c.ContainerImageIdentifier.Tag, c.ContainerImageIdentifier.Digest)
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Container is certified", true))
 		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
-}
-
-func testHelmVersion(check *checksdb.Check) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	clients := clientsholder.GetClientsHolder()
-	// Get the Tiller pod in the specified namespace
-	podList, err := clients.K8sClient.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{
-		LabelSelector: "app=helm,name=tiller",
-	})
-	if err != nil {
-		check.LogError("Could not get Tiller pod, err=%v", err)
-	}
-
-	if len(podList.Items) == 0 {
-		check.LogInfo("Tiller pod not found in any namespaces. Helm version is v3.")
-		for _, helm := range env.HelmChartReleases {
-			compliantObjects = append(compliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart was installed with helm v3", true))
-		}
-	}
-
-	check.LogError("Tiller pod found, Helm version is v2 but v3 required")
-	for i := range podList.Items {
-		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(podList.Items[i].Namespace, podList.Items[i].Name,
-			"This pod is a Tiller pod. Helm Chart version is v2 but needs to be v3 due to the security risks associated with Tiller", false))
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)

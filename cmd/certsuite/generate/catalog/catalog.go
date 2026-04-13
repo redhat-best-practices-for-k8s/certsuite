@@ -17,17 +17,23 @@
 package catalog
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"sort"
 	"strings"
 
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
+	plibContainer "github.com/redhat-openshift-ecosystem/openshift-preflight/container"
+	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
+
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/arrayhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
+	"github.com/redhat-best-practices-for-k8s/checks"
+	checksall "github.com/redhat-best-practices-for-k8s/checks/all"
 
 	"github.com/spf13/cobra"
 )
@@ -113,13 +119,13 @@ func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
 
 func scenarioIDToText(id string) (text string) {
 	switch id {
-	case identifiers.FarEdge:
+	case checks.FarEdge:
 		text = "Far-Edge"
-	case identifiers.Telco:
+	case checks.Telco:
 		text = "Telco"
-	case identifiers.NonTelco:
+	case checks.NonTelco:
 		text = "Non-Telco"
-	case identifiers.Extended:
+	case checks.Extended:
 		text = "Extended"
 	default:
 		text = "Unknown Scenario"
@@ -127,32 +133,117 @@ func scenarioIDToText(id string) (text string) {
 	return text
 }
 
-// outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
-func outputTestCases() (outString string, summary catalogSummary) { //nolint:funlen
-	preflight.LoadCatalogChecks()
+// catalogEntry holds all metadata needed to render one check in the catalog.
+type catalogEntry struct {
+	id                     string
+	suite                  string
+	tags                   string
+	description            string
+	remediation            string
+	bestPracticeReference  string
+	exceptionProcess       string
+	impactStatement        string
+	categoryClassification map[string]string
+}
 
-	// Building a separate data structure to store the key order for the map
-	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
-	for k := range identifiers.Catalog {
-		keys = append(keys, k)
+// buildCatalogEntries builds entries from both the checks library and preflight tests.
+func buildCatalogEntries() []catalogEntry {
+	checksall.Register()
+
+	var entries []catalogEntry
+
+	// Add all checks from the checks library
+	allChecks := checks.All()
+	for i := range allChecks {
+		info := &allChecks[i]
+		entries = append(entries, catalogEntry{
+			id:                     info.Name,
+			suite:                  info.Category,
+			tags:                   strings.Join(info.Tags, ","),
+			description:            info.Description,
+			remediation:            info.Remediation,
+			bestPracticeReference:  info.BestPracticeReference,
+			exceptionProcess:       info.ExceptionProcess,
+			impactStatement:        info.ImpactStatement,
+			categoryClassification: info.CategoryClassification,
+		})
 	}
 
-	// Sorting the map by identifier ID
-	sort.Slice(keys, func(i, j int) bool {
-		return keys[i].Id < keys[j].Id
+	// Add preflight tests dynamically
+	entries = append(entries, getPreflightEntries()...)
+
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].id < entries[j].id
 	})
 
-	catalog := CreatePrintableCatalogFromIdentifiers(keys)
-	if catalog == nil {
-		return
-	}
-	// we need the list of suite's names
-	suites := GetSuitesFromIdentifiers(keys)
+	return entries
+}
 
-	// Sort the list of suite names
+func getPreflightEntries() []catalogEntry {
+	const dummy = "dummy"
+	artifactsWriter, err := artifacts.NewMapWriter()
+	if err != nil {
+		log.Error("Error creating artifact, failed to add preflight tests to catalog: %v", err)
+		return nil
+	}
+	ctx := artifacts.ContextWithWriter(context.TODO(), artifactsWriter)
+	checkOperator := plibOperator.NewCheck(dummy, dummy, []byte(""), []plibOperator.Option{}...)
+	checkContainer := plibContainer.NewCheck(dummy, []plibContainer.Option{}...)
+	_, checksOperator, err := checkOperator.List(ctx)
+	if err != nil {
+		log.Error("Error getting preflight operator tests: %v", err)
+	}
+	_, checksContainer, err := checkContainer.List(ctx)
+	if err != nil {
+		log.Error("Error getting preflight container tests: %v", err)
+	}
+
+	allPreflight := checksOperator
+	allPreflight = append(allPreflight, checksContainer...)
+
+	allOptional := map[string]string{
+		checks.FarEdge: checks.Optional, checks.Telco: checks.Optional,
+		checks.NonTelco: checks.Optional, checks.Extended: checks.Optional,
+	}
+
+	var entries []catalogEntry
+	for _, c := range allPreflight {
+		remediation := c.Help().Suggestion
+		if c.Name() == "FollowsRestrictedNetworkEnablementGuidelines" {
+			remediation = "If consumers of your operator may need to do so on a restricted network, implement the guidelines outlined in OCP documentation: https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/disconnected_environments/olm-restricted-networks" //nolint:lll
+		}
+		id := "preflight-" + c.Name()
+
+		// Register in legacy identifiers so preflight result recording still works
+		_ = identifiers.AddCatalogEntry(c.Name(), "preflight", c.Metadata().Description,
+			remediation, checks.NoExceptionProcess, checks.NoDocLink, true, allOptional, checks.TagCommon)
+
+		entries = append(entries, catalogEntry{
+			id: id, suite: "preflight", tags: checks.TagCommon,
+			description: c.Metadata().Description, remediation: remediation,
+			bestPracticeReference: checks.NoDocLink, exceptionProcess: checks.NoExceptionProcess,
+			impactStatement: identifiers.ImpactMap[id], categoryClassification: allOptional,
+		})
+	}
+	return entries
+}
+
+// outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
+func outputTestCases() (outString string, summary catalogSummary) { //nolint:funlen
+	entries := buildCatalogEntries()
+
+	// Group by suite
+	suiteEntries := make(map[string][]catalogEntry)
+	for i := range entries {
+		suiteEntries[entries[i].suite] = append(suiteEntries[entries[i].suite], entries[i])
+	}
+
+	suites := make([]string, 0, len(suiteEntries))
+	for s := range suiteEntries {
+		suites = append(suites, s)
+	}
 	sort.Strings(suites)
 
-	// Iterating the map by test and suite names
 	outString = "## Test Case list\n\n" +
 		"Test Cases are the specifications used to perform a meaningful test. " +
 		"Test cases may run once, or several times against several targets. The Red Hat Best Practices Test Suite for Kubernetes includes " +
@@ -164,58 +255,51 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 	summary.totalSuites = len(suites)
 	for _, suite := range suites {
 		outString += fmt.Sprintf("\n### %s\n", suite)
-		for _, k := range catalog[suite] {
+		for idx := range suiteEntries[suite] {
+			e := &suiteEntries[suite][idx]
 			summary.testsPerSuite[suite]++
 			summary.totalTests++
-			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
-			// GetTestIDAndLabels function.
-			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ") + "," + k.identifier.Suite
+			tags := strings.ReplaceAll(e.tags, "\n", " ") + "," + e.suite
 
-			keys := make([]string, 0, len(identifiers.Catalog[k.identifier].CategoryClassification))
-
-			for scenario := range identifiers.Catalog[k.identifier].CategoryClassification {
+			keys := make([]string, 0, len(e.categoryClassification))
+			for scenario := range e.categoryClassification {
 				keys = append(keys, scenario)
 				_, ok := summary.testPerScenario[scenarioIDToText(scenario)]
 				if !ok {
-					child := make(map[string]int)
-					summary.testPerScenario[scenarioIDToText(scenario)] = child
+					summary.testPerScenario[scenarioIDToText(scenario)] = make(map[string]int)
 				}
 				switch scenario {
-				case identifiers.NonTelco:
-					tag := identifiers.TagCommon
-					if identifiers.Catalog[k.identifier].Tags == tag {
-						summary.testPerScenario[scenarioIDToText(scenario)][identifiers.Catalog[k.identifier].CategoryClassification[scenario]]++
+				case checks.NonTelco:
+					if e.tags == checks.TagCommon {
+						summary.testPerScenario[scenarioIDToText(scenario)][e.categoryClassification[scenario]]++
 					}
 				default:
 					tag := strings.ToLower(scenario)
-					if strings.Contains(identifiers.Catalog[k.identifier].Tags, tag) {
-						summary.testPerScenario[scenarioIDToText(scenario)][identifiers.Catalog[k.identifier].CategoryClassification[scenario]]++
+					if strings.Contains(e.tags, tag) {
+						summary.testPerScenario[scenarioIDToText(scenario)][e.categoryClassification[scenario]]++
 					}
 				}
 			}
 			sort.Strings(keys)
 			classificationString := "|**Scenario**|**Optional/Mandatory**|\n"
 			for _, j := range keys {
-				classificationString += "|" + scenarioIDToText(j) + "|" + identifiers.Catalog[k.identifier].CategoryClassification[j] + "|\n"
+				classificationString += "|" + scenarioIDToText(j) + "|" + e.categoryClassification[j] + "|\n"
 			}
 
-			// Every paragraph starts with a new line.
-
-			outString += fmt.Sprintf("\n#### %s\n\n", k.testName)
+			outString += fmt.Sprintf("\n#### %s\n\n", e.id)
 			outString += "|Property|Description|\n"
 			outString += "|---|---|\n"
-			outString += fmt.Sprintf("|Unique ID|%s|\n", k.identifier.Id)
-			outString += fmt.Sprintf("|Description|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Description, "\n", " "))
-			outString += fmt.Sprintf("|Suggested Remediation|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "))
-			outString += fmt.Sprintf("|Best Practice Reference|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
-			outString += fmt.Sprintf("|Exception Process|%s|\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
+			outString += fmt.Sprintf("|Unique ID|%s|\n", e.id)
+			outString += fmt.Sprintf("|Description|%s|\n", strings.ReplaceAll(e.description, "\n", " "))
+			outString += fmt.Sprintf("|Suggested Remediation|%s|\n", strings.ReplaceAll(e.remediation, "\n", " "))
+			outString += fmt.Sprintf("|Best Practice Reference|%s|\n", strings.ReplaceAll(e.bestPracticeReference, "\n", " "))
+			outString += fmt.Sprintf("|Exception Process|%s|\n", strings.ReplaceAll(e.exceptionProcess, "\n", " "))
 
-			// Add impact statement if available - fail if missing
-			if impact, exists := identifiers.ImpactMap[k.identifier.Id]; exists {
-				outString += fmt.Sprintf("|Impact Statement|%s|\n", strings.ReplaceAll(impact, "\n", " "))
+			if e.impactStatement != "" {
+				outString += fmt.Sprintf("|Impact Statement|%s|\n", strings.ReplaceAll(e.impactStatement, "\n", " "))
 			} else {
-				log.Error("Test case %s is missing an impact statement in the ImpactMap", k.identifier.Id)
-				fmt.Printf("ERROR: Test case %s is missing an impact statement in the ImpactMap\n", k.identifier.Id)
+				log.Error("Test case %s is missing an impact statement", e.id)
+				fmt.Printf("ERROR: Test case %s is missing an impact statement\n", e.id)
 				os.Exit(1)
 			}
 
@@ -255,17 +339,25 @@ func summaryToMD(aSummary catalogSummary) (out string) {
 	sort.Strings(keys)
 
 	for _, scenario := range keys {
-		out += fmt.Sprintf("### %s specific tests only: %d\n\n", scenario, aSummary.testPerScenario[scenario][identifiers.Mandatory]+aSummary.testPerScenario[scenario][identifiers.Optional])
+		out += fmt.Sprintf("### %s specific tests only: %d\n\n", scenario, aSummary.testPerScenario[scenario][checks.Mandatory]+aSummary.testPerScenario[scenario][checks.Optional])
 		out += "|Mandatory|Optional|\n"
 		out += tableHeader
-		out += fmt.Sprintf("|%d|%d|\n", aSummary.testPerScenario[scenario][identifiers.Mandatory], aSummary.testPerScenario[scenario][identifiers.Optional])
+		out += fmt.Sprintf("|%d|%d|\n", aSummary.testPerScenario[scenario][checks.Mandatory], aSummary.testPerScenario[scenario][checks.Optional])
 		out += "\n"
 	}
 	return out
 }
 
 func outputJS() {
-	out, err := json.MarshalIndent(identifiers.Classification, "", "  ")
+	checksall.Register()
+
+	classification := make(map[string]map[string]string)
+	allInfo := checks.All()
+	for i := range allInfo {
+		classification[allInfo[i].Name] = allInfo[i].CategoryClassification
+	}
+
+	out, err := json.MarshalIndent(classification, "", "  ")
 	if err != nil {
 		log.Error("could not Marshall classification, err=%s", err)
 		return
@@ -305,7 +397,7 @@ func outputSccCategories() (sccCategories string) {
 		" - Not request NET_ADMIN or NET_RAW for advanced networking functions\n\n"
 
 	secondCat := "### 2nd Category\n" +
-		"For workloads which utilize Service Mesh sidecars for mTLS or load balancing. These workloads must utilize an alternative SCC “restricted-no-uid0” to workaround a service mesh UID limitation. " +
+		"For workloads which utilize Service Mesh sidecars for mTLS or load balancing. These workloads must utilize an alternative SCC \"restricted-no-uid0\" to workaround a service mesh UID limitation. " +
 		"Workloads under this category should not run as root (UID0).\n\n"
 
 	thirdCat := "### 3rd Category\n" +
