@@ -27,7 +27,7 @@ import (
 	"time"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksadapter"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
@@ -401,7 +401,7 @@ func SanitizeClaimFile(claimFileName, labelsFilter string) (string, error) {
 			return "", fmt.Errorf("failed to create labels expression evaluator for %q: %w", labelsFilter, err)
 		}
 
-		_, gatheredLabels := identifiers.GetTestIDAndLabels(*aRoot.Claim.Results[testID].TestID)
+		_, gatheredLabels := checksadapter.GetCheckIDAndLabels(aRoot.Claim.Results[testID].TestID.Id)
 
 		if !evaluator.Eval(gatheredLabels) {
 			log.Info("Removing test ID: %s from the claim", testID)

@@ -18,6 +18,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/checks"
 )
 
 var (
@@ -62,9 +63,9 @@ func RunChecks(timeout time.Duration) (failedCtr int, err error) {
 		// Done channel for the goroutine that runs group.RunChecks().
 		groupDone := make(chan bool)
 		go func() {
-			checks, failedCheckCtr := group.RunChecks(stopChan, abortChan)
+			groupErrs, failedCheckCtr := group.RunChecks(stopChan, abortChan)
 			failedCtr += failedCheckCtr
-			errs = append(errs, checks...)
+			errs = append(errs, groupErrs...)
 			groupDone <- true
 		}()
 
@@ -110,35 +111,66 @@ func RunChecks(timeout time.Duration) (failedCtr int, err error) {
 }
 
 func recordCheckResult(check *Check) {
-	claimID, ok := identifiers.TestIDToClaimID[check.ID]
-	if !ok {
-		check.LogDebug("TestID %s has no corresponding Claim ID - skipping result recording", check.ID)
+	claimID, catClass, catInfo := resolveCheckMetadata(check)
+	if claimID == nil {
 		return
 	}
 
-	check.LogInfo("Recording result %q, claimID: %+v", strings.ToUpper(check.Result.String()), claimID)
+	check.LogInfo("Recording result %q, claimID: %+v", strings.ToUpper(check.Result.String()), *claimID)
 	resultsDB[check.ID] = claim.Result{
-		TestID:             &claimID,
-		State:              check.Result.String(),
-		StartTime:          check.StartTime.String(),
-		EndTime:            check.EndTime.String(),
-		Duration:           int(check.EndTime.Sub(check.StartTime).Seconds()),
-		SkipReason:         check.skipReason,
-		CapturedTestOutput: check.GetLogs(),
-		CheckDetails:       check.details,
-
-		CategoryClassification: &claim.CategoryClassification{
-			Extended: identifiers.Catalog[claimID].CategoryClassification[identifiers.Extended],
-			FarEdge:  identifiers.Catalog[claimID].CategoryClassification[identifiers.FarEdge],
-			NonTelco: identifiers.Catalog[claimID].CategoryClassification[identifiers.NonTelco],
-			Telco:    identifiers.Catalog[claimID].CategoryClassification[identifiers.Telco]},
-		CatalogInfo: &claim.CatalogInfo{
-			Description:           identifiers.Catalog[claimID].Description,
-			Remediation:           identifiers.Catalog[claimID].Remediation,
-			BestPracticeReference: identifiers.Catalog[claimID].BestPracticeReference,
-			ExceptionProcess:      identifiers.Catalog[claimID].ExceptionProcess,
-		},
+		TestID:                 claimID,
+		State:                  check.Result.String(),
+		StartTime:              check.StartTime.String(),
+		EndTime:                check.EndTime.String(),
+		Duration:               int(check.EndTime.Sub(check.StartTime).Seconds()),
+		SkipReason:             check.skipReason,
+		CapturedTestOutput:     check.GetLogs(),
+		CheckDetails:           check.details,
+		CategoryClassification: catClass,
+		CatalogInfo:            catInfo,
 	}
+}
+
+func resolveCheckMetadata(check *Check) (*claim.Identifier, *claim.CategoryClassification, *claim.CatalogInfo) {
+	// Try the checks library first (single source of truth)
+	if info, ok := checks.ByName(check.ID); ok {
+		id := claim.Identifier{Id: info.Name, Suite: info.Category, Tags: strings.Join(info.Tags, ",")}
+		return &id,
+			&claim.CategoryClassification{
+				Extended: info.CategoryClassification[checks.Extended],
+				FarEdge:  info.CategoryClassification[checks.FarEdge],
+				NonTelco: info.CategoryClassification[checks.NonTelco],
+				Telco:    info.CategoryClassification[checks.Telco],
+			},
+			&claim.CatalogInfo{
+				Description:           info.Description,
+				Remediation:           info.Remediation,
+				BestPracticeReference: info.BestPracticeReference,
+				ExceptionProcess:      info.ExceptionProcess,
+			}
+	}
+
+	// Fall back to legacy identifiers for checks not yet in the library
+	claimID, ok := identifiers.TestIDToClaimID[check.ID]
+	if !ok {
+		check.LogDebug("TestID %s has no corresponding Claim ID - skipping result recording", check.ID)
+		return nil, nil, nil
+	}
+
+	desc := identifiers.Catalog[claimID]
+	return &claimID,
+		&claim.CategoryClassification{
+			Extended: desc.CategoryClassification[identifiers.Extended],
+			FarEdge:  desc.CategoryClassification[identifiers.FarEdge],
+			NonTelco: desc.CategoryClassification[identifiers.NonTelco],
+			Telco:    desc.CategoryClassification[identifiers.Telco],
+		},
+		&claim.CatalogInfo{
+			Description:           desc.Description,
+			Remediation:           desc.Remediation,
+			BestPracticeReference: desc.BestPracticeReference,
+			ExceptionProcess:      desc.ExceptionProcess,
+		}
 }
 
 // GetReconciledResults is a function added to aggregate a Claim's results.  Due to the limitations of
@@ -278,8 +310,8 @@ func FilterCheckIDs() ([]string, error) {
 func InitLabelsExprEvaluator(labelsFilter string) error {
 	// Expand the abstract "all" label into actual existing labels
 	if labelsFilter == "all" {
-		allTags := []string{identifiers.TagCommon, identifiers.TagExtended,
-			identifiers.TagFarEdge, identifiers.TagTelco}
+		allTags := []string{checks.TagCommon, checks.TagExtended,
+			checks.TagFarEdge, checks.TagTelco}
 		labelsFilter = strings.Join(allTags, ",")
 	}
 
