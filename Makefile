@@ -129,9 +129,9 @@ install-mac-brew-tools:
 		hadolint \
 		shfmt
 
-# Installs linters
+# Checks if golangci-lint is installed
 install-lint:
-	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@${GOLANGCI_VERSION}
+	@command -v golangci-lint >/dev/null 2>&1 || { echo "golangci-lint is not installed. Please install it: https://golangci-lint.run/welcome/install/"; exit 1; }
 
 install-shfmt:
 	go install mvdan.cc/sh/v3/cmd/shfmt@latest
