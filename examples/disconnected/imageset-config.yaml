@@ -1,0 +1,17 @@
+# ImageSetConfiguration for mirroring certsuite images to a disconnected registry.
+# See docs/disconnected.md for usage instructions.
+#
+# Required:
+#   certsuite-probe - Privileged DaemonSet deployed on cluster nodes during test execution.
+#
+# Optional:
+#   certsuite - Only needed if running the certsuite as a container inside the cluster.
+#   oct       - Offline certification database for checking container/operator/helm certification
+#               status without internet access.
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+  additionalImages:
+    - name: quay.io/redhat-best-practices-for-k8s/certsuite-probe:latest
+    - name: quay.io/redhat-best-practices-for-k8s/certsuite:latest
+    - name: quay.io/redhat-best-practices-for-k8s/oct:latest
