@@ -56,7 +56,7 @@ type VersionInfo struct {
 }
 
 var (
-	ocpBetaVersions   = []string{"4.13", "4.14", "4.16", "4.17", "4.18", "4.19", "4.20", "4.21"}
+	ocpBetaVersions   = []string{"4.13", "4.14", "4.16", "4.18", "4.19", "4.20", "4.21"}
 	ocpLifeCycleDates = map[string]VersionInfo{
 		// TODO: Adjust all of these periodically to make sure they are up to date with the lifecycle
 		// update documentation.
@@ -92,16 +92,6 @@ var (
 			MinRHCOSVersion:      "4.19",
 			RHELVersionsAccepted: []string{"8.10", "9.4"}, // TBD - estimated based on typical support
 		},
-		"4.17": {
-			GADate:  time.Date(2024, 10, 1, 0, 0, 0, 0, time.UTC), // October 1, 2024
-			FSEDate: time.Date(2025, 5, 25, 0, 0, 0, 0, time.UTC), // May 25, 2025
-			MSEDate: time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),  // April 1, 2026
-
-			// OS Compatibility (for worker nodes)
-			MinRHCOSVersion:      "4.17",
-			RHELVersionsAccepted: []string{"8.10", "9.2"}, // TBD - estimated based on typical support
-		},
-
 		// Extended Update Support (EUS) - EUS releases receive additional 6-18 months beyond standard maintenance
 		"4.18": {
 			GADate:  time.Date(2025, 2, 25, 0, 0, 0, 0, time.UTC), // February 25, 2025
@@ -132,6 +122,15 @@ var (
 		},
 
 		// End of life
+		"4.17": {
+			GADate:  time.Date(2024, 10, 1, 0, 0, 0, 0, time.UTC), // October 1, 2024
+			FSEDate: time.Date(2025, 5, 25, 0, 0, 0, 0, time.UTC), // May 25, 2025
+			MSEDate: time.Date(2026, 4, 1, 0, 0, 0, 0, time.UTC),  // April 1, 2026
+
+			// OS Compatibility (for worker nodes)
+			MinRHCOSVersion:      "4.17",
+			RHELVersionsAccepted: []string{"8.10", "9.2"},
+		},
 		"4.12": {
 			GADate:  time.Date(2023, 1, 17, 0, 0, 0, 0, time.UTC), // January 17, 2023
 			FSEDate: time.Date(2023, 8, 17, 0, 0, 0, 0, time.UTC), // August 17, 2023
