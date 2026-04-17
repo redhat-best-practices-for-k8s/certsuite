@@ -160,6 +160,7 @@ var (
 	TestIsRedHatReleaseIdentifier                                    claim.Identifier
 	TestIsSELinuxEnforcingIdentifier                                 claim.Identifier
 	TestUndeclaredContainerPortsUsage                                claim.Identifier
+	TestUnsecuredContainerPortsIdentifier                            claim.Identifier
 	TestOCPReservedPortsUsage                                        claim.Identifier
 	TestLivenessProbeIdentifier                                      claim.Identifier
 	TestReadinessProbeIdentifier                                     claim.Identifier
@@ -1515,6 +1516,22 @@ that Node's kernel may not have the same hacks.'`,
 			Telco:    Optional,
 			NonTelco: Optional,
 			Extended: Mandatory,
+		},
+		TagExtended)
+
+	TestUnsecuredContainerPortsIdentifier = AddCatalogEntry(
+		"unsecured-container-ports",
+		common.NetworkingTestKey,
+		`Check that TCP ports listening inside containers use TLS encryption. Ports accepting plaintext connections are flagged as non-compliant.`,
+		UnsecuredContainerPortsRemediation,
+		NoExceptionProcessForExtendedTests,
+		TestUnsecuredContainerPortsDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagExtended)
 

@@ -72,6 +72,7 @@ testCases:
     - platform-alteration-tainted-node-kernel
   fail:
     - affiliated-certification-container-is-certified-digest # test container image is not certified
+    - networking-unsecured-container-ports # smoke test pods serve plaintext
   skip:
     - access-control-sys-ptrace-capability
     - access-control-sys-nice-realtime-capability
