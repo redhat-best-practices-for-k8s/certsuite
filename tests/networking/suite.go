@@ -237,7 +237,8 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	netsUnderTest := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType, check.GetLogger())
 	report, skip := icmp.RunNetworkingTests(netsUnderTest, defaultNumPings, aIPVersion, check.GetLogger())
 	if skip {
-		check.LogInfo("There are no %q networks to test with at least 2 pods, skipping test", aIPVersion)
+		check.SetResultSkipped(fmt.Sprintf("There are no %q networks to test with at least 2 pods", aIPVersion))
+		return
 	}
 	check.SetResult(report.CompliantObjectsOut, report.NonCompliantObjectsOut)
 }
