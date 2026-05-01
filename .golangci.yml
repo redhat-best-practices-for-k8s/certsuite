@@ -35,7 +35,7 @@ linters:
       statements: 45
     goconst:
       min-len: 4
-      min-occurrences: 2
+      min-occurrences: 3
     gocritic:
       disabled-checks:
         - whyNoLint
@@ -78,6 +78,9 @@ linters:
           - goconst
           - mnd
         path: _test\.go
+      - linters:
+          - goconst
+        path: compatibility\.go
       - linters:
           - mnd
         path: config/config.go

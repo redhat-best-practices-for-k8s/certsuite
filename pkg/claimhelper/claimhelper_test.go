@@ -56,7 +56,7 @@ func TestPopulateXMLFromClaim(t *testing.T) {
 				Extended: "false",
 				FarEdge:  "false",
 				NonTelco: "false",
-				Telco:    "true",
+				Telco:    unitTestEnvTrue,
 			},
 		}
 	}
@@ -142,7 +142,7 @@ func TestToJUnitXML(t *testing.T) {
 						Extended: "false",
 						FarEdge:  "false",
 						NonTelco: "false",
-						Telco:    "true",
+						Telco:    unitTestEnvTrue,
 					},
 				},
 			},
@@ -165,7 +165,7 @@ func TestToJUnitXML(t *testing.T) {
 						Extended: "false",
 						FarEdge:  "false",
 						NonTelco: "false",
-						Telco:    "true",
+						Telco:    unitTestEnvTrue,
 					},
 				},
 			},
@@ -173,7 +173,7 @@ func TestToJUnitXML(t *testing.T) {
 		},
 	}
 
-	t.Setenv("UNIT_TEST", "true")
+	t.Setenv("UNIT_TEST", unitTestEnvTrue)
 	defer os.Remove("testfile.xml")
 	defer os.Unsetenv("UNIT_TEST")
 

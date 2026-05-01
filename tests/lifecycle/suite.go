@@ -544,7 +544,6 @@ func testHighAvailability(check *checksdb.Check, env *provider.TestEnvironment) 
 		}
 
 		// Skip any AffinityRequired pods
-		//nolint:goconst
 		if dp.Spec.Template.Labels["AffinityRequired"] == "true" {
 			check.LogInfo("Skipping Deployment %q with affinity required", dp.ToString())
 			continue

@@ -72,13 +72,15 @@ const (
 	WorkerRoleLabel = "node-role.kubernetes.io/worker"
 	// ControlPlaneRoleLabel is the standard Kubernetes label for control-plane nodes.
 	ControlPlaneRoleLabel = "node-role.kubernetes.io/control-plane"
+	// MasterRoleLabel is the deprecated Kubernetes label for master nodes (deprecated since k8s 1.20).
+	MasterRoleLabel = "node-role.kubernetes.io/master"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
 // Master's role label "master" is deprecated since k8s 1.20.
 var (
 	WorkerLabels = []string{WorkerRoleLabel}
-	MasterLabels = []string{"node-role.kubernetes.io/master", ControlPlaneRoleLabel}
+	MasterLabels = []string{MasterRoleLabel, ControlPlaneRoleLabel}
 )
 
 type TestEnvironment struct { // rename this with testTarget

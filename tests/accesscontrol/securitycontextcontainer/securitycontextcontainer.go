@@ -75,7 +75,8 @@ type PodListCategory struct {
 }
 
 var (
-	requiredDropCapabilities = []string{"MKNOD", "SETUID", "SETGID", "KILL"}
+	capKILL                  = "KILL"
+	requiredDropCapabilities = []string{"MKNOD", "SETUID", "SETGID", capKILL}
 	dropAll                  = []string{"ALL"}
 	category2AddCapabilities = []string{"NET_ADMIN, NET_RAW"}
 	category3AddCapabilities = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}

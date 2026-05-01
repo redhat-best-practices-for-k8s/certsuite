@@ -44,6 +44,8 @@ const (
 	// dateTimeFormatDirective is the directive used to format date/time according to ISO 8601.
 	DateTimeFormatDirective = "2006-01-02 15:04:05 -0700 MST"
 
+	unitTestEnvTrue = "true"
+
 	// States for test cases
 	TestStateFailed  = "failed"
 	TestStateSkipped = "skipped"
@@ -109,7 +111,7 @@ type ClaimBuilder struct {
 }
 
 func NewClaimBuilder(env *provider.TestEnvironment) (*ClaimBuilder, error) {
-	if os.Getenv("UNIT_TEST") == "true" {
+	if os.Getenv("UNIT_TEST") == unitTestEnvTrue {
 		return &ClaimBuilder{
 			claimRoot: CreateClaimRoot(),
 		}, nil
