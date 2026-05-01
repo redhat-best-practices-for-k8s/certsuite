@@ -112,6 +112,8 @@ func addDescendingSortFilterToSheet(srv *sheets.Service, spreadsheet *sheets.Spr
 	return nil
 }
 
+const booleanConditionTextEQ = "TEXT_EQ"
+
 func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *sheets.Spreadsheet, sheetName string) error {
 	sheetsValues, err := srv.Spreadsheets.Values.Get(spreadsheet.SpreadsheetId, sheetName).Do()
 	if err != nil {
@@ -139,7 +141,7 @@ func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *shee
 					Criteria: map[string]sheets.FilterCriteria{
 						fmt.Sprint(stateColIndex): {
 							Condition: &sheets.BooleanCondition{
-								Type: "TEXT_EQ",
+								Type: booleanConditionTextEQ,
 								Values: []*sheets.ConditionValue{
 									{UserEnteredValue: "failed"},
 								},
@@ -147,7 +149,7 @@ func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *shee
 						},
 						fmt.Sprint(isMandatoryColIndex): {
 							Condition: &sheets.BooleanCondition{
-								Type: "TEXT_EQ",
+								Type: booleanConditionTextEQ,
 								Values: []*sheets.ConditionValue{
 									{UserEnteredValue: "Mandatory"},
 								},

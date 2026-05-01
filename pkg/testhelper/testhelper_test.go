@@ -520,9 +520,9 @@ func TestResultToString(t *testing.T) {
 		input          int
 		expectedResult string
 	}{
-		{input: SUCCESS, expectedResult: "SUCCESS"},
-		{input: FAILURE, expectedResult: "FAILURE"},
-		{input: ERROR, expectedResult: "ERROR"},
+		{input: SUCCESS, expectedResult: SuccessString},
+		{input: FAILURE, expectedResult: FailureString},
+		{input: ERROR, expectedResult: ErrorString},
 		{input: 1337, expectedResult: ""},
 	}
 
@@ -899,7 +899,7 @@ func TestGetNotEnoughWorkersSkipFn(t *testing.T) {
 							ObjectMeta: metav1.ObjectMeta{
 								Name: "test1",
 								Labels: map[string]string{
-									"node-role.kubernetes.io/worker": "",
+									provider.WorkerRoleLabel: "",
 								},
 							},
 						},

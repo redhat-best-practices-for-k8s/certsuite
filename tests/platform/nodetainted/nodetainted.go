@@ -78,6 +78,8 @@ type KernelTaint struct {
 	Letters     string
 }
 
+const bpfSyscallTaintMsg = "BPF syscall has either been configured or enabled for unprivileged users/programs"
+
 var kernelTaints = map[int]KernelTaint{
 	// Linux standard kernel taints
 	0:  {"proprietary module was loaded", "GP"},
@@ -105,8 +107,8 @@ var kernelTaints = map[int]KernelTaint{
 	27: {"Red Hat extension: Hardware for which support has been removed. / OMGZOMBIES easter egg", "Zrh"},
 	28: {"Red Hat extension: Unsupported hardware. Refer to \"UNSUPPORTED HARDWARE DEVICE:\" kernel log entry for details", "H"},
 	29: {"Red Hat extension: Technology Preview code was loaded; cf. Technology Preview features support scope description. Refer to \"TECH PREVIEW:\" kernel log entry for details", "Tt"},
-	30: {"BPF syscall has either been configured or enabled for unprivileged users/programs", "u"},
-	31: {"BPF syscall has either been configured or enabled for unprivileged users/programs", "u"},
+	30: {bpfSyscallTaintMsg, "u"},
+	31: {bpfSyscallTaintMsg, "u"},
 }
 
 func GetTaintMsg(bit int) string {

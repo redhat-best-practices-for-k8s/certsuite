@@ -15,10 +15,15 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/version"
 )
 
+const (
+	rootCmdUse   = "certsuite"
+	rootCmdShort = "A CLI tool for the Red Hat Best Practices Test Suite for Kubernetes."
+)
+
 func newRootCmd() *cobra.Command {
 	rootCmd := cobra.Command{
-		Use:   "certsuite",
-		Short: "A CLI tool for the Red Hat Best Practices Test Suite for Kubernetes.",
+		Use:   rootCmdUse,
+		Short: rootCmdShort,
 	}
 
 	rootCmd.AddCommand(claim.NewCommand())

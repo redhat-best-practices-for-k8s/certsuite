@@ -11,16 +11,18 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
+const sriovNetworkAPIGroup = "sriovnetwork.openshift.io"
+
 // SriovNetworkGVR defines the GroupVersionResource for SriovNetwork
 var SriovNetworkGVR = schema.GroupVersionResource{
-	Group:    "sriovnetwork.openshift.io",
+	Group:    sriovNetworkAPIGroup,
 	Version:  "v1",
 	Resource: "sriovnetworks",
 }
 
 // SriovNetworkNodePolicyGVR defines the GroupVersionResource for SriovNetworkNodePolicy
 var SriovNetworkNodePolicyGVR = schema.GroupVersionResource{
-	Group:    "sriovnetwork.openshift.io",
+	Group:    sriovNetworkAPIGroup,
 	Version:  "v1",
 	Resource: "sriovnetworknodepolicies",
 }

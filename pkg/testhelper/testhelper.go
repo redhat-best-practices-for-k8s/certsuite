@@ -28,6 +28,10 @@ const (
 	SUCCESS = iota
 	FAILURE
 	ERROR
+
+	SuccessString = "SUCCESS"
+	FailureString = "FAILURE"
+	ErrorString   = "ERROR"
 )
 
 type ReportObject struct {
@@ -408,11 +412,11 @@ func (obj *ReportObject) SetType(aType string) (out *ReportObject) {
 func ResultToString(result int) (str string) {
 	switch result {
 	case SUCCESS:
-		return "SUCCESS"
+		return SuccessString
 	case FAILURE:
-		return "FAILURE"
+		return FailureString
 	case ERROR:
-		return "ERROR"
+		return ErrorString
 	}
 	return ""
 }

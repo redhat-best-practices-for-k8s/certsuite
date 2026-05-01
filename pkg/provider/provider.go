@@ -67,11 +67,18 @@ const (
 	ZoneTopologyKey = "topology.kubernetes.io/zone"
 )
 
+const (
+	// WorkerRoleLabel is the standard Kubernetes label for worker nodes.
+	WorkerRoleLabel = "node-role.kubernetes.io/worker"
+	// ControlPlaneRoleLabel is the standard Kubernetes label for control-plane nodes.
+	ControlPlaneRoleLabel = "node-role.kubernetes.io/control-plane"
+)
+
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
 // Master's role label "master" is deprecated since k8s 1.20.
 var (
-	WorkerLabels = []string{"node-role.kubernetes.io/worker"}
-	MasterLabels = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
+	WorkerLabels = []string{WorkerRoleLabel}
+	MasterLabels = []string{"node-role.kubernetes.io/master", ControlPlaneRoleLabel}
 )
 
 type TestEnvironment struct { // rename this with testTarget

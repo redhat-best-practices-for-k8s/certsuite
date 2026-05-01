@@ -58,6 +58,10 @@ import (
 
 const (
 	DefaultTimeout = 10 * time.Second
+
+	defaultCluster = "default-cluster"
+	defaultUser    = "default-user"
+	defaultContext = "default-context"
 )
 
 type ClientsHolder struct {
@@ -215,20 +219,20 @@ func GetClientConfigFromRestConfig(restConfig *rest.Config) *clientcmdapi.Config
 		Kind:       "Config",
 		APIVersion: "v1",
 		Clusters: map[string]*clientcmdapi.Cluster{
-			"default-cluster": {
+			defaultCluster: {
 				Server:               restConfig.Host,
 				CertificateAuthority: restConfig.CAFile,
 			},
 		},
 		Contexts: map[string]*clientcmdapi.Context{
-			"default-context": {
-				Cluster:  "default-cluster",
-				AuthInfo: "default-user",
+			defaultContext: {
+				Cluster:  defaultCluster,
+				AuthInfo: defaultUser,
 			},
 		},
-		CurrentContext: "default-context",
+		CurrentContext: defaultContext,
 		AuthInfos: map[string]*clientcmdapi.AuthInfo{
-			"default-user": {
+			defaultUser: {
 				Token: restConfig.BearerToken,
 			},
 		},

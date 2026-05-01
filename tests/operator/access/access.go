@@ -5,6 +5,11 @@ import (
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 )
 
+const (
+	securityAPIGroup               = "security.openshift.io"
+	securityContextConstraintsName = "securitycontextconstraints"
+)
+
 func PermissionsHaveBadRule(clusterPermissions []v1alpha1.StrategyDeploymentPermissions) bool {
 	badRuleFound := false
 	for permissionIndex := range clusterPermissions {
@@ -15,7 +20,7 @@ func PermissionsHaveBadRule(clusterPermissions []v1alpha1.StrategyDeploymentPerm
 			// Check whether the rule is for the security api group.
 			securityGroupFound := false
 			for _, group := range rule.APIGroups {
-				if group == "*" || group == "security.openshift.io" {
+				if group == "*" || group == securityAPIGroup {
 					securityGroupFound = true
 					break
 				}
@@ -27,7 +32,7 @@ func PermissionsHaveBadRule(clusterPermissions []v1alpha1.StrategyDeploymentPerm
 
 			// Now check whether it grants some access to securitycontextconstraint resources.
 			for _, resource := range rule.Resources {
-				if resource == "*" || resource == "securitycontextconstraints" {
+				if resource == "*" || resource == securityContextConstraintsName {
 					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
 					badRuleFound = true
 					break

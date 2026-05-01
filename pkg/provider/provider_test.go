@@ -351,7 +351,7 @@ func TestIsWorkerNode(t *testing.T) {
 		{
 			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{"node-role.kubernetes.io/worker": ""},
+					Labels: map[string]string{WorkerRoleLabel: ""},
 				},
 			},
 			expectedResult: true,
@@ -359,7 +359,7 @@ func TestIsWorkerNode(t *testing.T) {
 		{
 			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{"node-role.kubernetes.io/worker": "blahblah"},
+					Labels: map[string]string{WorkerRoleLabel: "blahblah"},
 				},
 			},
 			expectedResult: true,
@@ -368,8 +368,8 @@ func TestIsWorkerNode(t *testing.T) {
 			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
-						"label1":                         "fakeValue1",
-						"node-role.kubernetes.io/worker": "",
+						"label1":        "fakeValue1",
+						WorkerRoleLabel: "",
 					},
 				},
 			},
@@ -379,8 +379,8 @@ func TestIsWorkerNode(t *testing.T) {
 			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
-						"label1":                         "fakeValue1",
-						"node-role.kubernetes.io/worker": "",
+						"label1":        "fakeValue1",
+						WorkerRoleLabel: "",
 					},
 				},
 			},
@@ -414,7 +414,7 @@ func TestIsControlPlaneNode(t *testing.T) {
 		{
 			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{"node-role.kubernetes.io/worker": ""},
+					Labels: map[string]string{WorkerRoleLabel: ""},
 				},
 			},
 			expectedResult: false,
@@ -438,7 +438,7 @@ func TestIsControlPlaneNode(t *testing.T) {
 		{
 			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{"node-role.kubernetes.io/control-plane": ""},
+					Labels: map[string]string{ControlPlaneRoleLabel: ""},
 				},
 			},
 			expectedResult: true,
@@ -446,7 +446,7 @@ func TestIsControlPlaneNode(t *testing.T) {
 		{
 			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{"node-role.kubernetes.io/control-plane": "blablah"},
+					Labels: map[string]string{ControlPlaneRoleLabel: "blablah"},
 				},
 			},
 			expectedResult: true,
@@ -466,8 +466,8 @@ func TestIsControlPlaneNode(t *testing.T) {
 			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
-						"label1":                                "fakeValue1",
-						"node-role.kubernetes.io/control-plane": "",
+						"label1":              "fakeValue1",
+						ControlPlaneRoleLabel: "",
 					},
 				},
 			},
@@ -477,9 +477,9 @@ func TestIsControlPlaneNode(t *testing.T) {
 			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
-						"label1":                                "fakeValue1",
-						"node-role.kubernetes.io/master":        "",
-						"node-role.kubernetes.io/control-plane": "",
+						"label1":                         "fakeValue1",
+						"node-role.kubernetes.io/master": "",
+						ControlPlaneRoleLabel:            "",
 					},
 				},
 			},
@@ -495,7 +495,7 @@ func TestIsControlPlaneNode(t *testing.T) {
 
 func TestGetNodeCount(t *testing.T) {
 	generateEnv := func(isMaster bool) *TestEnvironment {
-		key := "node-role.kubernetes.io/worker"
+		key := WorkerRoleLabel
 		if isMaster {
 			key = "node-role.kubernetes.io/master"
 		}

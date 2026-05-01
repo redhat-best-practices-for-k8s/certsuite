@@ -27,20 +27,20 @@ func TestPermissionsHaveBadRule(t *testing.T) {
 	}{
 		{ // SCC granted - this is a bad rule
 			testClusterPermissions: []v1alpha1.StrategyDeploymentPermissions{
-				generateSDP([]string{"security.openshift.io"}, []string{"*"}),
+				generateSDP([]string{securityAPIGroup}, []string{"*"}),
 			},
 			expectedResult: true,
 		},
 		{ // SCC granted - this is a bad rule
 			testClusterPermissions: []v1alpha1.StrategyDeploymentPermissions{
-				generateSDP([]string{"security.openshift.io"}, []string{"securitycontextconstraints"}),
+				generateSDP([]string{securityAPIGroup}, []string{securityContextConstraintsName}),
 			},
 			expectedResult: true,
 		},
 		{ // SCC granted - this is a bad rule
 			testClusterPermissions: []v1alpha1.StrategyDeploymentPermissions{
-				generateSDP([]string{"security.openshift.io"}, []string{"*"}),
-				generateSDP([]string{"security.openshift.io"}, []string{"securitycontextconstraints"}),
+				generateSDP([]string{securityAPIGroup}, []string{"*"}),
+				generateSDP([]string{securityAPIGroup}, []string{securityContextConstraintsName}),
 			},
 			expectedResult: true,
 		},

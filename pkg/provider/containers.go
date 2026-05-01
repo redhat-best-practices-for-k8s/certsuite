@@ -37,7 +37,7 @@ import (
 
 var (
 	// Certain tests that have been known to fail because of injected containers (such as Istio) that fail certain tests.
-	ignoredContainerNames = []string{"istio-proxy"}
+	ignoredContainerNames = []string{IstioProxyContainerName}
 )
 
 // Tag and Digest should not be populated at the same time. Digest takes precedence if both are populated

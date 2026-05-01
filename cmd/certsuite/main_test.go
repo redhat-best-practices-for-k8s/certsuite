@@ -74,8 +74,8 @@ func TestCertsuiteInfoCmd(t *testing.T) {
 
 func createCommand(cmd *cobra.Command) *cobra.Command {
 	rootCmd := cobra.Command{
-		Use:   "certsuite",
-		Short: "A CLI tool for the Red Hat Best Practices Test Suite for Kubernetes.",
+		Use:   rootCmdUse,
+		Short: rootCmdShort,
 	}
 	rootCmd.AddCommand(cmd)
 
