@@ -54,9 +54,6 @@ const (
 	// NonOpenshiftClusterVersion is a fake version number for non openshift clusters (kind/minikube)
 	NonOpenshiftClusterVersion = "0.0.0"
 	tnfCsvTargetLabelName      = "operator"
-	tnfCsvTargetLabelValue     = ""
-	tnfLabelPrefix             = "redhat-best-practices-for-k8s.com"
-	labelTemplate              = "%s/%s"
 )
 
 type PodStates struct {

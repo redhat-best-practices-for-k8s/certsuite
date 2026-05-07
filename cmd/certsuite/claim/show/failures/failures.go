@@ -95,9 +95,8 @@ Test Suite: lifecycle
 )
 
 const (
-	outputFormatText    = "text"
-	outputFormatJSON    = "json"
-	outputFarmatInvalid = "invalid"
+	outputFormatText = "text"
+	outputFormatJSON = "json"
 )
 
 var availableOutputFormats = []string{
