@@ -119,32 +119,26 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 }
 
 func testContainersLogging(check *checksdb.Check, env *provider.TestEnvironment) {
-	// Iterate through all the CUTs to get their log output. The TC checks that at least
-	// one log line is found.
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, cut := range env.Containers {
+	checksdb.ForEachParallel(check, env.Containers, 0, func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Container %q", cut)
 		hasLoggingOutput, err := containerHasLoggingOutput(cut)
 		if err != nil {
 			check.LogError("Failed to get %q log output, err: %v", cut, err)
-			nonCompliantObjects = append(nonCompliantObjects,
+			result.AddNonCompliantObject(
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not get log output", false))
-			continue
+			return
 		}
 
 		if !hasLoggingOutput {
 			check.LogError("Container %q does not have any line of log to stderr/stdout", cut)
-			nonCompliantObjects = append(nonCompliantObjects,
+			result.AddNonCompliantObject(
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "No log line to stderr/stdout found", false))
 		} else {
 			check.LogInfo("Container %q has some logging output", cut)
-			compliantObjects = append(compliantObjects,
+			result.AddCompliantObject(
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Found log line to stderr/stdout", true))
 		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	})
 }
 
 // testCrds testing if crds have a status sub resource set

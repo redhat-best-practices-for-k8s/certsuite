@@ -763,48 +763,41 @@ func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironm
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-// testOneProcessPerContainer is a function that checks if each container(except Istio proxy containers) has only one process running.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
 func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	for _, cut := range env.Containers {
+	checksdb.ForEachParallel(check, env.Containers, 0, func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Container %q", cut)
-		// the Istio sidecar container "istio-proxy" launches two processes: "pilot-agent" and "envoy"
 		if cut.IsIstioProxy() {
 			check.LogInfo("Skipping \"istio-proxy\" container")
-			continue
+			return
 		}
 		probePod := env.ProbePods[cut.NodeName]
 		if probePod == nil {
 			check.LogError("Debug pod not found for node %q", cut.NodeName)
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Debug pod not found for node", false))
 			return
 		}
 		ocpContext := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
 			check.LogError("Could not get PID for Container %q, error: %v", cut, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
-			continue
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
+			return
 		}
 
 		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid, clientsholder.GetClientsHolder())
 		if err != nil {
 			check.LogError("Could not get number of processes for Container %q, error: %v", cut, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
-			continue
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
+			return
 		}
 		if nbProcesses > 1 {
 			check.LogError("Container %q has more than one process running", cut)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has more than one process running", false))
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has more than one process running", false))
 		} else {
 			check.LogInfo("Container %q has only one process running", cut)
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has only one process running", true))
+			result.AddCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has only one process running", true))
 		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	})
 }
 
 // testSYSNiceRealtimeCapability is a function that checks if each container running on a realtime kernel enabled node has the SYS_NICE capability.
@@ -903,56 +896,47 @@ const (
 	sshServicePortProtocol = "TCP"
 )
 
-// testNoSSHDaemonsAllowed is a function that checks if each pod is running an SSH daemon.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
 func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	for _, put := range env.Pods {
+	checksdb.ForEachParallel(check, env.Pods, 0, func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Pod %q", put)
 		cut := put.Containers[0]
 
-		// 1. Find SSH port
 		port, err := netutil.GetSSHDaemonPort(cut)
 		if err != nil {
 			check.LogError("Could not get ssh daemon port on %q, err: %v", cut, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the ssh port for pod", false))
-			continue
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the ssh port for pod", false))
+			return
 		}
 
 		if port == "" {
 			check.LogInfo("Pod %q is not running an SSH daemon", put)
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not running an SSH daemon", true))
-			continue
+			result.AddCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not running an SSH daemon", true))
+			return
 		}
 
 		sshServicePortNumber, err := strconv.ParseInt(port, 10, 32)
 		if err != nil {
 			check.LogError("Could not convert port %q from string to integer on Container %q", port, cut)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
-			continue
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
+			return
 		}
 
-		// 2. Check if SSH port is listening
 		sshPortInfo := netutil.PortInfo{PortNumber: int32(sshServicePortNumber), Protocol: sshServicePortProtocol}
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
 			check.LogError("Failed to get the listening ports for Pod %q, err: %v", put, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
-			continue
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
+			return
 		}
 
 		if _, ok := listeningPorts[sshPortInfo]; ok {
 			check.LogError("Pod %q is running an SSH daemon", put)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running an SSH daemon", false))
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running an SSH daemon", false))
 		} else {
 			check.LogInfo("Pod %q is not running an SSH daemon", put)
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not running an SSH daemon", true))
+			result.AddCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not running an SSH daemon", true))
 		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	})
 }
 
 // testPodRequests is a function that checks if each container has resource requests.

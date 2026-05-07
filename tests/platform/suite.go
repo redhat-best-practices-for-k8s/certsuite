@@ -37,6 +37,8 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/sysctlconfig"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform/nodetainted"
+
+	corev1 "k8s.io/api/core/v1"
 )
 
 var (
@@ -174,26 +176,23 @@ func LoadChecks() {
 }
 
 func testHyperThreadingEnabled(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
 	baremetalNodes := env.GetBaremetalNodes()
-	for _, node := range baremetalNodes {
+	checksdb.ForEachParallel(check, baremetalNodes, 0, func(check *checksdb.Check, node provider.Node, result *checksdb.ParallelResult) {
 		nodeName := node.Data.Name
 		check.LogInfo("Testing node %q", nodeName)
 		enable, err := node.IsHyperThreadNode(env)
 		//nolint:gocritic
 		if enable {
 			check.LogInfo("Node %q has hyperthreading enabled", nodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading enabled", true))
+			result.AddCompliantObject(testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading enabled", true))
 		} else if err != nil {
 			check.LogError("Hyperthreading check fail for node %q, err: %v", nodeName, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Error with executing the check for hyperthreading: "+err.Error(), false))
+			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Error with executing the check for hyperthreading: "+err.Error(), false))
 		} else {
 			check.LogError("Node %q has hyperthreading disabled", nodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading disabled ", false))
+			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading disabled ", false))
 		}
-	}
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	})
 }
 
 func testServiceMesh(check *checksdb.Check, env *provider.TestEnvironment) {
@@ -223,24 +222,21 @@ func testServiceMesh(check *checksdb.Check, env *provider.TestEnvironment) {
 
 // testContainersFsDiff test that all CUT did not install new packages are starting
 func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, cut := range env.Containers {
+	// podman diff is resource-heavy; limit concurrency to avoid OOM on probe pods
+	checksdb.ForEachParallel(check, env.Containers, len(env.ProbePods), func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Container %q", cut)
 		probePod := env.ProbePods[cut.NodeName]
 
-		// If the probe pod is not found, we cannot run the test.
 		if probePod == nil {
 			check.LogError("Probe Pod not found for node %q", cut.NodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "certsuite probe pod not found", false))
-			continue
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "certsuite probe pod not found", false))
+			return
 		}
 
-		// Check whether or not a container is available to prevent a panic.
 		if len(probePod.Spec.Containers) == 0 {
 			check.LogError("Probe Pod %q has no containers", probePod)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "certsuite probe pod has no containers", false))
-			continue
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "certsuite probe pod has no containers", false))
+			return
 		}
 
 		ctxt := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
@@ -249,179 +245,124 @@ func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) 
 		switch fsDiffTester.GetResults() {
 		case testhelper.SUCCESS:
 			check.LogInfo("Container %q is not modified", cut)
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not modified", true))
-			continue
+			result.AddCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not modified", true))
 		case testhelper.FAILURE:
 			check.LogError("Container %q modified (changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is modified", false).
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is modified", false).
 				AddField("ChangedFolders", strings.Join(fsDiffTester.ChangedFolders, ",")).
 				AddField("DeletedFolders", strings.Join(fsDiffTester.DeletedFolders, ",")))
-
 		case testhelper.ERROR:
 			check.LogError("Could not run fs-diff in Container %q, err: %v", cut, fsDiffTester.Error)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Error while running fs-diff", false).AddField(testhelper.Error, fsDiffTester.Error.Error()))
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Error while running fs-diff", false).AddField(testhelper.Error, fsDiffTester.Error.Error()))
 		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	})
 }
 
 //nolint:funlen
 func testTainted(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	// errNodes has nodes that failed some operation while checking kernel taints.
-	errNodes := []string{}
-
-	type badModuleTaints struct {
-		name   string
-		taints []string
-	}
-
-	// badModules maps node names to list of "bad"/offending modules.
-	badModules := map[string][]badModuleTaints{}
-	// otherTaints maps a node to a list of taint bits that haven't been set by any module.
-	otherTaints := map[string][]int{}
-
 	check.LogInfo("Modules allowlist: %+v", env.Config.AcceptedKernelTaints)
-	// helper map to make the checks easier.
 	allowListedModules := map[string]bool{}
 	for _, module := range env.Config.AcceptedKernelTaints {
 		allowListedModules[module.Module] = true
 	}
 
-	// Loop through the probe pods that are tied to each node.
+	// Filter to nodes with workload deployed before parallelizing.
+	var workloadNodes []provider.Node
 	for _, n := range env.Nodes {
+		if n.HasWorkloadDeployed(env.Pods) {
+			workloadNodes = append(workloadNodes, n)
+		} else {
+			check.LogInfo("Node %q has no workload deployed on it. Skipping tainted kernel check.", n.Data.Name)
+		}
+	}
+
+	checksdb.ForEachParallel(check, workloadNodes, 0, func(check *checksdb.Check, n provider.Node, result *checksdb.ParallelResult) {
 		nodeName := n.Data.Name
 		check.LogInfo("Testing node %q", nodeName)
-
-		// Ensure we are only testing nodes that have CNF workload deployed on them.
-		if !n.HasWorkloadDeployed(env.Pods) {
-			check.LogInfo("Node %q has no workload deployed on it. Skipping tainted kernel check.", nodeName)
-			continue
-		}
 
 		dp := env.ProbePods[nodeName]
 
 		ocpContext := clientsholder.NewContext(dp.Namespace, dp.Name, dp.Spec.Containers[0].Name)
 		tf := nodetainted.NewNodeTaintedTester(&ocpContext, nodeName)
 
-		// Get the taints mask from the node kernel
 		taintsMask, err := tf.GetKernelTaintsMask()
 		if err != nil {
 			check.LogError("Failed to retrieve kernel taint information from node %q, err: %v", nodeName, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to retrieve kernel taint information from node", false).
+			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Failed to retrieve kernel taint information from node", false).
 				AddField(testhelper.Error, err.Error()))
-			continue
+			return
 		}
 
 		if taintsMask == 0 {
 			check.LogInfo("Node %q has no non-approved kernel taints.", nodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has no non-approved kernel taints", true))
-			continue
+			result.AddCompliantObject(testhelper.NewNodeReportObject(nodeName, "Node has no non-approved kernel taints", true))
+			return
 		}
 
 		check.LogInfo("Node %q kernel is tainted. Taints mask=%d - Decoded taints: %v",
 			nodeName, taintsMask, nodetainted.DecodeKernelTaintsFromBitMask(taintsMask))
 
-		// Check the allow list. If empty, mark this node as failed.
 		if len(allowListedModules) == 0 {
 			taintsMaskStr := strconv.FormatUint(taintsMask, 10)
 			taintsStr := strings.Join(nodetainted.DecodeKernelTaintsFromBitMask(taintsMask), ",")
 			check.LogError("Node %q contains taints not covered by module allowlist. Taints: %q (mask=%q)", nodeName, taintsStr, taintsMaskStr)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node contains taints not covered by module allowlist", false).
+			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Node contains taints not covered by module allowlist", false).
 				AddField(testhelper.TaintMask, taintsMaskStr).
 				AddField(testhelper.Taints, taintsStr))
-			continue
+			return
 		}
 
-		// allow list check.
-		// Get the list of modules (tainters) that have set a taint bit.
-		//   1. Each module should appear in the allow list.
-		//   2. All kernel taint bits (one bit <-> one letter) should have been set by at least
-		//      one tainter module.
 		tainters, taintBitsByAllModules, err := tf.GetTainterModules(allowListedModules)
 		if err != nil {
 			check.LogError("Could not get tainter modules from node %q, err: %v", nodeName, err)
-			errNodes = append(errNodes, nodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to get tainter modules", false).
+			result.AddNonCompliantObject(testhelper.NewNodeReportObject(nodeName, "Failed to get tainter modules", false).
 				AddField(testhelper.Error, err.Error()))
-			continue
+			return
 		}
 
-		// Keep track of whether or not this node is compliant with module allow list.
 		compliantNode := true
 
-		// Save modules' names only.
 		for moduleName, taintsLetters := range tainters {
 			moduleTaints := nodetainted.DecodeKernelTaintsFromLetters(taintsLetters)
-			badModules[nodeName] = append(badModules[nodeName], badModuleTaints{name: moduleName, taints: moduleTaints})
-
-			// Create non-compliant taint objects for each of the taints
 			for _, taint := range moduleTaints {
 				check.LogError("Node %q - module %q taints kernel: %q", nodeName, moduleName, taint)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewTaintReportObject(nodetainted.RemoveAllExceptNumbers(taint), nodeName, taint, false).AddField(testhelper.ModuleName, moduleName))
-
-				// Set the node as non-compliant for future reporting
+				result.AddNonCompliantObject(testhelper.NewTaintReportObject(nodetainted.RemoveAllExceptNumbers(taint), nodeName, taint, false).AddField(testhelper.ModuleName, moduleName))
 				compliantNode = false
 			}
 		}
 
-		// Lastly, check that all kernel taint bits come from modules.
 		otherKernelTaints := nodetainted.GetOtherTaintedBits(taintsMask, taintBitsByAllModules)
 		for _, taintedBit := range otherKernelTaints {
 			check.LogError("Node %q - taint bit %d is set but it is not caused by any module.", nodeName, taintedBit)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewTaintReportObject(strconv.Itoa(taintedBit), nodeName, nodetainted.GetTaintMsg(taintedBit), false).
+			result.AddNonCompliantObject(testhelper.NewTaintReportObject(strconv.Itoa(taintedBit), nodeName, nodetainted.GetTaintMsg(taintedBit), false).
 				AddField(testhelper.ModuleName, "N/A"))
-			otherTaints[nodeName] = append(otherTaints[nodeName], taintedBit)
-
-			// Set the node as non-compliant for future reporting
 			compliantNode = false
 		}
 
 		if compliantNode {
 			check.LogInfo("Node %q passed the tainted kernel check", nodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Passed the tainted kernel check", true))
+			result.AddCompliantObject(testhelper.NewNodeReportObject(nodeName, "Passed the tainted kernel check", true))
 		}
-	}
-
-	if len(errNodes) > 0 {
-		check.LogError("Failed to get kernel taints from some nodes: %+v", errNodes)
-	}
-
-	if len(badModules) > 0 || len(otherTaints) > 0 {
-		check.LogError("Nodes have been found to be tainted. Tainted modules: %+v", badModules)
-	}
-
-	if len(otherTaints) > 0 {
-		check.LogError("Taints not related to any module: %+v", otherTaints)
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	})
 }
 
 func testIsRedHatRelease(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, cut := range env.Containers {
+	checksdb.ForEachParallel(check, env.Containers, 0, func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Container %q", cut)
 		baseImageTester := isredhat.NewBaseImageTester(clientsholder.GetClientsHolder(), clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name))
 
-		result, err := baseImageTester.TestContainerIsRedHatRelease()
+		passed, err := baseImageTester.TestContainerIsRedHatRelease()
 		if err != nil {
 			check.LogError("Could not collect release information from Container %q, err=%v", cut, err)
 		}
-		if !result {
+		if !passed {
 			check.LogError("Container %q has failed the RHEL release check", cut)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Failed the RHEL release check", false))
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Failed the RHEL release check", false))
 		} else {
 			check.LogInfo("Container %q has passed the RHEL release check", cut)
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Passed the RHEL release check", true))
+			result.AddCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Passed the RHEL release check", true))
 		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	})
 }
 
 func testIsSELinuxEnforcing(check *checksdb.Check, env *provider.TestEnvironment) {
@@ -429,31 +370,29 @@ func testIsSELinuxEnforcing(check *checksdb.Check, env *provider.TestEnvironment
 		getenforceCommand = `chroot /host getenforce`
 		enforcingString   = "Enforcing\n"
 	)
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	o := clientsholder.GetClientsHolder()
-	nodesFailed := 0
-	nodesError := 0
-	for _, probePod := range env.ProbePods {
+
+	probePods := make([]*corev1.Pod, 0, len(env.ProbePods))
+	for _, p := range env.ProbePods {
+		probePods = append(probePods, p)
+	}
+
+	checksdb.ForEachParallel(check, probePods, 0, func(check *checksdb.Check, probePod *corev1.Pod, result *checksdb.ParallelResult) {
+		o := clientsholder.GetClientsHolder()
 		ctx := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
 		if err != nil || errStr != "" {
 			check.LogError("Could not execute command %q in Probe Pod %q, errStr: %q, err: %v", getenforceCommand, probePod, errStr, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(probePod.Namespace, probePod.Name, "Failed to execute command", false))
-			nodesError++
-			continue
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(probePod.Namespace, probePod.Name, "Failed to execute command", false))
+			return
 		}
 		if outStr != enforcingString {
 			check.LogError("Node %q is not running SELinux, %s command returned: %s", probePod.Spec.NodeName, getenforceCommand, outStr)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(probePod.Spec.NodeName, "SELinux is not enforced", false))
-			nodesFailed++
+			result.AddNonCompliantObject(testhelper.NewNodeReportObject(probePod.Spec.NodeName, "SELinux is not enforced", false))
 		} else {
 			check.LogInfo("Node %q is running SELinux", probePod.Spec.NodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(probePod.Spec.NodeName, "SELinux is enforced", true))
+			result.AddCompliantObject(testhelper.NewNodeReportObject(probePod.Spec.NodeName, "SELinux is enforced", true))
 		}
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	})
 }
 
 func testHugepages(check *checksdb.Check, env *provider.TestEnvironment) {

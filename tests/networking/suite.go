@@ -159,40 +159,31 @@ func LoadChecks() {
 		}))
 }
 
-//nolint:funlen
 func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	var portInfo netutil.PortInfo
-	for _, put := range env.Pods {
-		// First get the ports declared in the Pod's containers spec
+	checksdb.ForEachParallel(check, env.Pods, 0, func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
 		declaredPorts := make(map[netutil.PortInfo]bool)
 		for _, cut := range put.Containers {
 			check.LogInfo("Testing Container %q", cut)
 			for _, port := range cut.Ports {
-				portInfo.PortNumber = port.ContainerPort
-				portInfo.Protocol = string(port.Protocol)
-				declaredPorts[portInfo] = true
+				declaredPorts[netutil.PortInfo{PortNumber: port.ContainerPort, Protocol: string(port.Protocol)}] = true
 			}
 		}
 
-		// Then check the actual ports that the containers are listening on
 		firstPodContainer := put.Containers[0]
 		listeningPorts, err := netutil.GetListeningPorts(firstPodContainer)
 		if err != nil {
 			check.LogError("Failed to get container %q listening ports, err: %v", firstPodContainer, err)
-			nonCompliantObjects = append(nonCompliantObjects,
+			result.AddNonCompliantObject(
 				testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get the container's listening ports, err: %v", err), false))
-			continue
+			return
 		}
 		if len(listeningPorts) == 0 {
 			check.LogInfo("None of the containers of %q have any listening port.", put)
-			compliantObjects = append(compliantObjects,
+			result.AddCompliantObject(
 				testhelper.NewPodReportObject(put.Namespace, put.Name, "None of the containers have any listening ports", true))
-			continue
+			return
 		}
 
-		// Verify that all the listening ports have been declared in the container spec
 		failedPod := false
 		for listeningPort := range listeningPorts {
 			if put.ContainsIstioProxy() && netcommons.ReservedIstioPorts[listeningPort.PortNumber] {
@@ -205,7 +196,7 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 				check.LogError("%q is listening on port %d protocol %q, but that port was not declared in any container spec.",
 					put, listeningPort.PortNumber, listeningPort.Protocol)
 				failedPod = true
-				nonCompliantObjects = append(nonCompliantObjects,
+				result.AddNonCompliantObject(
 					testhelper.NewPodReportObject(put.Namespace, put.Name,
 						"Listening port was declared in no container spec", false).
 						SetType(testhelper.ListeningPortType).
@@ -213,7 +204,7 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 						AddField(testhelper.PortProtocol, listeningPort.Protocol))
 			} else {
 				check.LogInfo("%q is listening on declared port %d protocol %q", put, listeningPort.PortNumber, listeningPort.Protocol)
-				compliantObjects = append(compliantObjects,
+				result.AddCompliantObject(
 					testhelper.NewPodReportObject(put.Namespace, put.Name,
 						"Listening port was declared in container spec", true).
 						SetType(testhelper.ListeningPortType).
@@ -222,14 +213,13 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 			}
 		}
 		if failedPod {
-			nonCompliantObjects = append(nonCompliantObjects,
+			result.AddNonCompliantObject(
 				testhelper.NewPodReportObject(put.Namespace, put.Name, "At least one port was listening but not declared in any container specs", false))
 		} else {
-			compliantObjects = append(compliantObjects,
+			result.AddCompliantObject(
 				testhelper.NewPodReportObject(put.Namespace, put.Name, "All listening were declared in containers specs", true))
 		}
-	}
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	})
 }
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
@@ -244,16 +234,13 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 }
 
 func testOCPReservedPortsUsage(check *checksdb.Check, env *provider.TestEnvironment) {
-	// List of all ports reserved by OpenShift
 	OCPReservedPorts := map[int32]bool{
 		22623: true,
 		22624: true}
-	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, OCPReservedPorts, "OCP", check.GetLogger())
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	testReservedPortsUsageParallel(check, env, OCPReservedPorts, "OCP")
 }
 
 func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnvironment) {
-	// List of all of the ports reserved by partner
 	ReservedPorts := map[int32]bool{
 		15443: true,
 		15090: true,
@@ -265,8 +252,81 @@ func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnviro
 		15001: true,
 		15000: true,
 	}
-	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, ReservedPorts, "Partner", check.GetLogger())
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	testReservedPortsUsageParallel(check, env, ReservedPorts, "Partner")
+}
+
+//nolint:funlen
+func testReservedPortsUsageParallel(check *checksdb.Check, env *provider.TestEnvironment, portsToTest map[int32]bool, portsOrigin string) {
+	checksdb.ForEachParallel(check, env.Pods, 0, func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
+		check.LogInfo("Testing Pod %q", put)
+
+		nonCompliantPortFound := false
+		for _, cut := range put.Containers {
+			for _, port := range cut.Ports {
+				if portsToTest[port.ContainerPort] {
+					check.LogError("%q declares %s reserved port %d (%s)", cut, portsOrigin, port.ContainerPort, port.Protocol)
+					result.AddNonCompliantObject(
+						testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name,
+							fmt.Sprintf("Container declares %s reserved port in %v", portsOrigin, portsToTest), false).
+							SetType(testhelper.DeclaredPortType).
+							AddField(testhelper.PortNumber, strconv.Itoa(int(port.ContainerPort))).
+							AddField(testhelper.PortProtocol, string(port.Protocol)))
+					nonCompliantPortFound = true
+				} else {
+					result.AddCompliantObject(
+						testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name,
+							fmt.Sprintf("Container does not declare %s reserved port in %v", portsOrigin, portsToTest), true).
+							SetType(testhelper.DeclaredPortType).
+							AddField(testhelper.PortNumber, strconv.Itoa(int(port.ContainerPort))).
+							AddField(testhelper.PortProtocol, string(port.Protocol)))
+				}
+			}
+		}
+
+		firstContainer := put.Containers[0]
+		listeningPorts, err := netutil.GetListeningPorts(firstContainer)
+		if err != nil {
+			check.LogError("Failed to get the listening ports on %q, err: %v", firstContainer, err)
+			result.AddNonCompliantObject(
+				testhelper.NewPodReportObject(firstContainer.Namespace, put.Name,
+					fmt.Sprintf("Failed to get the listening ports on pod, err: %v", err), false))
+			return
+		}
+		for port := range listeningPorts {
+			if ok := portsToTest[port.PortNumber]; ok {
+				if put.ContainsIstioProxy() && netcommons.ReservedIstioPorts[port.PortNumber] {
+					check.LogInfo("%q was found to be listening to port %d due to istio-proxy being present. Ignoring.", put, port.PortNumber)
+					continue
+				}
+
+				check.LogError("%q has one container (%q) listening on port %d (%s) that has been reserved", put, firstContainer.Name, port.PortNumber, port.Protocol)
+				result.AddNonCompliantObject(
+					testhelper.NewPodReportObject(firstContainer.Namespace, put.Name,
+						fmt.Sprintf("Pod Listens to %s reserved port in %v", portsOrigin, portsToTest), false).
+						SetType(testhelper.ListeningPortType).
+						AddField(testhelper.PortNumber, strconv.Itoa(int(port.PortNumber))).
+						AddField(testhelper.PortProtocol, port.Protocol))
+				nonCompliantPortFound = true
+			} else {
+				check.LogInfo("%q listens in %s unreserved port %d (%s)", put, portsOrigin, port.PortNumber, port.Protocol)
+				result.AddCompliantObject(
+					testhelper.NewPodReportObject(firstContainer.Namespace, put.Name,
+						fmt.Sprintf("Pod Listens to port not in %s reserved port %v", portsOrigin, portsToTest), true).
+						SetType(testhelper.ListeningPortType).
+						AddField(testhelper.PortNumber, strconv.Itoa(int(port.PortNumber))).
+						AddField(testhelper.PortProtocol, port.Protocol))
+			}
+		}
+		if nonCompliantPortFound {
+			result.AddNonCompliantObject(
+				testhelper.NewPodReportObject(firstContainer.Namespace, put.Name,
+					fmt.Sprintf("Pod listens to or its containers declares some %s reserved port in %v", portsOrigin, portsToTest), false))
+		} else {
+			result.AddCompliantObject(
+				testhelper.NewPodReportObject(firstContainer.Namespace, put.Name,
+					fmt.Sprintf("Pod does not listen to or declare any %s reserved port in %v", portsOrigin, portsToTest), true))
+		}
+	})
 }
 
 func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment) {
