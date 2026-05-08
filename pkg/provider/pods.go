@@ -209,11 +209,11 @@ func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
 		if podOwner.Kind == replicationController {
 			replicationControllers, err := oc.K8sClient.CoreV1().ReplicationControllers(p.Namespace).Get(context.TODO(), podOwner.Name, metav1.GetOptions{})
 			if err != nil {
-				return false, err
+				return false, fmt.Errorf("failed to get replication controller %s/%s: %w", p.Namespace, podOwner.Name, err)
 			}
 			for _, rcOwner := range replicationControllers.GetOwnerReferences() {
 				if rcOwner.Name == podOwner.Name && rcOwner.Kind == deploymentConfig {
-					return true, err
+					return true, nil
 				}
 			}
 		}

@@ -68,7 +68,7 @@ func MoveSpreadSheetToFolder(srv *drive.Service, folder *drive.File, spreadsheet
 func extractFolderIDFromURL(u string) (string, error) {
 	parsedURL, err := url.Parse(u)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to parse folder URL %q: %w", u, err)
 	}
 
 	pathSegments := strings.Split(parsedURL.Path, "/")

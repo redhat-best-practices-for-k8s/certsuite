@@ -17,6 +17,7 @@ package autodiscover
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 	corev1 "k8s.io/api/core/v1"
@@ -28,7 +29,7 @@ func getServices(oc corev1client.CoreV1Interface, namespaces, ignoreList []strin
 	for _, ns := range namespaces {
 		s, err := oc.Services(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			return allServices, err
+			return allServices, fmt.Errorf("failed to list services in namespace %s: %w", ns, err)
 		}
 		for i := range s.Items {
 			if stringhelper.StringInSlice(ignoreList, s.Items[i].Name, false) {

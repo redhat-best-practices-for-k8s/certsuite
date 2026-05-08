@@ -96,7 +96,7 @@ func isDeploymentReady(name, namespace string) (bool, error) {
 
 	dep, err := provider.GetUpdatedDeployment(appsV1Api, namespace, name)
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("failed to get updated deployment %s/%s: %w", namespace, name, err)
 	}
 
 	return dep.IsDeploymentReady(), nil
@@ -107,7 +107,7 @@ func isStatefulSetReady(name, namespace string) (bool, error) {
 
 	sts, err := provider.GetUpdatedStatefulset(appsV1Api, namespace, name)
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("failed to get updated statefulset %s/%s: %w", namespace, name, err)
 	}
 
 	return sts.IsStatefulSetReady(), nil

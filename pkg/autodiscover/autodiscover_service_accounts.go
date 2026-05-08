@@ -17,6 +17,7 @@ package autodiscover
 
 import (
 	"context"
+	"fmt"
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -27,7 +28,7 @@ func getServiceAccounts(oc corev1client.CoreV1Interface, namespaces []string) (s
 	for _, ns := range namespaces {
 		s, err := oc.ServiceAccounts(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			return servicesAccounts, err
+			return servicesAccounts, fmt.Errorf("failed to list service accounts in namespace %s: %w", ns, err)
 		}
 		for i := range s.Items {
 			servicesAccounts = append(servicesAccounts, &s.Items[i])

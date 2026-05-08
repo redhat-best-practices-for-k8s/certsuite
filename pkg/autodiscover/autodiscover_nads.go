@@ -3,6 +3,7 @@ package autodiscover
 
 import (
 	"context"
+	"fmt"
 
 	nadClient "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
@@ -16,7 +17,7 @@ func getNetworkAttachmentDefinitions(client *clientsholder.ClientsHolder, namesp
 	for _, ns := range namespaces {
 		nad, err := client.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil && !kerrors.IsNotFound(err) {
-			return nil, err
+			return nil, fmt.Errorf("failed to list network attachment definitions in namespace %s: %w", ns, err)
 		}
 
 		// Append the list of networkAttachmentDefinitions to the nadList slice

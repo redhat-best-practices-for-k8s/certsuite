@@ -130,7 +130,11 @@ func TestGetUpdatedStatefulset(t *testing.T) {
 
 		// Run the function to be tested.
 		result, err := GetUpdatedStatefulset(client.AppsV1(), tc.testNamespace, "testPod")
-		assert.Equal(t, tc.funcErr, err)
+		if tc.funcErr != nil {
+			assert.ErrorContains(t, err, tc.funcErr.Error())
+		} else {
+			assert.NoError(t, err)
+		}
 		if err == nil {
 			assert.Equal(t, tc.testNamespace, result.Namespace)
 			assert.Equal(t, "testPod", result.Name)

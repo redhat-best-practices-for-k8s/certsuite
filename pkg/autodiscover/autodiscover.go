@@ -365,7 +365,7 @@ func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, 
 			log.Warn("Unable to get ClusterOperator CR from openshift-apiserver. Running in a non-OCP cluster.")
 			return NonOpenshiftClusterVersion, nil
 		default:
-			return "", err
+			return "", fmt.Errorf("failed to get OpenShift version: %w", err)
 		}
 	}
 
@@ -410,7 +410,7 @@ func getPodsOwnedByCsv(csvName, operatorNamespace string, client *clientsholder.
 	// Get all pods from the target namespace
 	podsList, err := client.K8sClient.CoreV1().Pods(operatorNamespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to list pods in namespace %s: %w", operatorNamespace, err)
 	}
 
 	for index := range podsList.Items {

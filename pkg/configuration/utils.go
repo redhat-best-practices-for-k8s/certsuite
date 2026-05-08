@@ -17,6 +17,7 @@
 package configuration
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -40,12 +41,12 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 	log.Info("Loading config from file: %s", filePath)
 	contents, err := os.ReadFile(filePath)
 	if err != nil {
-		return configuration, err
+		return configuration, fmt.Errorf("failed to read config file %s: %w", filePath, err)
 	}
 
 	err = yaml.Unmarshal(contents, &configuration)
 	if err != nil {
-		return configuration, err
+		return configuration, fmt.Errorf("failed to parse config file %s: %w", filePath, err)
 	}
 
 	// Set default namespace for the probe daemonset pods, in case it was not set.

@@ -285,8 +285,7 @@ func MarshalConfigurations(env *provider.TestEnvironment) (configurations []byte
 	}
 	configurations, err = j.Marshal(&config)
 	if err != nil {
-		log.Error("Error converting configurations to JSON: %v", err)
-		return configurations, err
+		return configurations, fmt.Errorf("failed to marshal configurations to JSON: %w", err)
 	}
 	return configurations, nil
 }
@@ -310,11 +309,11 @@ func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 
 // ReadClaimFile writes the output payload to the claim file.  In the event of an error, this method fatally fails.
 func ReadClaimFile(claimFileName string) (data []byte, err error) {
+	log.Info("Reading claim file at path: %s", claimFileName)
 	data, err = os.ReadFile(claimFileName)
 	if err != nil {
-		log.Error("ReadFile failed with err: %v", err)
+		return nil, fmt.Errorf("failed to read claim file %s: %w", claimFileName, err)
 	}
-	log.Info("Reading claim file at path: %s", claimFileName)
 	return data, nil
 }
 
@@ -322,7 +321,6 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvironment, err error) {
 	data, err := ReadClaimFile(claimFileName)
 	if err != nil {
-		log.Error("ReadClaimFile failed with err: %v", err)
 		return env, err
 	}
 	var aRoot claim.Root
@@ -330,10 +328,13 @@ func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvi
 	UnmarshalClaim(data, &aRoot)
 	configJSON, err := j.Marshal(aRoot.Claim.Configurations)
 	if err != nil {
-		return nil, fmt.Errorf("cannot convert config to json")
+		return nil, fmt.Errorf("failed to marshal claim configurations to JSON: %w", err)
 	}
 	err = j.Unmarshal(configJSON, &env)
-	return env, err
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal config from claim file: %w", err)
+	}
+	return env, nil
 }
 
 // MarshalClaimOutput is a helper function to serialize a claim as JSON for output.  In the event of an error, this
@@ -388,7 +389,6 @@ func SanitizeClaimFile(claimFileName, labelsFilter string) (string, error) {
 	log.Info("Sanitizing claim file %s", claimFileName)
 	data, err := ReadClaimFile(claimFileName)
 	if err != nil {
-		log.Error("ReadClaimFile failed with err: %v", err)
 		return "", err
 	}
 	var aRoot claim.Root
@@ -398,8 +398,7 @@ func SanitizeClaimFile(claimFileName, labelsFilter string) (string, error) {
 	for testID := range aRoot.Claim.Results {
 		evaluator, err := labels.NewLabelsExprEvaluator(labelsFilter)
 		if err != nil {
-			log.Error("Failed to create labels expression evaluator: %v", err)
-			return "", err
+			return "", fmt.Errorf("failed to create labels expression evaluator for %q: %w", labelsFilter, err)
 		}
 
 		_, gatheredLabels := identifiers.GetTestIDAndLabels(*aRoot.Claim.Results[testID].TestID)

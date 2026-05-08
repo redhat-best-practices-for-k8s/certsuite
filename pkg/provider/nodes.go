@@ -79,7 +79,7 @@ func (node *Node) IsRTKernel() bool {
 func (node *Node) GetRHCOSVersion() (string, error) {
 	versions, err := node.GetRHCOSVersions()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get RHCOS versions for node: %w", err)
 	}
 	if len(versions) == 0 {
 		return operatingsystem.NotFoundStr, nil
@@ -102,7 +102,7 @@ func (node *Node) GetRHCOSVersions() ([]string, error) {
 	// Get all matching short versions from the long version string
 	shortVersions, err := operatingsystem.GetAllShortVersionsFromLong(longVersionSplit[0])
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get short versions from RHCOS version %s: %w", longVersionSplit[0], err)
 	}
 
 	return shortVersions, nil

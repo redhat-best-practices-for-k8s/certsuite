@@ -281,7 +281,7 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 func showFailures(_ *cobra.Command, _ []string) error {
 	outputFormat, err := parseOutputFormatFlag()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to parse output format flag: %w", err)
 	}
 
 	// Parse the claim file into the claim scheme.

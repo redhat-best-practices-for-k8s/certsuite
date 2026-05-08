@@ -3,6 +3,7 @@ package autodiscover
 
 import (
 	"context"
+	"fmt"
 
 	configv1 "github.com/openshift/api/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
@@ -14,7 +15,7 @@ import (
 func findClusterOperators(client clientconfigv1.ClusterOperatorInterface) ([]configv1.ClusterOperator, error) {
 	clusterOperators, err := client.List(context.TODO(), metav1.ListOptions{})
 	if err != nil && !k8serrors.IsNotFound(err) {
-		return nil, err
+		return nil, fmt.Errorf("failed to list cluster operators: %w", err)
 	}
 
 	if k8serrors.IsNotFound(err) {

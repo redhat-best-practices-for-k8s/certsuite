@@ -26,7 +26,7 @@ func Test_claimCompareFilesfunc(t *testing.T) {
 			name:          "claim1 is not a json file",
 			claim1Path:    "testdata/invalid.json",
 			claim2Path:    "testdata/claim_access_control.json",
-			expectedError: "failed to unmarshal claim1 file: invalid character 'T' looking for beginning of value",
+			expectedError: "failed to unmarshal claim1 file: failed to unmarshal claim file data: invalid character 'T' looking for beginning of value",
 		},
 		{
 			name:          "claim2 file not found",
@@ -38,7 +38,7 @@ func Test_claimCompareFilesfunc(t *testing.T) {
 			name:          "claim2 is not a json file",
 			claim1Path:    "testdata/claim_observability.json",
 			claim2Path:    "testdata/invalid.json",
-			expectedError: "failed to unmarshal claim2 file: invalid character 'T' looking for beginning of value",
+			expectedError: "failed to unmarshal claim2 file: failed to unmarshal claim file data: invalid character 'T' looking for beginning of value",
 		},
 		// claim_observability.json: claim.json from a run on a 3-nodes cluster with "-l observability".
 		// claim_access_control.json: real claim.json on a 3-nodes cluster with "-l access-control".

@@ -17,6 +17,7 @@ package autodiscover
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	appsv1 "k8s.io/api/apps/v1"
@@ -32,16 +33,14 @@ import (
 func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.Deployment, error) {
 	dp, err := appClient.Deployments(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		log.Error("Cannot retrieve deployment in ns=%s name=%s", namespace, name)
-		return nil, err
+		return nil, fmt.Errorf("failed to get deployment %s/%s: %w", namespace, name, err)
 	}
 	return dp, nil
 }
 func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.StatefulSet, error) {
 	ss, err := appClient.StatefulSets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		log.Error("Cannot retrieve deployment in ns=%s name=%s", namespace, name)
-		return nil, err
+		return nil, fmt.Errorf("failed to get statefulset %s/%s: %w", namespace, name, err)
 	}
 	return ss, nil
 }
@@ -49,8 +48,7 @@ func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, nam
 func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name string, groupResourceSchema schema.GroupResource) (*scalingv1.Scale, error) {
 	crScale, err := scalesGetter.Scales(ns).Get(context.TODO(), groupResourceSchema, name, metav1.GetOptions{})
 	if err != nil {
-		log.Error("Cannot retrieve deployment in ns=%s name=%s", ns, name)
-		return nil, err
+		return nil, fmt.Errorf("failed to get scale for %s/%s: %w", ns, name, err)
 	}
 	return crScale, nil
 }

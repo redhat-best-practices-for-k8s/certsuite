@@ -71,8 +71,7 @@ func parseSchedulingPolicyAndPriority(chrtCommandOutput string) (schedPolicy str
 		case strings.Contains(line, CurrentSchedulingPriority):
 			schedPriority, err = strconv.Atoi(lastToken)
 			if err != nil {
-				log.Error("Error obtained during strconv %v", err)
-				return schedPolicy, InvalidPriority, err
+				return schedPolicy, InvalidPriority, fmt.Errorf("failed to parse scheduling priority %q: %w", lastToken, err)
 			}
 		default:
 			return schedPolicy, InvalidPriority, fmt.Errorf("invalid: %s", line)
