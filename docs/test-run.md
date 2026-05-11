@@ -96,6 +96,28 @@ The following is a non-exhaustive list of the most common flags that the `certsu
 
     See the [OCT tool](https://github.com/redhat-best-practices-for-k8s/oct) for more information on how to create this DB.
 
+* `--allow-non-running`: Include non-Running pods during the autodiscovery phase. Disabled by default; enable this if your workloads include pods in CrashLoopBackOff or other non-running states that still need testing.
+
+* `--sanitize-claim`: Sanitize the claim.json file by removing sensitive data before sending it to the collector. Only relevant when `--enable-data-collection` is enabled.
+
+* `--include-web-files`: Save the HTML results viewer files in the configured output folder alongside the claim.json and log files.
+
+* `--create-xml-junit-file`: Generate a JUnit XML file with the test results, useful for CI/CD integration with systems that consume JUnit reports.
+
+* `--certsuite-probe-image`: Override the default certsuite probe daemonset image. Defaults to the version matching the certsuite release.
+
+* `--daemonset-cpu-req`, `--daemonset-cpu-lim`: Set the CPU request and limit for the probe daemonset container. Both default to `100m`.
+
+* `--daemonset-mem-req`, `--daemonset-mem-lim`: Set the memory request and limit for the probe daemonset container. Both default to `100M`.
+
+* `--connect-api-key`: API key for uploading results to the Red Hat Connect portal.
+
+* `--connect-project-id`: Project ID for uploading results to the Red Hat Connect portal.
+
+* `--connect-api-base-url`: Base URL for the Red Hat Connect API.
+
+* `--connect-api-proxy-url`, `--connect-api-proxy-port`: Proxy URL and port for the Red Hat Connect API, for environments that require HTTP proxies.
+
 * `--cleanup-probe`: Controls whether the probe daemonset and its namespace are deleted at the end of the test run. By default (true), the probe daemonset is cleaned up after tests complete. Set to `--cleanup-probe=false` to keep the probe daemonset running on the cluster for debugging or repeated test runs.
 
 ```shell
