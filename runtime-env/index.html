@@ -582,6 +582,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#client-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client Timeout
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -984,6 +993,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#client-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client Timeout
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1028,6 +1046,14 @@ images and image bundles for testing.</p>
 against a private container registry that has self-signed certificates.</p>
 <p>Note that you can also specify the probe pod image to use with <code>SUPPORT_IMAGE</code>
 environment variable, default to <code>certsuite-probe:v0.0.37</code>.</p>
+<h2 id="client-timeout">Client Timeout<a class="headerlink" href="#client-timeout" title="Permanent link">&para;</a></h2>
+<p><code>CERTSUITE_CLIENT_TIMEOUT</code> (default: <code>10s</code>) sets the timeout for Kubernetes API
+client operations such as resource discovery and API group listing. Increase
+this value when running against remote or high-latency clusters where the
+default 10-second timeout causes failures during startup.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">CERTSUITE_CLIENT_TIMEOUT</span><span class="o">=</span>30s
+</code></pre></div>
+<p>Accepts any valid Go duration string (e.g., <code>15s</code>, <code>1m</code>, <code>90s</code>).</p>
 
 
 
