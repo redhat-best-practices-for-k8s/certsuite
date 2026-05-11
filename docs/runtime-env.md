@@ -40,3 +40,16 @@ against a private container registry that has self-signed certificates.
 
 Note that you can also specify the probe pod image to use with `SUPPORT_IMAGE`
 environment variable, default to `certsuite-probe:v0.0.37`.
+
+## Client Timeout
+
+`CERTSUITE_CLIENT_TIMEOUT` (default: `10s`) sets the timeout for Kubernetes API
+client operations such as resource discovery and API group listing. Increase
+this value when running against remote or high-latency clusters where the
+default 10-second timeout causes failures during startup.
+
+```shell
+export CERTSUITE_CLIENT_TIMEOUT=30s
+```
+
+Accepts any valid Go duration string (e.g., `15s`, `1m`, `90s`).

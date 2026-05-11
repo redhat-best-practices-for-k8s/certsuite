@@ -19,6 +19,7 @@ package clientsholder
 import (
 	"errors"
 	"fmt"
+	"os"
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
@@ -59,10 +60,23 @@ import (
 const (
 	DefaultTimeout = 10 * time.Second
 
+	clientTimeoutEnvVar = "CERTSUITE_CLIENT_TIMEOUT"
+
 	defaultCluster = "default-cluster"
 	defaultUser    = "default-user"
 	defaultContext = "default-context"
 )
+
+func getClientTimeout() time.Duration {
+	if v := os.Getenv(clientTimeoutEnvVar); v != "" {
+		if d, err := time.ParseDuration(v); err == nil {
+			log.Info("Using custom client timeout from %s: %v", clientTimeoutEnvVar, d)
+			return d
+		}
+		log.Warn("Invalid %s value %q, using default %v", clientTimeoutEnvVar, v, DefaultTimeout)
+	}
+	return DefaultTimeout
+}
 
 type ClientsHolder struct {
 	RestConfig           *rest.Config
@@ -301,7 +315,7 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("failed to get rest.Config: %v", err)
 	}
-	clientsHolder.RestConfig.Timeout = DefaultTimeout
+	clientsHolder.RestConfig.Timeout = getClientTimeout()
 
 	clientsHolder.DynamicClient, err = dynamic.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
