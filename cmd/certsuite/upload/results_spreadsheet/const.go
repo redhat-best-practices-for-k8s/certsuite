@@ -1,9 +1,8 @@
 package resultsspreadsheet
 
 const (
-	ConclusionSheetName            = "conclusions"
-	RawResultsSheetName            = "raw results"
-	SingleWorkloadResultsSheetName = "results"
+	ConclusionSheetName = "conclusions"
+	RawResultsSheetName = "raw results"
 
 	categoryConclusionsCol        = "Category"
 	workloadVersionConclusionsCol = "Workload Version"

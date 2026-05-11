@@ -45,10 +45,7 @@ const (
 	NoProcessFoundErrMsg = "No such process"
 )
 
-var (
-	CrcClientExecCommandContainerNSEnter = crclient.ExecCommandContainerNSEnter
-	GetProcessCPUSchedulingFn            = GetProcessCPUScheduling
-)
+var GetProcessCPUSchedulingFn = GetProcessCPUScheduling
 
 func parseSchedulingPolicyAndPriority(chrtCommandOutput string) (schedPolicy string, schedPriority int, err error) {
 	/*	Sample output:

@@ -43,8 +43,6 @@ const (
 	timeoutPodSetReady         = 7 * time.Minute
 	minWorkerNodesForLifecycle = 2
 	statefulSet                = "StatefulSet"
-	localStorage               = "local-storage"
-	intrusiveTcSkippedReason   = "This is an intrusive test case and the flag --intrusive was set"
 )
 
 var (
