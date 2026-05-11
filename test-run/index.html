@@ -1181,7 +1181,42 @@ following:</p>
 <p>See the <a href="https://github.com/redhat-best-practices-for-k8s/oct">OCT tool</a> for more information on how to create this DB.</p>
 </div>
 <ul>
-<li><code>--cleanup-probe</code>: Controls whether the probe daemonset and its namespace are deleted at the end of the test run. By default (true), the probe daemonset is cleaned up after tests complete. Set to <code>--cleanup-probe=false</code> to keep the probe daemonset running on the cluster for debugging or repeated test runs.</li>
+<li>
+<p><code>--allow-non-running</code>: Include non-Running pods during the autodiscovery phase. Disabled by default; enable this if your workloads include pods in CrashLoopBackOff or other non-running states that still need testing.</p>
+</li>
+<li>
+<p><code>--sanitize-claim</code>: Sanitize the claim.json file by removing sensitive data before sending it to the collector. Only relevant when <code>--enable-data-collection</code> is enabled.</p>
+</li>
+<li>
+<p><code>--include-web-files</code>: Save the HTML results viewer files in the configured output folder alongside the claim.json and log files.</p>
+</li>
+<li>
+<p><code>--create-xml-junit-file</code>: Generate a JUnit XML file with the test results, useful for CI/CD integration with systems that consume JUnit reports.</p>
+</li>
+<li>
+<p><code>--certsuite-probe-image</code>: Override the default certsuite probe daemonset image. Defaults to the version matching the certsuite release.</p>
+</li>
+<li>
+<p><code>--daemonset-cpu-req</code>, <code>--daemonset-cpu-lim</code>: Set the CPU request and limit for the probe daemonset container. Both default to <code>100m</code>.</p>
+</li>
+<li>
+<p><code>--daemonset-mem-req</code>, <code>--daemonset-mem-lim</code>: Set the memory request and limit for the probe daemonset container. Both default to <code>100M</code>.</p>
+</li>
+<li>
+<p><code>--connect-api-key</code>: API key for uploading results to the Red Hat Connect portal.</p>
+</li>
+<li>
+<p><code>--connect-project-id</code>: Project ID for uploading results to the Red Hat Connect portal.</p>
+</li>
+<li>
+<p><code>--connect-api-base-url</code>: Base URL for the Red Hat Connect API.</p>
+</li>
+<li>
+<p><code>--connect-api-proxy-url</code>, <code>--connect-api-proxy-port</code>: Proxy URL and port for the Red Hat Connect API, for environments that require HTTP proxies.</p>
+</li>
+<li>
+<p><code>--cleanup-probe</code>: Controls whether the probe daemonset and its namespace are deleted at the end of the test run. By default (true), the probe daemonset is cleaned up after tests complete. Set to <code>--cleanup-probe=false</code> to keep the probe daemonset running on the cluster for debugging or repeated test runs.</p>
+</li>
 </ul>
 <div class="highlight"><pre><span></span><code>certsuite<span class="w"> </span>run<span class="w"> </span>--cleanup-probe<span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
