@@ -61,7 +61,7 @@ func CompressResultsArtifacts(outputDir string, filePaths []string) (string, err
 
 		tarHeader, err := getFileTarHeader(file)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("failed to get tar header for %s: %w", file, err)
 		}
 
 		err = tarWriter.WriteHeader(tarHeader)

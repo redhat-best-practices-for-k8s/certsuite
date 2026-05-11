@@ -67,7 +67,7 @@ func TestGetUpdatedDeployment(t *testing.T) {
 
 		if testCase.expectedErr != nil {
 			assert.NotNil(t, err)
-			assert.Equal(t, testCase.expectedErr.Error(), err.Error())
+			assert.ErrorContains(t, err, testCase.expectedErr.Error())
 		} else {
 			assert.Nil(t, err)
 			assert.NotNil(t, deployment)

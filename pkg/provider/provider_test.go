@@ -679,7 +679,11 @@ func TestGetRHCOSVersion(t *testing.T) {
 		}
 
 		result, err := node.GetRHCOSVersion()
-		assert.Equal(t, tc.expectedErr, err)
+		if tc.expectedErr != nil {
+			assert.ErrorContains(t, err, tc.expectedErr.Error())
+		} else {
+			assert.NoError(t, err)
+		}
 		assert.Equal(t, tc.expectedOutput, result)
 	}
 }

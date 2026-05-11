@@ -165,7 +165,7 @@ func unmarshalClaimFile(claimdata []byte) (claim.Schema, error) {
 	var claimDataResult claim.Schema
 	err := json.Unmarshal(claimdata, &claimDataResult)
 	if err != nil {
-		return claim.Schema{}, err
+		return claim.Schema{}, fmt.Errorf("failed to unmarshal claim file data: %w", err)
 	}
 	return claimDataResult, nil
 }

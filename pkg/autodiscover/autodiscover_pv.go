@@ -18,6 +18,7 @@ package autodiscover
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	corev1 "k8s.io/api/core/v1"
@@ -30,7 +31,7 @@ import (
 func getPersistentVolumes(oc corev1client.CoreV1Interface) ([]corev1.PersistentVolume, error) {
 	pvs, err := oc.PersistentVolumes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to list persistent volumes: %w", err)
 	}
 	return pvs.Items, nil
 }
@@ -38,7 +39,7 @@ func getPersistentVolumes(oc corev1client.CoreV1Interface) ([]corev1.PersistentV
 func getPersistentVolumeClaims(oc corev1client.CoreV1Interface) ([]corev1.PersistentVolumeClaim, error) {
 	pvcs, err := oc.PersistentVolumeClaims("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to list persistent volume claims: %w", err)
 	}
 	return pvcs.Items, nil
 }
@@ -47,7 +48,7 @@ func getAllStorageClasses(client storagev1typed.StorageV1Interface) ([]storagev1
 	storageclasslist, err := client.StorageClasses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		log.Error("Error when listing storage classes, err: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to list storage classes: %w", err)
 	}
 	return storageclasslist.Items, nil
 }

@@ -67,13 +67,13 @@ func createSendToCollectorPostRequest(endPoint, claimFilePath, executedBy, partn
 	// Add the claim file to the request
 	err := addClaimFileToPostRequest(w, claimFilePath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to add claim file to post request: %w", err)
 	}
 
 	// Add the executed by, partner name and password fields to the request
 	err = addVarFieldsToPostRequest(w, executedBy, partnerName, password)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to add variable fields to post request: %w", err)
 	}
 
 	w.Close()

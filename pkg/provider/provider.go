@@ -690,7 +690,7 @@ func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (M
 
 	nodeMc, err := client.MachineCfg.MachineconfigurationV1().MachineConfigs().Get(context.TODO(), mcName, metav1.GetOptions{})
 	if err != nil {
-		return MachineConfig{}, err
+		return MachineConfig{}, fmt.Errorf("failed to get machine config %s: %w", mcName, err)
 	}
 
 	mc := MachineConfig{

@@ -18,6 +18,7 @@ package autodiscover
 
 import (
 	"context"
+	"fmt"
 
 	policyv1 "k8s.io/api/policy/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -29,7 +30,7 @@ func getPodDisruptionBudgets(oc policyv1client.PolicyV1Interface, namespaces []s
 	for _, ns := range namespaces {
 		pdbs, err := oc.PodDisruptionBudgets(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to list pod disruption budgets in namespace %s: %w", ns, err)
 		}
 		podDisruptionBudgets = append(podDisruptionBudgets, pdbs.Items...)
 	}

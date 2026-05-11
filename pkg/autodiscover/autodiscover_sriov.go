@@ -3,6 +3,7 @@ package autodiscover
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
@@ -38,7 +39,7 @@ func getSriovNetworks(client *clientsholder.ClientsHolder, namespaces []string) 
 	for _, ns := range namespaces {
 		snl, err := client.DynamicClient.Resource(SriovNetworkGVR).Namespace(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil && !kerrors.IsNotFound(err) {
-			return nil, err
+			return nil, fmt.Errorf("failed to list SRIOV networks in namespace %s: %w", ns, err)
 		}
 
 		// Append the list of sriovNetworks to the sriovNetworks slice
@@ -60,7 +61,7 @@ func getSriovNetworkNodePolicies(client *clientsholder.ClientsHolder, namespaces
 	for _, ns := range namespaces {
 		snnp, err := client.DynamicClient.Resource(SriovNetworkNodePolicyGVR).Namespace(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil && !kerrors.IsNotFound(err) {
-			return nil, err
+			return nil, fmt.Errorf("failed to list SRIOV network node policies in namespace %s: %w", ns, err)
 		}
 
 		// Append the list of sriovNetworkNodePolicies to the sriovNetworkNodePolicies slice

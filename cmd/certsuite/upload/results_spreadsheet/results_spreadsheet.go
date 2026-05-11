@@ -61,14 +61,14 @@ func NewCommand() *cobra.Command {
 func readCSV(fp string) ([][]string, error) {
 	file, err := os.Open(fp)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to open CSV file %s: %w", fp, err)
 	}
 	defer file.Close()
 
 	reader := csv.NewReader(file)
 	records, err := reader.ReadAll()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to read CSV data from %s: %w", fp, err)
 	}
 	return records, nil
 }
@@ -136,7 +136,7 @@ func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workload
 	headers := GetHeadersFromSheet(rawResultsSheet)
 	indices, err := GetHeaderIndicesByColumnNames(headers, []string{"CNFName"})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to find CNFName column in results sheet: %w", err)
 	}
 	workloadNameIndex := indices[0]
 
@@ -168,7 +168,7 @@ func createSingleWorkloadRawResultsSheet(rawResultsSheet *sheets.Sheet, workload
 func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, driveService *drive.Service, folder *drive.File, rawResultsSheet *sheets.Sheet, workloadName string) (*sheets.Spreadsheet, error) {
 	workloadResultsSheet, err := createSingleWorkloadRawResultsSheet(rawResultsSheet, workloadName)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create workload results sheet for %s: %w", workloadName, err)
 	}
 
 	workloadResultsSpreadsheet := &sheets.Spreadsheet{
@@ -180,15 +180,15 @@ func createSingleWorkloadRawResultsSpreadSheet(sheetService *sheets.Service, dri
 
 	workloadResultsSpreadsheet, err = sheetService.Spreadsheets.Create(workloadResultsSpreadsheet).Do()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create spreadsheet for %s: %w", workloadName, err)
 	}
 
 	if err := addFilterByFailedAndMandatoryToSheet(sheetService, workloadResultsSpreadsheet, "results"); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to add filter to results sheet for %s: %w", workloadName, err)
 	}
 
 	if err := MoveSpreadSheetToFolder(driveService, folder, workloadResultsSpreadsheet); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to move spreadsheet to folder for %s: %w", workloadName, err)
 	}
 
 	log.Printf("%s workload's results sheet has been created.\n", workloadName)
@@ -212,7 +212,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 	rawSheetHeaders := GetHeadersFromSheet(rawResultsSheet)
 	colsIndices, err := GetHeaderIndicesByColumnNames(rawSheetHeaders, []string{workloadNameRawResultsCol, workloadTypeRawResultsCol, operatorVersionRawResultsCol})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to find required columns in raw results sheet: %w", err)
 	}
 
 	workloadNameColIndex := colsIndices[0]

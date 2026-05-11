@@ -240,7 +240,10 @@ var TestPing = func(sourceContainerID *provider.Container, targetContainerIP net
 		return results, fmt.Errorf("ping failed with stderr:%s err:%s", stderr, err)
 	}
 	results, err = parsePingResult(stdout, stderr)
-	return results, err
+	if err != nil {
+		return results, fmt.Errorf("failed to parse ping results: %w", err)
+	}
+	return results, nil
 }
 
 func parsePingResult(stdout, stderr string) (results PingResults, err error) {

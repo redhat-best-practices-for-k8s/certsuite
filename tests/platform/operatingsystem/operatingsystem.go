@@ -18,6 +18,7 @@ package operatingsystem
 
 import (
 	_ "embed"
+	"fmt"
 	"strings"
 )
 
@@ -60,7 +61,7 @@ func GetRHCOSMappedVersions(rhcosVersionMap string) (map[string]string, error) {
 func GetShortVersionFromLong(longVersion string) (string, error) {
 	versions, err := GetAllShortVersionsFromLong(longVersion)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get short versions from long version %s: %w", longVersion, err)
 	}
 	if len(versions) == 0 {
 		return NotFoundStr, nil
@@ -74,7 +75,7 @@ func GetShortVersionFromLong(longVersion string) (string, error) {
 func GetAllShortVersionsFromLong(longVersion string) ([]string, error) {
 	capturedVersions, err := GetRHCOSMappedVersions(rhcosVersionMap)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get RHCOS mapped versions: %w", err)
 	}
 
 	var matchingVersions []string
