@@ -41,6 +41,7 @@ func LoadInternalChecksDB() {
 	performance.LoadChecks()
 	platform.LoadChecks()
 	operator.LoadChecks()
+	preflight.LoadCatalogChecks()
 }
 
 func LoadChecksDB(labelsExpr string) {

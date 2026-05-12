@@ -72,6 +72,12 @@ func (group *ChecksGroup) WithAfterAllFn(afterAllFn func(checks []*Check) error)
 	return group
 }
 
+func (group *ChecksGroup) ResetChecks() {
+	dbLock.Lock()
+	defer dbLock.Unlock()
+	group.checks = []*Check{}
+}
+
 func (group *ChecksGroup) Add(check *Check) {
 	dbLock.Lock()
 	defer dbLock.Unlock()

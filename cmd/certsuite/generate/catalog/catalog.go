@@ -17,22 +17,17 @@
 package catalog
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"sort"
 	"strings"
 
-	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
-	plibContainer "github.com/redhat-openshift-ecosystem/openshift-preflight/container"
-	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
-
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/arrayhelper"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
 
 	"github.com/spf13/cobra"
 )
@@ -132,61 +127,9 @@ func scenarioIDToText(id string) (text string) {
 	return text
 }
 
-func addPreflightTestsToCatalog() {
-	const dummy = "dummy"
-	// Create artifacts handler
-	artifactsWriter, err := artifacts.NewMapWriter()
-	if err != nil {
-		log.Error("Error creating artifact, failed to add preflight tests to catalog: %v", err)
-		return
-	}
-	ctx := artifacts.ContextWithWriter(context.TODO(), artifactsWriter)
-	optsOperator := []plibOperator.Option{}
-	optsContainer := []plibContainer.Option{}
-	checkOperator := plibOperator.NewCheck(dummy, dummy, []byte(""), optsOperator...)
-	checkContainer := plibContainer.NewCheck(dummy, optsContainer...)
-	_, checksOperator, err := checkOperator.List(ctx)
-	if err != nil {
-		log.Error("Error getting preflight operator tests: %v", err)
-	}
-	_, checksContainer, err := checkContainer.List(ctx)
-	if err != nil {
-		log.Error("Error getting preflight container tests: %v", err)
-	}
-
-	allChecks := checksOperator
-	allChecks = append(allChecks, checksContainer...)
-
-	for _, c := range allChecks {
-		remediation := c.Help().Suggestion
-
-		// Custom override for specific preflight test remediation
-		if c.Name() == "FollowsRestrictedNetworkEnablementGuidelines" {
-			remediation = "If consumers of your operator may need to do so on a restricted network, implement the guidelines outlined in OCP documentation: https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/disconnected_environments/olm-restricted-networks"
-		}
-
-		_ = identifiers.AddCatalogEntry(
-			c.Name(),
-			common.PreflightTestKey,
-			c.Metadata().Description,
-			remediation,
-			identifiers.NoDocumentedProcess,
-			identifiers.NoDocLink,
-			true,
-			map[string]string{
-				identifiers.FarEdge:  identifiers.Optional,
-				identifiers.Telco:    identifiers.Optional,
-				identifiers.NonTelco: identifiers.Optional,
-				identifiers.Extended: identifiers.Optional,
-			},
-			identifiers.TagCommon)
-	}
-}
-
 // outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
 func outputTestCases() (outString string, summary catalogSummary) { //nolint:funlen
-	// Adds Preflight tests to catalog
-	addPreflightTestsToCatalog()
+	preflight.LoadCatalogChecks()
 
 	// Building a separate data structure to store the key order for the map
 	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))

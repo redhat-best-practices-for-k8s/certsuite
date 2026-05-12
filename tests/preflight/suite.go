@@ -78,8 +78,9 @@ func LoadChecks() {
 	// As the preflight lib's checks need to run here, we need to get the test environment now.
 	env = provider.GetTestEnvironment()
 
-	checksGroup := checksdb.NewChecksGroup(common.PreflightTestKey).
-		WithBeforeEachFn(beforeEachFn)
+	checksGroup := checksdb.NewChecksGroup(common.PreflightTestKey)
+	checksGroup.ResetChecks()
+	checksGroup = checksGroup.WithBeforeEachFn(beforeEachFn)
 
 	testPreflightContainers(checksGroup, &env)
 	if provider.IsOCPCluster() {
