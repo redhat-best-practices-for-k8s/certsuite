@@ -99,6 +99,25 @@ testCases:
     - performance-isolated-cpu-pool-rt-scheduling-policy
     - performance-shared-cpu-pool-non-rt-scheduling-policy
     - performance-rt-apps-no-exec-probes
+    - preflight-AllImageRefsInRelatedImages
+    - preflight-BasedOnUbi
+    - preflight-BundleImageRefsAreCertified
+    - preflight-DeployableByOLM
+    - preflight-FollowsRestrictedNetworkEnablementGuidelines
+    - preflight-HasLicense
+    - preflight-HasModifiedFiles
+    - preflight-HasNoProhibitedLabels
+    - preflight-HasNoProhibitedPackages
+    - preflight-HasProhibitedContainerName
+    - preflight-HasRequiredLabel
+    - preflight-HasUniqueTag
+    - preflight-LayerCountAcceptable
+    - preflight-RequiredAnnotations
+    - preflight-RunAsNonRoot
+    - preflight-ScorecardBasicSpecCheck
+    - preflight-ScorecardOlmSuiteCheck
+    - preflight-SecurityContextConstraintsInCSV
+    - preflight-ValidateOperatorBundle
     - platform-alteration-base-image
     - platform-alteration-boot-params
     - platform-alteration-cluster-operator-health

@@ -17,6 +17,7 @@
 package preflight
 
 import (
+	"sort"
 	"testing"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
@@ -181,4 +182,45 @@ func TestGetUniqueTestEntriesFromOperatorResults_Deduplicated(t *testing.T) {
 
 	result := getUniqueTestEntriesFromOperatorResults(operators)
 	assert.Len(t, result, 1)
+}
+
+func TestLoadCatalogChecks(t *testing.T) {
+	expectedChecks := []string{
+		// Container checks
+		"preflight-BasedOnUbi",
+		"preflight-HasLicense",
+		"preflight-HasModifiedFiles",
+		"preflight-HasNoProhibitedLabels",
+		"preflight-HasNoProhibitedPackages",
+		"preflight-HasProhibitedContainerName",
+		"preflight-HasRequiredLabel",
+		"preflight-HasUniqueTag",
+		"preflight-LayerCountAcceptable",
+		"preflight-RunAsNonRoot",
+		// Operator checks
+		"preflight-AllImageRefsInRelatedImages",
+		"preflight-BundleImageRefsAreCertified",
+		"preflight-DeployableByOLM",
+		"preflight-FollowsRestrictedNetworkEnablementGuidelines",
+		"preflight-RequiredAnnotations",
+		"preflight-ScorecardBasicSpecCheck",
+		"preflight-ScorecardOlmSuiteCheck",
+		"preflight-SecurityContextConstraintsInCSV",
+		"preflight-ValidateOperatorBundle",
+	}
+
+	LoadCatalogChecks()
+
+	var actualChecks []string
+	for id := range identifiers.Catalog {
+		if id.Suite == common.PreflightTestKey {
+			actualChecks = append(actualChecks, id.Id)
+		}
+	}
+
+	sort.Strings(expectedChecks)
+	sort.Strings(actualChecks)
+
+	assert.Equal(t, expectedChecks, actualChecks,
+		"Preflight check list has changed. If the preflight library was updated, update the expected list to match.")
 }
