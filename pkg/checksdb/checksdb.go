@@ -16,6 +16,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/labels"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 )
 
@@ -98,6 +99,7 @@ func RunChecks(timeout time.Duration) (failedCtr int, err error) {
 	// Print the results in the CLI
 	cli.PrintResultsTable(getResultsSummary())
 	printFailedChecksLog()
+	printDaemonsetSkippedChecks()
 
 	if len(errs) > 0 {
 		log.Error("RunChecks errors: %v", errs)
@@ -200,6 +202,34 @@ func printFailedChecksLog() {
 			}
 		}
 	}
+}
+
+func printDaemonsetSkippedChecks() {
+	var skippedIDs []string
+	for _, group := range dbByGroup {
+		for _, check := range group.checks {
+			if check.Result == CheckResultSkipped && check.skipReason == testhelper.DaemonsetFailedToSpawnSkipReason {
+				skippedIDs = append(skippedIDs, check.ID)
+			}
+		}
+	}
+
+	if len(skippedIDs) == 0 {
+		return
+	}
+
+	header := "| " + cli.Yellow + "SKIPPED DUE TO PROBE DAEMONSET FAILURE" + cli.Reset + " |"
+	nbSymbols := utf8.RuneCountInString(header) - nbColorSymbols
+	fmt.Println(strings.Repeat("=", nbSymbols))
+	fmt.Println(header)
+	fmt.Println(strings.Repeat("=", nbSymbols))
+	fmt.Printf("The probe daemonset failed to deploy. %d test(s) were skipped:\n", len(skippedIDs))
+	for _, id := range skippedIDs {
+		fmt.Printf("  - %s\n", id)
+	}
+	fmt.Println()
+	fmt.Println("To abort on probe failure instead of skipping, use --require-probe")
+	fmt.Println(strings.Repeat("=", nbSymbols))
 }
 
 func GetResults() map[string]claim.Result {

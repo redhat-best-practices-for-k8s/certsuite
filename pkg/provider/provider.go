@@ -273,9 +273,20 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 
 	// Wait for the probe pods to be ready before the autodiscovery starts.
 	if err := deployDaemonSet(config.ProbeDaemonSetNamespace); err != nil {
-		log.Error("The TNF daemonset could not be deployed, err: %v", err)
-		// Because of this failure, we are only able to run a certain amount of tests that do not rely
-		// on the existence of the daemonset probe pods.
+		log.Error("The probe daemonset could not be deployed, err: %v", err)
+
+		testParams := configuration.GetTestParameters()
+		if testParams.RequireProbe {
+			log.Fatal("--require-probe is set: aborting because the probe daemonset failed to deploy")
+		}
+
+		log.Warn("Probe daemonset failed to deploy. The following test categories will be SKIPPED: " +
+			"Platform (SELinux, hugepages, boot params, sysctl, kernel taints, base image, hyperthreading), " +
+			"Networking (ICMP connectivity, port usage), " +
+			"Access Control (process count, SSH daemon detection), " +
+			"Performance (CPU scheduling policy). " +
+			"To abort on probe failure instead, use --require-probe")
+
 		env.DaemonsetFailedToSpawn = true
 	}
 

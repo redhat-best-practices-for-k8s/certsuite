@@ -79,7 +79,7 @@ var (
 	}
 )
 
-func LoadChecks() {
+func LoadChecks() { //nolint:funlen
 	log.Debug("Loading %s suite checks", common.PerformanceTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.PerformanceTestKey).
@@ -93,28 +93,36 @@ func LoadChecks() {
 		}))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestRtAppNoExecProbes)).
-		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithExclusiveCPUs).
+		WithSkipCheckFn(
+			skipIfNoGuaranteedPodContainersWithExclusiveCPUs,
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testRtAppsNoExecProbes(c, &env)
 			return nil
 		}))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSharedCPUPoolSchedulingPolicy)).
-		WithSkipCheckFn(skipIfNoNonGuaranteedPodContainersWithoutHostPID).
+		WithSkipCheckFn(
+			skipIfNoNonGuaranteedPodContainersWithoutHostPID,
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSchedulingPolicyInCPUPool(c, &env, env.GetNonGuaranteedPodContainersWithoutHostPID(), scheduling.SharedCPUScheduling)
 			return nil
 		}))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestExclusiveCPUPoolSchedulingPolicy)).
-		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID).
+		WithSkipCheckFn(
+			skipIfNoGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID,
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSchedulingPolicyInCPUPool(c, &env, env.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID(), scheduling.ExclusiveCPUScheduling)
 			return nil
 		}))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)).
-		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID).
+		WithSkipCheckFn(
+			skipIfNoGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID,
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSchedulingPolicyInCPUPool(c, &env, env.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID(), scheduling.ExclusiveCPUScheduling)
 			return nil
