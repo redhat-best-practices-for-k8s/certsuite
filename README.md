@@ -1,3 +1,4 @@
+test
 # Red Hat Best Practices Test Suite for Kubernetes
 
 ![build](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/merge.yaml/badge.svg)
