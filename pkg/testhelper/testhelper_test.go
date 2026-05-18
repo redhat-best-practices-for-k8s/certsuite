@@ -1284,6 +1284,52 @@ func TestFailureReasonOutEqual(t *testing.T) {
 	}
 }
 
+func TestGetOCPVersionBelowSkipFn(t *testing.T) {
+	// In the default test environment, IsOCPCluster() returns true because
+	// the global env's OpenshiftVersion defaults to "" (which != "0.0.0").
+	// These tests exercise the version comparison logic in the OCP path.
+	testCases := []struct {
+		name           string
+		ocpVersion     string
+		minVersion     string
+		expectedResult bool
+	}{
+		{
+			name:           "empty OCP version skips",
+			ocpVersion:     "",
+			minVersion:     "4.22",
+			expectedResult: true,
+		},
+		{
+			name:           "OCP version below minimum skips",
+			ocpVersion:     "4.21",
+			minVersion:     "4.22",
+			expectedResult: true,
+		},
+		{
+			name:           "OCP version at minimum does not skip",
+			ocpVersion:     "4.22",
+			minVersion:     "4.22",
+			expectedResult: false,
+		},
+		{
+			name:           "OCP version above minimum does not skip",
+			ocpVersion:     "4.23",
+			minVersion:     "4.22",
+			expectedResult: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			env := &provider.TestEnvironment{OpenshiftVersion: tc.ocpVersion}
+			testFunc := GetOCPVersionBelowSkipFn(env, tc.minVersion)
+			result, _ := testFunc()
+			assert.Equal(t, tc.expectedResult, result)
+		})
+	}
+}
+
 func TestGetNoCatalogSourcesSkipFn(t *testing.T) {
 	testCases := []struct {
 		testEnv        *provider.TestEnvironment
