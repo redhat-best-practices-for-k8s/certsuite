@@ -58,7 +58,9 @@ func LoadChecks() {
 		WithBeforeEachFn(beforeEachFn)
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHyperThreadEnable)).
-		WithSkipCheckFn(testhelper.GetNoBareMetalNodesSkipFn(&env)).
+		WithSkipCheckFn(
+			testhelper.GetNoBareMetalNodesSkipFn(&env),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testHyperThreadingEnabled(c, &env)
 			return nil

@@ -142,4 +142,6 @@ type TestParameters struct {
 	AllowNonRunning bool
 	// CleanupProbe determines whether to delete the probe daemonset at the end of the run
 	CleanupProbe bool
+	// RequireProbe aborts the test run if the probe daemonset fails to deploy
+	RequireProbe bool
 }
