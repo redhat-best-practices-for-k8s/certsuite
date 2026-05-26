@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"sync"
 
 	clientsholder "github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -225,8 +226,16 @@ func testServiceMesh(check *checksdb.Check, env *provider.TestEnvironment) {
 // testContainersFsDiff test that all CUT did not install new packages are starting
 func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) {
 	// podman diff is resource-heavy; limit concurrency to avoid OOM on probe pods
+
+	// We also need a per-node map of mutexes to limit the concurrency per node on ocp < 4.13
+	// This avoids conflicts while mounting/unmounting and deleting the podman temp folder on the node.
+	mutexPerNode := make(map[string]*sync.Mutex)
+	for _, node := range env.Nodes {
+		mutexPerNode[node.Data.Name] = &sync.Mutex{}
+	}
+
 	checksdb.ForEachParallel(check, env.Containers, len(env.ProbePods), func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
-		check.LogInfo("Testing Container %q", cut)
+		check.LogInfo("Testing Container %q (node %q)", cut, cut.NodeName)
 		probePod := env.ProbePods[cut.NodeName]
 
 		if probePod == nil {
@@ -240,6 +249,16 @@ func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) 
 			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "certsuite probe pod has no containers", false))
 			return
 		}
+
+		nodeMutex, ok := mutexPerNode[cut.NodeName]
+		if !ok {
+			check.LogError("No mutex found for node %q", cut.NodeName)
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "node not found in environment", false))
+			return
+		}
+
+		nodeMutex.Lock()
+		defer nodeMutex.Unlock()
 
 		ctxt := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 		fsDiffTester := cnffsdiff.NewFsDiffTester(check, clientsholder.GetClientsHolder(), ctxt, env.OpenshiftVersion)

@@ -52,6 +52,7 @@ func ForEachParallel[T any](check *Check, items []T, limit int, fn func(*Check, 
 		limit = DefaultParallelLimit
 	}
 
+	check.LogInfo("Parallel check of %d items under test, max concurrency=%d", len(items), limit)
 	result := &ParallelResult{}
 	g := new(errgroup.Group)
 	g.SetLimit(limit)
