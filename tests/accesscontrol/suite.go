@@ -764,7 +764,9 @@ func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironm
 }
 
 func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnvironment) {
-	checksdb.ForEachParallel(check, env.Containers, 0, func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
+	mutexPerNode := env.NewPerNodeMutexMap()
+
+	checksdb.ForEachParallel(check, env.Containers, len(env.ProbePods), func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Container %q", cut)
 		if cut.IsIstioProxy() {
 			check.LogInfo("Skipping \"istio-proxy\" container")
@@ -776,6 +778,12 @@ func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnviron
 			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Debug pod not found for node", false))
 			return
 		}
+
+		if nodeMutex, ok := mutexPerNode[cut.NodeName]; ok {
+			nodeMutex.Lock()
+			defer nodeMutex.Unlock()
+		}
+
 		ocpContext := clientsholder.NewContext(probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name)
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
@@ -897,9 +905,16 @@ const (
 )
 
 func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironment) {
-	checksdb.ForEachParallel(check, env.Pods, 0, func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
+	mutexPerNode := env.NewPerNodeMutexMap()
+
+	checksdb.ForEachParallel(check, env.Pods, len(env.ProbePods), func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Pod %q", put)
 		cut := put.Containers[0]
+
+		if nodeMutex, ok := mutexPerNode[put.Spec.NodeName]; ok {
+			nodeMutex.Lock()
+			defer nodeMutex.Unlock()
+		}
 
 		port, err := netutil.GetSSHDaemonPort(cut)
 		if err != nil {

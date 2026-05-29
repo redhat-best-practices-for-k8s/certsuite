@@ -259,8 +259,15 @@ func testExclusiveCPUPool(check *checksdb.Check, env *provider.TestEnvironment) 
 
 func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvironment,
 	podContainers []*provider.Container, schedulingType string) {
-	checksdb.ForEachParallel(check, podContainers, 0, func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
+	mutexPerNode := env.NewPerNodeMutexMap()
+
+	checksdb.ForEachParallel(check, podContainers, len(env.ProbePods), func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Container %q", cut)
+
+		if nodeMutex, ok := mutexPerNode[cut.NodeName]; ok {
+			nodeMutex.Lock()
+			defer nodeMutex.Unlock()
+		}
 
 		pidNamespace, err := crclient.GetContainerPidNamespace(cut, env)
 		if err != nil {
@@ -311,13 +318,20 @@ func getExecProbesCmds(c *provider.Container) map[string]bool {
 }
 
 func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment) {
+	mutexPerNode := env.NewPerNodeMutexMap()
+
 	cuts := env.GetNonGuaranteedPodContainersWithoutHostPID()
-	checksdb.ForEachParallel(check, cuts, 0, func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
+	checksdb.ForEachParallel(check, cuts, len(env.ProbePods), func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Container %q", cut)
 		if !cut.HasExecProbes() {
 			check.LogInfo("Container %q does not define exec probes", cut)
 			result.AddCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not define exec probes", true))
 			return
+		}
+
+		if nodeMutex, ok := mutexPerNode[cut.NodeName]; ok {
+			nodeMutex.Lock()
+			defer nodeMutex.Unlock()
 		}
 
 		processes, err := crclient.GetContainerProcesses(cut, env)
