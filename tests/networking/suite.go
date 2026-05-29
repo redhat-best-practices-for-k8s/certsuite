@@ -159,14 +159,22 @@ func LoadChecks() {
 		}))
 }
 
+//nolint:funlen
 func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.TestEnvironment) {
-	checksdb.ForEachParallel(check, env.Pods, 0, func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
+	mutexPerNode := env.NewPerNodeMutexMap()
+
+	checksdb.ForEachParallel(check, env.Pods, len(env.ProbePods), func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
 		declaredPorts := make(map[netutil.PortInfo]bool)
 		for _, cut := range put.Containers {
 			check.LogInfo("Testing Container %q", cut)
 			for _, port := range cut.Ports {
 				declaredPorts[netutil.PortInfo{PortNumber: port.ContainerPort, Protocol: string(port.Protocol)}] = true
 			}
+		}
+
+		if nodeMutex, ok := mutexPerNode[put.Spec.NodeName]; ok {
+			nodeMutex.Lock()
+			defer nodeMutex.Unlock()
 		}
 
 		firstPodContainer := put.Containers[0]
@@ -257,7 +265,9 @@ func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnviro
 
 //nolint:funlen
 func testReservedPortsUsageParallel(check *checksdb.Check, env *provider.TestEnvironment, portsToTest map[int32]bool, portsOrigin string) {
-	checksdb.ForEachParallel(check, env.Pods, 0, func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
+	mutexPerNode := env.NewPerNodeMutexMap()
+
+	checksdb.ForEachParallel(check, env.Pods, len(env.ProbePods), func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Pod %q", put)
 
 		nonCompliantPortFound := false
@@ -281,6 +291,11 @@ func testReservedPortsUsageParallel(check *checksdb.Check, env *provider.TestEnv
 							AddField(testhelper.PortProtocol, string(port.Protocol)))
 				}
 			}
+		}
+
+		if nodeMutex, ok := mutexPerNode[put.Spec.NodeName]; ok {
+			nodeMutex.Lock()
+			defer nodeMutex.Unlock()
 		}
 
 		firstContainer := put.Containers[0]

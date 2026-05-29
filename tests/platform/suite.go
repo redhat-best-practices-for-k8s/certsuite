@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"sync"
 
 	clientsholder "github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -229,10 +228,7 @@ func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) 
 
 	// We also need a per-node map of mutexes to limit the concurrency per node on ocp < 4.13
 	// This avoids conflicts while mounting/unmounting and deleting the podman temp folder on the node.
-	mutexPerNode := make(map[string]*sync.Mutex)
-	for _, node := range env.Nodes {
-		mutexPerNode[node.Data.Name] = &sync.Mutex{}
-	}
+	mutexPerNode := env.NewPerNodeMutexMap()
 
 	checksdb.ForEachParallel(check, env.Containers, len(env.ProbePods), func(check *checksdb.Check, cut *provider.Container, result *checksdb.ParallelResult) {
 		check.LogInfo("Testing Container %q (node %q)", cut, cut.NodeName)

@@ -19,6 +19,7 @@ package provider
 import (
 	"context"
 	"regexp"
+	"sync"
 	"time"
 
 	"fmt"
@@ -627,6 +628,14 @@ func GetPciPerPod(annotation string) (pciAddr []string, err error) {
 		}
 	}
 	return pciAddr, nil
+}
+
+func (env *TestEnvironment) NewPerNodeMutexMap() map[string]*sync.Mutex {
+	m := make(map[string]*sync.Mutex, len(env.Nodes))
+	for _, node := range env.Nodes {
+		m[node.Data.Name] = &sync.Mutex{}
+	}
+	return m
 }
 
 func (env *TestEnvironment) SetNeedsRefresh() {
