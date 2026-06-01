@@ -62,7 +62,6 @@ func Test_getIPVersion(t *testing.T) {
 			want:    Undefined,
 			wantErr: true,
 		},
-		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -74,6 +73,25 @@ func Test_getIPVersion(t *testing.T) {
 			if got != tt.want {
 				t.Errorf("getIPVersion() = %v, want %v", got, tt.want)
 			}
+		})
+	}
+}
+
+func TestIPVersionString(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		version  IPVersion
+		expected string
+	}{
+		{IPv4, "IPv4"},
+		{IPv6, "IPv6"},
+		{IPv4v6, "IPv4v6"},
+		{Undefined, "undefined"},
+		{IPVersion(99), "undefined"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.expected, func(t *testing.T) {
+			assert.Equal(t, tt.expected, tt.version.String())
 		})
 	}
 }

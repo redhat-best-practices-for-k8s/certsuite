@@ -20,9 +20,8 @@ func TestIsManaged(t *testing.T) {
 		args args
 		want bool
 	}{
-		// TODO: Add test cases.
 		{
-			name: "test1",
+			name: "found",
 			args: args{
 				podSetName: "test1",
 				managedPodSet: []configuration.ManagedDeploymentsStatefulsets{
@@ -34,13 +33,31 @@ func TestIsManaged(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "test2",
+			name: "not found",
 			args: args{
 				podSetName: "test1",
 				managedPodSet: []configuration.ManagedDeploymentsStatefulsets{
 					{
 						Name: "test2",
 					},
+				},
+			},
+			want: false,
+		},
+		{
+			name: "empty managed list",
+			args: args{
+				podSetName:    "test1",
+				managedPodSet: []configuration.ManagedDeploymentsStatefulsets{},
+			},
+			want: false,
+		},
+		{
+			name: "empty pod set name",
+			args: args{
+				podSetName: "",
+				managedPodSet: []configuration.ManagedDeploymentsStatefulsets{
+					{Name: "test1"},
 				},
 			},
 			want: false,
