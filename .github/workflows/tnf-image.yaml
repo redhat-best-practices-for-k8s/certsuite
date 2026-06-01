@@ -34,8 +34,22 @@ env:
   PROBE_IMAGE_SRC_URL: 'https://github.com/${PROBE_IMAGE_REPO}'
 
 jobs:
+  check-quay-status:
+    name: Check Quay.io availability
+    runs-on: ubuntu-24.04
+    outputs:
+      quay-available: ${{ steps.status.outputs.degraded-count == '0' }}
+    steps:
+      - name: Check Red Hat Status (Quay.io)
+        id: status
+        uses: palmsoftware/redhat-status@v0
+        with:
+          components: |
+            Quay.io
+
   test-and-push-tnf-image-main:
-    if: github.repository_owner == 'redhat-best-practices-for-k8s'
+    needs: [check-quay-status]
+    if: github.repository_owner == 'redhat-best-practices-for-k8s' && needs.check-quay-status.outputs.quay-available != 'false'
     name: 'Test and push the `certsuite` image'
     runs-on: ubuntu-24.04
     env:
@@ -158,6 +172,8 @@ jobs:
           slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
 
   test-and-push-tnf-image-legacy:
+    needs: [check-quay-status]
+    if: needs.check-quay-status.outputs.quay-available != 'false'
     name: 'Test and push the `cnf-certification-test` image (legacy)'
     runs-on: ubuntu-24.04
     env:
