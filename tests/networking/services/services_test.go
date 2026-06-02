@@ -35,7 +35,6 @@ func TestGetServiceIPVersion(t *testing.T) {
 		wantResult netcommons.IPVersion
 		wantErr    bool
 	}{
-		// TODO: Add test cases.
 		{
 			name:       "dual-stack-ok1",
 			args:       args{aService: createService([]string{"1.1.1.1", "fd00:10:96::d789"}, corev1.IPFamilyPolicyPreferDualStack)},
@@ -95,6 +94,22 @@ func createService(ips []string, aFp corev1.IPFamilyPolicy) (aService *corev1.Se
 	aService.Spec.ClusterIPs = ips
 	aService.Spec.IPFamilyPolicy = &aFp
 	return aService
+}
+
+func TestToString(t *testing.T) {
+	t.Parallel()
+	svc := &corev1.Service{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "my-service",
+			Namespace: "my-ns",
+		},
+		Spec: corev1.ServiceSpec{
+			ClusterIP:  "10.0.0.1",
+			ClusterIPs: []string{"10.0.0.1", "fd00::1"},
+		},
+	}
+	expected := "Service ns: my-ns, name: my-service ClusterIP:10.0.0.1 ClusterIPs: [10.0.0.1 fd00::1]"
+	assert.Equal(t, expected, ToString(svc))
 }
 
 func TestToStringSlice(t *testing.T) {
