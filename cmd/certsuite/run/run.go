@@ -59,39 +59,69 @@ func NewCommand() *cobra.Command {
 	return runCmd
 }
 
+type flagReader struct {
+	cmd *cobra.Command
+	err error
+}
+
+func (f *flagReader) getString(dest *string, name string) {
+	if f.err != nil {
+		return
+	}
+	*dest, f.err = f.cmd.Flags().GetString(name)
+	if f.err != nil {
+		f.err = fmt.Errorf("flag %q: %w", name, f.err)
+	}
+}
+
+func (f *flagReader) getBool(dest *bool, name string) {
+	if f.err != nil {
+		return
+	}
+	*dest, f.err = f.cmd.Flags().GetBool(name)
+	if f.err != nil {
+		f.err = fmt.Errorf("flag %q: %w", name, f.err)
+	}
+}
+
 func initTestParamsFromFlags(cmd *cobra.Command) error {
 	testParams := configuration.GetTestParameters()
+	f := &flagReader{cmd: cmd}
 
-	// Fetch test params from flags
-	testParams.OutputDir, _ = cmd.Flags().GetString("output-dir")
-	testParams.LabelsFilter, _ = cmd.Flags().GetString("label-filter")
-	testParams.ServerMode, _ = cmd.Flags().GetBool("server-mode")
-	testParams.ConfigFile, _ = cmd.Flags().GetString("config-file")
-	testParams.Kubeconfig, _ = cmd.Flags().GetString("kubeconfig")
-	testParams.OmitArtifactsZipFile, _ = cmd.Flags().GetBool("omit-artifacts-zip-file")
-	testParams.LogLevel, _ = cmd.Flags().GetString("log-level")
-	testParams.OfflineDB, _ = cmd.Flags().GetString("offline-db")
-	testParams.PfltDockerconfig, _ = cmd.Flags().GetString("preflight-dockerconfig")
-	testParams.Intrusive, _ = cmd.Flags().GetBool("intrusive")
-	testParams.AllowPreflightInsecure, _ = cmd.Flags().GetBool("allow-preflight-insecure")
-	testParams.IncludeWebFilesInOutputFolder, _ = cmd.Flags().GetBool("include-web-files")
-	testParams.EnableDataCollection, _ = cmd.Flags().GetBool("enable-data-collection")
-	testParams.EnableXMLCreation, _ = cmd.Flags().GetBool("create-xml-junit-file")
-	testParams.CertSuiteProbeImage, _ = cmd.Flags().GetString("certsuite-probe-image")
-	testParams.DaemonsetCPUReq, _ = cmd.Flags().GetString("daemonset-cpu-req")
-	testParams.DaemonsetCPULim, _ = cmd.Flags().GetString("daemonset-cpu-lim")
-	testParams.DaemonsetMemReq, _ = cmd.Flags().GetString("daemonset-mem-req")
-	testParams.DaemonsetMemLim, _ = cmd.Flags().GetString("daemonset-mem-lim")
-	testParams.SanitizeClaim, _ = cmd.Flags().GetBool("sanitize-claim")
-	testParams.AllowNonRunning, _ = cmd.Flags().GetBool("allow-non-running")
-	testParams.ConnectAPIKey, _ = cmd.Flags().GetString("connect-api-key")
-	testParams.ConnectProjectID, _ = cmd.Flags().GetString("connect-project-id")
-	testParams.ConnectAPIBaseURL, _ = cmd.Flags().GetString("connect-api-base-url")
-	testParams.ConnectAPIProxyURL, _ = cmd.Flags().GetString("connect-api-proxy-url")
-	testParams.ConnectAPIProxyPort, _ = cmd.Flags().GetString("connect-api-proxy-port")
-	testParams.CleanupProbe, _ = cmd.Flags().GetBool("cleanup-probe")
-	testParams.RequireProbe, _ = cmd.Flags().GetBool("require-probe")
-	timeoutStr, _ := cmd.Flags().GetString("timeout")
+	f.getString(&testParams.OutputDir, "output-dir")
+	f.getString(&testParams.LabelsFilter, "label-filter")
+	f.getBool(&testParams.ServerMode, "server-mode")
+	f.getString(&testParams.ConfigFile, "config-file")
+	f.getString(&testParams.Kubeconfig, "kubeconfig")
+	f.getBool(&testParams.OmitArtifactsZipFile, "omit-artifacts-zip-file")
+	f.getString(&testParams.LogLevel, "log-level")
+	f.getString(&testParams.OfflineDB, "offline-db")
+	f.getString(&testParams.PfltDockerconfig, "preflight-dockerconfig")
+	f.getBool(&testParams.Intrusive, "intrusive")
+	f.getBool(&testParams.AllowPreflightInsecure, "allow-preflight-insecure")
+	f.getBool(&testParams.IncludeWebFilesInOutputFolder, "include-web-files")
+	f.getBool(&testParams.EnableDataCollection, "enable-data-collection")
+	f.getBool(&testParams.EnableXMLCreation, "create-xml-junit-file")
+	f.getString(&testParams.CertSuiteProbeImage, "certsuite-probe-image")
+	f.getString(&testParams.DaemonsetCPUReq, "daemonset-cpu-req")
+	f.getString(&testParams.DaemonsetCPULim, "daemonset-cpu-lim")
+	f.getString(&testParams.DaemonsetMemReq, "daemonset-mem-req")
+	f.getString(&testParams.DaemonsetMemLim, "daemonset-mem-lim")
+	f.getBool(&testParams.SanitizeClaim, "sanitize-claim")
+	f.getBool(&testParams.AllowNonRunning, "allow-non-running")
+	f.getString(&testParams.ConnectAPIKey, "connect-api-key")
+	f.getString(&testParams.ConnectProjectID, "connect-project-id")
+	f.getString(&testParams.ConnectAPIBaseURL, "connect-api-base-url")
+	f.getString(&testParams.ConnectAPIProxyURL, "connect-api-proxy-url")
+	f.getString(&testParams.ConnectAPIProxyPort, "connect-api-proxy-port")
+	f.getBool(&testParams.CleanupProbe, "cleanup-probe")
+	f.getBool(&testParams.RequireProbe, "require-probe")
+
+	var timeoutStr string
+	f.getString(&timeoutStr, "timeout")
+	if f.err != nil {
+		return f.err
+	}
 
 	// Check if the output directory exists and, if not, create it
 	if _, err := os.Stat(testParams.OutputDir); os.IsNotExist(err) {
@@ -105,11 +135,10 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	}
 
 	// Process the timeout flag
-	const timeoutDefaultvalue = 24 * time.Hour
 	timeout, err := time.ParseDuration(timeoutStr)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to parse timeout flag %q, err: %v. Using default timeout value %v", timeoutStr, err, timeoutDefaultvalue)
-		testParams.Timeout = timeoutDefaultvalue
+		fmt.Fprintf(os.Stderr, "Failed to parse timeout flag %q, err: %v. Using default timeout value %v", timeoutStr, err, timeoutFlagDefaultvalue)
+		testParams.Timeout = timeoutFlagDefaultvalue
 	} else {
 		testParams.Timeout = timeout
 	}
