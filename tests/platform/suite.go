@@ -566,11 +566,18 @@ func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvi
 		// Control plane nodes must be RHCOS (also CentOS Stream starting in OCP 4.13)
 		// Per the release notes from OCP documentation:
 		// "You must use RHCOS machines for the control plane, and you can use either RHCOS or RHEL for compute machines."
-		if node.IsControlPlaneNode() && !node.IsRHCOS() && !node.IsCSCOS() {
-			check.LogError("Control plane node %q has been found to be running an incompatible operating system %q", nodeName, node.Data.Status.NodeInfo.OSImage)
-			failedControlPlaneNodes = append(failedControlPlaneNodes, nodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Control plane node has been found to be running an incompatible OS", false).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
-			continue
+		if node.IsControlPlaneNode() {
+			if !node.IsRHCOS() && !node.IsCSCOS() {
+				check.LogError("Control plane node %q has been found to be running an incompatible operating system %q", nodeName, node.Data.Status.NodeInfo.OSImage)
+				failedControlPlaneNodes = append(failedControlPlaneNodes, nodeName)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Control plane node has been found to be running an incompatible OS", false).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
+			} else {
+				check.LogInfo("Control plane node %q has been found to be running a compatible OS %q", nodeName, node.Data.Status.NodeInfo.OSImage)
+				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Control plane node has been found to be running a compatible OS", true).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
+			}
+			if !node.IsWorkerNode() {
+				continue
+			}
 		}
 
 		// Worker nodes can either be RHEL or RHCOS
@@ -589,6 +596,7 @@ func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvi
 
 				if len(shortVersions) == 0 {
 					check.LogInfo("Node %q has an RHCOS operating system that is not found in our internal database. Skipping as to not cause failures due to database mismatch.", nodeName)
+					compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node is running RHCOS but the version was not found in the internal database", true).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
 					continue
 				}
 
@@ -633,6 +641,7 @@ func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvi
 					OCP RC/GA version. Relaxing the conditions to check the OS as a result.
 					`
 				check.LogDebug(msg, nodeName, shortVersion)
+				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Worker node is running CentOS Stream CoreOS (not yet validated against OCP versions)", true).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
 			} else if node.IsRHEL() {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHELVersion()
