@@ -139,6 +139,8 @@ const (
 
 	UndeclaredContainerPortsRemediation = `Ensure the workload's apps do not listen on undeclared containers' ports.`
 
+	UnsecuredContainerPortsRemediation = `Ensure all listening TCP ports use TLS. If a port intentionally serves plaintext (e.g., health probes behind network policies), annotate the pod with certsuite.redhat.com/non-tls-ports: "port1,port2".`
+
 	CrdsStatusSubresourceRemediation = `Ensure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).`
 
 	LoggingRemediation = `Ensure containers are not redirecting stdout/stderr`
