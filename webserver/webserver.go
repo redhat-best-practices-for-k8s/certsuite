@@ -363,7 +363,7 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	config.ManagedDeployments = managedDeployments
 
 	var managedStatefulsets []configuration.ManagedDeploymentsStatefulsets
-	for _, val := range data.ManagedDeployments {
+	for _, val := range data.ManagedStatefulsets {
 		managedStatefulsets = append(managedStatefulsets, configuration.ManagedDeploymentsStatefulsets{Name: val})
 	}
 	config.ManagedStatefulsets = managedStatefulsets
