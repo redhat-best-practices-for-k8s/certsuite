@@ -409,6 +409,10 @@ func nameInStatefulSetSkipList(name, namespace string, list []configuration.Skip
 //nolint:dupl
 func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration, check *checksdb.Check) {
 	defer env.SetNeedsRefresh()
+	if len(env.Deployments) == 0 {
+		check.SetResultSkipped("no deployments to check found")
+		return
+	}
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, deployment := range env.Deployments {
@@ -483,6 +487,10 @@ func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration, check *c
 //nolint:dupl
 func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration, check *checksdb.Check) {
 	defer env.SetNeedsRefresh()
+	if len(env.StatefulSets) == 0 {
+		check.SetResultSkipped("no statefulsets to check found")
+		return
+	}
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, statefulSet := range env.StatefulSets {
