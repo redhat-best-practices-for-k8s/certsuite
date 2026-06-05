@@ -49,6 +49,7 @@ func CompressResultsArtifacts(outputDir string, filePaths []string) (string, err
 		return "", fmt.Errorf("failed creating tar.gz file %s in dir %s (filepath=%s): %v",
 			zipFileName, outputDir, zipFilePath, err)
 	}
+	defer zipFile.Close()
 
 	zipWriter := gzip.NewWriter(zipFile)
 	defer zipWriter.Close()
@@ -74,11 +75,11 @@ func CompressResultsArtifacts(outputDir string, filePaths []string) (string, err
 			return "", fmt.Errorf("failed to open file %s: %v", file, err)
 		}
 
-		if _, err = io.Copy(tarWriter, f); err != nil {
-			return "", fmt.Errorf("failed to tar file %s: %v", file, err)
-		}
-
+		_, err = io.Copy(tarWriter, f)
 		f.Close()
+		if err != nil {
+			return "", fmt.Errorf("failed to tar file %s: %w", file, err)
+		}
 	}
 
 	// Create fully qualified path to the zip file
