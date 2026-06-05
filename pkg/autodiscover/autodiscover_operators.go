@@ -196,7 +196,8 @@ func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*rel
 
 		helmClient, err := helmclient.NewClientFromRestConf(opt)
 		if err != nil {
-			panic(err)
+			log.Error("Failed to create helm client for namespace %q, err: %v", ns, err)
+			continue
 		}
 		nsHelmchartreleases, _ := helmClient.ListDeployedReleases()
 		helmChartReleases[ns] = nsHelmchartreleases
