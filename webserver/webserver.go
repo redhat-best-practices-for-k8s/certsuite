@@ -199,8 +199,8 @@ func installReqHandlers() {
 	http.HandleFunc("/logstream", logStreamHandler)
 }
 
-func StartServer(outputFolder string) {
-	ctx := context.TODO()
+func StartServer(outputFolder string) error {
+	ctx := context.Background()
 	server := &http.Server{
 		Addr:        ":8084",                          // Server address
 		ReadTimeout: readTimeoutSeconds * time.Second, // Maximum duration for reading the entire request
@@ -216,8 +216,10 @@ func StartServer(outputFolder string) {
 
 	log.Info("Server is running on :8084...")
 	if err := server.ListenAndServe(); err != nil {
-		panic(err)
+		return fmt.Errorf("server listen error: %w", err)
 	}
+
+	return nil
 }
 
 // Define an HTTP handler that triggers CERTSUITE tests

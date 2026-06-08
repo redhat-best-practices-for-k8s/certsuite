@@ -118,17 +118,10 @@ func dumpCsv(_ *cobra.Command, _ []string) error {
 	// initializes CSV writer
 	writer := csv.NewWriter(os.Stdout)
 
-	// writes all CSV records
 	err = writer.WriteAll(resultsCsv)
 	if err != nil {
 		log.Fatalf("Failed to write results CSV to screen, err: %s", err)
 		return nil
-	}
-	// flushes buffer to screen
-	writer.Flush()
-	// Check for any writing errors
-	if err := writer.Error(); err != nil {
-		panic(err)
 	}
 
 	return nil
