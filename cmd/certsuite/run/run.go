@@ -154,7 +154,9 @@ func runTestSuite(cmd *cobra.Command, _ []string) error {
 	testParams := configuration.GetTestParameters()
 	if testParams.ServerMode {
 		log.Info("Running Certification Suite in web server mode")
-		webserver.StartServer(testParams.OutputDir)
+		if err := webserver.StartServer(testParams.OutputDir); err != nil {
+			log.Fatal("Failed to start web server: %v", err)
+		}
 	} else {
 		certsuite.Startup()
 		defer certsuite.Shutdown()
