@@ -20,6 +20,7 @@ require (
 	github.com/operator-framework/api v0.42.0
 	github.com/operator-framework/operator-lifecycle-manager v0.42.0
 	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.65
+	github.com/redhat-best-practices-for-k8s/checks v0.0.23
 	github.com/redhat-best-practices-for-k8s/oct v0.0.63
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.70
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20260421203005-eb87e5b2d67a
