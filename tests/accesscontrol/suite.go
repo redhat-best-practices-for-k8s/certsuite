@@ -43,8 +43,9 @@ import (
 )
 
 const (
-	nodePort              = "NodePort"
-	defaultServiceAccount = "default"
+	nodePort                  = "NodePort"
+	defaultServiceAccount     = "default"
+	clusterServiceVersionKind = "ClusterServiceVersion"
 )
 
 var (
@@ -602,38 +603,10 @@ func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
 					continue
 				}
 				// If we make it to this point, the role binding and the pod are in different namespaces.
-				// We must check if the pod's service account is in the role binding's subjects.
-				found := false
-				for _, subject := range env.RoleBindings[rbIndex].Subjects {
-					// If the subject is a service account and the service account is in the same namespace as one of the CNF's namespaces, then continue, this is allowed
-					if subject.Kind == rbacv1.ServiceAccountKind &&
-						subject.Namespace == put.Namespace &&
-						subject.Name == put.Spec.ServiceAccountName &&
-						stringhelper.StringInSlice[string](env.Namespaces, env.RoleBindings[rbIndex].Namespace, false) {
-						continue
-					}
-
-					// Finally, if the subject is a service account and the service account is in the same namespace as the pod, then we have a failure
-					if subject.Kind == rbacv1.ServiceAccountKind &&
-						subject.Namespace == put.Namespace &&
-						subject.Name == put.Spec.ServiceAccountName {
-						check.LogError("Pod %q has the following role bindings that do not live in one of the CNF namespaces: %q", put, env.RoleBindings[rbIndex].Name)
-
-						// Add the pod to the non-compliant list
-						nonCompliantObjects = append(nonCompliantObjects,
-							testhelper.NewPodReportObject(put.Namespace, put.Name,
-								"The role bindings used by this pod do not live in one of the CNF namespaces", false).
-								AddField(testhelper.RoleBindingName, env.RoleBindings[rbIndex].Name).
-								AddField(testhelper.RoleBindingNamespace, env.RoleBindings[rbIndex].Namespace).
-								AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName).
-								SetType(testhelper.PodRoleBinding))
-						found = true
-						podIsCompliant = false
-						break
-					}
-				}
-				// Break of out the loop if we found a role binding that is out of namespace
-				if found {
+				// Check if this represents a violation.
+				if violation := checkCrossNamespaceRoleBindingViolation(&env.RoleBindings[rbIndex], put, env.Namespaces, check); violation != nil {
+					nonCompliantObjects = append(nonCompliantObjects, violation)
+					podIsCompliant = false
 					break
 				}
 			}
@@ -678,6 +651,13 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 		if isOwnedByClusterWideOperator && result {
 			check.LogInfo("Pod %q is using a cluster role binding but is owned by a cluster-wide operator (Csv %q, namespace %q)", put, csvName, csvNamespace)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding but owned by a cluster-wide operator", true))
+			continue
+		}
+		// Allow system:auth-delegator ClusterRoleBinding for OLM-managed pods (required for Kubernetes extension API server)
+		// See: https://kubernetes.io/docs/tasks/extend-kubernetes/setup-extension-api-server/
+		if result && roleRefName == "system:auth-delegator" && isOwnedByOLM(put) {
+			check.LogInfo("Pod %q is using system:auth-delegator cluster role binding but is owned by OLM (extension API server requirement)", put)
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using system:auth-delegator cluster role binding but owned by OLM (extension API server requirement)", true))
 			continue
 		}
 		if result {
@@ -733,6 +713,76 @@ func ownedByClusterWideOperator(topOwners map[string]podhelper.TopOwner, env *pr
 		}
 	}
 	return "", "", false
+}
+
+// isOwnedByOLM checks if a pod is managed by OLM (Operator Lifecycle Manager).
+// It checks for OLM-specific labels and owner references that indicate the pod is managed by an operator.
+// Return:
+//   - bool: true if the pod has OLM labels or CSV owner references, otherwise false
+func isOwnedByOLM(put *provider.Pod) bool {
+	// Check for OLM-specific labels
+	if _, hasOLMOwner := put.Labels["olm.owner"]; hasOLMOwner {
+		return true
+	}
+	if _, hasOLMNamespace := put.Labels["olm.owner.namespace"]; hasOLMNamespace {
+		return true
+	}
+	if _, hasOLMKind := put.Labels["olm.owner.kind"]; hasOLMKind {
+		return true
+	}
+
+	// Check owner references for ClusterServiceVersion
+	for _, ownerRef := range put.OwnerReferences {
+		if ownerRef.Kind == clusterServiceVersionKind {
+			return true
+		}
+	}
+
+	return false
+}
+
+// isAllowedExtensionAPIServerRoleBinding checks if a RoleBinding is an allowed cross-namespace binding
+// for Kubernetes extension API servers. Returns true if the RoleBinding is the documented
+// extension-apiserver-authentication-reader in kube-system for an OLM-managed pod.
+// See: https://kubernetes.io/docs/tasks/extend-kubernetes/setup-extension-api-server/
+func isAllowedExtensionAPIServerRoleBinding(rb *rbacv1.RoleBinding, put *provider.Pod) bool {
+	return rb.Namespace == "kube-system" &&
+		rb.RoleRef.Name == "extension-apiserver-authentication-reader" &&
+		isOwnedByOLM(put)
+}
+
+// checkCrossNamespaceRoleBindingViolation checks if a cross-namespace RoleBinding represents a violation.
+// Returns a violation report object if the binding is not allowed, nil otherwise.
+func checkCrossNamespaceRoleBindingViolation(rb *rbacv1.RoleBinding, put *provider.Pod, cnfNamespaces []string, check *checksdb.Check) *testhelper.ReportObject {
+	for _, subject := range rb.Subjects {
+		// If the subject is a service account in a CNF namespace, this is allowed
+		if subject.Kind == rbacv1.ServiceAccountKind &&
+			subject.Namespace == put.Namespace &&
+			subject.Name == put.Spec.ServiceAccountName &&
+			stringhelper.StringInSlice[string](cnfNamespaces, rb.Namespace, false) {
+			continue
+		}
+
+		// Check if this is the pod's service account
+		if subject.Kind == rbacv1.ServiceAccountKind &&
+			subject.Namespace == put.Namespace &&
+			subject.Name == put.Spec.ServiceAccountName {
+			// Allow extension API server RoleBinding for OLM-managed pods
+			if isAllowedExtensionAPIServerRoleBinding(rb, put) {
+				check.LogInfo("Pod %q is using extension-apiserver-authentication-reader role binding in kube-system but is owned by OLM (extension API server requirement)", put)
+				return nil
+			}
+
+			check.LogError("Pod %q has the following role bindings that do not live in one of the CNF namespaces: %q", put, rb.Name)
+			return testhelper.NewPodReportObject(put.Namespace, put.Name,
+				"The role bindings used by this pod do not live in one of the CNF namespaces", false).
+				AddField(testhelper.RoleBindingName, rb.Name).
+				AddField(testhelper.RoleBindingNamespace, rb.Namespace).
+				AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName).
+				SetType(testhelper.PodRoleBinding)
+		}
+	}
+	return nil
 }
 
 // testAutomountServiceToken checks if each pod uses the default service account name and if the token is explicitly set in the Pod's spec or if it is inherited from the associated ServiceAccount.
