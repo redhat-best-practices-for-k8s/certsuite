@@ -58,7 +58,7 @@ func parseListeningPorts(cmdOut string) (map[PortInfo]bool, error) {
 
 		port, err := strconv.ParseInt(s[len(s)-1], 10, 32)
 		if err != nil {
-			return nil, fmt.Errorf("string to int conversion error, err: %v", err)
+			return nil, fmt.Errorf("string to int conversion error, err: %w", err)
 		}
 		protocol := strings.ToUpper(fields[indexProtocol])
 		portInfo := PortInfo{int32(port), protocol}

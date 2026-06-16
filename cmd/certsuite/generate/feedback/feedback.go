@@ -41,28 +41,28 @@ var (
 func runGenerateFeedbackJsFile(_ *cobra.Command, _ []string) error {
 	dat, err := os.ReadFile(feedbackJSONFilePath)
 	if err != nil {
-		return fmt.Errorf("failed to read json feedback file: %v", err)
+		return fmt.Errorf("failed to read json feedback file: %w", err)
 	}
 	var obj map[string]interface{}
 	err = json.Unmarshal(dat, &obj)
 	if err != nil {
-		return fmt.Errorf("failed to unmarshal json feedback file %s: %v", feedbackJSONFilePath, err)
+		return fmt.Errorf("failed to unmarshal json feedback file %s: %w", feedbackJSONFilePath, err)
 	}
 
 	// Print the JSON content
 	jsonBytes, err := json.MarshalIndent(obj, "", "  ")
 	if err != nil {
-		return fmt.Errorf("failed to marshal feedback js content: %v", err)
+		return fmt.Errorf("failed to marshal feedback js content: %w", err)
 	}
 	feedbackJsFilePath := filepath.Join(feedbackOutputPath, "feedback.js")
 	file, err := os.Create(feedbackJsFilePath)
 	if err != nil {
-		return fmt.Errorf("failed to create javascript feedback file: %v", err)
+		return fmt.Errorf("failed to create javascript feedback file: %w", err)
 	}
 	feedbackjs := "feedback="
 	_, err = file.WriteString(feedbackjs + string(jsonBytes))
 	if err != nil {
-		return fmt.Errorf("failed to write javascript feedback file: %v", err)
+		return fmt.Errorf("failed to write javascript feedback file: %w", err)
 	}
 
 	fmt.Println(feedbackjs + string(jsonBytes))

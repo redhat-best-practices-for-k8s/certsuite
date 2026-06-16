@@ -166,7 +166,7 @@ func getNonCompliantObjectsFromFailureReason(checkDetails string) ([]NonComplian
 
 	err := json.Unmarshal([]byte(checkDetails), &objects)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decode checkDetails %s: %v", checkDetails, err)
+		return nil, fmt.Errorf("failed to decode checkDetails %s: %w", checkDetails, err)
 	}
 
 	// Now let's create a list of our NonCompliantObject-type items.
@@ -286,7 +286,7 @@ func showFailures(_ *cobra.Command, _ []string) error {
 	// Parse the claim file into the claim scheme.
 	claimScheme, err := claim.Parse(claimFilePathFlag)
 	if err != nil {
-		return fmt.Errorf("failed to parse claim file %s: %v", claimFilePathFlag, err)
+		return fmt.Errorf("failed to parse claim file %s: %w", claimFilePathFlag, err)
 	}
 
 	// Check claim format version

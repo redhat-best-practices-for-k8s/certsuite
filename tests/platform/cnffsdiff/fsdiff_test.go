@@ -153,7 +153,7 @@ func TestRunTestMountFolderErrors(t *testing.T) {
 			mockedClientshHolder: &ClientHoldersMountCustomPodmanMock{
 				createFolderErr: fmt.Errorf("custom error"),
 			},
-			expectedError: "failed or unexpected output when creating folder /host/tmp/tnf-podman. Stderr: , Stdout: , Err: custom error",
+			expectedError: "failed to create temp folder /host/tmp/tnf-podman: failed or unexpected output when creating folder /host/tmp/tnf-podman. Stderr: , Stdout: , Err: custom error",
 		},
 		{
 			mockedClientshHolder: &ClientHoldersMountCustomPodmanMock{
@@ -161,7 +161,7 @@ func TestRunTestMountFolderErrors(t *testing.T) {
 				createFolderStderr: "custom stderr",
 				createFolderErr:    nil,
 			},
-			expectedError: "failed or unexpected output when creating folder /host/tmp/tnf-podman. Stderr: custom stdout, Stdout: custom stderr, Err: <nil>",
+			expectedError: "failed to create temp folder /host/tmp/tnf-podman: failed or unexpected output when creating folder /host/tmp/tnf-podman. Stderr: custom stdout, Stdout: custom stderr, Err: <nil>",
 		},
 
 		// Errors mounting the podman folder.

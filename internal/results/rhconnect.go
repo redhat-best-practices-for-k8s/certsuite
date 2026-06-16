@@ -24,12 +24,12 @@ const (
 func createFormField(w *multipart.Writer, field, value string) error {
 	fw, err := w.CreateFormField(field)
 	if err != nil {
-		return fmt.Errorf("failed to create form field: %v", err)
+		return fmt.Errorf("failed to create form field: %w", err)
 	}
 
 	_, err = fw.Write([]byte(value))
 	if err != nil {
-		return fmt.Errorf("failed to write field %s: %v", field, err)
+		return fmt.Errorf("failed to write field %s: %w", field, err)
 	}
 
 	return nil
@@ -71,7 +71,7 @@ func GetCertIDFromConnectAPI(apiKey, projectID, connectAPIBaseURL, proxyURL, pro
 	// Create a new request
 	req, err := http.NewRequest("POST", certIDURL, bytes.NewBuffer(projectIDJSONBytes))
 	if err != nil {
-		return "", fmt.Errorf("failed to create new request: %v", err)
+		return "", fmt.Errorf("failed to create new request: %w", err)
 	}
 
 	log.Debug("Request Body: %s", req.Body)
@@ -90,7 +90,7 @@ func GetCertIDFromConnectAPI(apiKey, projectID, connectAPIBaseURL, proxyURL, pro
 	setProxy(client, proxyURL, proxyPort)
 	res, err := sendRequest(req, client)
 	if err != nil {
-		return "", fmt.Errorf("failed to send post request to the endpoint: %v", err)
+		return "", fmt.Errorf("failed to send post request to the endpoint: %w", err)
 	}
 	defer res.Body.Close()
 
@@ -98,7 +98,7 @@ func GetCertIDFromConnectAPI(apiKey, projectID, connectAPIBaseURL, proxyURL, pro
 	var certIDResponse CertIDResponse
 	err = json.NewDecoder(res.Body).Decode(&certIDResponse)
 	if err != nil {
-		return "", fmt.Errorf("failed to decode response body: %v", err)
+		return "", fmt.Errorf("failed to decode response body: %w", err)
 	}
 
 	log.Info("Certification ID retrieved from the API: %d", certIDResponse.ID)
@@ -148,7 +148,7 @@ func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, 
 
 	fw, err := w.CreateFormFile("attachment", zipFile)
 	if err != nil {
-		return fmt.Errorf("failed to create form file: %v", err)
+		return fmt.Errorf("failed to create form file: %w", err)
 	}
 
 	if _, err = io.Copy(fw, claimFile); err != nil {
@@ -181,7 +181,7 @@ func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, 
 	// Create a new request
 	req, err := http.NewRequest("POST", connectAPIURL, &buffer)
 	if err != nil {
-		return fmt.Errorf("failed to create new request: %v", err)
+		return fmt.Errorf("failed to create new request: %w", err)
 	}
 
 	// Set the content type
@@ -195,7 +195,7 @@ func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, 
 	setProxy(client, proxyURL, proxyPort)
 	response, err := sendRequest(req, client)
 	if err != nil {
-		return fmt.Errorf("failed to send post request to the endpoint: %v", err)
+		return fmt.Errorf("failed to send post request to the endpoint: %w", err)
 	}
 	defer response.Body.Close()
 
@@ -203,7 +203,7 @@ func SendResultsToConnectAPI(zipFile, apiKey, connectBaseURL, certID, proxyURL, 
 	var uploadResult UploadResult
 	err = json.NewDecoder(response.Body).Decode(&uploadResult)
 	if err != nil {
-		return fmt.Errorf("failed to decode response body: %v", err)
+		return fmt.Errorf("failed to decode response body: %w", err)
 	}
 
 	log.Info("Download URL: %s", uploadResult.DownloadURL)
@@ -217,7 +217,7 @@ func sendRequest(req *http.Request, client *http.Client) (*http.Response, error)
 
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("failed to send post request: %v", err)
+		return nil, fmt.Errorf("failed to send post request: %w", err)
 	}
 
 	if res.StatusCode != http.StatusOK {

@@ -120,7 +120,7 @@ func NewClaimBuilder(env *provider.TestEnvironment) (*ClaimBuilder, error) {
 	log.Debug("Creating claim file builder.")
 	configurations, err := MarshalConfigurations(env)
 	if err != nil {
-		return nil, fmt.Errorf("configuration node missing because of: %v", err)
+		return nil, fmt.Errorf("configuration node missing because of: %w", err)
 	}
 
 	claimConfigurations := map[string]interface{}{}

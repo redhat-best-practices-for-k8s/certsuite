@@ -139,7 +139,7 @@ func LoadChecks() {
 		WithCheckFn(func(c *checksdb.Check) error {
 			sriovPods, err := env.GetPodsUsingSRIOV()
 			if err != nil {
-				return fmt.Errorf("failure getting pods using SRIOV: %v", err)
+				return fmt.Errorf("failure getting pods using SRIOV: %w", err)
 			}
 			testRestartOnRebootLabelOnPodsUsingSriov(c, sriovPods)
 			return nil
@@ -152,7 +152,7 @@ func LoadChecks() {
 		WithCheckFn(func(c *checksdb.Check) error {
 			sriovPods, err := env.GetPodsUsingSRIOV()
 			if err != nil {
-				return fmt.Errorf("failure getting pods using SRIOV: %v", err)
+				return fmt.Errorf("failure getting pods using SRIOV: %w", err)
 			}
 			testNetworkAttachmentDefinitionSRIOVUsingMTU(c, sriovPods)
 			return nil

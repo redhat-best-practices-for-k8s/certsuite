@@ -40,12 +40,12 @@ func CreateGlobalLogFile(outputDir, logLevel string) error {
 	logFilePath := outputDir + "/" + LogFileName
 	err := os.Remove(logFilePath)
 	if err != nil && !os.IsNotExist(err) {
-		return fmt.Errorf("could not delete old log file, err: %v", err)
+		return fmt.Errorf("could not delete old log file, err: %w", err)
 	}
 
 	logFile, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE, LogFilePermissions)
 	if err != nil {
-		return fmt.Errorf("could not open a new log file, err: %v", err)
+		return fmt.Errorf("could not open a new log file, err: %w", err)
 	}
 
 	SetupLogger(logFile, logLevel)

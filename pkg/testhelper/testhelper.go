@@ -712,7 +712,7 @@ func ResultObjectsToString(compliantObject, nonCompliantObject []*ReportObject) 
 
 	bytes, err := json.Marshal(reason)
 	if err != nil {
-		return "", fmt.Errorf("could not marshall FailureReasonOut object: %v", err)
+		return "", fmt.Errorf("could not marshall FailureReasonOut object: %w", err)
 	}
 
 	return string(bytes), nil

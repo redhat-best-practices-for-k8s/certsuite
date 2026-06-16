@@ -143,7 +143,7 @@ func (env *TestEnvironment) GetPodsUsingSRIOV() ([]*Pod, error) {
 	for _, p := range env.Pods {
 		usesSRIOV, err := p.IsUsingSRIOV()
 		if err != nil {
-			return nil, fmt.Errorf("failed to check sriov usage for pod %s: %v", p, err)
+			return nil, fmt.Errorf("failed to check sriov usage for pod %s: %w", p, err)
 		}
 
 		if usesSRIOV {

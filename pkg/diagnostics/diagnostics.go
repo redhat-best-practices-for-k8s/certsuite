@@ -121,7 +121,7 @@ func getHWJsonOutput(probePod *corev1.Pod, o clientsholder.Command, cmd string) 
 	}
 	err = json.Unmarshal([]byte(outStr), &out)
 	if err != nil {
-		return out, fmt.Errorf("could not decode json file because of: %s", err)
+		return out, fmt.Errorf("could not decode json file because of: %w", err)
 	}
 	return out, nil
 }

@@ -30,7 +30,7 @@ func GetPodTopOwner(podNamespace string, podOwnerReferences []metav1.OwnerRefere
 		podNamespace,
 		podOwnerReferences)
 	if err != nil {
-		return topOwners, fmt.Errorf("could not get top owners, err: %v", err)
+		return topOwners, fmt.Errorf("could not get top owners, err: %w", err)
 	}
 	return topOwners, nil
 }
@@ -40,12 +40,12 @@ func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient
 	for _, ownerRef := range ownerRefs {
 		apiResource, err := searchAPIResource(ownerRef.Kind, ownerRef.APIVersion, resourceList)
 		if err != nil {
-			return fmt.Errorf("error searching APIResource for owner reference %v: %v", ownerRef, err)
+			return fmt.Errorf("error searching APIResource for owner reference %v: %w", ownerRef, err)
 		}
 
 		gv, err := schema.ParseGroupVersion(ownerRef.APIVersion)
 		if err != nil {
-			return fmt.Errorf("failed to parse apiVersion %q: %v", ownerRef.APIVersion, err)
+			return fmt.Errorf("failed to parse apiVersion %q: %w", ownerRef.APIVersion, err)
 		}
 
 		gvr := schema.GroupVersionResource{
@@ -63,7 +63,7 @@ func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient
 		// spawned and removed after completion.
 		resource, err := dynamicClient.Resource(gvr).Namespace(namespace).Get(context.TODO(), ownerRef.Name, metav1.GetOptions{})
 		if err != nil && !k8serrors.IsNotFound(err) {
-			return fmt.Errorf("could not get object indicated by owner references %+v (gvr=%+v): %v", ownerRef, gvr, err)
+			return fmt.Errorf("could not get object indicated by owner references %+v (gvr=%+v): %w", ownerRef, gvr, err)
 		}
 
 		// Get owner references of the unstructured object

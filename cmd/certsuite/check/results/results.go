@@ -50,7 +50,7 @@ func checkResults(cmd *cobra.Command, _ []string) error {
 	// Build a database with the test results from the log file
 	actualTestResults, err := getTestResultsDB(logFileName)
 	if err != nil {
-		return fmt.Errorf("could not get the test results DB, err: %v", err)
+		return fmt.Errorf("could not get the test results DB, err: %w", err)
 	}
 
 	// Generate a reference YAML template with the test results if required
@@ -61,7 +61,7 @@ func checkResults(cmd *cobra.Command, _ []string) error {
 	// Get the expected test results from the reference YAML template
 	expectedTestResults, err := getExpectedTestResults(templateFileName)
 	if err != nil {
-		return fmt.Errorf("could not get the expected test results, err: %v", err)
+		return fmt.Errorf("could not get the expected test results, err: %w", err)
 	}
 
 	// Match the results between the test results DB and the reference YAML template
@@ -95,7 +95,7 @@ func getTestResultsDB(logFileName string) (map[string]string, error) {
 
 	file, err := os.Open(logFileName)
 	if err != nil {
-		return nil, fmt.Errorf("could not open file %q, err: %v", logFileName, err)
+		return nil, fmt.Errorf("could not open file %q, err: %w", logFileName, err)
 	}
 	defer file.Close()
 
@@ -118,7 +118,7 @@ func getTestResultsDB(logFileName string) (map[string]string, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("error scanning file, err: %v", err)
+		return nil, fmt.Errorf("error scanning file, err: %w", err)
 	}
 
 	return resultsDB, nil
@@ -127,13 +127,13 @@ func getTestResultsDB(logFileName string) (map[string]string, error) {
 func getExpectedTestResults(templateFileName string) (map[string]string, error) {
 	templateFile, err := os.ReadFile(templateFileName)
 	if err != nil {
-		return nil, fmt.Errorf("could not open template file %q, err: %v", templateFileName, err)
+		return nil, fmt.Errorf("could not open template file %q, err: %w", templateFileName, err)
 	}
 
 	var expectedTestResultsList TestResults
 	err = yaml.Unmarshal(templateFile, &expectedTestResultsList)
 	if err != nil {
-		return nil, fmt.Errorf("could not parse the template YAML file, err: %v", err)
+		return nil, fmt.Errorf("could not parse the template YAML file, err: %w", err)
 	}
 
 	expectedTestResults := make(map[string]string)
@@ -190,12 +190,12 @@ func generateTemplateFile(resultsDB map[string]string) error {
 	yamlEncoder.SetIndent(twoSpaces)
 	err := yamlEncoder.Encode(&resultsTemplate)
 	if err != nil {
-		return fmt.Errorf("could not encode template yaml, err: %v", err)
+		return fmt.Errorf("could not encode template yaml, err: %w", err)
 	}
 
 	err = os.WriteFile(TestResultsTemplateFileName, yamlTemplate.Bytes(), TestResultsTemplateFilePermissions)
 	if err != nil {
-		return fmt.Errorf("could not write to file %q: %v", TestResultsTemplateFileName, err)
+		return fmt.Errorf("could not write to file %q: %w", TestResultsTemplateFileName, err)
 	}
 
 	return nil

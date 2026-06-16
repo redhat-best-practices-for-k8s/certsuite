@@ -53,7 +53,7 @@ func GetServiceIPVersion(aService *corev1.Service) (result netcommons.IPVersion,
 
 	res, err := isClusterIPsDualStack(aService.Spec.ClusterIPs)
 	if err != nil {
-		err = fmt.Errorf("%s, err:%s", ToString(aService), err)
+		err = fmt.Errorf("%s, err:%w", ToString(aService), err)
 		return result, err
 	}
 	if res {
@@ -87,7 +87,7 @@ func isClusterIPsDualStack(ips []string) (result bool, err error) {
 	for _, ip := range ips {
 		ipver, err := netcommons.GetIPVersion(ip)
 		if err != nil {
-			return result, fmt.Errorf("cannot get aService ClusterIPs (%s)  version - err: %v", ip, err)
+			return result, fmt.Errorf("cannot get aService ClusterIPs (%s)  version - err: %w", ip, err)
 		}
 		switch ipver {
 		case netcommons.IPv4:

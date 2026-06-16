@@ -18,7 +18,6 @@ package cnffsdiff
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -221,7 +220,7 @@ func (f *FsDiff) GetResults() int {
 func (f *FsDiff) execCommandContainer(cmd, errorStr string) error {
 	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, cmd)
 	if err != nil || output != "" || outerr != "" {
-		return errors.New(errorStr + fmt.Sprintf(" Stderr: %s, Stdout: %s, Err: %v", output, outerr, err))
+		return fmt.Errorf("%s Stderr: %s, Stdout: %s, Err: %v", errorStr, output, outerr, err)
 	}
 
 	return nil
@@ -251,7 +250,7 @@ func (f *FsDiff) installCustomPodman() error {
 	// We need to create the destination folder first.
 	f.check.LogInfo("Creating temp folder %s", nodeTmpMountFolder)
 	if err := f.createNodeFolder(); err != nil {
-		return err
+		return fmt.Errorf("failed to create temp folder %s: %w", nodeTmpMountFolder, err)
 	}
 
 	// Mount podman from partner probe pod into /host/tmp/...
@@ -259,7 +258,7 @@ func (f *FsDiff) installCustomPodman() error {
 	if mountErr := f.mountProbePodmanFolder(); mountErr != nil {
 		// We need to delete the temp folder previously created as mount point.
 		if deleteErr := f.deleteNodeFolder(); deleteErr != nil {
-			return fmt.Errorf("failed to mount folder %s: %s, failed to delete %s: %s",
+			return fmt.Errorf("failed to mount folder %s: %w, failed to delete %s: %w",
 				partnerPodmanFolder, mountErr, nodeTmpMountFolder, deleteErr)
 		}
 

@@ -257,7 +257,7 @@ func (check *Check) Run() error {
 	}
 
 	if check.Error != nil {
-		return fmt.Errorf("unable to run due to a previously existing error: %v", check.Error)
+		return fmt.Errorf("unable to run due to a previously existing error: %w", check.Error)
 	}
 
 	cli.PrintCheckRunning(check.ID)
@@ -270,17 +270,17 @@ func (check *Check) Run() error {
 	check.LogInfo("Running check (labels: %v)", check.Labels)
 	if check.BeforeCheckFn != nil {
 		if err := check.BeforeCheckFn(check); err != nil {
-			return fmt.Errorf("check %s failed in before check function: %v", check.ID, err)
+			return fmt.Errorf("check %s failed in before check function: %w", check.ID, err)
 		}
 	}
 
 	if err := check.CheckFn(check); err != nil {
-		return fmt.Errorf("check %s failed in check function: %v", check.ID, err)
+		return fmt.Errorf("check %s failed in check function: %w", check.ID, err)
 	}
 
 	if check.AfterCheckFn != nil {
 		if err := check.AfterCheckFn(check); err != nil {
-			return fmt.Errorf("check %s failed in after check function: %v", check.ID, err)
+			return fmt.Errorf("check %s failed in after check function: %w", check.ID, err)
 		}
 	}
 

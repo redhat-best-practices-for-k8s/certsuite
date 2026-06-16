@@ -104,7 +104,7 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 
 	podLogsReaderCloser, err := req.Stream(context.TODO())
 	if err != nil {
-		return false, fmt.Errorf("unable to get log streamer, err: %v", err)
+		return false, fmt.Errorf("unable to get log streamer, err: %w", err)
 	}
 
 	defer podLogsReaderCloser.Close()
@@ -112,7 +112,7 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 	buf := new(bytes.Buffer)
 	_, err = io.Copy(buf, podLogsReaderCloser)
 	if err != nil {
-		return false, fmt.Errorf("unable to get log data, err: %v", err)
+		return false, fmt.Errorf("unable to get log data, err: %w", err)
 	}
 
 	return buf.String() != "", nil

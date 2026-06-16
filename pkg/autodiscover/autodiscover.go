@@ -394,7 +394,7 @@ func getOperatorCsvPods(csvList []*olmv1Alpha.ClusterServiceVersion) (map[types.
 
 		pods, err := getPodsOwnedByCsv(csv.Name, strings.TrimSpace(ns), client)
 		if err != nil {
-			return nil, fmt.Errorf("failed to get pods from ns %v: %v", ns, err)
+			return nil, fmt.Errorf("failed to get pods from ns %v: %w", ns, err)
 		}
 
 		csvToPodsMapping[types.NamespacedName{Name: csv.Name, Namespace: csv.Namespace}] = pods
@@ -415,7 +415,7 @@ func getPodsOwnedByCsv(csvName, operatorNamespace string, client *clientsholder.
 		pod := podsList.Items[index]
 		topOwners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
 		if err != nil {
-			return nil, fmt.Errorf("could not get top owners of Pod %s (in namespace %s), err=%v", pod.Name, pod.Namespace, err)
+			return nil, fmt.Errorf("could not get top owners of Pod %s (in namespace %s), err=%w", pod.Name, pod.Namespace, err)
 		}
 
 		// check if owner matches with the csv

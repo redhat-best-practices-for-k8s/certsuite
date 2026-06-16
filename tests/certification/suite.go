@@ -50,7 +50,7 @@ var (
 		var err error
 		validator, err = certdb.GetValidator(env.GetOfflineDBPath())
 		if err != nil {
-			return fmt.Errorf("cannot access the certification DB, err: %v", err)
+			return fmt.Errorf("cannot access the certification DB, err: %w", err)
 		}
 
 		return nil

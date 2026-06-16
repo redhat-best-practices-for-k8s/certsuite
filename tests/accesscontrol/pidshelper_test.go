@@ -91,7 +91,11 @@ func TestGetNbOfProcessesInPidNamespace(t *testing.T) {
 
 		// assertions
 		assert.Equal(t, tc.expectedResult, result)
-		assert.Equal(t, tc.expectedErr, err)
+		if tc.expectedErr != nil {
+			assert.EqualError(t, err, tc.expectedErr.Error())
+		} else {
+			assert.NoError(t, err)
+		}
 		assert.Equal(t, tc.expectedExecFuncCalls, ch.CallCount())
 	}
 }
