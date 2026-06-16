@@ -115,11 +115,6 @@ jobs:
           path: certsuite-qe
           ref: main
 
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@826c144163ac67bf08347590a5f81afd45da63ca # main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Run the tests (against image)
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:

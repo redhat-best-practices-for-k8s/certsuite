@@ -69,11 +69,6 @@ jobs:
       - name: Install yaml dependency
         uses: ./.github/actions/install-yaml-dep
 
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@826c144163ac67bf08347590a5f81afd45da63ca # main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Install checkmake
         run: |
           curl --location --output $CM_BIN --silent $CM_URL_LINUX
@@ -151,11 +146,6 @@ jobs:
       - name: Install yaml dependency
         uses: ./.github/actions/install-yaml-dep
 
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@826c144163ac67bf08347590a5f81afd45da63ca # main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Run Tests
         run: make test
         env:
@@ -229,11 +219,6 @@ jobs:
 
       - name: Install yaml dependency
         uses: ./.github/actions/install-yaml-dep
-
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@826c144163ac67bf08347590a5f81afd45da63ca # main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       # Update the CNF containers, helm charts and operators DB.
       - name: Update the CNF DB
@@ -321,7 +306,6 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
-      # needed by depends-on-action
       - name: Set up Go
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
         with:
@@ -331,11 +315,6 @@ jobs:
         uses: ./.github/actions/setup-partner-cluster
         with:
           make-command: 'install'
-
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@826c144163ac67bf08347590a5f81afd45da63ca # main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the `certsuite` image
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
@@ -535,16 +514,3 @@ jobs:
           slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
 
 
-  check-all-dependencies-are-merged:
-    name: Check all the PR dependencies are merged
-    runs-on: ubuntu-slim
-    steps:
-
-      - name: Checkout code
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-
-      - name: Check all dependent Pull Requests are merged
-        uses: depends-on/depends-on-action@826c144163ac67bf08347590a5f81afd45da63ca # main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          check-unmerged-pr: true
