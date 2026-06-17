@@ -130,14 +130,13 @@ type labelObject struct {
 
 var data = DiscoveredTestData{}
 
-const labelRegex = `(\S*)\s*:\s*(\S*)`
 const labelRegexMatches = 3
+
+var labelRegexCompiled = regexp.MustCompile(`(\S*)\s*:\s*(\S*)`)
 
 func CreateLabels(labelStrings []string) (labelObjects []labelObject) {
 	for _, label := range labelStrings {
-		r := regexp.MustCompile(labelRegex)
-
-		values := r.FindStringSubmatch(label)
+		values := labelRegexCompiled.FindStringSubmatch(label)
 		if len(values) != labelRegexMatches {
 			log.Error("Failed to parse label %q. It will not be used!, ", label)
 			continue
