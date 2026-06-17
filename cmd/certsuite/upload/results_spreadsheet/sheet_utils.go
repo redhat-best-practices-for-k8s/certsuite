@@ -73,7 +73,7 @@ func addBasicFilterToSpreadSheet(srv *sheets.Service, spreadsheet *sheets.Spread
 func addDescendingSortFilterToSheet(srv *sheets.Service, spreadsheet *sheets.Spreadsheet, sheetName, colName string) error {
 	sheetsValues, err := srv.Spreadsheets.Values.Get(spreadsheet.SpreadsheetId, sheetName).Do()
 	if err != nil {
-		return fmt.Errorf("unable to retrieve sheet %s values: %v", sheetName, err)
+		return fmt.Errorf("unable to retrieve sheet %s values: %w", sheetName, err)
 	}
 	headers := GetHeadersFromValueRange(sheetsValues)
 	indices, err := GetHeaderIndicesByColumnNames(headers, []string{colName})
@@ -83,7 +83,7 @@ func addDescendingSortFilterToSheet(srv *sheets.Service, spreadsheet *sheets.Spr
 
 	sheetID, err := GetSheetIDByName(spreadsheet, sheetName)
 	if err != nil {
-		return fmt.Errorf("unable to retrieve sheet %s id: %v", sheetName, err)
+		return fmt.Errorf("unable to retrieve sheet %s id: %w", sheetName, err)
 	}
 
 	requests := []*sheets.Request{
@@ -117,7 +117,7 @@ const booleanConditionTextEQ = "TEXT_EQ"
 func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *sheets.Spreadsheet, sheetName string) error {
 	sheetsValues, err := srv.Spreadsheets.Values.Get(spreadsheet.SpreadsheetId, sheetName).Do()
 	if err != nil {
-		return fmt.Errorf("unable to retrieve sheet %s values: %v", sheetName, err)
+		return fmt.Errorf("unable to retrieve sheet %s values: %w", sheetName, err)
 	}
 	headers := GetHeadersFromValueRange(sheetsValues)
 	indices, err := GetHeaderIndicesByColumnNames(headers, []string{"State", "Mandatory/Optional"})
@@ -130,7 +130,7 @@ func addFilterByFailedAndMandatoryToSheet(srv *sheets.Service, spreadsheet *shee
 
 	sheetID, err := GetSheetIDByName(spreadsheet, sheetName)
 	if err != nil {
-		return fmt.Errorf("unable to retrieve sheet %s id: %v", sheetName, err)
+		return fmt.Errorf("unable to retrieve sheet %s id: %w", sheetName, err)
 	}
 
 	requests := []*sheets.Request{

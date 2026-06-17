@@ -39,7 +39,7 @@ func checkImageCertStatus(cmd *cobra.Command, _ []string) error {
 
 	validator, err := certdb.GetValidator(offlineDB)
 	if err != nil {
-		return fmt.Errorf("could not get a validator for container images, error: %v", err)
+		return fmt.Errorf("could not get a validator for container images, error: %w", err)
 	}
 
 	switch {

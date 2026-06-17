@@ -128,10 +128,10 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 		var dirPerm fs.FileMode = 0o755 // default permissions for a directory
 		err := os.MkdirAll(testParams.OutputDir, dirPerm)
 		if err != nil {
-			return fmt.Errorf("could not create directory %q, err: %v", testParams.OutputDir, err)
+			return fmt.Errorf("could not create directory %q, err: %w", testParams.OutputDir, err)
 		}
 	} else if err != nil {
-		return fmt.Errorf("could not check directory %q, err: %v", testParams.OutputDir, err)
+		return fmt.Errorf("could not check directory %q, err: %w", testParams.OutputDir, err)
 	}
 
 	// Process the timeout flag

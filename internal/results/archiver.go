@@ -27,12 +27,12 @@ func generateZipFileName() string {
 func getFileTarHeader(file string) (*tar.Header, error) {
 	info, err := os.Stat(file)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get file info from %s: %v", file, err)
+		return nil, fmt.Errorf("failed to get file info from %s: %w", file, err)
 	}
 
 	header, err := tar.FileInfoHeader(info, info.Name())
 	if err != nil {
-		return nil, fmt.Errorf("failed to get file info header for %s: %v", file, err)
+		return nil, fmt.Errorf("failed to get file info header for %s: %w", file, err)
 	}
 
 	return header, nil
@@ -46,7 +46,7 @@ func CompressResultsArtifacts(outputDir string, filePaths []string) (string, err
 	log.Info("Compressing results artifacts into %s", zipFilePath)
 	zipFile, err := os.Create(zipFilePath)
 	if err != nil {
-		return "", fmt.Errorf("failed creating tar.gz file %s in dir %s (filepath=%s): %v",
+		return "", fmt.Errorf("failed creating tar.gz file %s in dir %s (filepath=%s): %w",
 			zipFileName, outputDir, zipFilePath, err)
 	}
 	defer zipFile.Close()
@@ -67,12 +67,12 @@ func CompressResultsArtifacts(outputDir string, filePaths []string) (string, err
 
 		err = tarWriter.WriteHeader(tarHeader)
 		if err != nil {
-			return "", fmt.Errorf("failed to write tar header for %s: %v", file, err)
+			return "", fmt.Errorf("failed to write tar header for %s: %w", file, err)
 		}
 
 		f, err := os.Open(file)
 		if err != nil {
-			return "", fmt.Errorf("failed to open file %s: %v", file, err)
+			return "", fmt.Errorf("failed to open file %s: %w", file, err)
 		}
 
 		_, err = io.Copy(tarWriter, f)
@@ -85,7 +85,7 @@ func CompressResultsArtifacts(outputDir string, filePaths []string) (string, err
 	// Create fully qualified path to the zip file
 	zipFilePath, err = filepath.Abs(zipFilePath)
 	if err != nil {
-		return "", fmt.Errorf("failed to get absolute path for %s: %v", zipFilePath, err)
+		return "", fmt.Errorf("failed to get absolute path for %s: %w", zipFilePath, err)
 	}
 
 	// Return the entire path to the zip file

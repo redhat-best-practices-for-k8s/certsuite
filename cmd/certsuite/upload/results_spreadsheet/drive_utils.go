@@ -23,7 +23,7 @@ func createDriveFolder(srv *drive.Service, folderName, parentFolderID string) (*
 
 	files, err := call.Do()
 	if err != nil {
-		return nil, fmt.Errorf("unable to list files: %v", err)
+		return nil, fmt.Errorf("unable to list files: %w", err)
 	}
 
 	if len(files.Files) > 0 {
@@ -32,7 +32,7 @@ func createDriveFolder(srv *drive.Service, folderName, parentFolderID string) (*
 
 	createdFolder, err := srv.Files.Create(driveFolder).Do()
 	if err != nil {
-		return nil, fmt.Errorf("unable to create folder: %v", err)
+		return nil, fmt.Errorf("unable to create folder: %w", err)
 	}
 
 	return createdFolder, nil

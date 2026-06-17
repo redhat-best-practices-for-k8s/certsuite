@@ -132,7 +132,7 @@ func findOperatorsByLabels(olmClient v1alpha1.OperatorsV1alpha1Interface, labels
 func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err error) {
 	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return allNs, fmt.Errorf("error getting all namespaces, err: %v", err)
+		return allNs, fmt.Errorf("error getting all namespaces, err: %w", err)
 	}
 	for index := range nsList.Items {
 		allNs = append(allNs, nsList.Items[index].Name)
@@ -145,7 +145,7 @@ func getAllOperators(olmClient v1alpha1.OperatorsV1alpha1Interface) ([]*olmv1Alp
 
 	csvList, err := olmClient.ClusterServiceVersions("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return nil, fmt.Errorf("error when listing CSVs in all namespaces, err: %v", err)
+		return nil, fmt.Errorf("error when listing CSVs in all namespaces, err: %w", err)
 	}
 	for i := range csvList.Items {
 		csvs = append(csvs, &csvList.Items[i])
@@ -280,7 +280,7 @@ func getOperandPodsFromTestCsvs(testCsvs []*olmv1Alpha.ClusterServiceVersion, po
 		pod := &pods[i]
 		owners, err := podhelper.GetPodTopOwner(pod.Namespace, pod.OwnerReferences)
 		if err != nil {
-			return nil, fmt.Errorf("failed to get top owners of pod %v/%v: %v", pod.Namespace, pod.Name, err)
+			return nil, fmt.Errorf("failed to get top owners of pod %v/%v: %w", pod.Namespace, pod.Name, err)
 		}
 
 		for _, owner := range owners {

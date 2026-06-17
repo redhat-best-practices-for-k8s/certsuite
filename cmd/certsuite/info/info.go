@@ -32,7 +32,7 @@ func showInfo(cmd *cobra.Command, _ []string) error {
 	// Get a list of matching test cases names
 	testIDs, err := getMatchingTestIDs(testCaseFlag)
 	if err != nil {
-		return fmt.Errorf("could not get the matching test case list, err: %v", err)
+		return fmt.Errorf("could not get the matching test case list, err: %w", err)
 	}
 
 	// Print the list and leave if only listing is required
@@ -123,12 +123,12 @@ func printTestList(testIDs []string) {
 
 func getMatchingTestIDs(labelExpr string) ([]string, error) {
 	if err := checksdb.InitLabelsExprEvaluator(labelExpr); err != nil {
-		return nil, fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
+		return nil, fmt.Errorf("failed to initialize a test case label evaluator, err: %w", err)
 	}
 	certsuite.LoadInternalChecksDB()
 	testIDs, err := checksdb.FilterCheckIDs()
 	if err != nil {
-		return nil, fmt.Errorf("could not list test cases, err: %v", err)
+		return nil, fmt.Errorf("could not list test cases, err: %w", err)
 	}
 
 	return testIDs, nil

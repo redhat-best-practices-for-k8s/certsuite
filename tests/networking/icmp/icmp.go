@@ -237,7 +237,7 @@ var TestPing = func(sourceContainerID *provider.Container, targetContainerIP net
 	stdout, stderr, err := crclient.ExecCommandContainerNSEnter(command, sourceContainerID)
 	if err != nil || stderr != "" {
 		results.outcome = testhelper.ERROR
-		return results, fmt.Errorf("ping failed with stderr:%s err:%s", stderr, err)
+		return results, fmt.Errorf("ping failed with stderr:%s err:%v", stderr, err)
 	}
 	results, err = parsePingResult(stdout, stderr)
 	if err != nil {

@@ -316,7 +316,7 @@ func isNetworkAttachmentDefinitionSRIOVConfigMTUSet(nadConfig string) (bool, err
 
 	cniConfig := CNIConfig{}
 	if err := json.Unmarshal([]byte(nadConfig), &cniConfig); err != nil {
-		return false, fmt.Errorf("failed to unmarshal cni config %s: %v", nadConfig, err)
+		return false, fmt.Errorf("failed to unmarshal cni config %s: %w", nadConfig, err)
 	}
 
 	if cniConfig.Plugins == nil {
@@ -379,7 +379,7 @@ func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error
 
 	cniConfig := CNIConfig{}
 	if err := json.Unmarshal([]byte(nadConfig), &cniConfig); err != nil {
-		return false, fmt.Errorf("failed to unmarshal cni config %s: %v", nadConfig, err)
+		return false, fmt.Errorf("failed to unmarshal cni config %s: %w", nadConfig, err)
 	}
 
 	// If type is found, it's a single plugin CNI config.
@@ -428,12 +428,12 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 		log.Debug("%s: Reviewing network-attachment definition %q", p, networkName)
 		nad, err := oc.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
 		if err != nil {
-			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
+			return false, fmt.Errorf("failed to get NetworkAttachment %s: %w", networkName, err)
 		}
 
 		isSRIOV, err := isNetworkAttachmentDefinitionConfigTypeSRIOV(nad.Spec.Config)
 		if err != nil {
-			return false, fmt.Errorf("failed to know if network-attachment %s is sriov: %v", networkName, err)
+			return false, fmt.Errorf("failed to know if network-attachment %s is sriov: %w", networkName, err)
 		}
 
 		log.Debug("%s: NAD config: %s", p, nad.Spec.Config)
@@ -468,7 +468,7 @@ func (p *Pod) IsUsingSRIOVWithMTU() (bool, error) {
 		nad, err := oc.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(
 			p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
 		if err != nil {
-			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
+			return false, fmt.Errorf("failed to get NetworkAttachment %s: %w", networkName, err)
 		}
 
 		// If the network-status annotation is not set, let's check the SriovNetwork/SriovNetworkNodePolicy CRs

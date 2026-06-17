@@ -2,7 +2,6 @@
 package hugepages
 
 import (
-	"errors"
 	"testing"
 
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
@@ -481,7 +480,7 @@ func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
 			&client,
 		)
 
-		assert.Equal(t, errors.New(tc.expectedErrorMsg), hpTester.Run())
+		assert.EqualError(t, hpTester.Run(), tc.expectedErrorMsg)
 	}
 }
 
@@ -726,6 +725,6 @@ func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 			&client,
 		)
 
-		assert.Equal(t, errors.New(tc.expectedErrorMsg), hpTester.Run())
+		assert.EqualError(t, hpTester.Run(), tc.expectedErrorMsg)
 	}
 }

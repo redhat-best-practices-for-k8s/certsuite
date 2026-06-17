@@ -56,7 +56,7 @@ func GetSysctlSettings(env *provider.TestEnvironment, nodeName string) (map[stri
 
 	outStr, errStr, err := o.ExecCommandContainer(ctx, sysctlCommand)
 	if err != nil || errStr != "" {
-		return nil, fmt.Errorf("failed to execute command %s in probe pod %s, err=%s, stderr=%s", sysctlCommand,
+		return nil, fmt.Errorf("failed to execute command %s in probe pod %s, err=%v, stderr=%s", sysctlCommand,
 			env.ProbePods[nodeName], err, errStr)
 	}
 

@@ -90,12 +90,12 @@ type Schema struct {
 func CheckVersion(version string) error {
 	claimSemVersion, err := semver.NewVersion(version)
 	if err != nil {
-		return fmt.Errorf("claim file version %q is not valid: %v", version, err)
+		return fmt.Errorf("claim file version %q is not valid: %w", version, err)
 	}
 
 	supportedSemVersion, err := semver.NewVersion(supportedClaimFormatVersion)
 	if err != nil {
-		return fmt.Errorf("supported claim file version v%v is not valid: v%v", supportedClaimFormatVersion, err)
+		return fmt.Errorf("supported claim file version v%v is not valid: %w", supportedClaimFormatVersion, err)
 	}
 
 	if claimSemVersion.Compare(supportedSemVersion) != 0 {
@@ -109,13 +109,13 @@ func CheckVersion(version string) error {
 func Parse(filePath string) (*Schema, error) {
 	fileBytes, err := os.ReadFile(filePath)
 	if err != nil {
-		return nil, fmt.Errorf("failure reading file: %v", err)
+		return nil, fmt.Errorf("failure reading file: %w", err)
 	}
 
 	claimFile := Schema{}
 	err = json.Unmarshal(fileBytes, &claimFile)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal file: %v", err)
+		return nil, fmt.Errorf("failed to unmarshal file: %w", err)
 	}
 
 	return &claimFile, nil

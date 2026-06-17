@@ -95,7 +95,7 @@ func intOrStringToValue(intOrStr *intstr.IntOrString, replicas int32) (int, erro
 		// Convert percentage to absolute value: "60%" with 5 replicas → 0.60 * 5 = 3
 		v, err := percentageToFloat(intOrStr.StrVal)
 		if err != nil {
-			return 0, fmt.Errorf("invalid value %q: %v", intOrStr.StrVal, err)
+			return 0, fmt.Errorf("invalid value %q: %w", intOrStr.StrVal, err)
 		}
 		return int(math.RoundToEven(v * float64(replicas))), nil
 	}
@@ -173,7 +173,7 @@ func CheckPDBIsZoneAware(pdb *policyv1.PodDisruptionBudget, replicas *int32, num
 		var err error
 		minAvailableValue, err = intOrStringToValue(pdb.Spec.MinAvailable, replicaCount)
 		if err != nil {
-			result.ZoneCheckError = fmt.Errorf("failed to parse minAvailable: %v", err)
+			result.ZoneCheckError = fmt.Errorf("failed to parse minAvailable: %w", err)
 			return result
 		}
 		result.MinAvailableValue = minAvailableValue
@@ -183,7 +183,7 @@ func CheckPDBIsZoneAware(pdb *policyv1.PodDisruptionBudget, replicas *int32, num
 		var err error
 		maxUnavailableValue, err = intOrStringToValue(pdb.Spec.MaxUnavailable, replicaCount)
 		if err != nil {
-			result.ZoneCheckError = fmt.Errorf("failed to parse maxUnavailable: %v", err)
+			result.ZoneCheckError = fmt.Errorf("failed to parse maxUnavailable: %w", err)
 			return result
 		}
 		result.MaxUnavailableValue = maxUnavailableValue

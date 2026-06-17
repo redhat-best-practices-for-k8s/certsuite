@@ -22,7 +22,7 @@ func createClaimJSFile(claimFilePath, outputDir string) (filePath string, err er
 	// Read claim.json content.
 	claimContent, err := os.ReadFile(claimFilePath)
 	if err != nil {
-		return "", fmt.Errorf("failed to read claim file %s content in %s: %v", claimFilePath, outputDir, err)
+		return "", fmt.Errorf("failed to read claim file %s content in %s: %w", claimFilePath, outputDir, err)
 	}
 
 	// Add the content as the value for the js variable.
@@ -31,7 +31,7 @@ func createClaimJSFile(claimFilePath, outputDir string) (filePath string, err er
 	filePath = filepath.Join(outputDir, jsClaimVarFileName)
 	err = os.WriteFile(filePath, []byte(jsClaimContent), writeFilePerms)
 	if err != nil {
-		return "", fmt.Errorf("failed to write file %s: %v", filePath, err)
+		return "", fmt.Errorf("failed to write file %s: %w", filePath, err)
 	}
 
 	return filePath, nil
@@ -58,14 +58,14 @@ func CreateResultsWebFiles(outputDir, claimFileName string) (filePaths []string,
 	claimFilePath := filepath.Join(outputDir, claimFileName)
 	claimJSFilePath, err := createClaimJSFile(claimFilePath, outputDir)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create file %s: %v", jsClaimVarFileName, err)
+		return nil, fmt.Errorf("failed to create file %s: %w", jsClaimVarFileName, err)
 	}
 
 	filePaths = []string{claimJSFilePath}
 	for _, f := range staticFiles {
 		err := os.WriteFile(f.Path, f.Content, writeFilePerms)
 		if err != nil {
-			return nil, fmt.Errorf("failed to create file %s: %v", f.Path, err)
+			return nil, fmt.Errorf("failed to create file %s: %w", f.Path, err)
 		}
 
 		// Add this file path to the slice.

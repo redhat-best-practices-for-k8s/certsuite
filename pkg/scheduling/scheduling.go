@@ -132,7 +132,7 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 	env := provider.GetTestEnvironment()
 	ctx, err := crclient.GetNodeProbePodContext(testContainer.NodeName, &env)
 	if err != nil {
-		return "", 0, fmt.Errorf("failed to get probe pod's context for container %s: %v", testContainer, err)
+		return "", 0, fmt.Errorf("failed to get probe pod's context for container %s: %w", testContainer, err)
 	}
 
 	ch := clientsholder.GetClientsHolder()
@@ -145,7 +145,7 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 
 	schedulePolicy, schedulePriority, err = parseSchedulingPolicyAndPriority(stdout)
 	if err != nil {
-		return schedulePolicy, InvalidPriority, fmt.Errorf("error getting the scheduling policy and priority for %v : %v", testContainer, err)
+		return schedulePolicy, InvalidPriority, fmt.Errorf("error getting the scheduling policy and priority for %v : %w", testContainer, err)
 	}
 	log.Info("pid %d in %v has the cpu scheduling policy %s, scheduling priority %d", pid, testContainer, schedulePolicy, schedulePriority)
 

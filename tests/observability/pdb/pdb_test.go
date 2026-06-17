@@ -208,7 +208,11 @@ func TestIntOrStringToValue(t *testing.T) {
 	for index, tc := range testCases {
 		result, err := intOrStringToValue(&testCases[index].intOrString, tc.testReplicas)
 		assert.Equal(t, tc.expectedInt, result)
-		assert.Equal(t, tc.expectedErr, err)
+		if tc.expectedErr != nil {
+			assert.EqualError(t, err, tc.expectedErr.Error())
+		} else {
+			assert.NoError(t, err)
+		}
 	}
 }
 

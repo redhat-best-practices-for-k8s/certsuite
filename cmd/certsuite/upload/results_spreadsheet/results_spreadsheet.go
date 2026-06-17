@@ -78,12 +78,12 @@ func CreateSheetsAndDriveServices(credentials string) (sheetService *sheets.Serv
 
 	sheetSrv, err := sheets.NewService(ctx, option.WithAuthCredentialsFile(option.ServiceAccount, credentials))
 	if err != nil {
-		return nil, nil, fmt.Errorf("unable to retrieve Sheets service: %v", err)
+		return nil, nil, fmt.Errorf("unable to retrieve Sheets service: %w", err)
 	}
 
 	driveSrv, err := drive.NewService(ctx, option.WithAuthCredentialsFile(option.ServiceAccount, credentials))
 	if err != nil {
-		return nil, nil, fmt.Errorf("unable to retrieve Drive service: %v", err)
+		return nil, nil, fmt.Errorf("unable to retrieve Drive service: %w", err)
 	}
 
 	return sheetSrv, driveSrv, nil
@@ -206,7 +206,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 	workloadsFolderName := "Results Per Workload"
 	workloadsResultsFolder, err := createDriveFolder(driveService, workloadsFolderName, mainResultsFolderID)
 	if err != nil {
-		return nil, fmt.Errorf("unable to create workloads results folder: %v", err)
+		return nil, fmt.Errorf("unable to create workloads results folder: %w", err)
 	}
 
 	rawSheetHeaders := GetHeadersFromSheet(rawResultsSheet)
@@ -262,7 +262,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 			case ResultsConclusionsCol:
 				workloadResultsSpreadsheet, err := createSingleWorkloadRawResultsSpreadSheet(sheetsService, driveService, workloadsResultsFolder, rawResultsSheet, workloadName)
 				if err != nil {
-					return nil, fmt.Errorf("error has occurred while creating %s results file: %v", workloadName, err)
+					return nil, fmt.Errorf("error has occurred while creating %s results file: %w", workloadName, err)
 				}
 
 				hyperlinkFormula := fmt.Sprintf("=HYPERLINK(%q, %q)", workloadResultsSpreadsheet.SpreadsheetUrl, "Results")
@@ -292,7 +292,7 @@ func createConclusionsSheet(sheetsService *sheets.Service, driveService *drive.S
 func createRawResultsSheet(fp string) (*sheets.Sheet, error) {
 	records, err := readCSV(fp)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read csv file: %v", err)
+		return nil, fmt.Errorf("failed to read csv file: %w", err)
 	}
 
 	rows := prepareRecordsForSpreadSheet(records)

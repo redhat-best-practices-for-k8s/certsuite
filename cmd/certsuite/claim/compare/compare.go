@@ -121,23 +121,23 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	// readfiles
 	claimdata1, err := os.ReadFile(claim1)
 	if err != nil {
-		return fmt.Errorf("failed reading claim1 file: %v", err)
+		return fmt.Errorf("failed reading claim1 file: %w", err)
 	}
 
 	claimdata2, err := os.ReadFile(claim2)
 	if err != nil {
-		return fmt.Errorf("failed reading claim2 file: %v", err)
+		return fmt.Errorf("failed reading claim2 file: %w", err)
 	}
 
 	// unmarshal the files
 	claimFile1Data, err := unmarshalClaimFile(claimdata1)
 	if err != nil {
-		return fmt.Errorf("failed to unmarshal claim1 file: %v", err)
+		return fmt.Errorf("failed to unmarshal claim1 file: %w", err)
 	}
 
 	claimFile2Data, err := unmarshalClaimFile(claimdata2)
 	if err != nil {
-		return fmt.Errorf("failed to unmarshal claim2 file: %v", err)
+		return fmt.Errorf("failed to unmarshal claim2 file: %w", err)
 	}
 
 	// Compare claim versions.

@@ -263,7 +263,7 @@ func getClusterRestConfig(filenames ...string) (*rest.Config, error) {
 		clientConfig := GetClientConfigFromRestConfig(restConfig)
 		clientsHolder.KubeConfig, err = createByteArrayKubeConfig(clientConfig)
 		if err != nil {
-			return nil, fmt.Errorf("failed to create byte array from kube config reference: %v", err)
+			return nil, fmt.Errorf("failed to create byte array from kube config reference: %w", err)
 		}
 
 		// No error: we're inside a cluster.
@@ -300,7 +300,7 @@ func getClusterRestConfig(filenames ...string) (*rest.Config, error) {
 
 	restConfig, err = kubeconfig.ClientConfig()
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate rest config: %s", err)
+		return nil, fmt.Errorf("cannot instantiate rest config: %w", err)
 	}
 
 	return restConfig, nil
@@ -313,64 +313,64 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	var err error
 	clientsHolder.RestConfig, err = getClusterRestConfig(filenames...)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get rest.Config: %v", err)
+		return nil, fmt.Errorf("failed to get rest.Config: %w", err)
 	}
 	clientsHolder.RestConfig.Timeout = getClientTimeout()
 
 	clientsHolder.DynamicClient, err = dynamic.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate dynamic client (unstructured/dynamic): %s", err)
+		return nil, fmt.Errorf("cannot instantiate dynamic client (unstructured/dynamic): %w", err)
 	}
 	clientsHolder.APIExtClient, err = apiextv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate apiextv1: %s", err)
+		return nil, fmt.Errorf("cannot instantiate apiextv1: %w", err)
 	}
 	clientsHolder.OlmClient, err = olmClient.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate olm clientset: %s", err)
+		return nil, fmt.Errorf("cannot instantiate olm clientset: %w", err)
 	}
 	clientsHolder.OlmPkgClient, err = olmpkgclient.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate olm clientset: %s", err)
+		return nil, fmt.Errorf("cannot instantiate olm clientset: %w", err)
 	}
 	clientsHolder.K8sClient, err = kubernetes.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate k8sclient: %s", err)
+		return nil, fmt.Errorf("cannot instantiate k8sclient: %w", err)
 	}
 	// create the oc client
 	clientsHolder.OcpClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate ocClient: %s", err)
+		return nil, fmt.Errorf("cannot instantiate ocClient: %w", err)
 	}
 	clientsHolder.MachineCfg, err = ocpMachine.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate MachineCfg client: %s", err)
+		return nil, fmt.Errorf("cannot instantiate MachineCfg client: %w", err)
 	}
 	clientsHolder.K8sNetworkingClient, err = networkingv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate k8s networking client: %s", err)
+		return nil, fmt.Errorf("cannot instantiate k8s networking client: %w", err)
 	}
 
 	discoveryClient, err := discovery.NewDiscoveryClientForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate discoveryClient: %s", err)
+		return nil, fmt.Errorf("cannot instantiate discoveryClient: %w", err)
 	}
 
 	clientsHolder.GroupResources, err = discoveryClient.ServerPreferredResources()
 	if err != nil {
-		return nil, fmt.Errorf("cannot get list of resources in cluster: %s", err)
+		return nil, fmt.Errorf("cannot get list of resources in cluster: %w", err)
 	}
 
 	resolver := scale.NewDiscoveryScaleKindResolver(discoveryClient)
 	gr, err := restmapper.GetAPIGroupResources(clientsHolder.K8sClient.Discovery())
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate GetAPIGroupResources: %s", err)
+		return nil, fmt.Errorf("cannot instantiate GetAPIGroupResources: %w", err)
 	}
 
 	mapper := restmapper.NewDiscoveryRESTMapper(gr)
 	clientsHolder.ScalingClient, err = scale.NewForConfig(clientsHolder.RestConfig, mapper, dynamic.LegacyAPIPathResolverFunc, resolver)
 	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate ScalesGetter: %s", err)
+		return nil, fmt.Errorf("cannot instantiate ScalesGetter: %w", err)
 	}
 
 	clientsHolder.CNCFNetworkingClient, err = cncfNetworkAttachmentv1.NewForConfig(clientsHolder.RestConfig)

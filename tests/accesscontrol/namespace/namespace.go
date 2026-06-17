@@ -38,7 +38,7 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 	for _, crd := range crds {
 		crNamespaces, err := getCrsPerNamespaces(crd)
 		if err != nil {
-			return invalidCrs, fmt.Errorf("failed to get CRs for CRD %s - Error: %v", crd.Name, err)
+			return invalidCrs, fmt.Errorf("failed to get CRs for CRD %s - Error: %w", crd.Name, err)
 		}
 		for namespace, crNames := range crNamespaces {
 			if !stringhelper.StringInSlice(configNamespaces, namespace, false) {

@@ -285,7 +285,7 @@ func InitLabelsExprEvaluator(labelsFilter string) error {
 
 	eval, err := labels.NewLabelsExprEvaluator(labelsFilter)
 	if err != nil {
-		return fmt.Errorf("could not create a label evaluator, err: %v", err)
+		return fmt.Errorf("could not create a label evaluator, err: %w", err)
 	}
 
 	labelsExprEvaluator = eval

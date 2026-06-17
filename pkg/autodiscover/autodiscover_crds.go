@@ -36,7 +36,7 @@ func getClusterCrdNames() ([]*apiextv1.CustomResourceDefinition, error) {
 	oc := clientsholder.GetClientsHolder()
 	crds, err := oc.APIExtClient.ApiextensionsV1().CustomResourceDefinitions().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return nil, fmt.Errorf("unable to get cluster CRDs, err: %v", err)
+		return nil, fmt.Errorf("unable to get cluster CRDs, err: %w", err)
 	}
 
 	var crdList []*apiextv1.CustomResourceDefinition

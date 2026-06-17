@@ -24,7 +24,7 @@ func NewLabelsExprEvaluator(labelsExpr string) (LabelsExprEvaluator, error) {
 
 	node, err := parser.ParseExpr(goLikeExpr)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse labels expression %s: %v", labelsExpr, err)
+		return nil, fmt.Errorf("failed to parse labels expression %s: %w", labelsExpr, err)
 	}
 
 	return labelsExprParser{

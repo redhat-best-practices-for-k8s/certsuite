@@ -125,13 +125,13 @@ func NewTester(node *provider.Node, probePod *corev1.Pod, commander clientsholde
 	var err error
 	tester.nodeHugepagesByNuma, err = tester.getNodeNumaHugePages()
 	if err != nil {
-		return nil, fmt.Errorf("unable to get node hugepages, err: %v", err)
+		return nil, fmt.Errorf("unable to get node hugepages, err: %w", err)
 	}
 
 	log.Info("Parsing machineconfig's kernelArguments and systemd's hugepages units.")
 	tester.mcSystemdHugepagesByNuma, err = getMcSystemdUnitsHugepagesConfig(&tester.node.Mc)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get MC systemd hugepages config, err: %v", err)
+		return nil, fmt.Errorf("failed to get MC systemd hugepages config, err: %w", err)
 	}
 
 	return tester, nil
@@ -145,12 +145,12 @@ func (tester *Tester) Run() error {
 	if tester.HasMcSystemdHugepagesUnits() {
 		log.Info("Comparing MachineConfig Systemd hugepages info against node values.")
 		if pass, err := tester.TestNodeHugepagesWithMcSystemd(); !pass {
-			return fmt.Errorf("failed to compare machineConfig systemd's unit hugepages config with node values, err: %v", err)
+			return fmt.Errorf("failed to compare machineConfig systemd's unit hugepages config with node values, err: %w", err)
 		}
 	} else {
 		log.Info("Comparing MC KernelArguments hugepages info against node values.")
 		if pass, err := tester.TestNodeHugepagesWithKernelArgs(); !pass {
-			return fmt.Errorf("failed to compare machineConfig KernelArguments with node ones, err: %v", err)
+			return fmt.Errorf("failed to compare machineConfig KernelArguments with node ones, err: %w", err)
 		}
 	}
 	return nil

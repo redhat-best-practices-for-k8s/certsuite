@@ -90,7 +90,7 @@ func dumpCsv(_ *cobra.Command, _ []string) error {
 	// Parse the claim file into the claim scheme.
 	claimScheme, err := claim.Parse(claimFilePathFlag)
 	if err != nil {
-		return fmt.Errorf("failed to parse claim file %s: %v", claimFilePathFlag, err)
+		return fmt.Errorf("failed to parse claim file %s: %w", claimFilePathFlag, err)
 	}
 
 	// Check claim format version
@@ -186,7 +186,7 @@ func loadCNFTypeMap(path string) (CNFTypeMap map[string]string, err error) { //n
 	// Open the CSV file
 	file, err := os.Open(path)
 	if err != nil {
-		return CNFTypeMap, fmt.Errorf("error opening text file: %s, err:%s", path, err)
+		return CNFTypeMap, fmt.Errorf("error opening text file: %s, err:%w", path, err)
 	}
 	defer file.Close()
 	// initialize map
@@ -195,7 +195,7 @@ func loadCNFTypeMap(path string) (CNFTypeMap map[string]string, err error) { //n
 	// read the file
 	data, err := io.ReadAll(file)
 	if err != nil {
-		return CNFTypeMap, fmt.Errorf("error reading JSON file: %s, err:%s", path, err)
+		return CNFTypeMap, fmt.Errorf("error reading JSON file: %s, err:%w", path, err)
 	}
 
 	err = json.Unmarshal(data, &CNFTypeMap)

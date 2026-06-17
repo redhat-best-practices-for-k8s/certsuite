@@ -76,7 +76,7 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 	ch := clientsholder.GetClientsHolder()
 	outStr, errStr, err := ch.ExecCommandContainer(ctx, pidCmd)
 	if err != nil {
-		return 0, fmt.Errorf("cannot execute command: \" %s \"  on %s err:%s", pidCmd, cut, err)
+		return 0, fmt.Errorf("cannot execute command: \" %s \"  on %s err:%w", pidCmd, cut, err)
 	}
 	if errStr != "" {
 		return 0, fmt.Errorf("cmd: \" %s \" on %s returned %s", pidCmd, cut, errStr)
@@ -90,12 +90,12 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	// Get the container pid
 	ocpContext, err := GetNodeProbePodContext(testContainer.NodeName, env)
 	if err != nil {
-		return "", fmt.Errorf("failed to get probe pod's context for container %s: %v", testContainer, err)
+		return "", fmt.Errorf("failed to get probe pod's context for container %s: %w", testContainer, err)
 	}
 
 	pid, err := GetPidFromContainer(testContainer, ocpContext)
 	if err != nil {
-		return "", fmt.Errorf("unable to get container process id due to: %v", err)
+		return "", fmt.Errorf("unable to get container process id due to: %w", err)
 	}
 	log.Debug("Obtained process id for %s is %d", testContainer, pid)
 
@@ -111,7 +111,7 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 func GetContainerProcesses(container *provider.Container, env *provider.TestEnvironment) ([]*Process, error) {
 	pidNs, err := GetContainerPidNamespace(container, env)
 	if err != nil {
-		return nil, fmt.Errorf("could not get the containers' pid namespace, err: %v", err)
+		return nil, fmt.Errorf("could not get the containers' pid namespace, err: %w", err)
 	}
 
 	return GetPidsFromPidNamespace(pidNs, container)
@@ -123,7 +123,7 @@ func ExecCommandContainerNSEnter(command string,
 	env := provider.GetTestEnvironment()
 	ctx, err := GetNodeProbePodContext(aContainer.NodeName, &env)
 	if err != nil {
-		return "", "", fmt.Errorf("failed to get probe pod's context for container %s: %v", aContainer, err)
+		return "", "", fmt.Errorf("failed to get probe pod's context for container %s: %w", aContainer, err)
 	}
 
 	ch := clientsholder.GetClientsHolder()
@@ -131,7 +131,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Get the container PID to build the nsenter command
 	containerPid, err := GetPidFromContainer(aContainer, ctx)
 	if err != nil {
-		return "", "", fmt.Errorf("cannot get PID from: %s, err: %v", aContainer, err)
+		return "", "", fmt.Errorf("cannot get PID from: %s, err: %w", aContainer, err)
 	}
 
 	// Add the container PID and the specific command to run with nsenter
@@ -148,7 +148,7 @@ func ExecCommandContainerNSEnter(command string,
 		}
 	}
 	if err != nil {
-		return "", "", fmt.Errorf("cannot execute command: \" %s \"  on %s err:%s", command, aContainer, err)
+		return "", "", fmt.Errorf("cannot execute command: \" %s \"  on %s err:%w", command, aContainer, err)
 	}
 
 	return outStr, errStr, err
@@ -159,7 +159,7 @@ func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container)
 	env := provider.GetTestEnvironment()
 	ctx, err := GetNodeProbePodContext(container.NodeName, &env)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get probe pod's context for container %s: %v", container, err)
+		return nil, fmt.Errorf("failed to get probe pod's context for container %s: %w", container, err)
 	}
 
 	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ctx, command)

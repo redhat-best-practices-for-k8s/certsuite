@@ -231,11 +231,11 @@ func deployDaemonSet(namespace string) error {
 		corev1.PullIfNotPresent,
 	)
 	if err != nil {
-		return fmt.Errorf("could not deploy certsuite daemonset, err=%v", err)
+		return fmt.Errorf("could not deploy certsuite daemonset, err=%w", err)
 	}
 	err = k8sPrivilegedDs.WaitDaemonsetReady(namespace, DaemonSetName, probePodsTimeout)
 	if err != nil {
-		return fmt.Errorf("timed out waiting for certsuite daemonset, err=%v", err)
+		return fmt.Errorf("timed out waiting for certsuite daemonset, err=%w", err)
 	}
 
 	return nil
@@ -248,13 +248,13 @@ func CleanupProbeDaemonset(namespace string) error {
 	log.Info("Cleaning up probe daemonset %q in namespace %q", DaemonSetName, namespace)
 	err := k8sPrivilegedDs.DeleteDaemonSet(DaemonSetName, namespace)
 	if err != nil {
-		return fmt.Errorf("failed to delete probe daemonset %q in namespace %q: %v", DaemonSetName, namespace, err)
+		return fmt.Errorf("failed to delete probe daemonset %q in namespace %q: %w", DaemonSetName, namespace, err)
 	}
 
 	log.Info("Cleaning up namespace %q", namespace)
 	err = k8sPrivilegedDs.DeleteNamespaceIfPresent(namespace)
 	if err != nil {
-		return fmt.Errorf("failed to delete namespace %q: %v", namespace, err)
+		return fmt.Errorf("failed to delete namespace %q: %w", namespace, err)
 	}
 
 	log.Info("Probe daemonset cleanup completed")
@@ -599,7 +599,7 @@ func GetPodIPsPerNet(annotation string) (ips map[string]CniNetworkInterface, err
 	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
-		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %v", err)
+		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %w", err)
 	}
 	// If this is the default interface, skip it as it is tested separately
 	// Otherwise add all non default interfaces
@@ -620,7 +620,7 @@ func GetPciPerPod(annotation string) (pciAddr []string, err error) {
 	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
-		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %v", err)
+		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %w", err)
 	}
 	for _, cniInterface := range cniInfo {
 		if cniInterface.DeviceInfo.PCI.PciAddress != "" {
@@ -719,7 +719,7 @@ func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (M
 
 	err = json.Unmarshal(nodeMc.Spec.Config.Raw, &mc.Config)
 	if err != nil {
-		return MachineConfig{}, fmt.Errorf("failed to unmarshal mc's Config field, err: %v", err)
+		return MachineConfig{}, fmt.Errorf("failed to unmarshal mc's Config field, err: %w", err)
 	}
 
 	return mc, nil

@@ -120,7 +120,7 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 		FieldSelector: "metadata.name=" + pod.Name + ",metadata.namespace=" + pod.Namespace,
 	})
 	if err != nil {
-		return fmt.Errorf("waitPodDeleted ns=%s pod=%s, err=%s", pod.Namespace, pod.Name, err)
+		return fmt.Errorf("waitPodDeleted ns=%s pod=%s, err=%w", pod.Namespace, pod.Name, err)
 	}
 	// Actually deleting pod
 	err = clients.K8sClient.CoreV1().Pods(pod.Namespace).Delete(context.TODO(), pod.Name, metav1.DeleteOptions{
