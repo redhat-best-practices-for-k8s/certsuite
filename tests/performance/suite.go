@@ -175,14 +175,14 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 				counter++
 				if cut.StartupProbe.PeriodSeconds >= minExecProbePeriodSeconds {
 					check.LogInfo("Container %q has a StartupProbe with PeriodSeconds greater than %d (%d seconds)",
-						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+						cut, minExecProbePeriodSeconds, cut.StartupProbe.PeriodSeconds)
 
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
 						cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
 							cut.StartupProbe.PeriodSeconds), true))
 				} else {
 					check.LogError("Container %q has a StartupProbe with PeriodSeconds less than %d (%d seconds)",
-						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+						cut, minExecProbePeriodSeconds, cut.StartupProbe.PeriodSeconds)
 
 					nonCompliantObjects = append(nonCompliantObjects,
 						testhelper.NewContainerReportObject(put.Namespace, put.Name,
@@ -194,14 +194,14 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 				counter++
 				if cut.ReadinessProbe.PeriodSeconds >= minExecProbePeriodSeconds {
 					check.LogInfo("Container %q has a ReadinessProbe with PeriodSeconds greater than %d (%d seconds)",
-						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+						cut, minExecProbePeriodSeconds, cut.ReadinessProbe.PeriodSeconds)
 
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
 						cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
 							cut.ReadinessProbe.PeriodSeconds), true))
 				} else {
 					check.LogError("Container %q has a ReadinessProbe with PeriodSeconds less than %d (%d seconds)",
-						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+						cut, minExecProbePeriodSeconds, cut.ReadinessProbe.PeriodSeconds)
 
 					nonCompliantObjects = append(nonCompliantObjects,
 						testhelper.NewContainerReportObject(put.Namespace, put.Name,
