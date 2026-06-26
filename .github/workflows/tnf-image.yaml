@@ -95,14 +95,17 @@ jobs:
       - name: Ensure $CERTSUITE_VERSION and $IMAGE_TAG are set
         run: '[[ -n "$CERTSUITE_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$PROBE_IMAGE_VERSION" ]]'
 
-      - name: Check whether the version tag exists on remote
+      # Check both remote tags in parallel - independent operations
+      - name: Check whether the certsuite version tag exists on remote
+        runs-in-parallel: true
         run: git ls-remote --exit-code $CERTSUITE_SRC_URL refs/tags/$CERTSUITE_VERSION
 
       - name: (if tag is missing) Display debug message
         if: ${{ failure() }}
         run: echo "Tag '$CERTSUITE_VERSION' does not exist on remote $CERTSUITE_SRC_URL"
 
-      - name: Check whether the version tag exists on remote
+      - name: Check whether the probe version tag exists on remote
+        runs-in-parallel: true
         run: git ls-remote --exit-code ${{ env.PROBE_IMAGE_SRC_URL }} refs/tags/$PROBE_IMAGE_VERSION
 
       - name: (if debugTag is missing) Display debug message
@@ -217,14 +220,17 @@ jobs:
       - name: Ensure $CERTSUITE_VERSION and $IMAGE_TAG are set
         run: '[[ -n "$CERTSUITE_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$PROBE_IMAGE_VERSION" ]]'
 
-      - name: Check whether the version tag exists on remote
+      # Check both remote tags in parallel - independent operations
+      - name: Check whether the certsuite version tag exists on remote
+        runs-in-parallel: true
         run: git ls-remote --exit-code $CERTSUITE_SRC_URL refs/tags/$CERTSUITE_VERSION
 
       - name: (if tag is missing) Display debug message
         if: ${{ failure() }}
         run: echo "Tag '$CERTSUITE_VERSION' does not exist on remote $CERTSUITE_SRC_URL"
 
-      - name: Check whether the version tag exists on remote
+      - name: Check whether the probe version tag exists on remote
+        runs-in-parallel: true
         run: git ls-remote --exit-code ${{ env.PROBE_IMAGE_SRC_URL }} refs/tags/$PROBE_IMAGE_VERSION
 
       - name: (if debugTag is missing) Display debug message
