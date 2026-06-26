@@ -97,7 +97,7 @@ jobs:
 
       # Check both remote tags in parallel - independent operations
       - name: Check whether the certsuite version tag exists on remote
-        runs-in-parallel: true
+        background: true
         run: git ls-remote --exit-code $CERTSUITE_SRC_URL refs/tags/$CERTSUITE_VERSION
 
       - name: (if tag is missing) Display debug message
@@ -105,12 +105,16 @@ jobs:
         run: echo "Tag '$CERTSUITE_VERSION' does not exist on remote $CERTSUITE_SRC_URL"
 
       - name: Check whether the probe version tag exists on remote
-        runs-in-parallel: true
+        background: true
         run: git ls-remote --exit-code ${{ env.PROBE_IMAGE_SRC_URL }} refs/tags/$PROBE_IMAGE_VERSION
 
       - name: (if debugTag is missing) Display debug message
         if: ${{ failure() }}
         run: echo "Tag '$PROBE_IMAGE_VERSION' does not exist on remote $PROBE_IMAGE_SRC_URL"
+
+      # Wait for both version checks to complete
+      - name: Wait for version checks
+        wait-all: true
 
       - name: Checkout the version tag
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -222,7 +226,7 @@ jobs:
 
       # Check both remote tags in parallel - independent operations
       - name: Check whether the certsuite version tag exists on remote
-        runs-in-parallel: true
+        background: true
         run: git ls-remote --exit-code $CERTSUITE_SRC_URL refs/tags/$CERTSUITE_VERSION
 
       - name: (if tag is missing) Display debug message
@@ -230,12 +234,16 @@ jobs:
         run: echo "Tag '$CERTSUITE_VERSION' does not exist on remote $CERTSUITE_SRC_URL"
 
       - name: Check whether the probe version tag exists on remote
-        runs-in-parallel: true
+        background: true
         run: git ls-remote --exit-code ${{ env.PROBE_IMAGE_SRC_URL }} refs/tags/$PROBE_IMAGE_VERSION
 
       - name: (if debugTag is missing) Display debug message
         if: ${{ failure() }}
         run: echo "Tag '$PROBE_IMAGE_VERSION' does not exist on remote $PROBE_IMAGE_SRC_URL"
+
+      # Wait for both version checks to complete
+      - name: Wait for version checks
+        wait-all: true
 
       - name: Checkout the version tag
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
