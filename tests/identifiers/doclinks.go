@@ -20,6 +20,7 @@ const (
 	TestICMPv6ConnectivityMultusIdentifierDocLink       = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations"
 	TestServiceDualStackIdentifierDocLink               = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ipv4-&-ipv6"
 	TestUndeclaredContainerPortsUsageDocLink            = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-requirements-cnf-reqs"
+	TestUnsecuredContainerPortsDocLink                  = NoDocLinkExtended
 	TestOCPReservedPortsUsageDocLink                    = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ports-reserved-by-openshift"
 
 	// Access Control Suite
