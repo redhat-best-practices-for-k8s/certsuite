@@ -77,38 +77,50 @@ jobs:
       - name: Install Shfmt
         uses: mfinelli/setup-shfmt@a25fda4c1fe115aec0f85e04126610841bc3141d # v4.0.1
 
+      # Run independent linters in parallel for faster execution
       - name: Golangci-lint
         uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee # v9.2.1
+        background: true
         with:
           args: --timeout 10m0s
 
       - name: Checkmake
+        background: true
         run: checkmake --config=.checkmake Makefile
 
       - name: Hadolint
         uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
+        background: true
         with:
           dockerfile: Dockerfile
           recursive: true
 
       - name: Shfmt
+        background: true
         run: shfmt -d script
 
       - name: Markdownlint
         uses: nosborn/github-action-markdown-cli@508d6cefd8f0cc99eab5d2d4685b1d5f470042c1 # v3.5.0
+        background: true
         with:
           files: .
 
       - name: ShellCheck
         uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # master
+        background: true
 
       # - name: Typos
       #   uses: crate-ci/typos@master
 
       - name: Yamllint
         uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c # v3.1.1
+        background: true
         with:
           config_file: .yamllint.yml
+
+      # Wait for all background linters to complete
+      - name: Wait for linters
+        wait-all: true
 
       - name: Go vet
         run: make vet
@@ -178,12 +190,21 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
-      - name: Pull the images to verify they exist
+      # Pull images in parallel - they're independent operations
+      - name: Pull OCT image
+        background: true
+        run: docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+
+      - name: Pull probe image
+        background: true
         run: |
-          docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
           PROBE_TAG=$(jq -r '.debugTag' version.json)
           echo "Using probe tag: ${PROBE_TAG}"
           docker pull ${REGISTRY}/${PROBE_IMAGE_NAME}:${PROBE_TAG}
+
+      # Wait for both image pulls to complete
+      - name: Wait for image pulls
+        wait-all: true
 
   smoke-tests-local:
     name: Run Local Smoke Tests
