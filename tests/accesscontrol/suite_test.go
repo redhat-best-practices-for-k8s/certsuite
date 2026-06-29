@@ -19,8 +19,10 @@ package accesscontrol
 import (
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/stretchr/testify/assert"
 	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func Test_isContainerCapabilitySet(t *testing.T) {
@@ -121,6 +123,158 @@ func Test_isContainerCapabilitySet(t *testing.T) {
 			if got := isContainerCapabilitySet(tt.args.containerCapabilities, tt.args.capability); got != tt.want {
 				assert.Equal(t, tt.want, got)
 			}
+		})
+	}
+}
+
+func Test_isOwnedByOLM(t *testing.T) {
+	tests := []struct {
+		name string
+		pod  *provider.Pod
+		want bool
+	}{
+		{
+			name: "pod with olm.owner label",
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						Labels: map[string]string{
+							"olm.owner": "test-operator.v1.0.0",
+						},
+					},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "pod with olm.owner.namespace label",
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						Labels: map[string]string{
+							"olm.owner.namespace": "openshift-operators",
+						},
+					},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "pod with olm.owner.kind label",
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						Labels: map[string]string{
+							"olm.owner.kind": "ClusterServiceVersion",
+						},
+					},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "pod with ClusterServiceVersion owner reference",
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						OwnerReferences: []metav1.OwnerReference{
+							{
+								Kind:       "ClusterServiceVersion",
+								Name:       "test-operator.v1.0.0",
+								APIVersion: "operators.coreos.com/v1alpha1",
+							},
+						},
+					},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "pod with no OLM labels or owner references",
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						Labels: map[string]string{
+							"app": "my-app",
+						},
+					},
+				},
+			},
+			want: false,
+		},
+		{
+			name: "pod with non-CSV owner reference",
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						OwnerReferences: []metav1.OwnerReference{
+							{
+								Kind:       "ReplicaSet",
+								Name:       "test-rs",
+								APIVersion: "apps/v1",
+							},
+						},
+					},
+				},
+			},
+			want: false,
+		},
+		{
+			name: "pod with multiple OLM labels",
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						Labels: map[string]string{
+							"olm.owner":           "test-operator.v1.0.0",
+							"olm.owner.namespace": "openshift-operators",
+							"olm.owner.kind":      "ClusterServiceVersion",
+						},
+					},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "pod with both OLM label and CSV owner reference",
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						Labels: map[string]string{
+							"olm.owner": "test-operator.v1.0.0",
+						},
+						OwnerReferences: []metav1.OwnerReference{
+							{
+								Kind:       "ClusterServiceVersion",
+								Name:       "test-operator.v1.0.0",
+								APIVersion: "operators.coreos.com/v1alpha1",
+							},
+						},
+					},
+				},
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := isOwnedByOLM(tt.pod)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
