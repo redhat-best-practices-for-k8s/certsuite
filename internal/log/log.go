@@ -61,7 +61,7 @@ func CloseGlobalLogFile() error {
 func SetupLogger(logWriter io.Writer, level string) {
 	logLevel, err := parseLevel(level)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not parse log level, err: %v. Defaulting to DEBUG.", err)
+		fmt.Fprintf(os.Stderr, "Could not parse log level, err: %v. Defaulting to INFO.", err)
 		globalLogLevel = slog.LevelInfo
 	} else {
 		globalLogLevel = logLevel
