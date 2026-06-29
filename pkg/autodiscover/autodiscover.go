@@ -227,9 +227,6 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 
 	// Best effort mode autodiscovery for operand (running-only) pods.
 	pods, _ := FindPodsByLabels(oc.K8sClient.CoreV1(), nil, data.Namespaces)
-	if err != nil {
-		log.Fatal("Failed to get running pods, err: %v", err)
-	}
 
 	data.OperandPods, err = getOperandPodsFromTestCsvs(data.Csvs, pods)
 	if err != nil {
