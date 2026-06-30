@@ -23,7 +23,7 @@ acceptedKernelTaints:
 skipScalingTestDeployments:
   - name: deployment1
     namespace: tnf
-skipScalingTestStatefulsets:
+skipScalingTestStatefulSets:
   - name: statefulset1
     namespace: tnf
 skipHelmChartList:
