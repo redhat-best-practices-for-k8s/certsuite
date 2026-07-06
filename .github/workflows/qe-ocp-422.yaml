@@ -1,4 +1,4 @@
-name: QE OCP 4.21 Testing
+name: QE OCP 4.22 Testing
 
 on:
   # pull_request:
@@ -58,8 +58,8 @@ jobs:
           name: certsuite-binary
           path: ./certsuite
 
-  qe-ocp-421-testing:
-    name: QE OCP 4.21 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
+  qe-ocp-422-testing:
+    name: QE OCP 4.22 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
     runs-on: ubuntu-24.04
     timeout-minutes: 240
     needs: build-and-store
@@ -115,7 +115,7 @@ jobs:
         with:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
-          desiredOCPVersion: 4.21
+          desiredOCPVersion: 4.22
           waitForOperatorsReady: true
         env:
           OCP_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
@@ -174,5 +174,5 @@ jobs:
           GITHUB_REPO: https://github.com/redhat-best-practices-for-k8s/certsuite
         run: |
           curl -X POST --data "{
-              \"text\": \"🚨⚠️  Failed to run non-intrusive OCP 4.21 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+              \"text\": \"🚨⚠️  Failed to run non-intrusive OCP 4.22 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
           }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'
