@@ -1,4 +1,4 @@
-name: QE OCP 4.18 Intrusive Testing
+name: QE OCP 4.22 Intrusive Testing
 
 on:
   # pull_request:
@@ -33,10 +33,10 @@ jobs:
         continue-on-error: true
 
       - name: Setup docker buildx
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
 
       - name: Build temporary image tag for this PR
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
         with:
           context: .
           file: ./Dockerfile
@@ -58,15 +58,15 @@ jobs:
           name: certsuite-binary
           path: ./certsuite
 
-  qe-ocp-418-intrusive-testing:
-    name: QE OCP 4.18 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
+  qe-ocp-422-intrusive-testing:
+    name: QE OCP 4.22 Tests (${{ matrix.suite }} - ${{ matrix.run-type }})
     runs-on: ubuntu-24.04
     timeout-minutes: 300
     needs: build-and-store
     if: needs.build-and-store.result == 'success'
     strategy:
       fail-fast: false
-      matrix: 
+      matrix:
         # Add more suites if more intrusive tests are added to the QE repo
         suite: [lifecycle]
         # run-type: [binary, image]
@@ -102,7 +102,7 @@ jobs:
           cache: false
 
       - name: check if CRC_PULL_SECRET exists, if not, exit
-        env: 
+        env:
           super_secret: ${{ secrets.CRC_PULL_SECRET }}
         if: ${{ env.super_secret == '' }}
         run: |
@@ -114,11 +114,11 @@ jobs:
         with:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
-          desiredOCPVersion: 4.18
+          desiredOCPVersion: 4.22
           waitForOperatorsReady: true
         env:
           OCP_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
-      
+
       - name: Clone the QE repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -163,7 +163,7 @@ jobs:
           timeout_minutes: 180
           max_attempts: 2
           command: cd ${GITHUB_WORKSPACE}/certsuite-qe; FEATURES=${{matrix.suite}} CERTSUITE_REPO_PATH=${GITHUB_WORKSPACE} USE_BINARY=true JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
-      
+
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
         if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'redhat-best-practices-for-k8s' }}
         env:
@@ -173,5 +173,5 @@ jobs:
           GITHUB_REPO: https://github.com/redhat-best-practices-for-k8s/certsuite
         run: |
           curl -X POST --data "{
-              \"text\": \"🚨⚠️  Failed to run intrusive OCP 4.18 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+              \"text\": \"🚨⚠️  Failed to run intrusive OCP 4.22 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
           }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'
