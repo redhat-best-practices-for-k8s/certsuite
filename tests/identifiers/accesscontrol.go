@@ -434,7 +434,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		TagCommon)
 
 	TestSecConReadOnlyFilesystem = AddCatalogEntry(
-		"security-context-read-only-file-system",
+		"security-context-read-only-root-file-system",
 		common.AccessControlTestKey,
 		`Checks the security context readOnlyFileSystem in containers is enabled. Containers should not try modify its own filesystem.`,
 		SecConNonRootUserExceptionProcess,

@@ -428,11 +428,11 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
 
-#### access-control-security-context-read-only-file-system
+#### access-control-security-context-read-only-root-file-system
 
 |Property|Description|
 |---|---|
-|Unique ID|access-control-security-context-read-only-file-system|
+|Unique ID|access-control-security-context-read-only-root-file-system|
 |Description|Checks the security context readOnlyFileSystem in containers is enabled. Containers should not try modify its own filesystem.|
 |Suggested Remediation|No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities|
