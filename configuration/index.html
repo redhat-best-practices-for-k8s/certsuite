@@ -1480,12 +1480,39 @@ If there are labels defined, we get the list of pods, statefulsets, deployments,
 <p>With the config show above, all CRD names in the cluster whose names have the suffix <em>group1.certsuite.com</em> or <em>anydomain.com</em> ( e.g. <em>crd1.group1.certsuite.com</em> or <em>mycrd.mygroup.anydomain.com</em>) will be tested.</p>
 <h4 id="manageddeployments-managedstatefulsets">managedDeployments / managedStatefulSets<a class="headerlink" href="#manageddeployments-managedstatefulsets" title="Permanent link">&para;</a></h4>
 <p>The Deployments/StatefulSets managed by a Custom Resource whose scaling is controlled using the &ldquo;scale&rdquo; subresource of the CR.</p>
-<p>The CRD defining that CR should be included in the CRD filters with the scalable property set to true. If so, the test case <em>lifecycle-{deployment/statefulset}-scaling</em> will be skipped, otherwise it will fail.</p>
-<div class="annotate highlight"><pre><span></span><code><span class="nt">managedDeployments</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jack</span>
-<span class="nt">managedStatefulsets</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jack</span>
+<p><strong>Behavior:</strong></p>
+<ul>
+<li><strong>If a Deployment/StatefulSet is listed here:</strong> The test case <em>lifecycle-{deployment/statefulset}-scaling</em> will be <strong>skipped</strong> for that resource, as long as its OwnerReference matches a CRD in <code>targetCrdFilters</code> with <code>scalable: true</code>. If the OwnerReference does not match a scalable CRD, the test will <strong>fail</strong>.</li>
+<li><strong>If a Deployment/StatefulSet is NOT listed here:</strong> The test will run normally and directly test scaling on the Deployment/StatefulSet itself.</li>
+</ul>
+<p>Use this configuration when your Deployments/StatefulSets are managed by a CR that implements the scale subresource, so the scaling tests run against the CR instead of the individual pod controllers.</p>
+<p><strong>Example scenarios:</strong></p>
+<p>Scenario 1: CR-managed Deployment (correct configuration)</p>
+<div class="highlight"><pre><span></span><code><span class="nt">targetCrdFilters</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myoperator.example.com&quot;</span>
+<span class="w">    </span><span class="nt">scalable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">managedDeployments</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-workload-deployment</span><span class="w">  </span><span class="c1"># Owned by MyWorkload CR</span>
 </code></pre></div>
+<p>Result: ✅ Test <strong>skipped</strong> for <code>my-workload-deployment</code> (scaling tested via MyWorkload CR instead)</p>
+<p>Scenario 2: Missing or incorrect CRD configuration</p>
+<div class="highlight"><pre><span></span><code><span class="nt">targetCrdFilters</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myoperator.example.com&quot;</span>
+<span class="w">    </span><span class="nt">scalable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># Wrong: should be true</span>
+
+<span class="nt">managedDeployments</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-workload-deployment</span>
+</code></pre></div>
+<p>Result: ❌ Test <strong>fails</strong> (listed as managed but no matching scalable CRD)</p>
+<p>Scenario 3: Standalone Deployment</p>
+<div class="highlight"><pre><span></span><code><span class="nt">targetCrdFilters</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myoperator.example.com&quot;</span>
+<span class="w">    </span><span class="nt">scalable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="c1"># managedDeployments: []  # Not listed</span>
+</code></pre></div>
+<p>Result: ✅ Test <strong>runs</strong> directly on the Deployment (standard scaling test)</p>
 <h4 id="junit-xml-file-creation">JUnit XML File Creation<a class="headerlink" href="#junit-xml-file-creation" title="Permanent link">&para;</a></h4>
 <p>The test suite has the ability to create the JUNit XML File output containing the test ID and the corresponding test result.</p>
 <p>To enable this, set:</p>
