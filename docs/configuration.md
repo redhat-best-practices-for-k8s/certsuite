@@ -91,14 +91,52 @@ With the config show above, all CRD names in the cluster whose names have the su
 
 The Deployments/StatefulSets managed by a Custom Resource whose scaling is controlled using the "scale" subresource of the CR.
 
-The CRD defining that CR should be included in the CRD filters with the scalable property set to true. If so, the test case _lifecycle-{deployment/statefulset}-scaling_ will be skipped, otherwise it will fail.
+**Behavior:**
 
-``` { .yaml .annotate }
+- **If a Deployment/StatefulSet is listed here:** The test case _lifecycle-{deployment/statefulset}-scaling_ will be **skipped** for that resource, as long as its OwnerReference matches a CRD in `targetCrdFilters` with `scalable: true`. If the OwnerReference does not match a scalable CRD, the test will **fail**.
+- **If a Deployment/StatefulSet is NOT listed here:** The test will run normally and directly test scaling on the Deployment/StatefulSet itself.
+
+Use this configuration when your Deployments/StatefulSets are managed by a CR that implements the scale subresource, so the scaling tests run against the CR instead of the individual pod controllers.
+
+**Example scenarios:**
+
+Scenario 1: CR-managed Deployment (correct configuration)
+
+```yaml
+targetCrdFilters:
+  - nameSuffix: "myoperator.example.com"
+    scalable: true
+
 managedDeployments:
-  - name: jack
-managedStatefulsets:
-  - name: jack
+  - name: my-workload-deployment  # Owned by MyWorkload CR
 ```
+
+Result: ✅ Test **skipped** for `my-workload-deployment` (scaling tested via MyWorkload CR instead)
+
+Scenario 2: Missing or incorrect CRD configuration
+
+```yaml
+targetCrdFilters:
+  - nameSuffix: "myoperator.example.com"
+    scalable: false  # Wrong: should be true
+
+managedDeployments:
+  - name: my-workload-deployment
+```
+
+Result: ❌ Test **fails** (listed as managed but no matching scalable CRD)
+
+Scenario 3: Standalone Deployment
+
+```yaml
+targetCrdFilters:
+  - nameSuffix: "myoperator.example.com"
+    scalable: true
+
+# managedDeployments: []  # Not listed
+```
+
+Result: ✅ Test **runs** directly on the Deployment (standard scaling test)
 
 #### JUnit XML File Creation
 
