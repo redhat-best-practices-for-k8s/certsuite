@@ -30,6 +30,111 @@ import (
 	"k8s.io/client-go/scale"
 )
 
+// isMatchingAtLeastOneLabel is a generic helper that checks if a controller's pod template
+// matches at least one of the provided labels.
+func isMatchingAtLeastOneLabel[T any](
+	labels []labelObject,
+	namespace string,
+	item *T,
+	resourceType string,
+	getLabelsFn func(*T) map[string]string,
+	getNameFn func(*T) string,
+) bool {
+	name := getNameFn(item)
+	templateLabels := getLabelsFn(item)
+
+	for _, labelObj := range labels {
+		log.Debug("Searching pods in %s %q found in ns %q using label %s=%s",
+			resourceType, name, namespace, labelObj.LabelKey, labelObj.LabelValue)
+
+		if templateLabels[labelObj.LabelKey] == labelObj.LabelValue {
+			log.Info("%s %s found in ns=%s", resourceType, name, namespace)
+			return true
+		}
+	}
+	return false
+}
+
+// findControllersByLabels is a generic implementation for finding pod controllers by labels.
+// It works with any Kubernetes resource type (Deployment, StatefulSet, DaemonSet, etc.) by using
+// accessor functions to extract the necessary fields.
+func findControllersByLabels[T any](
+	appClient appv1client.AppsV1Interface,
+	labels []labelObject,
+	namespaces []string,
+	resourceType string,
+	lister func(appv1client.AppsV1Interface, string) ([]T, error),
+	getLabelsFn func(*T) map[string]string,
+	getNameFn func(*T) string,
+) []T {
+	allResults := []T{}
+
+	for _, ns := range namespaces {
+		items, err := lister(appClient, ns)
+		if err != nil {
+			log.Error("Failed to list %s resources in ns=%s, err: %v. Trying to proceed.", resourceType, ns, err)
+			continue
+		}
+
+		if len(items) == 0 {
+			log.Warn("Did not find any %s in ns=%s", resourceType, ns)
+		}
+
+		for i := range items {
+			if len(labels) > 0 {
+				// The resource is added only once if at least one pod matches one label
+				if isMatchingAtLeastOneLabel(labels, ns, &items[i], resourceType, getLabelsFn, getNameFn) {
+					allResults = append(allResults, items[i])
+				}
+			} else {
+				// If labels are not provided, all resources in the namespaces under test are included
+				name := getNameFn(&items[i])
+				log.Debug("Searching pods in %s %q found in ns %q without label", resourceType, name, ns)
+				allResults = append(allResults, items[i])
+				log.Info("%s %s found in ns=%s", resourceType, name, ns)
+			}
+		}
+	}
+
+	if len(allResults) == 0 {
+		log.Warn("Did not find any %s in the configured namespaces %v", resourceType, namespaces)
+	}
+
+	return allResults
+}
+
+func listDeployments(appClient appv1client.AppsV1Interface, ns string) ([]appsv1.Deployment, error) {
+	dps, err := appClient.Deployments(ns).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, err
+	}
+	return dps.Items, nil
+}
+
+func listStatefulSets(appClient appv1client.AppsV1Interface, ns string) ([]appsv1.StatefulSet, error) {
+	ss, err := appClient.StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, err
+	}
+	return ss.Items, nil
+}
+
+func getDeploymentTemplateLabels(d *appsv1.Deployment) map[string]string {
+	return d.Spec.Template.Labels
+}
+
+func getDeploymentName(d *appsv1.Deployment) string {
+	return d.Name
+}
+
+func getStatefulSetTemplateLabels(ss *appsv1.StatefulSet) map[string]string {
+	return ss.Spec.Template.Labels
+}
+
+func getStatefulSetName(ss *appsv1.StatefulSet) string {
+	return ss.Name
+}
+
 func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.Deployment, error) {
 	dp, err := appClient.Deployments(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
@@ -53,100 +158,36 @@ func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name str
 	return crScale, nil
 }
 
-func isDeploymentsPodsMatchingAtLeastOneLabel(labels []labelObject, namespace string, deployment *appsv1.Deployment) bool {
-	for _, aLabelObject := range labels {
-		log.Debug("Searching pods in deployment %q found in ns %q using label %s=%s", deployment.Name, namespace, aLabelObject.LabelKey, aLabelObject.LabelValue)
-		if deployment.Spec.Template.Labels[aLabelObject.LabelKey] == aLabelObject.LabelValue {
-			log.Info("Deployment %s found in ns=%s", deployment.Name, namespace)
-			return true
-		}
-	}
-	return false
-}
-
-//nolint:dupl
 func findDeploymentsByLabels(
 	appClient appv1client.AppsV1Interface,
 	labels []labelObject,
 	namespaces []string,
 ) []appsv1.Deployment {
-	allDeployments := []appsv1.Deployment{}
-	for _, ns := range namespaces {
-		dps, err := appClient.Deployments(ns).List(context.TODO(), metav1.ListOptions{})
-		if err != nil {
-			log.Error("Failed to list deployments in ns=%s, err: %v . Trying to proceed.", ns, err)
-			continue
-		}
-		if len(dps.Items) == 0 {
-			log.Warn("Did not find any deployments in ns=%s", ns)
-		}
-		for i := 0; i < len(dps.Items); i++ {
-			if len(labels) > 0 {
-				// The deployment is added only once if at least one pod matches one label in the Deployment
-				if isDeploymentsPodsMatchingAtLeastOneLabel(labels, ns, &dps.Items[i]) {
-					allDeployments = append(allDeployments, dps.Items[i])
-					continue
-				}
-			} else {
-				// If labels are not provided, all deployments in the namespaces under test, are tested by the CNF suite
-				log.Debug("Searching pods in deployment %q found in ns %q without label", dps.Items[i].Name, ns)
-				allDeployments = append(allDeployments, dps.Items[i])
-				log.Info("Deployment %s found in ns=%s", dps.Items[i].Name, ns)
-			}
-		}
-	}
-	if len(allDeployments) == 0 {
-		log.Warn("Did not find any deployment in the configured namespaces %v", namespaces)
-	}
-	return allDeployments
+	return findControllersByLabels(
+		appClient,
+		labels,
+		namespaces,
+		"Deployment",
+		listDeployments,
+		getDeploymentTemplateLabels,
+		getDeploymentName,
+	)
 }
 
-func isStatefulSetsMatchingAtLeastOneLabel(labels []labelObject, namespace string, statefulSet *appsv1.StatefulSet) bool {
-	for _, aLabelObject := range labels {
-		log.Debug("Searching pods in statefulset %q found in ns %q using label %s=%s", statefulSet.Name, namespace, aLabelObject.LabelKey, aLabelObject.LabelValue)
-		if statefulSet.Spec.Template.Labels[aLabelObject.LabelKey] == aLabelObject.LabelValue {
-			log.Info("StatefulSet %s found in ns=%s", statefulSet.Name, namespace)
-			return true
-		}
-	}
-	return false
-}
-
-//nolint:dupl
 func findStatefulSetsByLabels(
 	appClient appv1client.AppsV1Interface,
 	labels []labelObject,
 	namespaces []string,
 ) []appsv1.StatefulSet {
-	allStatefulSets := []appsv1.StatefulSet{}
-	for _, ns := range namespaces {
-		statefulSet, err := appClient.StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
-		if err != nil {
-			log.Error("Failed to list statefulsets in ns=%s, err: %v . Trying to proceed.", ns, err)
-			continue
-		}
-		if len(statefulSet.Items) == 0 {
-			log.Warn("Did not find any statefulSet in ns=%s", ns)
-		}
-		for i := 0; i < len(statefulSet.Items); i++ {
-			if len(labels) > 0 {
-				// The StatefulSet is added only once if at least one pod matches one label in the Statefulset
-				if isStatefulSetsMatchingAtLeastOneLabel(labels, ns, &statefulSet.Items[i]) {
-					allStatefulSets = append(allStatefulSets, statefulSet.Items[i])
-					continue
-				}
-			} else {
-				// If labels are not provided, all statefulsets in the namespaces under test, are tested by the CNF suite
-				log.Debug("Searching pods in statefulset %q found in ns %q without label", statefulSet.Items[i].Name, ns)
-				allStatefulSets = append(allStatefulSets, statefulSet.Items[i])
-				log.Info("StatefulSet %s found in ns=%s", statefulSet.Items[i].Name, ns)
-			}
-		}
-	}
-	if len(allStatefulSets) == 0 {
-		log.Warn("Did not find any statefulset in the configured namespaces %v", namespaces)
-	}
-	return allStatefulSets
+	return findControllersByLabels(
+		appClient,
+		labels,
+		namespaces,
+		"StatefulSet",
+		listStatefulSets,
+		getStatefulSetTemplateLabels,
+		getStatefulSetName,
+	)
 }
 
 func findHpaControllers(cs kubernetes.Interface, namespaces []string) []*scalingv1.HorizontalPodAutoscaler {
