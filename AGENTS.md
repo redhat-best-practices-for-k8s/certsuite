@@ -45,6 +45,23 @@ make get-db             # Download offline certification database
 make delete-db          # Remove offline database
 ```
 
+### Code Quality
+```bash
+make fmt                # Format Go source code
+make vet                # Run go vet on all packages
+make clean              # Remove build artifacts and report files
+make install-lint       # Check that golangci-lint is installed
+make install-shfmt      # Install shfmt via go install
+make install-mac-brew-tools  # Install linter tools via Homebrew (macOS)
+```
+
+### Validation
+```bash
+make check-catalog-links # Validate all links in CATALOG.md
+make check-results       # Run certsuite check results
+make results-html        # Download parser HTML template for result reports
+```
+
 ### Running Tests
 ```bash
 ./certsuite run --config-file <path> --output-dir <path>
@@ -90,6 +107,30 @@ The CLI is built using Cobra and organized into subcommands:
 
 **collector**: Result collection and submission to external data collectors.
 
+**arrayhelper**: Generic utility functions for slice operations (map-from-list, filtering, deduplication).
+
+**certsuite**: Top-level test orchestration. Handles startup, check database loading, test execution, and result generation.
+
+**claimhelper**: Builds and marshals claim files (JSON/XML) from test results, including suite metadata, failure reasons, and skip messages.
+
+**diagnostics**: Collects cluster diagnostic data (CNI plugins, node hardware info, node resources) for claim file enrichment.
+
+**junit**: Utility for converting JUnit XML results to generic JSON format.
+
+**labels**: Label expression parser and evaluator for filtering test cases by label selectors at runtime.
+
+**podhelper**: Resolves pod ownership chains by traversing OwnerReferences up to the top-level controller (Deployment, StatefulSet, etc.).
+
+**postmortem**: Generates post-mortem diagnostic logs after test execution for debugging failures.
+
+**scheduling**: Validates CPU scheduling policies and priorities (FIFO, RR, OTHER) for container processes and RT kernel configurations.
+
+**stringhelper**: Generic string slice utilities (contains, subset, intersection, prefix matching).
+
+**testhelper**: Test result reporting helpers. Provides `ReportObject` for structured pass/fail output and Ginkgo result-writing utilities.
+
+**versions**: Build version metadata (git commit, release tag, claim format version) injected via linker flags.
+
 ### Internal Packages (internal/)
 
 **clientsholder**: Kubernetes client management and caching. Maintains singleton instances of various k8s clients (core, apps, networking, etc.).
@@ -99,6 +140,10 @@ The CLI is built using Cobra and organized into subcommands:
 **cli**: CLI framework and utilities for command-line interactions.
 
 **results**: Results processing and HTML generation for test reports.
+
+**crclient**: Remote command execution on containers via the Kubernetes exec API. Provides process listing, PID namespace lookup, and command helpers.
+
+**datautil**: Generic map utility functions (e.g., subset checking for comparable key-value maps).
 
 ### Test Organization (tests/)
 
