@@ -36,7 +36,10 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 	if probePod == nil {
 		return fmt.Errorf("probe pod for container %s not found on node %s", cut, cut.NodeName)
 	}
-	mcKernelArgumentsMap := GetMcKernelArguments(env, cut.NodeName)
+	mcKernelArgumentsMap, err := GetMcKernelArguments(env, cut.NodeName)
+	if err != nil {
+		return fmt.Errorf("error getting MachineConfig kernel arguments for node %s: %w", cut.NodeName, err)
+	}
 	currentKernelArgsMap, err := getCurrentKernelCmdlineArgs(env, cut.NodeName)
 	if err != nil {
 		return fmt.Errorf("error getting kernel cli arguments from container: %s, err=%w", cut, err)
@@ -66,9 +69,17 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 	return nil
 }
 
-func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap map[string]string) {
-	mcKernelArgumentsMap := arrayhelper.ArgListToMap(env.Nodes[nodeName].Mc.Spec.KernelArguments)
-	return mcKernelArgumentsMap
+// GetMcKernelArguments returns kernel arguments from the node's MachineConfig.
+// Mc is optional: do not assume every OCP node has MachineConfig.
+func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (map[string]string, error) {
+	node, exists := env.Nodes[nodeName]
+	if !exists {
+		return nil, fmt.Errorf("node %q not found in environment", nodeName)
+	}
+	if node.Mc.MachineConfig == nil {
+		return nil, fmt.Errorf("node %q has no MachineConfig", nodeName)
+	}
+	return arrayhelper.ArgListToMap(node.Mc.Spec.KernelArguments), nil
 }
 
 func getGrubKernelArgs(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, err error) {

@@ -502,7 +502,12 @@ func testSysctlConfigs(check *checksdb.Check, env *provider.TestEnvironment) {
 			continue
 		}
 
-		mcKernelArgumentsMap := bootparams.GetMcKernelArguments(env, cut.NodeName)
+		mcKernelArgumentsMap, err := bootparams.GetMcKernelArguments(env, cut.NodeName)
+		if err != nil {
+			check.LogError("Could not get MachineConfig kernel arguments for node %q, error: %v", cut.NodeName, err)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Could not get MachineConfig kernel arguments", false))
+			continue
+		}
 		validSettings := true
 		for key, sysctlConfigVal := range sysctlSettings {
 			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
