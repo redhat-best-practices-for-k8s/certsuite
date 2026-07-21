@@ -130,5 +130,6 @@ func TestGetMcKernelArguments_NilMachineConfig(t *testing.T) {
 
 	result, err := GetMcKernelArguments(env, "node1")
 	require.Error(t, err)
+	assert.ErrorIs(t, err, ErrNoMachineConfig)
 	assert.Nil(t, result)
 }

@@ -17,6 +17,7 @@
 package bootparams
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -25,6 +26,9 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/arrayhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 )
+
+// ErrNoMachineConfig is returned when a node has no MachineConfig (e.g. HyperShift).
+var ErrNoMachineConfig = errors.New("no MachineConfig available")
 
 const (
 	grubKernelArgsCommand = "cat /host/boot/loader/entries/$(ls /host/boot/loader/entries/ | sort | tail -n 1)"
@@ -77,7 +81,7 @@ func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (map[s
 		return nil, fmt.Errorf("node %q not found in environment", nodeName)
 	}
 	if node.Mc.MachineConfig == nil {
-		return nil, fmt.Errorf("node %q has no MachineConfig", nodeName)
+		return nil, fmt.Errorf("node %q: %w", nodeName, ErrNoMachineConfig)
 	}
 	return arrayhelper.ArgListToMap(node.Mc.Spec.KernelArguments), nil
 }
