@@ -462,6 +462,18 @@ func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironmen
 		}
 		alreadyCheckedNodes[cut.NodeName] = true
 
+		node, exists := env.Nodes[cut.NodeName]
+		if !exists {
+			check.LogError("Node %q not found in environment", cut.NodeName)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Node not found in environment", false))
+			continue
+		}
+		// No MachineConfig to compare against (e.g. HyperShift) — skip, do not fail.
+		if node.Mc.MachineConfig == nil {
+			check.LogInfo("Skipping node %q: no MachineConfig", cut.NodeName)
+			continue
+		}
+
 		err := bootparams.TestBootParamsHelper(env, cut, check.GetLogger())
 		if err != nil {
 			check.LogError("Node %q failed the boot params check", cut.NodeName)
@@ -499,6 +511,18 @@ func testSysctlConfigs(check *checksdb.Check, env *provider.TestEnvironment) {
 		if err != nil {
 			check.LogError("Could not get sysctl settings for node %q, error: %v", cut.NodeName, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Could not get sysctl settings", false))
+			continue
+		}
+
+		node, exists := env.Nodes[cut.NodeName]
+		if !exists {
+			check.LogError("Node %q not found in environment", cut.NodeName)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Node not found in environment", false))
+			continue
+		}
+		// No MachineConfig to compare against (e.g. HyperShift) — skip, do not fail.
+		if node.Mc.MachineConfig == nil {
+			check.LogInfo("Skipping node %q: no MachineConfig", cut.NodeName)
 			continue
 		}
 
