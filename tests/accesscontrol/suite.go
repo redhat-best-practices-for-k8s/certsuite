@@ -43,9 +43,11 @@ import (
 )
 
 const (
-	nodePort                  = "NodePort"
-	defaultServiceAccount     = "default"
-	clusterServiceVersionKind = "ClusterServiceVersion"
+	nodePort                                    = "NodePort"
+	defaultServiceAccount                       = "default"
+	clusterServiceVersionKind                   = "ClusterServiceVersion"
+	extensionAPIServerNamespace                 = "kube-system"
+	extensionAPIServerAuthReaderRoleBindingName = "extension-apiserver-authentication-reader"
 )
 
 var (
@@ -746,8 +748,8 @@ func isOwnedByOLM(put *provider.Pod) bool {
 // extension-apiserver-authentication-reader in kube-system for an OLM-managed pod.
 // See: https://kubernetes.io/docs/tasks/extend-kubernetes/setup-extension-api-server/
 func isAllowedExtensionAPIServerRoleBinding(rb *rbacv1.RoleBinding, put *provider.Pod) bool {
-	return rb.Namespace == "kube-system" &&
-		rb.RoleRef.Name == "extension-apiserver-authentication-reader" &&
+	return rb.Namespace == extensionAPIServerNamespace &&
+		rb.RoleRef.Name == extensionAPIServerAuthReaderRoleBindingName &&
 		isOwnedByOLM(put)
 }
 

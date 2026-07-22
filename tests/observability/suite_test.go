@@ -20,8 +20,10 @@ import (
 	"testing"
 
 	apiserv1 "github.com/openshift/api/apiserver/v1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/stretchr/testify/assert"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -257,5 +259,55 @@ func TestEvaluateAPICompliance(t *testing.T) {
 		}
 
 		assert.True(t, valueFound)
+	}
+}
+
+func TestExtractUniqueServiceAccountNames(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name            string
+		serviceAccounts []*corev1.ServiceAccount
+		want            map[string]struct{}
+	}{
+		{
+			name: "multiple unique names",
+			serviceAccounts: []*corev1.ServiceAccount{
+				{ObjectMeta: metav1.ObjectMeta{Name: "sa-1"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "sa-2"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "sa-3"}},
+			},
+			want: map[string]struct{}{
+				"sa-1": {},
+				"sa-2": {},
+				"sa-3": {},
+			},
+		},
+		{
+			name: "duplicate names",
+			serviceAccounts: []*corev1.ServiceAccount{
+				{ObjectMeta: metav1.ObjectMeta{Name: "sa-1", Namespace: "ns-a"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "sa-1", Namespace: "ns-b"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "sa-2"}},
+			},
+			want: map[string]struct{}{
+				"sa-1": {},
+				"sa-2": {},
+			},
+		},
+		{
+			name:            "empty slice",
+			serviceAccounts: []*corev1.ServiceAccount{},
+			want:            map[string]struct{}{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testEnv := &provider.TestEnvironment{
+				ServiceAccounts: tt.serviceAccounts,
+			}
+			got := extractUniqueServiceAccountNames(testEnv)
+			assert.Equal(t, tt.want, got)
+		})
 	}
 }

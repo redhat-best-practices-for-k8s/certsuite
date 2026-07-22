@@ -25,72 +25,102 @@ import (
 
 func TestNameInDeploymentSkipList(t *testing.T) {
 	testCases := []struct {
+		name           string
 		testName       string
 		testNamespace  string
 		testList       []configuration.SkipScalingTestDeploymentsInfo
 		expectedOutput bool
 	}{
 		{
+			name:          "match found",
 			testName:      "test1",
 			testNamespace: "tnf",
 			testList: []configuration.SkipScalingTestDeploymentsInfo{
-				{
-					Name:      "test1",
-					Namespace: "tnf",
-				},
+				{Name: "test1", Namespace: "tnf"},
 			},
 			expectedOutput: true,
 		},
 		{
+			name:          "name matches but namespace does not",
+			testName:      "test1",
+			testNamespace: "other-ns",
+			testList: []configuration.SkipScalingTestDeploymentsInfo{
+				{Name: "test1", Namespace: "tnf"},
+			},
+			expectedOutput: false,
+		},
+		{
+			name:           "empty list",
+			testName:       "test1",
+			testNamespace:  "tnf",
+			testList:       []configuration.SkipScalingTestDeploymentsInfo{},
+			expectedOutput: false,
+		},
+		{
+			name:          "no match",
 			testName:      "test2",
 			testNamespace: "tnf",
 			testList: []configuration.SkipScalingTestDeploymentsInfo{
-				{
-					Name:      "test1",
-					Namespace: "tnf",
-				},
+				{Name: "test1", Namespace: "tnf"},
 			},
 			expectedOutput: false,
 		},
 	}
 
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedOutput, nameInDeploymentSkipList(tc.testName, tc.testNamespace, tc.testList))
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.expectedOutput, nameInDeploymentSkipList(tc.testName, tc.testNamespace, tc.testList))
+		})
 	}
 }
 
 func TestNameInStatefulSetSkipList(t *testing.T) {
 	testCases := []struct {
+		name           string
 		testName       string
 		testNamespace  string
 		testList       []configuration.SkipScalingTestStatefulSetsInfo
 		expectedOutput bool
 	}{
 		{
+			name:          "match found",
 			testName:      "test1",
 			testNamespace: "tnf",
 			testList: []configuration.SkipScalingTestStatefulSetsInfo{
-				{
-					Name:      "test1",
-					Namespace: "tnf",
-				},
+				{Name: "test1", Namespace: "tnf"},
 			},
 			expectedOutput: true,
 		},
 		{
+			name:          "name matches but namespace does not",
+			testName:      "test1",
+			testNamespace: "other-ns",
+			testList: []configuration.SkipScalingTestStatefulSetsInfo{
+				{Name: "test1", Namespace: "tnf"},
+			},
+			expectedOutput: false,
+		},
+		{
+			name:           "empty list",
+			testName:       "test1",
+			testNamespace:  "tnf",
+			testList:       []configuration.SkipScalingTestStatefulSetsInfo{},
+			expectedOutput: false,
+		},
+		{
+			name:          "no match",
 			testName:      "test2",
 			testNamespace: "tnf",
 			testList: []configuration.SkipScalingTestStatefulSetsInfo{
-				{
-					Name:      "test1",
-					Namespace: "tnf",
-				},
+				{Name: "test1", Namespace: "tnf"},
 			},
 			expectedOutput: false,
 		},
 	}
 
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedOutput, nameInStatefulSetSkipList(tc.testName, tc.testNamespace, tc.testList))
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.expectedOutput, nameInStatefulSetSkipList(tc.testName, tc.testNamespace, tc.testList))
+		})
 	}
 }
