@@ -98,6 +98,60 @@ func TestForEachParallelRespectsLimit(t *testing.T) {
 	assert.LessOrEqual(t, int(maxActive.Load()), 5)
 }
 
+func TestAddCompliantObjects(t *testing.T) {
+	t.Parallel()
+
+	r := &ParallelResult{}
+
+	objs := []*testhelper.ReportObject{
+		testhelper.NewPodReportObject("ns", "pod1", "ok", true),
+		testhelper.NewPodReportObject("ns", "pod2", "ok", true),
+		testhelper.NewPodReportObject("ns", "pod3", "ok", true),
+	}
+
+	r.AddCompliantObjects(objs)
+
+	compliant, nonCompliant := r.Results()
+	assert.Len(t, compliant, 3)
+	assert.Empty(t, nonCompliant)
+}
+
+func TestAddNonCompliantObjects(t *testing.T) {
+	t.Parallel()
+
+	r := &ParallelResult{}
+
+	objs := []*testhelper.ReportObject{
+		testhelper.NewPodReportObject("ns", "pod1", "bad", false),
+		testhelper.NewPodReportObject("ns", "pod2", "bad", false),
+	}
+
+	r.AddNonCompliantObjects(objs)
+
+	compliant, nonCompliant := r.Results()
+	assert.Empty(t, compliant)
+	assert.Len(t, nonCompliant, 2)
+}
+
+func TestAddObjectsMixed(t *testing.T) {
+	t.Parallel()
+
+	r := &ParallelResult{}
+
+	r.AddCompliantObjects([]*testhelper.ReportObject{
+		testhelper.NewPodReportObject("ns", "pod1", "ok", true),
+	})
+	r.AddNonCompliantObjects([]*testhelper.ReportObject{
+		testhelper.NewPodReportObject("ns", "pod2", "bad", false),
+	})
+	r.AddCompliantObject(testhelper.NewPodReportObject("ns", "pod3", "ok", true))
+	r.AddNonCompliantObject(testhelper.NewPodReportObject("ns", "pod4", "bad", false))
+
+	compliant, nonCompliant := r.Results()
+	assert.Len(t, compliant, 2)
+	assert.Len(t, nonCompliant, 2)
+}
+
 // TestForEachParallelPerNodeMutex verifies the per-node mutex pattern used by
 // probe-pod-heavy tests. Items are assigned to "nodes"; a per-node mutex
 // serializes execution within each node while allowing cross-node parallelism.
