@@ -139,6 +139,36 @@ func Test_hugepagesFromKernelArgsFunc(t *testing.T) {
 	}
 }
 
+func TestGetMcHugepages_NilMachineConfig(t *testing.T) {
+	mc := provider.MachineConfig{}
+
+	_, _, err := getMcHugepagesFromMcKernelArguments(&mc)
+	assert.ErrorIs(t, err, provider.ErrNoMachineConfig)
+
+	_, err = getMcSystemdUnitsHugepagesConfig(&mc)
+	assert.ErrorIs(t, err, provider.ErrNoMachineConfig)
+}
+
+func TestNewTester_NilMachineConfig(t *testing.T) {
+	node := &provider.Node{
+		Data: &corev1.Node{ObjectMeta: metav1.ObjectMeta{Name: "node1"}},
+		Mc:   provider.MachineConfig{},
+	}
+	probePod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns1"},
+		Spec:       corev1.PodSpec{Containers: []corev1.Container{{Name: "container1"}}},
+	}
+	client := &fakeK8sClient{
+		execCommandFunctionMocker: func() (string, string, error) {
+			return "/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:0\n", "", nil
+		},
+	}
+
+	tester, err := NewTester(node, probePod, client)
+	assert.ErrorIs(t, err, provider.ErrNoMachineConfig)
+	assert.Nil(t, tester)
+}
+
 type fakeK8sClient struct {
 	execCommandFunctionMocker func() (stdout string, stderr string, err error)
 }

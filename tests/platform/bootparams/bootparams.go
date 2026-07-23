@@ -17,7 +17,6 @@
 package bootparams
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -28,7 +27,7 @@ import (
 )
 
 // ErrNoMachineConfig is returned when a node has no MachineConfig (e.g. HyperShift).
-var ErrNoMachineConfig = errors.New("no MachineConfig available")
+var ErrNoMachineConfig = provider.ErrNoMachineConfig
 
 const (
 	grubKernelArgsCommand = "cat /host/boot/loader/entries/$(ls /host/boot/loader/entries/ | sort | tail -n 1)"
@@ -81,7 +80,7 @@ func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (map[s
 		return nil, fmt.Errorf("node %q not found in environment", nodeName)
 	}
 	if node.Mc.MachineConfig == nil {
-		return nil, fmt.Errorf("node %q: %w", nodeName, ErrNoMachineConfig)
+		return nil, fmt.Errorf("node %q: %w", nodeName, provider.ErrNoMachineConfig)
 	}
 	return arrayhelper.ArgListToMap(node.Mc.Spec.KernelArguments), nil
 }

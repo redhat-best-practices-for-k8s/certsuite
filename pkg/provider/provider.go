@@ -18,6 +18,7 @@ package provider
 
 import (
 	"context"
+	"errors"
 	"regexp"
 	"sync"
 	"time"
@@ -170,6 +171,9 @@ type MachineConfig struct {
 		} `json:"systemd"`
 	} `json:"config"`
 }
+
+// ErrNoMachineConfig is returned when a node has no MachineConfig (e.g. HyperShift).
+var ErrNoMachineConfig = errors.New("no MachineConfig available")
 
 type CniNetworkInterface struct {
 	Name       string                 `json:"name"`
