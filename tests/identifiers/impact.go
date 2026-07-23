@@ -36,6 +36,7 @@ const (
 	TestICMPv6ConnectivityMultusIdentifierImpact       = `IPv6 Multus connectivity problems can prevent dual-stack multi-network scenarios from working, limiting network scalability and future-proofing.`
 	TestServiceDualStackIdentifierImpact               = `Single-stack IPv4 services limit network architecture flexibility and prevent migration to modern dual-stack infrastructures.`
 	TestUndeclaredContainerPortsUsageImpact            = `Undeclared ports can be blocked by security policies, causing unexpected connectivity issues and making troubleshooting difficult.`
+	TestUnsecuredContainerPortsImpact                  = `Unsecured ports accepting plaintext traffic expose sensitive data to eavesdropping and man-in-the-middle attacks, violating security compliance requirements.`
 	TestOCPReservedPortsUsageImpact                    = `Using OpenShift-reserved ports can cause critical platform services to fail, potentially destabilizing the entire cluster.`
 
 	// Access Control Suite Impact Statements
@@ -179,6 +180,7 @@ var ImpactMap = map[string]string{
 	"networking-icmpv6-connectivity-multus":              TestICMPv6ConnectivityMultusIdentifierImpact,
 	"networking-dual-stack-service":                      TestServiceDualStackIdentifierImpact,
 	"networking-undeclared-container-ports-usage":        TestUndeclaredContainerPortsUsageImpact,
+	"networking-unsecured-container-ports":               TestUnsecuredContainerPortsImpact,
 	"networking-ocp-reserved-ports-usage":                TestOCPReservedPortsUsageImpact,
 
 	// Access Control Suite
