@@ -17,11 +17,16 @@
 package accesscontrol
 
 import (
+	"io"
 	"testing"
 
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/stretchr/testify/assert"
 	corev1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -275,6 +280,401 @@ func Test_isOwnedByOLM(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			got := isOwnedByOLM(tt.pod)
 			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+func Test_checkForbiddenCapability(t *testing.T) {
+	log.SetupLogger(io.Discard, "INFO")
+
+	tests := []struct {
+		name                  string
+		containers            []*provider.Container
+		capability            string
+		wantCompliantCount    int
+		wantNonCompliantCount int
+	}{
+		{
+			name:                  "no containers",
+			containers:            []*provider.Container{},
+			capability:            "SYS_ADMIN",
+			wantCompliantCount:    0,
+			wantNonCompliantCount: 0,
+		},
+		{
+			name: "container with nil SecurityContext",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name:            "test-container",
+						SecurityContext: nil,
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "SYS_ADMIN",
+			wantCompliantCount:    1,
+			wantNonCompliantCount: 0,
+		},
+		{
+			name: "container with nil Capabilities",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "test-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: nil,
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "NET_ADMIN",
+			wantCompliantCount:    1,
+			wantNonCompliantCount: 0,
+		},
+		{
+			name: "container with forbidden capability",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "test-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"SYS_ADMIN"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "SYS_ADMIN",
+			wantCompliantCount:    0,
+			wantNonCompliantCount: 1,
+		},
+		{
+			name: "compliant container without forbidden capability",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "test-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"NET_RAW"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "SYS_ADMIN",
+			wantCompliantCount:    1,
+			wantNonCompliantCount: 0,
+		},
+		{
+			name: "multiple containers mixed compliance",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "good-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"NET_RAW"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+				{
+					Container: &corev1.Container{
+						Name: "bad-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"SYS_ADMIN"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "SYS_ADMIN",
+			wantCompliantCount:    1,
+			wantNonCompliantCount: 1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			logger := log.GetLogger()
+			compliant, nonCompliant := checkForbiddenCapability(tt.containers, tt.capability, logger)
+			assert.Len(t, compliant, tt.wantCompliantCount)
+			assert.Len(t, nonCompliant, tt.wantNonCompliantCount)
+		})
+	}
+}
+
+func Test_isInstallModeMultiNamespace(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name         string
+		installModes []v1alpha1.InstallMode
+		want         bool
+	}{
+		{
+			name:         "empty install modes",
+			installModes: []v1alpha1.InstallMode{},
+			want:         false,
+		},
+		{
+			name: "AllNamespaces supported",
+			installModes: []v1alpha1.InstallMode{
+				{Type: v1alpha1.InstallModeTypeOwnNamespace, Supported: true},
+				{Type: v1alpha1.InstallModeTypeAllNamespaces, Supported: true},
+			},
+			want: true,
+		},
+		{
+			name: "AllNamespaces not present",
+			installModes: []v1alpha1.InstallMode{
+				{Type: v1alpha1.InstallModeTypeOwnNamespace, Supported: true},
+				{Type: v1alpha1.InstallModeTypeSingleNamespace, Supported: true},
+			},
+			want: false,
+		},
+		{
+			name: "only MultiNamespace present",
+			installModes: []v1alpha1.InstallMode{
+				{Type: v1alpha1.InstallModeTypeMultiNamespace, Supported: true},
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := isInstallModeMultiNamespace(tt.installModes)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+func Test_isAllowedExtensionAPIServerRoleBinding(t *testing.T) {
+	t.Parallel()
+
+	olmPod := &provider.Pod{
+		Pod: &corev1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-pod",
+				Namespace: "test-ns",
+				Labels: map[string]string{
+					"olm.owner": "test-operator.v1.0.0",
+				},
+			},
+		},
+	}
+	nonOLMPod := &provider.Pod{
+		Pod: &corev1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-pod",
+				Namespace: "test-ns",
+				Labels:    map[string]string{"app": "my-app"},
+			},
+		},
+	}
+
+	tests := []struct {
+		name string
+		rb   *rbacv1.RoleBinding
+		pod  *provider.Pod
+		want bool
+	}{
+		{
+			name: "correct namespace and name with OLM pod",
+			rb: &rbacv1.RoleBinding{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "extension-apiserver-auth-reader",
+					Namespace: extensionAPIServerNamespace,
+				},
+				RoleRef: rbacv1.RoleRef{
+					Name: extensionAPIServerAuthReaderRoleBindingName,
+				},
+			},
+			pod:  olmPod,
+			want: true,
+		},
+		{
+			name: "wrong namespace",
+			rb: &rbacv1.RoleBinding{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "extension-apiserver-auth-reader",
+					Namespace: "default",
+				},
+				RoleRef: rbacv1.RoleRef{
+					Name: extensionAPIServerAuthReaderRoleBindingName,
+				},
+			},
+			pod:  olmPod,
+			want: false,
+		},
+		{
+			name: "wrong role name",
+			rb: &rbacv1.RoleBinding{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "some-role-binding",
+					Namespace: extensionAPIServerNamespace,
+				},
+				RoleRef: rbacv1.RoleRef{
+					Name: "some-other-role",
+				},
+			},
+			pod:  olmPod,
+			want: false,
+		},
+		{
+			name: "pod not OLM-managed",
+			rb: &rbacv1.RoleBinding{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "extension-apiserver-auth-reader",
+					Namespace: extensionAPIServerNamespace,
+				},
+				RoleRef: rbacv1.RoleRef{
+					Name: extensionAPIServerAuthReaderRoleBindingName,
+				},
+			},
+			pod:  nonOLMPod,
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := isAllowedExtensionAPIServerRoleBinding(tt.rb, tt.pod)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+func Test_checkCrossNamespaceRoleBindingViolation(t *testing.T) {
+	log.SetupLogger(io.Discard, "INFO")
+
+	tests := []struct {
+		name          string
+		rb            *rbacv1.RoleBinding
+		pod           *provider.Pod
+		cnfNamespaces []string
+		wantViolation bool
+	}{
+		{
+			name: "subject in CNF namespace - allowed",
+			rb: &rbacv1.RoleBinding{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-rb",
+					Namespace: "cnf-ns",
+				},
+				Subjects: []rbacv1.Subject{
+					{
+						Kind:      rbacv1.ServiceAccountKind,
+						Name:      "test-sa",
+						Namespace: "test-ns",
+					},
+				},
+			},
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+					},
+					Spec: corev1.PodSpec{
+						ServiceAccountName: "test-sa",
+					},
+				},
+			},
+			cnfNamespaces: []string{"test-ns", "cnf-ns"},
+			wantViolation: false,
+		},
+		{
+			name: "extension API server exception for OLM pod",
+			rb: &rbacv1.RoleBinding{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "extension-apiserver-auth-reader",
+					Namespace: extensionAPIServerNamespace,
+				},
+				RoleRef: rbacv1.RoleRef{
+					Name: extensionAPIServerAuthReaderRoleBindingName,
+				},
+				Subjects: []rbacv1.Subject{
+					{
+						Kind:      rbacv1.ServiceAccountKind,
+						Name:      "test-sa",
+						Namespace: "test-ns",
+					},
+				},
+			},
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						Labels: map[string]string{
+							"olm.owner": "test-operator.v1.0.0",
+						},
+					},
+					Spec: corev1.PodSpec{
+						ServiceAccountName: "test-sa",
+					},
+				},
+			},
+			cnfNamespaces: []string{"test-ns"},
+			wantViolation: false,
+		},
+		{
+			name: "cross-namespace violation detected",
+			rb: &rbacv1.RoleBinding{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "foreign-rb",
+					Namespace: "foreign-ns",
+				},
+				RoleRef: rbacv1.RoleRef{
+					Name: "some-role",
+				},
+				Subjects: []rbacv1.Subject{
+					{
+						Kind:      rbacv1.ServiceAccountKind,
+						Name:      "test-sa",
+						Namespace: "test-ns",
+					},
+				},
+			},
+			pod: &provider.Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-ns",
+						Labels:    map[string]string{"app": "my-app"},
+					},
+					Spec: corev1.PodSpec{
+						ServiceAccountName: "test-sa",
+					},
+				},
+			},
+			cnfNamespaces: []string{"test-ns"},
+			wantViolation: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			check := checksdb.NewCheck("test-check", []string{})
+			result := checkCrossNamespaceRoleBindingViolation(tt.rb, tt.pod, tt.cnfNamespaces, check)
+			if tt.wantViolation {
+				assert.NotNil(t, result)
+			} else {
+				assert.Nil(t, result)
+			}
 		})
 	}
 }

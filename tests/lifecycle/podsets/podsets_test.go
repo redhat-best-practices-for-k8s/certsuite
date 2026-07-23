@@ -107,6 +107,80 @@ func TestIsStatefulSetReady(t *testing.T) {
 	}
 }
 
+func TestGetDeploymentsInfo(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name        string
+		deployments []*provider.Deployment
+		want        []string
+	}{
+		{
+			name: "normal list",
+			deployments: []*provider.Deployment{
+				{Deployment: &appsv1.Deployment{ObjectMeta: metav1.ObjectMeta{Name: "dep1", Namespace: "ns1"}}},
+				{Deployment: &appsv1.Deployment{ObjectMeta: metav1.ObjectMeta{Name: "dep2", Namespace: "ns2"}}},
+			},
+			want: []string{"ns1:dep1", "ns2:dep2"},
+		},
+		{
+			name:        "empty list",
+			deployments: []*provider.Deployment{},
+			want:        []string{},
+		},
+		{
+			name: "single entry",
+			deployments: []*provider.Deployment{
+				{Deployment: &appsv1.Deployment{ObjectMeta: metav1.ObjectMeta{Name: "only", Namespace: "default"}}},
+			},
+			want: []string{"default:only"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := getDeploymentsInfo(tt.deployments)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+func TestGetStatefulSetsInfo(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name         string
+		statefulSets []*provider.StatefulSet
+		want         []string
+	}{
+		{
+			name: "normal list",
+			statefulSets: []*provider.StatefulSet{
+				{StatefulSet: &appsv1.StatefulSet{ObjectMeta: metav1.ObjectMeta{Name: "sts1", Namespace: "ns1"}}},
+				{StatefulSet: &appsv1.StatefulSet{ObjectMeta: metav1.ObjectMeta{Name: "sts2", Namespace: "ns2"}}},
+			},
+			want: []string{"ns1:sts1", "ns2:sts2"},
+		},
+		{
+			name:         "empty list",
+			statefulSets: []*provider.StatefulSet{},
+			want:         []string{},
+		},
+		{
+			name: "single entry",
+			statefulSets: []*provider.StatefulSet{
+				{StatefulSet: &appsv1.StatefulSet{ObjectMeta: metav1.ObjectMeta{Name: "only", Namespace: "default"}}},
+			},
+			want: []string{"default:only"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := getStatefulSetsInfo(tt.statefulSets)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
 func TestGetPodSetNodes(t *testing.T) {
 	type args struct {
 		pods    []*corev1.Pod
