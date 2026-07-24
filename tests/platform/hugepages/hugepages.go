@@ -129,6 +129,10 @@ func NewTester(node *provider.Node, probePod *corev1.Pod, commander clientsholde
 	}
 
 	log.Info("Parsing machineconfig's kernelArguments and systemd's hugepages units.")
+	// Mc is optional: do not assume every OCP node has MachineConfig (e.g. HyperShift).
+	if tester.node.Mc.MachineConfig == nil {
+		return nil, fmt.Errorf("node %q: %w", node.Data.Name, provider.ErrNoMachineConfig)
+	}
 	tester.mcSystemdHugepagesByNuma, err = getMcSystemdUnitsHugepagesConfig(&tester.node.Mc)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get MC systemd hugepages config, err: %w", err)
@@ -211,6 +215,10 @@ func (tester *Tester) TestNodeHugepagesWithMcSystemd() (bool, error) {
 // The total count of hugepages of the size defined in the kernelArguments must match the kernArgs' hugepages value.
 // For other sizes, the sum should be 0.
 func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
+	// Mc is optional: do not assume every OCP node has MachineConfig (e.g. HyperShift).
+	if tester.node.Mc.MachineConfig == nil {
+		return false, provider.ErrNoMachineConfig
+	}
 	kernelArgsHpCountBySize, _, err := getMcHugepagesFromMcKernelArguments(&tester.node.Mc)
 	if err != nil {
 		return false, fmt.Errorf("failed to get kernelArguments hugepages config, err: %w", err)
@@ -289,6 +297,10 @@ func (tester *Tester) getNodeNumaHugePages() (hugepages hugepagesByNuma, err err
 
 // getMcSystemdUnitsHugepagesConfig gets the hugepages information from machineconfig's systemd units.
 func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages hugepagesByNuma, err error) {
+	if mc == nil || mc.MachineConfig == nil {
+		return nil, provider.ErrNoMachineConfig
+	}
+
 	const UnitContentsRegexMatchLen = 4
 	hugepages = hugepagesByNuma{}
 
@@ -336,6 +348,10 @@ func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz i
 
 // getMcHugepagesFromMcKernelArguments gets the hugepages params from machineconfig's kernelArguments
 func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesPerSize map[int]int, defhugepagesz int, err error) {
+	if mc == nil || mc.MachineConfig == nil {
+		return nil, 0, provider.ErrNoMachineConfig
+	}
+
 	defhugepagesz = RhelDefaultHugepagesz
 	hugepagesPerSize = map[int]int{}
 

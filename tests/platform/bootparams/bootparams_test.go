@@ -22,6 +22,7 @@ import (
 	mcv1 "github.com/openshift/api/machineconfiguration/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGetMcKernelArguments_SingleKeyValue(t *testing.T) {
@@ -39,7 +40,8 @@ func TestGetMcKernelArguments_SingleKeyValue(t *testing.T) {
 		},
 	}
 
-	result := GetMcKernelArguments(env, "node1")
+	result, err := GetMcKernelArguments(env, "node1")
+	require.NoError(t, err)
 	assert.Equal(t, "true", result["nosmt"])
 }
 
@@ -58,7 +60,8 @@ func TestGetMcKernelArguments_MultipleArgs(t *testing.T) {
 		},
 	}
 
-	result := GetMcKernelArguments(env, "node1")
+	result, err := GetMcKernelArguments(env, "node1")
+	require.NoError(t, err)
 	assert.Len(t, result, 3)
 	assert.Equal(t, "true", result["nosmt"])
 	assert.Equal(t, "1G", result["hugepagesz"])
@@ -80,7 +83,8 @@ func TestGetMcKernelArguments_FlagWithoutValue(t *testing.T) {
 		},
 	}
 
-	result := GetMcKernelArguments(env, "node1")
+	result, err := GetMcKernelArguments(env, "node1")
+	require.NoError(t, err)
 	assert.Len(t, result, 1)
 	assert.Equal(t, "", result["nosmt"])
 }
@@ -100,6 +104,32 @@ func TestGetMcKernelArguments_EmptyArgs(t *testing.T) {
 		},
 	}
 
-	result := GetMcKernelArguments(env, "node1")
+	result, err := GetMcKernelArguments(env, "node1")
+	require.NoError(t, err)
 	assert.Empty(t, result)
+}
+
+func TestGetMcKernelArguments_MissingNode(t *testing.T) {
+	env := &provider.TestEnvironment{
+		Nodes: map[string]provider.Node{},
+	}
+
+	result, err := GetMcKernelArguments(env, "missing-node")
+	require.Error(t, err)
+	assert.Nil(t, result)
+}
+
+func TestGetMcKernelArguments_NilMachineConfig(t *testing.T) {
+	env := &provider.TestEnvironment{
+		Nodes: map[string]provider.Node{
+			"node1": {
+				Mc: provider.MachineConfig{},
+			},
+		},
+	}
+
+	result, err := GetMcKernelArguments(env, "node1")
+	require.Error(t, err)
+	assert.ErrorIs(t, err, ErrNoMachineConfig)
+	assert.Nil(t, result)
 }

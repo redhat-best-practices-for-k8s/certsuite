@@ -18,6 +18,7 @@ package provider
 
 import (
 	"context"
+	"errors"
 	"regexp"
 	"sync"
 	"time"
@@ -170,6 +171,9 @@ type MachineConfig struct {
 		} `json:"systemd"`
 	} `json:"config"`
 }
+
+// ErrNoMachineConfig is returned when a node has no MachineConfig (e.g. HyperShift).
+var ErrNoMachineConfig = errors.New("no MachineConfig available")
 
 type CniNetworkInterface struct {
 	Name       string                 `json:"name"`
@@ -740,16 +744,19 @@ func createNodes(nodes []corev1.Node) map[string]Node {
 			continue
 		}
 
-		// Get Node's machineConfig name
+		// Not all OCP clusters expose MachineConfig on nodes (e.g. hosted control planes).
+		// Keep the node without Mc — do not assume MCO.
 		mcName, exists := node.Annotations["machineconfiguration.openshift.io/currentConfig"]
 		if !exists {
-			log.Error("Failed to get machineConfig name for node %q", node.Name)
+			log.Warn("Failed to get machineConfig name for node %q; keeping node without MachineConfig", node.Name)
+			wrapperNodes[node.Name] = Node{Data: node}
 			continue
 		}
 		log.Info("Node %q - mc name %q", node.Name, mcName)
 		mc, err := getMachineConfig(mcName, machineConfigs)
 		if err != nil {
-			log.Error("Failed to get machineConfig %q, err: %v", mcName, err)
+			log.Warn("Failed to get machineConfig %q, err: %v; keeping node without MachineConfig", mcName, err)
+			wrapperNodes[node.Name] = Node{Data: node}
 			continue
 		}
 

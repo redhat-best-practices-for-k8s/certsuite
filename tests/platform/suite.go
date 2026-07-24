@@ -17,6 +17,7 @@
 package platform
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -433,9 +434,14 @@ func testHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
 		}
 
 		hpTester, err := hugepages.NewTester(&node, probePod, clientsholder.GetClientsHolder())
+		if errors.Is(err, provider.ErrNoMachineConfig) {
+			check.LogInfo("Skipping node %q: %v", nodeName, err)
+			continue
+		}
 		if err != nil {
 			check.LogError("Unable to get node hugepages tester for node %q, err: %v", nodeName, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Unable to get node hugepages tester", false))
+			continue
 		}
 
 		if err := hpTester.Run(); err != nil {
@@ -463,15 +469,19 @@ func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironmen
 		alreadyCheckedNodes[cut.NodeName] = true
 
 		err := bootparams.TestBootParamsHelper(env, cut, check.GetLogger())
+		if errors.Is(err, bootparams.ErrNoMachineConfig) {
+			check.LogInfo("Skipping node %q: %v", cut.NodeName, err)
+			continue
+		}
 		if err != nil {
-			check.LogError("Node %q failed the boot params check", cut.NodeName)
+			check.LogError("Node %q failed the boot params check: %v", cut.NodeName, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false).
 				AddField(testhelper.ProbePodName, env.ProbePods[cut.NodeName].Name))
-		} else {
-			check.LogInfo("Node %q passed the boot params check", cut.NodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true).
-				AddField(testhelper.ProbePodName, env.ProbePods[cut.NodeName].Name))
+			continue
 		}
+		check.LogInfo("Node %q passed the boot params check", cut.NodeName)
+		compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true).
+			AddField(testhelper.ProbePodName, env.ProbePods[cut.NodeName].Name))
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)
@@ -502,7 +512,16 @@ func testSysctlConfigs(check *checksdb.Check, env *provider.TestEnvironment) {
 			continue
 		}
 
-		mcKernelArgumentsMap := bootparams.GetMcKernelArguments(env, cut.NodeName)
+		mcKernelArgumentsMap, err := bootparams.GetMcKernelArguments(env, cut.NodeName)
+		if errors.Is(err, bootparams.ErrNoMachineConfig) {
+			check.LogInfo("Skipping sysctl check for node %q: %v", cut.NodeName, err)
+			continue
+		}
+		if err != nil {
+			check.LogError("Could not get MachineConfig kernel arguments for node %q: %v", cut.NodeName, err)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Could not get MachineConfig kernel arguments", false))
+			continue
+		}
 		validSettings := true
 		for key, sysctlConfigVal := range sysctlSettings {
 			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
