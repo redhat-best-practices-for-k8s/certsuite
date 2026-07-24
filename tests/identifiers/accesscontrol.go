@@ -36,6 +36,8 @@ var (
 	TestBpfIdentifier                                 claim.Identifier
 	TestContainerHostPort                             claim.Identifier
 	TestCrdRoleIdentifier                             claim.Identifier
+	TestDacOverrideIdentifier                         claim.Identifier
+	TestDacReadSearchIdentifier                       claim.Identifier
 	TestIpcLockIdentifier                             claim.Identifier
 	TestNamespaceBestPracticesIdentifier              claim.Identifier
 	TestNamespaceResourceQuotaIdentifier              claim.Identifier
@@ -59,6 +61,7 @@ var (
 	TestSecContextIdentifier                          claim.Identifier
 	TestServicesDoNotUseNodeportsIdentifier           claim.Identifier
 	TestSysAdminIdentifier                            claim.Identifier
+	TestSysModuleIdentifier                           claim.Identifier
 	TestSysPtraceCapabilityIdentifier                 claim.Identifier
 )
 
@@ -127,6 +130,39 @@ func init() {
 			Extended: Mandatory,
 		},
 		TagExtended)
+
+	TestDacOverrideIdentifier = AddCatalogEntry(
+		"dac-override-capability-check",
+		common.AccessControlTestKey,
+		`Ensures that containers do not use DAC_OVERRIDE capability. DAC_OVERRIDE bypasses file permission checks and usually indicates incorrect file ownership in the container image.`,
+		DacOverrideCapabilityRemediation,
+		NoExceptions,
+		TestDacOverrideIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestDacReadSearchIdentifier = AddCatalogEntry(
+		"dac-read-search-capability-check",
+		common.AccessControlTestKey,
+		`Ensures that containers do not use DAC_READ_SEARCH capability. DAC_READ_SEARCH enables open_by_handle_at()-style access and is a known container escape risk.`,
+		DacReadSearchCapabilityRemediation,
+		NoExceptions,
+		TestDacReadSearchIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
 	TestIpcLockIdentifier = AddCatalogEntry(
 		"ipc-lock-capability-check",
 		common.AccessControlTestKey,
@@ -488,6 +524,22 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		SecConRemediation+" Containers should not use the SYS_ADMIN Linux capability.",
 		NoExceptions,
 		TestSysAdminIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
+	TestSysModuleIdentifier = AddCatalogEntry(
+		"sys-module-capability-check",
+		common.AccessControlTestKey,
+		`Ensures that containers do not use SYS_MODULE capability. SYS_MODULE allows loading kernel modules from a container and creates a host/cluster takeover risk.`,
+		SysModuleCapabilityRemediation,
+		NoExceptions,
+		TestSysModuleIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,

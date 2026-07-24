@@ -407,6 +407,66 @@ func Test_checkForbiddenCapability(t *testing.T) {
 			wantCompliantCount:    1,
 			wantNonCompliantCount: 1,
 		},
+		{
+			name: "container with SYS_MODULE is non-compliant",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "test-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"SYS_MODULE"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "SYS_MODULE",
+			wantCompliantCount:    0,
+			wantNonCompliantCount: 1,
+		},
+		{
+			name: "container with DAC_OVERRIDE is non-compliant",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "test-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"DAC_OVERRIDE"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "DAC_OVERRIDE",
+			wantCompliantCount:    0,
+			wantNonCompliantCount: 1,
+		},
+		{
+			name: "container with DAC_READ_SEARCH is non-compliant",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "test-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"DAC_READ_SEARCH"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "DAC_READ_SEARCH",
+			wantCompliantCount:    0,
+			wantNonCompliantCount: 1,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
