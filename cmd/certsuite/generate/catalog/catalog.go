@@ -167,9 +167,10 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 		for _, k := range catalog[suite] {
 			summary.testsPerSuite[suite]++
 			summary.totalTests++
-			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
-			// GetTestIDAndLabels function.
-			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ") + "," + k.identifier.Suite
+			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ")
+			if !strings.Contains(tags, k.identifier.Suite) {
+				tags += "," + k.identifier.Suite
+			}
 
 			keys := make([]string, 0, len(identifiers.Catalog[k.identifier].CategoryClassification))
 

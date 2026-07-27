@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|---|
 |8|1|
 
-### Non-Telco specific tests only: 71
+### Non-Telco specific tests only: 52
 
 |Mandatory|Optional|
 |---|---|---|
-|43|28|
+|43|9|
 
 ### Telco specific tests only: 28
 
@@ -624,8 +624,8 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Property|Description|
 |---|---|
 |Unique ID|lifecycle-container-poststart|
-|Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.|
-|Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.|
+|Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.|
+|Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container's main work begins. Kubernetes will not change the container's state to Running until the PostStart script has executed successfully. For details, see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container's work begins.|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cloud-native-design-best-practices|
 |Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.|
 |Impact Statement|Missing PostStart hooks can cause containers to start serving traffic before proper initialization, leading to application errors.|
@@ -641,7 +641,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Property|Description|
 |---|---|
 |Unique ID|lifecycle-container-prestop|
-|Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.|
+|Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn't shut down within the default 30 seconds then the platform will send a SIGKILL signal which will stop the pod immediately. This method isn't as clean and the default time between the SIGTERM and SIGKILL can be modified based on the requirements of the application. Containers must handle SIGTERM and shut down gracefully.|
 |Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cloud-native-design-best-practices|
 |Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.|
@@ -1191,7 +1191,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Property|Description|
 |---|---|
 |Unique ID|observability-crd-status|
-|Description|Checks that all CRDs have a status sub-resource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).|
+|Description|Checks that all CRDs have a status sub-resource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).|
 |Suggested Remediation|Ensure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).|
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-cnf-operator-requirements|
 |Exception Process|No exceptions|
@@ -1816,7 +1816,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Missing or incorrect image references in related images can cause deployment failures and broken operator functionality.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1833,7 +1833,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Non-UBI base images may lack security updates, enterprise support, and compliance certifications required for production use.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1850,7 +1850,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Uncertified bundle image references can introduce security vulnerabilities and compatibility issues in production deployments.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1867,7 +1867,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Operators not deployable by OLM cannot be properly managed, updated, or integrated into OpenShift lifecycle management.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1884,7 +1884,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Non-compliance with restricted network guidelines can prevent deployment in air-gapped environments and violate security policies.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1901,7 +1901,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Missing license information can create legal compliance issues and prevent proper software asset management.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1918,7 +1918,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Modified files in containers can introduce security vulnerabilities, create inconsistent behavior, and violate immutable infrastructure principles.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1935,7 +1935,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Misuse of Red Hat trademarks in name, vendor, or maintainer labels creates legal and compliance risks that can block certification and publication.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1952,7 +1952,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Prohibited packages can introduce security vulnerabilities, licensing issues, and compliance violations.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1969,7 +1969,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Prohibited container names can cause conflicts with system components and violate naming conventions.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -1986,7 +1986,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Missing required labels prevent proper metadata management and can cause deployment and management issues.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -2003,7 +2003,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Non-unique tags can cause version conflicts and deployment inconsistencies, making rollbacks and troubleshooting difficult.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -2020,7 +2020,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Excessive image layers can cause poor performance, increased storage usage, and longer deployment times.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -2037,7 +2037,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Missing required annotations can prevent proper operator lifecycle management and cause deployment failures.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -2054,7 +2054,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Running containers as root increases the blast radius of security vulnerabilities and can lead to full host compromise if containers are breached.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -2071,7 +2071,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Failing basic scorecard checks indicates fundamental operator implementation issues that can cause runtime failures.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -2088,7 +2088,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Failing OLM suite checks indicates operator lifecycle management issues that can prevent proper installation and updates.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -2105,7 +2105,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Incorrect SCC definitions in CSV can cause security policy violations and deployment failures.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
@@ -2122,7 +2122,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Invalid operator bundles can cause deployment failures, update issues, and operational instability.|
-|Tags|common,preflight|
+|Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Optional|
