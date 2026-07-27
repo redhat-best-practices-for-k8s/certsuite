@@ -20,11 +20,11 @@ import (
 	"strings"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksadapter"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
-	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	checksfn "github.com/redhat-best-practices-for-k8s/checks/manageability"
 )
 
 var (
@@ -51,37 +51,13 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.ManageabilityTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainersImageTag)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("manageability-containers-image-tag")).
 		WithSkipCheckFn(skipIfNoContainersFn).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testContainersImageTag(c, &env)
-			return nil
-		}))
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckImageTag).MakeCheckFn(&env)))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainerPortNameFormat)).
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("manageability-container-port-name-format")).
 		WithSkipCheckFn(skipIfNoContainersFn).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testContainerPortNameFormat(c, &env)
-			return nil
-		}))
-}
-
-// testContainersImageTag is a function that checks if each container is missing image tag(s).
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
-func testContainersImageTag(check *checksdb.Check, env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, cut := range env.Containers {
-		check.LogDebug("Testing Container %q", cut)
-		if cut.IsTagEmpty() {
-			check.LogError("Container %q is missing image tag(s)", cut)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing image tag(s)", false))
-		} else {
-			check.LogInfo("Container %q is tagged with %q", cut, cut.ContainerImageIdentifier.Tag)
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is tagged", true))
-		}
-	}
-	check.SetResult(compliantObjects, nonCompliantObjects)
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckPortNameFormat).MakeCheckFn(&env)))
 }
 
 // The name field in the ContainerPort section must be of the form <protocol>[-<suffix>] where <protocol> is one of the following,
@@ -94,29 +70,4 @@ var allowedProtocolNames = map[string]bool{"grpc": true, "http": true, "http2": 
 func containerPortNameFormatCheck(portName string) bool {
 	res := strings.Split(portName, "-")
 	return allowedProtocolNames[res[0]]
-}
-
-// testContainerPortNameFormat is a function that checks if each container declares ports that do not follow the partner naming conventions.
-// It sets the result of a compliance check based on the analysis of lists of compliant and non-compliant objects.
-func testContainerPortNameFormat(check *checksdb.Check, env *provider.TestEnvironment) {
-	for _, newProtocol := range env.ValidProtocolNames {
-		allowedProtocolNames[newProtocol] = true
-	}
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, cut := range env.Containers {
-		check.LogDebug("Testing Container %q", cut)
-		for _, port := range cut.Ports {
-			if !containerPortNameFormatCheck(port.Name) {
-				check.LogError("Container %q declares port %q that does not follow the partner naming conventions", cut, port.Name)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort does not follow the partner naming conventions", false).
-					AddField(testhelper.ContainerPort, port.Name))
-			} else {
-				check.LogInfo("Container %q declares port %q that does follow the partner naming conventions", cut, port.Name)
-				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort follows the partner naming conventions", true).
-					AddField(testhelper.ContainerPort, port.Name))
-			}
-		}
-	}
-	check.SetResult(compliantObjects, nonCompliantObjects)
 }
