@@ -45,11 +45,11 @@ const (
 
 	BpfCapabilityRemediation = `Remove the following capability from the container/pod definitions: BPF`
 
-	SysModuleCapabilityRemediation = `Remove the SYS_MODULE capability from the container/pod definitions. Containers must not load kernel modules.`
+	SysModuleCapabilityRemediation = `Remove the SYS_MODULE capability from the container/pod definitions. Containers must not load kernel modules. If kernel modules are needed, they should be loaded on the host via a MachineConfig or at node provisioning time.`
 
 	DacOverrideCapabilityRemediation = `Remove the DAC_OVERRIDE capability from the container/pod definitions. Fix file ownership in the container image (for example, chown the application files to the non-root runtime UID in the Dockerfile) instead of bypassing permission checks.`
 
-	DacReadSearchCapabilityRemediation = `Remove the DAC_READ_SEARCH capability from the container/pod definitions. Containers must not use this capability due to container escape risk.`
+	DacReadSearchCapabilityRemediation = `Remove the DAC_READ_SEARCH capability from the container/pod definitions. Containers must not use this capability due to container escape risk. If the application needs to read files it does not own, fix file ownership or permissions in the Dockerfile instead of granting this capability.`
 
 	SecConPrivilegeRemediation = `Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).`
 
