@@ -7,13 +7,13 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 121
+### Total test cases: 124
 
 ### Total suites: 10
 
 |Suite|Tests per suite|Link|
 |---|---|---|
-|access-control|28|[access-control](#access-control)|
+|access-control|31|[access-control](#access-control)|
 |affiliated-certification|4|[affiliated-certification](#affiliated-certification)|
 |lifecycle|19|[lifecycle](#lifecycle)|
 |manageability|2|[manageability](#manageability)|
@@ -36,11 +36,11 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |---|---|---|
 |8|1|
 
-### Non-Telco specific tests only: 52
+### Non-Telco specific tests only: 55
 
 |Mandatory|Optional|
 |---|---|---|
-|43|9|
+|46|9|
 
 ### Telco specific tests only: 28
 
@@ -121,6 +121,40 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
+
+#### access-control-dac-override-capability-check
+
+|Property|Description|
+|---|---|
+|Unique ID|access-control-dac-override-capability-check|
+|Description|Ensures that containers do not use DAC_OVERRIDE capability. DAC_OVERRIDE bypasses file permission checks and usually indicates incorrect file ownership in the container image.|
+|Suggested Remediation|Remove the DAC_OVERRIDE capability from the container/pod definitions. Fix file ownership in the container image (for example, chown the application files to the non-root runtime UID in the Dockerfile) instead of bypassing permission checks.|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities|
+|Exception Process|No exceptions|
+|Impact Statement|DAC_OVERRIDE capability bypasses file permission checks and typically indicates incorrect image file ownership; it can enable unauthorized file access and privilege escalation.|
+|Tags|common,access-control|
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### access-control-dac-read-search-capability-check
+
+|Property|Description|
+|---|---|
+|Unique ID|access-control-dac-read-search-capability-check|
+|Description|Ensures that containers do not use DAC_READ_SEARCH capability. DAC_READ_SEARCH enables open_by_handle_at()-style access and is a known container escape risk.|
+|Suggested Remediation|Remove the DAC_READ_SEARCH capability from the container/pod definitions. Containers must not use this capability due to container escape risk. If the application needs to read files it does not own, fix file ownership or permissions in the Dockerfile instead of granting this capability.|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities|
+|Exception Process|No exceptions|
+|Impact Statement|DAC_READ_SEARCH capability enables open_by_handle_at()-style access and is a known container escape vector that can compromise host isolation.|
+|Tags|common,access-control|
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
 
 #### access-control-ipc-lock-capability-check
 
@@ -489,6 +523,23 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-avoid-sys_admin|
 |Exception Process|No exceptions|
 |Impact Statement|SYS_ADMIN capability provides extensive privileges that can compromise container isolation, enable host system access, and create serious security vulnerabilities.|
+|Tags|common,access-control|
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### access-control-sys-module-capability-check
+
+|Property|Description|
+|---|---|
+|Unique ID|access-control-sys-module-capability-check|
+|Description|Ensures that containers do not use SYS_MODULE capability. SYS_MODULE allows loading kernel modules from a container and creates a host/cluster takeover risk.|
+|Suggested Remediation|Remove the SYS_MODULE capability from the container/pod definitions. Containers must not load kernel modules. If kernel modules are needed, they should be loaded on the host via a MachineConfig or at node provisioning time.|
+|Best Practice Reference|https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities|
+|Exception Process|No exceptions|
+|Impact Statement|SYS_MODULE capability allows loading kernel modules from a container, which can compromise the host kernel and enable cluster-wide takeover.|
 |Tags|common,access-control|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
