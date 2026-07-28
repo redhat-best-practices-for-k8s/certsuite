@@ -30,34 +30,6 @@ import (
 	"k8s.io/client-go/scale"
 )
 
-// isMatchingAtLeastOneLabel is a generic helper that checks if a controller's pod template
-// matches at least one of the provided labels.
-func isMatchingAtLeastOneLabel[T any](
-	labels []labelObject,
-	namespace string,
-	item *T,
-	resourceType string,
-	getLabelsFn func(*T) map[string]string,
-	getNameFn func(*T) string,
-) bool {
-	name := getNameFn(item)
-	templateLabels := getLabelsFn(item)
-
-	for _, labelObj := range labels {
-		log.Debug("Searching pods in %s %q found in ns %q using label %s=%s",
-			resourceType, name, namespace, labelObj.LabelKey, labelObj.LabelValue)
-
-		if templateLabels[labelObj.LabelKey] == labelObj.LabelValue {
-			log.Info("%s %s found in ns=%s", resourceType, name, namespace)
-			return true
-		}
-	}
-	return false
-}
-
-// findControllersByLabels is a generic implementation for finding pod controllers by labels.
-// It works with any Kubernetes resource type (Deployment, StatefulSet, DaemonSet, etc.) by using
-// accessor functions to extract the necessary fields.
 func findControllersByLabels[T any](
 	appClient appv1client.AppsV1Interface,
 	labels []labelObject,
@@ -82,12 +54,11 @@ func findControllersByLabels[T any](
 
 		for i := range items {
 			if len(labels) > 0 {
-				// The resource is added only once if at least one pod matches one label
-				if isMatchingAtLeastOneLabel(labels, ns, &items[i], resourceType, getLabelsFn, getNameFn) {
+				if matchesAnyLabel(getLabelsFn(&items[i]), labels) {
+					log.Info("%s %s found in ns=%s", resourceType, getNameFn(&items[i]), ns)
 					allResults = append(allResults, items[i])
 				}
 			} else {
-				// If labels are not provided, all resources in the namespaces under test are included
 				name := getNameFn(&items[i])
 				log.Debug("Searching pods in %s %q found in ns %q without label", resourceType, name, ns)
 				allResults = append(allResults, items[i])

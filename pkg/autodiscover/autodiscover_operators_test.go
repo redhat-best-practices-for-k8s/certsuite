@@ -313,6 +313,58 @@ func TestFindOperatorsMatchingAtLeastOneLabel(t *testing.T) {
 	}
 }
 
+func TestFindOperatorsMatchingAtLeastOneLabelSkipsNilLabels(t *testing.T) {
+	csv := &olmv1alpha1.ClusterServiceVersion{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "no-labels-csv",
+			Namespace: "default",
+		},
+	}
+
+	client := fakeolmv1alpha1.NewSimpleClientset(csv)
+	labels := []labelObject{{LabelKey: "key", LabelValue: "value"}}
+	result := findOperatorsMatchingAtLeastOneLabel(client.OperatorsV1alpha1(), labels, configuration.Namespace{Name: "default"})
+	assert.Empty(t, result.Items, "CSV with nil labels must not match any label query")
+}
+
+func TestFindOperatorsMatchingAtLeastOneLabelNonMatchingLabels(t *testing.T) {
+	csv := &olmv1alpha1.ClusterServiceVersion{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "wrong-label-csv",
+			Namespace: "default",
+			Labels:    map[string]string{"key": "other"},
+		},
+	}
+
+	client := fakeolmv1alpha1.NewSimpleClientset(csv)
+	labels := []labelObject{{LabelKey: "key", LabelValue: "value"}}
+	result := findOperatorsMatchingAtLeastOneLabel(client.OperatorsV1alpha1(), labels, configuration.Namespace{Name: "default"})
+	assert.Empty(t, result.Items, "CSV with non-matching labels must not be returned")
+}
+
+func TestFindOperatorsMatchingMultipleLabelsNoDuplicates(t *testing.T) {
+	csv := &olmv1alpha1.ClusterServiceVersion{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "multi-label-csv",
+			Namespace: "default",
+			Labels: map[string]string{
+				"app":  "operator",
+				"role": "operator",
+			},
+		},
+	}
+
+	client := fakeolmv1alpha1.NewSimpleClientset(csv)
+	labels := []labelObject{
+		{LabelKey: "app", LabelValue: "operator"},
+		{LabelKey: "role", LabelValue: "operator"},
+	}
+
+	result := findOperatorsMatchingAtLeastOneLabel(client.OperatorsV1alpha1(), labels, configuration.Namespace{Name: "default"})
+	assert.Len(t, result.Items, 1, "CSV matching multiple labels must appear exactly once")
+	assert.Equal(t, "multi-label-csv", result.Items[0].Name)
+}
+
 func TestFindOperatorsByLabels(t *testing.T) {
 	generateClusterServiceVersion := func(name, namespace string) *olmv1alpha1.ClusterServiceVersion {
 		return &olmv1alpha1.ClusterServiceVersion{

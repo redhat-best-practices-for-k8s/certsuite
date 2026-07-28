@@ -57,6 +57,52 @@ func TestCreateLabels(t *testing.T) {
 	}
 }
 
+func TestMatchesAnyLabel(t *testing.T) {
+	tests := []struct {
+		name           string
+		resourceLabels map[string]string
+		selectors      []labelObject
+		want           bool
+	}{
+		{
+			name:           "match first selector",
+			resourceLabels: map[string]string{"app": "target"},
+			selectors:      []labelObject{{LabelKey: "app", LabelValue: "target"}},
+			want:           true,
+		},
+		{
+			name:           "match second selector",
+			resourceLabels: map[string]string{"role": "worker"},
+			selectors:      []labelObject{{LabelKey: "app", LabelValue: "target"}, {LabelKey: "role", LabelValue: "worker"}},
+			want:           true,
+		},
+		{
+			name:           "no match",
+			resourceLabels: map[string]string{"app": "other"},
+			selectors:      []labelObject{{LabelKey: "app", LabelValue: "target"}},
+			want:           false,
+		},
+		{
+			name:           "nil labels map",
+			resourceLabels: nil,
+			selectors:      []labelObject{{LabelKey: "app", LabelValue: "target"}},
+			want:           false,
+		},
+		{
+			name:           "empty selectors",
+			resourceLabels: map[string]string{"app": "target"},
+			selectors:      []labelObject{},
+			want:           false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, matchesAnyLabel(tt.resourceLabels, tt.selectors))
+		})
+	}
+}
+
 func TestNamespacesListToStringList(t *testing.T) {
 	testCases := []struct {
 		testList       []configuration.Namespace

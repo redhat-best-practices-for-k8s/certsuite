@@ -27,19 +27,20 @@ import (
 )
 
 func findPodsMatchingAtLeastOneLabel(oc corev1client.CoreV1Interface, labels []labelObject, namespace string) *corev1.PodList {
-	allPods := &corev1.PodList{}
-	for _, l := range labels {
-		log.Debug("Searching Pods in namespace %s with label %q", namespace, l)
-		pods, err := oc.Pods(namespace).List(context.TODO(), metav1.ListOptions{
-			LabelSelector: l.LabelKey + "=" + l.LabelValue,
-		})
-		if err != nil {
-			log.Error("Error when listing pods in ns=%s label=%s, err: %v", namespace, l.LabelKey+"="+l.LabelValue, err)
-			continue
-		}
-		allPods.Items = append(allPods.Items, pods.Items...)
+	log.Debug("Searching Pods in namespace %s with labels %v", namespace, labels)
+	allPods, err := oc.Pods(namespace).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Error("Error when listing pods in ns=%s, err: %v", namespace, err)
+		return &corev1.PodList{}
 	}
-	return allPods
+
+	matched := &corev1.PodList{}
+	for i := range allPods.Items {
+		if matchesAnyLabel(allPods.Items[i].Labels, labels) {
+			matched.Items = append(matched.Items, allPods.Items[i])
+		}
+	}
+	return matched
 }
 
 func FindPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, namespaces []string) (runningPods, allPods []corev1.Pod) {
