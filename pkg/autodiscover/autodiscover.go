@@ -128,6 +128,15 @@ type labelObject struct {
 	LabelValue string
 }
 
+func matchesAnyLabel(resourceLabels map[string]string, selectors []labelObject) bool {
+	for _, l := range selectors {
+		if resourceLabels[l.LabelKey] == l.LabelValue {
+			return true
+		}
+	}
+	return false
+}
+
 var data = DiscoveredTestData{}
 
 const labelRegexMatches = 3
