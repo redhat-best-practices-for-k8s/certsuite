@@ -23,7 +23,7 @@ on:
         description: 'Job-level timeout in minutes'
         required: false
         type: number
-        default: 240
+        default: 300
       test-timeout:
         description: 'Per-test retry timeout in minutes'
         required: false
