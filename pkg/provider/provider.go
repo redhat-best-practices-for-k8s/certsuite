@@ -40,7 +40,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	k8sPrivilegedDs "github.com/redhat-best-practices-for-k8s/privileged-daemonset"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
-	"helm.sh/helm/v3/pkg/release"
+	release "helm.sh/helm/v4/pkg/release/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
