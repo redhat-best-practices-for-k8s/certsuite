@@ -35,7 +35,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/compatibility"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
-	"helm.sh/helm/v3/pkg/release"
+	release "helm.sh/helm/v4/pkg/release/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
