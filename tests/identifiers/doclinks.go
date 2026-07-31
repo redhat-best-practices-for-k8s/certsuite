@@ -26,6 +26,9 @@ const (
 	Test1337UIDIdentifierDocLink                             = NoDocLinkExtended
 	TestNetAdminIdentifierDocLink                            = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-net_admin"
 	TestSysAdminIdentifierDocLink                            = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-avoid-sys_admin"
+	TestSysModuleIdentifierDocLink                           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities"
+	TestDacOverrideIdentifierDocLink                         = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities"
+	TestDacReadSearchIdentifierDocLink                       = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities"
 	TestIpcLockIdentifierDocLink                             = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ipc_lock"
 	TestNetRawIdentifierDocLink                              = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-user-plane-cnfs"
 	TestBpfIdentifierDocLink                                 = NoDocLinkTelco

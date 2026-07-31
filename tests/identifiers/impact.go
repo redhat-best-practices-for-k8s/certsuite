@@ -42,6 +42,9 @@ const (
 	Test1337UIDIdentifierImpact                             = `UID 1337 is reserved for use by Istio service mesh components; using it for applications can cause conflicts with Istio sidecars and break service mesh functionality.`
 	TestNetAdminIdentifierImpact                            = `NET_ADMIN capability allows network configuration changes that can compromise cluster networking, enable privilege escalation, and bypass network security controls.`
 	TestSysAdminIdentifierImpact                            = `SYS_ADMIN capability provides extensive privileges that can compromise container isolation, enable host system access, and create serious security vulnerabilities.`
+	TestSysModuleIdentifierImpact                           = `SYS_MODULE capability allows loading kernel modules from a container, which can compromise the host kernel and enable cluster-wide takeover.`
+	TestDacOverrideIdentifierImpact                         = `DAC_OVERRIDE capability bypasses file permission checks and typically indicates incorrect image file ownership; it can enable unauthorized file access and privilege escalation.`
+	TestDacReadSearchIdentifierImpact                       = `DAC_READ_SEARCH capability enables open_by_handle_at()-style access and is a known container escape vector that can compromise host isolation.`
 	TestIpcLockIdentifierImpact                             = `IPC_LOCK capability can be exploited to lock system memory, potentially causing denial of service and affecting other workloads on the same node.`
 	TestNetRawIdentifierImpact                              = `NET_RAW capability enables packet manipulation and network sniffing, which can be used for attacks against other workloads and compromise network security.`
 	TestBpfIdentifierImpact                                 = `BPF capability allows kernel-level programming that can bypass security controls, monitor other processes, and potentially compromise the entire host system.`
@@ -185,6 +188,9 @@ var ImpactMap = map[string]string{
 	"access-control-no-1337-uid":                                 Test1337UIDIdentifierImpact,
 	"access-control-net-admin-capability-check":                  TestNetAdminIdentifierImpact,
 	"access-control-sys-admin-capability-check":                  TestSysAdminIdentifierImpact,
+	"access-control-sys-module-capability-check":                 TestSysModuleIdentifierImpact,
+	"access-control-dac-override-capability-check":               TestDacOverrideIdentifierImpact,
+	"access-control-dac-read-search-capability-check":            TestDacReadSearchIdentifierImpact,
 	"access-control-ipc-lock-capability-check":                   TestIpcLockIdentifierImpact,
 	"access-control-net-raw-capability-check":                    TestNetRawIdentifierImpact,
 	"access-control-bpf-capability-check":                        TestBpfIdentifierImpact,

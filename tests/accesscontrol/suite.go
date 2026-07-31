@@ -93,6 +93,27 @@ func LoadChecks() {
 			return nil
 		}))
 
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSysModuleIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testSysModuleCapability(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestDacOverrideIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testDacOverrideCapability(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestDacReadSearchIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testDacReadSearchCapability(c, &env)
+			return nil
+		}))
+
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestNetAdminIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
@@ -325,6 +346,21 @@ func checkForbiddenCapability(containers []*provider.Container, capability strin
 
 func testSysAdminCapability(check *checksdb.Check, env *provider.TestEnvironment) {
 	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "SYS_ADMIN", check.GetLogger())
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testSysModuleCapability(check *checksdb.Check, env *provider.TestEnvironment) {
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "SYS_MODULE", check.GetLogger())
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testDacOverrideCapability(check *checksdb.Check, env *provider.TestEnvironment) {
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "DAC_OVERRIDE", check.GetLogger())
+	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+func testDacReadSearchCapability(check *checksdb.Check, env *provider.TestEnvironment) {
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "DAC_READ_SEARCH", check.GetLogger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
