@@ -102,7 +102,7 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	command := fmt.Sprintf("lsns -p %d -t pid -n", pid)
 	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ocpContext, command)
 	if err != nil || stderr != "" {
-		return "", fmt.Errorf("unable to run nsenter due to : %v", err)
+		return "", fmt.Errorf("unable to run nsenter due to: %w", err)
 	}
 
 	return strings.Fields(stdout)[0], nil
@@ -164,7 +164,7 @@ func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container)
 
 	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ctx, command)
 	if err != nil || stderr != "" {
-		return nil, fmt.Errorf("command %q failed to run in probe pod=%s (node=%s): %v", command, ctx.GetPodName(), container.NodeName, err)
+		return nil, fmt.Errorf("command %q failed to run in probe pod=%s (node=%s): %w", command, ctx.GetPodName(), container.NodeName, err)
 	}
 
 	re := regexp.MustCompile(PsRegex)

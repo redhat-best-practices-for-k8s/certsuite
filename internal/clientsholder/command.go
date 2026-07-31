@@ -19,7 +19,6 @@ package clientsholder
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"strings"
 	"time"
 
@@ -63,7 +62,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 
 	exec, err := remotecommand.NewSPDYExecutor(clientsholder.RestConfig, "POST", req.URL())
 	if err != nil {
-		return stdout, stderr, fmt.Errorf("failed to create SPDY executor for command %q: %w", command, err)
+		return stdout, stderr, newExecError(command, ctx.GetNamespace(), ctx.GetPodName(), err)
 	}
 	// enforce an execution timeout for the remote command
 	goCtx, cancel := context.WithTimeout(context.TODO(), ExecCommandTimeout)
@@ -75,7 +74,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 	})
 	stdout, stderr = buffOut.String(), buffErr.String()
 	if err != nil {
-		return stdout, stderr, fmt.Errorf("failed to execute command %q in %s/%s: %w", command, ctx.GetNamespace(), ctx.GetPodName(), err)
+		return stdout, stderr, newExecError(command, ctx.GetNamespace(), ctx.GetPodName(), err)
 	}
 	return stdout, stderr, nil
 }

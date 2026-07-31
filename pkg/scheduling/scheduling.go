@@ -17,6 +17,7 @@
 package scheduling
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -44,6 +45,8 @@ const (
 
 	NoProcessFoundErrMsg = "No such process"
 )
+
+var ErrProcessNotFound = errors.New("process not found")
 
 var GetProcessCPUSchedulingFn = GetProcessCPUScheduling
 
@@ -87,7 +90,7 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 		logger.Debug("Testing process %q", process)
 		schedulePolicy, schedulePriority, err := GetProcessCPUSchedulingFn(process.Pid, testContainer)
 		if err != nil {
-			if strings.Contains(err.Error(), NoProcessFoundErrMsg) {
+			if errors.Is(err, ErrProcessNotFound) {
 				logger.Warn("Process %q in Container %q disappeared (pid no longer exists), treating as compliant", process, testContainer)
 				aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process disappeared", true).
 					SetContainerProcessValues("", "", process.Args)
@@ -139,8 +142,12 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 
 	stdout, stderr, err := ch.ExecCommandContainer(ctx, command)
 	if err != nil || stderr != "" {
-		return schedulePolicy, InvalidPriority, fmt.Errorf("command %q failed to run in probe pod %s (node %s): %v (stderr: %v)",
-			command, ctx.GetPodName(), testContainer.NodeName, err, stderr)
+		if strings.Contains(stderr, NoProcessFoundErrMsg) {
+			return schedulePolicy, InvalidPriority, fmt.Errorf("command %q in probe pod %s (node %s): %w",
+				command, ctx.GetPodName(), testContainer.NodeName, ErrProcessNotFound)
+		}
+		return schedulePolicy, InvalidPriority, fmt.Errorf("command %q failed to run in probe pod %s (node %s) (stderr: %s): %w",
+			command, ctx.GetPodName(), testContainer.NodeName, stderr, err)
 	}
 
 	schedulePolicy, schedulePriority, err = parseSchedulingPolicyAndPriority(stdout)

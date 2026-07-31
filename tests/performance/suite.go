@@ -17,6 +17,7 @@
 package performance
 
 import (
+	"errors"
 	"fmt"
 	"slices"
 	"strconv"
@@ -348,7 +349,7 @@ func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment
 			check.LogInfo("Testing process %q", p)
 			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(p.Pid, cut)
 			if err != nil {
-				if strings.Contains(err.Error(), scheduling.NoProcessFoundErrMsg) {
+				if errors.Is(err, scheduling.ErrProcessNotFound) {
 					check.LogWarn("Container process %q disappeared", p)
 					result.AddCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container process disappeared", true).
 						AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
