@@ -18,8 +18,8 @@ package cnffsdiff
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
@@ -32,6 +32,7 @@ import (
 const (
 	partnerPodmanFolder      = "/root/podman"
 	tmpMountDestFolder       = "/tmp/tnf-podman"
+	podmanExitCode125        = 125
 	errorCode125RetrySeconds = 15
 )
 
@@ -178,7 +179,8 @@ func (f *FsDiff) RunTest(containerUID string) {
 		// Retry if we get a podman error code 125, which is a known issue where the container/pod
 		// has possibly gone missing or is in CrashLoopBackOff state. Adding a retry here to help
 		// smooth out the test results.
-		if strings.Contains(err.Error(), "command terminated with exit code 125") {
+		var execErr *clientsholder.ExecError
+		if errors.As(err, &execErr) && execErr.HasExitCode(podmanExitCode125) {
 			f.check.LogWarn("Retrying \"podman diff\" due to error code 125 (attempt %d/5)", i+1)
 			time.Sleep(errorCode125RetrySeconds * time.Second)
 			continue

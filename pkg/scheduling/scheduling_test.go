@@ -404,7 +404,7 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				if pid == 101 {
-					return "", InvalidPriority, fmt.Errorf("command failed: %s", NoProcessFoundErrMsg)
+					return "", InvalidPriority, fmt.Errorf("command failed: %w", ErrProcessNotFound)
 				}
 				return "SCHED_OTHER", 0, nil
 			},
