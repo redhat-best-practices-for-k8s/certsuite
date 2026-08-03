@@ -29,9 +29,14 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/performance"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/platform"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/preflight"
+	checksall "github.com/redhat-best-practices-for-k8s/checks/all"
 )
 
 func LoadInternalChecksDB() {
+	// Register all checks from the shared checks library so metadata
+	// lookups (ByName) work in recordCheckResult and info commands.
+	checksall.Register()
+
 	accesscontrol.LoadChecks()
 	certification.LoadChecks()
 	lifecycle.LoadChecks()

@@ -27,17 +27,18 @@ const (
 	TagExtended  = "extended"
 	TagTelco     = "telco"
 	TagFarEdge   = "faredge"
-	FarEdge      = "FarEdge"
-	Telco        = "Telco"
-	NonTelco     = "NonTelco"
-	Extended     = "Extended"
-	Optional     = "Optional"
-	Mandatory    = "Mandatory"
 	TagPreflight = "preflight"
-)
 
-const (
-	NotApplicableSNO = ` Not applicable to SNO applications.`
+	FarEdge  = "FarEdge"
+	Telco    = "Telco"
+	NonTelco = "NonTelco"
+	Extended = "Extended"
+
+	Optional  = "Optional"
+	Mandatory = "Mandatory"
+
+	NoDocumentedProcess = `There is no documented exception process for this.`
+	NoDocLink           = "No Doc Link"
 )
 
 func AddCatalogEntry(testID, suiteName, description, remediation, exception, reference string, qe bool, categoryclassification map[string]string, tags ...string) (aID claim.Identifier) {
@@ -53,15 +54,12 @@ func AddCatalogEntry(testID, suiteName, description, remediation, exception, ref
 
 	tcDescription, aID := claim.BuildTestCaseDescription(testID, suiteName, description, remediation, exception, reference, qe, categoryclassification, tags...)
 	Catalog[aID] = tcDescription
-	Classification[aID.Id] = categoryclassification
 
 	return aID
 }
 
-var (
-	TestIDToClaimID = map[string]claim.Identifier{}
-)
-
+// GetTestIDAndLabels transforms a claim.Identifier into a test ID and label set.
+// Used by preflight tests which register dynamically at runtime.
 func GetTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
 	tags = strings.Split(identifier.Tags, ",")
 	tags = append(tags, identifier.Id, identifier.Suite)
@@ -69,5 +67,7 @@ func GetTestIDAndLabels(identifier claim.Identifier) (testID string, tags []stri
 	return identifier.Id, tags
 }
 
-var Catalog = map[claim.Identifier]claim.TestCaseDescription{}
-var Classification = map[string]map[string]string{}
+var (
+	TestIDToClaimID = map[string]claim.Identifier{}
+	Catalog         = map[claim.Identifier]claim.TestCaseDescription{}
+)
