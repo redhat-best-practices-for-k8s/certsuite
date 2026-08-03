@@ -38,21 +38,14 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/versions"
 )
 
-var (
-	env provider.TestEnvironment
-
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-)
+var env provider.TestEnvironment
 
 //nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.OperatorTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.OperatorTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorInstallStatusSucceededIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).

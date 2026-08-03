@@ -48,11 +48,6 @@ const (
 var (
 	env provider.TestEnvironment
 
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-
 	// podset = deployment or statefulset
 	skipIfNoPodSetsetsUnderTest = func() (bool, string) {
 		if len(env.Deployments) == 0 && len(env.StatefulSets) == 0 {
@@ -67,7 +62,7 @@ func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.LifecycleTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.LifecycleTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	// Prestop test
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainerPrestopIdentifier)).

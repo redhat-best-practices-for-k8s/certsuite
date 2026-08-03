@@ -29,14 +29,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 )
 
-var (
-	env provider.TestEnvironment
-
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-)
+var env provider.TestEnvironment
 
 func labelsAllowTestRun(labelFilter string, allowedLabels []string) bool {
 	for _, label := range allowedLabels {
@@ -80,7 +73,7 @@ func LoadChecks() {
 
 	checksGroup := checksdb.NewChecksGroup(common.PreflightTestKey)
 	checksGroup.ResetChecks()
-	checksGroup = checksGroup.WithBeforeEachFn(beforeEachFn)
+	checksGroup = checksGroup.WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	testPreflightContainers(checksGroup, &env)
 	if provider.IsOCPCluster() {
