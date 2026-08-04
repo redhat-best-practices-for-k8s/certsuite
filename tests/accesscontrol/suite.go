@@ -61,14 +61,7 @@ var (
 	knownContainersToSkip = map[string]bool{"kube-rbac-proxy": true}
 )
 
-var (
-	env provider.TestEnvironment
-
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-)
+var env provider.TestEnvironment
 
 // LoadChecks loads all the checks.
 //
@@ -77,7 +70,7 @@ func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.AccessControlTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.AccessControlTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSecContextIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).

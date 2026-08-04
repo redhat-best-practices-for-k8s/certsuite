@@ -39,20 +39,13 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 )
 
-var (
-	env provider.TestEnvironment
-
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-)
+var env provider.TestEnvironment
 
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.ObservabilityTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.ObservabilityTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestLoggingIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).

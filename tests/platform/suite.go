@@ -42,21 +42,14 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-var (
-	env provider.TestEnvironment
-
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-)
+var env provider.TestEnvironment
 
 //nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.PlatformAlterationTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.PlatformAlterationTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHyperThreadEnable)).
 		WithSkipCheckFn(

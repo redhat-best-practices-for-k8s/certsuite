@@ -54,6 +54,13 @@ func (group *ChecksGroup) WithBeforeAllFn(beforeAllFn func(checks []*Check) erro
 	return group
 }
 
+func DefaultBeforeEachFn(refreshEnv func()) func(*Check) error {
+	return func(check *Check) error {
+		refreshEnv()
+		return nil
+	}
+}
+
 func (group *ChecksGroup) WithBeforeEachFn(beforeEachFn func(check *Check) error) *ChecksGroup {
 	group.beforeEachFn = beforeEachFn
 

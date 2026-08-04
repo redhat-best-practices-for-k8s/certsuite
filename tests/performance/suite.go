@@ -42,11 +42,6 @@ const (
 var (
 	env provider.TestEnvironment
 
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-
 	skipIfNoGuaranteedPodContainersWithExclusiveCPUs = func() (bool, string) {
 		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUs()
 		if len(guaranteedPodContainersWithExclusiveCPUs) == 0 {
@@ -84,7 +79,7 @@ func LoadChecks() { //nolint:funlen
 	log.Debug("Loading %s suite checks", common.PerformanceTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.PerformanceTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestExclusiveCPUPoolIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).

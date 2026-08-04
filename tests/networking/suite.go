@@ -45,21 +45,14 @@ type Port []struct {
 	Protocol      string
 }
 
-var (
-	env provider.TestEnvironment
-
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-)
+var env provider.TestEnvironment
 
 //nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.NetworkingTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.NetworkingTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	// Default interface ICMP IPv4 test case
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestICMPv4ConnectivityIdentifier)).
