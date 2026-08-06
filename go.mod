@@ -222,5 +222,5 @@ require (
 replace (
 	github.com/openshift/api => github.com/openshift/api v0.0.0-20260204104751-e09e5a4ebcd0
 	github.com/operator-framework/operator-lifecycle-manager => github.com/operator-framework/operator-lifecycle-manager v0.42.0
-	github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20260720160940-ffbc84882f21
+	github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/acornett21/openshift-preflight v0.0.0-20260731203721-3a3ada843434 // TODO: change to upstream when merged/released
 )

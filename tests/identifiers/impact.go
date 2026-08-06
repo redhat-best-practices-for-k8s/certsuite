@@ -161,8 +161,6 @@ const (
 	PreflightLayerCountAcceptableImpact                         = `Excessive image layers can cause poor performance, increased storage usage, and longer deployment times.`
 	PreflightRequiredAnnotationsImpact                          = `Missing required annotations can prevent proper operator lifecycle management and cause deployment failures.`
 	PreflightRunAsNonRootImpact                                 = `Running containers as root increases the blast radius of security vulnerabilities and can lead to full host compromise if containers are breached.`
-	PreflightScorecardBasicSpecCheckImpact                      = `Failing basic scorecard checks indicates fundamental operator implementation issues that can cause runtime failures.`
-	PreflightScorecardOlmSuiteCheckImpact                       = `Failing OLM suite checks indicates operator lifecycle management issues that can prevent proper installation and updates.`
 	PreflightSecurityContextConstraintsInCSVImpact              = `Incorrect SCC definitions in CSV can cause security policy violations and deployment failures.`
 	PreflightValidateOperatorBundleImpact                       = `Invalid operator bundles can cause deployment failures, update issues, and operational instability.`
 )
@@ -310,8 +308,6 @@ var ImpactMap = map[string]string{
 	"preflight-LayerCountAcceptable":                         PreflightLayerCountAcceptableImpact,
 	"preflight-RequiredAnnotations":                          PreflightRequiredAnnotationsImpact,
 	"preflight-RunAsNonRoot":                                 PreflightRunAsNonRootImpact,
-	"preflight-ScorecardBasicSpecCheck":                      PreflightScorecardBasicSpecCheckImpact,
-	"preflight-ScorecardOlmSuiteCheck":                       PreflightScorecardOlmSuiteCheckImpact,
 	"preflight-SecurityContextConstraintsInCSV":              PreflightSecurityContextConstraintsInCSVImpact,
 	"preflight-ValidateOperatorBundle":                       PreflightValidateOperatorBundleImpact,
 }
