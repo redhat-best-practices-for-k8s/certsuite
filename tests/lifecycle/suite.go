@@ -365,9 +365,13 @@ func testPodNodeSelectorAndAffinityBestPractices(testPods []*provider.Pod, check
 		check.LogInfo("Testing Pod %q", put)
 		compliantPod := true
 		if put.HasNodeSelector() {
-			check.LogError("Pod %q has a node selector. Node selector: %v", put, put.Spec.NodeSelector)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node selector", false))
-			compliantPod = false
+			if put.IsRuntimeClassNameSpecified() {
+				check.LogInfo("Pod %q has a node selector injected via RuntimeClass %q, skipping", put, *put.Spec.RuntimeClassName)
+			} else {
+				check.LogError("Pod %q has a node selector. Node selector: %v", put, put.Spec.NodeSelector)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node selector", false))
+				compliantPod = false
+			}
 		}
 		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
 			check.LogError("Pod %q has a node affinity clause. Node affinity: %v", put, put.Spec.Affinity.NodeAffinity)
