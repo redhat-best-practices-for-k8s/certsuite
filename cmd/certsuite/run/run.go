@@ -56,7 +56,7 @@ func NewCommand() *cobra.Command {
 	outputFlags.Bool("sanitize-claim", false, "Sanitize the claim.json file before sending it to the collector")
 
 	probeFlags := flag.NewFlagSet("probe", flag.ContinueOnError)
-	probeFlags.String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.41", "Certsuite probe image")
+	probeFlags.String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42", "Certsuite probe image")
 	probeFlags.String("daemonset-cpu-req", "100m", "CPU request for the probe daemonset container")
 	probeFlags.String("daemonset-cpu-lim", "100m", "CPU limit for the probe daemonset container")
 	probeFlags.String("daemonset-mem-req", "100M", "Memory request for the probe daemonset container")
