@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 124
+### Total test cases: 122
 
 ### Total suites: 10
 
@@ -22,7 +22,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |operator|12|[operator](#operator)|
 |performance|7|[performance](#performance)|
 |platform-alteration|14|[platform-alteration](#platform-alteration)|
-|preflight|19|[preflight](#preflight)|
+|preflight|17|[preflight](#preflight)|
 
 ### Extended specific tests only: 13
 
@@ -1879,7 +1879,7 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Property|Description|
 |---|---|
 |Unique ID|preflight-BasedOnUbi|
-|Description|Checking if the container's base image is based upon the Red Hat Universal Base Image (UBI)|
+|Description|Checking if the container's base image is based upon the Red Hat Universal Base Image (UBI) or Red Hat Hardened Images (RHHI)|
 |Suggested Remediation|Change the FROM directive in your Dockerfile or Containerfile, for the latest list of images and details refer to: https://catalog.redhat.com/software/base-images|
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
@@ -2105,40 +2105,6 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Best Practice Reference|No Doc Link|
 |Exception Process|There is no documented exception process for this.|
 |Impact Statement|Running containers as root increases the blast radius of security vulnerabilities and can lead to full host compromise if containers are breached.|
-|Tags|preflight|
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
-|Non-Telco|Optional|
-|Telco|Optional|
-
-#### preflight-ScorecardBasicSpecCheck
-
-|Property|Description|
-|---|---|
-|Unique ID|preflight-ScorecardBasicSpecCheck|
-|Description|Check to make sure that all CRs have a spec block.|
-|Suggested Remediation|Make sure that all CRs have a spec block|
-|Best Practice Reference|No Doc Link|
-|Exception Process|There is no documented exception process for this.|
-|Impact Statement|Failing basic scorecard checks indicates fundamental operator implementation issues that can cause runtime failures.|
-|Tags|preflight|
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
-|Non-Telco|Optional|
-|Telco|Optional|
-
-#### preflight-ScorecardOlmSuiteCheck
-
-|Property|Description|
-|---|---|
-|Unique ID|preflight-ScorecardOlmSuiteCheck|
-|Description|Operator-sdk scorecard OLM Test Suite Check|
-|Suggested Remediation|See scorecard output for details, artifacts/operator_bundle_scorecard_OlmSuiteCheck.json|
-|Best Practice Reference|No Doc Link|
-|Exception Process|There is no documented exception process for this.|
-|Impact Statement|Failing OLM suite checks indicates operator lifecycle management issues that can prevent proper installation and updates.|
 |Tags|preflight|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|

@@ -203,8 +203,6 @@ func TestLoadCatalogChecks(t *testing.T) {
 		"preflight-DeployableByOLM",
 		"preflight-FollowsRestrictedNetworkEnablementGuidelines",
 		"preflight-RequiredAnnotations",
-		"preflight-ScorecardBasicSpecCheck",
-		"preflight-ScorecardOlmSuiteCheck",
 		"preflight-SecurityContextConstraintsInCSV",
 		"preflight-ValidateOperatorBundle",
 	}
