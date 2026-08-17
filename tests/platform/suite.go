@@ -414,9 +414,12 @@ func testHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
 		nodeName := node.Data.Name
 		check.LogInfo("Testing node %q", nodeName)
 		if !node.IsWorkerNode() {
-			check.LogInfo("Node %q is not a worker node", nodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Not a worker node", true))
-			continue
+			if !env.IsSNO() {
+				check.LogInfo("Node %q is not a worker node", nodeName)
+				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Not a worker node", true))
+				continue
+			}
+			check.LogInfo("Node %q is a control-plane node on an SNO cluster, testing hugepages as it also runs workloads", nodeName)
 		}
 
 		probePod, exist := env.ProbePods[nodeName]
