@@ -11,7 +11,7 @@ This repository provides a set of test cases to verify the conformance of a work
 
     The tool we use to certify a workload.
 
-The purpose of the tests and the framework is to test the interaction of the workload with OpenShift Container Platform (OCP).  
+The purpose of the tests and the framework is to test the interaction of the workload with OpenShift Container Platform (OCP).
 
 !!! info
 
@@ -30,11 +30,11 @@ The purpose of the tests and the framework is to test the interaction of the wor
 
 There are 3 building blocks in the above framework.
 
-* the `CertSuite` represents the workload to be certified. The Test Suite identifies the resources (containers/pods/operators etc) belonging to the workload via labels or static data entries in the Config File
+* the **workload under test** is the application to be certified. The Test Suite identifies its resources (containers, pods, operators, and so on) via labels or static entries in the Config File
 
-* the `Certification container/exec` is the Test Suite running on the platform or in a container. The executable verifies the workload under test configuration and its interactions with OpenShift
+* the **certsuite binary or container** is the Test Suite running on a jump host or in a container. The executable verifies the workload under test configuration and its interactions with OpenShift
 
-* the `Debug` pods are part of a Kubernetes daemonset responsible to run various **privileged commands** on Kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The probe daemonset is instantiated via the [privileged-daemonset](https://github.com/redhat-best-practices-for-k8s/privileged-daemonset) repository.
+* the **probe DaemonSet** (`certsuite-probe`) runs privileged commands on Kubernetes nodes. Probe pods are used for platform tests and commands (for example ping) in container namespaces without changing the container image. The DaemonSet is deployed through the [privileged-daemonset](https://github.com/redhat-best-practices-for-k8s/privileged-daemonset) repository.
 
 ## Disconnected Environments
 

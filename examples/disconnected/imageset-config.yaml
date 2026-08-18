@@ -3,6 +3,8 @@
 #
 # Required:
 #   certsuite-probe - Privileged DaemonSet deployed on cluster nodes during test execution.
+#                     Certsuite defaults to tag v0.0.42 (--certsuite-probe-image). Include that
+#                     tag, or :latest if you override the flag.
 #
 # Optional:
 #   certsuite - Only needed if running the certsuite as a container inside the cluster.
@@ -12,6 +14,7 @@ kind: ImageSetConfiguration
 apiVersion: mirror.openshift.io/v2alpha1
 mirror:
   additionalImages:
+    - name: quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42
     - name: quay.io/redhat-best-practices-for-k8s/certsuite-probe:latest
     - name: quay.io/redhat-best-practices-for-k8s/certsuite:latest
     - name: quay.io/redhat-best-practices-for-k8s/oct:latest

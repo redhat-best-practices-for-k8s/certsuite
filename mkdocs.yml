@@ -54,9 +54,6 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.arithmatex:
       generic: true
-  - pymdownx.snippets:
-      auto_append:
-        - includes/abbreviations.md
 
 plugins:
   - search

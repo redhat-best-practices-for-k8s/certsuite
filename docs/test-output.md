@@ -13,38 +13,11 @@ This file describes the following
 
 **Files that need to be submitted for certification**
 
-When submitting results back to Red Hat for certification, please include the above mentioned claim file, the JUnit file, and any available console logs.
-
-**How to add a workload platform test result to the existing claim file?**
-
-```go
-go run cmd/tools/cmd/main.go claim-add --claimfile=claim.json
---reportdir=/home/$USER/reports
-```
-
- **Args**:
-`--claimfile is an existing claim.json file`
-`--repordir :path to test results that you want to include.`
-
- The tests result files from the given report dir will be appended under the result section of the claim file using file name as the key/value pair.
- The tool will ignore the test result, if the key name is already present under result section of the claim file.
-
-```json
- "results": {
- "certsuite-tests_junit": {
- "testsuite": {
- "-errors": "0",
- "-failures": "2",
- "-name": "CertSuite Certification Test Suite",
- "-tests": "14",
- ...
-```
+When submitting results back to Red Hat for certification, please include the above mentioned claim file, the JUnit file (if generated with `--create-xml-junit-file`), and any available console logs.
 
 **Reference**
 
-For more details on the contents of the claim file
-
-* [Guide](https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf).
+For more details on the contents of the claim file, see the [best-practices guide](https://redhat-best-practices-for-k8s.github.io/guide/) and the [claim format package](https://github.com/redhat-best-practices-for-k8s/certsuite-claim).
 
 ## Execution logs
 
@@ -160,7 +133,7 @@ make build-certsuite-tool
 #### Compare a claim file against itself: no differences expected
 
 <!-- markdownlint-disable MD033 -->
-<object type="image/svg+xml" data="../assets/images/claim-compare-self.svg" width="100%" height=auto></object>
+<object type="image/svg+xml" data="assets/images/claim-compare-self.svg" width="100%" height=auto></object>
 <!-- markdownlint-disable MD033 -->
 
 #### Different test cases results
@@ -170,7 +143,7 @@ Let's assume we have two claim files, claim1.json and claim2.json, obtained from
 During the second run, there was a test case that failed. Let's simulate it modifying manually the second run's claim file to switch one test case's state from "passed" to "failed".
 
 <!-- markdownlint-disable MD033 -->
-<object type="image/svg+xml" data="../assets/images/claim-compare-results.svg" width="100%" height=auto></object>
+<object type="image/svg+xml" data="assets/images/claim-compare-results.svg" width="100%" height=auto></object>
 <!-- markdownlint-disable MD033 -->
 
 #### Different cluster configurations
@@ -179,17 +152,17 @@ First, let's simulate that the second run took place in a cluster with a differe
 The versions section comparison appears at the very beginning of the `certsuite claim compare` output:
 
 <!-- markdownlint-disable MD033 -->
-<object type="image/svg+xml" data="../assets/images/claim-compare-versions.svg" width="100%" height=auto></object>
+<object type="image/svg+xml" data="assets/images/claim-compare-versions.svg" width="100%" height=auto></object>
 <!-- markdownlint-disable MD033 -->
 
 Now, let's simulate that the cluster was a bit different when the second Test Suite run was performed. First, let's make a manual change in claim2.json to emulate a different CNI version in the first node.
 
 <!-- markdownlint-disable MD033 -->
-<object type="image/svg+xml" data="../assets/images/claim-compare-cni.svg" width="100%" height=auto></object>
+<object type="image/svg+xml" data="assets/images/claim-compare-cni.svg" width="100%" height=auto></object>
 <!-- markdownlint-disable MD033 -->
 
 Finally, we'll simulate that, for some reason, the first node had one label removed when the second run was performed:
 
 <!-- markdownlint-disable MD033 -->
-<object type="image/svg+xml" data="../assets/images/claim-compare-nodes.svg" width="100%" height=auto></object>
+<object type="image/svg+xml" data="assets/images/claim-compare-nodes.svg" width="100%" height=auto></object>
 <!-- markdownlint-disable MD033 -->
