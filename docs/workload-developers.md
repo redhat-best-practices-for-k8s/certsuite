@@ -2,20 +2,16 @@
 # Workload Guidelines for developers
 
 Developers of Kubernetes workloads, particularly those targeting
-[certification with Red Hat on OpenShift](https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf),
-can use this suite to test the interaction of their workload with OpenShift.  If interested in certification
-please contact [Red Hat](https://redhat-connect.gitbook.io/red-hat-partner-connect-general-guide/managing-your-account/getting-help/technology-partner-success-desk).
+[Red Hat certification on OpenShift](https://connect.redhat.com),
+can use this suite to test the interaction of their workload with OpenShift.
+If interested in certification, start with
+[Red Hat Partner Connect](https://connect.redhat.com).
 
 **Requirements**
 
-- [OpenShift 4.10 installation](https://docs.openshift.com/container-platform/4.10/welcome/index.html) to run the workload
-- At least one extra machine to host the test suite
-
-## To add private test cases
-
-Refer this documentation
-https://github.com/redhat-best-practices-for-k8s/cnfextensions
+- An [OpenShift cluster](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/welcome/index) in a currently supported version (QE covers 4.14 through 4.22)
+- At least one extra machine to host the test suite, or run certsuite as a container or in-cluster pod
 
 **Reference**
 
-[certsuite-sample-workload](https://github.com/redhat-best-practices-for-k8s/certsuite-sample-workload) repository provides sample example to model the test setup.
+The [certsuite-sample-workload](https://github.com/redhat-best-practices-for-k8s/certsuite-sample-workload) repository provides a sample setup to model against.

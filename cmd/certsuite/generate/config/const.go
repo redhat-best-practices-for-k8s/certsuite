@@ -111,7 +111,7 @@ Test cases affected: lifecycle-statefulset-scaling`
 	// Settings
 	probeDaemonSetHelp = `Set the namespace where the probe DaemonSet will be deployed.
 The namespace will be created in case it does not exist. If not set, the default namespace
-is "certsuite".
+is "cnf-suite".
 This DaemonSet, called "certsuite-probe" is deployed and used internally by the Certification Suite
 to issue some shell commands that are needed in certain test cases. Some of these test cases might
 fail or be skipped in case it is not deployed correctly.`

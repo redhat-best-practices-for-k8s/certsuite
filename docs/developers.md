@@ -1,19 +1,24 @@
 <!-- markdownlint-disable line-length no-bare-urls -->
 # Steps
 
-To test the newly added test / existing tests locally, follow the steps
+To test a newly added test or existing tests locally, follow the steps
 
 - Clone the repo
-- Set runtime environment variables, as per the requirement.
+- Build the certsuite binary
 
-    For example, to deploy partner deployments in a custom namespace in the test config.
+    ```shell
+    make build
+    ```
+
+- Create or edit `config/certsuite_config.yml`. For example, to deploy partner
+  workloads in a custom namespace:
 
     ```yaml
     targetNameSpaces:
       - name: mynamespace
     ```
 
-- Also, skip intrusive tests
+- Skip intrusive tests if you do not want scaling or pod-recreation checks
 
     ```shell
     ./certsuite run --intrusive=false
@@ -25,13 +30,27 @@ To test the newly added test / existing tests locally, follow the steps
     export KUBECONFIG=<<mypath/.kube/config>>
     ```
 
-- Execute test suite, which would build and run the suite
-
-    For example, to run `networking` tests
+- Execute the test suite. For example, to run `networking` tests:
 
     ```shell
-    ./certsuite run -l networking
+    ./certsuite run -l networking --config-file=config/certsuite_config.yml
     ```
+
+- List matching test cases without running them:
+
+    ```shell
+    ./certsuite info -t networking --list
+    ```
+
+- Run unit tests and linters before opening a pull request:
+
+    ```shell
+    make test
+    make lint
+    ```
+
+See [Runtime environment variables](runtime-env.md) and
+[Test Configuration](configuration.md) for more options.
 
 ## Dependencies on other PR
 

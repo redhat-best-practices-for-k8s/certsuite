@@ -32,4 +32,12 @@ func TestLoadConfiguration(t *testing.T) {
 	assert.Contains(t, env.CrdFilters, crd1)
 	crd2 := configuration.CrdFilter{NameSuffix: crdSuffix2}
 	assert.Contains(t, env.CrdFilters, crd2)
+	assert.Equal(t, 1, len(env.SkipScalingTestDeployments))
+	assert.Equal(t, "deployment1", env.SkipScalingTestDeployments[0].Name)
+	assert.Equal(t, "tnf", env.SkipScalingTestDeployments[0].Namespace)
+	assert.Equal(t, 1, len(env.SkipScalingTestStatefulSets))
+	assert.Equal(t, "statefulset1", env.SkipScalingTestStatefulSets[0].Name)
+	assert.Equal(t, "tnf", env.SkipScalingTestStatefulSets[0].Namespace)
+	assert.Contains(t, env.ServicesIgnoreList, "hazelcast-platform-controller-manager-service")
+	assert.Contains(t, env.ServicesIgnoreList, "hazelcast-platform-webhook-service")
 }

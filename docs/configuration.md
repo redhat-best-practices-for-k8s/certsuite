@@ -25,7 +25,7 @@ Here's an example of how to use the tool:
 
 <!-- markdownlint-disable MD033 MD045 -->
 <object type="image/svg+xml" data="./assets/images/demo-config.svg">
-<img src="../assets/images/demo-config.svg">
+<img src="assets/images/demo-config.svg">
 </object>
 <!-- markdownlint-enable MD033 MD045 -->
 
@@ -148,17 +148,7 @@ To enable this, set:
 --create-xml-junit-file true
 ```
 
-This will create a file named `certsuite/certsuite-tests_junit.xml`.
-
-#### Enable running container against OpenShift Local
-
-While running the test suite as a container, you can enable the container to be able to reach the local CRC instance by setting:
-
-```shell
-export CERTSUITE_ENABLE_CRC_TESTING=true
-```
-
-This utilizes the `--add-host` flag in Docker to be able to point `api.crc.testing` to the host gateway.
+This creates `certsuite-tests_junit.xml` in the directory given by `--output-dir` (default `results`).
 
 ### Exceptions
 
@@ -230,7 +220,7 @@ Test cases affected: _lifecycle-deployment-scaling_, _lifecycle-statefulset-scal
 skipScalingTestDeployments:
   - name: deployment1
     namespace: certsuite
-skipScalingTestStatefulSetNames:
+skipScalingTestStatefulSets:
   - name: statefulset1
     namespace: certsuite
 ```
@@ -239,7 +229,7 @@ skipScalingTestStatefulSetNames:
 
 #### probeDaemonSetNamespace
 
-This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is _certsuite_.
+This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. If this field is not set, the default namespace for this DaemonSet is _cnf-suite_.
 
 ``` { .yaml .annotate }
 probeDaemonSetNamespace: cnf-cert
@@ -267,3 +257,31 @@ The label _redhat-best-practices-for-k8s.com/skip_multus_connectivity_tests_ exc
 #### Affinity requirements
 
 For workloads that require Pods to use Pod or Node Affinity rules, the label _AffinityRequired: true_ must be included on the Pod YAML. This will ensure that the affinity best practices are tested and prevent any test cases for anti-affinity to fail.
+
+### Collector and Red Hat Connect
+
+These optional fields configure result upload. They can also be supplied as `certsuite run` flags. See [Data Collection](data-collection.md) for details.
+
+#### executedBy / partnerName / collectorAppPassword / collectorAppEndpoint
+
+Used when `--enable-data-collection` is set. `collectorAppEndpoint` defaults to the Red Hat collector if left empty.
+
+``` { .yaml .annotate }
+executedBy: ""
+partnerName: ""
+collectorAppPassword: ""
+collectorAppEndpoint: "http://claims-collector.cnf-certifications.sysdeseng.com"
+```
+
+#### connectAPIConfig
+
+Credentials and proxy settings for uploading results to the Red Hat Connect portal. Equivalent flags: `--connect-api-key`, `--connect-project-id`, `--connect-api-base-url`, `--connect-api-proxy-url`, `--connect-api-proxy-port`.
+
+``` { .yaml .annotate }
+connectAPIConfig:
+  baseURL: "https://access.redhat.com/hydra/cwe/rest/v1.0"
+  apiKey: ""
+  projectID: ""
+  proxyURL: ""
+  proxyPort: ""
+```

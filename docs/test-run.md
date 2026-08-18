@@ -44,9 +44,13 @@ These labels can be combined with some operators to create label filters that ma
 * The label filter "operator && !operator-crd-versioning" will match the _operator_ test suite without the _operator_crd_versioning_ test case.
 * To select all the test cases the _all_ label filter can be used.
 
-To view which test cases will run for a specific label or label filter use the flag `--list`.
+To view which test cases match a label or label filter:
 
-See the [CATALOG.md](CATALOG.md) to find all test labels.
+```shell
+certsuite info -t <label-filter> --list
+```
+
+See the [test catalog](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md) for all test labels.
 
 ## Disable intrusive tests
 
@@ -114,7 +118,7 @@ The `certsuite run` command organizes its flags into groups. To see the complete
 
 ### Probe daemonset flags
 
-* `--certsuite-probe-image`: Override the default certsuite probe daemonset image. Defaults to the version matching the certsuite release.
+* `--certsuite-probe-image`: Override the default certsuite probe daemonset image. Defaults to `quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42` (`debugTag` in `version.json`).
 
 * `--daemonset-cpu-req`, `--daemonset-cpu-lim`: Set the CPU request and limit for the probe daemonset container. Both default to `100m`.
 
@@ -179,7 +183,7 @@ The test image is available at this [repository](https://quay.io/repository/redh
 docker pull quay.io/redhat-best-practices-for-k8s/certsuite:<image-tag>
 ```
 
-The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository or any existing version number such as `v5.2.1`.
+The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository, or any existing version tag from the [releases page](https://github.com/redhat-best-practices-for-k8s/certsuite/releases).
 
 ### Launch the Test Suite
 

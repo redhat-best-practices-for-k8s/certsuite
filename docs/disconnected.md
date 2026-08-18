@@ -15,7 +15,9 @@ contains additional examples and source code.
 The certsuite deploys a privileged DaemonSet called `certsuite-probe` onto every
 node in the target cluster. This DaemonSet runs commands on the host that many
 test cases depend on (e.g., ping, platform checks). By default the probe image
-is pulled from `quay.io/redhat-best-practices-for-k8s/certsuite-probe:latest`.
+is pulled from `quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42`
+by default (`--certsuite-probe-image`). Mirror that tag, or `:latest` if you
+override the flag.
 In a disconnected cluster the nodes cannot reach quay.io, so the DaemonSet fails
 to start and the certsuite cannot run.
 
@@ -27,7 +29,7 @@ cluster itself) where to find them.
 
 | Image | Purpose | When needed |
 | --- | --- | --- |
-| `quay.io/redhat-best-practices-for-k8s/certsuite-probe:latest` | Privileged DaemonSet for running platform-level test commands on cluster nodes | Always |
+| `quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42` (default) or `:latest` | Privileged DaemonSet for running platform-level test commands on cluster nodes | Always. Certsuite defaults to `v0.0.42`; mirror `:latest` only if you pass `--certsuite-probe-image` with that tag. |
 | `quay.io/redhat-best-practices-for-k8s/certsuite:latest` | Certsuite container image | Only when running the certsuite as a pod inside the cluster (see [cluster-deploy](cluster-deploy/README.md)) |
 | `quay.io/redhat-best-practices-for-k8s/oct:latest` | Offline certification database for checking container, operator, and Helm chart certification status | Optional but recommended for fully disconnected environments |
 
@@ -45,7 +47,7 @@ A sample `ImageSetConfiguration` is provided in this repository at
 
 - The `oc-mirror` plugin v2 installed on your connected workstation.
   See the
-  [oc-mirror documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/disconnected_environments/mirroring-images-for-a-disconnected-installation-using-the-oc-mirror-plugin-v2)
+  [oc-mirror documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/disconnected_environments/about-installing-oc-mirror-v2)
   for installation instructions.
 - A mirror registry accessible from both the connected workstation (for pushing)
   and the disconnected cluster nodes (for pulling).
@@ -63,12 +65,13 @@ kind: ImageSetConfiguration
 apiVersion: mirror.openshift.io/v2alpha1
 mirror:
   additionalImages:
+    - name: quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42
     - name: quay.io/redhat-best-practices-for-k8s/certsuite-probe:latest
     - name: quay.io/redhat-best-practices-for-k8s/certsuite:latest
     - name: quay.io/redhat-best-practices-for-k8s/oct:latest
 ```
 
-Remove any images you do not need. The probe image is always required.
+Remove any images you do not need. Mirror `v0.0.42` to match the certsuite default probe tag, or `:latest` if you override `--certsuite-probe-image`.
 
 ### Step 2: Mirror images to disk
 
@@ -182,19 +185,13 @@ skopeo copy \
 
 Unlike oc-mirror, skopeo does not generate IDMS/ITMS resources. You must tell
 the certsuite where to find the probe image using the `--certsuite-probe-image`
-flag:
+flag. Certsuite defaults to `certsuite-probe:v0.0.42` (see `debugTag` in
+`version.json`); if you mirrored `:latest`, pass that tag explicitly:
 
 ```shell
 certsuite run \
   --certsuite-probe-image=<mirror-registry>/redhat-best-practices-for-k8s/certsuite-probe:latest \
   -l <label-filter> -c <config-file> -k <kubeconfig> -o <output-dir>
-```
-
-Alternatively, set the `SUPPORT_IMAGE` environment variable:
-
-```shell
-export SUPPORT_IMAGE=<mirror-registry>/redhat-best-practices-for-k8s/certsuite-probe:latest
-certsuite run -l <label-filter> -c <config-file> -k <kubeconfig> -o <output-dir>
 ```
 
 ## Offline Certification Database
@@ -253,6 +250,9 @@ Run the certsuite with `--cleanup-probe=false` to keep the probe running after
 tests complete, then verify the DaemonSet pods are running:
 
 ```shell
-oc get daemonset -n certsuite
-oc get pods -n certsuite
+oc get daemonset -n cnf-suite
+oc get pods -n cnf-suite
 ```
+
+Use the namespace from `probeDaemonSetNamespace` if you overrode the default
+(`cnf-suite`).

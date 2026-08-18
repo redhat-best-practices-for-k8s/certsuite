@@ -55,17 +55,15 @@ here.
 Contributors should follow [these seven rules](https://chris.beams.io/posts/git-commit/#seven-rules) and keep individual
 commits focused (`git add -p` will help with this).
 
-### Unit Testing Tests
+### Unit tests
 
-Each `tnf.Tester` implementation must have unit tests. Ideally, it should strive for 100% line coverage when possible. For some examples of existing unit tests, consult:
+New checks and helpers must include unit tests. Prefer table-driven tests and keep mocks next to the interfaces they implement. For examples of existing tests, consult:
 
-* pkg/tnf/handlers/base/version_test.go
-* pkg/tnf/handlers/hostname/hostname_test.go
-* pkg/tnf/handlers/ipaddr/ipaddr_test.go
-* pkg/tnf/handlers/ping/ping_test.go
+* `tests/networking/icmp/icmp_test.go`
+* `pkg/checksdb/checksdb_test.go`
+* `internal/clientsholder/command_mock.go`
 
-As always, you should ensure that tests should pass prior to submitting a Pull Request. To run the unit tests issue the
-following command:
+Run the unit tests before submitting a Pull Request:
 
 ```bash
 make test
@@ -90,6 +88,6 @@ In addition, the `redhat-best-practices-for-k8s` project committers expect all P
 configured linters are used. Please ensure you run `make lint` and resolve any issues in your changes before submitting
 your PR. Disabled linting must be justified.
 
-Finally, all contributions should follow the guidance of [Effective Go](https://golang.org/doc/effective_go.html)
+Finally, all contributions should follow the guidance of [Effective Go](https://go.dev/doc/effective_go)
 unless there is a clear and considered reason not to. Contributions are more likely to be accepted quickly if any
 divergence from the guidelines is justified before someone has to ask about it.
