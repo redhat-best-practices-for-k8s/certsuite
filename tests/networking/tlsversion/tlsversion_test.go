@@ -542,9 +542,77 @@ func TestIsPortTLS_ExecFailed(t *testing.T) {
 		},
 	)
 	ctx := clientsholder.NewContext("ns", "pod", "container")
-	isTLS, reachable, _ := IsPortTLS(mock, ctx, "10.0.0.1", 443)
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 443)
 	assert.False(t, isTLS)
 	assert.False(t, reachable)
+	assert.Contains(t, reason, "exec probe failed")
+}
+
+func TestIsPortTLS_AlertProtocolVersion(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "s_client",
+			stdout: "CONNECTED(00000003)\n---\nalert protocol version\nCipher is (NONE)\n---",
+			err:    fmt.Errorf("exit status 1"),
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 443)
+	assert.True(t, isTLS, "protocol version alert means TLS server, reason: %s", reason)
+	assert.True(t, reachable)
+	assert.Contains(t, reason, "TLS server detected")
+}
+
+func TestIsPortTLS_HandshakeFailureWithoutAlertPrefix(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "s_client",
+			stdout: "CONNECTED(00000003)\n---\nhandshake failure\n---",
+			err:    fmt.Errorf("exit status 1"),
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 443)
+	assert.True(t, isTLS, "handshake failure means TLS server, reason: %s", reason)
+	assert.True(t, reachable)
+	assert.Contains(t, reason, "TLS server detected")
+}
+
+func TestIsPortTLS_CipherIs0000(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "s_client",
+			stdout: "CONNECTED(00000003)\n---\nCipher    : 0000\nProtocol  : TLSv1.2\n---",
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 443)
+	assert.False(t, isTLS, "cipher 0000 means rejected, reason: %s", reason)
+	assert.True(t, reachable)
+	assert.Contains(t, reason, "plaintext")
+}
+
+func TestIsPortTLS_CipherNONEViaExtraction(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "s_client",
+			stdout: "CONNECTED(00000003)\n---\nCipher    : (NONE)\nProtocol  : TLSv1.2\n---",
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 443)
+	assert.False(t, isTLS, "cipher (NONE) via extraction means no TLS, reason: %s", reason)
+	assert.True(t, reachable)
+	assert.Contains(t, reason, "plaintext")
+}
+
+func TestIsPortTLS_NoRecognizableOutput(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "s_client",
+			stdout: "some random garbage output",
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 443)
+	assert.False(t, isTLS)
+	assert.False(t, reachable)
+	assert.Contains(t, reason, "no recognizable openssl output")
 }
 
 func TestVersionsAbove(t *testing.T) {
@@ -931,6 +999,65 @@ func TestOpensslVersionName(t *testing.T) {
 			assert.Equal(t, tc.expected, opensslVersionName(tc.ver))
 		})
 	}
+}
+
+func TestIsPortTLS_ConnectedNoCipherLine(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "s_client",
+			stdout: "CONNECTED(00000003)\n---\nProtocol  : TLSv1.2\n---",
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 443)
+	assert.False(t, isTLS, "unknown cipher should fall through to plaintext, reason: %s", reason)
+	assert.True(t, reachable)
+	assert.Contains(t, reason, "plaintext")
+}
+
+func TestIsPortTLS_ExecErrorWithSSLInStdout(t *testing.T) {
+	t.Run("ssl without connected is not exec probe failed", func(t *testing.T) {
+		mock := newMockCommand(
+			mockPattern{key: "s_client",
+				stdout: "SSL routines:ssl3_read_bytes:sslv3 alert handshake failure",
+				err:    fmt.Errorf("exit status 1"),
+			},
+		)
+		ctx := clientsholder.NewContext("ns", "pod", "container")
+		isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 443)
+		assert.True(t, isTLS, "SSL handshake alert is a TLS server even without CONNECTED, reason: %s", reason)
+		assert.True(t, reachable)
+		assert.NotContains(t, reason, "exec probe failed")
+		assert.Contains(t, reason, "TLS server detected")
+	})
+
+	t.Run("connected with cipher still detects TLS despite exec error", func(t *testing.T) {
+		mock := newMockCommand(
+			mockPattern{key: "s_client",
+				stdout: "CONNECTED(00000003)\n---\nSSL handshake\nCipher    : TLS_AES_256_GCM_SHA384\n---",
+				err:    fmt.Errorf("exit status 1"),
+			},
+		)
+		ctx := clientsholder.NewContext("ns", "pod", "container")
+		isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 443)
+		assert.True(t, isTLS, "expected TLS despite exec error, reason: %s", reason)
+		assert.True(t, reachable)
+		assert.Contains(t, reason, "TLS negotiated")
+	})
+}
+
+func TestIsPortTLS_IPv6Address(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "s_client",
+			stdout: "CONNECTED(00000003)\n---\nProtocol  : TLSv1.3\nCipher    : TLS_AES_256_GCM_SHA384\n---",
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "2001:db8::1", 443)
+	assert.True(t, isTLS, "expected TLS over IPv6, reason: %s", reason)
+	assert.True(t, reachable)
+	assert.Contains(t, reason, "TLS negotiated")
+	assert.Equal(t, 1, mock.CallCount())
+	assert.Contains(t, mock.Calls()[0].Command, "[2001:db8::1]:443")
 }
 
 func TestExtractOpenSSLCipher(t *testing.T) {

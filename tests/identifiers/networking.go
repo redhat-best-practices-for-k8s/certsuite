@@ -34,6 +34,7 @@ var (
 	TestServiceDualStackIdentifier               claim.Identifier
 	TestTLSMinimumVersionIdentifier              claim.Identifier
 	TestUndeclaredContainerPortsUsage            claim.Identifier
+	TestUnsecuredContainerPortsIdentifier        claim.Identifier
 )
 
 //nolint:funlen
@@ -231,6 +232,22 @@ func init() {
 			Telco:    Optional,
 			NonTelco: Optional,
 			Extended: Mandatory,
+		},
+		TagExtended)
+
+	TestUnsecuredContainerPortsIdentifier = AddCatalogEntry(
+		"unsecured-container-ports",
+		common.NetworkingTestKey,
+		`Check that TCP ports listening inside containers use TLS encryption. Ports accepting plaintext connections are flagged as non-compliant.`,
+		UnsecuredContainerPortsRemediation,
+		NoExceptionProcessForExtendedTests,
+		TestUnsecuredContainerPortsDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagExtended)
 }

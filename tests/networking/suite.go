@@ -19,6 +19,7 @@ package networking
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
@@ -164,6 +165,18 @@ func LoadChecks() {
 			testTLSMinimumVersion(c, &env)
 			return nil
 		}))
+
+	// Unsecured container ports test case
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestUnsecuredContainerPortsIdentifier)).
+		WithSkipCheckFn(
+			testhelper.GetNoContainersUnderTestSkipFn(&env),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env),
+			testhelper.GetNoPodsUnderTestSkipFn(&env),
+		).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testUnsecuredContainerPorts(c, &env)
+			return nil
+		}))
 }
 
 //nolint:funlen
@@ -234,6 +247,118 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 			result.AddCompliantObject(
 				testhelper.NewPodReportObject(put.Namespace, put.Name, "All listening were declared in containers specs", true))
 		}
+	})
+}
+
+const nonTLSPortsAnnotation = "certsuite.redhat.com/non-tls-ports"
+
+func parseNonTLSPortsAnnotation(pod *provider.Pod, check *checksdb.Check) map[int32]bool {
+	exempt := make(map[int32]bool)
+	ann, ok := pod.Annotations[nonTLSPortsAnnotation]
+	if !ok || ann == "" {
+		return exempt
+	}
+	for _, p := range strings.Split(ann, ",") {
+		p = strings.TrimSpace(p)
+		port, err := strconv.ParseInt(p, 10, 32)
+		if err != nil || port < 1 || port > 65535 {
+			check.LogError("Invalid port %q in %s annotation on pod %s/%s", p, nonTLSPortsAnnotation, pod.Namespace, pod.Name)
+			continue
+		}
+		exempt[int32(port)] = true
+	}
+	return exempt
+}
+
+func getFirstProbeContext(env *provider.TestEnvironment) (clientsholder.Command, clientsholder.Context, bool) {
+	for _, probePod := range env.ProbePods {
+		if probePod == nil || len(probePod.Spec.Containers) == 0 {
+			continue
+		}
+		return clientsholder.GetClientsHolder(), clientsholder.NewContext(
+			probePod.Namespace, probePod.Name, probePod.Spec.Containers[0].Name,
+		), true
+	}
+	return nil, clientsholder.Context{}, false
+}
+
+func newPortReportObject(namespace, name, message string, compliant bool, port netutil.PortInfo) *testhelper.ReportObject {
+	return testhelper.NewPodReportObject(namespace, name, message, compliant).
+		SetType(testhelper.ListeningPortType).
+		AddField(testhelper.PortNumber, strconv.Itoa(int(port.PortNumber))).
+		AddField(testhelper.PortProtocol, port.Protocol)
+}
+
+func checkPodPortTLS(check *checksdb.Check, put *provider.Pod, ch clientsholder.Command,
+	probeCtx clientsholder.Context, result *checksdb.ParallelResult) {
+	firstContainer := put.Containers[0]
+	listeningPorts, err := netutil.GetListeningPorts(firstContainer)
+	if err != nil {
+		check.LogError("Failed to get pod %q listening ports, err: %v", put, err)
+		result.AddNonCompliantObject(
+			testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get listening ports: %v", err), false))
+		return
+	}
+
+	if len(listeningPorts) == 0 {
+		result.AddCompliantObject(
+			testhelper.NewPodReportObject(put.Namespace, put.Name, "No listening ports", true))
+		return
+	}
+
+	exemptPorts := parseNonTLSPortsAnnotation(put, check)
+	podIP := put.Status.PodIP
+	if podIP == "" {
+		check.LogError("Pod %q has no PodIP, skipping TLS probe", put)
+		return
+	}
+
+	for port := range listeningPorts {
+		if port.Protocol != "TCP" {
+			continue
+		}
+		if put.ContainsIstioProxy() && netcommons.ReservedIstioPorts[port.PortNumber] {
+			continue
+		}
+		if exemptPorts[port.PortNumber] {
+			result.AddCompliantObject(
+				newPortReportObject(put.Namespace, put.Name,
+					fmt.Sprintf("Port %d exempt via annotation", port.PortNumber), true, port))
+			continue
+		}
+
+		isTLS, reachable, reason := tlsversion.IsPortTLS(ch, probeCtx, podIP, port.PortNumber)
+		check.LogInfo("TLS probe %s:%d: isTLS=%v reachable=%v reason=%q",
+			podIP, port.PortNumber, isTLS, reachable, reason)
+
+		switch {
+		case !reachable:
+			result.AddCompliantObject(
+				newPortReportObject(put.Namespace, put.Name,
+					fmt.Sprintf("Port %d unreachable (%s)", port.PortNumber, reason), true, port))
+		case isTLS:
+			result.AddCompliantObject(
+				newPortReportObject(put.Namespace, put.Name,
+					fmt.Sprintf("Port %d uses TLS (%s)", port.PortNumber, reason), true, port))
+		default:
+			check.LogError("Port %d on %q is plaintext (%s)", port.PortNumber, put, reason)
+			result.AddNonCompliantObject(
+				newPortReportObject(put.Namespace, put.Name,
+					fmt.Sprintf("Port %d accepts plaintext connections (%s)", port.PortNumber, reason), false, port))
+		}
+	}
+}
+
+func testUnsecuredContainerPorts(check *checksdb.Check, env *provider.TestEnvironment) {
+	ch, probeCtx, probeAvailable := getFirstProbeContext(env)
+	if !probeAvailable {
+		check.LogError("No probe pods available for TLS checks, skipping")
+		check.SetResult(nil, nil)
+		return
+	}
+
+	checksdb.ForEachParallel(check, env.Pods, len(env.ProbePods), func(check *checksdb.Check, put *provider.Pod, result *checksdb.ParallelResult) {
+		checkPodPortTLS(check, put, ch, probeCtx, result)
 	})
 }
 
