@@ -127,6 +127,20 @@ func convertScalingConfig(resources *checks.DiscoveredResources, env *provider.T
 		})
 	}
 
+	resources.ScalableResources = make([]checks.ScalableResource, 0, len(env.ScaleCrUnderTest))
+	for i := range env.ScaleCrUnderTest {
+		cr := &env.ScaleCrUnderTest[i]
+		if cr.Scale.Scale == nil {
+			continue
+		}
+		resources.ScalableResources = append(resources.ScalableResources, checks.ScalableResource{
+			Name:          cr.Scale.Name,
+			Namespace:     cr.Scale.Namespace,
+			Replicas:      cr.Scale.Spec.Replicas,
+			GroupResource: cr.GroupResourceSchema,
+		})
+	}
+
 	resources.HPAs = make([]checks.HPAInfo, 0, len(env.HorizontalScaler))
 	for _, hpa := range env.HorizontalScaler {
 		if hpa == nil {

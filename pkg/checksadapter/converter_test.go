@@ -4,12 +4,15 @@ import (
 	"testing"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	"github.com/redhat-best-practices-for-k8s/checks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	chart "helm.sh/helm/v4/pkg/chart/v2"
 	release "helm.sh/helm/v4/pkg/release/v1"
+	autoscalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 func TestDerefSlice(t *testing.T) {
@@ -150,4 +153,33 @@ func TestBuildPodMultusNetworks_Empty(t *testing.T) {
 
 	result := buildPodMultusNetworks(nil)
 	assert.Empty(t, result)
+}
+
+func TestConvertScalingConfig_ScalableResources(t *testing.T) {
+	t.Parallel()
+
+	env := &provider.TestEnvironment{
+		ScaleCrUnderTest: []provider.ScaleObject{
+			{
+				Scale: provider.CrScale{
+					Scale: &autoscalingv1.Scale{
+						ObjectMeta: metav1.ObjectMeta{Name: "widget", Namespace: "ns1"},
+						Spec:       autoscalingv1.ScaleSpec{Replicas: 2},
+					},
+				},
+				GroupResourceSchema: schema.GroupResource{Group: "example.com", Resource: "widgets"},
+			},
+			{
+				Scale: provider.CrScale{Scale: nil},
+			},
+		},
+	}
+
+	var resources checks.DiscoveredResources
+	convertScalingConfig(&resources, env)
+	require.Len(t, resources.ScalableResources, 1)
+	assert.Equal(t, "widget", resources.ScalableResources[0].Name)
+	assert.Equal(t, "ns1", resources.ScalableResources[0].Namespace)
+	assert.Equal(t, int32(2), resources.ScalableResources[0].Replicas)
+	assert.Equal(t, schema.GroupResource{Group: "example.com", Resource: "widgets"}, resources.ScalableResources[0].GroupResource)
 }
