@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: tls-test-ns
+podsUnderTestLabels:
+  - "tls-test: target"
+operatorsUnderTestLabels: []
