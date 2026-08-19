@@ -7,7 +7,7 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 
 ## Test cases summary
 
-### Total test cases: 123
+### Total test cases: 124
 
 ### Total suites: 10
 
@@ -17,18 +17,18 @@ Depending on the workload type, not all tests are required to pass to satisfy be
 |affiliated-certification|4|[affiliated-certification](#affiliated-certification)|
 |lifecycle|19|[lifecycle](#lifecycle)|
 |manageability|2|[manageability](#manageability)|
-|networking|12|[networking](#networking)|
+|networking|13|[networking](#networking)|
 |observability|5|[observability](#observability)|
 |operator|12|[operator](#operator)|
 |performance|7|[performance](#performance)|
 |platform-alteration|14|[platform-alteration](#platform-alteration)|
 |preflight|17|[preflight](#preflight)|
 
-### Extended specific tests only: 14
+### Extended specific tests only: 15
 
 |Mandatory|Optional|
 |---|---|---|
-|10|4|
+|10|5|
 
 ### Far-Edge specific tests only: 9
 
@@ -1214,6 +1214,23 @@ Test Cases are the specifications used to perform a meaningful test. Test cases 
 |Tags|extended,networking|
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### networking-unsecured-container-ports
+
+|Property|Description|
+|---|---|
+|Unique ID|networking-unsecured-container-ports|
+|Description|Check that TCP ports listening inside containers use TLS encryption. Ports accepting plaintext connections are flagged as non-compliant.|
+|Suggested Remediation|Ensure all listening TCP ports use TLS. If a port intentionally serves plaintext (e.g., health probes behind network policies), annotate the pod with certsuite.redhat.com/non-tls-ports: "port1,port2".|
+|Best Practice Reference|No Doc Link - Extended|
+|Exception Process|No exception needed for optional/extended tests.|
+|Impact Statement|Unsecured ports accepting plaintext traffic expose sensitive data to eavesdropping and man-in-the-middle attacks, violating security compliance requirements.|
+|Tags|extended,networking|
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
 |Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
