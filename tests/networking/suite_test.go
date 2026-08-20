@@ -309,6 +309,15 @@ func TestCheckPodPortTLS(t *testing.T) {
 			wantCalls:             1,
 		},
 		{
+			name:                  "openssl 3 tls 1.3 cipher is",
+			pod:                   newPod("10.0.0.1", nil, app),
+			ports:                 map[netutil.PortInfo]bool{tcp8080: true},
+			opensslStdout:         "CONNECTED(00000003)\n---\nNew, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384\nProtocol: TLSv1.3\n---",
+			wantCompliant:         1,
+			wantCompliantContains: "uses TLS",
+			wantCalls:             1,
+		},
+		{
 			name:                     "plaintext port",
 			pod:                      newPod("10.0.0.1", nil, app),
 			ports:                    map[netutil.PortInfo]bool{tcp8080: true},

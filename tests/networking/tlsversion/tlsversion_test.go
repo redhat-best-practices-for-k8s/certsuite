@@ -1273,6 +1273,28 @@ func TestProbeExecCipherCompliance_TLS13SkipsCipherCheck(t *testing.T) {
 	ctx := clientsholder.NewContext("ns", "pod", "container")
 	result := probeExecCipherCompliance(mock, ctx, "10.0.0.1:443", modernPolicy())
 	assert.Nil(t, result, "Modern profile (TLS 1.3) should skip cipher check")
+	assert.Equal(t, 0, mock.CallCount())
+}
+
+func TestProbeExecCipherCompliance_OldProfileSkips(t *testing.T) {
+	mock := newMockCommand()
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	oldPolicy := ResolveTLSProfile(&configv1.TLSSecurityProfile{Type: configv1.TLSProfileOldType})
+	result := probeExecCipherCompliance(mock, ctx, "10.0.0.1:443", oldPolicy)
+	assert.Nil(t, result, "Old profile has no disallowed ciphers to probe")
+	assert.Equal(t, 0, mock.CallCount())
+}
+
+func TestProbeExecCipherCompliance_NoNegotiatedCipher(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "-cipher",
+			stdout: "CONNECTED(00000003)\n---\nProtocol  : TLSv1.2\n---",
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	result := probeExecCipherCompliance(mock, ctx, "10.0.0.1:443", intermediatePolicy())
+	assert.Nil(t, result, "expected nil when handshake was not rejected and no cipher was negotiated")
+	assert.Equal(t, 1, mock.CallCount())
 }
 
 func TestProbeExecCipherCompliance_ServerRejectsDisallowed(t *testing.T) {
