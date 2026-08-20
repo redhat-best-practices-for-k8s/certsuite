@@ -17,9 +17,12 @@
 package netutil
 
 import (
+	"context"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseListeningPorts(t *testing.T) {
@@ -58,4 +61,18 @@ func TestParseListeningPorts(t *testing.T) {
 			assert.Equal(t, tc.expectedListeningPorts, listeningPorts)
 		}
 	}
+}
+
+func TestWrapNSEnterError(t *testing.T) {
+	t.Parallel()
+
+	cut := &provider.Container{Namespace: "smf1", Podname: "nf-alert"}
+	deadline := wrapNSEnterError("ss -tpln", cut, "", context.DeadlineExceeded)
+	require.Error(t, deadline)
+	assert.ErrorIs(t, deadline, context.DeadlineExceeded)
+	assert.Contains(t, deadline.Error(), "failed to execute command ss -tpln")
+
+	stderrOnly := wrapNSEnterError("ss -tulwnH", cut, "command not found", nil)
+	require.Error(t, stderrOnly)
+	assert.Contains(t, stderrOnly.Error(), "command not found")
 }
