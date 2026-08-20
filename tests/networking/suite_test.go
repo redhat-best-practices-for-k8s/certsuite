@@ -17,8 +17,11 @@
 package networking
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
@@ -134,47 +137,52 @@ func TestNewPortReportObject(t *testing.T) {
 	assert.Contains(t, nonCompliant.ObjectFieldsValues, "plaintext")
 }
 
-func TestGetFirstProbeContext(t *testing.T) {
+func testProbePod(name string) *corev1.Pod {
+	return &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: "cnf-suite"},
+		Spec: corev1.PodSpec{
+			Containers: []corev1.Container{{Name: "container-00"}},
+		},
+	}
+}
+
+func TestUsableProbeContexts(t *testing.T) {
 	t.Parallel()
 
+	usable := testProbePod("probe-a")
 	tests := []struct {
 		name      string
 		probePods map[string]*corev1.Pod
-		wantOK    bool
+		wantPods  map[string]string
 	}{
+		{name: "nil map", probePods: nil, wantPods: map[string]string{}},
+		{name: "empty map", probePods: map[string]*corev1.Pod{}, wantPods: map[string]string{}},
+		{name: "nil probe", probePods: map[string]*corev1.Pod{"node-a": nil}, wantPods: map[string]string{}},
+		{name: "no containers", probePods: map[string]*corev1.Pod{"node-a": {ObjectMeta: metav1.ObjectMeta{Name: "probe"}}}, wantPods: map[string]string{}},
+		{name: "usable probe", probePods: map[string]*corev1.Pod{"node-a": usable}, wantPods: map[string]string{"node-a": "probe-a"}},
+		{name: "mixed nil and usable", probePods: map[string]*corev1.Pod{"node-a": nil, "node-b": usable}, wantPods: map[string]string{"node-b": "probe-a"}},
 		{
-			name:      "nil map",
-			probePods: nil,
-			wantOK:    false,
-		},
-		{
-			name:      "empty map",
-			probePods: map[string]*corev1.Pod{},
-			wantOK:    false,
-		},
-		{
-			name:      "nil probe pod",
-			probePods: map[string]*corev1.Pod{"node1": nil},
-			wantOK:    false,
-		},
-		{
-			name: "probe pod with no containers",
+			name: "two nodes",
 			probePods: map[string]*corev1.Pod{
-				"node1": {
-					ObjectMeta: metav1.ObjectMeta{Name: "probe", Namespace: "cnf-certsuite"},
-					Spec:       corev1.PodSpec{},
-				},
+				"node-a": testProbePod("probe-a"),
+				"node-b": testProbePod("probe-b"),
 			},
-			wantOK: false,
+			wantPods: map[string]string{"node-a": "probe-a", "node-b": "probe-b"},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			env := &provider.TestEnvironment{ProbePods: tt.probePods}
-			_, _, ok := getFirstProbeContext(env)
-			assert.Equal(t, tt.wantOK, ok)
+			got := usableProbeContexts(&provider.TestEnvironment{ProbePods: tt.probePods})
+			assert.Len(t, got, len(tt.wantPods))
+			for node, wantPod := range tt.wantPods {
+				ctx, ok := got[node]
+				assert.True(t, ok, "missing context for node %s", node)
+				assert.Equal(t, wantPod, ctx.GetPodName())
+				assert.Equal(t, "cnf-suite", ctx.GetNamespace())
+				assert.Equal(t, "container-00", ctx.GetContainerName())
+			}
 		})
 	}
 }
@@ -186,4 +194,185 @@ func TestUnsecuredContainerPorts_NoProbePods(t *testing.T) {
 	env := &provider.TestEnvironment{ProbePods: map[string]*corev1.Pod{}}
 	testUnsecuredContainerPorts(check, env)
 	assert.Equal(t, checksdb.CheckResultSkipped, check.Result.String())
+}
+
+func TestUnsecuredContainerPorts_MissingNodeLocalProbe(t *testing.T) {
+	t.Parallel()
+
+	check := checksdb.NewCheck("test-unsecured-ports", []string{"test"})
+	env := &provider.TestEnvironment{
+		ProbePods: map[string]*corev1.Pod{
+			"node-a": testProbePod("probe-a"),
+		},
+		Pods: []*provider.Pod{
+			{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{Name: "workload", Namespace: "app-ns"},
+					Spec:       corev1.PodSpec{NodeName: "node-b"},
+				},
+			},
+		},
+	}
+	testUnsecuredContainerPorts(check, env)
+	assert.Equal(t, checksdb.CheckResultFailed, check.Result.String())
+	assert.Contains(t, check.GetLogs(), `No probe pod available on node "node-b"`)
+}
+
+func joinedReportValues(objs []*testhelper.ReportObject) string {
+	var parts []string
+	for _, o := range objs {
+		parts = append(parts, o.ObjectFieldsValues...)
+	}
+	return strings.Join(parts, " ")
+}
+
+func TestCheckPodPortTLS(t *testing.T) {
+	orig := getListeningPorts
+	t.Cleanup(func() { getListeningPorts = orig })
+
+	probeCtx := clientsholder.NewContext("cnf-suite", "probe-a", "container-00")
+	app := &provider.Container{Container: &corev1.Container{Name: "app"}}
+	istio := &provider.Container{Container: &corev1.Container{Name: provider.IstioProxyContainerName}}
+	tcp8080 := netutil.PortInfo{PortNumber: 8080, Protocol: "TCP"}
+	udp53 := netutil.PortInfo{PortNumber: 53, Protocol: "UDP"}
+	istioPort := netutil.PortInfo{PortNumber: 15001, Protocol: "TCP"}
+
+	newPod := func(ip string, anns map[string]string, containers ...*provider.Container) *provider.Pod {
+		return &provider.Pod{
+			Pod: &corev1.Pod{
+				ObjectMeta: metav1.ObjectMeta{Name: "workload", Namespace: "app-ns", Annotations: anns},
+				Status:     corev1.PodStatus{PodIP: ip},
+			},
+			Containers: containers,
+		}
+	}
+
+	tests := []struct {
+		name                     string
+		pod                      *provider.Pod
+		ports                    map[netutil.PortInfo]bool
+		portsErr                 error
+		opensslStdout            string
+		opensslErr               error
+		wantCompliant            int
+		wantNonCompliant         int
+		wantCompliantContains    string
+		wantNonCompliantContains string
+		wantCalls                int
+	}{
+		{
+			name:                     "listening ports error",
+			pod:                      newPod("10.0.0.1", nil, app),
+			portsErr:                 fmt.Errorf("ss failed"),
+			wantNonCompliant:         1,
+			wantNonCompliantContains: "Failed to get listening ports",
+		},
+		{
+			name:                  "no listening ports",
+			pod:                   newPod("10.0.0.1", nil, app),
+			ports:                 map[netutil.PortInfo]bool{},
+			wantCompliant:         1,
+			wantCompliantContains: "No listening ports",
+		},
+		{
+			name:                     "no containers",
+			pod:                      newPod("10.0.0.1", nil),
+			wantNonCompliant:         1,
+			wantNonCompliantContains: "no containers",
+		},
+		{
+			name:                     "empty pod IP",
+			pod:                      newPod("", nil, app),
+			ports:                    map[netutil.PortInfo]bool{tcp8080: true},
+			wantNonCompliant:         1,
+			wantNonCompliantContains: "no PodIP",
+		},
+		{
+			name:  "udp only is ignored",
+			pod:   newPod("10.0.0.1", nil, app),
+			ports: map[netutil.PortInfo]bool{udp53: true},
+		},
+		{
+			name:                  "exempt annotation",
+			pod:                   newPod("10.0.0.1", map[string]string{nonTLSPortsAnnotation: "8080"}, app),
+			ports:                 map[netutil.PortInfo]bool{tcp8080: true},
+			wantCompliant:         1,
+			wantCompliantContains: "exempt via annotation",
+		},
+		{
+			name:                  "tls port",
+			pod:                   newPod("10.0.0.1", nil, app),
+			ports:                 map[netutil.PortInfo]bool{tcp8080: true},
+			opensslStdout:         "CONNECTED(00000003)\n---\nProtocol  : TLSv1.3\nCipher    : TLS_AES_256_GCM_SHA384\n---",
+			wantCompliant:         1,
+			wantCompliantContains: "uses TLS",
+			wantCalls:             1,
+		},
+		{
+			name:                     "plaintext port",
+			pod:                      newPod("10.0.0.1", nil, app),
+			ports:                    map[netutil.PortInfo]bool{tcp8080: true},
+			opensslStdout:            "CONNECTED(00000003)\n---\nCipher is (NONE)\npacket length too long\n---",
+			wantNonCompliant:         1,
+			wantNonCompliantContains: "plaintext",
+			wantCalls:                1,
+		},
+		{
+			name:                  "unreachable port",
+			pod:                   newPod("10.0.0.1", nil, app),
+			ports:                 map[netutil.PortInfo]bool{tcp8080: true},
+			opensslStdout:         "connect:errno=111\nConnection refused",
+			wantCompliant:         1,
+			wantCompliantContains: "unreachable",
+			wantCalls:             1,
+		},
+		{
+			name:                  "exec probe failed treated as unreachable",
+			pod:                   newPod("10.0.0.1", nil, app),
+			ports:                 map[netutil.PortInfo]bool{tcp8080: true},
+			opensslErr:            fmt.Errorf("command not found"),
+			wantCompliant:         1,
+			wantCompliantContains: "unreachable",
+			wantCalls:             1,
+		},
+		{
+			name:  "istio reserved port skipped",
+			pod:   newPod("10.0.0.1", nil, app, istio),
+			ports: map[netutil.PortInfo]bool{istioPort: true},
+		},
+		{
+			name:                     "istio reserved port ignored, app port classified",
+			pod:                      newPod("10.0.0.1", nil, app, istio),
+			ports:                    map[netutil.PortInfo]bool{istioPort: true, tcp8080: true},
+			opensslStdout:            "CONNECTED(00000003)\n---\nCipher is (NONE)\npacket length too long\n---",
+			wantNonCompliant:         1,
+			wantNonCompliantContains: "plaintext",
+			wantCalls:                1,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			getListeningPorts = func(*provider.Container) (map[netutil.PortInfo]bool, error) {
+				return tt.ports, tt.portsErr
+			}
+			mock := &clientsholder.MockCommand{
+				ExecFunc: func(_ clientsholder.Context, _ string) (string, string, error) {
+					return tt.opensslStdout, "", tt.opensslErr
+				},
+			}
+			result := &checksdb.ParallelResult{}
+			checkPodPortTLS(checksdb.NewCheck("test-unsecured-ports", []string{"test"}), tt.pod, mock, probeCtx, result)
+			compliant, nonCompliant := result.Results()
+			assert.Len(t, compliant, tt.wantCompliant)
+			assert.Len(t, nonCompliant, tt.wantNonCompliant)
+			if tt.wantCompliantContains != "" {
+				assert.Contains(t, joinedReportValues(compliant), tt.wantCompliantContains)
+			}
+			if tt.wantNonCompliantContains != "" {
+				assert.Contains(t, joinedReportValues(nonCompliant), tt.wantNonCompliantContains)
+			}
+			assert.Equal(t, tt.wantCalls, mock.CallCount())
+		})
+	}
 }

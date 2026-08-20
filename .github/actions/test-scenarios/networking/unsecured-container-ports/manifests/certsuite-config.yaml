@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: unsecured-ports-ns
+podsUnderTestLabels:
+  - "unsecured-ports: target"
+operatorsUnderTestLabels: []

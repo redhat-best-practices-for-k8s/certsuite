@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tls-spread
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tls-spread
+      unsecured-ports: target
+  template:
+    metadata:
+      labels:
+        app: tls-spread
+        unsecured-ports: target
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: tls-spread
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          ports:
+            - containerPort: 8443
+          readinessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 1
+            periodSeconds: 2
+          volumeMounts:
+            - name: tls
+              mountPath: /etc/tls
+              readOnly: true
+            - name: conf
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: tls
+          secret:
+            secretName: tls-test-cert
+        - name: conf
+          configMap:
+            name: nginx-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tls-spread-svc
+spec:
+  selector:
+    app: tls-spread
+  ports:
+    - port: 443
+      targetPort: 8443

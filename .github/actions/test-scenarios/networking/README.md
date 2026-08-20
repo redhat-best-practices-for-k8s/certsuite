@@ -14,6 +14,20 @@ Validates that the `networking-tls-minimum-version` test correctly checks servic
 | TLS 1.2 Allowed (compliant) | `tls12-allowed.yaml` | TLS 1.2 + 1.3, Intermediate ciphers | `passed` |
 | Plain HTTP (compliant) | `plain-http.yaml` | No TLS | `passed` |
 
+### unsecured-container-ports
+
+Validates that `networking-unsecured-container-ports` probes plaintext TCP
+listeners on every node, not only the node of a randomly chosen probe pod.
+Smoke Kind clusters have two workers; required pod anti-affinity spreads two
+replicas across them. The runner also requires at least two non-compliant
+objects so one same-node plaintext hit plus a cross-node timeout cannot pass
+as a generic FAIL.
+
+| Scenario | Manifest | Workload | Expected Test Result |
+|---|---|---|---|
+| Plain HTTP spread across nodes | `plain-http-spread.yaml` | Two replicas, plaintext :8080, hostname anti-affinity | `failed` (min 2 non-compliant objects) |
+| TLS spread across nodes | `tls-spread.yaml` | Two replicas, TLS :8443, hostname anti-affinity | `passed` (min 2 objects containing "uses TLS") |
+
 ## Adding a new scenario
 
 1. Create a directory under the appropriate test suite (e.g., `networking/<test-name>/`).
@@ -28,7 +42,13 @@ Validates that the `networking-tls-minimum-version` test correctly checks servic
      "path": "networking/<test-name>",
      "manifest": "<workload>.yaml",
      "expected_result": "passed|failed",
+     "min_noncompliant": 2,
+     "min_compliant": 2,
+     "compliant_contains": "uses TLS",
      "output_dir": "<workload>-results"
    }
    ```
+   `min_noncompliant` and `min_compliant` are optional. `compliant_contains`
+   limits the compliant-object count to entries whose details include that
+   string (so an unreachable port cannot satisfy a TLS pass).
    The runner script (`../run-scenarios.sh`) picks up all entries automatically. Validation is data-driven: the runner checks that the test state in `claim.json` matches `expected_result`.
