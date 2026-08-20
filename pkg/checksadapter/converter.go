@@ -185,6 +185,24 @@ func convertClusterResources(resources *checks.DiscoveredResources, env *provide
 	resources.K8sVersion = env.K8sVersion
 	resources.OpenshiftVersion = env.OpenshiftVersion
 	resources.OCPStatus = env.OCPStatus
+
+	injectTLSSecurityProfile(resources)
+}
+
+func injectTLSSecurityProfile(resources *checks.DiscoveredResources) {
+	if !provider.IsOCPCluster() {
+		return
+	}
+	clients := clientsholder.GetClientsHolder()
+	if clients.OcpClient == nil {
+		return
+	}
+	apiServer, err := clients.OcpClient.APIServers().Get(context.TODO(), "cluster", metav1.GetOptions{})
+	if err != nil {
+		log.Warn("Failed to get APIServer TLS security profile, using Intermediate default: %v", err)
+		return
+	}
+	resources.TLSSecurityProfile = apiServer.Spec.TLSSecurityProfile
 }
 
 func convertCertificationResources(resources *checks.DiscoveredResources, env *provider.TestEnvironment) {

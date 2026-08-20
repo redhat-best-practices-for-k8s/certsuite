@@ -28,6 +28,7 @@ import (
 
 var env provider.TestEnvironment
 
+//nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.NetworkingTestKey)
 
@@ -88,4 +89,22 @@ func LoadChecks() {
 	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("networking-network-attachment-definition-sriov-mtu")).
 		WithSkipCheckFn(testhelper.GetNoSRIOVPodsSkipFn(&env)).
 		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckSRIOVNetworkAttachmentDefinitionMTU).MakeCheckFn(&env)))
+
+	// TLS minimum version test case
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("networking-tls-minimum-version")).
+		WithSkipCheckFn(
+			testhelper.GetNoServicesUnderTestSkipFn(&env),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env),
+			testhelper.GetOCPVersionBelowSkipFn(&env, checksfn.OCPTLSProfileEnforcementVersion),
+		).
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckTLSMinimumVersion).MakeCheckFn(&env)))
+
+	// Unsecured container ports test case
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("networking-unsecured-container-ports")).
+		WithSkipCheckFn(
+			testhelper.GetNoContainersUnderTestSkipFn(&env),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env),
+			testhelper.GetNoPodsUnderTestSkipFn(&env),
+		).
+		WithCheckFn(checksadapter.NewAdapter(checksfn.CheckUnsecuredContainerPorts).MakeCheckFn(&env)))
 }
