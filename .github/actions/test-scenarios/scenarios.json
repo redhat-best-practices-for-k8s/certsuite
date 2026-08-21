@@ -34,5 +34,26 @@
     "manifest": "plain-http.yaml",
     "expected_result": "passed",
     "output_dir": "plain-http-results"
+  },
+  {
+    "name": "Unsecured container ports across nodes (non-compliant)",
+    "description": "Deploys two plaintext HTTP pods with required hostname anti-affinity so they land on different nodes. networking-unsecured-container-ports must fail both pods as plaintext. A single plaintext failure with the other pod marked unreachable is the cross-node openssl flake this scenario guards against.",
+    "label_filter": "networking-unsecured-container-ports",
+    "path": "networking/unsecured-container-ports",
+    "manifest": "plain-http-spread.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 2,
+    "output_dir": "plain-http-spread-results"
+  },
+  {
+    "name": "Secured container ports across nodes (compliant)",
+    "description": "Deploys two TLS HTTP pods with required hostname anti-affinity so they land on different nodes. networking-unsecured-container-ports must pass, and both pods must be classified as using TLS. A pass with one pod marked unreachable is the cross-node openssl flake this scenario guards against.",
+    "label_filter": "networking-unsecured-container-ports",
+    "path": "networking/unsecured-container-ports",
+    "manifest": "tls-spread.yaml",
+    "expected_result": "passed",
+    "min_compliant": 2,
+    "compliant_contains": "uses TLS",
+    "output_dir": "tls-spread-results"
   }
 ]

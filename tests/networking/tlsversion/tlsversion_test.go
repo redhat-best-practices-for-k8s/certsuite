@@ -492,6 +492,20 @@ func TestIsPortTLS_TLSServer(t *testing.T) {
 	assert.Contains(t, reason, "TLS negotiated")
 }
 
+func TestIsPortTLS_OpenSSL3TLS13Format(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "s_client",
+			stdout: "CONNECTED(00000003)\n---\nNew, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384\nProtocol: TLSv1.3\n---",
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 8443)
+	assert.True(t, isTLS, "expected TLS from OpenSSL 3 TLS 1.3 output, reason: %s", reason)
+	assert.True(t, reachable)
+	assert.Contains(t, reason, "TLS negotiated")
+	assert.Contains(t, reason, "TLS_AES_256_GCM_SHA384")
+}
+
 func TestIsPortTLS_PlaintextService(t *testing.T) {
 	mock := newMockCommand(
 		mockPattern{key: "s_client",
@@ -1060,6 +1074,101 @@ func TestIsPortTLS_IPv6Address(t *testing.T) {
 	assert.Contains(t, mock.Calls()[0].Command, "[2001:db8::1]:443")
 }
 
+func timeoutExecErr() error {
+	return &clientsholder.ExecError{
+		Command:   "openssl s_client",
+		Namespace: "ns",
+		PodName:   "pod",
+		ExitCode:  opensslTimeoutExitCode,
+		Err:       fmt.Errorf("command terminated with exit code %d", opensslTimeoutExitCode),
+	}
+}
+
+func TestIsOpensslTimeout(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{name: "nil", err: nil, want: false},
+		{name: "generic error", err: fmt.Errorf("command not found"), want: false},
+		{name: "wrong exit code", err: &clientsholder.ExecError{ExitCode: 1, Err: fmt.Errorf("fail")}, want: false},
+		{name: "timeout 124", err: timeoutExecErr(), want: true},
+		{name: "wrapped timeout", err: fmt.Errorf("probe: %w", timeoutExecErr()), want: true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.want, isOpensslTimeout(tt.err))
+		})
+	}
+}
+
+func TestIsPortTLS_TimeoutThenPlaintext(t *testing.T) {
+	mock := &clientsholder.MockCommand{}
+	mock.ExecFunc = func(_ clientsholder.Context, _ string) (string, string, error) {
+		if mock.CallCount() < 2 {
+			return "", "", timeoutExecErr()
+		}
+		return "CONNECTED(00000003)\n---\nProtocol  : TLSv1.2\n---", "", nil
+	}
+
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 8080)
+	assert.False(t, isTLS)
+	assert.True(t, reachable)
+	assert.Contains(t, reason, "plaintext")
+	assert.Equal(t, 2, mock.CallCount())
+}
+
+func TestIsPortTLS_TimeoutExhausted(t *testing.T) {
+	mock := &clientsholder.MockCommand{
+		ExecFunc: func(_ clientsholder.Context, _ string) (string, string, error) {
+			return "", "", timeoutExecErr()
+		},
+	}
+
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 8080)
+	assert.False(t, isTLS)
+	assert.False(t, reachable)
+	assert.Contains(t, reason, "exec probe failed")
+	assert.Equal(t, opensslTLSProbeAttempts, mock.CallCount())
+}
+
+func TestIsPortTLS_TimeoutNotRetriedWhenConnected(t *testing.T) {
+	mock := &clientsholder.MockCommand{
+		ExecFunc: func(_ clientsholder.Context, _ string) (string, string, error) {
+			return "CONNECTED(00000003)\n---\nProtocol  : TLSv1.2\n---", "", timeoutExecErr()
+		},
+	}
+
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 8080)
+	assert.False(t, isTLS)
+	assert.True(t, reachable)
+	assert.Contains(t, reason, "plaintext")
+	assert.Equal(t, 1, mock.CallCount())
+}
+
+func TestIsPortTLS_NonTimeoutExecNotRetried(t *testing.T) {
+	mock := &clientsholder.MockCommand{
+		ExecFunc: func(_ clientsholder.Context, _ string) (string, string, error) {
+			return "", "", fmt.Errorf("command not found")
+		},
+	}
+
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	isTLS, reachable, reason := IsPortTLS(mock, ctx, "10.0.0.1", 8080)
+	assert.False(t, isTLS)
+	assert.False(t, reachable)
+	assert.Contains(t, reason, "exec probe failed")
+	assert.Equal(t, 1, mock.CallCount())
+}
+
 func TestExtractOpenSSLCipher(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -1068,9 +1177,11 @@ func TestExtractOpenSSLCipher(t *testing.T) {
 	}{
 		{"with spaces", "Cipher    : ECDHE-RSA-AES128-GCM-SHA256\nProtocol  : TLSv1.2", "ECDHE-RSA-AES128-GCM-SHA256"},
 		{"without spaces", "Cipher: TLS_AES_256_GCM_SHA384\nProtocol: TLSv1.3", "TLS_AES_256_GCM_SHA384"},
+		{"openssl 3 cipher is", "New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384", "TLS_AES_256_GCM_SHA384"},
+		{"cipher is none", "Cipher is (NONE)\nProtocol  : TLSv1.2", "(NONE)"},
 		{"cipher 0000", "Cipher    : 0000\nProtocol  : TLSv1.2", "0000"},
-		{"no cipher line", "Protocol  : TLSv1.2\nSome other output", "unknown"},
-		{"empty output", "", "unknown"},
+		{"no cipher line", "Protocol  : TLSv1.2\nSome other output", ""},
+		{"empty output", "", ""},
 	}
 
 	for _, tc := range tests {
@@ -1137,17 +1248,24 @@ func assertReportField(t *testing.T, ro *testhelper.ReportObject, key, expectedV
 }
 
 func TestProbeExecCipherCompliance_ServerAcceptsDisallowed(t *testing.T) {
-	mock := newMockCommand(
-		mockPattern{key: "-cipher",
-			stdout: "CONNECTED(00000003)\n---\nProtocol  : TLSv1.2\nCipher    : DES-CBC3-SHA\n---",
-		},
-	)
+	tests := []struct {
+		name   string
+		stdout string
+	}{
+		{name: "openssl 1.1 cipher colon", stdout: "CONNECTED(00000003)\n---\nProtocol  : TLSv1.2\nCipher    : DES-CBC3-SHA\n---"},
+		{name: "openssl 3 cipher is", stdout: "CONNECTED(00000003)\n---\nNew, TLSv1.2, Cipher is DES-CBC3-SHA\n---"},
+	}
 
-	ctx := clientsholder.NewContext("ns", "pod", "container")
-	result := probeExecCipherCompliance(mock, ctx, "10.0.0.1:443", intermediatePolicy())
-	assert.NotNil(t, result, "expected non-nil result for accepted disallowed cipher")
-	assert.False(t, result.Compliant)
-	assert.Contains(t, result.Reason, "disallowed cipher")
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mock := newMockCommand(mockPattern{key: "-cipher", stdout: tt.stdout})
+			ctx := clientsholder.NewContext("ns", "pod", "container")
+			result := probeExecCipherCompliance(mock, ctx, "10.0.0.1:443", intermediatePolicy())
+			assert.NotNil(t, result, "expected non-nil result for accepted disallowed cipher")
+			assert.False(t, result.Compliant)
+			assert.Contains(t, result.Reason, "DES-CBC3-SHA")
+		})
+	}
 }
 
 func TestProbeExecCipherCompliance_TLS13SkipsCipherCheck(t *testing.T) {
@@ -1155,6 +1273,28 @@ func TestProbeExecCipherCompliance_TLS13SkipsCipherCheck(t *testing.T) {
 	ctx := clientsholder.NewContext("ns", "pod", "container")
 	result := probeExecCipherCompliance(mock, ctx, "10.0.0.1:443", modernPolicy())
 	assert.Nil(t, result, "Modern profile (TLS 1.3) should skip cipher check")
+	assert.Equal(t, 0, mock.CallCount())
+}
+
+func TestProbeExecCipherCompliance_OldProfileSkips(t *testing.T) {
+	mock := newMockCommand()
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	oldPolicy := ResolveTLSProfile(&configv1.TLSSecurityProfile{Type: configv1.TLSProfileOldType})
+	result := probeExecCipherCompliance(mock, ctx, "10.0.0.1:443", oldPolicy)
+	assert.Nil(t, result, "Old profile has no disallowed ciphers to probe")
+	assert.Equal(t, 0, mock.CallCount())
+}
+
+func TestProbeExecCipherCompliance_NoNegotiatedCipher(t *testing.T) {
+	mock := newMockCommand(
+		mockPattern{key: "-cipher",
+			stdout: "CONNECTED(00000003)\n---\nProtocol  : TLSv1.2\n---",
+		},
+	)
+	ctx := clientsholder.NewContext("ns", "pod", "container")
+	result := probeExecCipherCompliance(mock, ctx, "10.0.0.1:443", intermediatePolicy())
+	assert.Nil(t, result, "expected nil when handshake was not rejected and no cipher was negotiated")
+	assert.Equal(t, 1, mock.CallCount())
 }
 
 func TestProbeExecCipherCompliance_ServerRejectsDisallowed(t *testing.T) {

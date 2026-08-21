@@ -51,7 +51,7 @@ func (p *Process) String() string {
 // information from a node where a pod/container under test is running.
 func GetNodeProbePodContext(node string, env *provider.TestEnvironment) (clientsholder.Context, error) {
 	probePod := env.ProbePods[node]
-	if probePod == nil {
+	if probePod == nil || len(probePod.Spec.Containers) == 0 {
 		return clientsholder.Context{}, fmt.Errorf("probe pod not found on node %s", node)
 	}
 

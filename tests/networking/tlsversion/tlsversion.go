@@ -19,6 +19,7 @@ package tlsversion
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"net"
 	"strconv"
@@ -48,13 +49,18 @@ const (
 	truncateLen = 200
 
 	// openssl output patterns used to classify TLS probe results.
-	opensslCipherNone       = "Cipher is (NONE)"
-	opensslAlertProtoVer    = "alert protocol version"
-	opensslAlertHandshake   = "alert handshake failure"
-	opensslHandshakeFailure = "handshake failure"
-	opensslNoCiphers        = "no ciphers available"
-	opensslConnected        = "CONNECTED"
-	opensslConnErrno        = "errno"
+	opensslCipherColonSpaced = "Cipher    :"
+	opensslCipherColon       = "Cipher:"
+	opensslCipherIsPrefix    = "Cipher is "
+	opensslCipherNoneValue   = "(NONE)"
+	opensslCipherZero        = "0000"
+	opensslCipherNone        = opensslCipherIsPrefix + opensslCipherNoneValue
+	opensslAlertProtoVer     = "alert protocol version"
+	opensslAlertHandshake    = "alert handshake failure"
+	opensslHandshakeFailure  = "handshake failure"
+	opensslNoCiphers         = "no ciphers available"
+	opensslConnected         = "CONNECTED"
+	opensslConnErrno         = "errno"
 
 	// OCPTLSProfileEnforcementVersion is the minimum OCP version at which the
 	// APIServer CR's TLS security profile is reliably enforced. On older versions,
@@ -68,7 +74,10 @@ const (
 
 	cipherECDHERSAAES128GCMSHA256 = "ECDHE-RSA-AES128-GCM-SHA256"
 	reasonPortUnreachable         = "port unreachable"
-	reasonUnknown                 = "unknown"
+
+	// GNU timeout exits 124 when openssl s_client does not finish in time.
+	opensslTimeoutExitCode  = 124
+	opensslTLSProbeAttempts = 3
 )
 
 // TLSPolicy holds the resolved effective TLS policy for the cluster.
@@ -319,12 +328,25 @@ func CheckServiceTLSCompliance(check *checksdb.Check, env *provider.TestEnvironm
 	return compliant, nonCompliant
 }
 
+func isOpensslTimeout(err error) bool {
+	var execErr *clientsholder.ExecError
+	return errors.As(err, &execErr) && execErr.HasExitCode(opensslTimeoutExitCode)
+}
+
 // IsPortTLS probes a single TCP port via openssl to determine whether it speaks TLS.
 // It does not validate TLS version or cipher compliance — only whether TLS is present.
 func IsPortTLS(ch clientsholder.Command, ctx clientsholder.Context, address string, port int32) (isTLS, reachable bool, reason string) {
 	endpoint := net.JoinHostPort(address, strconv.Itoa(int(port)))
 	cmd := fmt.Sprintf("echo | timeout 5 openssl s_client -connect %s 2>&1", endpoint)
-	stdout, _, err := ch.ExecCommandContainer(ctx, cmd)
+
+	var stdout string
+	var err error
+	for range opensslTLSProbeAttempts {
+		stdout, _, err = ch.ExecCommandContainer(ctx, cmd)
+		if err == nil || hasOpensslOutput(stdout) || !isOpensslTimeout(err) {
+			break
+		}
+	}
 
 	if err != nil && !hasOpensslOutput(stdout) {
 		return false, false, fmt.Sprintf("exec probe failed: %v", err)
@@ -345,14 +367,8 @@ func IsPortTLS(ch clientsholder.Command, ctx clientsholder.Context, address stri
 		return true, true, "TLS server detected (handshake alert)"
 	}
 
-	// Successful TLS handshake: cipher is not NONE
-	if !strings.Contains(stdout, opensslCipherNone) {
-		if strings.Contains(stdout, "Cipher    :") || strings.Contains(stdout, "Cipher:") {
-			cipher := extractOpenSSLCipher(stdout)
-			if cipher != "" && cipher != "0000" && cipher != "(NONE)" {
-				return true, true, fmt.Sprintf("TLS negotiated (cipher: %s)", cipher)
-			}
-		}
+	if cipher := extractOpenSSLCipher(stdout); isNegotiatedCipher(cipher) {
+		return true, true, fmt.Sprintf("TLS negotiated (cipher: %s)", cipher)
 	}
 
 	// Connected but no TLS indicators — plaintext service
@@ -639,20 +655,18 @@ func probeExecCipherCompliance(ch clientsholder.Command, ctx clientsholder.Conte
 		return nil
 	}
 
-	// Server negotiated a cipher from the disallowed set — non-compliant.
-	if strings.Contains(stdout, "Cipher    :") || strings.Contains(stdout, "Cipher:") {
-		cipherName := extractOpenSSLCipher(stdout)
-		result := TLSProbeResult{
-			Compliant:     false,
-			IsTLS:         true,
-			Reachable:     true,
-			NegotiatedVer: TLSVersionNameTLS12,
-			Reason:        fmt.Sprintf("server accepted disallowed cipher %s (not in %s profile, via exec probe)", cipherName, policy.ProfileType),
-		}
-		return &result
+	cipherName := extractOpenSSLCipher(stdout)
+	if !isNegotiatedCipher(cipherName) {
+		return nil
 	}
 
-	return nil
+	return &TLSProbeResult{
+		Compliant:     false,
+		IsTLS:         true,
+		Reachable:     true,
+		NegotiatedVer: TLSVersionNameTLS12,
+		Reason:        fmt.Sprintf("server accepted disallowed cipher %s (not in %s profile, via exec probe)", cipherName, policy.ProfileType),
+	}
 }
 
 // computeDisallowedOpenSSLCiphers returns OpenSSL cipher names that are NOT in the policy's allowed list.
@@ -671,19 +685,27 @@ func computeDisallowedOpenSSLCiphers(policy TLSPolicy) []string {
 	return disallowed
 }
 
-// extractOpenSSLCipher parses the "Cipher    :" or "Cipher:" line from openssl
-// s_client output and returns the negotiated cipher name.
+// extractOpenSSLCipher parses the negotiated cipher name from openssl s_client
+// output. OpenSSL 1.1 uses "Cipher    : NAME" / "Cipher: NAME"; OpenSSL 3 also
+// emits "Cipher is NAME" (including on the "New, TLSv1.3, Cipher is NAME" line).
 func extractOpenSSLCipher(stdout string) string {
 	for line := range strings.SplitSeq(stdout, "\n") {
 		trimmed := strings.TrimSpace(line)
-		if after, ok := strings.CutPrefix(trimmed, "Cipher    :"); ok {
+		if after, ok := strings.CutPrefix(trimmed, opensslCipherColonSpaced); ok {
 			return strings.TrimSpace(after)
 		}
-		if after, ok := strings.CutPrefix(trimmed, "Cipher:"); ok {
+		if after, ok := strings.CutPrefix(trimmed, opensslCipherColon); ok {
+			return strings.TrimSpace(after)
+		}
+		if _, after, ok := strings.Cut(trimmed, opensslCipherIsPrefix); ok {
 			return strings.TrimSpace(after)
 		}
 	}
-	return reasonUnknown
+	return ""
+}
+
+func isNegotiatedCipher(cipher string) bool {
+	return cipher != "" && cipher != opensslCipherZero && cipher != opensslCipherNoneValue
 }
 
 // opensslVersionFlag converts a Go TLS version constant to the corresponding
