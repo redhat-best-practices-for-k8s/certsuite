@@ -126,7 +126,7 @@ FROM quay.io/redhat-best-practices-for-k8s/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.8@sha256:17fd831ced9434de0a984d60b3fbe61008308261ba98bbc348d6fbdef05fa7c0
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.8@sha256:8eb2830d0936237fc13a1f2f7e45aecf90d69043380ad167fad0343632937f41
 
 ENV \
 	CERTSUITE_DIR=/usr/certsuite \
