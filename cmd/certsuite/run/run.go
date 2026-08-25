@@ -58,9 +58,9 @@ func NewCommand() *cobra.Command {
 	probeFlags := flag.NewFlagSet("probe", flag.ContinueOnError)
 	probeFlags.String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42", "Certsuite probe image")
 	probeFlags.String("daemonset-cpu-req", "100m", "CPU request for the probe daemonset container")
-	probeFlags.String("daemonset-cpu-lim", "100m", "CPU limit for the probe daemonset container")
+	probeFlags.String("daemonset-cpu-lim", "", "CPU limit for the probe daemonset container (empty = no limit)")
 	probeFlags.String("daemonset-mem-req", "100M", "Memory request for the probe daemonset container")
-	probeFlags.String("daemonset-mem-lim", "100M", "Memory limit for the probe daemonset container")
+	probeFlags.String("daemonset-mem-lim", "", "Memory limit for the probe daemonset container (empty = no limit)")
 	probeFlags.Bool("cleanup-probe", true, "Delete the probe daemonset at the end of the test run")
 	probeFlags.Bool("require-probe", false, "Abort the test run if the probe daemonset fails to deploy")
 
