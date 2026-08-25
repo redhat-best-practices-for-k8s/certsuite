@@ -989,12 +989,5 @@ var TestPingSuccess = func(sourceContainerID *provider.Container, targetContaine
 }
 
 var TestPingFailure = func(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
-	return PingResults{
-		outcome:     testhelper.FAILURE,
-		transmitted: 10,
-		received:    5,
-		errors:      5,
-	}, fmt.Errorf(
-		"ping failed",
-	)
+	return PingResults{outcome: testhelper.FAILURE, transmitted: 10, received: 5, errors: 5}, fmt.Errorf("ping failed")
 }
