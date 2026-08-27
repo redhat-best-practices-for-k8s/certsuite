@@ -63,7 +63,7 @@ data:
     skipScalingTestDeployments:
       - name: deployment1
         namespace: tnf
-    skipScalingTestStatefulsets:
+    skipScalingTestStatefulSets:
       - name: statefulset1
         namespace: tnf
     skipHelmChartList:
@@ -127,18 +127,18 @@ spec:
       args:
         - "-c"
         - |
-          certsuite run -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' --intrusive=false ; sleep inf
+          certsuite run \
+            --config-file=/usr/certsuite/config/certsuite_config.yml \
+            --preflight-dockerconfig=/usr/certsuite/config/preflight/preflight_dockerconfig.json \
+            --allow-preflight-insecure \
+            --log-level=trace \
+            -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' \
+            --intrusive=false ; sleep inf
       volumeMounts:
         - name: config-volume
           mountPath: /usr/certsuite/config
         - name: preflight-dockerconfig
           mountPath: /usr/certsuite/config/preflight
       env:
-        - name: CERTSUITE_ALLOW_PREFLIGHT_INSECURE
-          value: "true"
-        - name: CERTSUITE_LOG_LEVEL
-          value: trace
         - name: PFLT_DOCKERCONFIG
           value: /usr/certsuite/config/preflight/preflight_dockerconfig.json
-        - name: CERTSUITE_CONFIGURATION_PATH
-          value: /usr/certsuite/config/certsuite_config.yaml
