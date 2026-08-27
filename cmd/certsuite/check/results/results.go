@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -27,9 +28,10 @@ const (
 )
 
 type TestCaseList struct {
-	Pass []string `yaml:"pass"`
-	Fail []string `yaml:"fail"`
-	Skip []string `yaml:"skip"`
+	Pass       []string `yaml:"pass"`
+	Fail       []string `yaml:"fail"`
+	Skip       []string `yaml:"skip"`
+	PassOrSkip []string `yaml:"passOrSkip"`
 }
 
 type TestResults struct {
@@ -67,7 +69,7 @@ func checkResults(cmd *cobra.Command, _ []string) error {
 	// Match the results between the test results DB and the reference YAML template
 	var mismatchedTestCases []string
 	for testCase, testResult := range actualTestResults {
-		if testResult != expectedTestResults[testCase] {
+		if !slices.Contains(expectedTestResults[testCase], testResult) {
 			mismatchedTestCases = append(mismatchedTestCases, testCase)
 		}
 	}
@@ -124,7 +126,7 @@ func getTestResultsDB(logFileName string) (map[string]string, error) {
 	return resultsDB, nil
 }
 
-func getExpectedTestResults(templateFileName string) (map[string]string, error) {
+func getExpectedTestResults(templateFileName string) (map[string][]string, error) {
 	templateFile, err := os.ReadFile(templateFileName)
 	if err != nil {
 		return nil, fmt.Errorf("could not open template file %q, err: %w", templateFileName, err)
@@ -136,29 +138,33 @@ func getExpectedTestResults(templateFileName string) (map[string]string, error) 
 		return nil, fmt.Errorf("could not parse the template YAML file, err: %w", err)
 	}
 
-	expectedTestResults := make(map[string]string)
+	expectedTestResults := make(map[string][]string)
 	for _, testCase := range expectedTestResultsList.Pass {
-		expectedTestResults[testCase] = resultPass
+		expectedTestResults[testCase] = []string{resultPass}
 	}
 	for _, testCase := range expectedTestResultsList.Skip {
-		expectedTestResults[testCase] = resultSkip
+		expectedTestResults[testCase] = []string{resultSkip}
 	}
 	for _, testCase := range expectedTestResultsList.Fail {
-		expectedTestResults[testCase] = resultFail
+		expectedTestResults[testCase] = []string{resultFail}
+	}
+	for _, testCase := range expectedTestResultsList.PassOrSkip {
+		expectedTestResults[testCase] = []string{resultPass, resultSkip}
 	}
 
 	return expectedTestResults, nil
 }
 
-func printTestResultsMismatch(mismatchedTestCases []string, actualResults, expectedResults map[string]string) {
+func printTestResultsMismatch(mismatchedTestCases []string, actualResults map[string]string, expectedResults map[string][]string) {
 	fmt.Printf("\n")
 	fmt.Println(strings.Repeat("-", 96)) //nolint:mnd // table line
 	fmt.Printf("| %-58s %-19s %s |\n", "TEST_CASE", "EXPECTED_RESULT", "ACTUAL_RESULT")
 	fmt.Println(strings.Repeat("-", 96)) //nolint:mnd // table line
 	for _, testCase := range mismatchedTestCases {
-		expectedResult, exist := expectedResults[testCase]
-		if !exist {
-			expectedResult = resultMiss
+		expectedResultSlice, exist := expectedResults[testCase]
+		expectedResult := resultMiss
+		if exist {
+			expectedResult = strings.Join(expectedResultSlice, "|")
 		}
 		actualResult, exist := actualResults[testCase]
 		if !exist {

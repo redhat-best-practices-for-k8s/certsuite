@@ -89,7 +89,7 @@ func TestGetExpectedTestResults(t *testing.T) {
 		name           string
 		fileContent    string
 		createFile     bool
-		expectedResult map[string]string
+		expectedResult map[string][]string
 		expectedErrMsg string
 	}{
 		{
@@ -104,11 +104,31 @@ func TestGetExpectedTestResults(t *testing.T) {
   skip:
     - test-d
 `,
-			expectedResult: map[string]string{
-				"test-a": "PASSED",
-				"test-b": "PASSED",
-				"test-c": "FAILED",
-				"test-d": "SKIPPED",
+			expectedResult: map[string][]string{
+				"test-a": {"PASSED"},
+				"test-b": {"PASSED"},
+				"test-c": {"FAILED"},
+				"test-d": {"SKIPPED"},
+			},
+		},
+		{
+			name:       "valid YAML with passOrSkip",
+			createFile: true,
+			fileContent: `testCases:
+  pass:
+    - test-a
+  fail:
+    - test-b
+  skip:
+    - test-c
+  passOrSkip:
+    - test-d
+`,
+			expectedResult: map[string][]string{
+				"test-a": {"PASSED"},
+				"test-b": {"FAILED"},
+				"test-c": {"SKIPPED"},
+				"test-d": {"PASSED", "SKIPPED"},
 			},
 		},
 		{
@@ -119,7 +139,7 @@ func TestGetExpectedTestResults(t *testing.T) {
   fail: []
   skip: []
 `,
-			expectedResult: map[string]string{},
+			expectedResult: map[string][]string{},
 		},
 		{
 			name:           "file not found",
