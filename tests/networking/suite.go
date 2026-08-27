@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/crclient"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
@@ -180,6 +181,11 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 		firstPodContainer := put.Containers[0]
 		listeningPorts, err := netutil.GetListeningPorts(firstPodContainer)
 		if err != nil {
+			if crclient.IsProbeToolExecError(err) {
+				check.LogError("Tool execution error for %q — probe unavailable, skipping pod (not a test case failure): %v", firstPodContainer, err)
+				check.SetResultError(fmt.Sprintf("probe tool execution error for pod %s/%s: %v", put.Namespace, put.Name, err))
+				return
+			}
 			check.LogError("Failed to get container %q listening ports, err: %v", firstPodContainer, err)
 			result.AddNonCompliantObject(
 				testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get the container's listening ports, err: %v", err), false))
@@ -301,6 +307,11 @@ func testReservedPortsUsageParallel(check *checksdb.Check, env *provider.TestEnv
 		firstContainer := put.Containers[0]
 		listeningPorts, err := netutil.GetListeningPorts(firstContainer)
 		if err != nil {
+			if crclient.IsProbeToolExecError(err) {
+				check.LogError("Tool execution error for %q — probe unavailable, skipping pod (not a test case failure): %v", firstContainer, err)
+				check.SetResultError(fmt.Sprintf("probe tool execution error for pod %s/%s: %v", put.Namespace, put.Name, err))
+				return
+			}
 			check.LogError("Failed to get the listening ports on %q, err: %v", firstContainer, err)
 			result.AddNonCompliantObject(
 				testhelper.NewPodReportObject(firstContainer.Namespace, put.Name,

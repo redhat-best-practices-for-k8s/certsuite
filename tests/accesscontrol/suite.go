@@ -970,6 +970,11 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 
 		port, err := netutil.GetSSHDaemonPort(cut)
 		if err != nil {
+			if crclient.IsProbeToolExecError(err) {
+				check.LogError("Tool execution error for %q — probe unavailable, skipping pod (not a test case failure): %v", cut, err)
+				check.SetResultError(fmt.Sprintf("probe tool execution error for pod %s/%s: %v", put.Namespace, put.Name, err))
+				return
+			}
 			check.LogError("Could not get ssh daemon port on %q, err: %v", cut, err)
 			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the ssh port for pod", false))
 			return
@@ -991,6 +996,11 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 		sshPortInfo := netutil.PortInfo{PortNumber: int32(sshServicePortNumber), Protocol: sshServicePortProtocol}
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
+			if crclient.IsProbeToolExecError(err) {
+				check.LogError("Tool execution error for %q — probe unavailable, skipping pod (not a test case failure): %v", cut, err)
+				check.SetResultError(fmt.Sprintf("probe tool execution error for pod %s/%s: %v", put.Namespace, put.Name, err))
+				return
+			}
 			check.LogError("Failed to get the listening ports for Pod %q, err: %v", put, err)
 			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
 			return

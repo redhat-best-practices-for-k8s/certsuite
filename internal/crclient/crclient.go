@@ -17,6 +17,7 @@
 package crclient
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -29,6 +30,25 @@ import (
 )
 
 const PsRegex = `(?m)^(\d+?)\s+?(\d+?)\s+?(\d+?)\s+?(.*?)$`
+
+// ProbeToolExecError represents a failure in the certsuite-probe daemonset tool execution,
+// as distinct from a test case failure in the workload under test.
+type ProbeToolExecError struct {
+	Reason  string
+	Wrapped error
+}
+
+func (e *ProbeToolExecError) Error() string {
+	return fmt.Sprintf("probe tool execution error: %s: %v", e.Reason, e.Wrapped)
+}
+
+func (e *ProbeToolExecError) Unwrap() error { return e.Wrapped }
+
+// IsProbeToolExecError returns true if err wraps a ProbeToolExecError.
+func IsProbeToolExecError(err error) bool {
+	var e *ProbeToolExecError
+	return errors.As(err, &e)
+}
 
 type Process struct {
 	PidNs, Pid, PPid int
@@ -117,13 +137,18 @@ func GetContainerProcesses(container *provider.Container, env *provider.TestEnvi
 	return GetPidsFromPidNamespace(pidNs, container)
 }
 
-// ExecCommandContainerNSEnter executes a command in the specified container namespace using nsenter
+// ExecCommandContainerNSEnter executes a command in the specified container namespace using nsenter.
+// Any error returned is a ProbeToolExecError, indicating the certsuite-probe tool failed —
+// not that the workload under test is non-compliant.
 func ExecCommandContainerNSEnter(command string,
 	aContainer *provider.Container) (outStr, errStr string, err error) {
 	env := provider.GetTestEnvironment()
 	ctx, err := GetNodeProbePodContext(aContainer.NodeName, &env)
 	if err != nil {
-		return "", "", fmt.Errorf("failed to get probe pod's context for container %s: %w", aContainer, err)
+		return "", "", &ProbeToolExecError{
+			Reason:  fmt.Sprintf("probe pod not found for container %s on node %s", aContainer, aContainer.NodeName),
+			Wrapped: err,
+		}
 	}
 
 	ch := clientsholder.GetClientsHolder()
@@ -131,7 +156,10 @@ func ExecCommandContainerNSEnter(command string,
 	// Get the container PID to build the nsenter command
 	containerPid, err := GetPidFromContainer(aContainer, ctx)
 	if err != nil {
-		return "", "", fmt.Errorf("cannot get PID from: %s, err: %w", aContainer, err)
+		return "", "", &ProbeToolExecError{
+			Reason:  fmt.Sprintf("cannot get PID for container %s via probe pod %s", aContainer, ctx.GetPodName()),
+			Wrapped: err,
+		}
 	}
 
 	// Add the container PID and the specific command to run with nsenter
@@ -148,7 +176,10 @@ func ExecCommandContainerNSEnter(command string,
 		}
 	}
 	if err != nil {
-		return "", "", fmt.Errorf("cannot execute command: \" %s \"  on %s err:%w", command, aContainer, err)
+		return "", "", &ProbeToolExecError{
+			Reason:  fmt.Sprintf("command %q failed in probe pod %s for container %s", command, ctx.GetPodName(), aContainer),
+			Wrapped: err,
+		}
 	}
 
 	return outStr, errStr, err
