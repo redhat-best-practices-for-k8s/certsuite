@@ -41,18 +41,10 @@ const (
 )
 
 var (
-	env       provider.TestEnvironment
-	validator certdb.CertificationStatusValidator
+	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
 		env = provider.GetTestEnvironment()
-
-		var err error
-		validator, err = certdb.GetValidator(env.GetOfflineDBPath())
-		if err != nil {
-			return fmt.Errorf("cannot access the certification DB, err: %w", err)
-		}
-
 		return nil
 	}
 
@@ -89,6 +81,10 @@ func LoadChecks() {
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)).
 		WithSkipCheckFn(skipIfNoOperatorsFn).
 		WithCheckFn(func(c *checksdb.Check) error {
+			validator, err := certdb.GetValidator(env.GetOfflineDBPath())
+			if err != nil {
+				return fmt.Errorf("cannot access the certification DB: %w", err)
+			}
 			testAllOperatorCertified(c, &env, validator)
 			return nil
 		}))
@@ -96,6 +92,10 @@ func LoadChecks() {
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)).
 		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
 		WithCheckFn(func(c *checksdb.Check) error {
+			validator, err := certdb.GetValidator(env.GetOfflineDBPath())
+			if err != nil {
+				return fmt.Errorf("cannot access the certification DB: %w", err)
+			}
 			testHelmCertified(c, &env, validator)
 			return nil
 		}))
@@ -103,6 +103,10 @@ func LoadChecks() {
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
+			validator, err := certdb.GetValidator(env.GetOfflineDBPath())
+			if err != nil {
+				return fmt.Errorf("cannot access the certification DB: %w", err)
+			}
 			testContainerCertificationStatusByDigest(c, &env, validator)
 			return nil
 		}))
