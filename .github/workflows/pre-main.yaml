@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 env:
   REGISTRY: quay.io
@@ -538,3 +539,37 @@ jobs:
           slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
 
 
+
+  notify-quay-skip:
+    name: Notify team when Quay.io degradation silently skips the unstable image build
+    needs: [check-quay-status]
+    if: |
+      github.event_name == 'push'
+      && github.ref == 'refs/heads/main'
+      && github.repository_owner == 'redhat-best-practices-for-k8s'
+      && needs.check-quay-status.outputs.quay-available == 'false'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Send Slack alert
+        continue-on-error: true
+        uses: ./.github/actions/slack-webhook-sender
+        with:
+          message: >
+            *certsuite:unstable was NOT rebuilt* — Quay.io is currently degraded.
+            The image build was skipped automatically to avoid a failed push.
+            A rebuild is being retriggered automatically; it will succeed once Quay recovers.
+            To re-trigger manually if needed:
+            • CLI: `gh workflow run pre-main.yaml --ref main --repo ${{ github.repository }}`
+            • UI: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/pre-main.yaml
+          slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
+      - name: Retrigger workflow to rebuild once Quay recovers
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! command -v gh &>/dev/null; then
+            echo "gh CLI not available, skipping auto-retrigger"
+            exit 0
+          fi
+          gh workflow run pre-main.yaml --ref main --repo "${{ github.repository }}"
+          echo "Retriggered pre-main.yaml — if Quay is still degraded the build will be skipped again without further alerts"
