@@ -45,6 +45,12 @@ const (
 
 	BpfCapabilityRemediation = `Remove the following capability from the container/pod definitions: BPF`
 
+	SysModuleCapabilityRemediation = `Remove the SYS_MODULE capability from the container/pod definitions. Containers must not load kernel modules. If kernel modules are needed, they should be loaded on the host via a MachineConfig or at node provisioning time.`
+
+	DacOverrideCapabilityRemediation = `Remove the DAC_OVERRIDE capability from the container/pod definitions. Fix file ownership in the container image (for example, chown the application files to the non-root runtime UID in the Dockerfile) instead of bypassing permission checks.`
+
+	DacReadSearchCapabilityRemediation = `Remove the DAC_READ_SEARCH capability from the container/pod definitions. Containers must not use this capability due to container escape risk. If the application needs to read files it does not own, fix file ownership or permissions in the Dockerfile instead of granting this capability.`
+
 	SecConPrivilegeRemediation = `Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).`
 
 	SecConReadOnlyFilesystem = `Ensure that the pods have the read-only root filesystem setting enabled.`
@@ -139,6 +145,8 @@ const (
 
 	UndeclaredContainerPortsRemediation = `Ensure the workload's apps do not listen on undeclared containers' ports.`
 
+	UnsecuredContainerPortsRemediation = `Ensure all listening TCP ports use TLS. If a port intentionally serves plaintext (e.g., health probes behind network policies), annotate the pod with certsuite.redhat.com/non-tls-ports: "port1,port2".`
+
 	CrdsStatusSubresourceRemediation = `Ensure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).`
 
 	LoggingRemediation = `Ensure containers are not redirecting stdout/stderr`
@@ -223,4 +231,6 @@ const (
 	ContainerPostStartIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`
 
 	ContainerPrestopIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`
+
+	TLSMinimumVersionRemediation = `Configure workload services to honor the cluster's TLS security profile. On OpenShift, the minimum TLS version and allowed ciphers are determined by the APIServer CR's TLSSecurityProfile (default: Intermediate, min TLS 1.2). Ensure server TLS settings enforce at least the profile's minimum version and only accept ciphers from the profile's allowed list.`
 )

@@ -5,7 +5,11 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"strings"
+	"text/template"
 	"time"
+
+	flag "github.com/spf13/pflag"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
@@ -16,48 +20,104 @@ import (
 
 const timeoutFlagDefaultvalue = 24 * time.Hour
 
+type flagGroup struct {
+	Name    string
+	FlagSet *flag.FlagSet
+}
+
 var (
 	runCmd = &cobra.Command{
 		Use:   "run",
 		Short: "Run the Red Hat Best Practices Test Suite for Kubernetes",
 		RunE:  runTestSuite,
 	}
+
+	groups []flagGroup
 )
 
 func NewCommand() *cobra.Command {
-	runCmd.PersistentFlags().StringP("output-dir", "o", "results", "The directory where the output artifacts will be placed")
-	runCmd.PersistentFlags().StringP("label-filter", "l", "none", "Label expression to filter test cases  (e.g. --label-filter 'access-control && !access-control-sys-admin-capability')")
-	runCmd.PersistentFlags().String("timeout", timeoutFlagDefaultvalue.String(), "Time allowed for the test suite execution to complete (e.g. --timeout 30m  or -timeout 1h30m)")
-	runCmd.PersistentFlags().StringP("config-file", "c", "config/certsuite_config.yml", "The certsuite configuration file")
-	runCmd.PersistentFlags().StringP("kubeconfig", "k", "", "The target cluster's Kubeconfig file")
-	runCmd.PersistentFlags().Bool("server-mode", false, "Run the certsuite in web server mode")
-	runCmd.PersistentFlags().Bool("omit-artifacts-zip-file", false, "Prevents the creation of a zip file with the result artifacts")
-	runCmd.PersistentFlags().String("log-level", "debug", "Sets the log level")
-	runCmd.PersistentFlags().String("offline-db", "", "Set the location of an offline DB to check the certification status of for container images, operators and helm charts")
-	runCmd.PersistentFlags().String("preflight-dockerconfig", "", "Set the dockerconfig file to be used by the Preflight test suite")
-	runCmd.PersistentFlags().Bool("intrusive", true, "Run intrusive tests that may disrupt the test environment")
-	runCmd.PersistentFlags().Bool("allow-preflight-insecure", false, "Allow insecure connections in the Preflight test suite")
-	runCmd.PersistentFlags().Bool("include-web-files", false, "Save web files in the configured output folder")
-	runCmd.PersistentFlags().Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
-	runCmd.PersistentFlags().Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
-	runCmd.PersistentFlags().String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.41", "Certsuite probe image")
-	runCmd.PersistentFlags().String("daemonset-cpu-req", "100m", "CPU request for the probe daemonset container")
-	runCmd.PersistentFlags().String("daemonset-cpu-lim", "100m", "CPU limit for the probe daemonset container")
-	runCmd.PersistentFlags().String("daemonset-mem-req", "100M", "Memory request for the probe daemonset container")
-	runCmd.PersistentFlags().String("daemonset-mem-lim", "100M", "Memory limit for the probe daemonset container")
-	runCmd.PersistentFlags().Bool("sanitize-claim", false, "Sanitize the claim.json file before sending it to the collector")
-	// Include non-Running pods during autodiscovery when enabled (default false)
-	runCmd.PersistentFlags().Bool("allow-non-running", false, "Include non-Running pods during autodiscovery phase")
-	runCmd.PersistentFlags().String("connect-api-key", "", "API Key for Red Hat Connect portal")
-	runCmd.PersistentFlags().String("connect-project-id", "", "Project ID for Red Hat Connect portal")
-	runCmd.PersistentFlags().String("connect-api-base-url", "", "Base URL for Red Hat Connect API")
-	runCmd.PersistentFlags().String("connect-api-proxy-url", "", "Proxy URL for Red Hat Connect API")
-	runCmd.PersistentFlags().String("connect-api-proxy-port", "", "Proxy port for Red Hat Connect API")
-	runCmd.PersistentFlags().Bool("cleanup-probe", true, "Delete the probe daemonset at the end of the test run")
-	runCmd.PersistentFlags().Bool("require-probe", false, "Abort the test run if the probe daemonset fails to deploy")
+	commonFlags := flag.NewFlagSet("common", flag.ContinueOnError)
+	commonFlags.StringP("config-file", "c", "config/certsuite_config.yml", "The certsuite configuration file")
+	commonFlags.StringP("label-filter", "l", "none", "Label expression to filter test cases  (e.g. --label-filter 'access-control && !access-control-sys-admin-capability')")
+	commonFlags.StringP("output-dir", "o", "results", "The directory where the output artifacts will be placed")
+	commonFlags.StringP("kubeconfig", "k", "", "The target cluster's Kubeconfig file")
+	commonFlags.String("timeout", timeoutFlagDefaultvalue.String(), "Time allowed for the test suite execution to complete (e.g. --timeout 30m  or -timeout 1h30m)")
+	commonFlags.String("log-level", "debug", "Sets the log level")
+	commonFlags.Bool("intrusive", true, "Run intrusive tests that may disrupt the test environment")
+
+	behaviorFlags := flag.NewFlagSet("behavior", flag.ContinueOnError)
+	behaviorFlags.Bool("allow-non-running", false, "Include non-Running pods during autodiscovery phase")
+	behaviorFlags.Bool("server-mode", false, "Run the certsuite in web server mode")
+
+	outputFlags := flag.NewFlagSet("output", flag.ContinueOnError)
+	outputFlags.Bool("omit-artifacts-zip-file", false, "Prevents the creation of a zip file with the result artifacts")
+	outputFlags.Bool("include-web-files", false, "Save web files in the configured output folder")
+	outputFlags.Bool("create-xml-junit-file", false, "Create a JUnit file with the test results")
+	outputFlags.Bool("sanitize-claim", false, "Sanitize the claim.json file before sending it to the collector")
+
+	probeFlags := flag.NewFlagSet("probe", flag.ContinueOnError)
+	probeFlags.String("certsuite-probe-image", "quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42", "Certsuite probe image")
+	probeFlags.String("daemonset-cpu-req", "100m", "CPU request for the probe daemonset container")
+	probeFlags.String("daemonset-cpu-lim", "", "CPU limit for the probe daemonset container (empty = no limit)")
+	probeFlags.String("daemonset-mem-req", "100M", "Memory request for the probe daemonset container")
+	probeFlags.String("daemonset-mem-lim", "", "Memory limit for the probe daemonset container (empty = no limit)")
+	probeFlags.Bool("cleanup-probe", true, "Delete the probe daemonset at the end of the test run")
+	probeFlags.Bool("require-probe", false, "Abort the test run if the probe daemonset fails to deploy")
+
+	preflightFlags := flag.NewFlagSet("preflight", flag.ContinueOnError)
+	preflightFlags.String("preflight-dockerconfig", "", "Set the dockerconfig file to be used by the Preflight test suite")
+	preflightFlags.Bool("allow-preflight-insecure", false, "Allow insecure connections in the Preflight test suite")
+	preflightFlags.String("offline-db", "", "Set the location of an offline DB to check the certification status of for container images, operators and helm charts")
+
+	connectFlags := flag.NewFlagSet("connect", flag.ContinueOnError)
+	connectFlags.Bool("enable-data-collection", false, "Allow sending test results to an external data collector")
+	connectFlags.String("connect-api-key", "", "API Key for Red Hat Connect portal")
+	connectFlags.String("connect-project-id", "", "Project ID for Red Hat Connect portal")
+	connectFlags.String("connect-api-base-url", "", "Base URL for Red Hat Connect API")
+	connectFlags.String("connect-api-proxy-url", "", "Proxy URL for Red Hat Connect API")
+	connectFlags.String("connect-api-proxy-port", "", "Proxy port for Red Hat Connect API")
+
+	groups = []flagGroup{
+		{Name: "Common", FlagSet: commonFlags},
+		{Name: "Test Behavior", FlagSet: behaviorFlags},
+		{Name: "Output & Artifact", FlagSet: outputFlags},
+		{Name: "Probe DaemonSet", FlagSet: probeFlags},
+		{Name: "Preflight", FlagSet: preflightFlags},
+		{Name: "Red Hat Connect", FlagSet: connectFlags},
+	}
+
+	for _, g := range groups {
+		runCmd.PersistentFlags().AddFlagSet(g.FlagSet)
+	}
+
+	runCmd.SetUsageFunc(groupedUsageFunc)
 
 	return runCmd
 }
+
+func groupedUsageFunc(cmd *cobra.Command) error {
+	t := template.Must(template.New("usage").Funcs(template.FuncMap{
+		"trimTrailingWhitespaces": func(s string) string {
+			return strings.TrimRight(s, " \t\n")
+		},
+	}).Parse(groupedUsageTemplate))
+	return t.Execute(cmd.OutOrStderr(), struct {
+		Cmd    *cobra.Command
+		Groups []flagGroup
+	}{Cmd: cmd, Groups: groups})
+}
+
+const groupedUsageTemplate = `Usage:
+  {{.Cmd.UseLine}}
+{{range .Groups}}
+{{.Name}} Flags:
+{{.FlagSet.FlagUsages | trimTrailingWhitespaces}}
+{{end}}{{if .Cmd.HasAvailableInheritedFlags}}
+Global Flags:
+{{.Cmd.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}
+{{end}}
+Use "{{.Cmd.CommandPath}} [command] --help" for more information about a command.
+`
 
 type flagReader struct {
 	cmd *cobra.Command

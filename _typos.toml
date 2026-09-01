@@ -1,7 +1,11 @@
 [default.extend-words]
 iif = "iif"
+ITMS = "ITMS"
 odf = "odf"
 ono = "ono"
+
+[default.extend-identifiers]
+ITMS = "ITMS"
 
 [files]
 extend-exclude = ["depends-on.json", "go.mod", "results.html", "cmd/certsuite/claim/compare/testdata", "docs/assets/images/*.svg", "*.js"]

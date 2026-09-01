@@ -42,6 +42,18 @@ const (
 	RetrySleepSeconds = 3
 )
 
+var (
+	probeCommand       clientsholder.Command
+	getTestEnvironment = provider.GetTestEnvironment
+)
+
+func probeExec() clientsholder.Command {
+	if probeCommand != nil {
+		return probeCommand
+	}
+	return clientsholder.GetClientsHolder()
+}
+
 func (p *Process) String() string {
 	return fmt.Sprintf("cmd: %s, pid: %d, ppid: %d, pidNs: %d", p.Args, p.Pid, p.PPid, p.PidNs)
 }
@@ -51,7 +63,7 @@ func (p *Process) String() string {
 // information from a node where a pod/container under test is running.
 func GetNodeProbePodContext(node string, env *provider.TestEnvironment) (clientsholder.Context, error) {
 	probePod := env.ProbePods[node]
-	if probePod == nil {
+	if probePod == nil || len(probePod.Spec.Containers) == 0 {
 		return clientsholder.Context{}, fmt.Errorf("probe pod not found on node %s", node)
 	}
 
@@ -73,10 +85,9 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 		return 0, fmt.Errorf("container runtime %s not supported", cut.Runtime)
 	}
 
-	ch := clientsholder.GetClientsHolder()
-	outStr, errStr, err := ch.ExecCommandContainer(ctx, pidCmd)
+	outStr, errStr, err := probeExec().ExecCommandContainer(ctx, pidCmd)
 	if err != nil {
-		return 0, fmt.Errorf("cannot execute command: \" %s \"  on %s err:%w", pidCmd, cut, err)
+		return 0, handleProbeExecError(ctx, fmt.Errorf("cannot execute command: \" %s \"  on %s err:%w", pidCmd, cut, err))
 	}
 	if errStr != "" {
 		return 0, fmt.Errorf("cmd: \" %s \" on %s returned %s", pidCmd, cut, errStr)
@@ -100,9 +111,12 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	log.Debug("Obtained process id for %s is %d", testContainer, pid)
 
 	command := fmt.Sprintf("lsns -p %d -t pid -n", pid)
-	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ocpContext, command)
+	stdout, stderr, err := probeExec().ExecCommandContainer(ocpContext, command)
 	if err != nil || stderr != "" {
-		return "", fmt.Errorf("unable to run nsenter due to : %v", err)
+		if err == nil {
+			err = fmt.Errorf("stderr: %s", stderr)
+		}
+		return "", handleProbeExecError(ocpContext, fmt.Errorf("unable to run nsenter due to: %w", err))
 	}
 
 	return strings.Fields(stdout)[0], nil
@@ -120,13 +134,13 @@ func GetContainerProcesses(container *provider.Container, env *provider.TestEnvi
 // ExecCommandContainerNSEnter executes a command in the specified container namespace using nsenter
 func ExecCommandContainerNSEnter(command string,
 	aContainer *provider.Container) (outStr, errStr string, err error) {
-	env := provider.GetTestEnvironment()
+	env := getTestEnvironment()
 	ctx, err := GetNodeProbePodContext(aContainer.NodeName, &env)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get probe pod's context for container %s: %w", aContainer, err)
 	}
 
-	ch := clientsholder.GetClientsHolder()
+	ch := probeExec()
 
 	// Get the container PID to build the nsenter command
 	containerPid, err := GetPidFromContainer(aContainer, ctx)
@@ -137,10 +151,11 @@ func ExecCommandContainerNSEnter(command string,
 	// Add the container PID and the specific command to run with nsenter
 	nsenterCommand := "nsenter -t " + strconv.Itoa(containerPid) + " -n " + command
 
-	// Run the nsenter command on the probe pod with retry logic
+	// Retry transient exec errors. Probe outages (container not found, SPDY
+	// upgrade failure, deadline exceeded) will not recover after a sleep.
 	for attempt := 1; attempt <= RetryAttempts; attempt++ {
 		outStr, errStr, err = ch.ExecCommandContainer(ctx, nsenterCommand)
-		if err == nil {
+		if err == nil || IsProbeExecFailure(err) {
 			break
 		}
 		if attempt < RetryAttempts {
@@ -148,7 +163,7 @@ func ExecCommandContainerNSEnter(command string,
 		}
 	}
 	if err != nil {
-		return "", "", fmt.Errorf("cannot execute command: \" %s \"  on %s err:%w", command, aContainer, err)
+		return "", "", handleProbeExecError(ctx, fmt.Errorf("cannot execute command: \" %s \"  on %s err:%w", command, aContainer, err))
 	}
 
 	return outStr, errStr, err
@@ -156,15 +171,18 @@ func ExecCommandContainerNSEnter(command string,
 
 func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container) (p []*Process, err error) {
 	const command = "trap \"\" SIGURG ; ps -e -o pidns,pid,ppid,args"
-	env := provider.GetTestEnvironment()
+	env := getTestEnvironment()
 	ctx, err := GetNodeProbePodContext(container.NodeName, &env)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get probe pod's context for container %s: %w", container, err)
 	}
 
-	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ctx, command)
+	stdout, stderr, err := probeExec().ExecCommandContainer(ctx, command)
 	if err != nil || stderr != "" {
-		return nil, fmt.Errorf("command %q failed to run in probe pod=%s (node=%s): %v", command, ctx.GetPodName(), container.NodeName, err)
+		if err == nil {
+			err = fmt.Errorf("stderr: %s", stderr)
+		}
+		return nil, handleProbeExecError(ctx, fmt.Errorf("command %q failed to run in probe pod=%s (node=%s): %w", command, ctx.GetPodName(), container.NodeName, err))
 	}
 
 	re := regexp.MustCompile(PsRegex)

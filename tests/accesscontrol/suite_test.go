@@ -17,6 +17,7 @@
 package accesscontrol
 
 import (
+	"errors"
 	"io"
 	"testing"
 
@@ -407,6 +408,66 @@ func Test_checkForbiddenCapability(t *testing.T) {
 			wantCompliantCount:    1,
 			wantNonCompliantCount: 1,
 		},
+		{
+			name: "container with SYS_MODULE is non-compliant",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "test-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"SYS_MODULE"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "SYS_MODULE",
+			wantCompliantCount:    0,
+			wantNonCompliantCount: 1,
+		},
+		{
+			name: "container with DAC_OVERRIDE is non-compliant",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "test-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"DAC_OVERRIDE"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "DAC_OVERRIDE",
+			wantCompliantCount:    0,
+			wantNonCompliantCount: 1,
+		},
+		{
+			name: "container with DAC_READ_SEARCH is non-compliant",
+			containers: []*provider.Container{
+				{
+					Container: &corev1.Container{
+						Name: "test-container",
+						SecurityContext: &corev1.SecurityContext{
+							Capabilities: &corev1.Capabilities{
+								Add: []corev1.Capability{"DAC_READ_SEARCH"},
+							},
+						},
+					},
+					Namespace: "test-ns",
+					Podname:   "test-pod",
+				},
+			},
+			capability:            "DAC_READ_SEARCH",
+			wantCompliantCount:    0,
+			wantNonCompliantCount: 1,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -677,4 +738,33 @@ func Test_checkCrossNamespaceRoleBindingViolation(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSSHDaemonCheckFailureReason(t *testing.T) {
+	t.Parallel()
+
+	probeErr := errors.New(`unable to upgrade connection: container not found ("container-00")`)
+	got := sshDaemonCheckFailureReason(probeErr)
+	assert.Contains(t, got, "Probe pod exec failed while checking for sshd")
+	assert.Contains(t, got, "not evidence the pod is running sshd")
+	assert.Contains(t, got, "container not found")
+
+	other := sshDaemonCheckFailureReason(errors.New("connection refused"))
+	assert.Contains(t, other, "Failed to get the ssh port for pod")
+	assert.NotContains(t, other, "not evidence the pod is running sshd")
+	assert.Equal(t, "Failed to get the ssh port for pod", sshDaemonCheckFailureReason(nil))
+
+	ports := listeningPortsCheckFailureReason(errors.New("connection refused"))
+	assert.Contains(t, ports, "Failed to get the listening ports for pod")
+	assert.Contains(t, listeningPortsCheckFailureReason(probeErr), "Probe pod exec failed while checking for sshd")
+}
+
+func TestProbeExecFailureReason(t *testing.T) {
+	t.Parallel()
+
+	probeErr := errors.New(`unable to upgrade connection: container not found ("container-00")`)
+	got := probeExecFailureReason(probeErr)
+	assert.Contains(t, got, "Probe pod exec failed; not a CNF finding")
+	assert.Equal(t, "boom", probeExecFailureReason(errors.New("boom")))
+	assert.Equal(t, "", probeExecFailureReason(nil))
 }

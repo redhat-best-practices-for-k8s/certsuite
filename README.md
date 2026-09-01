@@ -9,7 +9,7 @@
 [![QE OCP 4.21 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-421.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-421.yaml)
 [![QE OCP 4.22 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-422.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-422.yaml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/redhat-best-practices-for-k8s/certsuite/badge)](https://scorecard.dev/viewer/?uri=github.com/redhat-best-practices-for-k8s/certsuite)
-[![go-doc](https://godoc.org/github.com/redhat-best-practices-for-k8s/certsuite?status.svg)](https://godoc.org/github.com/redhat-best-practices-for-k8s/certsuite)
+[![go-doc](https://pkg.go.dev/badge/github.com/redhat-best-practices-for-k8s/certsuite.svg)](https://pkg.go.dev/github.com/redhat-best-practices-for-k8s/certsuite)
 [![release)](https://img.shields.io/github/v/release/redhat-best-practices-for-k8s/certsuite?color=blue&label=%20&logo=semver&logoColor=white&style=flat)](https://github.com/redhat-best-practices-for-k8s/certsuite/releases)
 [![red hat](https://img.shields.io/badge/red%20hat---?color=gray&logo=redhat&logoColor=red&style=flat)](https://www.redhat.com)
 [![openshift](https://img.shields.io/badge/openshift---?color=gray&logo=redhatopenshift&logoColor=red&style=flat)](https://www.redhat.com/en/technologies/cloud-computing/openshift)

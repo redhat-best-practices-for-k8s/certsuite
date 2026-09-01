@@ -20,6 +20,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"sync/atomic"
 	"testing"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
@@ -59,6 +60,16 @@ func TestRunTest(t *testing.T) {
 		{ // test when an error occurred when running the command
 			expectedResult: testhelper.ERROR,
 			clientErr:      errors.New("error executing the command"),
+		},
+		{ // test when an ExecError with non-125 exit code is returned (should not retry)
+			expectedResult: testhelper.ERROR,
+			clientErr: &clientsholder.ExecError{
+				Command:   "podman diff",
+				Namespace: "test-ns",
+				PodName:   "test-pod",
+				ExitCode:  1,
+				Err:       errors.New("container exited"),
+			},
 		},
 		{ // test when an error message was returned
 			expectedResult: testhelper.ERROR,
@@ -112,6 +123,48 @@ func TestRunTest(t *testing.T) {
 		fsdiff.RunTest("fakeUID")
 		assert.Equal(t, tc.expectedResult, fsdiff.GetResults())
 	}
+}
+
+type ClientHoldersRetryMock struct {
+	callCount atomic.Int32
+	firstErr  error
+	successOn int32
+	output    string
+}
+
+func (m *ClientHoldersRetryMock) ExecCommandContainer(_ clientsholder.Context, cmd string) (stdout, stderr string, err error) {
+	if !strings.Contains(cmd, "podman diff") {
+		return "", "", nil
+	}
+	call := m.callCount.Add(1)
+	if call >= m.successOn {
+		return m.output, "", nil
+	}
+	return "", "", m.firstErr
+}
+
+func TestRunTestExitCode125Retry(t *testing.T) {
+	check := &checksdb.Check{}
+	ocpVersion := "4.13.0"
+
+	exitCode125Err := &clientsholder.ExecError{
+		Command:   "podman diff",
+		Namespace: "test-ns",
+		PodName:   "test-pod",
+		ExitCode:  podmanExitCode125,
+		Err:       errors.New("container gone"),
+	}
+
+	mock := &ClientHoldersRetryMock{
+		firstErr:  exitCode125Err,
+		successOn: 2,
+		output:    "{}",
+	}
+
+	fsdiff := NewFsDiffTester(check, mock, clientsholder.Context{}, ocpVersion)
+	fsdiff.RunTest("fakeUID")
+	assert.Equal(t, testhelper.SUCCESS, fsdiff.GetResults())
+	assert.GreaterOrEqual(t, mock.callCount.Load(), int32(2))
 }
 
 type ClientHoldersMountCustomPodmanMock struct {

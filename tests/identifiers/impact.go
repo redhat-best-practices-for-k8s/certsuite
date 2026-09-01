@@ -36,12 +36,17 @@ const (
 	TestICMPv6ConnectivityMultusIdentifierImpact       = `IPv6 Multus connectivity problems can prevent dual-stack multi-network scenarios from working, limiting network scalability and future-proofing.`
 	TestServiceDualStackIdentifierImpact               = `Single-stack IPv4 services limit network architecture flexibility and prevent migration to modern dual-stack infrastructures.`
 	TestUndeclaredContainerPortsUsageImpact            = `Undeclared ports can be blocked by security policies, causing unexpected connectivity issues and making troubleshooting difficult.`
+	TestUnsecuredContainerPortsImpact                  = `Unsecured ports accepting plaintext traffic expose sensitive data to eavesdropping and man-in-the-middle attacks, violating security compliance requirements.`
 	TestOCPReservedPortsUsageImpact                    = `Using OpenShift-reserved ports can cause critical platform services to fail, potentially destabilizing the entire cluster.`
+	TestTLSMinimumVersionIdentifierImpact              = `Services accepting TLS versions below 1.3 are vulnerable to known protocol attacks (BEAST, POODLE, Lucky13) and may fail security compliance audits required for telco/CNF deployments.`
 
 	// Access Control Suite Impact Statements
 	Test1337UIDIdentifierImpact                             = `UID 1337 is reserved for use by Istio service mesh components; using it for applications can cause conflicts with Istio sidecars and break service mesh functionality.`
 	TestNetAdminIdentifierImpact                            = `NET_ADMIN capability allows network configuration changes that can compromise cluster networking, enable privilege escalation, and bypass network security controls.`
 	TestSysAdminIdentifierImpact                            = `SYS_ADMIN capability provides extensive privileges that can compromise container isolation, enable host system access, and create serious security vulnerabilities.`
+	TestSysModuleIdentifierImpact                           = `SYS_MODULE capability allows loading kernel modules from a container, which can compromise the host kernel and enable cluster-wide takeover.`
+	TestDacOverrideIdentifierImpact                         = `DAC_OVERRIDE capability bypasses file permission checks and typically indicates incorrect image file ownership; it can enable unauthorized file access and privilege escalation.`
+	TestDacReadSearchIdentifierImpact                       = `DAC_READ_SEARCH capability enables open_by_handle_at()-style access and is a known container escape vector that can compromise host isolation.`
 	TestIpcLockIdentifierImpact                             = `IPC_LOCK capability can be exploited to lock system memory, potentially causing denial of service and affecting other workloads on the same node.`
 	TestNetRawIdentifierImpact                              = `NET_RAW capability enables packet manipulation and network sniffing, which can be used for attacks against other workloads and compromise network security.`
 	TestBpfIdentifierImpact                                 = `BPF capability allows kernel-level programming that can bypass security controls, monitor other processes, and potentially compromise the entire host system.`
@@ -158,8 +163,6 @@ const (
 	PreflightLayerCountAcceptableImpact                         = `Excessive image layers can cause poor performance, increased storage usage, and longer deployment times.`
 	PreflightRequiredAnnotationsImpact                          = `Missing required annotations can prevent proper operator lifecycle management and cause deployment failures.`
 	PreflightRunAsNonRootImpact                                 = `Running containers as root increases the blast radius of security vulnerabilities and can lead to full host compromise if containers are breached.`
-	PreflightScorecardBasicSpecCheckImpact                      = `Failing basic scorecard checks indicates fundamental operator implementation issues that can cause runtime failures.`
-	PreflightScorecardOlmSuiteCheckImpact                       = `Failing OLM suite checks indicates operator lifecycle management issues that can prevent proper installation and updates.`
 	PreflightSecurityContextConstraintsInCSVImpact              = `Incorrect SCC definitions in CSV can cause security policy violations and deployment failures.`
 	PreflightValidateOperatorBundleImpact                       = `Invalid operator bundles can cause deployment failures, update issues, and operational instability.`
 )
@@ -179,12 +182,17 @@ var ImpactMap = map[string]string{
 	"networking-icmpv6-connectivity-multus":              TestICMPv6ConnectivityMultusIdentifierImpact,
 	"networking-dual-stack-service":                      TestServiceDualStackIdentifierImpact,
 	"networking-undeclared-container-ports-usage":        TestUndeclaredContainerPortsUsageImpact,
+	"networking-unsecured-container-ports":               TestUnsecuredContainerPortsImpact,
 	"networking-ocp-reserved-ports-usage":                TestOCPReservedPortsUsageImpact,
+	"networking-tls-minimum-version":                     TestTLSMinimumVersionIdentifierImpact,
 
 	// Access Control Suite
 	"access-control-no-1337-uid":                                 Test1337UIDIdentifierImpact,
 	"access-control-net-admin-capability-check":                  TestNetAdminIdentifierImpact,
 	"access-control-sys-admin-capability-check":                  TestSysAdminIdentifierImpact,
+	"access-control-sys-module-capability-check":                 TestSysModuleIdentifierImpact,
+	"access-control-dac-override-capability-check":               TestDacOverrideIdentifierImpact,
+	"access-control-dac-read-search-capability-check":            TestDacReadSearchIdentifierImpact,
 	"access-control-ipc-lock-capability-check":                   TestIpcLockIdentifierImpact,
 	"access-control-net-raw-capability-check":                    TestNetRawIdentifierImpact,
 	"access-control-bpf-capability-check":                        TestBpfIdentifierImpact,
@@ -304,8 +312,6 @@ var ImpactMap = map[string]string{
 	"preflight-LayerCountAcceptable":                         PreflightLayerCountAcceptableImpact,
 	"preflight-RequiredAnnotations":                          PreflightRequiredAnnotationsImpact,
 	"preflight-RunAsNonRoot":                                 PreflightRunAsNonRootImpact,
-	"preflight-ScorecardBasicSpecCheck":                      PreflightScorecardBasicSpecCheckImpact,
-	"preflight-ScorecardOlmSuiteCheck":                       PreflightScorecardOlmSuiteCheckImpact,
 	"preflight-SecurityContextConstraintsInCSV":              PreflightSecurityContextConstraintsInCSVImpact,
 	"preflight-ValidateOperatorBundle":                       PreflightValidateOperatorBundleImpact,
 }

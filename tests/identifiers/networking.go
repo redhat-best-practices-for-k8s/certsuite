@@ -32,7 +32,9 @@ var (
 	TestReservedExtendedPartnerPorts             claim.Identifier
 	TestRestartOnRebootLabelOnPodsUsingSRIOV     claim.Identifier
 	TestServiceDualStackIdentifier               claim.Identifier
+	TestTLSMinimumVersionIdentifier              claim.Identifier
 	TestUndeclaredContainerPortsUsage            claim.Identifier
+	TestUnsecuredContainerPortsIdentifier        claim.Identifier
 )
 
 //nolint:funlen
@@ -196,6 +198,27 @@ func init() {
 		},
 		TagExtended)
 
+	TestTLSMinimumVersionIdentifier = AddCatalogEntry(
+		"tls-minimum-version",
+		common.NetworkingTestKey,
+		`Checks that TLS-enabled services in target namespaces honor the cluster's TLS security profile. `+
+			`On OpenShift, the profile is read from the APIServer CR (default: Intermediate, min TLS 1.2). `+
+			`On non-OpenShift clusters, Intermediate is used as default. `+
+			`Validates both minimum TLS version and cipher suite compliance. `+
+			`Non-TLS ports are reported as informational only. `+
+			`Note: this test is skipped on OpenShift clusters running versions below 4.22.`,
+		TLSMinimumVersionRemediation,
+		NoExceptionProcessForExtendedTests,
+		TestTLSMinimumVersionIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
+		},
+		TagExtended)
+
 	TestUndeclaredContainerPortsUsage = AddCatalogEntry(
 		"undeclared-container-ports-usage",
 		common.NetworkingTestKey,
@@ -209,6 +232,22 @@ func init() {
 			Telco:    Optional,
 			NonTelco: Optional,
 			Extended: Mandatory,
+		},
+		TagExtended)
+
+	TestUnsecuredContainerPortsIdentifier = AddCatalogEntry(
+		"unsecured-container-ports",
+		common.NetworkingTestKey,
+		`Check that TCP ports listening inside containers use TLS encryption. Ports accepting plaintext connections are flagged as non-compliant.`,
+		UnsecuredContainerPortsRemediation,
+		NoExceptionProcessForExtendedTests,
+		TestUnsecuredContainerPortsDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagExtended)
 }

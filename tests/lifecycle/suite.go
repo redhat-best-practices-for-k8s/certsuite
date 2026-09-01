@@ -48,11 +48,6 @@ const (
 var (
 	env provider.TestEnvironment
 
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-
 	// podset = deployment or statefulset
 	skipIfNoPodSetsetsUnderTest = func() (bool, string) {
 		if len(env.Deployments) == 0 && len(env.StatefulSets) == 0 {
@@ -67,7 +62,7 @@ func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.LifecycleTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.LifecycleTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	// Prestop test
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainerPrestopIdentifier)).
@@ -370,9 +365,13 @@ func testPodNodeSelectorAndAffinityBestPractices(testPods []*provider.Pod, check
 		check.LogInfo("Testing Pod %q", put)
 		compliantPod := true
 		if put.HasNodeSelector() {
-			check.LogError("Pod %q has a node selector. Node selector: %v", put, put.Spec.NodeSelector)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node selector", false))
-			compliantPod = false
+			if put.IsRuntimeClassNameSpecified() {
+				check.LogInfo("Pod %q has a node selector injected via RuntimeClass %q, skipping", put, *put.Spec.RuntimeClassName)
+			} else {
+				check.LogError("Pod %q has a node selector. Node selector: %v", put, put.Spec.NodeSelector)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node selector", false))
+				compliantPod = false
+			}
 		}
 		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
 			check.LogError("Pod %q has a node affinity clause. Node affinity: %v", put, put.Spec.Affinity.NodeAffinity)

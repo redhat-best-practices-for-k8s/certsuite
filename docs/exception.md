@@ -1,6 +1,9 @@
 <!-- markdownlint-disable line-length no-bare-urls -->
 # Exception Process
 
-There may exist some test cases which needs to fail always. The exception raised by the failed tests is published to Red Hat website for that partner.
+Some test cases may fail for a workload that still meets Red Hat best practices
+with a documented exception. The catalog lists the exception process for each
+test case.
 
-[CATALOG](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md) provides the details of such exception.
+See [CATALOG.md](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md)
+for per-test exception guidance.

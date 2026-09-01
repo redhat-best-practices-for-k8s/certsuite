@@ -22,7 +22,7 @@ make coverage-html      # Generate and view HTML coverage report
 
 ### Linting
 ```bash
-make lint               # Run all linters (golangci-lint, hadolint, shfmt, markdownlint, yamllint, shellcheck, typos)
+make lint               # Run all linters (checkmake, golangci-lint, hadolint, shfmt, markdownlint, yamllint, shellcheck, typos)
 make markdownlint       # Run markdown linter only
 make yamllint           # Run YAML linter only
 ```
@@ -92,14 +92,14 @@ The CLI is built using Cobra and organized into subcommands:
 - RBAC (roles, bindings)
 - Custom resources and CRDs
 
-**configuration**: Test configuration parsing and validation. Reads `tnf_config.yaml` (or custom config file) to determine:
+**configuration**: Test configuration parsing and validation. Reads `config/certsuite_config.yml` (or a custom `--config-file`) to determine:
 - Target namespaces to test
 - Pod label selectors
 - Operator label selectors
 - Network attachment definitions to check
 - Test-specific parameters
 
-**provider**: Test execution providers and resource access. The `TestEnvironment` interface provides access to discovered resources for test implementations.
+**provider**: Test execution providers and resource access. The `TestEnvironment` struct provides access to discovered resources for test implementations.
 
 **checksdb**: Test case database and results tracking. Each test is registered as a `Check` with metadata, skip conditions, and execution functions.
 
@@ -192,13 +192,14 @@ targetCrdFilters:
 ## Development Guidelines
 
 ### Go Version
-This repository uses Go 1.26.4. Ensure your local environment matches this version.
+This repository uses Go 1.26. Match the version in `go.mod` (`go` and `toolchain` lines).
 
 ### Testing and Mocks
 The codebase uses native Go structs for mocking interfaces in tests. Mock implementations are hand-written and located alongside the interfaces they mock (e.g., `internal/clientsholder/command_mock.go`). This approach avoids external dependencies and makes the code easier to understand and maintain.
 
 ### Linting
 All code must pass the configured linters before submission. Use `make lint` to run all linters. The project uses:
+- `checkmake` (Makefile validation)
 - `golangci-lint` (Go code quality)
 - `hadolint` (Dockerfile linting)
 - `shfmt` (Shell script formatting)
@@ -233,7 +234,7 @@ The claim format is defined in a separate package (`certsuite-claim`) and shared
 
 ### Running a Single Test Suite
 ```bash
-./certsuite run --config-file=tnf_config.yaml --label-filter=networking
+./certsuite run --config-file=config/certsuite_config.yml --label-filter=networking
 ```
 
 ### Comparing Test Results

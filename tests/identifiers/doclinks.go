@@ -20,12 +20,17 @@ const (
 	TestICMPv6ConnectivityMultusIdentifierDocLink       = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-high-level-cnf-expectations"
 	TestServiceDualStackIdentifierDocLink               = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ipv4-&-ipv6"
 	TestUndeclaredContainerPortsUsageDocLink            = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-requirements-cnf-reqs"
+	TestUnsecuredContainerPortsDocLink                  = NoDocLinkExtended
 	TestOCPReservedPortsUsageDocLink                    = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ports-reserved-by-openshift"
+	TestTLSMinimumVersionIdentifierDocLink              = NoDocLinkExtended
 
 	// Access Control Suite
 	Test1337UIDIdentifierDocLink                             = NoDocLinkExtended
 	TestNetAdminIdentifierDocLink                            = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-net_admin"
 	TestSysAdminIdentifierDocLink                            = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-avoid-sys_admin"
+	TestSysModuleIdentifierDocLink                           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities"
+	TestDacOverrideIdentifierDocLink                         = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities"
+	TestDacReadSearchIdentifierDocLink                       = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-linux-capabilities"
 	TestIpcLockIdentifierDocLink                             = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-ipc_lock"
 	TestNetRawIdentifierDocLink                              = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-user-plane-cnfs"
 	TestBpfIdentifierDocLink                                 = NoDocLinkTelco
@@ -48,7 +53,7 @@ const (
 	TestOneProcessPerContainerIdentifierDocLink              = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-one-process-per-container"
 	TestSYSNiceRealtimeCapabilityIdentifierDocLink           = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-sys_nice"
 	TestSysPtraceCapabilityIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-sys_ptrace"
-	TestPodRequestsIdentifierDocLink                         = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-requests-limits"
+	TestPodRequestsIdentifierDocLink                         = "https://redhat-best-practices-for-k8s.github.io/guide/#_requests_and_limits_in_kubernetes"
 	TestNamespaceResourceQuotaIdentifierDocLink              = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-memory-allocation"
 	TestNoSSHDaemonsAllowedIdentifierDocLink                 = "https://redhat-best-practices-for-k8s.github.io/guide/#k8s-best-practices-pod-interaction-and-configuration"
 

@@ -234,7 +234,7 @@ func (p *Pod) IsRuntimeClassNameSpecified() bool {
 // the names only. It's a custom and simplified version of:
 // https://github.com/k8snetworkplumbingwg/multus-cni/blob/e692127d19623c8bdfc4d391224ea542658b584c/pkg/k8sclient/k8sclient.go#L185
 //
-// The cncf netwoks annotation has two different formats:
+// The cncf networks annotation has two different formats:
 //
 //	  a) list of network names: k8s.v1.cni.cncf.io/networks: <network>[,<network>,...]
 //	  b) json array of network objects:

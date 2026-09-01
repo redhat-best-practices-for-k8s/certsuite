@@ -95,3 +95,47 @@ func TestFindPodsUnderTest(t *testing.T) {
 		assert.Equal(t, tc.expectedResults, podResult)
 	}
 }
+
+func TestFindPodsByLabelsSkipsPodsWithNilLabels(t *testing.T) {
+	pod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "no-labels-pod",
+			Namespace: "test-ns",
+		},
+		Status: corev1.PodStatus{
+			Phase: corev1.PodRunning,
+		},
+	}
+
+	oc := clientsholder.GetTestClientsHolder([]runtime.Object{pod})
+	labels := []labelObject{{LabelKey: "app", LabelValue: "target"}}
+
+	result, _ := FindPodsByLabels(oc.K8sClient.CoreV1(), labels, []string{"test-ns"})
+	assert.Empty(t, result, "pod with nil labels must not match any label query")
+}
+
+func TestFindPodsMatchingMultipleLabelsNoDuplicates(t *testing.T) {
+	pod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "multi-label-pod",
+			Namespace: "test-ns",
+			Labels: map[string]string{
+				"app":  "target",
+				"role": "target",
+			},
+		},
+		Status: corev1.PodStatus{
+			Phase: corev1.PodRunning,
+		},
+	}
+
+	oc := clientsholder.GetTestClientsHolder([]runtime.Object{pod})
+	labels := []labelObject{
+		{LabelKey: "app", LabelValue: "target"},
+		{LabelKey: "role", LabelValue: "target"},
+	}
+
+	result, _ := FindPodsByLabels(oc.K8sClient.CoreV1(), labels, []string{"test-ns"})
+	assert.Len(t, result, 1, "pod matching multiple labels must appear exactly once")
+	assert.Equal(t, "multi-label-pod", result[0].Name)
+}

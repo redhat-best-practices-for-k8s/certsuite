@@ -4,6 +4,8 @@ testCases:
     - access-control-cluster-role-bindings
     - access-control-container-host-port
     - access-control-crd-roles
+    - access-control-dac-override-capability-check
+    - access-control-dac-read-search-capability-check
     - access-control-ipc-lock-capability-check
     - access-control-namespace
     - access-control-namespace-resource-quota
@@ -26,10 +28,10 @@ testCases:
     - access-control-service-type
     - access-control-ssh-daemons
     - access-control-sys-admin-capability-check
+    - access-control-sys-module-capability-check
     - lifecycle-affinity-required-pods
     - lifecycle-container-prestop
     - lifecycle-container-poststart
-    - lifecycle-crd-scaling
     - lifecycle-deployment-scaling
     - lifecycle-image-pull-policy
     - lifecycle-liveness-probe
@@ -51,6 +53,7 @@ testCases:
     - networking-network-policy-deny-all
     - networking-ocp-reserved-ports-usage
     - networking-reserved-partner-ports
+    - networking-tls-minimum-version
     - networking-undeclared-container-ports-usage
     - observability-container-logging
     - observability-crd-status
@@ -72,6 +75,7 @@ testCases:
     - platform-alteration-tainted-node-kernel
   fail:
     - affiliated-certification-container-is-certified-digest # test container image is not certified
+    - networking-unsecured-container-ports # smoke test pods serve plaintext
   skip:
     - access-control-sys-ptrace-capability
     - access-control-sys-nice-realtime-capability
@@ -114,8 +118,6 @@ testCases:
     - preflight-LayerCountAcceptable
     - preflight-RequiredAnnotations
     - preflight-RunAsNonRoot
-    - preflight-ScorecardBasicSpecCheck
-    - preflight-ScorecardOlmSuiteCheck
     - preflight-SecurityContextConstraintsInCSV
     - preflight-ValidateOperatorBundle
     - platform-alteration-base-image
@@ -130,3 +132,5 @@ testCases:
     - platform-alteration-ocp-node-os-lifecycle
     - platform-alteration-service-mesh-usage
     - platform-alteration-sysctl-config
+  passOrSkip:
+    - lifecycle-crd-scaling

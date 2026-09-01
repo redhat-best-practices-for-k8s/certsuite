@@ -30,11 +30,6 @@ import (
 var (
 	env provider.TestEnvironment
 
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
-
 	skipIfNoContainersFn = func() (bool, string) {
 		if len(env.Containers) == 0 {
 			log.Warn("No containers to check...")
@@ -49,7 +44,7 @@ func LoadChecks() {
 	log.Debug("Loading %s suite checks", common.ManageabilityTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.ManageabilityTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainersImageTag)).
 		WithSkipCheckFn(skipIfNoContainersFn).

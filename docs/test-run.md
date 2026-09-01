@@ -44,9 +44,13 @@ These labels can be combined with some operators to create label filters that ma
 * The label filter "operator && !operator-crd-versioning" will match the _operator_ test suite without the _operator_crd_versioning_ test case.
 * To select all the test cases the _all_ label filter can be used.
 
-To view which test cases will run for a specific label or label filter use the flag `--list`.
+To view which test cases match a label or label filter:
 
-See the [CATALOG.md](CATALOG.md) to find all test labels.
+```shell
+certsuite info -t <label-filter> --list
+```
+
+See the [test catalog](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/CATALOG.md) for all test labels.
 
 ## Disable intrusive tests
 
@@ -72,9 +76,13 @@ certsuite run --intrusive=true
 
 Intrusive tests are enabled by default.
 
-## Selected flags description
+## Flag reference
 
-The following is a non-exhaustive list of the most common flags that the `certsuite run` command accepts. To see the complete list use the `-h, --help` flag.
+The `certsuite run` command organizes its flags into groups. To see the complete list use the `-h, --help` flag.
+
+### Common flags
+
+* `-c, --config-file`: Path to the `certsuite_config.yml` file.
 
 * `-l, --label-filter`: Label expression to filter test cases. Can be a test suite or list or test suites, such as `"observability,access-control"` or a more complex expression with logical operators such as `"access-control && !access-control-sys-admin-capability"`.
 
@@ -86,37 +94,35 @@ The following is a non-exhaustive list of the most common flags that the `certsu
 
 * `-k, --kubeconfig`: Path to the Kubeconfig file of the target cluster.
 
-* `-c, --config-file`: Path to the `certsuite_config.yml` file.
+* `--timeout`: Time allowed for the test suite execution to complete (e.g. `--timeout 30m` or `--timeout 1h30m`). Defaults to `24h`.
 
-* `--preflight-dockerconfig`: Path to the Dockerconfig file to be used by the Preflight test suite
+* `--log-level`: Sets the log level. Defaults to `debug`.
 
-* `--offline-db`: Path to an offline DB to check the certification status of container images, operators and helm charts. Defaults to the DB included in the test container image.
+* `--intrusive`: Run intrusive tests that may disrupt the test environment. Enabled by default. Set to `--intrusive=false` to skip intrusive tests.
 
-!!! note
-
-    See the [OCT tool](https://github.com/redhat-best-practices-for-k8s/oct) for more information on how to create this DB.
+### Test behavior flags
 
 * `--allow-non-running`: Include non-Running pods during the autodiscovery phase. Disabled by default; enable this if your workloads include pods in CrashLoopBackOff or other non-running states that still need testing.
 
-* `--sanitize-claim`: Sanitize the claim.json file by removing sensitive data before sending it to the collector. Only relevant when `--enable-data-collection` is enabled.
+* `--server-mode`: Run the certsuite in web server mode.
+
+### Output & artifact flags
+
+* `--omit-artifacts-zip-file`: Prevents the creation of a zip file with the result artifacts.
 
 * `--include-web-files`: Save the HTML results viewer files in the configured output folder alongside the claim.json and log files.
 
 * `--create-xml-junit-file`: Generate a JUnit XML file with the test results, useful for CI/CD integration with systems that consume JUnit reports.
 
-* `--certsuite-probe-image`: Override the default certsuite probe daemonset image. Defaults to the version matching the certsuite release.
+* `--sanitize-claim`: Sanitize the claim.json file by removing sensitive data before sending it to the collector. Only relevant when `--enable-data-collection` is enabled.
+
+### Probe daemonset flags
+
+* `--certsuite-probe-image`: Override the default certsuite probe daemonset image. Defaults to `quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42` (`debugTag` in `version.json`).
 
 * `--daemonset-cpu-req`, `--daemonset-cpu-lim`: Set the CPU request and limit for the probe daemonset container. Both default to `100m`.
 
 * `--daemonset-mem-req`, `--daemonset-mem-lim`: Set the memory request and limit for the probe daemonset container. Both default to `100M`.
-
-* `--connect-api-key`: API key for uploading results to the Red Hat Connect portal.
-
-* `--connect-project-id`: Project ID for uploading results to the Red Hat Connect portal.
-
-* `--connect-api-base-url`: Base URL for the Red Hat Connect API.
-
-* `--connect-api-proxy-url`, `--connect-api-proxy-port`: Proxy URL and port for the Red Hat Connect API, for environments that require HTTP proxies.
 
 * `--cleanup-probe`: Controls whether the probe daemonset and its namespace are deleted at the end of the test run. By default (true), the probe daemonset is cleaned up after tests complete. Set to `--cleanup-probe=false` to keep the probe daemonset running on the cluster for debugging or repeated test runs.
 
@@ -139,6 +145,32 @@ docker run --rm --network host \
   --cleanup-probe=false
 ```
 
+* `--require-probe`: Abort the test run if the probe daemonset fails to deploy. Disabled by default.
+
+### Preflight flags
+
+* `--preflight-dockerconfig`: Path to the Dockerconfig file to be used by the Preflight test suite.
+
+* `--allow-preflight-insecure`: Allow insecure connections in the Preflight test suite.
+
+* `--offline-db`: Path to an offline DB to check the certification status of container images, operators and helm charts. Defaults to the DB included in the test container image.
+
+!!! note
+
+    See the [OCT tool](https://github.com/redhat-best-practices-for-k8s/oct) for more information on how to create this DB.
+
+### Red Hat Connect flags
+
+* `--enable-data-collection`: Allow sending test results to an external data collector.
+
+* `--connect-api-key`: API key for uploading results to the Red Hat Connect portal.
+
+* `--connect-project-id`: Project ID for uploading results to the Red Hat Connect portal.
+
+* `--connect-api-base-url`: Base URL for the Red Hat Connect API.
+
+* `--connect-api-proxy-url`, `--connect-api-proxy-port`: Proxy URL and port for the Red Hat Connect API, for environments that require HTTP proxies.
+
 ## Using the container image
 
 The only prerequisite for running the Test Suite in container mode is having Docker or Podman installed.
@@ -151,7 +183,7 @@ The test image is available at this [repository](https://quay.io/repository/redh
 docker pull quay.io/redhat-best-practices-for-k8s/certsuite:<image-tag>
 ```
 
-The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository or any existing version number such as `v5.2.1`.
+The image tag can be `latest` to select the latest release, `unstable` to fetch the image built with the latest commit in the repository, or any existing version tag from the [releases page](https://github.com/redhat-best-practices-for-k8s/certsuite/releases).
 
 ### Launch the Test Suite
 

@@ -17,6 +17,7 @@
 package performance
 
 import (
+	"errors"
 	"fmt"
 	"slices"
 	"strconv"
@@ -40,11 +41,6 @@ const (
 
 var (
 	env provider.TestEnvironment
-
-	beforeEachFn = func(check *checksdb.Check) error {
-		env = provider.GetTestEnvironment()
-		return nil
-	}
 
 	skipIfNoGuaranteedPodContainersWithExclusiveCPUs = func() (bool, string) {
 		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUs()
@@ -83,7 +79,7 @@ func LoadChecks() { //nolint:funlen
 	log.Debug("Loading %s suite checks", common.PerformanceTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.PerformanceTestKey).
-		WithBeforeEachFn(beforeEachFn)
+		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestExclusiveCPUPoolIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
@@ -348,7 +344,7 @@ func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment
 			check.LogInfo("Testing process %q", p)
 			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(p.Pid, cut)
 			if err != nil {
-				if strings.Contains(err.Error(), scheduling.NoProcessFoundErrMsg) {
+				if errors.Is(err, scheduling.ErrProcessNotFound) {
 					check.LogWarn("Container process %q disappeared", p)
 					result.AddCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container process disappeared", true).
 						AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).

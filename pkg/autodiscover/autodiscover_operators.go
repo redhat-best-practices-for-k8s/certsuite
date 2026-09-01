@@ -32,7 +32,7 @@ import (
 	olmpkgv1 "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	olmpkgclient "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/client/clientset/versioned/typed/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
-	"helm.sh/helm/v3/pkg/release"
+	release "helm.sh/helm/v4/pkg/release/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -69,19 +69,20 @@ func isIstioServiceMeshInstalled(appClient appv1client.AppsV1Interface, allNs []
 }
 
 func findOperatorsMatchingAtLeastOneLabel(olmClient v1alpha1.OperatorsV1alpha1Interface, labels []labelObject, namespace configuration.Namespace) *olmv1Alpha.ClusterServiceVersionList {
-	csvList := &olmv1Alpha.ClusterServiceVersionList{}
-	for _, l := range labels {
-		log.Debug("Searching CSVs in namespace %q with label %q", namespace, l)
-		csv, err := olmClient.ClusterServiceVersions(namespace.Name).List(context.TODO(), metav1.ListOptions{
-			LabelSelector: l.LabelKey + "=" + l.LabelValue,
-		})
-		if err != nil {
-			log.Error("Error when listing csvs in namespace %q with label %q, err: %v", namespace, l.LabelKey+"="+l.LabelValue, err)
-			continue
-		}
-		csvList.Items = append(csvList.Items, csv.Items...)
+	log.Debug("Searching CSVs in namespace %q with labels %v", namespace, labels)
+	allCSVs, err := olmClient.ClusterServiceVersions(namespace.Name).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Error("Error when listing csvs in namespace %q, err: %v", namespace, err)
+		return &olmv1Alpha.ClusterServiceVersionList{}
 	}
-	return csvList
+
+	matched := &olmv1Alpha.ClusterServiceVersionList{}
+	for i := range allCSVs.Items {
+		if matchesAnyLabel(allCSVs.Items[i].Labels, labels) {
+			matched.Items = append(matched.Items, allCSVs.Items[i])
+		}
+	}
+	return matched
 }
 
 func findOperatorsByLabels(olmClient v1alpha1.OperatorsV1alpha1Interface, labels []labelObject, namespaces []configuration.Namespace) (csvs []*olmv1Alpha.ClusterServiceVersion) {
