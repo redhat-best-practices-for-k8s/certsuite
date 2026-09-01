@@ -740,25 +740,6 @@ func Test_checkCrossNamespaceRoleBindingViolation(t *testing.T) {
 	}
 }
 
-func TestSSHDaemonCheckFailureReason(t *testing.T) {
-	t.Parallel()
-
-	probeErr := errors.New(`unable to upgrade connection: container not found ("container-00")`)
-	got := sshDaemonCheckFailureReason(probeErr)
-	assert.Contains(t, got, "Probe pod exec failed while checking for sshd")
-	assert.Contains(t, got, "not evidence the pod is running sshd")
-	assert.Contains(t, got, "container not found")
-
-	other := sshDaemonCheckFailureReason(errors.New("connection refused"))
-	assert.Contains(t, other, "Failed to get the ssh port for pod")
-	assert.NotContains(t, other, "not evidence the pod is running sshd")
-	assert.Equal(t, "Failed to get the ssh port for pod", sshDaemonCheckFailureReason(nil))
-
-	ports := listeningPortsCheckFailureReason(errors.New("connection refused"))
-	assert.Contains(t, ports, "Failed to get the listening ports for pod")
-	assert.Contains(t, listeningPortsCheckFailureReason(probeErr), "Probe pod exec failed while checking for sshd")
-}
-
 func TestProbeExecFailureReason(t *testing.T) {
 	t.Parallel()
 

@@ -330,6 +330,10 @@ func checkPodPortTLS(check *checksdb.Check, put *provider.Pod, ch clientsholder.
 	listeningPorts, err := getListeningPorts(put.Containers[0])
 	if err != nil {
 		check.LogError("Failed to get pod %q listening ports, err: %v", put, err)
+		if crclient.IsProbeExecFailure(err) {
+			check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
+			return
+		}
 		result.AddNonCompliantObject(
 			testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get listening ports: %v", err), false))
 		return

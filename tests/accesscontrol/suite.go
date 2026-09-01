@@ -983,26 +983,7 @@ func testNamespaceResourceQuota(check *checksdb.Check, env *provider.TestEnviron
 
 const (
 	sshServicePortProtocol = "TCP"
-	sshDaemonProbeExecMsg  = "Probe pod exec failed while checking for sshd; not evidence the pod is running sshd"
 )
-
-func checkFailureReason(err error, probeMsg, otherMsg string) string {
-	if crclient.IsProbeExecFailure(err) {
-		return fmt.Sprintf("%s: %v", probeMsg, err)
-	}
-	if err == nil {
-		return otherMsg
-	}
-	return fmt.Sprintf("%s: %v", otherMsg, err)
-}
-
-func sshDaemonCheckFailureReason(err error) string {
-	return checkFailureReason(err, sshDaemonProbeExecMsg, "Failed to get the ssh port for pod")
-}
-
-func listeningPortsCheckFailureReason(err error) string {
-	return checkFailureReason(err, sshDaemonProbeExecMsg, "Failed to get the listening ports for pod")
-}
 
 func probeExecFailureReason(err error) string {
 	if crclient.IsProbeExecFailure(err) {
@@ -1029,7 +1010,11 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 		port, err := netutil.GetSSHDaemonPort(cut)
 		if err != nil {
 			check.LogError("Could not get ssh daemon port on %q, err: %v", cut, err)
-			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, sshDaemonCheckFailureReason(err), false))
+			if crclient.IsProbeExecFailure(err) {
+				check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
+				return
+			}
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the ssh port for pod", false))
 			return
 		}
 
@@ -1050,7 +1035,11 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
 			check.LogError("Failed to get the listening ports for Pod %q, err: %v", put, err)
-			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, listeningPortsCheckFailureReason(err), false))
+			if crclient.IsProbeExecFailure(err) {
+				check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
+				return
+			}
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
 			return
 		}
 
