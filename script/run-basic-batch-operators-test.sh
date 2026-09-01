@@ -775,13 +775,14 @@ while IFS=, read -r package_name catalog_index; do
 	# Special handling for multicluster-engine operator with + suffix
 	if [ "$actual_package_name" = "multicluster-engine" ] && [ "$skip_cleanup" = true ]; then
 		echo_color "$BLUE" "Creating MultiClusterEngine custom resource"
-		if cat <<EOF | oc apply -f - >>"$LOG_FILE_PATH" 2>&1; then
+		if cat <<EOF | oc apply -f - >>"$LOG_FILE_PATH" 2>&1
 apiVersion: multicluster.openshift.io/v1
 kind: MultiClusterEngine
 metadata:
   name: multiclusterengine
 spec: {}
 EOF
+		then
 			echo_color "$BLUE" "MultiClusterEngine custom resource created successfully"
 			echo_color "$BLUE" "Waiting for MultiClusterEngine to be ready..."
 			sleep 30
