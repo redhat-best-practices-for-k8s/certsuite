@@ -20,6 +20,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
@@ -27,6 +28,8 @@ import (
 	chart "helm.sh/helm/v4/pkg/chart/v2"
 	release "helm.sh/helm/v4/pkg/release/v1"
 	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
 func TestGetContainersToQuery(t *testing.T) {
@@ -280,6 +283,37 @@ func TestHelmCertified_NotCertified(t *testing.T) {
 	}
 
 	testHelmCertified(check, testEnv, validator)
+	assert.Equal(t, "failed", string(check.Result))
+}
+
+// ---- TestHelmVersion ----
+
+// TestHelmVersion_NoTiller verifies that testHelmVersion passes (no Tiller pods found)
+// without requiring certdb access — confirming the fix for issue #3890.
+func TestHelmVersion_NoTiller(t *testing.T) {
+	clientsholder.GetTestClientsHolder([]runtime.Object{})
+	check := setupCertCheck()
+	env = provider.TestEnvironment{
+		HelmChartReleases: []*release.Release{
+			{Name: "mychart", Namespace: "ns1", Chart: &chart.Chart{Metadata: &chart.Metadata{Version: "1.0.0"}}},
+		},
+	}
+	testHelmVersion(check)
+	assert.Equal(t, "passed", string(check.Result))
+}
+
+func TestHelmVersion_TillerPresent(t *testing.T) {
+	tillerPod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "tiller-deploy-abc",
+			Namespace: "kube-system",
+			Labels:    map[string]string{"app": "helm", "name": "tiller"},
+		},
+	}
+	clientsholder.GetTestClientsHolder([]runtime.Object{tillerPod})
+	check := setupCertCheck()
+	env = provider.TestEnvironment{}
+	testHelmVersion(check)
 	assert.Equal(t, "failed", string(check.Result))
 }
 
