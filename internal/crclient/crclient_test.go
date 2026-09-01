@@ -66,3 +66,12 @@ func TestIsProbeToolExecError_nil(t *testing.T) {
 		t.Error("expected IsProbeToolExecError to return false for nil")
 	}
 }
+
+func TestIsProbeToolExecError_doubleWrapped(t *testing.T) {
+	inner := &ProbeToolExecError{Reason: "probe unavailable", Wrapped: errors.New("pods not found")}
+	mid := fmt.Errorf("unable to run nsenter due to : %w", inner)
+	outer := fmt.Errorf("could not get pid namespace, err: %w", mid)
+	if !IsProbeToolExecError(outer) {
+		t.Error("expected IsProbeToolExecError to return true through two levels of %%w wrapping")
+	}
+}

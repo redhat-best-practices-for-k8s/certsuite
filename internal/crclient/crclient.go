@@ -122,7 +122,7 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	command := fmt.Sprintf("lsns -p %d -t pid -n", pid)
 	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ocpContext, command)
 	if err != nil || stderr != "" {
-		return "", fmt.Errorf("unable to run nsenter due to : %v", err)
+		return "", fmt.Errorf("unable to run nsenter due to : %w", err)
 	}
 
 	return strings.Fields(stdout)[0], nil
