@@ -26,12 +26,14 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/podhelper"
+	"github.com/redhat-best-practices-for-k8s/checks"
 
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
+
 
 const (
 	HugePages2Mi            = "hugepages-2Mi"
@@ -621,3 +623,20 @@ func (p *Pod) IsAutomountServiceAccountSetOnSA() (isSet *bool, err error) {
 	}
 	return (*p.AllServiceAccountsMap)[p.Namespace+p.Spec.ServiceAccountName].AutomountServiceAccountToken, nil
 }
+
+// ToMultusNetwork converts the pod's Multus network interfaces to the checks library format.
+func (p *Pod) ToMultusNetwork() []checks.MultusNetwork {
+	if p.Pod == nil || len(p.MultusNetworkInterfaces) == 0 {
+		return nil
+	}
+	var networks []checks.MultusNetwork
+	for netName, iface := range p.MultusNetworkInterfaces {
+		networks = append(networks, checks.MultusNetwork{
+			Name:          netName,
+			InterfaceName: iface.Interface,
+			IPs:           iface.IPs,
+		})
+	}
+	return networks
+}
+

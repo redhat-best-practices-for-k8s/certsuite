@@ -137,12 +137,13 @@ type TestEnvironment struct { // rename this with testTarget
 	AllCatalogSources            []*olmv1Alpha.CatalogSource `json:"AllCatalogSources"`
 	AllPackageManifests          []*olmpkgv1.PackageManifest `json:"AllPackageManifests"`
 	OperatorGroups               []*olmv1.OperatorGroup      `json:"OperatorGroups"`
-	SriovNetworks                []unstructured.Unstructured
+	 SriovNetworks                []unstructured.Unstructured
 	AllSriovNetworks             []unstructured.Unstructured
 	SriovNetworkNodePolicies     []unstructured.Unstructured
 	AllSriovNetworkNodePolicies  []unstructured.Unstructured
 	NetworkAttachmentDefinitions []nadClient.NetworkAttachmentDefinition
 	ClusterOperators             []configv1.ClusterOperator
+	TLSSecurityProfile           *configv1.TLSSecurityProfile
 	IstioServiceMeshFound        bool
 	ValidProtocolNames           []string
 	DaemonsetFailedToSpawn       bool
@@ -317,6 +318,7 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	env.Nodes = createNodes(data.Nodes.Items)
 	env.IstioServiceMeshFound = data.IstioServiceMeshFound
 	env.ValidProtocolNames = append(env.ValidProtocolNames, data.ValidProtocolNames...)
+	env.TLSSecurityProfile = getTLSSecurityProfile()
 	for i := range data.AbnormalEvents {
 		aEvent := NewEvent(&data.AbnormalEvents[i])
 		env.AbnormalEvents = append(env.AbnormalEvents, &aEvent)
@@ -776,6 +778,22 @@ func (env *TestEnvironment) GetBaremetalNodes() []Node {
 		}
 	}
 	return baremetalNodes
+}
+
+func getTLSSecurityProfile() *configv1.TLSSecurityProfile {
+	if !IsOCPCluster() {
+		return nil
+	}
+	clients := clientsholder.GetClientsHolder()
+	if clients.OcpClient == nil {
+		return nil
+	}
+	apiServer, err := clients.OcpClient.APIServers().Get(context.TODO(), "cluster", metav1.GetOptions{})
+	if err != nil {
+		log.Warn("Failed to get APIServer TLS security profile: %v", err)
+		return nil
+	}
+	return apiServer.Spec.TLSSecurityProfile
 }
 
 func GetPreflightResultsDB(results *plibRuntime.Results) PreflightResultsDB {
