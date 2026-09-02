@@ -26,6 +26,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	checksall "github.com/redhat-best-practices-for-k8s/checks/all"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -498,13 +499,18 @@ func TestGetConfigurationFromClaimFileNotFound(t *testing.T) {
 }
 
 func TestSanitizeClaimFile(t *testing.T) {
+	checksall.Register()
 	// Not parallel: mutates identifiers.TestIDToClaimID
 	origTestIDToClaimID := identifiers.TestIDToClaimID
 	t.Cleanup(func() { identifiers.TestIDToClaimID = origTestIDToClaimID })
 	identifiers.TestIDToClaimID = map[string]claim.Identifier{}
 
-	commonID := claim.Identifier{Id: "common-check", Suite: "test-suite", Tags: "common"}
-	extendedID := claim.Identifier{Id: "extended-check", Suite: "test-suite", Tags: "extended"}
+	// Use real check names from the checks library so label lookup works
+	const commonCheckName = "access-control-container-host-port"
+	const extendedCheckName = "access-control-crd-roles"
+
+	commonID := claim.Identifier{Id: commonCheckName, Suite: "access-control", Tags: "common"}
+	extendedID := claim.Identifier{Id: extendedCheckName, Suite: "access-control", Tags: "extended"}
 
 	claimRoot := &claim.Root{
 		Claim: &claim.Claim{
@@ -515,11 +521,11 @@ func TestSanitizeClaimFile(t *testing.T) {
 			Versions:       &claim.Versions{CertSuite: "test"},
 			Configurations: map[string]interface{}{},
 			Results: map[string]claim.Result{
-				"common-check": {
+				commonCheckName: {
 					TestID: &commonID,
 					State:  "passed",
 				},
-				"extended-check": {
+				extendedCheckName: {
 					TestID: &extendedID,
 					State:  "passed",
 				},
@@ -547,8 +553,8 @@ func TestSanitizeClaimFile(t *testing.T) {
 	err = j.Unmarshal(data, &sanitized)
 	require.NoError(t, err)
 
-	assert.Contains(t, sanitized.Claim.Results, "common-check")
-	assert.NotContains(t, sanitized.Claim.Results, "extended-check")
+	assert.Contains(t, sanitized.Claim.Results, commonCheckName)
+	assert.NotContains(t, sanitized.Claim.Results, extendedCheckName)
 }
 
 func TestSanitizeClaimFileInvalidFilter(t *testing.T) {
