@@ -4,17 +4,19 @@ import (
 	"testing"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/checks"
+	checksall "github.com/redhat-best-practices-for-k8s/checks/all"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetTestDescriptionsFromTestIDs(t *testing.T) {
 	t.Parallel()
 
+	checksall.Register()
+	allChecks := checks.All()
 	var knownID string
-	for id := range identifiers.Catalog {
-		knownID = id.Id
-		break
+	if len(allChecks) > 0 {
+		knownID = allChecks[0].Name
 	}
 
 	testCases := []struct {
