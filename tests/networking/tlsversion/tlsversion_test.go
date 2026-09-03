@@ -503,7 +503,7 @@ func TestIsPortTLS_OpenSSL3TLS13Format(t *testing.T) {
 	assert.True(t, isTLS, "expected TLS from OpenSSL 3 TLS 1.3 output, reason: %s", reason)
 	assert.True(t, reachable)
 	assert.Contains(t, reason, "TLS negotiated")
-	assert.Contains(t, reason, "TLS_AES_256_GCM_SHA384")
+	assert.Contains(t, reason, cipherTLSAES256GCMSHA384)
 }
 
 func TestIsPortTLS_PlaintextService(t *testing.T) {
@@ -1176,8 +1176,8 @@ func TestExtractOpenSSLCipher(t *testing.T) {
 		expected string
 	}{
 		{"with spaces", "Cipher    : ECDHE-RSA-AES128-GCM-SHA256\nProtocol  : TLSv1.2", "ECDHE-RSA-AES128-GCM-SHA256"},
-		{"without spaces", "Cipher: TLS_AES_256_GCM_SHA384\nProtocol: TLSv1.3", "TLS_AES_256_GCM_SHA384"},
-		{"openssl 3 cipher is", "New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384", "TLS_AES_256_GCM_SHA384"},
+		{"without spaces", "Cipher: TLS_AES_256_GCM_SHA384\nProtocol: TLSv1.3", cipherTLSAES256GCMSHA384},
+		{"openssl 3 cipher is", "New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384", cipherTLSAES256GCMSHA384},
 		{"cipher is none", "Cipher is (NONE)\nProtocol  : TLSv1.2", "(NONE)"},
 		{"cipher 0000", "Cipher    : 0000\nProtocol  : TLSv1.2", "0000"},
 		{"no cipher line", "Protocol  : TLSv1.2\nSome other output", ""},

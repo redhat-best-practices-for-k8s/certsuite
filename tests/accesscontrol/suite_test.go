@@ -17,7 +17,6 @@
 package accesscontrol
 
 import (
-	"errors"
 	"io"
 	"testing"
 
@@ -738,14 +737,4 @@ func Test_checkCrossNamespaceRoleBindingViolation(t *testing.T) {
 			}
 		})
 	}
-}
-
-func TestProbeExecFailureReason(t *testing.T) {
-	t.Parallel()
-
-	probeErr := errors.New(`unable to upgrade connection: container not found ("container-00")`)
-	got := probeExecFailureReason(probeErr)
-	assert.Contains(t, got, "Probe pod exec failed; not a CNF finding")
-	assert.Equal(t, "boom", probeExecFailureReason(errors.New("boom")))
-	assert.Equal(t, "", probeExecFailureReason(nil))
 }

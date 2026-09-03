@@ -869,14 +869,22 @@ func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnviron
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
 			check.LogError("Could not get PID for Container %q, error: %v", cut, err)
-			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, probeExecFailureReason(err), false))
+			if crclient.IsProbeExecFailure(err) {
+				check.SetResultError(fmt.Sprintf("probe exec failure for container %s/%s: %v", cut.Namespace, cut.Name, err))
+				return
+			}
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Could not get PID for container: %v", err), false))
 			return
 		}
 
 		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid, clientsholder.GetClientsHolder())
 		if err != nil {
 			check.LogError("Could not get number of processes for Container %q, error: %v", cut, err)
-			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, probeExecFailureReason(err), false))
+			if crclient.IsProbeExecFailure(err) {
+				check.SetResultError(fmt.Sprintf("probe exec failure for container %s/%s: %v", cut.Namespace, cut.Name, err))
+				return
+			}
+			result.AddNonCompliantObject(testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Could not get number of processes in PID namespace: %v", err), false))
 			return
 		}
 		if nbProcesses > 1 {
@@ -985,16 +993,6 @@ const (
 	sshServicePortProtocol = "TCP"
 )
 
-func probeExecFailureReason(err error) string {
-	if crclient.IsProbeExecFailure(err) {
-		return fmt.Sprintf("Probe pod exec failed; not a CNF finding: %v", err)
-	}
-	if err == nil {
-		return ""
-	}
-	return err.Error()
-}
-
 func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironment) {
 	mutexPerNode := env.NewPerNodeMutexMap()
 
@@ -1014,7 +1012,7 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 				check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
 				return
 			}
-			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the ssh port for pod", false))
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get the ssh port for pod: %v", err), false))
 			return
 		}
 
@@ -1027,7 +1025,7 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 		sshServicePortNumber, err := strconv.ParseInt(port, 10, 32)
 		if err != nil {
 			check.LogError("Could not convert port %q from string to integer on Container %q", port, cut)
-			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Could not parse SSH daemon port number: %v", err), false))
 			return
 		}
 
@@ -1039,7 +1037,7 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 				check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
 				return
 			}
-			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
+			result.AddNonCompliantObject(testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get the listening ports for pod: %v", err), false))
 			return
 		}
 

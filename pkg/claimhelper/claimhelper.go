@@ -49,6 +49,7 @@ const (
 	// States for test cases
 	TestStateFailed  = "failed"
 	TestStateSkipped = "skipped"
+	TestStateError   = "error"
 )
 
 type SkippedMessage struct {
@@ -57,6 +58,12 @@ type SkippedMessage struct {
 }
 
 type FailureMessage struct {
+	Text    string `xml:",chardata"`
+	Message string `xml:"message,attr,omitempty"`
+	Type    string `xml:"type,attr,omitempty"`
+}
+
+type ErrorMessage struct {
 	Text    string `xml:",chardata"`
 	Message string `xml:"message,attr,omitempty"`
 	Type    string `xml:"type,attr,omitempty"`
@@ -71,6 +78,7 @@ type TestCase struct {
 	SystemErr string          `xml:"system-err,omitempty"`
 	Skipped   *SkippedMessage `xml:"skipped"`
 	Failure   *FailureMessage `xml:"failure"`
+	Error     *ErrorMessage   `xml:"error"`
 }
 
 type Testsuite struct {
@@ -192,18 +200,26 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 		}
 	}
 
+	// Count all of the errored tests in the suite
+	erroredTests := 0
+	for testID := range c.Results {
+		if c.Results[testID].State == TestStateError {
+			erroredTests++
+		}
+	}
+
 	xmlOutput.Failures = strconv.Itoa(failedTests)
 	xmlOutput.Disabled = strconv.Itoa(skippedTests)
-	xmlOutput.Errors = strconv.Itoa(0)
+	xmlOutput.Errors = strconv.Itoa(erroredTests)
 	xmlOutput.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 5, 64)
 
 	// <testsuite>
 	xmlOutput.Testsuite.Name = TestSuiteName
 	xmlOutput.Testsuite.Tests = strconv.Itoa(len(c.Results))
-	// Counters for failed and skipped tests
+	// Counters for failed, skipped, and errored tests
 	xmlOutput.Testsuite.Failures = strconv.Itoa(failedTests)
 	xmlOutput.Testsuite.Skipped = strconv.Itoa(skippedTests)
-	xmlOutput.Testsuite.Errors = strconv.Itoa(0)
+	xmlOutput.Testsuite.Errors = strconv.Itoa(erroredTests)
 
 	xmlOutput.Testsuite.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 5, 64)
 	xmlOutput.Testsuite.Timestamp = time.Now().UTC().Format(DateTimeFormatDirective)
@@ -246,6 +262,15 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 			testCase.Failure.Text = c.Results[testID].CheckDetails
 		} else {
 			testCase.Failure = nil
+		}
+
+		// Populate the error message if the test case errored (probe/infrastructure failure)
+		if testCase.Status == TestStateError {
+			testCase.Error = &ErrorMessage{}
+			testCase.Error.Text = c.Results[testID].CheckDetails
+			testCase.Error.Type = "probe-exec-failure"
+		} else {
+			testCase.Error = nil
 		}
 
 		// Append the test case to the test suite
