@@ -2,6 +2,7 @@ package upload
 
 import (
 	resultsspreadsheet "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/upload/results_spreadsheet"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +14,7 @@ var (
 )
 
 func NewCommand() *cobra.Command {
-	upload.AddCommand(resultsspreadsheet.NewCommand())
+	cli.AddCommand(upload, resultsspreadsheet.NewCommand())
 
 	return upload
 }
