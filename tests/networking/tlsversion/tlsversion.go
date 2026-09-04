@@ -75,6 +75,12 @@ const (
 	cipherECDHERSAAES128GCMSHA256 = "ECDHE-RSA-AES128-GCM-SHA256"
 	reasonPortUnreachable         = "port unreachable"
 
+	// cipherTLSAES256GCMSHA384 is used in the tls13CipherNames map and in test
+	// assertions. PR #3869 added OpenSSL 3 "Cipher is" test cases that pushed the
+	// standalone literal count past goconst's threshold of 3, so a named constant
+	// is required.
+	cipherTLSAES256GCMSHA384 = "TLS_AES_256_GCM_SHA384"
+
 	// GNU timeout exits 124 when openssl s_client does not finish in time.
 	opensslTimeoutExitCode  = 124
 	opensslTLSProbeAttempts = 3
@@ -141,7 +147,7 @@ var opensslToGoCipher = map[string]uint16{
 // so we skip them when building allowed/disallowed sets.
 var tls13CipherNames = map[string]bool{
 	"TLS_AES_128_GCM_SHA256":       true,
-	"TLS_AES_256_GCM_SHA384":       true,
+	cipherTLSAES256GCMSHA384:       true,
 	"TLS_CHACHA20_POLY1305_SHA256": true,
 }
 
