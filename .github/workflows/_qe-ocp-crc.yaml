@@ -135,7 +135,7 @@ jobs:
           exit 1
 
       - name: Deploy the OCP Cluster
-        uses: palmsoftware/quick-ocp@0644e7e36df26d6ca96104605bcd1ace08e65371 # v1.0.1
+        uses: palmsoftware/quick-ocp@f56c1783506b19b91d211dc1134d1415edaa5736 # v1.0.2
         with:
           ocpPullSecret: $OCP_PULL_SECRET
           bundleCache: true
