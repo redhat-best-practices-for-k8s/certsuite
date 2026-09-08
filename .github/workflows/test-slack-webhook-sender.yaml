@@ -1,0 +1,25 @@
+---
+name: Test slack-webhook-sender action
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Test message to send'
+        required: false
+        default: 'Test message from slack-webhook-sender action'
+
+permissions:
+  contents: read
+
+jobs:
+  test-slack-webhook-sender:
+    name: Send test Slack alert
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Send test message
+        uses: ./.github/actions/slack-webhook-sender
+        with:
+          message: ${{ inputs.message }}
+          slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
