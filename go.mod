@@ -1,6 +1,8 @@
 module github.com/redhat-best-practices-for-k8s/certsuite
 
-go 1.26.5
+go 1.27
+
+toolchain go1.27.1
 
 require (
 	github.com/Masterminds/semver/v3 v3.5.0
