@@ -202,8 +202,12 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 		listeningPorts, err := netutil.GetListeningPorts(firstPodContainer)
 		if err != nil {
 			check.LogError("Failed to get container %q listening ports, err: %v", firstPodContainer, err)
+			if crclient.IsProbeExecFailure(err) {
+				check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
+				return
+			}
 			result.AddNonCompliantObject(
-				testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get the container's listening ports, err: %v", err), false))
+				testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get the container's listening ports: %v", err), false))
 			return
 		}
 		if len(listeningPorts) == 0 {
@@ -330,6 +334,10 @@ func checkPodPortTLS(check *checksdb.Check, put *provider.Pod, ch clientsholder.
 	listeningPorts, err := getListeningPorts(put.Containers[0])
 	if err != nil {
 		check.LogError("Failed to get pod %q listening ports, err: %v", put, err)
+		if crclient.IsProbeExecFailure(err) {
+			check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
+			return
+		}
 		result.AddNonCompliantObject(
 			testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get listening ports: %v", err), false))
 		return
@@ -457,9 +465,13 @@ func testReservedPortsUsageParallel(check *checksdb.Check, env *provider.TestEnv
 		listeningPorts, err := netutil.GetListeningPorts(firstContainer)
 		if err != nil {
 			check.LogError("Failed to get the listening ports on %q, err: %v", firstContainer, err)
+			if crclient.IsProbeExecFailure(err) {
+				check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
+				return
+			}
 			result.AddNonCompliantObject(
 				testhelper.NewPodReportObject(firstContainer.Namespace, put.Name,
-					fmt.Sprintf("Failed to get the listening ports on pod, err: %v", err), false))
+					fmt.Sprintf("Failed to get the listening ports on pod: %v", err), false))
 			return
 		}
 		for port := range listeningPorts {

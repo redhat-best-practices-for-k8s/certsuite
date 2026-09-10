@@ -160,12 +160,13 @@ const (
 	PASSED  = 0
 	FAILED  = 1
 	SKIPPED = 2
+	ERROR   = 3
 )
 
 func getResultsSummary() map[string][]int {
 	results := make(map[string][]int)
 	for groupName, group := range dbByGroup {
-		groupResults := []int{0, 0, 0}
+		groupResults := []int{0, 0, 0, 0}
 		for _, check := range group.checks {
 			switch check.Result {
 			case CheckResultPassed:
@@ -174,6 +175,8 @@ func getResultsSummary() map[string][]int {
 				groupResults[FAILED]++
 			case CheckResultSkipped:
 				groupResults[SKIPPED]++
+			case CheckResultError:
+				groupResults[ERROR]++
 			}
 		}
 		results[groupName] = groupResults
@@ -186,7 +189,7 @@ const nbColorSymbols = 9
 func printFailedChecksLog() {
 	for _, group := range dbByGroup {
 		for _, check := range group.checks {
-			if check.Result != CheckResultFailed {
+			if check.Result != CheckResultFailed && check.Result != CheckResultError {
 				continue
 			}
 			logHeader := fmt.Sprintf("| "+cli.Cyan+"LOG (%s)"+cli.Reset+" |", check.ID)

@@ -143,15 +143,16 @@ func (c *cliCheckLogSniffer) Write(p []byte) (n int, err error) {
 
 func PrintResultsTable(results map[string][]int) {
 	fmt.Printf("\n")
-	fmt.Println("-----------------------------------------------------------")
-	fmt.Printf("| %-27s %-9s %-9s %s |\n", "SUITE", "PASSED", "FAILED", "SKIPPED")
-	fmt.Println("-----------------------------------------------------------")
+	fmt.Println("------------------------------------------------------------------------")
+	fmt.Printf("| %-27s %-9s %-9s %-9s %s |\n", "SUITE", "PASSED", "FAILED", "SKIPPED", "ERROR")
+	fmt.Println("------------------------------------------------------------------------")
 	for groupName, groupResults := range results {
-		fmt.Printf("| %-25s %8d %9d %10d |\n", groupName,
+		fmt.Printf("| %-25s %8d %9d %10d %7d |\n", groupName,
 			groupResults[0],
 			groupResults[1],
-			groupResults[2])
-		fmt.Println("-----------------------------------------------------------")
+			groupResults[2],
+			groupResults[3])
+		fmt.Println("------------------------------------------------------------------------")
 	}
 	fmt.Printf("\n")
 }
