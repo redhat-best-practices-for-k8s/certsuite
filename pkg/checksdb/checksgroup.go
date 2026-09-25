@@ -380,7 +380,7 @@ func (group *ChecksGroup) RunChecks(stopChan <-chan bool, abortChan chan string)
 		}
 
 		// Increment the failed checks counter.
-		if check.Result.String() == CheckResultFailed {
+		if check.Result.String() == CheckResultFailed || check.Result.String() == CheckResultError {
 			failedChecks++
 		}
 
