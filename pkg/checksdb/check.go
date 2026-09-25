@@ -27,6 +27,8 @@ const (
 	SkipModeAll
 )
 
+type SkipCheckFn func() (skip bool, reason string)
+
 type CheckResult string
 
 func (cr CheckResult) String() string {
@@ -41,7 +43,7 @@ type Check struct {
 	BeforeCheckFn, AfterCheckFn func(check *Check) error
 	CheckFn                     func(check *Check) error
 
-	SkipCheckFns []func() (skip bool, reason string)
+	SkipCheckFns []SkipCheckFn
 	SkipMode     skipMode
 
 	Result         CheckResult
@@ -142,7 +144,7 @@ func (check *Check) WithAfterCheckFn(afterCheckFn func(check *Check) error) *Che
 	return check
 }
 
-func (check *Check) WithSkipCheckFn(skipCheckFn ...func() (skip bool, reason string)) *Check {
+func (check *Check) WithSkipCheckFn(skipCheckFn ...SkipCheckFn) *Check {
 	if check.Error != nil {
 		return check
 	}

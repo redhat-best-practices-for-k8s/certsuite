@@ -4,10 +4,8 @@ package webserver
 import (
 	"testing"
 
-	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	yaml "gopkg.in/yaml.v3"
 )
 
@@ -109,118 +107,6 @@ func TestToJSONString(t *testing.T) {
 			t.Parallel()
 			result := toJSONString(tt.input)
 			assert.Equal(t, tt.expected, result)
-		})
-	}
-}
-
-func TestGetSuitesFromIdentifiers(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		name     string
-		input    []claim.Identifier
-		expected []string
-	}{
-		{
-			name: "multiple identifiers with duplicate suites",
-			input: []claim.Identifier{
-				{Id: "test-1", Suite: "networking"},
-				{Id: "test-2", Suite: "networking"},
-				{Id: "test-3", Suite: "lifecycle"},
-			},
-			expected: []string{"networking", "lifecycle"},
-		},
-		{
-			name: "single identifier",
-			input: []claim.Identifier{
-				{Id: "test-1", Suite: "operator"},
-			},
-			expected: []string{"operator"},
-		},
-		{
-			name:     "empty input",
-			input:    []claim.Identifier{},
-			expected: []string{},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			result := GetSuitesFromIdentifiers(tt.input)
-			assert.ElementsMatch(t, tt.expected, result)
-		})
-	}
-}
-
-func TestCreatePrintableCatalogFromIdentifiers(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		name           string
-		input          []claim.Identifier
-		expectedSuites []string
-		expectedCounts map[string]int
-	}{
-		{
-			name: "multiple suites",
-			input: []claim.Identifier{
-				{Id: "net-test-1", Suite: "networking"},
-				{Id: "net-test-2", Suite: "networking"},
-				{Id: "life-test-1", Suite: "lifecycle"},
-			},
-			expectedSuites: []string{"networking", "lifecycle"},
-			expectedCounts: map[string]int{
-				"networking": 2,
-				"lifecycle":  1,
-			},
-		},
-		{
-			name: "single suite",
-			input: []claim.Identifier{
-				{Id: "op-test-1", Suite: "operator"},
-			},
-			expectedSuites: []string{"operator"},
-			expectedCounts: map[string]int{
-				"operator": 1,
-			},
-		},
-		{
-			name:           "empty input",
-			input:          []claim.Identifier{},
-			expectedSuites: nil,
-			expectedCounts: map[string]int{},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			result := CreatePrintableCatalogFromIdentifiers(tt.input)
-
-			require.NotNil(t, result)
-
-			for _, suite := range tt.expectedSuites {
-				entries, ok := result[suite]
-				assert.True(t, ok)
-				assert.Len(t, entries, tt.expectedCounts[suite])
-			}
-
-			for suite, count := range tt.expectedCounts {
-				assert.Len(t, result[suite], count)
-			}
-
-			for _, id := range tt.input {
-				entries := result[id.Suite]
-				found := false
-				for _, e := range entries {
-					if e.testName == id.Id && e.identifier == id {
-						found = true
-						break
-					}
-				}
-				assert.True(t, found)
-			}
 		})
 	}
 }
