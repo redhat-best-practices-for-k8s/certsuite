@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM registry.access.redhat.com/ubi9/ubi:9.8@sha256:9295c5c688f487fa5cf27a734fa55ecd57aeb7dc0904ba537da4f42dfa1d0acb AS build
+FROM --platform=$BUILDPLATFORM registry.access.redhat.com/ubi9/ubi:9.8@sha256:7a38d75d376f7989033e75fcaaf9fcbb090fafc58e05c2c99de76ae0ba083fdb AS build
 ENV CERTSUITE_DIR=/usr/certsuite
 ENV \
 	CERTSUITE_SRC_DIR=${CERTSUITE_DIR}/src \
