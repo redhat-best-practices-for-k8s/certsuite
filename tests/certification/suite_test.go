@@ -22,8 +22,10 @@ import (
 
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksadapter"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
+	checksfn "github.com/redhat-best-practices-for-k8s/checks/certification"
 	"github.com/stretchr/testify/assert"
 	chart "helm.sh/helm/v4/pkg/chart/v2"
 	release "helm.sh/helm/v4/pkg/release/v1"
@@ -291,6 +293,8 @@ func TestHelmCertified_NotCertified(t *testing.T) {
 // TestHelmVersion_NoTiller verifies that testHelmVersion passes (no Tiller pods found)
 // without requiring certdb access — confirming the fix for issue #3890.
 func TestHelmVersion_NoTiller(t *testing.T) {
+	checksadapter.ResetCache()
+	t.Cleanup(checksadapter.ResetCache)
 	clientsholder.GetTestClientsHolder([]runtime.Object{})
 	check := setupCertCheck()
 	env = provider.TestEnvironment{
@@ -298,11 +302,13 @@ func TestHelmVersion_NoTiller(t *testing.T) {
 			{Name: "mychart", Namespace: "ns1", Chart: &chart.Chart{Metadata: &chart.Metadata{Version: "1.0.0"}}},
 		},
 	}
-	testHelmVersion(check)
+	assert.NoError(t, checksadapter.NewAdapter(checksfn.CheckHelmVersion).MakeCheckFn(&env)(check))
 	assert.Equal(t, "passed", string(check.Result))
 }
 
 func TestHelmVersion_TillerPresent(t *testing.T) {
+	checksadapter.ResetCache()
+	t.Cleanup(checksadapter.ResetCache)
 	tillerPod := &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "tiller-deploy-abc",
@@ -312,8 +318,12 @@ func TestHelmVersion_TillerPresent(t *testing.T) {
 	}
 	clientsholder.GetTestClientsHolder([]runtime.Object{tillerPod})
 	check := setupCertCheck()
-	env = provider.TestEnvironment{}
-	testHelmVersion(check)
+	env = provider.TestEnvironment{
+		HelmChartReleases: []*release.Release{
+			{Name: "mychart", Namespace: "ns1", Chart: &chart.Chart{Metadata: &chart.Metadata{Version: "1.0.0"}}},
+		},
+	}
+	assert.NoError(t, checksadapter.NewAdapter(checksfn.CheckHelmVersion).MakeCheckFn(&env)(check))
 	assert.Equal(t, "failed", string(check.Result))
 }
 

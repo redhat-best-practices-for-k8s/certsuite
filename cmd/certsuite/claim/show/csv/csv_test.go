@@ -1,10 +1,17 @@
 package csv
 
 import (
+	"os"
 	"testing"
 
+	checksall "github.com/redhat-best-practices-for-k8s/checks/all"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestMain(m *testing.M) {
+	checksall.Register()
+	os.Exit(m.Run())
+}
 
 func TestBuildCatalogByID(t *testing.T) {
 	catalogMap := buildCatalogByID()
