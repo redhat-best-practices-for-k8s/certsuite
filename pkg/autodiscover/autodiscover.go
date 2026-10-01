@@ -48,6 +48,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/version"
 )
 
 const (
@@ -248,7 +249,9 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	}
 
 	data.OpenshiftVersion = openshiftVersion
-	k8sVersion, err := oc.K8sClient.Discovery().ServerVersion()
+	k8sVersion, err := retryAPICall(context.Background(), "get Kubernetes server version", func(context.Context) (*version.Info, error) {
+		return oc.K8sClient.Discovery().ServerVersion()
+	})
 	if err != nil {
 		log.Fatal("Cannot get the K8s version, err: %v", err)
 	}
@@ -284,7 +287,9 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	}
 	data.Roles = roles
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
-	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
+	data.Nodes, err = retryAPICall(context.Background(), "list nodes", func(ctx context.Context) (*corev1.NodeList, error) {
+		return oc.K8sClient.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		log.Fatal("Cannot get list of nodes, err: %v", err)
 	}
@@ -360,7 +365,9 @@ func namespacesListToStringList(namespaceList []configuration.Namespace) (string
 
 func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, err error) {
 	var clusterOperator *configv1.ClusterOperator
-	clusterOperator, err = oClient.ClusterOperators().Get(context.TODO(), "openshift-apiserver", metav1.GetOptions{})
+	clusterOperator, err = retryAPICall(context.Background(), "get openshift-apiserver ClusterOperator", func(ctx context.Context) (*configv1.ClusterOperator, error) {
+		return oClient.ClusterOperators().Get(ctx, "openshift-apiserver", metav1.GetOptions{})
+	})
 	if err != nil {
 		switch {
 		case kerrors.IsNotFound(err):
@@ -410,7 +417,9 @@ func getOperatorCsvPods(csvList []*olmv1Alpha.ClusterServiceVersion) (map[types.
 // This function gets the operator/controller pods of the specified csv name in from the installation namespace.
 func getPodsOwnedByCsv(csvName, operatorNamespace string, client *clientsholder.ClientsHolder) (managedPods []*corev1.Pod, err error) {
 	// Get all pods from the target namespace
-	podsList, err := client.K8sClient.CoreV1().Pods(operatorNamespace).List(context.TODO(), metav1.ListOptions{})
+	podsList, err := retryAPICall(context.Background(), "list operator pods in namespace "+operatorNamespace, func(ctx context.Context) (*corev1.PodList, error) {
+		return client.K8sClient.CoreV1().Pods(operatorNamespace).List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to list pods in namespace %s: %w", operatorNamespace, err)
 	}

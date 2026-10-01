@@ -13,7 +13,9 @@ import (
 )
 
 func findClusterOperators(client clientconfigv1.ClusterOperatorInterface) ([]configv1.ClusterOperator, error) {
-	clusterOperators, err := client.List(context.TODO(), metav1.ListOptions{})
+	clusterOperators, err := retryAPICall(context.Background(), "list cluster operators", func(ctx context.Context) (*configv1.ClusterOperatorList, error) {
+		return client.List(ctx, metav1.ListOptions{})
+	})
 	if err != nil && !k8serrors.IsNotFound(err) {
 		return nil, fmt.Errorf("failed to list cluster operators: %w", err)
 	}

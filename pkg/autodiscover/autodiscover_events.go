@@ -28,7 +28,9 @@ import (
 func findAbnormalEvents(oc corev1client.CoreV1Interface, namespaces []string) (abnormalEvents []corev1.Event) {
 	abnormalEvents = []corev1.Event{}
 	for _, ns := range namespaces {
-		someAbnormalEvents, err := oc.Events(ns).List(context.TODO(), metav1.ListOptions{FieldSelector: "type!=Normal"})
+		someAbnormalEvents, err := retryAPICall(context.Background(), "list abnormal events in namespace "+ns, func(ctx context.Context) (*corev1.EventList, error) {
+			return oc.Events(ns).List(ctx, metav1.ListOptions{FieldSelector: "type!=Normal"})
+		})
 		if err != nil {
 			log.Error("Failed to get event list for namespace %q, err: %v", ns, err)
 			continue

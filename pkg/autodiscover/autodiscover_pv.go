@@ -29,7 +29,9 @@ import (
 )
 
 func getPersistentVolumes(oc corev1client.CoreV1Interface) ([]corev1.PersistentVolume, error) {
-	pvs, err := oc.PersistentVolumes().List(context.TODO(), metav1.ListOptions{})
+	pvs, err := retryAPICall(context.Background(), "list persistent volumes", func(ctx context.Context) (*corev1.PersistentVolumeList, error) {
+		return oc.PersistentVolumes().List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to list persistent volumes: %w", err)
 	}
@@ -37,7 +39,9 @@ func getPersistentVolumes(oc corev1client.CoreV1Interface) ([]corev1.PersistentV
 }
 
 func getPersistentVolumeClaims(oc corev1client.CoreV1Interface) ([]corev1.PersistentVolumeClaim, error) {
-	pvcs, err := oc.PersistentVolumeClaims("").List(context.TODO(), metav1.ListOptions{})
+	pvcs, err := retryAPICall(context.Background(), "list persistent volume claims", func(ctx context.Context) (*corev1.PersistentVolumeClaimList, error) {
+		return oc.PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to list persistent volume claims: %w", err)
 	}
@@ -45,7 +49,9 @@ func getPersistentVolumeClaims(oc corev1client.CoreV1Interface) ([]corev1.Persis
 }
 
 func getAllStorageClasses(client storagev1typed.StorageV1Interface) ([]storagev1.StorageClass, error) {
-	storageclasslist, err := client.StorageClasses().List(context.TODO(), metav1.ListOptions{})
+	storageclasslist, err := retryAPICall(context.Background(), "list storage classes", func(ctx context.Context) (*storagev1.StorageClassList, error) {
+		return client.StorageClasses().List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		log.Error("Error when listing storage classes, err: %v", err)
 		return nil, fmt.Errorf("failed to list storage classes: %w", err)

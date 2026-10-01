@@ -28,7 +28,9 @@ import (
 
 func findPodsMatchingAtLeastOneLabel(oc corev1client.CoreV1Interface, labels []labelObject, namespace string) *corev1.PodList {
 	log.Debug("Searching Pods in namespace %s with labels %v", namespace, labels)
-	allPods, err := oc.Pods(namespace).List(context.TODO(), metav1.ListOptions{})
+	allPods, err := retryAPICall(context.Background(), "list pods in namespace "+namespace, func(ctx context.Context) (*corev1.PodList, error) {
+		return oc.Pods(namespace).List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		log.Error("Error when listing pods in ns=%s, err: %v", namespace, err)
 		return &corev1.PodList{}
@@ -56,7 +58,9 @@ func FindPodsByLabels(oc corev1client.CoreV1Interface, labels []labelObject, nam
 			// If labels are not provided in the namespace under test, they are tested by the CNF suite
 			log.Debug("Searching Pods in namespace %s without label", ns)
 			var err error
-			pods, err = oc.Pods(ns).List(context.TODO(), metav1.ListOptions{})
+			pods, err = retryAPICall(context.Background(), "list pods in namespace "+ns, func(ctx context.Context) (*corev1.PodList, error) {
+				return oc.Pods(ns).List(ctx, metav1.ListOptions{})
+			})
 			if err != nil {
 				log.Error("Error when listing pods in ns=%s, err: %v", ns, err)
 				continue

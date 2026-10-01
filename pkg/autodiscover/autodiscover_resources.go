@@ -26,7 +26,9 @@ import (
 )
 
 func getResourceQuotas(oc corev1client.CoreV1Interface) ([]corev1.ResourceQuota, error) {
-	rql, err := oc.ResourceQuotas("").List(context.TODO(), metav1.ListOptions{})
+	rql, err := retryAPICall(context.Background(), "list resource quotas", func(ctx context.Context) (*corev1.ResourceQuotaList, error) {
+		return oc.ResourceQuotas("").List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to list resource quotas: %w", err)
 	}

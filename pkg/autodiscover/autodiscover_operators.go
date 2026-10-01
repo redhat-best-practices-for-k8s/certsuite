@@ -33,6 +33,7 @@ import (
 	olmpkgclient "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/client/clientset/versioned/typed/operators/v1"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 	release "helm.sh/helm/v4/pkg/release/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -54,7 +55,9 @@ func isIstioServiceMeshInstalled(appClient appv1client.AppsV1Interface, allNs []
 	}
 
 	// The Deployment "istiod" must be present in an active service mesh
-	_, err := appClient.Deployments(istioNamespace).Get(context.TODO(), istioDeploymentName, metav1.GetOptions{})
+	_, err := retryAPICall(context.Background(), "get Istio deployment", func(ctx context.Context) (*appsv1.Deployment, error) {
+		return appClient.Deployments(istioNamespace).Get(ctx, istioDeploymentName, metav1.GetOptions{})
+	})
 	if errors.IsNotFound(err) {
 		log.Warn("The Istio Deployment %q is missing (but the Istio namespace exists)", istioDeploymentName)
 		return false
@@ -70,7 +73,9 @@ func isIstioServiceMeshInstalled(appClient appv1client.AppsV1Interface, allNs []
 
 func findOperatorsMatchingAtLeastOneLabel(olmClient v1alpha1.OperatorsV1alpha1Interface, labels []labelObject, namespace configuration.Namespace) *olmv1Alpha.ClusterServiceVersionList {
 	log.Debug("Searching CSVs in namespace %q with labels %v", namespace, labels)
-	allCSVs, err := olmClient.ClusterServiceVersions(namespace.Name).List(context.TODO(), metav1.ListOptions{})
+	allCSVs, err := retryAPICall(context.Background(), "list CSVs in namespace "+namespace.Name, func(ctx context.Context) (*olmv1Alpha.ClusterServiceVersionList, error) {
+		return olmClient.ClusterServiceVersions(namespace.Name).List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		log.Error("Error when listing csvs in namespace %q, err: %v", namespace, err)
 		return &olmv1Alpha.ClusterServiceVersionList{}
@@ -103,7 +108,9 @@ func findOperatorsByLabels(olmClient v1alpha1.OperatorsV1alpha1Interface, labels
 			// If labels are not provided in the namespace under test, they are tested by the CNF suite
 			log.Debug("Searching CSVs in namespace %s without label", ns)
 			var err error
-			csvList, err = olmClient.ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{})
+			csvList, err = retryAPICall(context.Background(), "list CSVs in namespace "+ns.Name, func(ctx context.Context) (*olmv1Alpha.ClusterServiceVersionList, error) {
+				return olmClient.ClusterServiceVersions(ns.Name).List(ctx, metav1.ListOptions{})
+			})
 			if err != nil {
 				log.Error("Error when listing csvs in namespace %q , err: %v", ns, err)
 				continue
@@ -131,7 +138,9 @@ func findOperatorsByLabels(olmClient v1alpha1.OperatorsV1alpha1Interface, labels
 }
 
 func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err error) {
-	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
+	nsList, err := retryAPICall(context.Background(), "list namespaces", func(ctx context.Context) (*corev1.NamespaceList, error) {
+		return oc.Namespaces().List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		return allNs, fmt.Errorf("error getting all namespaces, err: %w", err)
 	}
@@ -144,7 +153,9 @@ func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err erro
 func getAllOperators(olmClient v1alpha1.OperatorsV1alpha1Interface) ([]*olmv1Alpha.ClusterServiceVersion, error) {
 	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 
-	csvList, err := olmClient.ClusterServiceVersions("").List(context.TODO(), metav1.ListOptions{})
+	csvList, err := retryAPICall(context.Background(), "list CSVs", func(ctx context.Context) (*olmv1Alpha.ClusterServiceVersionList, error) {
+		return olmClient.ClusterServiceVersions("").List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		return nil, fmt.Errorf("error when listing CSVs in all namespaces, err: %w", err)
 	}
@@ -166,7 +177,9 @@ func findSubscriptions(olmClient v1alpha1.OperatorsV1alpha1Interface, namespaces
 			displayNs = "All Namespaces"
 		}
 		log.Debug("Searching subscriptions in namespace %q", displayNs)
-		subscription, err := olmClient.Subscriptions(ns).List(context.TODO(), metav1.ListOptions{})
+		subscription, err := retryAPICall(context.Background(), "list subscriptions in namespace "+displayNs, func(ctx context.Context) (*olmv1Alpha.SubscriptionList, error) {
+			return olmClient.Subscriptions(ns).List(ctx, metav1.ListOptions{})
+		})
 		if err != nil {
 			log.Error("Error when listing subscriptions in namespace %q", ns)
 			continue
@@ -200,7 +213,13 @@ func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*rel
 			log.Error("Failed to create helm client for namespace %q, err: %v", ns, err)
 			continue
 		}
-		nsHelmchartreleases, _ := helmClient.ListDeployedReleases()
+		nsHelmchartreleases, err := retryAPICall(context.Background(), "list Helm releases in namespace "+ns, func(context.Context) ([]*release.Release, error) {
+			return helmClient.ListDeployedReleases()
+		})
+		if err != nil {
+			log.Error("Failed to list Helm releases in namespace %q, err: %v", ns, err)
+			continue
+		}
 		helmChartReleases[ns] = nsHelmchartreleases
 	}
 	return helmChartReleases
@@ -208,7 +227,9 @@ func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*rel
 
 // getAllInstallPlans is a helper function to get the all the installPlans in a cluster.
 func getAllInstallPlans(olmClient v1alpha1.OperatorsV1alpha1Interface) (out []*olmv1Alpha.InstallPlan) {
-	installPlanList, err := olmClient.InstallPlans("").List(context.TODO(), metav1.ListOptions{})
+	installPlanList, err := retryAPICall(context.Background(), "list install plans", func(ctx context.Context) (*olmv1Alpha.InstallPlanList, error) {
+		return olmClient.InstallPlans("").List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		log.Error("Unable get installplans in cluster, err: %v", err)
 		return out
@@ -221,7 +242,9 @@ func getAllInstallPlans(olmClient v1alpha1.OperatorsV1alpha1Interface) (out []*o
 
 // getAllCatalogSources is a helper function to get the all the CatalogSources in a cluster.
 func getAllCatalogSources(olmClient v1alpha1.OperatorsV1alpha1Interface) (out []*olmv1Alpha.CatalogSource) {
-	catalogSourcesList, err := olmClient.CatalogSources("").List(context.TODO(), metav1.ListOptions{})
+	catalogSourcesList, err := retryAPICall(context.Background(), "list catalog sources", func(ctx context.Context) (*olmv1Alpha.CatalogSourceList, error) {
+		return olmClient.CatalogSources("").List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		log.Error("Unable get CatalogSources in cluster, err: %v", err)
 		return out
@@ -234,7 +257,9 @@ func getAllCatalogSources(olmClient v1alpha1.OperatorsV1alpha1Interface) (out []
 
 // getAllPackageManifests is a helper function to get the all the PackageManifests in a cluster.
 func getAllPackageManifests(olmPkgClient olmpkgclient.PackageManifestInterface) (out []*olmpkgv1.PackageManifest) {
-	packageManifestsList, err := olmPkgClient.List(context.TODO(), metav1.ListOptions{})
+	packageManifestsList, err := retryAPICall(context.Background(), "list package manifests", func(ctx context.Context) (*olmpkgv1.PackageManifestList, error) {
+		return olmPkgClient.List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		log.Error("Unable get Package Manifests in cluster, err: %v", err)
 		return out

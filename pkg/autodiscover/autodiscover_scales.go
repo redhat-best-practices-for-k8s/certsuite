@@ -45,7 +45,9 @@ func GetScaleCrUnderTest(namespaces []string, crds []*apiextv1.CustomResourceDef
 				crd.Name, crdVersion.Name, crd.Spec.Group, crd.Spec.Names.Plural)
 
 			for _, ns := range namespaces {
-				crs, err := dynamicClient.Resource(gvr).Namespace(ns).List(context.TODO(), metav1.ListOptions{})
+				crs, err := retryAPICall(context.Background(), "list custom resources for "+crd.Name+" in namespace "+ns, func(ctx context.Context) (*unstructured.UnstructuredList, error) {
+					return dynamicClient.Resource(gvr).Namespace(ns).List(ctx, metav1.ListOptions{})
+				})
 				if err != nil {
 					log.Fatal("Error getting CRs of CRD %q in namespace %q, err: %v", crd.Name, ns, err)
 				}
@@ -73,7 +75,9 @@ func getCrScaleObjects(crs []unstructured.Unstructured, crd *apiextv1.CustomReso
 
 		name := cr.GetName()
 		namespace := cr.GetNamespace()
-		crScale, err := clients.ScalingClient.Scales(namespace).Get(context.TODO(), groupResourceSchema, name, metav1.GetOptions{})
+		crScale, err := retryAPICall(context.Background(), "get scale for "+namespace+"/"+name, func(ctx context.Context) (*scalingv1.Scale, error) {
+			return clients.ScalingClient.Scales(namespace).Get(ctx, groupResourceSchema, name, metav1.GetOptions{})
+		})
 		if err != nil {
 			log.Fatal("Error while getting the scale of CR=%s (CRD=%s) in namespace %s: %v", name, crd.Name, namespace, err)
 		}

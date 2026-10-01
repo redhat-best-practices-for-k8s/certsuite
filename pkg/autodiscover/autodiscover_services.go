@@ -27,7 +27,9 @@ import (
 
 func getServices(oc corev1client.CoreV1Interface, namespaces, ignoreList []string) (allServices []*corev1.Service, err error) {
 	for _, ns := range namespaces {
-		s, err := oc.Services(ns).List(context.TODO(), metav1.ListOptions{})
+		s, err := retryAPICall(context.Background(), "list services in namespace "+ns, func(ctx context.Context) (*corev1.ServiceList, error) {
+			return oc.Services(ns).List(ctx, metav1.ListOptions{})
+		})
 		if err != nil {
 			return allServices, fmt.Errorf("failed to list services in namespace %s: %w", ns, err)
 		}

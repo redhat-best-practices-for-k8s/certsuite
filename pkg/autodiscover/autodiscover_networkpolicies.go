@@ -26,7 +26,9 @@ import (
 )
 
 func getNetworkPolicies(oc networkingv1client.NetworkingV1Interface) ([]networkingv1.NetworkPolicy, error) {
-	nps, err := oc.NetworkPolicies("").List(context.TODO(), metav1.ListOptions{})
+	nps, err := retryAPICall(context.Background(), "list network policies", func(ctx context.Context) (*networkingv1.NetworkPolicyList, error) {
+		return oc.NetworkPolicies("").List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to list network policies: %w", err)
 	}
