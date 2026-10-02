@@ -37,7 +37,7 @@ Allow insecure connections to a private registry with self-signed certificates
 using `--allow-preflight-insecure` (default: false).
 
 Override the probe DaemonSet image with `--certsuite-probe-image`. The default
-is `quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.42` (see
+is `quay.io/redhat-best-practices-for-k8s/certsuite-probe:v0.0.43` (see
 `debugTag` in `version.json`).
 
 ## Client Timeout
