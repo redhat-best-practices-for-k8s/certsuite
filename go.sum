@@ -90,8 +90,8 @@ github.com/containerd/errdefs/pkg v0.3.0 h1:9IKJ06FvyNlexW690DXuQNx2KA2cUJXx151X
 github.com/containerd/errdefs/pkg v0.3.0/go.mod h1:NJw6s9HwNuRhnjJhM7pylWwMyAkmCQvQ4GpJHEqRLVk=
 github.com/containerd/log v0.1.0 h1:TCJt7ioM2cr/tfR8GPbGf9/VRAX8D2B4PjzCpfX540I=
 github.com/containerd/log v0.1.0/go.mod h1:VRRf09a7mHDIRezVKTRCrOq78v577GXq3bSa3EhrzVo=
-github.com/containerd/platforms v0.2.1 h1:zvwtM3rz2YHPQsF2CHYM8+KtB5dvhISiXh5ZpSBQv6A=
-github.com/containerd/platforms v0.2.1/go.mod h1:XHCb+2/hzowdiut9rkudds9bE5yJ7npe7dG/wG+uFPw=
+github.com/containerd/platforms v1.0.0-rc.4 h1:M42JrUT4zfZTqtkUwkr0GzmUWbfyO5VO0Q5b3op97T4=
+github.com/containerd/platforms v1.0.0-rc.4/go.mod h1:lKlMXyLybmBedS/JJm11uDofzI8L2v0J2ZbYvNsbq1A=
 github.com/containerd/ttrpc v1.2.7 h1:qIrroQvuOL9HQ1X6KHe2ohc7p+HP/0VE6XPU7elJRqQ=
 github.com/containerd/ttrpc v1.2.7/go.mod h1:YCXHsb32f+Sq5/72xHubdiJRQY9inL4a4ZQrAbN1q9o=
 github.com/containerd/typeurl v1.0.2 h1:Chlt8zIieDbzQFzXzAeBEF92KhExuE4p9p92/QmY7aY=
@@ -325,8 +325,8 @@ github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D
 github.com/mattn/go-runewidth v0.0.23 h1:7ykA0T0jkPpzSvMS5i9uoNn2Xy3R383f9HDx3RybWcw=
 github.com/mattn/go-runewidth v0.0.23/go.mod h1:XBkDxAl56ILZc9knddidhrOlY5R/pDhgLpndooCuJAs=
 github.com/mattn/go-sqlite3 v1.14.22/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
-github.com/mattn/go-sqlite3 v1.14.44 h1:3VSe+xafpbzsLbdr2AWlAZk9yRHiBhTBakioXaCKTF8=
-github.com/mattn/go-sqlite3 v1.14.44/go.mod h1:pjEuOr8IwzLJP2MfGeTb0A35jauH+C2kbHKBr7yXKVQ=
+github.com/mattn/go-sqlite3 v1.14.48 h1:7XHIgl0a8HwOaiK4E47ozLkST78rR9+OtNGx27D/TFs=
+github.com/mattn/go-sqlite3 v1.14.48/go.mod h1:6JTjA44L93a0QCyJef5YvlPoKXntQPjzWv5gtm9sB6w=
 github.com/miekg/dns v1.1.57 h1:Jzi7ApEIzwEPLHWRcafCN9LZSBbqQpxjt/wpgvg7wcM=
 github.com/miekg/dns v1.1.57/go.mod h1:uqRjCRUuEAA6qsOiJvDd+CFo/vW+y5WR6SNmHE55hZk=
 github.com/miekg/pkcs11 v1.1.2 h1:/VxmeAX5qU6Q3EwafypogwWbYryHFmF2RpkJmw3m4MQ=
@@ -393,8 +393,8 @@ github.com/operator-framework/operator-lifecycle-manager v0.42.0 h1:4mmPYowf6LmL
 github.com/operator-framework/operator-lifecycle-manager v0.42.0/go.mod h1:IPTHOZvjFxVDPMDd3GVaYlWITVURW47/Wus/qllwc+o=
 github.com/operator-framework/operator-manifest-tools v0.12.0 h1:RZU49mLdyHv2C9OMXuQXMYteKan6LahX5P66r1iLrYw=
 github.com/operator-framework/operator-manifest-tools v0.12.0/go.mod h1:Qe6H69HTSnzdMZxDZ584yQAr/+hQwEeEZI0NwmHbigg=
-github.com/operator-framework/operator-registry v1.65.0 h1:SBNp8qPRWHwMVk4WBBWeQ5pOAq/fBusacIn5zVH03rk=
-github.com/operator-framework/operator-registry v1.65.0/go.mod h1:psQG9kYyTR+2RNHgdwTvGjSbebmk9/Lzk3jS3kI36bc=
+github.com/operator-framework/operator-registry v1.73.0 h1:ZlgunOFoo0z2aR1teQs54sOkzBdEMmJKF0W6iQXNW90=
+github.com/operator-framework/operator-registry v1.73.0/go.mod h1:3nfBxNTdxK1rKTBUSilyhLNHABv1N0HUVDpX08eaM58=
 github.com/otiai10/copy v1.14.1 h1:5/7E6qsUMBaH5AnQ0sSLzzTg1oTECmcCmT6lvF45Na8=
 github.com/otiai10/copy v1.14.1/go.mod h1:oQwrEDDOci3IM8dJF0d8+jnbfPDllW6vUjNc3DoZm9I=
 github.com/otiai10/mint v1.6.3 h1:87qsV/aw1F5as1eH1zS/yqHY85ANKVMgkDrf9rcxbQs=
@@ -424,6 +424,8 @@ github.com/prometheus/procfs v0.21.1 h1:GljZCt+zSTS+NZq88cyQ1LjZ+RCHp3uVuabBWA5+
 github.com/prometheus/procfs v0.21.1/go.mod h1:aB55Cww9pdSJVHk0hUf0inxWyyjPogFIjmHKYgMKmtY=
 github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.66 h1:Rt6UycqVetFYsTlfSvEPBgDnZwwBGAlAgJ2IeQ0UNPw=
 github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.66/go.mod h1:Q6l1462a89dYcLKhecQpvMtrmGrkNESL2MNjQM7wWCI=
+github.com/redhat-best-practices-for-k8s/checks v0.0.33-0.20260831145425-800c4d0cbe83 h1:wFSakRL2+RvMuhqV0GdXv03XzJcM43jrxejgWmu6iTE=
+github.com/redhat-best-practices-for-k8s/checks v0.0.33-0.20260831145425-800c4d0cbe83/go.mod h1:L6+yq1Vy9FZT8DTql0cDLiQl3mPMls6fcuB/GJ7Xr6E=
 github.com/redhat-best-practices-for-k8s/oct v0.0.67 h1:nvqQUBsrmO85mUwG5i+YF2A4EZIB5nUqXmbma7Dow4g=
 github.com/redhat-best-practices-for-k8s/oct v0.0.67/go.mod h1:dmMmZEon662ZZQC71CGIL/b6Ay1+nckJcLe6CPlzbyY=
 github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.76 h1:2H9bdSuCeXFZgX0AtG9ArcikCj9N8HjXxtCHlJJHh+g=
@@ -568,8 +570,8 @@ go.opentelemetry.io/otel/trace v1.46.0 h1:OULy7ccdJnZtJ0UDYFOIGaCmiWzJ8Vi2G/Rsu6
 go.opentelemetry.io/otel/trace v1.46.0/go.mod h1:J7GAXweO77XSFkB/rmAqk9D6ihszhFjLU+d9WuUxDLI=
 go.opentelemetry.io/proto/otlp v1.11.0 h1:5rrYs0Ykyj50sdU/JU0x8etU+LubXWb+gED6TbEdMIk=
 go.opentelemetry.io/proto/otlp v1.11.0/go.mod h1:SmVizdCOAm3XBtG1g1NnOdhW6jtddT72hLMhv8VwA8E=
-go.podman.io/common v0.67.0 h1:6Ci5oU1ek08OAxBLkHEqSyWmjNh5zf03PRqZ04cPdwU=
-go.podman.io/common v0.67.0/go.mod h1:sB9L8LMtmf5Hpek2qkEyRrcSzpb+gYpG3vq5Khima3U=
+go.podman.io/common v0.68.1 h1:y8NoHLidghpgHtWtwB9+pN7cHhIDe33g1sB4RFCRvKI=
+go.podman.io/common v0.68.1/go.mod h1:zVzufHkRpLueF6NW6N+fAs1C2METdzYcfD9zuw+oJKA=
 go.podman.io/image/v5 v5.40.0 h1:gNQvj343Eb4juCitUBkuDz1T82Zpp6nhgMEXzNfCges=
 go.podman.io/image/v5 v5.40.0/go.mod h1:qgXf1abXJ+2l01pL8+CljaMKryeo6ahaHO7H51ooKIc=
 go.podman.io/storage v1.63.0 h1:bj/pAWFhChbuBmejzno0iQLhU7FevGVXepRXm5pFGeA=

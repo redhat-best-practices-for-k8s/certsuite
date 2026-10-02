@@ -6,7 +6,6 @@ toolchain go1.27.1
 
 require (
 	github.com/Masterminds/semver/v3 v3.5.0
-	github.com/blang/semver/v4 v4.0.0
 	github.com/fatih/color v1.19.0
 	github.com/go-logr/logr v1.4.4
 	github.com/go-logr/stdr v1.2.2
@@ -18,8 +17,9 @@ require (
 	github.com/openshift/api v0.0.0-20260204104751-e09e5a4ebcd0
 	github.com/openshift/client-go v0.0.0-20260108185524-48f4ccfc4e13
 	github.com/operator-framework/api v0.45.0
-	github.com/operator-framework/operator-lifecycle-manager v0.42.0
+	github.com/operator-framework/operator-lifecycle-manager v0.46.0
 	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.66
+	github.com/redhat-best-practices-for-k8s/checks v0.0.33-0.20260831145425-800c4d0cbe83
 	github.com/redhat-best-practices-for-k8s/oct v0.0.67
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.76
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20260421203005-eb87e5b2d67a
@@ -57,6 +57,7 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
+	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.10.0 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
@@ -140,7 +141,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
 	github.com/operator-framework/operator-manifest-tools v0.12.0 // indirect
-	github.com/operator-framework/operator-registry v1.65.0 // indirect
+	github.com/operator-framework/operator-registry v1.73.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
@@ -160,6 +161,7 @@ require (
 	github.com/spf13/afero v1.15.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
 	github.com/spf13/viper v1.21.0 // indirect
+	github.com/stretchr/objx v0.5.3 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tetratelabs/wabin v0.0.0-20230304001439-f6f874872834 // indirect
 	github.com/tetratelabs/wazero v1.12.0 // indirect
