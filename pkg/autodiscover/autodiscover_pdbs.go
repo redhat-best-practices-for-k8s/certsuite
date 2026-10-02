@@ -28,7 +28,9 @@ import (
 func getPodDisruptionBudgets(oc policyv1client.PolicyV1Interface, namespaces []string) ([]policyv1.PodDisruptionBudget, error) {
 	podDisruptionBudgets := []policyv1.PodDisruptionBudget{}
 	for _, ns := range namespaces {
-		pdbs, err := oc.PodDisruptionBudgets(ns).List(context.TODO(), metav1.ListOptions{})
+		pdbs, err := retryAPICall(context.Background(), "list pod disruption budgets in namespace "+ns, func(ctx context.Context) (*policyv1.PodDisruptionBudgetList, error) {
+			return oc.PodDisruptionBudgets(ns).List(ctx, metav1.ListOptions{})
+		})
 		if err != nil {
 			return nil, fmt.Errorf("failed to list pod disruption budgets in namespace %s: %w", ns, err)
 		}

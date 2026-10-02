@@ -26,7 +26,9 @@ import (
 
 func getServiceAccounts(oc corev1client.CoreV1Interface, namespaces []string) (servicesAccounts []*corev1.ServiceAccount, err error) {
 	for _, ns := range namespaces {
-		s, err := oc.ServiceAccounts(ns).List(context.TODO(), metav1.ListOptions{})
+		s, err := retryAPICall(context.Background(), "list service accounts in namespace "+ns, func(ctx context.Context) (*corev1.ServiceAccountList, error) {
+			return oc.ServiceAccounts(ns).List(ctx, metav1.ListOptions{})
+		})
 		if err != nil {
 			return servicesAccounts, fmt.Errorf("failed to list service accounts in namespace %s: %w", ns, err)
 		}

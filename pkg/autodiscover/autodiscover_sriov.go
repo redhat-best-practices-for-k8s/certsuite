@@ -37,7 +37,9 @@ func getSriovNetworks(client *clientsholder.ClientsHolder, namespaces []string) 
 	var sriovNetworkList []unstructured.Unstructured
 
 	for _, ns := range namespaces {
-		snl, err := client.DynamicClient.Resource(SriovNetworkGVR).Namespace(ns).List(context.TODO(), metav1.ListOptions{})
+		snl, err := retryAPICall(context.Background(), "list SR-IOV networks in namespace "+ns, func(ctx context.Context) (*unstructured.UnstructuredList, error) {
+			return client.DynamicClient.Resource(SriovNetworkGVR).Namespace(ns).List(ctx, metav1.ListOptions{})
+		})
 		if err != nil && !kerrors.IsNotFound(err) {
 			return nil, fmt.Errorf("failed to list SRIOV networks in namespace %s: %w", ns, err)
 		}
@@ -59,7 +61,9 @@ func getSriovNetworkNodePolicies(client *clientsholder.ClientsHolder, namespaces
 	var sriovNetworkNodePolicyList []unstructured.Unstructured
 
 	for _, ns := range namespaces {
-		snnp, err := client.DynamicClient.Resource(SriovNetworkNodePolicyGVR).Namespace(ns).List(context.TODO(), metav1.ListOptions{})
+		snnp, err := retryAPICall(context.Background(), "list SR-IOV network node policies in namespace "+ns, func(ctx context.Context) (*unstructured.UnstructuredList, error) {
+			return client.DynamicClient.Resource(SriovNetworkNodePolicyGVR).Namespace(ns).List(ctx, metav1.ListOptions{})
+		})
 		if err != nil && !kerrors.IsNotFound(err) {
 			return nil, fmt.Errorf("failed to list SRIOV network node policies in namespace %s: %w", ns, err)
 		}

@@ -15,7 +15,9 @@ func getNetworkAttachmentDefinitions(client *clientsholder.ClientsHolder, namesp
 	var nadList []nadClient.NetworkAttachmentDefinition
 
 	for _, ns := range namespaces {
-		nad, err := client.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(ns).List(context.TODO(), metav1.ListOptions{})
+		nad, err := retryAPICall(context.Background(), "list network attachment definitions in namespace "+ns, func(ctx context.Context) (*nadClient.NetworkAttachmentDefinitionList, error) {
+			return client.CNCFNetworkingClient.K8sCniCncfIoV1().NetworkAttachmentDefinitions(ns).List(ctx, metav1.ListOptions{})
+		})
 		if err != nil && !kerrors.IsNotFound(err) {
 			return nil, fmt.Errorf("failed to list network attachment definitions in namespace %s: %w", ns, err)
 		}

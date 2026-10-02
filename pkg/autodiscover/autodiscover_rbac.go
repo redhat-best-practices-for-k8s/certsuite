@@ -28,7 +28,9 @@ import (
 // getRoleBindings returns all of the rolebindings in the cluster
 func getRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.RoleBinding, error) {
 	// Get all of the rolebindings from all namespaces
-	roleList, roleErr := client.RoleBindings("").List(context.TODO(), metav1.ListOptions{})
+	roleList, roleErr := retryAPICall(context.Background(), "list role bindings", func(ctx context.Context) (*rbacv1.RoleBindingList, error) {
+		return client.RoleBindings("").List(ctx, metav1.ListOptions{})
+	})
 	if roleErr != nil {
 		log.Error("Executing rolebinding command failed with error: %v", roleErr)
 		return nil, roleErr
@@ -40,7 +42,9 @@ func getRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.RoleBinding, 
 func getClusterRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.ClusterRoleBinding, error) {
 	// Get all of the clusterrolebindings from the cluster
 	// These are not namespaced so we want all of them
-	crbList, crbErr := client.ClusterRoleBindings().List(context.TODO(), metav1.ListOptions{})
+	crbList, crbErr := retryAPICall(context.Background(), "list cluster role bindings", func(ctx context.Context) (*rbacv1.ClusterRoleBindingList, error) {
+		return client.ClusterRoleBindings().List(ctx, metav1.ListOptions{})
+	})
 	if crbErr != nil {
 		log.Error("Executing clusterrolebinding command failed with error: %v", crbErr)
 		return nil, crbErr
@@ -51,7 +55,9 @@ func getClusterRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.Cluste
 // getRoles returns all of the roles in the cluster
 func getRoles(client rbacv1typed.RbacV1Interface) ([]rbacv1.Role, error) {
 	// Get all of the roles from all namespaces
-	roleList, roleErr := client.Roles("").List(context.TODO(), metav1.ListOptions{})
+	roleList, roleErr := retryAPICall(context.Background(), "list roles", func(ctx context.Context) (*rbacv1.RoleList, error) {
+		return client.Roles("").List(ctx, metav1.ListOptions{})
+	})
 	if roleErr != nil {
 		log.Error("Executing roles command failed with error: %v", roleErr)
 		return nil, roleErr

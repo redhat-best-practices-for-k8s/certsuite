@@ -75,7 +75,9 @@ func findControllersByLabels[T any](
 }
 
 func listDeployments(appClient appv1client.AppsV1Interface, ns string) ([]appsv1.Deployment, error) {
-	dps, err := appClient.Deployments(ns).List(context.TODO(), metav1.ListOptions{})
+	dps, err := retryAPICall(context.Background(), "list deployments in namespace "+ns, func(ctx context.Context) (*appsv1.DeploymentList, error) {
+		return appClient.Deployments(ns).List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +85,9 @@ func listDeployments(appClient appv1client.AppsV1Interface, ns string) ([]appsv1
 }
 
 func listStatefulSets(appClient appv1client.AppsV1Interface, ns string) ([]appsv1.StatefulSet, error) {
-	ss, err := appClient.StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
+	ss, err := retryAPICall(context.Background(), "list statefulsets in namespace "+ns, func(ctx context.Context) (*appsv1.StatefulSetList, error) {
+		return appClient.StatefulSets(ns).List(ctx, metav1.ListOptions{})
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -107,14 +111,18 @@ func getStatefulSetName(ss *appsv1.StatefulSet) string {
 }
 
 func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.Deployment, error) {
-	dp, err := appClient.Deployments(namespace).Get(context.TODO(), name, metav1.GetOptions{})
+	dp, err := retryAPICall(context.Background(), "get deployment "+namespace+"/"+name, func(ctx context.Context) (*appsv1.Deployment, error) {
+		return appClient.Deployments(namespace).Get(ctx, name, metav1.GetOptions{})
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to get deployment %s/%s: %w", namespace, name, err)
 	}
 	return dp, nil
 }
 func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.StatefulSet, error) {
-	ss, err := appClient.StatefulSets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
+	ss, err := retryAPICall(context.Background(), "get statefulset "+namespace+"/"+name, func(ctx context.Context) (*appsv1.StatefulSet, error) {
+		return appClient.StatefulSets(namespace).Get(ctx, name, metav1.GetOptions{})
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to get statefulset %s/%s: %w", namespace, name, err)
 	}
@@ -122,7 +130,9 @@ func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, nam
 }
 
 func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name string, groupResourceSchema schema.GroupResource) (*scalingv1.Scale, error) {
-	crScale, err := scalesGetter.Scales(ns).Get(context.TODO(), groupResourceSchema, name, metav1.GetOptions{})
+	crScale, err := retryAPICall(context.Background(), "get scale for "+ns+"/"+name, func(ctx context.Context) (*scalingv1.Scale, error) {
+		return scalesGetter.Scales(ns).Get(ctx, groupResourceSchema, name, metav1.GetOptions{})
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to get scale for %s/%s: %w", ns, name, err)
 	}
@@ -164,7 +174,9 @@ func findStatefulSetsByLabels(
 func findHpaControllers(cs kubernetes.Interface, namespaces []string) []*scalingv1.HorizontalPodAutoscaler {
 	var m []*scalingv1.HorizontalPodAutoscaler
 	for _, ns := range namespaces {
-		hpas, err := cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(context.TODO(), metav1.ListOptions{})
+		hpas, err := retryAPICall(context.Background(), "list horizontal pod autoscalers in namespace "+ns, func(ctx context.Context) (*scalingv1.HorizontalPodAutoscalerList, error) {
+			return cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(ctx, metav1.ListOptions{})
+		})
 		if err != nil {
 			log.Error("Cannot list HorizontalPodAutoscalers on namespace %q, err: %v", ns, err)
 			return m
