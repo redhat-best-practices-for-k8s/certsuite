@@ -53,21 +53,22 @@ func LoadCatalogChecks() {
 			remediation = "If consumers of your operator may need to do so on a restricted network, implement the guidelines outlined in OCP documentation: https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/disconnected_environments/olm-restricted-networks"
 		}
 
-		aID := identifiers.AddCatalogEntry(
-			c.Name(),
-			common.PreflightTestKey,
-			c.Metadata().Description,
-			remediation,
-			identifiers.NoDocumentedProcess,
-			identifiers.NoDocLink,
-			true,
-			map[string]string{
+		aID := identifiers.AddCatalogEntry(&identifiers.CatalogEntry{
+			ID:          c.Name(),
+			Suite:       common.PreflightTestKey,
+			Description: c.Metadata().Description,
+			Remediation: remediation,
+			Exception:   identifiers.NoDocumentedProcess,
+			Reference:   identifiers.NoDocLink,
+			QE:          true,
+			CategoryClassification: map[string]string{
 				identifiers.FarEdge:  identifiers.Optional,
 				identifiers.Telco:    identifiers.Optional,
 				identifiers.NonTelco: identifiers.Optional,
 				identifiers.Extended: identifiers.Optional,
 			},
-			identifiers.TagPreflight)
+			Tags: []string{identifiers.TagPreflight},
+		})
 
 		checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(aID)))
 	}
