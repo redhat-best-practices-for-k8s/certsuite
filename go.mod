@@ -19,9 +19,9 @@ require (
 	github.com/openshift/client-go v0.0.0-20260108185524-48f4ccfc4e13
 	github.com/operator-framework/api v0.45.0
 	github.com/operator-framework/operator-lifecycle-manager v0.42.0
-	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.66
-	github.com/redhat-best-practices-for-k8s/oct v0.0.67
-	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.76
+	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.67
+	github.com/redhat-best-practices-for-k8s/oct v0.0.68
+	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.77
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20260421203005-eb87e5b2d67a
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/spf13/cobra v1.10.2
@@ -155,7 +155,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466 // indirect
-	github.com/sirupsen/logrus v1.9.4 // indirect
+	github.com/sirupsen/logrus v1.10.2 // indirect
 	github.com/sourcegraph/conc v0.3.1-0.20240121214520-5f936abd7ae8 // indirect
 	github.com/spf13/afero v1.15.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
