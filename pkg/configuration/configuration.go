@@ -67,7 +67,7 @@ type ManagedDeploymentsStatefulsets struct {
 // ConnectAPIConfig contains the configuration for the Red Hat Connect API
 type ConnectAPIConfig struct {
 	// APIKey is the API key for the Red Hat Connect
-	APIKey string `yaml:"apiKey" json:"apiKey"`
+	APIKey string `yaml:"apiKey" json:"-"`
 	// ProjectID is the project ID for the Red Hat Connect
 	ProjectID string `yaml:"projectID" json:"projectID"`
 	// BaseURL is the base URL for the Red Hat Connect API
@@ -104,7 +104,7 @@ type TestConfiguration struct {
 	// Collector's parameters
 	ExecutedBy           string `yaml:"executedBy,omitempty" json:"executedBy,omitempty"`
 	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`
-	CollectorAppPassword string `yaml:"collectorAppPassword,omitempty" json:"collectorAppPassword,omitempty"`
+	CollectorAppPassword string `yaml:"collectorAppPassword,omitempty" json:"-"`
 	CollectorAppEndpoint string `yaml:"collectorAppEndpoint,omitempty" json:"collectorAppEndpoint,omitempty"`
 	// ConnectAPIConfig contains the configuration for the Red Hat Connect API
 	ConnectAPIConfig ConnectAPIConfig `yaml:"connectAPIConfig,omitempty" json:"connectAPIConfig,omitempty"`
