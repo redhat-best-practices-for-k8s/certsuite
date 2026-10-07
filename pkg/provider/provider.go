@@ -150,9 +150,9 @@ type TestEnvironment struct { // rename this with testTarget
 	StorageClassList             []storagev1.StorageClass
 	ExecutedBy                   string
 	PartnerName                  string
-	CollectorAppPassword         string
+	CollectorAppPassword         string `json:"-"`
 	CollectorAppEndpoint         string
-	ConnectAPIKey                string
+	ConnectAPIKey                string `json:"-"`
 	ConnectProjectID             string
 	ConnectAPIBaseURL            string
 	ConnectAPIProxyURL           string

@@ -24,6 +24,7 @@ import (
 	"time"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/stretchr/testify/assert"
@@ -352,13 +353,54 @@ func TestClaimBuilderReset(t *testing.T) {
 	assert.True(t, resetTime.After(pastTime))
 }
 
-func TestMarshalConfigurations(t *testing.T) {
+func TestMarshalConfigurationsRedactsCredentials(t *testing.T) {
 	t.Parallel()
 
-	env := &provider.TestEnvironment{}
+	const (
+		collectorConfigPassword  = "collector-config-password"
+		connectConfigAPIKey      = "connect-config-api-key"
+		collectorRuntimePassword = "collector-runtime-password"
+		connectRuntimeAPIKey     = "connect-runtime-api-key"
+	)
+
+	env := &provider.TestEnvironment{
+		Namespaces: []string{"target-namespace"},
+		Config: configuration.TestConfiguration{
+			CollectorAppPassword: collectorConfigPassword,
+			ConnectAPIConfig: configuration.ConnectAPIConfig{
+				APIKey:    connectConfigAPIKey,
+				ProjectID: "connect-project-id",
+			},
+		},
+		CollectorAppPassword: collectorRuntimePassword,
+		ConnectAPIKey:        connectRuntimeAPIKey,
+	}
 	data, err := MarshalConfigurations(env)
 	require.NoError(t, err)
 	assert.NotEmpty(t, data)
+	for _, secret := range []string{
+		collectorConfigPassword,
+		connectConfigAPIKey,
+		collectorRuntimePassword,
+		connectRuntimeAPIKey,
+	} {
+		assert.NotContains(t, string(data), secret)
+	}
+	for _, credentialField := range []string{
+		`"CollectorAppPassword"`,
+		`"ConnectAPIKey"`,
+		`"collectorAppPassword"`,
+		`"apiKey"`,
+	} {
+		assert.NotContains(t, string(data), credentialField)
+	}
+	assert.Contains(t, string(data), "target-namespace")
+	assert.Contains(t, string(data), "connect-project-id")
+
+	assert.Equal(t, collectorConfigPassword, env.Config.CollectorAppPassword)
+	assert.Equal(t, connectConfigAPIKey, env.Config.ConnectAPIConfig.APIKey)
+	assert.Equal(t, collectorRuntimePassword, env.CollectorAppPassword)
+	assert.Equal(t, connectRuntimeAPIKey, env.ConnectAPIKey)
 
 	var parsed map[string]interface{}
 	err = j.Unmarshal(data, &parsed)
