@@ -135,14 +135,12 @@ jobs:
           exit 1
 
       - name: Deploy the OCP Cluster
-        uses: palmsoftware/quick-ocp@03c1f061bd0cd62829cc7563bc3ceb8f93b94192 # v1.0.5
+        uses: palmsoftware/quick-ocp@4926cc468c13717996450985954f8ac44eda2ef3 # v1.0.6
         with:
-          ocpPullSecret: $OCP_PULL_SECRET
+          ocpPullSecret: ${{ secrets.CRC_PULL_SECRET }}
           bundleCache: true
           desiredOCPVersion: ${{ inputs.ocp-version }}
           waitForOperatorsReady: true
-        env:
-          OCP_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
 
       - name: Clone the QE repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
