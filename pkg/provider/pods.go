@@ -44,7 +44,7 @@ const (
 
 type Pod struct {
 	*corev1.Pod
-	AllServiceAccountsMap   *map[string]*corev1.ServiceAccount
+	AllServiceAccountsMap   *map[string]*corev1.ServiceAccount `json:"-"`
 	Containers              []*Container
 	MultusNetworkInterfaces map[string]CniNetworkInterface
 	MultusPCIs              []string
