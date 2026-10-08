@@ -20,6 +20,7 @@ import (
 	j "encoding/json"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -29,6 +30,8 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestPopulateXMLFromClaim(t *testing.T) {
@@ -405,6 +408,140 @@ func TestMarshalConfigurationsRedactsCredentials(t *testing.T) {
 	var parsed map[string]interface{}
 	err = j.Unmarshal(data, &parsed)
 	assert.NoError(t, err)
+}
+
+func newClaimConfigurationTestEnvironment() *provider.TestEnvironment {
+	serviceAccount := &corev1.ServiceAccount{
+		ObjectMeta: metav1.ObjectMeta{Name: "builder", Namespace: "target"},
+	}
+	serviceAccounts := map[string]*corev1.ServiceAccount{"targetbuilder": serviceAccount}
+	newPod := func(name string) *provider.Pod {
+		return &provider.Pod{
+			Pod: &corev1.Pod{
+				ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: "target"},
+				Spec:       corev1.PodSpec{ServiceAccountName: "builder"},
+			},
+			AllServiceAccountsMap: &serviceAccounts,
+		}
+	}
+
+	return &provider.TestEnvironment{
+		Pods:                  []*provider.Pod{newPod("test")},
+		AllPods:               []*provider.Pod{newPod("all")},
+		CSVToPodListMap:       map[string][]*provider.Pod{"csv": {newPod("csv")}},
+		AllServiceAccounts:    []*corev1.ServiceAccount{serviceAccount},
+		AllServiceAccountsMap: serviceAccounts,
+		ServiceAccounts:       []*corev1.ServiceAccount{serviceAccount},
+		Operators:             []*provider.Operator{{OperandPods: map[string]*provider.Pod{"operand": newPod("operand")}}},
+		AllOperators:          []*provider.Operator{{OperandPods: map[string]*provider.Pod{"all-operand": newPod("all-operand")}}},
+	}
+}
+
+func TestMarshalConfigurationsOmitsPodServiceAccountMap(t *testing.T) {
+	t.Parallel()
+
+	env := newClaimConfigurationTestEnvironment()
+	data, err := MarshalConfigurations(env)
+	require.NoError(t, err)
+
+	var configurations map[string]interface{}
+	require.NoError(t, j.Unmarshal(data, &configurations))
+	serviceAccounts, ok := configurations["AllServiceAccountsMap"].(map[string]interface{})
+	require.True(t, ok)
+	assert.Contains(t, serviceAccounts, "targetbuilder")
+	assert.Len(t, configurations["AllServiceAccounts"], 1)
+	assert.Len(t, configurations["testServiceAccounts"], 1)
+	assert.Equal(t, 1, strings.Count(string(data), `"AllServiceAccountsMap"`))
+
+	assertPodMapOmitted := func(pod interface{}) {
+		podObject, ok := pod.(map[string]interface{})
+		require.True(t, ok)
+		assert.NotContains(t, podObject, "AllServiceAccountsMap")
+	}
+	for _, field := range []string{"testPods", "AllPods"} {
+		pods, ok := configurations[field].([]interface{})
+		require.True(t, ok)
+		require.Len(t, pods, 1)
+		assertPodMapOmitted(pods[0])
+	}
+	csvPods, ok := configurations["CSVToPodListMap"].(map[string]interface{})
+	require.True(t, ok)
+	csvPodList, ok := csvPods["csv"].([]interface{})
+	require.True(t, ok)
+	require.Len(t, csvPodList, 1)
+	assertPodMapOmitted(csvPodList[0])
+	for _, testCase := range []struct {
+		field       string
+		operandName string
+	}{
+		{field: "testOperators", operandName: "operand"},
+		{field: "AllOperators", operandName: "all-operand"},
+	} {
+		operators, ok := configurations[testCase.field].([]interface{})
+		require.True(t, ok)
+		require.Len(t, operators, 1)
+		operator, ok := operators[0].(map[string]interface{})
+		require.True(t, ok)
+		operandPods, ok := operator["OperandPods"].(map[string]interface{})
+		require.True(t, ok)
+		assertPodMapOmitted(operandPods[testCase.operandName])
+	}
+}
+
+func TestGetConfigurationFromClaimFileRestoresPodServiceAccountMaps(t *testing.T) {
+	t.Parallel()
+
+	env := newClaimConfigurationTestEnvironment()
+	configurationsJSON, err := MarshalConfigurations(env)
+	require.NoError(t, err)
+	configurations := map[string]interface{}{}
+	UnmarshalConfigurations(configurationsJSON, configurations)
+
+	claimRoot := &claim.Root{Claim: &claim.Claim{
+		Metadata:       &claim.Metadata{StartTime: "2024-01-15 10:00:00 +0000 UTC"},
+		Versions:       &claim.Versions{CertSuite: "test"},
+		Configurations: configurations,
+		Results:        map[string]claim.Result{},
+	}}
+	claimFile := t.TempDir() + "/claim.json"
+	require.NoError(t, os.WriteFile(claimFile, MarshalClaimOutput(claimRoot), claimFilePermissions))
+
+	loaded, err := GetConfigurationFromClaimFile(claimFile)
+	require.NoError(t, err)
+	require.NotNil(t, loaded.AllServiceAccountsMap)
+	require.Len(t, loaded.AllServiceAccountsMap, 1)
+
+	loadedPods := []*provider.Pod{loaded.Pods[0], loaded.AllPods[0], loaded.CSVToPodListMap["csv"][0],
+		loaded.Operators[0].OperandPods["operand"], loaded.AllOperators[0].OperandPods["all-operand"]}
+	for _, pod := range loadedPods {
+		require.NotNil(t, pod.AllServiceAccountsMap)
+		assert.Same(t, &loaded.AllServiceAccountsMap, pod.AllServiceAccountsMap)
+		automount, err := pod.IsAutomountServiceAccountSetOnSA()
+		assert.NoError(t, err)
+		assert.Nil(t, automount)
+	}
+}
+
+func TestReconnectPodServiceAccountMapsHandlesNilEntries(t *testing.T) {
+	t.Parallel()
+
+	assert.NotPanics(t, func() { reconnectPodServiceAccountMaps(nil) })
+
+	env := &provider.TestEnvironment{
+		Pods:            []*provider.Pod{nil},
+		AllPods:         []*provider.Pod{nil},
+		CSVToPodListMap: map[string][]*provider.Pod{"csv": {nil}},
+		Operators: []*provider.Operator{
+			nil,
+			{OperandPods: map[string]*provider.Pod{"nil": nil}},
+		},
+		AllOperators: []*provider.Operator{
+			nil,
+			{OperandPods: map[string]*provider.Pod{"nil": nil}},
+		},
+	}
+
+	assert.NotPanics(t, func() { reconnectPodServiceAccountMaps(env) })
 }
 
 func TestUnmarshalConfigurations(t *testing.T) {

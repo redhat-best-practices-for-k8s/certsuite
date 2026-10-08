@@ -359,7 +359,41 @@ func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvi
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal config from claim file: %w", err)
 	}
+	reconnectPodServiceAccountMaps(env)
 	return env, nil
+}
+
+func reconnectPodServiceAccountMaps(env *provider.TestEnvironment) {
+	if env == nil {
+		return
+	}
+
+	connectPodServiceAccountMap := func(pod *provider.Pod) {
+		if pod != nil {
+			pod.AllServiceAccountsMap = &env.AllServiceAccountsMap
+		}
+	}
+	connectPodSliceServiceAccountMaps := func(pods []*provider.Pod) {
+		for _, pod := range pods {
+			connectPodServiceAccountMap(pod)
+		}
+	}
+
+	connectPodSliceServiceAccountMaps(env.Pods)
+	connectPodSliceServiceAccountMaps(env.AllPods)
+	for _, pods := range env.CSVToPodListMap {
+		connectPodSliceServiceAccountMaps(pods)
+	}
+	for _, operators := range [][]*provider.Operator{env.Operators, env.AllOperators} {
+		for _, operator := range operators {
+			if operator == nil {
+				continue
+			}
+			for _, pod := range operator.OperandPods {
+				connectPodServiceAccountMap(pod)
+			}
+		}
+	}
 }
 
 // MarshalClaimOutput is a helper function to serialize a claim as JSON for output.  In the event of an error, this
