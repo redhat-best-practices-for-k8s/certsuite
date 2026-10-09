@@ -104,10 +104,10 @@ func skipAll(checks []*Check, reason string) {
 	}
 }
 
-func onFailure(failureType, failureMsg string, group *ChecksGroup, currentCheck *Check, remainingChecks []*Check) error {
+func onFailure(errorType, failureType, failureMsg string, group *ChecksGroup, currentCheck *Check, remainingChecks []*Check) error {
 	// Set current Check's result as error.
 	fmt.Printf("\r[ %s ] %-60s\n", cli.CheckResultTagError, currentCheck.ID)
-	currentCheck.SetResultError(failureType + ": " + failureMsg)
+	currentCheck.SetResultError(errorType, failureType+": "+failureMsg)
 	// Set the remaining checks as skipped, using a simplified reason msg.
 	reason := "group " + group.name + " " + failureType
 	skipAll(remainingChecks, reason)
@@ -127,14 +127,14 @@ func runBeforeAllFn(group *ChecksGroup, checks []*Check) (err error) {
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
 			log.Error("Panic while running beforeAll function:\n%v", stackTrace)
 			// Set first check's result as error and skip the remaining ones.
-			err = onFailure("beforeAll function panicked", "\n:"+stackTrace, group, firstCheck, checks)
+			err = onFailure(ErrorTypeLifecyclePanic, "beforeAll function panicked", "\n:"+stackTrace, group, firstCheck, checks[1:])
 		}
 	}()
 
 	if err := group.beforeAllFn(checks); err != nil {
 		log.Error("Unexpected error while running beforeAll function: %v", err)
 		// Set first check's result as error and skip the remaining ones.
-		return onFailure("beforeAll function unexpected error", err.Error(), group, firstCheck, checks)
+		return onFailure(ErrorTypeLifecycleError, "beforeAll function unexpected error", err.Error(), group, firstCheck, checks[1:])
 	}
 
 	return nil
@@ -154,14 +154,14 @@ func runAfterAllFn(group *ChecksGroup, checks []*Check) (err error) {
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
 			log.Error("Panic while running afterAll function:\n%v", stackTrace)
 			// Set last check's result as error, no need to skip anyone.
-			err = onFailure("afterAll function panicked", "\n: "+stackTrace, group, lastCheck, zeroRemainingChecks)
+			err = onFailure(ErrorTypeLifecyclePanic, "afterAll function panicked", "\n: "+stackTrace, group, lastCheck, zeroRemainingChecks)
 		}
 	}()
 
 	if err := group.afterAllFn(group.checks); err != nil {
 		log.Error("Unexpected error while running afterAll function: %v", err.Error())
 		// Set last check's result as error, no need to skip anyone.
-		return onFailure("afterAll function unexpected error", err.Error(), group, lastCheck, zeroRemainingChecks)
+		return onFailure(ErrorTypeLifecycleError, "afterAll function unexpected error", err.Error(), group, lastCheck, zeroRemainingChecks)
 	}
 
 	return nil
@@ -178,14 +178,14 @@ func runBeforeEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check)
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
 			log.Error("Panic while running beforeEach function:\n%v", stackTrace)
 			// Set last check's result as error, no need to skip anyone.
-			err = onFailure("beforeEach function panicked", "\n: "+stackTrace, group, check, remainingChecks)
+			err = onFailure(ErrorTypeLifecyclePanic, "beforeEach function panicked", "\n: "+stackTrace, group, check, remainingChecks)
 		}
 	}()
 
 	if err := group.beforeEachFn(check); err != nil {
 		log.Error("Unexpected error while running beforeEach function:\n%v", err.Error())
 		// Set last check's result as error, no need to skip anyone.
-		return onFailure("beforeEach function unexpected error", err.Error(), group, check, remainingChecks)
+		return onFailure(ErrorTypeLifecycleError, "beforeEach function unexpected error", err.Error(), group, check, remainingChecks)
 	}
 
 	return nil
@@ -203,14 +203,14 @@ func runAfterEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) 
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
 			log.Error("Panic while running afterEach function:\n%v", stackTrace)
 			// Set last check's result as error, no need to skip anyone.
-			err = onFailure("afterEach function panicked", "\n: "+stackTrace, group, check, remainingChecks)
+			err = onFailure(ErrorTypeLifecyclePanic, "afterEach function panicked", "\n: "+stackTrace, group, check, remainingChecks)
 		}
 	}()
 
 	if err := group.afterEachFn(check); err != nil {
 		log.Error("Unexpected error while running afterEach function:\n%v", err.Error())
 		// Set last check's result as error, no need to skip anyone.
-		return onFailure("afterEach function unexpected error", err.Error(), group, check, remainingChecks)
+		return onFailure(ErrorTypeLifecycleError, "afterEach function unexpected error", err.Error(), group, check, remainingChecks)
 	}
 
 	return nil
@@ -279,13 +279,13 @@ func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err e
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
 
 			check.LogError("Panic while running check %s function:\n%v", check.ID, stackTrace)
-			err = onFailure(fmt.Sprintf("check %s function panic", check.ID), stackTrace, group, check, remainingChecks)
+			err = onFailure(ErrorTypeCheckPanic, fmt.Sprintf("check %s function panic", check.ID), stackTrace, group, check, remainingChecks)
 		}
 	}()
 
 	if err := check.Run(); err != nil {
 		check.LogError("Unexpected error while running check %s function: %v", check.ID, err.Error())
-		return onFailure(fmt.Sprintf("check %s function unexpected error", check.ID), err.Error(), group, check, remainingChecks)
+		return onFailure(ErrorTypeCheckError, fmt.Sprintf("check %s function unexpected error", check.ID), err.Error(), group, check, remainingChecks)
 	}
 
 	return nil

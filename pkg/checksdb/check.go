@@ -20,6 +20,16 @@ const (
 	CheckResultAborted = "aborted"
 )
 
+// Error types identify the source of a check error in claims and JUnit output.
+const (
+	ErrorTypeProbeExecFailure = "probe-exec-failure"
+	ErrorTypeCheckPanic       = "check-panic"
+	ErrorTypeCheckError       = "check-error"
+	ErrorTypeLifecyclePanic   = "lifecycle-panic"
+	ErrorTypeLifecycleError   = "lifecycle-error"
+	ErrorTypeParallelPanic    = "parallel-panic"
+)
+
 type skipMode int
 
 const (
@@ -48,6 +58,8 @@ type Check struct {
 	CapturedOutput string
 	details        string
 	skipReason     string
+	errorType      string
+	errorReason    string
 
 	logger     *log.Logger
 	logArchive *strings.Builder
@@ -225,9 +237,10 @@ func (check *Check) SetResultSkipped(reason string) {
 
 	check.Result = CheckResultSkipped
 	check.skipReason = reason
+	check.errorType, check.errorReason = "", ""
 }
 
-func (check *Check) SetResultError(reason string) {
+func (check *Check) SetResultError(errorType, reason string) {
 	check.mutex.Lock()
 	defer check.mutex.Unlock()
 
@@ -240,7 +253,8 @@ func (check *Check) SetResultError(reason string) {
 		return
 	}
 	check.Result = CheckResultError
-	check.skipReason = reason
+	check.errorType = errorType
+	check.errorReason = reason
 }
 
 func (check *Check) SetResultAborted(reason string) {
@@ -249,6 +263,7 @@ func (check *Check) SetResultAborted(reason string) {
 
 	check.Result = CheckResultAborted
 	check.skipReason = reason
+	check.errorType, check.errorReason = "", ""
 }
 
 func (check *Check) Run() error {

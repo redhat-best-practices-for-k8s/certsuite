@@ -251,12 +251,18 @@ func TestSetResultError(t *testing.T) {
 	tests := []struct {
 		name           string
 		initialResult  CheckResult
+		initialType    string
+		initialReason  string
 		expectedResult CheckResult
+		expectedType   string
+		expectedReason string
 	}{
 		{
 			name:           "sets error from passed",
 			initialResult:  CheckResultPassed,
 			expectedResult: CheckResultError,
+			expectedType:   ErrorTypeCheckError,
+			expectedReason: "test error reason",
 		},
 		{
 			name:           "no change when already aborted",
@@ -266,7 +272,11 @@ func TestSetResultError(t *testing.T) {
 		{
 			name:           "no change when already error",
 			initialResult:  CheckResultError,
+			initialType:    ErrorTypeLifecycleError,
+			initialReason:  "previous error reason",
 			expectedResult: CheckResultError,
+			expectedType:   ErrorTypeLifecycleError,
+			expectedReason: "previous error reason",
 		},
 	}
 
@@ -274,8 +284,13 @@ func TestSetResultError(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			check := NewCheck("test-error", []string{"test"})
 			check.Result = tt.initialResult
-			check.SetResultError("test error reason")
+			check.errorType = tt.initialType
+			check.errorReason = tt.initialReason
+			check.SetResultError(ErrorTypeCheckError, "test error reason")
 			assert.Equal(t, tt.expectedResult, check.Result)
+			assert.Equal(t, tt.expectedType, check.errorType)
+			assert.Equal(t, tt.expectedReason, check.errorReason)
+			assert.Empty(t, check.skipReason)
 		})
 	}
 }

@@ -51,6 +51,18 @@ func TestForEachParallel(t *testing.T) {
 	assert.Equal(t, "failed", check.Result.String())
 }
 
+func TestForEachParallelPanicIsTyped(t *testing.T) {
+	check := NewCheck("test-parallel-panic", []string{"test"})
+
+	ForEachParallel(check, []int{1}, 1, func(*Check, int, *ParallelResult) {
+		panic("parallel failure")
+	})
+
+	assert.Equal(t, CheckResultError, check.Result.String())
+	assert.Equal(t, ErrorTypeParallelPanic, check.errorType)
+	assert.Equal(t, "panic: parallel failure", check.errorReason)
+}
+
 func TestForEachParallelAllCompliant(t *testing.T) {
 	check := NewCheck("test-parallel-pass", []string{"test"})
 

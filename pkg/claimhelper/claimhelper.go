@@ -17,6 +17,7 @@
 package claimhelper
 
 import (
+	"cmp"
 	j "encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -264,11 +265,10 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 			testCase.Failure = nil
 		}
 
-		// Populate the error message if the test case errored (probe/infrastructure failure)
+		// Populate the error message if the test case errored
 		if testCase.Status == TestStateError {
-			testCase.Error = &ErrorMessage{}
-			testCase.Error.Text = c.Results[testID].CheckDetails
-			testCase.Error.Type = "probe-exec-failure"
+			result := c.Results[testID]
+			testCase.Error = errorMessageFromResult(&result)
 		} else {
 			testCase.Error = nil
 		}
@@ -278,6 +278,15 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 	}
 
 	return xmlOutput
+}
+
+func errorMessageFromResult(result *claim.Result) *ErrorMessage {
+	// Claims older than the errorType/errorReason fields only produced probe
+	// exec errors and stored the reason in skipReason or checkDetails.
+	return &ErrorMessage{
+		Text: cmp.Or(result.ErrorReason, result.SkipReason, result.CheckDetails),
+		Type: cmp.Or(result.ErrorType, checksdb.ErrorTypeProbeExecFailure),
+	}
 }
 
 func (c *ClaimBuilder) ToJUnitXML(outputFile string, startTime, endTime time.Time) {
