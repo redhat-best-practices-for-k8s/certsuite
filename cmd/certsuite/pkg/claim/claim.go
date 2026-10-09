@@ -17,6 +17,7 @@ const (
 	TestCaseResultPassed  = "passed"
 	TestCaseResultSkipped = "skipped"
 	TestCaseResultFailed  = "failed"
+	TestCaseResultError   = "error"
 )
 
 type TestCaseRawResult struct {
@@ -41,6 +42,8 @@ type TestCaseResult struct {
 	CategoryClassification map[string]string `json:"categoryClassification"`
 	Duration               int               `json:"duration"`
 	EndTime                string            `json:"endTime"`
+	ErrorReason            string            `json:"errorReason,omitempty"`
+	ErrorType              string            `json:"errorType,omitempty"`
 	FailureLineContent     string            `json:"failureLineContent"`
 	FailureLocation        string            `json:"failureLocation"`
 	SkipReason             string            `json:"skipReason"`

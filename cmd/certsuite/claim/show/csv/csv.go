@@ -2,6 +2,7 @@
 package csv
 
 import (
+	"cmp"
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
@@ -156,6 +157,8 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 	}
 
 	for testID := range claimScheme.Claim.Results {
+		result := claimScheme.Claim.Results[testID]
+
 		// initialize record
 		record := []string{}
 		// creates and appends new CSV record
@@ -163,17 +166,19 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 			CNFNameFlag,
 			opVers,
 			testID,
-			claimScheme.Claim.Results[testID].TestID.Suite,
-			claimScheme.Claim.Results[testID].CatalogInfo.Description,
-			claimScheme.Claim.Results[testID].State,
-			claimScheme.Claim.Results[testID].StartTime,
-			claimScheme.Claim.Results[testID].EndTime,
-			claimScheme.Claim.Results[testID].SkipReason,
-			claimScheme.Claim.Results[testID].CheckDetails,
-			claimScheme.Claim.Results[testID].CapturedTestOutput,
+			result.TestID.Suite,
+			result.CatalogInfo.Description,
+			result.State,
+			result.StartTime,
+			result.EndTime,
+			// Errored results carry their reason in errorReason; keep reporting
+			// it in the SkipReason column as older claims did.
+			cmp.Or(result.ErrorReason, result.SkipReason),
+			result.CheckDetails,
+			result.CapturedTestOutput,
 			catalogMap[testID].Remediation,
 			cnfType, // Append the CNF type
-			claimScheme.Claim.Results[testID].CategoryClassification[cnfType],
+			result.CategoryClassification[cnfType],
 		)
 
 		resultsCSVRecords = append(resultsCSVRecords, record)
