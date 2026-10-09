@@ -27,6 +27,7 @@ IMAGE_TAG?=localtest
 	build-certsuite-tool \
 	build-certsuite-tool-debug \
 	coverage-html \
+	check-scenario-readme \
 	fmt \
 	generate \
 	lint \
@@ -84,6 +85,7 @@ lint:
 	shfmt -d script
 	typos
 	markdownlint '**/*.md'
+	python3 .github/actions/test-scenarios/generate-readme.py --check
 	yamllint --no-warnings .
 	shellcheck --format=gcc ${BASH_SCRIPTS}
 
@@ -116,6 +118,10 @@ build-catalog-md: build-certsuite-tool
 check-catalog-links:
 	@echo "Validating all links in CATALOG.md..."
 	@./script/test-catalog-links.sh CATALOG.md
+
+# Validates that the generated scenario coverage README is current
+check-scenario-readme:
+	python3 .github/actions/test-scenarios/generate-readme.py --check
 
 # Builds the Certsuite binary with debug flags
 build-certsuite-tool-debug: results-html

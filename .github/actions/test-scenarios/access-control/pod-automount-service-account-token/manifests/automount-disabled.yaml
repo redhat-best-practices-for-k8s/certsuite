@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: scenario-account
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: automount-disabled
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: automount-disabled
+      scenario-automount: target
+  template:
+    metadata:
+      labels:
+        app: automount-disabled
+        scenario-automount: target
+    spec:
+      serviceAccountName: scenario-account
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27

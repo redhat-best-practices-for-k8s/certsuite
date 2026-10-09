@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: liveness-no-probe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: liveness-no-probe
+      scenario-probe: target
+  template:
+    metadata:
+      labels:
+        app: liveness-no-probe
+        scenario-probe: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27

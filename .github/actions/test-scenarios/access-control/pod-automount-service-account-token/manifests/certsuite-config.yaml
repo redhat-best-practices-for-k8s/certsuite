@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: automount-token-smoke-ns
+podsUnderTestLabels:
+  - "scenario-automount: target"
+operatorsUnderTestLabels: []

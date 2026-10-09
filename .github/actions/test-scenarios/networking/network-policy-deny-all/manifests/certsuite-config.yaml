@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: network-policy-smoke-ns
+podsUnderTestLabels:
+  - "scenario-policy: target"
+operatorsUnderTestLabels: []

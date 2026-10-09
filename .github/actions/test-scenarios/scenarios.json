@@ -55,5 +55,165 @@
     "min_compliant": 2,
     "compliant_contains": "uses TLS",
     "output_dir": "tls-spread-results"
+  },
+  {
+    "name": "Container port name http (compliant)",
+    "description": "Deploys a container port named http, which follows the allowed port-name format.",
+    "label_filter": "manageability-container-port-name-format",
+    "path": "manageability/container-checks",
+    "manifest": "port-name-http.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "output_dir": "port-name-http-results"
+  },
+  {
+    "name": "Container port name sftp (non-compliant)",
+    "description": "Deploys a container port named sftp, which is outside the allowed port-name formats.",
+    "label_filter": "manageability-container-port-name-format",
+    "path": "manageability/container-checks",
+    "manifest": "port-name-sftp.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "output_dir": "port-name-sftp-results"
+  },
+  {
+    "name": "Readiness probe defined (compliant)",
+    "description": "Deploys a workload with a TCP readiness probe on nginx's listening port.",
+    "label_filter": "lifecycle-readiness-probe",
+    "path": "lifecycle/probes",
+    "manifest": "readiness-probe.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "output_dir": "readiness-probe-results"
+  },
+  {
+    "name": "Readiness probe missing (non-compliant)",
+    "description": "Deploys a workload without a readiness probe.",
+    "label_filter": "lifecycle-readiness-probe",
+    "path": "lifecycle/probes",
+    "manifest": "readiness-no-probe.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "output_dir": "readiness-no-probe-results"
+  },
+  {
+    "name": "Liveness probe defined (compliant)",
+    "description": "Deploys a workload with a TCP liveness probe on nginx's listening port.",
+    "label_filter": "lifecycle-liveness-probe",
+    "path": "lifecycle/probes",
+    "manifest": "liveness-probe.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "output_dir": "liveness-probe-results"
+  },
+  {
+    "name": "Liveness probe missing (non-compliant)",
+    "description": "Deploys a workload without a liveness probe.",
+    "label_filter": "lifecycle-liveness-probe",
+    "path": "lifecycle/probes",
+    "manifest": "liveness-no-probe.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "output_dir": "liveness-no-probe-results"
+  },
+  {
+    "name": "Startup probe defined (compliant)",
+    "description": "Deploys a workload with a TCP startup probe on nginx's listening port.",
+    "label_filter": "lifecycle-startup-probe",
+    "path": "lifecycle/probes",
+    "manifest": "startup-probe.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "output_dir": "startup-probe-results"
+  },
+  {
+    "name": "Startup probe missing (non-compliant)",
+    "description": "Deploys a workload without a startup probe.",
+    "label_filter": "lifecycle-startup-probe",
+    "path": "lifecycle/probes",
+    "manifest": "startup-no-probe.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "output_dir": "startup-no-probe-results"
+  },
+  {
+    "name": "Default ingress and egress deny policy (compliant)",
+    "description": "Deploys a NetworkPolicy with empty ingress and egress rules for the target pod. This checks API objects and rules only; it does not depend on packet enforcement.",
+    "label_filter": "networking-network-policy-deny-all",
+    "path": "networking/network-policy-deny-all",
+    "manifest": "deny-all.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "output_dir": "deny-all-policy-results"
+  },
+  {
+    "name": "NetworkPolicy missing egress deny (non-compliant)",
+    "description": "Deploys a NetworkPolicy that selects the target pod and denies ingress but does not declare egress policy. This checks API objects and rules only; it does not depend on packet enforcement.",
+    "label_filter": "networking-network-policy-deny-all",
+    "path": "networking/network-policy-deny-all",
+    "manifest": "ingress-only.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "output_dir": "ingress-only-policy-results"
+  },
+  {
+    "name": "Image with explicit tag (compliant)",
+    "description": "Deploys the multi-architecture nginx unprivileged image with an explicit 1.27 tag.",
+    "label_filter": "manageability-containers-image-tag",
+    "path": "manageability/container-checks",
+    "manifest": "image-tagged.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "output_dir": "image-tagged-results"
+  },
+  {
+    "name": "Image without explicit tag (non-compliant)",
+    "description": "Deploys the same multi-architecture image without a tag, so the image reference resolves to latest but is reported as untagged.",
+    "label_filter": "manageability-containers-image-tag",
+    "path": "manageability/container-checks",
+    "manifest": "image-untagged.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "output_dir": "image-untagged-results"
+  },
+  {
+    "name": "Service account token automount disabled (compliant)",
+    "description": "Deploys a pod with a dedicated service account whose service account token automount is disabled.",
+    "label_filter": "access-control-pod-automount-service-account-token",
+    "path": "access-control/pod-automount-service-account-token",
+    "manifest": "automount-disabled.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "output_dir": "automount-disabled-results"
+  },
+  {
+    "name": "Service account token automount enabled (non-compliant)",
+    "description": "Deploys a pod with a dedicated service account whose service account token automount is enabled.",
+    "label_filter": "access-control-pod-automount-service-account-token",
+    "path": "access-control/pod-automount-service-account-token",
+    "manifest": "automount-enabled.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "output_dir": "automount-enabled-results"
+  },
+  {
+    "name": "Declared listening port (compliant)",
+    "description": "Reuses the two-node plaintext listener workload and node-probe path. Both nginx pods declare the TCP port they listen on.",
+    "label_filter": "networking-undeclared-container-ports-usage",
+    "path": "networking/unsecured-container-ports",
+    "manifest": "plain-http-spread.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "output_dir": "declared-listening-port-results"
+  },
+  {
+    "name": "Undeclared listening port (non-compliant)",
+    "description": "Reuses the two-node plaintext listener workload and node-probe path, but omits the container port declaration while nginx continues listening on TCP 8080.",
+    "label_filter": "networking-undeclared-container-ports-usage",
+    "path": "networking/unsecured-container-ports",
+    "manifest": "undeclared-http-spread.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "output_dir": "undeclared-listening-port-results"
   }
 ]

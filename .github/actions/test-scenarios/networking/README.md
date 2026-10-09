@@ -28,6 +28,29 @@ as a generic FAIL.
 | Plain HTTP spread across nodes | `plain-http-spread.yaml` | Two replicas, plaintext :8080, hostname anti-affinity | `failed` (min 2 non-compliant objects) |
 | TLS spread across nodes | `tls-spread.yaml` | Two replicas, TLS :8443, hostname anti-affinity | `passed` (min 2 objects containing "uses TLS") |
 
+### undeclared-container-ports-usage
+
+Uses the same two-node nginx listener and node-probe path as the unsecured
+container-port scenarios. The compliant manifest declares TCP 8080; the
+non-compliant manifest omits `containerPort` while nginx still listens on
+8080. The fail case requires at least one non-compliant object.
+
+| Scenario | Manifest | Workload | Expected Test Result |
+|---|---|---|---|
+| Declared listening port | `plain-http-spread.yaml` | Two replicas, declared TCP :8080, hostname anti-affinity | `passed` |
+| Undeclared listening port | `undeclared-http-spread.yaml` | Two replicas, undeclared TCP :8080 listener, hostname anti-affinity | `failed` (min 1 non-compliant object) |
+
+### network-policy-deny-all
+
+Checks NetworkPolicy API objects and rules only. The Quick-K8s smoke cluster
+does not enable its default CNI, so these scenarios do not test packet
+enforcement.
+
+| Scenario | Manifest | Policy rules | Expected Test Result |
+|---|---|---|---|
+| Default ingress and egress deny | `network-policy-deny-all/manifests/deny-all.yaml` | Empty ingress and egress rules | `passed` |
+| Missing egress deny | `network-policy-deny-all/manifests/ingress-only.yaml` | Empty ingress rules; egress type omitted | `failed` |
+
 ## Adding a new scenario
 
 1. Create a directory under the appropriate test suite (e.g., `networking/<test-name>/`).

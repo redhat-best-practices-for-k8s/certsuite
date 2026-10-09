@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: liveness-probe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: liveness-probe
+      scenario-probe: target
+  template:
+    metadata:
+      labels:
+        app: liveness-probe
+        scenario-probe: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 5

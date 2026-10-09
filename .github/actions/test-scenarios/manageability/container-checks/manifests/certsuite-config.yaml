@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: manageability-smoke-ns
+podsUnderTestLabels:
+  - "scenario-container: target"
+operatorsUnderTestLabels: []
