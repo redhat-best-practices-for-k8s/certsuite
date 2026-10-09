@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: startup-no-probe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: startup-no-probe
+      scenario-probe: target
+  template:
+    metadata:
+      labels:
+        app: startup-no-probe
+        scenario-probe: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27

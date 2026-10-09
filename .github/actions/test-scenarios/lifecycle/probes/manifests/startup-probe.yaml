@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: startup-probe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: startup-probe
+      scenario-probe: target
+  template:
+    metadata:
+      labels:
+        app: startup-probe
+        scenario-probe: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 2

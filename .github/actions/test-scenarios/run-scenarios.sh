@@ -13,6 +13,21 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCENARIOS_FILE="${SCRIPT_DIR}/scenarios.json"
 LOG_LEVEL="${SMOKE_TESTS_LOG_LEVEL:-info}"
 OVERALL_RC=0
+CURRENT_SCENARIO_DIR=""
+CURRENT_OUTPUT_DIR=""
+
+cleanup_current_scenario() {
+  local scenario_dir="$CURRENT_SCENARIO_DIR"
+  local output_dir="$CURRENT_OUTPUT_DIR"
+  CURRENT_SCENARIO_DIR=""
+  CURRENT_OUTPUT_DIR=""
+
+  if [[ -n "$scenario_dir" ]]; then
+    "$scenario_dir/cleanup.sh" "$output_dir" || true
+  fi
+}
+
+trap cleanup_current_scenario EXIT
 
 claim_object_count() {
   local claim_file=$1 test_id=$2 list_name=$3 needle=$4
@@ -49,6 +64,8 @@ for i in $(seq 0 $((scenario_count - 1))); do
 
   SCENARIO_DIR="${SCRIPT_DIR}/${SCENARIO_PATH}"
   CONFIG_FILE="${SCENARIO_DIR}/manifests/certsuite-config.yaml"
+  CURRENT_SCENARIO_DIR="$SCENARIO_DIR"
+  CURRENT_OUTPUT_DIR="$OUTPUT_DIR"
 
   echo ""
   echo "========================================"
@@ -118,7 +135,7 @@ for i in $(seq 0 $((scenario_count - 1))); do
 
   # Cleanup (always runs)
   echo "--- Cleanup ---"
-  "${SCENARIO_DIR}/cleanup.sh" "${OUTPUT_DIR}" || true
+  cleanup_current_scenario
 
   if [[ $RC -ne 0 ]]; then
     OVERALL_RC=1
