@@ -104,7 +104,7 @@ func init() {
 		LimitedUseOfExecProbesRemediation,
 		NoDocumentedProcess,
 		TestLimitedUseOfExecProbesIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,

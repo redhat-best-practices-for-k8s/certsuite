@@ -47,7 +47,7 @@ func init() {
 		MultipleSameOperatorsRemediation,
 		NoExceptions,
 		TestMultipleSameOperatorsIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -62,7 +62,7 @@ func init() {
 		OperatorCatalogSourceBundleCountRemediation,
 		NoExceptions,
 		TestOperatorCatalogSourceBundleCountIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -206,7 +206,7 @@ func init() {
 		OperatorSingleCrdOwnerRemediation,
 		NoExceptions,
 		TestOperatorSingleCrdOwnerIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,

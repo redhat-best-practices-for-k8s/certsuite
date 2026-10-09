@@ -47,7 +47,7 @@ func init() {
 		ClusterOperatorHealthRemediation,
 		NoExceptions,
 		TestClusterOperatorHealthDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,

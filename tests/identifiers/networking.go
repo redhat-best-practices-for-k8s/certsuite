@@ -78,7 +78,7 @@ func init() {
 		ICMPv6ConnectivityRemediation,
 		NoDocumentedProcess,
 		TestICMPv6ConnectivityIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -189,7 +189,7 @@ func init() {
 		TestServiceDualStackRemediation,
 		NoExceptionProcessForExtendedTests,
 		TestServiceDualStackIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,
@@ -210,7 +210,7 @@ func init() {
 		TLSMinimumVersionRemediation,
 		NoExceptionProcessForExtendedTests,
 		TestTLSMinimumVersionIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,

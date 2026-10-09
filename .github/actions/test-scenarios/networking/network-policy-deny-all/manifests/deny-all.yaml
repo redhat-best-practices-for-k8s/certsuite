@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deny-all
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deny-all
+      scenario-policy: target
+  template:
+    metadata:
+      labels:
+        app: deny-all
+        scenario-policy: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all
+spec:
+  podSelector:
+    matchLabels:
+      scenario-policy: target
+  policyTypes:
+    - Ingress
+    - Egress
