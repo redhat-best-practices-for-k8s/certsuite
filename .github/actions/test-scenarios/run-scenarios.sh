@@ -11,6 +11,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCENARIOS_FILE="${SCRIPT_DIR}/scenarios.json"
+JUNIT_FILE_NAME="certsuite-tests_junit.xml"
 LOG_LEVEL="${SMOKE_TESTS_LOG_LEVEL:-info}"
 OVERALL_RC=0
 
@@ -31,6 +32,53 @@ require_min_objects() {
     return 1
   fi
   echo "PASS: ${label} object count ${count} >= ${min}"
+}
+
+# Errored results must carry a known errorType and an errorReason (not a
+# skipReason); every other result must carry neither. The JUnit file must
+# have exactly one <error> element per errored result. Keep the error types in
+# sync with the ErrorType constants in pkg/checksdb/check.go.
+validate_error_fields() {
+  local claim_file=$1 junit_file=$2
+  local violations claim_errors junit_errors
+
+  if ! violations=$(jq -r '
+    ["probe-exec-failure", "check-panic", "check-error", "lifecycle-panic", "lifecycle-error", "parallel-panic"] as $types
+    | .claim.results
+    | to_entries[]
+    | .key as $id
+    | .value
+    | if .state == "error" then
+        (select((.errorType // "") | IN($types[]) | not) | "\($id): error result has unknown errorType \(.errorType // "" | @json)"),
+        (select((.errorReason // "") == "") | "\($id): error result has no errorReason"),
+        (select((.skipReason // "") != "") | "\($id): error result also sets skipReason")
+      else
+        select(has("errorType") or has("errorReason")) | "\($id): \(.state) result carries errorType/errorReason"
+      end
+  ' "$claim_file"); then
+    echo "FAIL: could not parse ${claim_file}"
+    return 1
+  fi
+  if [[ -n "$violations" ]]; then
+    echo "FAIL: claim error fields are inconsistent:"
+    echo "$violations"
+    return 1
+  fi
+
+  if [[ ! -f "$junit_file" ]]; then
+    echo "FAIL: JUnit file not found at ${junit_file}"
+    return 1
+  fi
+  if ! claim_errors=$(jq '[.claim.results[] | select(.state == "error")] | length' "$claim_file"); then
+    echo "FAIL: could not parse ${claim_file}"
+    return 1
+  fi
+  junit_errors=$(grep -c '<error' "$junit_file" || true)
+  if [[ "$junit_errors" -ne "$claim_errors" ]]; then
+    echo "FAIL: JUnit has ${junit_errors} <error> element(s), claim has ${claim_errors} errored result(s)"
+    return 1
+  fi
+  echo "PASS: error fields consistent across claim and JUnit (${claim_errors} errored result(s))"
 }
 
 scenario_count=$(jq 'length' "$SCENARIOS_FILE")
@@ -74,6 +122,7 @@ for i in $(seq 0 $((scenario_count - 1))); do
       --label-filter="${LABEL_FILTER}" \
       --config-file="${CONFIG_FILE}" \
       --output-dir="${OUTPUT_DIR}" \
+      --create-xml-junit-file \
       --log-level="${LOG_LEVEL}" || true
   fi
 
@@ -103,6 +152,7 @@ for i in $(seq 0 $((scenario_count - 1))); do
           require_min_objects "compliant" "$COMPLIANT_COUNT" "$MIN_COMPLIANT" || RC=1
         fi
       fi
+      validate_error_fields "$CLAIM_FILE" "${OUTPUT_DIR}/${JUNIT_FILE_NAME}" || RC=1
     fi
   fi
 

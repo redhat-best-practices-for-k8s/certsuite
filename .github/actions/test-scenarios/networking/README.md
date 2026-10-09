@@ -52,3 +52,4 @@ as a generic FAIL.
    limits the compliant-object count to entries whose details include that
    string (so an unreachable port cannot satisfy a TLS pass).
    The runner script (`../run-scenarios.sh`) picks up all entries automatically. Validation is data-driven: the runner checks that the test state in `claim.json` matches `expected_result`.
+   Every scenario also checks that only errored results carry `errorType`/`errorReason`, and that the JUnit file has one `<error>` element per errored result.

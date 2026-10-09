@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -203,6 +204,46 @@ func TestRecordCheckResultNotFound(t *testing.T) {
 	recordCheckResult(check)
 
 	assert.Empty(t, resultsDB)
+}
+
+func registerTestClaimID(t *testing.T, checkID string) {
+	t.Helper()
+
+	origTestIDToClaimID := identifiers.TestIDToClaimID
+	t.Cleanup(func() { identifiers.TestIDToClaimID = origTestIDToClaimID })
+	identifiers.TestIDToClaimID = map[string]claim.Identifier{checkID: {Id: checkID, Suite: "test-suite"}}
+}
+
+func TestRecordCheckResultIncludesErrorDetails(t *testing.T) {
+	saveAndResetDBState(t)
+
+	check := NewCheck("error-result-test", []string{"test"})
+	registerTestClaimID(t, check.ID)
+	check.SetResultError(ErrorTypeProbeExecFailure, "probe pod is unavailable")
+	recordCheckResult(check)
+
+	result, ok := resultsDB[check.ID]
+	require.True(t, ok)
+	assert.Equal(t, ErrorTypeProbeExecFailure, result.ErrorType)
+	assert.Equal(t, "probe pod is unavailable", result.ErrorReason)
+	assert.Empty(t, result.SkipReason)
+}
+
+func TestRecordCheckResultOmitsErrorDetailsWhenAborted(t *testing.T) {
+	saveAndResetDBState(t)
+
+	check := NewCheck("aborted-after-error-test", []string{"test"})
+	registerTestClaimID(t, check.ID)
+	check.SetResultError(ErrorTypeParallelPanic, "panic: boom")
+	check.SetResultAborted("global time-out")
+	recordCheckResult(check)
+
+	result, ok := resultsDB[check.ID]
+	require.True(t, ok)
+	assert.Equal(t, CheckResultAborted, result.State)
+	assert.Equal(t, "global time-out", result.SkipReason)
+	assert.Empty(t, result.ErrorType)
+	assert.Empty(t, result.ErrorReason)
 }
 
 func TestInitLabelsExprEvaluatorEval(t *testing.T) {

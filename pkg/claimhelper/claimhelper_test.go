@@ -25,6 +25,7 @@ import (
 	"time"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/configuration"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
@@ -897,4 +898,64 @@ func TestPopulateXMLFromClaimMultipleResults(t *testing.T) {
 	assert.Equal(t, "fail-1", xml.Testsuite.Testcase[0].Name)
 	assert.Equal(t, "pass-1", xml.Testsuite.Testcase[1].Name)
 	assert.Equal(t, "skip-1", xml.Testsuite.Testcase[2].Name)
+}
+
+func TestPopulateXMLFromClaimErrorMetadata(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name         string
+		result       claim.Result
+		expectedType string
+		expectedText string
+	}{
+		{
+			name: "uses explicit error metadata",
+			result: claim.Result{
+				State:       TestStateError,
+				ErrorType:   checksdb.ErrorTypeCheckPanic,
+				ErrorReason: "panic in check function",
+			},
+			expectedType: checksdb.ErrorTypeCheckPanic,
+			expectedText: "panic in check function",
+		},
+		{
+			name: "falls back to legacy skip reason and type",
+			result: claim.Result{
+				State:      TestStateError,
+				SkipReason: "probe pod unavailable",
+			},
+			expectedType: checksdb.ErrorTypeProbeExecFailure,
+			expectedText: "probe pod unavailable",
+		},
+		{
+			name: "falls back to legacy check details",
+			result: claim.Result{
+				State:        TestStateError,
+				CheckDetails: "legacy error details",
+			},
+			expectedType: checksdb.ErrorTypeProbeExecFailure,
+			expectedText: "legacy error details",
+		},
+	}
+
+	start, err := time.Parse(DateTimeFormatDirective, "2024-01-15 10:00:00 +0000 UTC")
+	require.NoError(t, err)
+	end, err := time.Parse(DateTimeFormatDirective, "2024-01-15 10:00:01 +0000 UTC")
+	require.NoError(t, err)
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := tt.result
+			result.TestID = &claim.Identifier{Id: "errored-test", Suite: "suite"}
+			result.StartTime = "2024-01-15 10:00:00 +0000 UTC"
+			result.EndTime = "2024-01-15 10:00:01 +0000 UTC"
+			claimData := claim.Claim{Results: map[string]claim.Result{"errored-test": result}}
+			xml := populateXMLFromClaim(claimData, start, end)
+			require.Len(t, xml.Testsuite.Testcase, 1)
+			require.NotNil(t, xml.Testsuite.Testcase[0].Error)
+			assert.Equal(t, tt.expectedType, xml.Testsuite.Testcase[0].Error.Type)
+			assert.Equal(t, tt.expectedText, xml.Testsuite.Testcase[0].Error.Text)
+		})
+	}
 }

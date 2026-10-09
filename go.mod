@@ -19,7 +19,7 @@ require (
 	github.com/openshift/client-go v0.0.0-20260108185524-48f4ccfc4e13
 	github.com/operator-framework/api v0.45.0
 	github.com/operator-framework/operator-lifecycle-manager v0.42.0
-	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.67
+	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.68
 	github.com/redhat-best-practices-for-k8s/oct v0.0.68
 	github.com/redhat-best-practices-for-k8s/privileged-daemonset v1.0.77
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20260421203005-eb87e5b2d67a

@@ -124,6 +124,8 @@ func recordCheckResult(check *Check) {
 		EndTime:            check.EndTime.String(),
 		Duration:           int(check.EndTime.Sub(check.StartTime).Seconds()),
 		SkipReason:         check.skipReason,
+		ErrorType:          check.errorType,
+		ErrorReason:        check.errorReason,
 		CapturedTestOutput: check.GetLogs(),
 		CheckDetails:       check.details,
 

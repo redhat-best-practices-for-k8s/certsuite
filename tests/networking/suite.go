@@ -203,7 +203,7 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 		if err != nil {
 			check.LogError("Failed to get container %q listening ports, err: %v", firstPodContainer, err)
 			if crclient.IsProbeExecFailure(err) {
-				check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
+				check.SetResultError(checksdb.ErrorTypeProbeExecFailure, fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
 				return
 			}
 			result.AddNonCompliantObject(
@@ -335,7 +335,7 @@ func checkPodPortTLS(check *checksdb.Check, put *provider.Pod, ch clientsholder.
 	if err != nil {
 		check.LogError("Failed to get pod %q listening ports, err: %v", put, err)
 		if crclient.IsProbeExecFailure(err) {
-			check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
+			check.SetResultError(checksdb.ErrorTypeProbeExecFailure, fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
 			return
 		}
 		result.AddNonCompliantObject(
@@ -466,7 +466,7 @@ func testReservedPortsUsageParallel(check *checksdb.Check, env *provider.TestEnv
 		if err != nil {
 			check.LogError("Failed to get the listening ports on %q, err: %v", firstContainer, err)
 			if crclient.IsProbeExecFailure(err) {
-				check.SetResultError(fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
+				check.SetResultError(checksdb.ErrorTypeProbeExecFailure, fmt.Sprintf("probe exec failure for pod %s/%s: %v", put.Namespace, put.Name, err))
 				return
 			}
 			result.AddNonCompliantObject(

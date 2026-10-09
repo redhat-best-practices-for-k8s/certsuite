@@ -106,13 +106,106 @@ func TestOnFailure(t *testing.T) {
 		NewCheck("remaining-2", []string{"test"}),
 	}
 
-	err := onFailure("panic", "something crashed", group, current, remaining)
+	err := onFailure(ErrorTypeLifecyclePanic, "panic", "something crashed", group, current, remaining)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "failure-test")
 
 	assert.Equal(t, CheckResultError, current.Result.String())
+	assert.Equal(t, ErrorTypeLifecyclePanic, current.errorType)
+	assert.Equal(t, "panic: something crashed", current.errorReason)
 	assert.Equal(t, CheckResultSkipped, remaining[0].Result.String())
 	assert.Equal(t, CheckResultSkipped, remaining[1].Result.String())
+}
+
+func TestLifecycleHookFailuresAreClassified(t *testing.T) {
+	tests := []struct {
+		name     string
+		hook     string
+		panics   bool
+		wantType string
+	}{
+		{name: "beforeAll error", hook: "beforeAll", wantType: ErrorTypeLifecycleError},
+		{name: "beforeAll panic", hook: "beforeAll", panics: true, wantType: ErrorTypeLifecyclePanic},
+		{name: "afterAll error", hook: "afterAll", wantType: ErrorTypeLifecycleError},
+		{name: "afterAll panic", hook: "afterAll", panics: true, wantType: ErrorTypeLifecyclePanic},
+		{name: "beforeEach error", hook: "beforeEach", wantType: ErrorTypeLifecycleError},
+		{name: "beforeEach panic", hook: "beforeEach", panics: true, wantType: ErrorTypeLifecyclePanic},
+		{name: "afterEach error", hook: "afterEach", wantType: ErrorTypeLifecycleError},
+		{name: "afterEach panic", hook: "afterEach", panics: true, wantType: ErrorTypeLifecyclePanic},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			saveAndResetDBState(t)
+			group := NewChecksGroup("lifecycle-failure-" + tt.name)
+			check := NewCheck("lifecycle-check", []string{"test"})
+			fail := func() error {
+				if tt.panics {
+					panic("lifecycle failure")
+				}
+				return errors.New("lifecycle failure")
+			}
+
+			var err error
+			switch tt.hook {
+			case "beforeAll":
+				group.WithBeforeAllFn(func([]*Check) error { return fail() })
+				err = runBeforeAllFn(group, []*Check{check})
+			case "afterAll":
+				group.WithAfterAllFn(func([]*Check) error { return fail() })
+				err = runAfterAllFn(group, []*Check{check})
+			case "beforeEach":
+				group.WithBeforeEachFn(func(*Check) error { return fail() })
+				err = runBeforeEachFn(group, check, nil)
+			case "afterEach":
+				group.WithAfterEachFn(func(*Check) error { return fail() })
+				err = runAfterEachFn(group, check, nil)
+			}
+
+			require.Error(t, err)
+			assert.Equal(t, CheckResultError, check.Result.String())
+			assert.Equal(t, tt.wantType, check.errorType)
+			assert.Contains(t, check.errorReason, "lifecycle failure")
+		})
+	}
+}
+
+func TestRunCheckClassifiesCheckFailures(t *testing.T) {
+	tests := []struct {
+		name         string
+		checkFn      func(*Check) error
+		expectedType string
+	}{
+		{
+			name: "panic",
+			checkFn: func(*Check) error {
+				panic("check panic")
+			},
+			expectedType: ErrorTypeCheckPanic,
+		},
+		{
+			name: "returned error",
+			checkFn: func(*Check) error {
+				return errors.New("check error")
+			},
+			expectedType: ErrorTypeCheckError,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			saveAndResetDBState(t)
+			group := NewChecksGroup("check-failure")
+			check := NewCheck("check", []string{"test"})
+			check.CheckFn = tt.checkFn
+
+			err := runCheck(check, group, nil)
+			require.Error(t, err)
+			assert.Equal(t, CheckResultError, check.Result.String())
+			assert.Equal(t, tt.expectedType, check.errorType)
+			assert.NotEmpty(t, check.errorReason)
+		})
+	}
 }
 
 func TestShouldSkipCheck(t *testing.T) {
@@ -321,6 +414,9 @@ func TestRunChecksBeforeAllError(t *testing.T) {
 	check1 := NewCheck("check-1", []string{"test"})
 	check1.WithCheckFn(func(c *Check) error { return nil })
 	group.Add(check1)
+	check2 := NewCheck("check-2", []string{"test"})
+	check2.WithCheckFn(func(c *Check) error { return nil })
+	group.Add(check2)
 
 	stopChan := make(chan bool, 1)
 	abortChan := make(chan string, 1)
@@ -328,6 +424,35 @@ func TestRunChecksBeforeAllError(t *testing.T) {
 	errs, _ := group.RunChecks(stopChan, abortChan)
 	require.NotEmpty(t, errs)
 	assert.Contains(t, errs[0].Error(), "beforeAll")
+	assert.Equal(t, CheckResultError, check1.Result.String())
+	assert.Equal(t, ErrorTypeLifecycleError, check1.errorType)
+	assert.Contains(t, check1.errorReason, "beforeAll function unexpected error")
+	assert.Equal(t, CheckResultSkipped, check2.Result.String())
+}
+
+func TestRunChecksBeforeAllPanic(t *testing.T) {
+	saveAndResetDBState(t)
+
+	err := InitLabelsExprEvaluator("test")
+	require.NoError(t, err)
+
+	group := NewChecksGroup("before-all-panic")
+	group.WithBeforeAllFn(func([]*Check) error {
+		panic("beforeAll panic")
+	})
+	check := NewCheck("check-1", []string{"test"})
+	check.WithCheckFn(func(*Check) error { return nil })
+	group.Add(check)
+	remaining := NewCheck("check-2", []string{"test"})
+	remaining.WithCheckFn(func(*Check) error { return nil })
+	group.Add(remaining)
+
+	errs, _ := group.RunChecks(make(chan bool, 1), make(chan string, 1))
+	require.NotEmpty(t, errs)
+	assert.Equal(t, CheckResultError, check.Result.String())
+	assert.Equal(t, ErrorTypeLifecyclePanic, check.errorType)
+	assert.Contains(t, check.errorReason, "beforeAll function panicked")
+	assert.Equal(t, CheckResultSkipped, remaining.Result.String())
 }
 
 func TestOnAbort(t *testing.T) {
