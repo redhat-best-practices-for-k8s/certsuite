@@ -138,7 +138,7 @@ func init() {
 		DacOverrideCapabilityRemediation,
 		NoExceptions,
 		TestDacOverrideIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -154,7 +154,7 @@ func init() {
 		DacReadSearchCapabilityRemediation,
 		NoExceptions,
 		TestDacReadSearchIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -428,7 +428,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		SYSNiceRealtimeCapabilityRemediation,
 		NoDocumentedProcess,
 		TestSYSNiceRealtimeCapabilityIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -540,7 +540,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		SysModuleCapabilityRemediation,
 		NoExceptions,
 		TestSysModuleIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,

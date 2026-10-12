@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-tagged
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: image-tagged
+      scenario-container: target
+  template:
+    metadata:
+      labels:
+        app: image-tagged
+        scenario-container: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27

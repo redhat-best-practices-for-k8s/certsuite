@@ -38,7 +38,7 @@ func init() {
 		APICompatibilityWithNextOCPReleaseRemediation,
 		NoExceptions,
 		TestAPICompatibilityWithNextOCPReleaseIdentifierDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,

@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: lifecycle-probe-smoke-ns
+podsUnderTestLabels:
+  - "scenario-probe: target"
+operatorsUnderTestLabels: []

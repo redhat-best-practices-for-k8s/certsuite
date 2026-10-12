@@ -28,12 +28,35 @@ as a generic FAIL.
 | Plain HTTP spread across nodes | `plain-http-spread.yaml` | Two replicas, plaintext :8080, hostname anti-affinity | `failed` (min 2 non-compliant objects) |
 | TLS spread across nodes | `tls-spread.yaml` | Two replicas, TLS :8443, hostname anti-affinity | `passed` (min 2 objects containing "uses TLS") |
 
+### undeclared-container-ports-usage
+
+Uses the same two-node nginx listener and node-probe path as the unsecured
+container-port scenarios. The compliant manifest declares TCP 8080; the
+non-compliant manifest omits `containerPort` while nginx still listens on
+8080. The fail case requires at least one non-compliant object.
+
+| Scenario | Manifest | Workload | Expected Test Result |
+|---|---|---|---|
+| Declared listening port | `plain-http-spread.yaml` | Two replicas, declared TCP :8080, hostname anti-affinity | `passed` (min 1 compliant object) |
+| Undeclared listening port | `undeclared-http-spread.yaml` | Two replicas, undeclared TCP :8080 listener, hostname anti-affinity | `failed` (min 1 non-compliant object) |
+
+### network-policy-deny-all
+
+Checks NetworkPolicy API objects and rules only. The Quick-K8s smoke cluster
+does not enable its default CNI, so these scenarios do not test packet
+enforcement.
+
+| Scenario | Manifest | Policy rules | Expected Test Result |
+|---|---|---|---|
+| Default ingress and egress deny | `network-policy-deny-all/manifests/deny-all.yaml` | Empty ingress and egress rules | `passed` |
+| Missing egress deny | `network-policy-deny-all/manifests/ingress-only.yaml` | Empty ingress rules; egress type omitted | `failed` |
+
 ## Adding a new scenario
 
 1. Create a directory under the appropriate test suite (e.g., `networking/<test-name>/`).
-2. Add a `deploy.sh` that accepts a manifest filename as `$1`, creates the namespace, applies shared resources, and deploys the single workload.
-3. Add a `cleanup.sh` to tear down resources.
-4. Place Kubernetes manifests and certsuite config in a `manifests/` subdirectory. Each manifest should define a single workload (Deployment + Service).
+2. Add a `deploy.sh` that accepts a manifest filename as `$1` and deploys the single workload. Scenarios with no extra setup can `exec ../../deploy-workload.sh <namespace> <manifest-path>`.
+3. Add a `cleanup.sh` to tear down resources (or `exec ../../cleanup-workload.sh <namespace> <results-dir>`).
+4. Place Kubernetes manifests and certsuite config in a `manifests/` subdirectory. Each manifest should define a single Deployment named after the manifest file.
 5. Add one entry per workload to `../scenarios.json`:
    ```json
    {
@@ -52,3 +75,4 @@ as a generic FAIL.
    limits the compliant-object count to entries whose details include that
    string (so an unreachable port cannot satisfy a TLS pass).
    The runner script (`../run-scenarios.sh`) picks up all entries automatically. Validation is data-driven: the runner checks that the test state in `claim.json` matches `expected_result`.
+6. Regenerate the coverage inventory with `python3 ../generate-readme.py`. `make check-scenario-readme` (also part of `make lint`) fails if it is stale.

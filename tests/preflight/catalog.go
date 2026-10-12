@@ -60,7 +60,7 @@ func LoadCatalogChecks() {
 			remediation,
 			identifiers.NoDocumentedProcess,
 			identifiers.NoDocLink,
-			true,
+			false,
 			map[string]string{
 				identifiers.FarEdge:  identifiers.Optional,
 				identifiers.Telco:    identifiers.Optional,

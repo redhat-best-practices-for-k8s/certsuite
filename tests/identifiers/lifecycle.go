@@ -340,7 +340,7 @@ func init() {
 		TopologySpreadConstraintRemediation,
 		NoDocumentedProcess,
 		TestTopologySpreadConstraintDocLink,
-		true,
+		false,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Mandatory,
