@@ -119,9 +119,10 @@ check-catalog-links:
 	@echo "Validating all links in CATALOG.md..."
 	@./script/test-catalog-links.sh CATALOG.md
 
-# Validates that the generated scenario coverage README is current
+# Validates that the generated scenario coverage README and batch manifests are current
 check-scenario-readme:
 	python3 .github/actions/test-scenarios/generate-readme.py --check
+	python3 .github/actions/test-scenarios/batches/generate-manifests.py --check
 
 # Builds the Certsuite binary with debug flags
 build-certsuite-tool-debug: results-html

@@ -215,5 +215,371 @@
     "expected_result": "failed",
     "min_noncompliant": 1,
     "output_dir": "undeclared-listening-port-results"
+  },
+  {
+    "name": "Pod spec batch: golden workloads (compliant)",
+    "description": "A golden Deployment, a Guaranteed whole-CPU variant with a RuntimeClass and CPU/IRQ load-balancing annotations, and a ClusterIP Service. Together they satisfy every pod spec check in the batch.",
+    "path": "batches/pod-spec",
+    "manifest": "golden.yaml",
+    "output_dir": "pod-spec-golden-results",
+    "tests": {
+      "access-control-pod-host-network": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-pod-host-pid": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-pod-host-ipc": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-pod-host-path": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-container-host-port": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-no-1337-uid": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-security-context-privilege-escalation": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-security-context-read-only-root-file-system": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-net-raw-capability-check": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-bpf-capability-check": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-ipc-lock-capability-check": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-net-admin-capability-check": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-sys-admin-capability-check": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-dac-override-capability-check": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-dac-read-search-capability-check": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-sys-module-capability-check": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-requests": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-security-context-non-root-user-id-check": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-pod-service-account": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-image-pull-policy": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-container-prestop": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-container-poststart": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-pod-owner-type": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-pod-toleration-bypass": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-pod-scheduling": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-cpu-isolation": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "observability-termination-policy": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "observability-container-logging": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "networking-reserved-partner-ports": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "networking-ocp-reserved-ports-usage": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "performance-max-resources-exec-probes": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "performance-cpu-pinning-no-exec-probes": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-service-type": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-security-context": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      }
+    }
+  },
+  {
+    "name": "Pod spec batch: one violation per workload (non-compliant)",
+    "description": "Workloads generated from the golden template with exactly one field changed, plus a NodePort Service. Each test must fail only on its own workload.",
+    "path": "batches/pod-spec",
+    "manifest": "violations.yaml",
+    "output_dir": "pod-spec-violations-results",
+    "tests": {
+      "access-control-pod-host-network": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-host-network"
+      },
+      "access-control-pod-host-pid": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-host-pid"
+      },
+      "access-control-pod-host-ipc": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-host-ipc"
+      },
+      "access-control-pod-host-path": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-host-path"
+      },
+      "access-control-container-host-port": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-host-port"
+      },
+      "access-control-no-1337-uid": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-uid-1337"
+      },
+      "access-control-security-context-privilege-escalation": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-priv-esc"
+      },
+      "access-control-security-context-read-only-root-file-system": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-rw-root"
+      },
+      "access-control-net-raw-capability-check": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-net-raw"
+      },
+      "access-control-bpf-capability-check": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-bpf"
+      },
+      "access-control-ipc-lock-capability-check": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-ipc-lock"
+      },
+      "access-control-net-admin-capability-check": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-net-admin"
+      },
+      "access-control-sys-admin-capability-check": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-sys-admin"
+      },
+      "access-control-dac-override-capability-check": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-dac-override"
+      },
+      "access-control-dac-read-search-capability-check": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-dac-read-search"
+      },
+      "access-control-sys-module-capability-check": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-sys-module"
+      },
+      "access-control-requests": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-no-requests"
+      },
+      "access-control-security-context-non-root-user-id-check": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-root-user"
+      },
+      "access-control-pod-service-account": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-default-sa"
+      },
+      "access-control-sys-ptrace-capability": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-ptrace"
+      },
+      "lifecycle-image-pull-policy": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-pull-always"
+      },
+      "lifecycle-container-prestop": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-no-prestop"
+      },
+      "lifecycle-container-poststart": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-no-poststart"
+      },
+      "lifecycle-pod-owner-type": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-bare-pod"
+      },
+      "lifecycle-pod-toleration-bypass": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-toleration"
+      },
+      "lifecycle-pod-scheduling": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-node-selector"
+      },
+      "lifecycle-cpu-isolation": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-cpu-isolation"
+      },
+      "observability-termination-policy": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-termination-file"
+      },
+      "observability-container-logging": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-no-logs"
+      },
+      "networking-reserved-partner-ports": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-partner-port"
+      },
+      "networking-ocp-reserved-ports-usage": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-ocp-port"
+      },
+      "performance-max-resources-exec-probes": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-exec-probe-period"
+      },
+      "performance-cpu-pinning-no-exec-probes": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-cpu-pinning"
+      },
+      "access-control-service-type": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-nodeport"
+      }
+    }
+  },
+  {
+    "name": "Pod spec batch: security context without fsGroup (non-compliant)",
+    "description": "The golden workload without a pod-level fsGroup falls out of security context category 1. Kept separate because most other violations also fail this check.",
+    "path": "batches/pod-spec",
+    "manifest": "bad-security-context.yaml",
+    "output_dir": "pod-spec-security-context-results",
+    "tests": {
+      "access-control-security-context": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-security-context"
+      }
+    }
+  },
+  {
+    "name": "Pod spec batch: shared process namespace with SYS_PTRACE (compliant)",
+    "description": "The golden workload with shareProcessNamespace and the SYS_PTRACE capability. Kept separate because the added capability fails the security context check.",
+    "path": "batches/pod-spec",
+    "manifest": "ptrace.yaml",
+    "output_dir": "pod-spec-ptrace-results",
+    "tests": {
+      "access-control-sys-ptrace-capability": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      }
+    }
+  },
+  {
+    "name": "Workload controllers batch: golden workloads (compliant)",
+    "description": "Two-replica Deployments with PodDisruptionBudgets: one with pod anti-affinity, one with hostname and zone topology spread constraints, and one labelled AffinityRequired with node affinity.",
+    "path": "batches/workload-controllers",
+    "manifest": "golden.yaml",
+    "output_dir": "controllers-golden-results",
+    "tests": {
+      "lifecycle-pod-high-availability": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "observability-pod-disruption-budget": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-topology-spread-constraint": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-affinity-required-pods": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      }
+    }
+  },
+  {
+    "name": "Workload controllers batch: one violation per workload (non-compliant)",
+    "description": "One replica, a missing PodDisruptionBudget, a hostname-only topology spread constraint, and an AffinityRequired workload that keeps pod anti-affinity.",
+    "path": "batches/workload-controllers",
+    "manifest": "violations.yaml",
+    "output_dir": "controllers-violations-results",
+    "tests": {
+      "lifecycle-pod-high-availability": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-ha"
+      },
+      "observability-pod-disruption-budget": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-pdb"
+      },
+      "lifecycle-topology-spread-constraint": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-tsc"
+      },
+      "lifecycle-affinity-required-pods": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-affinity-required"
+      }
+    }
   }
 ]

@@ -2,6 +2,8 @@
 
 Self-contained scenario tests for the networking test suite. Each scenario deploys a single workload with a known configuration, runs the certsuite against it, and validates the expected result.
 
+To add a scenario, in this suite or any other, see [../CONTRIBUTING.md](../CONTRIBUTING.md).
+
 ## Scenarios
 
 ### tls-minimum-version
@@ -50,29 +52,3 @@ enforcement.
 |---|---|---|---|
 | Default ingress and egress deny | `network-policy-deny-all/manifests/deny-all.yaml` | Empty ingress and egress rules | `passed` |
 | Missing egress deny | `network-policy-deny-all/manifests/ingress-only.yaml` | Empty ingress rules; egress type omitted | `failed` |
-
-## Adding a new scenario
-
-1. Create a directory under the appropriate test suite (e.g., `networking/<test-name>/`).
-2. Add a `deploy.sh` that accepts a manifest filename as `$1` and deploys the single workload. Scenarios with no extra setup can `exec ../../deploy-workload.sh <namespace> <manifest-path>`.
-3. Add a `cleanup.sh` to tear down resources (or `exec ../../cleanup-workload.sh <namespace> <results-dir>`).
-4. Place Kubernetes manifests and certsuite config in a `manifests/` subdirectory. Each manifest should define a single Deployment named after the manifest file.
-5. Add one entry per workload to `../scenarios.json`:
-   ```json
-   {
-     "name": "Human-readable name",
-     "label_filter": "test-case-label",
-     "path": "networking/<test-name>",
-     "manifest": "<workload>.yaml",
-     "expected_result": "passed|failed",
-     "min_noncompliant": 2,
-     "min_compliant": 2,
-     "compliant_contains": "uses TLS",
-     "output_dir": "<workload>-results"
-   }
-   ```
-   `min_noncompliant` and `min_compliant` are optional. `compliant_contains`
-   limits the compliant-object count to entries whose details include that
-   string (so an unreachable port cannot satisfy a TLS pass).
-   The runner script (`../run-scenarios.sh`) picks up all entries automatically. Validation is data-driven: the runner checks that the test state in `claim.json` matches `expected_result`.
-6. Regenerate the coverage inventory with `python3 ../generate-readme.py`. `make check-scenario-readme` (also part of `make lint`) fails if it is stale.
