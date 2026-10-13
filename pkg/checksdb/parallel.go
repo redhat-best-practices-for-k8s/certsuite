@@ -62,7 +62,7 @@ func ForEachParallel[T any](check *Check, items []T, limit int, fn func(*Check, 
 			defer func() {
 				if r := recover(); r != nil {
 					check.LogError("Panic during parallel check execution: %v", r)
-					check.SetResultError(fmt.Sprintf("panic: %v", r))
+					check.SetResultError(ErrorTypeParallelPanic, fmt.Sprintf("panic: %v", r))
 				}
 			}()
 			fn(check, item, result)

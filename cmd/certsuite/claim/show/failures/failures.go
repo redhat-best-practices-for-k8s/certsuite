@@ -243,7 +243,7 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 
 		failedTcs := []FailedTestCase{}
 		for _, tc := range claimResultsByTestSuite[testSuite] {
-			if tc.State != "failed" && tc.State != "error" {
+			if tc.State != claim.TestCaseResultFailed && tc.State != claim.TestCaseResultError {
 				continue
 			}
 
