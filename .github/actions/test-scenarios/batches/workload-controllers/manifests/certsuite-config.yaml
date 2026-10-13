@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: controllers-smoke-ns
+podsUnderTestLabels:
+  - "scenario-controllers: target"
+operatorsUnderTestLabels: []

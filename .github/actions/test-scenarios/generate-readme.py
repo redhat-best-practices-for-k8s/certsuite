@@ -18,13 +18,16 @@ SUITE_KEYS_FILE = ROOT / "tests" / "common" / "constant.go"
 QE_FLAG_FILES = sorted((ROOT / "tests" / "identifiers").glob("*.go")) + [ROOT / "tests" / "preflight" / "catalog.go"]
 QE_FLAG_ARG = 6
 
-FOLLOW_UP_IDS = {
-    "access-control-security-context-privilege-escalation",
-    "access-control-security-context-read-only-root-file-system",
-    "networking-reserved-partner-ports",
-    "observability-termination-policy",
+# Catalog IDs that cannot get a scenario on the Kind smoke cluster, and why.
+# Anything not listed here and not in scenarios.json is an open gap, not a
+# deliberate one.
+UNCOVERABLE_IDS = {
+    "access-control-sys-nice-realtime-capability": "needs a node running a realtime kernel",
 }
 
+# Non-batch tests that must assert an object, not only the claim state. Batch
+# tests are always required to; these are the single-test scenarios where a
+# matching state alone would also be produced by an unrelated failure.
 OBJECT_ASSERTION_IDS = {
     "manageability-container-port-name-format",
     "lifecycle-readiness-probe",
@@ -159,20 +162,43 @@ def load_scenarios(catalog_ids):
     scenarios_by_id = defaultdict(list)
     for index, scenario in enumerate(scenarios):
         prefix = f"scenario {index + 1}"
-        for key in ("name", "label_filter", "path", "manifest", "expected_result", "output_dir"):
+        for key in ("name", "description", "path", "manifest", "output_dir"):
             if not scenario.get(key):
                 raise ValueError(f"{prefix} is missing required field {key!r}")
-        if scenario["expected_result"] not in {"passed", "failed"}:
-            raise ValueError(f"{prefix} has invalid expected_result {scenario['expected_result']!r}")
 
-        test_id = scenario["label_filter"]
-        if test_id not in catalog_ids:
-            raise ValueError(f"{prefix} filters unknown catalog ID {test_id!r}")
+        # Batch scenarios check several tests in one run; the others check
+        # label_filter against the expectations on the scenario itself.
+        is_batch = "tests" in scenario
+        if is_batch:
+            tests = scenario["tests"]
+            if not isinstance(tests, dict) or not tests:
+                raise ValueError(f"{prefix} must map at least one test ID to its expectations in 'tests'")
+        else:
+            for key in ("label_filter", "expected_result"):
+                if not scenario.get(key):
+                    raise ValueError(f"{prefix} is missing required field {key!r}")
+            tests = {scenario["label_filter"]: scenario}
+
+        for test_id, expectations in tests.items():
+            if test_id not in catalog_ids:
+                raise ValueError(f"{prefix} filters unknown catalog ID {test_id!r}")
+            expected = expectations.get("expected_result")
+            if expected not in {"passed", "failed"}:
+                raise ValueError(f"{prefix} has invalid expected_result {expected!r} for {test_id}")
+            if is_batch or test_id in OBJECT_ASSERTION_IDS:
+                if expected == "passed":
+                    asserted = int(expectations.get("min_compliant", 0)) >= 1
+                else:
+                    asserted = bool(expectations.get("noncompliant_contains")) or int(expectations.get("min_noncompliant", 0)) >= 1
+                if not asserted:
+                    raise ValueError(f"{prefix} must assert at least one {'compliant' if expected == 'passed' else 'non-compliant'} object for {test_id}")
+            scenarios_by_id[test_id].append({"name": scenario["name"], "expected_result": expected})
 
         output_dir = scenario["output_dir"]
         if output_dir in output_dirs:
             raise ValueError(f"Scenario output directory {output_dir!r} is reused")
         output_dirs.add(output_dir)
+        scenario["test_ids"] = list(tests)
 
         scenario_dir = SCRIPT_DIR / scenario["path"]
         for required_file in (
@@ -184,14 +210,7 @@ def load_scenarios(catalog_ids):
             if not required_file.is_file():
                 raise ValueError(f"{prefix} references missing file {required_file.relative_to(ROOT)}")
 
-        if test_id in OBJECT_ASSERTION_IDS:
-            assertion = "min_compliant" if scenario["expected_result"] == "passed" else "min_noncompliant"
-            if int(scenario.get(assertion, 0)) < 1:
-                raise ValueError(f"{prefix} must assert at least one {assertion} object")
-
-        scenarios_by_id[test_id].append(scenario)
-
-    return scenarios_by_id
+    return scenarios, scenarios_by_id
 
 
 def markdown_cell(value):
@@ -201,11 +220,15 @@ def markdown_cell(value):
 def generate_readme():
     suites, ids_by_suite = parse_catalog()
     catalog_ids = {test_id for ids in ids_by_suite.values() for test_id in ids}
-    unknown_follow_ups = FOLLOW_UP_IDS - catalog_ids
-    if unknown_follow_ups:
-        raise ValueError(f"Follow-up IDs are missing from CATALOG.md: {', '.join(sorted(unknown_follow_ups))}")
+    unknown_uncoverable = set(UNCOVERABLE_IDS) - catalog_ids
+    if unknown_uncoverable:
+        raise ValueError(f"Uncoverable IDs are missing from CATALOG.md: {', '.join(sorted(unknown_uncoverable))}")
 
-    scenarios_by_id = load_scenarios(catalog_ids)
+    scenarios, scenarios_by_id = load_scenarios(catalog_ids)
+    covered_and_uncoverable = set(UNCOVERABLE_IDS) & set(scenarios_by_id)
+    if covered_and_uncoverable:
+        raise ValueError(f"Uncoverable IDs have a scenario: {', '.join(sorted(covered_and_uncoverable))}")
+
     qe_flags = parse_qe_flags(catalog_ids)
     lines = [
         "<!-- Generated by generate-readme.py; run make check-scenario-readme to check freshness. -->",
@@ -215,10 +238,12 @@ def generate_readme():
         "This inventory lists every test ID in `CATALOG.md` and compares two kinds of coverage:",
         "",
         "- **certsuite-qe**: the `qe` flag passed to `AddCatalogEntry` in `tests/identifiers` (and `tests/preflight/catalog.go`), which marks tests that have a [certsuite-qe](https://github.com/redhat-best-practices-for-k8s/certsuite-qe) test. `certsuite generate qe-coverage-report` reads the same flag.",
-        "- **Smoke scenarios**: the dedicated entries in `scenarios.json`. Each one runs an isolated workload and asserts the test's expected claim state and a relevant object.",
+        "- **Smoke scenarios**: the dedicated entries in `scenarios.json`. Each one deploys workloads into an isolated namespace and asserts the expected claim state and a relevant object for each test it covers. Batch entries (`tests`) check several tests in one certsuite run.",
         "",
         "The broader pre-main `--label-filter=all` smoke run is separate and does not count as dedicated scenario coverage.",
-        "Known follow-up gaps are marked `Follow-up`; all other uncovered catalog IDs are marked `No dedicated scenario`.",
+        "Catalog IDs that cannot be exercised on the Kind smoke cluster say why; all other uncovered IDs are marked `No dedicated scenario` and are open gaps.",
+        "",
+        "To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test batch scenarios, see [batches/README.md](batches/README.md).",
         "",
         "## Summary",
         "",
@@ -235,6 +260,25 @@ def generate_readme():
         totals = [total + count for total, count in zip(totals, counts)]
         lines.append(f"| {suite} | " + " | ".join(str(count) for count in counts) + " |")
     lines.extend(["| **Total** | " + " | ".join(f"**{total}**" for total in totals) + " |", ""])
+
+    lines.extend(
+        [
+            "## Scenarios",
+            "",
+            f"The {len(scenarios)} entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.",
+            "",
+            "| Scenario | Manifest | Tests | What it deploys |",
+            "|---|---|---|---|",
+        ]
+    )
+    for scenario in scenarios:
+        manifest = f"`{scenario['path']}/manifests/{scenario['manifest']}`"
+        test_ids = scenario["test_ids"]
+        count = str(len(test_ids)) if len(test_ids) > 1 else f"`{test_ids[0]}`"
+        lines.append(
+            f"| {markdown_cell(scenario['name'])} | {manifest} | {count} | {markdown_cell(scenario['description'])} |"
+        )
+    lines.append("")
 
     for suite in suites:
         lines.extend(
@@ -255,7 +299,8 @@ def generate_readme():
                 coverage = "Covered"
             else:
                 scenario_text = "—"
-                coverage = "Follow-up" if test_id in FOLLOW_UP_IDS else "No dedicated scenario"
+                reason = UNCOVERABLE_IDS.get(test_id)
+                coverage = f"Not reproducible on the smoke cluster: {reason}" if reason else "No dedicated scenario"
             qe = "Yes" if qe_flags[test_id] else "No"
             lines.append(f"| `{test_id}` | {qe} | {scenario_text} | {coverage} |")
         lines.append("")

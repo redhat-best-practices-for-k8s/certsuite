@@ -2,12 +2,14 @@
 set -euo pipefail
 
 # Run all test scenarios defined in scenarios.json.
-# Each scenario deploys a single workload, runs certsuite, validates the
-# result against the expected state, and cleans up.
+# Each scenario deploys its workloads, runs certsuite over the test IDs it
+# covers, validates the claim against the expected state, and cleans up.
 #
-# Usage: run-scenarios.sh [--log-level LEVEL]
+# Usage: run-scenarios.sh
+# Env:   SMOKE_TESTS_LOG_LEVEL (default: info)
 #
-# Requires: jq, kubectl, ./certsuite binary
+# Requires: jq, kubectl, and a ./certsuite binary built from this checkout.
+# See CONTRIBUTING.md for the scenario format and for debugging a failure.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCENARIOS_FILE="${SCRIPT_DIR}/scenarios.json"
@@ -30,11 +32,13 @@ cleanup_current_scenario() {
 trap cleanup_current_scenario EXIT
 
 claim_object_count() {
-  local claim_file=$1 test_id=$2 list_name=$3 needle=$4
-  jq -r --arg id "$test_id" --arg list "$list_name" --arg needle "$needle" '
+  local claim_file=$1 test_id=$2 list_name=$3 needle=$4 invert=${5:-false}
+  jq -r --arg id "$test_id" --arg list "$list_name" --arg needle "$needle" --argjson invert "$invert" '
     .claim.results[$id].checkDetails // "{}"
     | fromjson?
-    | [.[$list] // [] | .[] | select(($needle == "") or ((.ObjectFieldsValues | join(" ")) | contains($needle)))]
+    | [.[$list] // [] | .[]
+       | (($needle == "") or ((.ObjectFieldsValues | join(" ")) | contains($needle))) as $hit
+       | select($hit != $invert)]
     | length
   ' "$claim_file"
 }
@@ -48,19 +52,63 @@ require_min_objects() {
   echo "PASS: ${label} object count ${count} >= ${min}"
 }
 
+# Check one test's result in the claim against its expectations (a JSON object
+# with expected_result and optional min_noncompliant, min_compliant,
+# compliant_contains and noncompliant_contains).
+validate_test() {
+  local claim_file=$1 test_id=$2 spec=$3
+  local expected actual min_noncompliant min_compliant compliant_contains noncompliant_contains count foreign
+  expected=$(jq -r '.expected_result' <<<"$spec")
+  min_noncompliant=$(jq -r '.min_noncompliant // empty' <<<"$spec")
+  min_compliant=$(jq -r '.min_compliant // empty' <<<"$spec")
+  compliant_contains=$(jq -r '.compliant_contains // empty' <<<"$spec")
+  noncompliant_contains=$(jq -r '.noncompliant_contains // empty' <<<"$spec")
+
+  actual=$(jq -r --arg id "$test_id" '.claim.results[$id].state // empty' "$claim_file")
+  if [[ -z "$actual" ]]; then
+    echo "FAIL: ${test_id}: not found in claim.json"
+    return 1
+  fi
+  if [[ "$actual" != "$expected" ]]; then
+    echo "FAIL: ${test_id}: expected '${expected}', got '${actual}'"
+    return 1
+  fi
+  echo "PASS: ${test_id}: test state '${actual}' matches expected '${expected}'"
+
+  local rc=0
+  if [[ -n "$noncompliant_contains" ]]; then
+    # Every non-compliant object must belong to the expected workload, so a
+    # batch cannot pass on another workload's violation.
+    foreign=$(claim_object_count "$claim_file" "$test_id" "NonCompliantObjectsOut" "$noncompliant_contains" true)
+    if [[ "$foreign" -ne 0 ]]; then
+      echo "FAIL: ${test_id}: ${foreign} non-compliant objects do not contain '${noncompliant_contains}'"
+      rc=1
+    fi
+    min_noncompliant=${min_noncompliant:-1}
+  fi
+  if [[ -n "$min_noncompliant" ]]; then
+    count=$(claim_object_count "$claim_file" "$test_id" "NonCompliantObjectsOut" "$noncompliant_contains")
+    require_min_objects "${test_id}: non-compliant" "$count" "$min_noncompliant" || rc=1
+  fi
+  if [[ -n "$min_compliant" ]]; then
+    count=$(claim_object_count "$claim_file" "$test_id" "CompliantObjectsOut" "$compliant_contains")
+    require_min_objects "${test_id}: compliant" "$count" "$min_compliant" || rc=1
+  fi
+  return $rc
+}
+
 scenario_count=$(jq 'length' "$SCENARIOS_FILE")
 echo "=== Running ${scenario_count} test scenario(s) ==="
 
 for i in $(seq 0 $((scenario_count - 1))); do
   NAME=$(jq -r ".[$i].name" "$SCENARIOS_FILE")
-  LABEL_FILTER=$(jq -r ".[$i].label_filter" "$SCENARIOS_FILE")
   SCENARIO_PATH=$(jq -r ".[$i].path" "$SCENARIOS_FILE")
   MANIFEST=$(jq -r ".[$i].manifest" "$SCENARIOS_FILE")
   OUTPUT_DIR=$(jq -r ".[$i].output_dir" "$SCENARIOS_FILE")
-  EXPECTED_RESULT=$(jq -r ".[$i].expected_result" "$SCENARIOS_FILE")
-  MIN_NONCOMPLIANT=$(jq -r ".[$i].min_noncompliant // empty" "$SCENARIOS_FILE")
-  MIN_COMPLIANT=$(jq -r ".[$i].min_compliant // empty" "$SCENARIOS_FILE")
-  COMPLIANT_CONTAINS=$(jq -r ".[$i].compliant_contains // empty" "$SCENARIOS_FILE")
+  # A scenario either checks one test (label_filter + expected_result) or a
+  # batch of tests in one certsuite run (tests: {id: expectations}).
+  TESTS=$(jq -c ".[$i] | .tests // {(.label_filter): del(.name, .description, .label_filter, .path, .manifest, .output_dir)}" "$SCENARIOS_FILE")
+  LABEL_FILTER=$(jq -r 'keys_unsorted | join(",")' <<<"$TESTS")
 
   SCENARIO_DIR="${SCRIPT_DIR}/${SCENARIO_PATH}"
   CONFIG_FILE="${SCENARIO_DIR}/manifests/certsuite-config.yaml"
@@ -70,9 +118,8 @@ for i in $(seq 0 $((scenario_count - 1))); do
   echo ""
   echo "========================================"
   echo "Scenario: ${NAME}"
-  echo "  Label filter:    ${LABEL_FILTER}"
-  echo "  Manifest:        ${MANIFEST}"
-  echo "  Expected result: ${EXPECTED_RESULT}"
+  echo "  Manifest: ${MANIFEST}"
+  jq -r 'to_entries[] | "  Expect:   \(.key) -> \(.value.expected_result)"' <<<"$TESTS"
   echo "========================================"
 
   RC=0
@@ -84,14 +131,17 @@ for i in $(seq 0 $((scenario_count - 1))); do
     RC=1
   fi
 
-  # Run certsuite (allow failure since some scenarios expect it)
+  # Run certsuite (allow failure since some scenarios expect it).
+  # Keep the probe daemonset between scenarios: deleting it waits for the
+  # probe pods to terminate, which costs ~40s per scenario.
   if [[ $RC -eq 0 ]]; then
     echo "--- Run certsuite ---"
     ./certsuite run \
       --label-filter="${LABEL_FILTER}" \
       --config-file="${CONFIG_FILE}" \
       --output-dir="${OUTPUT_DIR}" \
-      --log-level="${LOG_LEVEL}" || true
+      --log-level="${LOG_LEVEL}" \
+      --cleanup-probe=false || true
   fi
 
   # Validate
@@ -102,24 +152,9 @@ for i in $(seq 0 $((scenario_count - 1))); do
       echo "FAIL: claim.json not found at ${CLAIM_FILE}"
       RC=1
     else
-      ACTUAL_STATE=$(jq -r --arg id "$LABEL_FILTER" '.claim.results[$id].state // empty' "$CLAIM_FILE")
-      if [[ -z "$ACTUAL_STATE" ]]; then
-        echo "FAIL: test ${LABEL_FILTER} not found in claim.json"
-        RC=1
-      elif [[ "$ACTUAL_STATE" != "$EXPECTED_RESULT" ]]; then
-        echo "FAIL: expected '${EXPECTED_RESULT}', got '${ACTUAL_STATE}'"
-        RC=1
-      else
-        echo "PASS: test state '${ACTUAL_STATE}' matches expected '${EXPECTED_RESULT}'"
-        if [[ -n "${MIN_NONCOMPLIANT}" ]]; then
-          NONCOMPLIANT_COUNT=$(claim_object_count "$CLAIM_FILE" "$LABEL_FILTER" "NonCompliantObjectsOut" "")
-          require_min_objects "non-compliant" "$NONCOMPLIANT_COUNT" "$MIN_NONCOMPLIANT" || RC=1
-        fi
-        if [[ -n "${MIN_COMPLIANT}" ]]; then
-          COMPLIANT_COUNT=$(claim_object_count "$CLAIM_FILE" "$LABEL_FILTER" "CompliantObjectsOut" "$COMPLIANT_CONTAINS")
-          require_min_objects "compliant" "$COMPLIANT_COUNT" "$MIN_COMPLIANT" || RC=1
-        fi
-      fi
+      while IFS= read -r test_id; do
+        validate_test "$CLAIM_FILE" "$test_id" "$(jq -c --arg id "$test_id" '.[$id]' <<<"$TESTS")" || RC=1
+      done < <(jq -r 'keys_unsorted[]' <<<"$TESTS")
     fi
   fi
 
@@ -127,7 +162,7 @@ for i in $(seq 0 $((scenario_count - 1))); do
   if [[ $RC -ne 0 ]]; then
     echo "--- Scenario certsuite.log (debug) ---"
     if [[ -f "certsuite.log" ]]; then
-      grep -iE "${LABEL_FILTER}|tls|tlsversion|Probing|exec.*fallback|probe.*pod|probePods|DaemonSet|daemonset|cnf-suite|unsecured|plaintext|openssl|TLS probe" certsuite.log || tail -n 50 certsuite.log
+      grep -iE "${LABEL_FILTER//,/|}|tls|tlsversion|Probing|exec.*fallback|probe.*pod|probePods|DaemonSet|daemonset|cnf-suite|unsecured|plaintext|openssl|TLS probe" certsuite.log || tail -n 50 certsuite.log
     else
       echo "(certsuite.log not found)"
     fi

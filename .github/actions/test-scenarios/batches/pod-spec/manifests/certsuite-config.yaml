@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: pod-spec-smoke-ns
+podsUnderTestLabels:
+  - "scenario-pod-spec: target"
+operatorsUnderTestLabels: []
