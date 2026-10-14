@@ -5,6 +5,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/config"
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/feedback"
 	qecoverage "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/generate/qe_coverage"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 	"github.com/spf13/cobra"
 )
 
@@ -16,10 +17,10 @@ var (
 )
 
 func NewCommand() *cobra.Command {
-	generate.AddCommand(catalog.NewCommand())
-	generate.AddCommand(feedback.NewCommand())
-	generate.AddCommand(config.NewCommand())
-	generate.AddCommand(qecoverage.NewCommand())
+	cli.AddCommand(generate, catalog.NewCommand())
+	cli.AddCommand(generate, feedback.NewCommand())
+	cli.AddCommand(generate, config.NewCommand())
+	cli.AddCommand(generate, qecoverage.NewCommand())
 
 	return generate
 }
