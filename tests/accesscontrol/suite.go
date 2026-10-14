@@ -24,6 +24,7 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/stringhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 	"github.com/redhat-best-practices-for-k8s/certsuite/tests/common"
+	"github.com/redhat-best-practices-for-k8s/checks"
 	checksfn "github.com/redhat-best-practices-for-k8s/checks/accesscontrol"
 	corev1 "k8s.io/api/core/v1"
 )
@@ -39,8 +40,30 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.AccessControlTestKey).
 		WithBeforeEachFn(checksdb.DefaultBeforeEachFn(func() { env = provider.GetTestEnvironment() }))
 
-	checksadapter.AddCheck(checksGroup, "access-control-security-context", checksfn.CheckSecurityContext, &env,
-		testhelper.GetNoContainersUnderTestSkipFn(&env))
+	// access-control-security-context: extends the library check with a pod-level fsGroup requirement.
+	// Category 1 (most restrictive) requires fsGroup to be set on the pod security context;
+	// the library check omits this, so we add it as an extra non-compliant step.
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("access-control-security-context")).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(check *checksdb.Check) error {
+			resources := checksadapter.ConvertToDiscoveredResources(&env)
+			result := checksfn.CheckSecurityContext(resources)
+			for i := range resources.Pods {
+				pod := &resources.Pods[i]
+				if pod.Spec.SecurityContext == nil || pod.Spec.SecurityContext.FSGroup == nil {
+					result.ComplianceStatus = checks.StatusNonCompliant
+					result.Details = append(result.Details, checks.ResourceDetail{
+						Kind:      "Pod",
+						Name:      pod.Name,
+						Namespace: pod.Namespace,
+						Compliant: false,
+						Message:   "Pod security context does not set fsGroup (required for category 1)",
+					})
+				}
+			}
+			checksadapter.ConvertAndSetResult(check, result)
+			return nil
+		}))
 
 	checksadapter.AddCheck(checksGroup, "access-control-sys-admin-capability-check", checksfn.CheckSysAdmin, &env,
 		testhelper.GetNoContainersUnderTestSkipFn(&env))

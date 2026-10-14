@@ -116,9 +116,27 @@ func LoadChecks() {
 		testhelper.GetNoPersistentVolumesSkipFn(&env),
 		testhelper.GetNoPodsUnderTestSkipFn(&env))
 
-	// CPU Isolation test
-	checksadapter.AddCheck(checksGroup, "lifecycle-cpu-isolation", checksfn.CheckCPUIsolation, &env,
-		testhelper.GetNoGuaranteedPodsWithExclusiveCPUsSkipFn(&env))
+	// CPU Isolation test — only Guaranteed pods with exclusive (whole-unit) CPUs are in scope.
+	// The library's CheckCPUIsolation only validates CPU requests==limits; this check additionally
+	// requires runtimeClassName and CPU/IRQ load-balancing annotations, so we use the provider's
+	// IsCPUIsolationCompliant which covers all three criteria.
+	checksGroup.Add(checksdb.NewCheck(checksadapter.GetCheckIDAndLabels("lifecycle-cpu-isolation")).
+		WithSkipCheckFn(testhelper.GetNoGuaranteedPodsWithExclusiveCPUsSkipFn(&env)).
+		WithCheckFn(func(check *checksdb.Check) error {
+			var compliantObjects, nonCompliantObjects []*testhelper.ReportObject
+			for _, put := range env.GetGuaranteedPodsWithExclusiveCPUs() {
+				check.LogInfo("Testing Pod %q", put)
+				if !put.IsCPUIsolationCompliant() {
+					check.LogError("Pod %q is not CPU isolated", put)
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not CPU isolated", false))
+				} else {
+					check.LogInfo("Pod %q is CPU isolated", put)
+					compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is CPU isolated", true))
+				}
+			}
+			check.SetResult(compliantObjects, nonCompliantObjects)
+			return nil
+		}))
 
 	// Affinity required pods test
 	checksadapter.AddCheck(checksGroup, "lifecycle-affinity-required-pods", checksfn.CheckAffinityRequired, &env,
