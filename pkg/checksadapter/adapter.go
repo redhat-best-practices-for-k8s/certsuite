@@ -70,3 +70,12 @@ func AddIntrusiveCheck(group *checksdb.ChecksGroup, id string, checkFn checks.Ch
 		WithSkipCheckFn(skips...).
 		WithCheckFn(NewAdapter(checkFn).MakeIntrusiveCheckFn(env)))
 }
+
+// AddCheckSkipAll is like AddCheck but uses SkipModeAll: the check only skips
+// when ALL of the provided skip functions return true.
+func AddCheckSkipAll(group *checksdb.ChecksGroup, id string, checkFn checks.CheckFunc, env *provider.TestEnvironment, skips ...checksdb.SkipCheckFn) {
+	group.Add(checksdb.NewCheck(GetCheckIDAndLabels(id)).
+		WithSkipCheckFn(skips...).
+		WithSkipModeAll().
+		WithCheckFn(NewAdapter(checkFn).MakeCheckFn(env)))
+}

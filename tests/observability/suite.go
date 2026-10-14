@@ -49,7 +49,7 @@ func LoadChecks() {
 	checksadapter.AddCheck(checksGroup, "observability-termination-policy", checksfn.CheckTerminationPolicy, &env,
 		testhelper.GetNoContainersUnderTestSkipFn(&env))
 
-	checksadapter.AddCheck(checksGroup, "observability-pod-disruption-budget", checksfn.CheckPodDisruptionBudget, &env,
+	checksadapter.AddCheckSkipAll(checksGroup, "observability-pod-disruption-budget", checksfn.CheckPodDisruptionBudget, &env,
 		testhelper.GetNoDeploymentsUnderTestSkipFn(&env), testhelper.GetNoStatefulSetsUnderTestSkipFn(&env))
 
 	checksadapter.AddCheck(checksGroup, "observability-compatibility-with-next-ocp-release", checksfn.CheckAPICompatibilityWithNextOCPRelease, &env)
