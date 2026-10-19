@@ -16,17 +16,17 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 
 | Suite | Tests | Covered in certsuite-qe | Covered in smoke scenarios | Covered in both | Covered in neither |
 |---|---|---|---|---|---|
-| access-control | 31 | 28 | 23 | 20 | 0 |
+| access-control | 31 | 30 | 23 | 23 | 1 |
 | affiliated-certification | 4 | 4 | 0 | 0 | 0 |
-| lifecycle | 19 | 18 | 13 | 12 | 0 |
+| lifecycle | 19 | 19 | 13 | 13 | 0 |
 | manageability | 2 | 2 | 2 | 2 | 0 |
-| networking | 13 | 9 | 6 | 5 | 3 |
-| observability | 5 | 4 | 3 | 3 | 1 |
-| operator | 12 | 10 | 0 | 0 | 2 |
-| performance | 7 | 6 | 2 | 1 | 0 |
-| platform-alteration | 14 | 13 | 0 | 0 | 1 |
-| preflight | 17 | 0 | 0 | 0 | 17 |
-| **Total** | **124** | **94** | **49** | **43** | **24** |
+| networking | 13 | 8 | 6 | 6 | 5 |
+| observability | 5 | 5 | 3 | 3 | 0 |
+| operator | 12 | 7 | 0 | 0 | 5 |
+| performance | 9 | 9 | 2 | 2 | 0 |
+| platform-alteration | 15 | 12 | 0 | 0 | 3 |
+| preflight | 17 | 17 | 0 | 0 | 0 |
+| **Total** | **127** | **113** | **49** | **49** | **14** |
 
 ## Scenarios
 
@@ -71,8 +71,8 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `access-control-cluster-role-bindings` | Yes | — | No dedicated scenario |
 | `access-control-container-host-port` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-crd-roles` | Yes | — | No dedicated scenario |
-| `access-control-dac-override-capability-check` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-dac-read-search-capability-check` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
+| `access-control-dac-override-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
+| `access-control-dac-read-search-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-ipc-lock-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-namespace` | Yes | — | No dedicated scenario |
 | `access-control-namespace-resource-quota` | Yes | — | No dedicated scenario |
@@ -95,8 +95,8 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `access-control-service-type` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-ssh-daemons` | Yes | — | No dedicated scenario |
 | `access-control-sys-admin-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-sys-module-capability-check` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-sys-nice-realtime-capability` | Yes | — | Not reproducible on the smoke cluster: needs a node running a realtime kernel |
+| `access-control-sys-module-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
+| `access-control-sys-nice-realtime-capability` | No | — | Not reproducible on the smoke cluster: needs a node running a realtime kernel |
 | `access-control-sys-ptrace-capability` | Yes | Pod spec batch: one violation per workload (non-compliant) (`failed`)<br>Pod spec batch: shared process namespace with SYS_PTRACE (compliant) (`passed`) | Covered |
 
 ## affiliated-certification
@@ -130,7 +130,7 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `lifecycle-startup-probe` | Yes | Startup probe defined (compliant) (`passed`)<br>Startup probe missing (non-compliant) (`failed`) | Covered |
 | `lifecycle-statefulset-scaling` | Yes | — | No dedicated scenario |
 | `lifecycle-storage-provisioner` | Yes | — | No dedicated scenario |
-| `lifecycle-topology-spread-constraint` | No | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
+| `lifecycle-topology-spread-constraint` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
 
 ## manageability
 
@@ -143,17 +143,17 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `networking-dual-stack-service` | Yes | — | No dedicated scenario |
+| `networking-dual-stack-service` | No | — | No dedicated scenario |
 | `networking-icmpv4-connectivity` | Yes | — | No dedicated scenario |
 | `networking-icmpv4-connectivity-multus` | Yes | — | No dedicated scenario |
-| `networking-icmpv6-connectivity` | Yes | — | No dedicated scenario |
+| `networking-icmpv6-connectivity` | No | — | No dedicated scenario |
 | `networking-icmpv6-connectivity-multus` | No | — | No dedicated scenario |
 | `networking-network-attachment-definition-sriov-mtu` | No | — | No dedicated scenario |
 | `networking-network-policy-deny-all` | Yes | Default ingress and egress deny policy (compliant) (`passed`)<br>NetworkPolicy missing egress deny (non-compliant) (`failed`) | Covered |
 | `networking-ocp-reserved-ports-usage` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `networking-reserved-partner-ports` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `networking-restart-on-reboot-sriov-pod` | No | — | No dedicated scenario |
-| `networking-tls-minimum-version` | No | TLS 1.3 Only (non-compliant with Intermediate) (`failed`)<br>TLS 1.2 Only (non-compliant with Intermediate) (`failed`)<br>TLS 1.2 Allowed (compliant with Intermediate profile) (`passed`)<br>Plain HTTP (compliant) (`passed`) | Covered |
+| `networking-tls-minimum-version` | Yes | TLS 1.3 Only (non-compliant with Intermediate) (`failed`)<br>TLS 1.2 Only (non-compliant with Intermediate) (`failed`)<br>TLS 1.2 Allowed (compliant with Intermediate profile) (`passed`)<br>Plain HTTP (compliant) (`passed`) | Covered |
 | `networking-undeclared-container-ports-usage` | Yes | Declared listening port (compliant) (`passed`)<br>Undeclared listening port (non-compliant) (`failed`) | Covered |
 | `networking-unsecured-container-ports` | Yes | Unsecured container ports across nodes (non-compliant) (`failed`)<br>Secured container ports across nodes (compliant) (`passed`) | Covered |
 
@@ -161,7 +161,7 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `observability-compatibility-with-next-ocp-release` | No | — | No dedicated scenario |
+| `observability-compatibility-with-next-ocp-release` | Yes | — | No dedicated scenario |
 | `observability-container-logging` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `observability-crd-status` | Yes | — | No dedicated scenario |
 | `observability-pod-disruption-budget` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
@@ -171,17 +171,17 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `operator-catalogsource-bundle-count` | Yes | — | No dedicated scenario |
+| `operator-catalogsource-bundle-count` | No | — | No dedicated scenario |
 | `operator-crd-openapi-schema` | Yes | — | No dedicated scenario |
 | `operator-crd-versioning` | Yes | — | No dedicated scenario |
 | `operator-install-source` | Yes | — | No dedicated scenario |
 | `operator-install-status-no-privileges` | Yes | — | No dedicated scenario |
 | `operator-install-status-succeeded` | Yes | — | No dedicated scenario |
-| `operator-multiple-same-operators` | Yes | — | No dedicated scenario |
+| `operator-multiple-same-operators` | No | — | No dedicated scenario |
 | `operator-olm-skip-range` | No | — | No dedicated scenario |
 | `operator-pods-no-hugepages` | No | — | No dedicated scenario |
 | `operator-semantic-versioning` | Yes | — | No dedicated scenario |
-| `operator-single-crd-owner` | Yes | — | No dedicated scenario |
+| `operator-single-crd-owner` | No | — | No dedicated scenario |
 | `operator-single-or-multi-namespaced-allowed-in-tenant-namespaces` | Yes | — | No dedicated scenario |
 
 ## performance
@@ -192,7 +192,9 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `performance-exclusive-cpu-pool` | Yes | — | No dedicated scenario |
 | `performance-exclusive-cpu-pool-rt-scheduling-policy` | Yes | — | No dedicated scenario |
 | `performance-isolated-cpu-pool-rt-scheduling-policy` | Yes | — | No dedicated scenario |
-| `performance-max-resources-exec-probes` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
+| `performance-limit-memory-allocation` | Yes | — | No dedicated scenario |
+| `performance-limited-use-of-exec-probes` | Yes | — | No dedicated scenario |
+| `performance-max-resources-exec-probes` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `performance-rt-apps-no-exec-probes` | Yes | — | No dedicated scenario |
 | `performance-shared-cpu-pool-non-rt-scheduling-policy` | Yes | — | No dedicated scenario |
 
@@ -202,7 +204,7 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 |---|---|---|---|
 | `platform-alteration-base-image` | Yes | — | No dedicated scenario |
 | `platform-alteration-boot-params` | Yes | — | No dedicated scenario |
-| `platform-alteration-cluster-operator-health` | Yes | — | No dedicated scenario |
+| `platform-alteration-cluster-operator-health` | No | — | No dedicated scenario |
 | `platform-alteration-hugepages-1g-only` | Yes | — | No dedicated scenario |
 | `platform-alteration-hugepages-2m-only` | Yes | — | No dedicated scenario |
 | `platform-alteration-hugepages-config` | Yes | — | No dedicated scenario |
@@ -210,6 +212,7 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `platform-alteration-is-selinux-enforcing` | Yes | — | No dedicated scenario |
 | `platform-alteration-isredhat-release` | Yes | — | No dedicated scenario |
 | `platform-alteration-ocp-lifecycle` | Yes | — | No dedicated scenario |
+| `platform-alteration-ocp-node-count` | No | — | No dedicated scenario |
 | `platform-alteration-ocp-node-os-lifecycle` | Yes | — | No dedicated scenario |
 | `platform-alteration-service-mesh-usage` | Yes | — | No dedicated scenario |
 | `platform-alteration-sysctl-config` | Yes | — | No dedicated scenario |
@@ -219,20 +222,20 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `preflight-AllImageRefsInRelatedImages` | No | — | No dedicated scenario |
-| `preflight-BasedOnUbi` | No | — | No dedicated scenario |
-| `preflight-BundleImageRefsAreCertified` | No | — | No dedicated scenario |
-| `preflight-DeployableByOLM` | No | — | No dedicated scenario |
-| `preflight-FollowsRestrictedNetworkEnablementGuidelines` | No | — | No dedicated scenario |
-| `preflight-HasLicense` | No | — | No dedicated scenario |
-| `preflight-HasModifiedFiles` | No | — | No dedicated scenario |
-| `preflight-HasNoProhibitedLabels` | No | — | No dedicated scenario |
-| `preflight-HasNoProhibitedPackages` | No | — | No dedicated scenario |
-| `preflight-HasProhibitedContainerName` | No | — | No dedicated scenario |
-| `preflight-HasRequiredLabel` | No | — | No dedicated scenario |
-| `preflight-HasUniqueTag` | No | — | No dedicated scenario |
-| `preflight-LayerCountAcceptable` | No | — | No dedicated scenario |
-| `preflight-RequiredAnnotations` | No | — | No dedicated scenario |
-| `preflight-RunAsNonRoot` | No | — | No dedicated scenario |
-| `preflight-SecurityContextConstraintsInCSV` | No | — | No dedicated scenario |
-| `preflight-ValidateOperatorBundle` | No | — | No dedicated scenario |
+| `preflight-AllImageRefsInRelatedImages` | Yes | — | No dedicated scenario |
+| `preflight-BasedOnUbi` | Yes | — | No dedicated scenario |
+| `preflight-BundleImageRefsAreCertified` | Yes | — | No dedicated scenario |
+| `preflight-DeployableByOLM` | Yes | — | No dedicated scenario |
+| `preflight-FollowsRestrictedNetworkEnablementGuidelines` | Yes | — | No dedicated scenario |
+| `preflight-HasLicense` | Yes | — | No dedicated scenario |
+| `preflight-HasModifiedFiles` | Yes | — | No dedicated scenario |
+| `preflight-HasNoProhibitedLabels` | Yes | — | No dedicated scenario |
+| `preflight-HasNoProhibitedPackages` | Yes | — | No dedicated scenario |
+| `preflight-HasProhibitedContainerName` | Yes | — | No dedicated scenario |
+| `preflight-HasRequiredLabel` | Yes | — | No dedicated scenario |
+| `preflight-HasUniqueTag` | Yes | — | No dedicated scenario |
+| `preflight-LayerCountAcceptable` | Yes | — | No dedicated scenario |
+| `preflight-RequiredAnnotations` | Yes | — | No dedicated scenario |
+| `preflight-RunAsNonRoot` | Yes | — | No dedicated scenario |
+| `preflight-SecurityContextConstraintsInCSV` | Yes | — | No dedicated scenario |
+| `preflight-ValidateOperatorBundle` | Yes | — | No dedicated scenario |

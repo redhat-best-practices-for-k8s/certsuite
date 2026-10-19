@@ -4,6 +4,7 @@
 import argparse
 import json
 import re
+import subprocess
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -14,9 +15,7 @@ ROOT = SCRIPT_DIR.parents[2]
 CATALOG_FILE = ROOT / "CATALOG.md"
 SCENARIOS_FILE = SCRIPT_DIR / "scenarios.json"
 README_FILE = SCRIPT_DIR / "README.md"
-SUITE_KEYS_FILE = ROOT / "tests" / "common" / "constant.go"
-QE_FLAG_FILES = sorted((ROOT / "tests" / "identifiers").glob("*.go")) + [ROOT / "tests" / "preflight" / "catalog.go"]
-QE_FLAG_ARG = 6
+PREFLIGHT_CATALOG_FILE = ROOT / "tests" / "preflight" / "catalog.go"
 
 # Catalog IDs that cannot get a scenario on the Kind smoke cluster, and why.
 # Anything not listed here and not in scenarios.json is an open gap, not a
@@ -90,64 +89,65 @@ def parse_catalog():
     return suites, ids_by_suite
 
 
-def split_call_args(source, start):
-    """Return the top-level arguments of the Go call whose "(" ends at start."""
-    args = []
-    depth = 0
-    arg_start = index = start
-    while index < len(source):
-        char = source[index]
-        if char == "`":
-            index = source.index("`", index + 1)
-        elif char == '"':
-            index += 1
-            while source[index] != '"':
-                index += 2 if source[index] == "\\" else 1
-        elif char in "({[":
-            depth += 1
-        elif char in ")}]":
-            if depth == 0:
-                args.append(source[arg_start:index].strip())
-                return args
-            depth -= 1
-        elif char == "," and depth == 0:
-            args.append(source[arg_start:index].strip())
-            arg_start = index + 1
-        index += 1
-    raise ValueError("Unterminated AddCatalogEntry call")
+def _get_checks_module_path():
+    """Return the path to the checks library source in the Go module cache."""
+    go_mod = (ROOT / "go.mod").read_text(encoding="utf-8")
+    match = re.search(r'github\.com/redhat-best-practices-for-k8s/checks\s+(\S+)', go_mod)
+    if not match:
+        raise ValueError("checks library not found in go.mod")
+    version = match.group(1)
+    gomodcache = subprocess.check_output(["go", "env", "GOMODCACHE"], text=True, cwd=ROOT).strip()
+    return Path(gomodcache) / f"github.com/redhat-best-practices-for-k8s/checks@{version}"
 
 
 def parse_qe_flags(catalog_ids):
-    """Read the qe argument of every AddCatalogEntry call.
+    """Read QE flags from the checks library source in the Go module cache.
 
-    Calls with a non-literal test name (the generated preflight entries) set the
-    flag for every catalog ID in their suite.
+    The checks library stores QE flags in CheckInfo structs in register.go files.
+    Preflight tests (dynamically registered via AddCatalogEntry at runtime) are
+    all marked QE=true by convention.
     """
-    suite_keys = dict(re.findall(r'(\w+TestKey)\s*=\s*"([^"]+)"', SUITE_KEYS_FILE.read_text(encoding="utf-8")))
+    checks_path = _get_checks_module_path()
+
     qe_by_id = {}
-    qe_by_suite = {}
-    for go_file in QE_FLAG_FILES:
-        source = go_file.read_text(encoding="utf-8")
-        for match in re.finditer(r"\bAddCatalogEntry\(", source):
-            if source[: match.start()].endswith("func "):
-                continue
-            args = split_call_args(source, match.end())
-            suite = suite_keys.get(args[1].rsplit(".", 1)[-1])
-            qe = args[QE_FLAG_ARG]
-            if not suite or qe not in {"true", "false"}:
-                raise ValueError(f"Cannot read the qe flag from an AddCatalogEntry call in {go_file.relative_to(ROOT)}")
-            if args[0].startswith('"'):
-                qe_by_id[suite + "-" + args[0].strip('"')] = qe == "true"
-            else:
-                qe_by_suite[suite] = qe == "true"
+    for go_file in checks_path.rglob("*.go"):
+        try:
+            source = go_file.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        for block_match in re.finditer(r"checks\.Register\(checks\.CheckInfo\{", source):
+            start = block_match.end() - 1
+            depth = 0
+            i = start
+            while i < len(source):
+                if source[i] == "{":
+                    depth += 1
+                elif source[i] == "}":
+                    depth -= 1
+                    if depth == 0:
+                        block = source[start : i + 1]
+                        name_m = re.search(r'\bName:\s*"([^"]+)"', block)
+                        qe_m = re.search(r'\bQe:\s*(true|false)', block)
+                        if name_m and qe_m:
+                            qe_by_id[name_m.group(1)] = qe_m.group(1) == "true"
+                        break
+                i += 1
+
+    # Preflight tests use AddCatalogEntry with a runtime c.Name() — all are QE=true.
+    preflight_source = PREFLIGHT_CATALOG_FILE.read_text(encoding="utf-8")
+    preflight_suite_match = re.search(r'common\.(\w+TestKey)', preflight_source)
+    preflight_suite = ""
+    if preflight_suite_match:
+        suite_keys_source = (ROOT / "tests" / "common" / "constant.go").read_text(encoding="utf-8")
+        suite_keys = dict(re.findall(r'(\w+TestKey)\s*=\s*"([^"]+)"', suite_keys_source))
+        preflight_suite = suite_keys.get(preflight_suite_match.group(1), "")
 
     flags = {}
     for test_id in catalog_ids:
-        suite = next((suite for suite in qe_by_suite if test_id.startswith(f"{suite}-")), None)
         if test_id in qe_by_id:
             flags[test_id] = qe_by_id[test_id]
-        elif suite:
-            flags[test_id] = qe_by_suite[suite]
+        elif preflight_suite and test_id.startswith(f"{preflight_suite}-"):
+            flags[test_id] = True
         else:
             raise ValueError(f"No qe flag found for catalog ID {test_id!r}")
     return flags

@@ -19,7 +19,6 @@ package feedback
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -77,7 +76,7 @@ func NewCommand() *cobra.Command {
 
 	err := generateFeedbackJsFile.MarkFlagRequired("feedback")
 	if err != nil {
-		log.Fatalf("failed to mark feedback flag as required:  :%v", err)
+		fmt.Fprintf(os.Stderr, "failed to mark feedback flag as required: %v", err)
 		return nil
 	}
 	generateFeedbackJsFile.Flags().StringVarP(
@@ -86,7 +85,7 @@ func NewCommand() *cobra.Command {
 
 	err = generateFeedbackJsFile.MarkFlagRequired("outputPath")
 	if err != nil {
-		log.Fatalf("failed to mark outputPath flag as required:  :%v", err)
+		fmt.Fprintf(os.Stderr, "failed to mark outputPath flag as required: %v", err)
 		return nil
 	}
 	return generateFeedbackJsFile
