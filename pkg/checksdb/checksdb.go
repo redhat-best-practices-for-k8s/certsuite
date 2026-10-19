@@ -189,6 +189,9 @@ func getResultsSummary() map[string][]int {
 const nbColorSymbols = 9
 
 func printFailedChecksLog() {
+	if cli.IsQuiet() {
+		return
+	}
 	for _, group := range dbByGroup {
 		for _, check := range group.checks {
 			if check.Result != CheckResultFailed && check.Result != CheckResultError {

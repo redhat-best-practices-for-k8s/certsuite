@@ -191,7 +191,8 @@ for i in $(seq 0 $((scenario_count - 1))); do
       --output-dir="${OUTPUT_DIR}" \
       --create-xml-junit-file \
       --log-level="${LOG_LEVEL}" \
-      --cleanup-probe=false || true
+      --cleanup-probe=false \
+      --quiet || true
   fi
 
   # Validate

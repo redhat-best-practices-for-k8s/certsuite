@@ -97,6 +97,9 @@ func Startup() {
 		os.Exit(1)
 	}
 
+	// Quiet mode silences the console progress output; the log file keeps it all.
+	cli.SetQuiet(testParams.Quiet)
+
 	// Diagnostic functions will run when no labels are provided.
 	if testParams.LabelsFilter == noLabelsFilterExpr {
 		log.Warn("The Best Practices Test Suite will run in diagnostic mode so no test case will be launched")
@@ -111,14 +114,16 @@ func Startup() {
 	log.Info("Labels filter: %v", testParams.LabelsFilter)
 	log.Info("Log level: %s", strings.ToUpper(testParams.LogLevel))
 
-	cli.PrintBanner()
+	if !testParams.Quiet {
+		cli.PrintBanner()
 
-	fmt.Printf("Certsuite version: %s\n", versions.GitVersion())
-	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
-	fmt.Printf("Checks filter: %s\n", testParams.LabelsFilter)
-	fmt.Printf("Output folder: %s\n", testParams.OutputDir)
-	fmt.Printf("Log file: %s (level=%s)\n", log.LogFileName, testParams.LogLevel)
-	fmt.Printf("\n")
+		fmt.Printf("Certsuite version: %s\n", versions.GitVersion())
+		fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
+		fmt.Printf("Checks filter: %s\n", testParams.LabelsFilter)
+		fmt.Printf("Output folder: %s\n", testParams.OutputDir)
+		fmt.Printf("Log file: %s (level=%s)\n", log.LogFileName, testParams.LogLevel)
+		fmt.Printf("\n")
+	}
 }
 
 func Shutdown() {
@@ -133,8 +138,10 @@ func Shutdown() {
 func Run(labelsFilter, outputFolder string) error {
 	testParams := configuration.GetTestParameters()
 
-	fmt.Println("Running discovery of CNF target resources...")
-	fmt.Print("\n")
+	if !testParams.Quiet {
+		fmt.Println("Running discovery of CNF target resources...")
+		fmt.Print("\n")
+	}
 
 	env := provider.GetTestEnvironment()
 

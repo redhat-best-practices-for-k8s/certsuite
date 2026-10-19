@@ -87,7 +87,9 @@ for the IDs in its `OBJECT_ASSERTION_IDS` set.
 ## What the runner does per scenario
 
 1. `deploy.sh <manifest>`.
-2. `./certsuite run --label-filter=<joined test IDs> --config-file=<path>/manifests/certsuite-config.yaml --output-dir=<output_dir> --cleanup-probe=false`.
+2. `./certsuite run --label-filter=<joined test IDs> --config-file=<path>/manifests/certsuite-config.yaml --output-dir=<output_dir> --create-xml-junit-file --log-level=<SMOKE_TESTS_LOG_LEVEL> --cleanup-probe=false --quiet`. The `--quiet` flag keeps certsuite's own
+   console output out of the job log; everything it suppresses is still written
+   to `<output_dir>/certsuite.log`.
 3. Validate each test ID in the entry against the claim.
 4. On failure, grep `certsuite.log` for the test IDs and probe-related lines.
 5. `cleanup.sh <output_dir>`, which also runs if the script exits early.

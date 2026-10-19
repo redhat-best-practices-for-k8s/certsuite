@@ -106,7 +106,9 @@ func skipAll(checks []*Check, reason string) {
 
 func onFailure(errorType ErrorType, failureDesc, failureMsg string, group *ChecksGroup, currentCheck *Check, remainingChecks []*Check) error {
 	// Set current Check's result as error.
-	fmt.Printf("\r[ %s ] %-60s\n", cli.CheckResultTagError, currentCheck.ID)
+	if !cli.IsQuiet() {
+		fmt.Printf("\r[ %s ] %-60s\n", cli.CheckResultTagError, currentCheck.ID)
+	}
 	currentCheck.SetResultError(errorType, failureDesc+": "+failureMsg)
 	// Set the remaining checks as skipped, using a simplified reason msg.
 	reason := "group " + group.name + " " + failureDesc
@@ -308,7 +310,9 @@ func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err e
 //nolint:funlen
 func (group *ChecksGroup) RunChecks(stopChan <-chan bool, abortChan chan string) (errs []error, failedChecks int) {
 	log.Info("Running group %q checks.", group.name)
-	fmt.Printf("Running suite %s\n", strings.ToUpper(group.name))
+	if !cli.IsQuiet() {
+		fmt.Printf("Running suite %s\n", strings.ToUpper(group.name))
+	}
 
 	// Get checks to run based on the label expr.
 	checks := []*Check{}
@@ -392,7 +396,7 @@ func (group *ChecksGroup) RunChecks(stopChan <-chan bool, abortChan chan string)
 
 func (group *ChecksGroup) OnAbort(abortReason string) error {
 	// If this wasn't the group with the aborted check.
-	if group.currentRunningCheckIdx == checkIdxNone {
+	if group.currentRunningCheckIdx == checkIdxNone && !cli.IsQuiet() {
 		fmt.Printf("Skipping checks from suite %s\n", strings.ToUpper(group.name))
 	}
 

@@ -53,7 +53,24 @@ var (
 	stopChan        chan bool
 )
 
+// quietMode silences the console progress output when the suite runs with
+// --quiet. The log file output is not affected.
+var quietMode bool
+
+// SetQuiet enables or disables quiet mode for the console output functions.
+func SetQuiet(quiet bool) {
+	quietMode = quiet
+}
+
+// IsQuiet reports whether quiet mode is enabled.
+func IsQuiet() bool {
+	return quietMode
+}
+
 func PrintBanner() {
+	if quietMode {
+		return
+	}
 	fmt.Print(banner)
 }
 
@@ -106,6 +123,10 @@ func cropLogLine(line string, maxAvailableWidth int) string {
 }
 
 func printRunningCheckLine(checkName string, startTime time.Time, logLine string) {
+	if quietMode {
+		return
+	}
+
 	// Minimum space on the right needed to show the current last log line.
 	const minColsNeededForLogLine = 40
 
@@ -142,6 +163,9 @@ func (c *cliCheckLogSniffer) Write(p []byte) (n int, err error) {
 }
 
 func PrintResultsTable(results map[string][]int) {
+	if quietMode {
+		return
+	}
 	fmt.Printf("\n")
 	fmt.Println("------------------------------------------------------------------------")
 	fmt.Printf("| %-27s %-9s %-9s %-9s %s |\n", "SUITE", "PASSED", "FAILED", "SKIPPED", "ERROR")
@@ -173,6 +197,9 @@ func PrintCheckSkipped(checkName, reason string) {
 	// if neither compliant objects nor non-compliant objects were found.
 	stopCheckLineGoroutine()
 
+	if quietMode {
+		return
+	}
 	fmt.Print(ClearLineCode + "[ " + CheckResultTagSkip + " ] " + checkName + "  (" + reason + ")\n")
 }
 
@@ -180,12 +207,15 @@ func PrintCheckRunning(checkName string) {
 	stopChan = make(chan bool)
 	checkLoggerChan = make(chan string)
 
-	line := "[ " + CheckResultTagRunning + " ] " + checkName
-	if !isTTY() {
-		line += "\n"
-	}
+	// The goroutine below keeps running in quiet mode to drain checkLoggerChan.
+	if !quietMode {
+		line := "[ " + CheckResultTagRunning + " ] " + checkName
+		if !isTTY() {
+			line += "\n"
+		}
 
-	fmt.Print(line)
+		fmt.Print(line)
+	}
 
 	go updateRunningCheckLine(checkName, stopChan)
 }
@@ -193,24 +223,36 @@ func PrintCheckRunning(checkName string) {
 func PrintCheckPassed(checkName string) {
 	stopCheckLineGoroutine()
 
+	if quietMode {
+		return
+	}
 	fmt.Print(ClearLineCode + "[ " + CheckResultTagPass + " ] " + checkName + "\n")
 }
 
 func PrintCheckFailed(checkName string) {
 	stopCheckLineGoroutine()
 
+	if quietMode {
+		return
+	}
 	fmt.Print(ClearLineCode + "[ " + CheckResultTagFail + " ] " + checkName + "\n")
 }
 
 func PrintCheckAborted(checkName, reason string) {
 	stopCheckLineGoroutine()
 
+	if quietMode {
+		return
+	}
 	fmt.Print(ClearLineCode + "[ " + CheckResultTagAborted + " ] " + checkName + "  (" + reason + ")\n")
 }
 
 func PrintCheckErrored(checkName string) {
 	stopCheckLineGoroutine()
 
+	if quietMode {
+		return
+	}
 	fmt.Print(ClearLineCode + "[ " + CheckResultTagError + " ] " + checkName + "\n")
 }
 
