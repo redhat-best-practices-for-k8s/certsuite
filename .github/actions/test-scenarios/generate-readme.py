@@ -37,6 +37,9 @@ OBJECT_ASSERTION_IDS = {
     "manageability-containers-image-tag",
     "access-control-pod-automount-service-account-token",
     "networking-undeclared-container-ports-usage",
+    "access-control-namespace",
+    "access-control-namespace-resource-quota",
+    "networking-icmpv4-connectivity",
 }
 
 

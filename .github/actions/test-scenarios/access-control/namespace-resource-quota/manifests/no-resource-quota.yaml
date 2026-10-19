@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: scenario-account
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-resource-quota
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: no-resource-quota
+      scenario-resource-quota: target
+  template:
+    metadata:
+      labels:
+        app: no-resource-quota
+        scenario-resource-quota: target
+    spec:
+      serviceAccountName: scenario-account
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27

@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: processes-smoke-ns
+podsUnderTestLabels:
+  - "scenario-processes: target"
+operatorsUnderTestLabels: []

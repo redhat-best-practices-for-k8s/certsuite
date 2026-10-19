@@ -104,7 +104,7 @@ freshly created probe, and must not delete the `cnf-suite` namespace in its
 ## Cluster preconditions
 
 The scenarios run against the partner Kind cluster created by
-`.github/actions/setup-partner-cluster`. Two properties of that cluster are load
+`.github/actions/setup-partner-cluster`. Three properties of that cluster are load
 bearing:
 
 - **At least two nodes labelled `node-role.kubernetes.io/worker`.** The partner
@@ -114,8 +114,12 @@ bearing:
   rather than pass or fail, so their scenarios report a state mismatch.
 - **Two schedulable nodes.** Scenarios that spread replicas with required
   hostname anti-affinity will not become Available on a single-node cluster.
+- **Dual-stack pod and service networks.** The golden pod-spec Service sets
+  `ipFamilyPolicy: PreferDualStack` and `networking-dual-stack-service` asserts
+  it ends up with two cluster IPs. On a single-stack cluster the check errors
+  out instead.
 
-Running the suite against your own cluster means reproducing both.
+Running the suite against your own cluster means reproducing all three.
 
 ## Debugging a failing scenario
 

@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: istio-prefix-smoke-ns
+podsUnderTestLabels:
+  - "scenario-namespace: target"
+operatorsUnderTestLabels: []

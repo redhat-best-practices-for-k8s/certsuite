@@ -217,8 +217,52 @@
     "output_dir": "undeclared-listening-port-results"
   },
   {
+    "name": "Namespace with istio prefix (non-compliant)",
+    "description": "Deploys a workload into a namespace whose name starts with the reserved istio- prefix. The check flags the namespace itself, not the workload.",
+    "label_filter": "access-control-namespace",
+    "path": "access-control/namespace",
+    "manifest": "istio-prefix.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "noncompliant_contains": "istio-prefix-smoke-ns",
+    "output_dir": "istio-prefix-results"
+  },
+  {
+    "name": "Namespace without a ResourceQuota (non-compliant)",
+    "description": "Deploys a workload into a namespace with no ResourceQuota. The check flags the pod for running in that namespace.",
+    "label_filter": "access-control-namespace-resource-quota",
+    "path": "access-control/namespace-resource-quota",
+    "manifest": "no-resource-quota.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "noncompliant_contains": "no-resource-quota",
+    "output_dir": "no-resource-quota-results"
+  },
+  {
+    "name": "ICMPv4 connectivity between pods (compliant)",
+    "description": "Deploys two plain nginx workloads. The check pings the second pod from the first over the default network and must succeed.",
+    "label_filter": "networking-icmpv4-connectivity",
+    "path": "networking/icmpv4-connectivity",
+    "manifest": "icmp-connectivity.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "compliant_contains": "icmpv4-smoke-ns",
+    "output_dir": "icmp-connectivity-results"
+  },
+  {
+    "name": "ICMPv4 connectivity ignored by the target pod (non-compliant)",
+    "description": "Deploys two identical workloads that ignore ICMP echo requests: a privileged init container sets net.ipv4.icmp_echo_ignore_all=1 in the shared pod network namespace. The check reports the failed pair and the failed default network.",
+    "label_filter": "networking-icmpv4-connectivity",
+    "path": "networking/icmpv4-connectivity",
+    "manifest": "icmp-droppers.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 2,
+    "noncompliant_contains": "default",
+    "output_dir": "icmp-droppers-results"
+  },
+  {
     "name": "Pod spec batch: golden workloads (compliant)",
-    "description": "A golden Deployment, a Guaranteed whole-CPU variant with a RuntimeClass and CPU/IRQ load-balancing annotations, and a ClusterIP Service. Together they satisfy every pod spec check in the batch.",
+    "description": "A golden Deployment mounting a statically bound volume, a Guaranteed whole-CPU variant with a RuntimeClass and CPU/IRQ load-balancing annotations, a ClusterIP Service, a ResourceQuota and the storage objects backing the volume. Together they satisfy every pod spec check in the batch.",
     "path": "batches/pod-spec",
     "manifest": "golden.yaml",
     "output_dir": "pod-spec-golden-results",
@@ -299,6 +343,22 @@
         "expected_result": "passed",
         "min_compliant": 1
       },
+      "access-control-namespace": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-namespace-resource-quota": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-pod-role-bindings": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-cluster-role-bindings": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
       "lifecycle-image-pull-policy": {
         "expected_result": "passed",
         "min_compliant": 1
@@ -327,6 +387,14 @@
         "expected_result": "passed",
         "min_compliant": 1
       },
+      "lifecycle-persistent-volume-reclaim-policy": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-storage-provisioner": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
       "observability-termination-policy": {
         "expected_result": "passed",
         "min_compliant": 1
@@ -340,6 +408,10 @@
         "min_compliant": 1
       },
       "networking-ocp-reserved-ports-usage": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "networking-dual-stack-service": {
         "expected_result": "passed",
         "min_compliant": 1
       },
@@ -363,7 +435,7 @@
   },
   {
     "name": "Pod spec batch: one violation per workload (non-compliant)",
-    "description": "Workloads generated from the golden template with exactly one field changed, plus a NodePort Service. Each test must fail only on its own workload.",
+    "description": "Workloads generated from the golden template with exactly one field changed, plus a NodePort Service, an IPv4-only Service, a ClusterRoleBinding and the storage objects backing two of the workloads. Each test must fail only on its own workload.",
     "path": "batches/pod-spec",
     "manifest": "violations.yaml",
     "output_dir": "pod-spec-violations-results",
@@ -444,6 +516,14 @@
         "expected_result": "failed",
         "noncompliant_contains": "bad-default-sa"
       },
+      "access-control-pod-role-bindings": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-default-sa"
+      },
+      "access-control-cluster-role-bindings": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-crb"
+      },
       "access-control-sys-ptrace-capability": {
         "expected_result": "failed",
         "noncompliant_contains": "bad-ptrace"
@@ -476,6 +556,14 @@
         "expected_result": "failed",
         "noncompliant_contains": "bad-cpu-isolation"
       },
+      "lifecycle-persistent-volume-reclaim-policy": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-retain-policy"
+      },
+      "lifecycle-storage-provisioner": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-local-storage"
+      },
       "observability-termination-policy": {
         "expected_result": "failed",
         "noncompliant_contains": "bad-termination-file"
@@ -491,6 +579,10 @@
       "networking-ocp-reserved-ports-usage": {
         "expected_result": "failed",
         "noncompliant_contains": "bad-ocp-port"
+      },
+      "networking-dual-stack-service": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-ipv4"
       },
       "performance-max-resources-exec-probes": {
         "expected_result": "failed",
@@ -579,6 +671,74 @@
       "lifecycle-affinity-required-pods": {
         "expected_result": "failed",
         "noncompliant_contains": "bad-affinity-required"
+      }
+    }
+  },
+  {
+    "name": "Processes batch: golden workloads (compliant)",
+    "description": "A plain nginx Deployment with a single process per container and no sshd listening. Together they satisfy every process check in the batch.",
+    "path": "batches/processes",
+    "manifest": "golden.yaml",
+    "output_dir": "processes-golden-results",
+    "tests": {
+      "access-control-one-process-per-container": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "access-control-ssh-daemons": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      }
+    }
+  },
+  {
+    "name": "Processes batch: one violation per workload (non-compliant)",
+    "description": "A Deployment whose container runs multiple processes and an sshd Deployment listening in the foreground. Each test must fail only on its own workload.",
+    "path": "batches/processes",
+    "manifest": "violations.yaml",
+    "output_dir": "processes-violations-results",
+    "tests": {
+      "access-control-one-process-per-container": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-multi-process"
+      },
+      "access-control-ssh-daemons": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-sshd"
+      }
+    }
+  },
+  {
+    "name": "CRDs batch: golden objects (compliant)",
+    "description": "A namespaced CRD with a status subresource and a Role granting read access to it. Together they satisfy every CRD check in the batch.",
+    "path": "batches/crds",
+    "manifest": "golden.yaml",
+    "output_dir": "crds-golden-results",
+    "tests": {
+      "access-control-crd-roles": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "observability-crd-status": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      }
+    }
+  },
+  {
+    "name": "CRDs batch: one violation per object (non-compliant)",
+    "description": "A CRD without a status subresource and a Role that grants an extra pods rule next to its CRD access. Each test must fail only on its own object.",
+    "path": "batches/crds",
+    "manifest": "violations.yaml",
+    "output_dir": "crds-violations-results",
+    "tests": {
+      "access-control-crd-roles": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-crd-role"
+      },
+      "observability-crd-status": {
+        "expected_result": "failed",
+        "noncompliant_contains": "scenariocrds.scenario-smoke.example.com"
       }
     }
   }
