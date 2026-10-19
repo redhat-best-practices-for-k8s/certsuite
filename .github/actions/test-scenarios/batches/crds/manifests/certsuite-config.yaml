@@ -1,0 +1,9 @@
+---
+targetNameSpaces:
+  - name: crds-smoke-ns
+podsUnderTestLabels:
+  - "scenario-crds: target"
+operatorsUnderTestLabels: []
+targetCrdFilters:
+  - nameSuffix: "scenariocrds.scenario-smoke.example.com"
+    scalable: false

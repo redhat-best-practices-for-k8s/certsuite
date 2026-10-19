@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: scenario-account
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icmp-source
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: icmp-source
+      scenario-icmpv4: target
+  template:
+    metadata:
+      labels:
+        app: icmp-source
+        scenario-icmpv4: target
+    spec:
+      serviceAccountName: scenario-account
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icmp-target
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: icmp-target
+      scenario-icmpv4: target
+  template:
+    metadata:
+      labels:
+        app: icmp-target
+        scenario-icmpv4: target
+    spec:
+      serviceAccountName: scenario-account
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27

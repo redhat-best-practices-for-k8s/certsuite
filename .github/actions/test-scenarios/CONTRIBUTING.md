@@ -87,7 +87,9 @@ for the IDs in its `OBJECT_ASSERTION_IDS` set.
 ## What the runner does per scenario
 
 1. `deploy.sh <manifest>`.
-2. `./certsuite run --label-filter=<joined test IDs> --config-file=<path>/manifests/certsuite-config.yaml --output-dir=<output_dir> --cleanup-probe=false`.
+2. `./certsuite run --label-filter=<joined test IDs> --config-file=<path>/manifests/certsuite-config.yaml --output-dir=<output_dir> --create-xml-junit-file --log-level=<SMOKE_TESTS_LOG_LEVEL> --cleanup-probe=false --quiet`. The `--quiet` flag keeps certsuite's own
+   console output out of the job log; everything it suppresses is still written
+   to `<output_dir>/certsuite.log`.
 3. Validate each test ID in the entry against the claim.
 4. On failure, grep `certsuite.log` for the test IDs and probe-related lines.
 5. `cleanup.sh <output_dir>`, which also runs if the script exits early.
@@ -104,7 +106,7 @@ freshly created probe, and must not delete the `cnf-suite` namespace in its
 ## Cluster preconditions
 
 The scenarios run against the partner Kind cluster created by
-`.github/actions/setup-partner-cluster`. Two properties of that cluster are load
+`.github/actions/setup-partner-cluster`. Three properties of that cluster are load
 bearing:
 
 - **At least two nodes labelled `node-role.kubernetes.io/worker`.** The partner
@@ -114,8 +116,12 @@ bearing:
   rather than pass or fail, so their scenarios report a state mismatch.
 - **Two schedulable nodes.** Scenarios that spread replicas with required
   hostname anti-affinity will not become Available on a single-node cluster.
+- **Dual-stack pod and service networks.** The golden pod-spec Service sets
+  `ipFamilyPolicy: PreferDualStack` and `networking-dual-stack-service` asserts
+  it ends up with two cluster IPs. On a single-stack cluster the check errors
+  out instead.
 
-Running the suite against your own cluster means reproducing both.
+Running the suite against your own cluster means reproducing all three.
 
 ## Debugging a failing scenario
 

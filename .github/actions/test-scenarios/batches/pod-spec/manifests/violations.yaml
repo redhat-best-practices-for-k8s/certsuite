@@ -5,6 +5,92 @@ kind: ServiceAccount
 metadata:
   name: scenario-sa
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bad-crb-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: bad-crb-binding
+subjects:
+  - kind: ServiceAccount
+    name: bad-crb-sa
+    namespace: pod-spec-smoke-ns
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: bad-local-storage-sc
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bad-storage-pv
+spec:
+  capacity:
+    storage: "1Gi"
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: bad-local-storage-sc
+  hostPath:
+    path: /tmp/scenario-bad-storage
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bad-storage-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: bad-local-storage-sc
+  resources:
+    requests:
+      storage: "1Gi"
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: bad-retain-sc
+provisioner: example.com/nfs
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bad-retain-pv
+spec:
+  capacity:
+    storage: "1Gi"
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: bad-retain-sc
+  hostPath:
+    path: /tmp/scenario-bad-retain
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bad-retain-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: bad-retain-sc
+  resources:
+    requests:
+      storage: "1Gi"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -2004,3 +2090,210 @@ spec:
     - port: 8080
       targetPort: 8080
       protocol: TCP
+  ipFamilyPolicy: PreferDualStack
+  ipFamilies:
+    - IPv4
+    - IPv6
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-crb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-crb
+      scenario-pod-spec: target
+  template:
+    metadata:
+      labels:
+        app: bad-crb
+        scenario-pod-spec: target
+    spec:
+      serviceAccountName: bad-crb-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        fsGroup: 101
+        seLinuxOptions:
+          level: "s0:c123,c456"
+      containers:
+        - name: nginx
+          image: "nginxinc/nginx-unprivileged:1.27"
+          imagePullPolicy: IfNotPresent
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - "-c"
+                  - "true"
+            preStop:
+              exec:
+                command:
+                  - /bin/sh
+                  - "-c"
+                  - "sleep 1"
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-retain-policy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-retain-policy
+      scenario-pod-spec: target
+  template:
+    metadata:
+      labels:
+        app: bad-retain-policy
+        scenario-pod-spec: target
+    spec:
+      serviceAccountName: scenario-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        fsGroup: 101
+        seLinuxOptions:
+          level: "s0:c123,c456"
+      containers:
+        - name: nginx
+          image: "nginxinc/nginx-unprivileged:1.27"
+          imagePullPolicy: IfNotPresent
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - "-c"
+                  - "true"
+            preStop:
+              exec:
+                command:
+                  - /bin/sh
+                  - "-c"
+                  - "sleep 1"
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: data
+          persistentVolumeClaim:
+            claimName: bad-retain-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-local-storage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-local-storage
+      scenario-pod-spec: target
+  template:
+    metadata:
+      labels:
+        app: bad-local-storage
+        scenario-pod-spec: target
+    spec:
+      serviceAccountName: scenario-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        fsGroup: 101
+        seLinuxOptions:
+          level: "s0:c123,c456"
+      containers:
+        - name: nginx
+          image: "nginxinc/nginx-unprivileged:1.27"
+          imagePullPolicy: IfNotPresent
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - "-c"
+                  - "true"
+            preStop:
+              exec:
+                command:
+                  - /bin/sh
+                  - "-c"
+                  - "sleep 1"
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: data
+          persistentVolumeClaim:
+            claimName: bad-storage-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bad-ipv4
+spec:
+  type: ClusterIP
+  selector:
+    app: bad-ipv4
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+  ipFamilyPolicy: SingleStack
+  ipFamilies:
+    - IPv4

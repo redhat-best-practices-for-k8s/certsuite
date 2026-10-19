@@ -144,4 +144,6 @@ type TestParameters struct {
 	CleanupProbe bool
 	// RequireProbe aborts the test run if the probe daemonset fails to deploy
 	RequireProbe bool
+	// Quiet suppresses stdout progress output; results go only to the log file
+	Quiet bool
 }

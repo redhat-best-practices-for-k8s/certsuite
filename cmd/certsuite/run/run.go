@@ -48,6 +48,7 @@ func NewCommand() *cobra.Command {
 	behaviorFlags := flag.NewFlagSet("behavior", flag.ContinueOnError)
 	behaviorFlags.Bool("allow-non-running", false, "Include non-Running pods during autodiscovery phase")
 	behaviorFlags.Bool("server-mode", false, "Run the certsuite in web server mode")
+	behaviorFlags.Bool("quiet", false, "Suppress stdout progress output; results go to the log file only")
 
 	outputFlags := flag.NewFlagSet("output", flag.ContinueOnError)
 	outputFlags.Bool("omit-artifacts-zip-file", false, "Prevents the creation of a zip file with the result artifacts")
@@ -169,6 +170,7 @@ func initTestParamsFromFlags(cmd *cobra.Command) error {
 	f.getString(&testParams.DaemonsetMemLim, "daemonset-mem-lim")
 	f.getBool(&testParams.SanitizeClaim, "sanitize-claim")
 	f.getBool(&testParams.AllowNonRunning, "allow-non-running")
+	f.getBool(&testParams.Quiet, "quiet")
 	f.getString(&testParams.ConnectAPIKey, "connect-api-key")
 	f.getString(&testParams.ConnectProjectID, "connect-project-id")
 	f.getString(&testParams.ConnectAPIBaseURL, "connect-api-base-url")

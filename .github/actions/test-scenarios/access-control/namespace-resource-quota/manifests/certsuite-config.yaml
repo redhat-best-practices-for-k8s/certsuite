@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: resource-quota-smoke-ns
+podsUnderTestLabels:
+  - "scenario-resource-quota: target"
+operatorsUnderTestLabels: []

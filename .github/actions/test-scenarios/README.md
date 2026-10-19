@@ -16,21 +16,21 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 
 | Suite | Tests | Covered in certsuite-qe | Covered in smoke scenarios | Covered in both | Covered in neither |
 |---|---|---|---|---|---|
-| access-control | 31 | 28 | 23 | 20 | 0 |
+| access-control | 31 | 28 | 30 | 27 | 0 |
 | affiliated-certification | 4 | 4 | 0 | 0 | 0 |
-| lifecycle | 19 | 18 | 13 | 12 | 0 |
+| lifecycle | 19 | 18 | 15 | 14 | 0 |
 | manageability | 2 | 2 | 2 | 2 | 0 |
-| networking | 13 | 9 | 6 | 5 | 3 |
-| observability | 5 | 4 | 3 | 3 | 1 |
+| networking | 13 | 9 | 8 | 7 | 3 |
+| observability | 5 | 4 | 4 | 4 | 1 |
 | operator | 12 | 10 | 0 | 0 | 2 |
 | performance | 7 | 6 | 2 | 1 | 0 |
 | platform-alteration | 14 | 13 | 0 | 0 | 1 |
 | preflight | 17 | 0 | 0 | 0 | 17 |
-| **Total** | **124** | **94** | **49** | **43** | **24** |
+| **Total** | **124** | **94** | **61** | **55** | **24** |
 
 ## Scenarios
 
-The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
+The 36 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Scenario | Manifest | Tests | What it deploys |
 |---|---|---|---|
@@ -56,36 +56,44 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | Service account token automount enabled (non-compliant) | `access-control/pod-automount-service-account-token/manifests/automount-enabled.yaml` | `access-control-pod-automount-service-account-token` | Deploys a pod with a dedicated service account whose service account token automount is enabled. |
 | Declared listening port (compliant) | `networking/unsecured-container-ports/manifests/plain-http-spread.yaml` | `networking-undeclared-container-ports-usage` | Two nginx pods on separate nodes declare the TCP port they listen on. |
 | Undeclared listening port (non-compliant) | `networking/unsecured-container-ports/manifests/undeclared-http-spread.yaml` | `networking-undeclared-container-ports-usage` | Two nginx pods on separate nodes listen on TCP 8080 without declaring the container port. |
-| Pod spec batch: golden workloads (compliant) | `batches/pod-spec/manifests/golden.yaml` | 34 | A golden Deployment, a Guaranteed whole-CPU variant with a RuntimeClass and CPU/IRQ load-balancing annotations, and a ClusterIP Service. Together they satisfy every pod spec check in the batch. |
-| Pod spec batch: one violation per workload (non-compliant) | `batches/pod-spec/manifests/violations.yaml` | 34 | Workloads generated from the golden template with exactly one field changed, plus a NodePort Service. Each test must fail only on its own workload. |
+| Namespace with istio prefix (non-compliant) | `access-control/namespace/manifests/istio-prefix.yaml` | `access-control-namespace` | Deploys a workload into a namespace whose name starts with the reserved istio- prefix. The check flags the namespace itself, not the workload. |
+| Namespace without a ResourceQuota (non-compliant) | `access-control/namespace-resource-quota/manifests/no-resource-quota.yaml` | `access-control-namespace-resource-quota` | Deploys a workload into a namespace with no ResourceQuota. The check flags the pod for running in that namespace. |
+| ICMPv4 connectivity between pods (compliant) | `networking/icmpv4-connectivity/manifests/icmp-connectivity.yaml` | `networking-icmpv4-connectivity` | Deploys two plain nginx workloads. The check pings the second pod from the first over the default network and must succeed. |
+| ICMPv4 connectivity ignored by the target pod (non-compliant) | `networking/icmpv4-connectivity/manifests/icmp-droppers.yaml` | `networking-icmpv4-connectivity` | Deploys two identical workloads that ignore ICMP echo requests: a privileged init container sets net.ipv4.icmp_echo_ignore_all=1 in the shared pod network namespace. The check reports the failed pair and the failed default network. |
+| Pod spec batch: golden workloads (compliant) | `batches/pod-spec/manifests/golden.yaml` | 41 | A golden Deployment mounting a statically bound volume, a Guaranteed whole-CPU variant with a RuntimeClass and CPU/IRQ load-balancing annotations, a ClusterIP Service, a ResourceQuota and the storage objects backing the volume. Together they satisfy every pod spec check in the batch. |
+| Pod spec batch: one violation per workload (non-compliant) | `batches/pod-spec/manifests/violations.yaml` | 39 | Workloads generated from the golden template with exactly one field changed, plus a NodePort Service, an IPv4-only Service, a ClusterRoleBinding and the storage objects backing two of the workloads. Each test must fail only on its own workload. |
 | Pod spec batch: security context without fsGroup (non-compliant) | `batches/pod-spec/manifests/bad-security-context.yaml` | `access-control-security-context` | The golden workload without a pod-level fsGroup falls out of security context category 1. Kept separate because most other violations also fail this check. |
 | Pod spec batch: shared process namespace with SYS_PTRACE (compliant) | `batches/pod-spec/manifests/ptrace.yaml` | `access-control-sys-ptrace-capability` | The golden workload with shareProcessNamespace and the SYS_PTRACE capability. Kept separate because the added capability fails the security context check. |
 | Workload controllers batch: golden workloads (compliant) | `batches/workload-controllers/manifests/golden.yaml` | 4 | Two-replica Deployments with PodDisruptionBudgets: one with pod anti-affinity, one with hostname and zone topology spread constraints, and one labelled AffinityRequired with node affinity. |
 | Workload controllers batch: one violation per workload (non-compliant) | `batches/workload-controllers/manifests/violations.yaml` | 4 | One replica, a missing PodDisruptionBudget, a hostname-only topology spread constraint, and an AffinityRequired workload that keeps pod anti-affinity. |
+| Processes batch: golden workloads (compliant) | `batches/processes/manifests/golden.yaml` | 2 | A plain nginx Deployment with a single process per container and no sshd listening. Together they satisfy every process check in the batch. |
+| Processes batch: one violation per workload (non-compliant) | `batches/processes/manifests/violations.yaml` | 2 | A Deployment whose container runs multiple processes and an sshd Deployment listening in the foreground. Each test must fail only on its own workload. |
+| CRDs batch: golden objects (compliant) | `batches/crds/manifests/golden.yaml` | 2 | A namespaced CRD with a status subresource and a Role granting read access to it. Together they satisfy every CRD check in the batch. |
+| CRDs batch: one violation per object (non-compliant) | `batches/crds/manifests/violations.yaml` | 2 | A CRD without a status subresource and a Role that grants an extra pods rule next to its CRD access. Each test must fail only on its own object. |
 
 ## access-control
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
 | `access-control-bpf-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-cluster-role-bindings` | Yes | — | No dedicated scenario |
+| `access-control-cluster-role-bindings` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-container-host-port` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-crd-roles` | Yes | — | No dedicated scenario |
+| `access-control-crd-roles` | Yes | CRDs batch: golden objects (compliant) (`passed`)<br>CRDs batch: one violation per object (non-compliant) (`failed`) | Covered |
 | `access-control-dac-override-capability-check` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-dac-read-search-capability-check` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-ipc-lock-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-namespace` | Yes | — | No dedicated scenario |
-| `access-control-namespace-resource-quota` | Yes | — | No dedicated scenario |
+| `access-control-namespace` | Yes | Namespace with istio prefix (non-compliant) (`failed`)<br>Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
+| `access-control-namespace-resource-quota` | Yes | Namespace without a ResourceQuota (non-compliant) (`failed`)<br>Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
 | `access-control-net-admin-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-net-raw-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-no-1337-uid` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-one-process-per-container` | Yes | — | No dedicated scenario |
+| `access-control-one-process-per-container` | Yes | Processes batch: golden workloads (compliant) (`passed`)<br>Processes batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-pod-automount-service-account-token` | Yes | Service account token automount disabled (compliant) (`passed`)<br>Service account token automount enabled (non-compliant) (`failed`) | Covered |
 | `access-control-pod-host-ipc` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-pod-host-network` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-pod-host-path` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-pod-host-pid` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-pod-role-bindings` | Yes | — | No dedicated scenario |
+| `access-control-pod-role-bindings` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-pod-service-account` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-requests` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-security-context` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: security context without fsGroup (non-compliant) (`failed`) | Covered |
@@ -93,7 +101,7 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `access-control-security-context-privilege-escalation` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-security-context-read-only-root-file-system` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-service-type` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-ssh-daemons` | Yes | — | No dedicated scenario |
+| `access-control-ssh-daemons` | Yes | Processes batch: golden workloads (compliant) (`passed`)<br>Processes batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-sys-admin-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-sys-module-capability-check` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-sys-nice-realtime-capability` | Yes | — | Not reproducible on the smoke cluster: needs a node running a realtime kernel |
@@ -120,7 +128,7 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `lifecycle-deployment-scaling` | Yes | — | No dedicated scenario |
 | `lifecycle-image-pull-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-liveness-probe` | Yes | Liveness probe defined (compliant) (`passed`)<br>Liveness probe missing (non-compliant) (`failed`) | Covered |
-| `lifecycle-persistent-volume-reclaim-policy` | Yes | — | No dedicated scenario |
+| `lifecycle-persistent-volume-reclaim-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-high-availability` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-owner-type` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-recreation` | Yes | — | No dedicated scenario |
@@ -129,7 +137,7 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `lifecycle-readiness-probe` | Yes | Readiness probe defined (compliant) (`passed`)<br>Readiness probe missing (non-compliant) (`failed`) | Covered |
 | `lifecycle-startup-probe` | Yes | Startup probe defined (compliant) (`passed`)<br>Startup probe missing (non-compliant) (`failed`) | Covered |
 | `lifecycle-statefulset-scaling` | Yes | — | No dedicated scenario |
-| `lifecycle-storage-provisioner` | Yes | — | No dedicated scenario |
+| `lifecycle-storage-provisioner` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-topology-spread-constraint` | No | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
 
 ## manageability
@@ -143,8 +151,8 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `networking-dual-stack-service` | Yes | — | No dedicated scenario |
-| `networking-icmpv4-connectivity` | Yes | — | No dedicated scenario |
+| `networking-dual-stack-service` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
+| `networking-icmpv4-connectivity` | Yes | ICMPv4 connectivity between pods (compliant) (`passed`)<br>ICMPv4 connectivity ignored by the target pod (non-compliant) (`failed`) | Covered |
 | `networking-icmpv4-connectivity-multus` | Yes | — | No dedicated scenario |
 | `networking-icmpv6-connectivity` | Yes | — | No dedicated scenario |
 | `networking-icmpv6-connectivity-multus` | No | — | No dedicated scenario |
@@ -163,7 +171,7 @@ The 28 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 |---|---|---|---|
 | `observability-compatibility-with-next-ocp-release` | No | — | No dedicated scenario |
 | `observability-container-logging` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `observability-crd-status` | Yes | — | No dedicated scenario |
+| `observability-crd-status` | Yes | CRDs batch: golden objects (compliant) (`passed`)<br>CRDs batch: one violation per object (non-compliant) (`failed`) | Covered |
 | `observability-pod-disruption-budget` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `observability-termination-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 
