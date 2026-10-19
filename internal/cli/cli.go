@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/spf13/cobra"
 	"golang.org/x/term"
 )
 
@@ -251,4 +252,11 @@ func LineAlignCenter(s string, w int) string {
 
 func LineColor(s, color string) string {
 	return color + s + Reset
+}
+
+// AddCommand adds a child command to a parent command if the child is not nil.
+func AddCommand(parent, child *cobra.Command) {
+	if child != nil {
+		parent.AddCommand(child)
+	}
 }

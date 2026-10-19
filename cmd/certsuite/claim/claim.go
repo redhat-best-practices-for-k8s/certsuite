@@ -3,6 +3,7 @@ package claim
 import (
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/compare"
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/claim/show"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 	"github.com/spf13/cobra"
 )
 
@@ -14,8 +15,8 @@ var (
 )
 
 func NewCommand() *cobra.Command {
-	claimCommand.AddCommand(compare.NewCommand())
-	claimCommand.AddCommand(show.NewCommand())
+	cli.AddCommand(claimCommand, compare.NewCommand())
+	cli.AddCommand(claimCommand, show.NewCommand())
 
 	return claimCommand
 }
