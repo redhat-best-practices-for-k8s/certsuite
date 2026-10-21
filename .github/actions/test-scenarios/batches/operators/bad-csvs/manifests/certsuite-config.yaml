@@ -1,0 +1,9 @@
+---
+targetNameSpaces:
+  - name: operators-bad-smoke-ns
+podsUnderTestLabels:
+  - "scenario-operators-bad: target"
+operatorsUnderTestLabels: []
+targetCrdFilters:
+  - nameSuffix: "badcrds.scenario-smoke.example.com"
+    scalable: false

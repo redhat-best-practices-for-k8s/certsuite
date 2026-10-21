@@ -146,3 +146,11 @@ results that do not match the source:
 A workload that is not Ready is left out of certsuite discovery, so an expected
 failure silently turns into a pass. Every `deploy.sh` must wait for all of its
 workloads.
+
+A scenario whose workload is *expected* to be broken inverts the wait: deploy
+waits for the broken state, not for Ready. The `batches/operators/hugepages`
+entry deploys a pod that can never schedule (it requests hugepages the Kind
+workers do not expose), so its `deploy.sh` waits for
+`--for=condition=PodScheduled=false` — the pod existing but unschedulable is
+what the scenario asserts, and waiting for anything stronger would fail the
+deploy step.

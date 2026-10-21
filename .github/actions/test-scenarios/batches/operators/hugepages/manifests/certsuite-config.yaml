@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: operators-hugepages-smoke-ns
+podsUnderTestLabels:
+  - "scenario-operators-hugepages: target"
+operatorsUnderTestLabels: []

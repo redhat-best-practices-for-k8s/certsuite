@@ -1,0 +1,9 @@
+---
+targetNameSpaces:
+  - name: operators-golden-smoke-ns
+podsUnderTestLabels:
+  - "scenario-operators-golden: target"
+operatorsUnderTestLabels: []
+targetCrdFilters:
+  - nameSuffix: "goldencrds.scenario-smoke.example.com"
+    scalable: false

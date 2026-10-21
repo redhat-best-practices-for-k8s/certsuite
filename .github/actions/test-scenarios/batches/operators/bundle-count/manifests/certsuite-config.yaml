@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: operators-big-smoke-ns
+podsUnderTestLabels:
+  - "scenario-operators-big: target"
+operatorsUnderTestLabels: []
