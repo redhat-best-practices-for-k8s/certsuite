@@ -123,6 +123,7 @@ check-catalog-links:
 check-scenario-readme:
 	python3 .github/actions/test-scenarios/generate-readme.py --check
 	python3 .github/actions/test-scenarios/batches/generate-manifests.py --check
+	python3 .github/actions/test-scenarios/batches/operators/generate-manifests.py --check
 
 # Builds the Certsuite binary with debug flags
 build-certsuite-tool-debug: results-html

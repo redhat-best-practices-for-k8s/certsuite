@@ -22,15 +22,15 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 | manageability | 2 | 2 | 2 | 2 | 0 |
 | networking | 13 | 9 | 8 | 7 | 3 |
 | observability | 5 | 4 | 4 | 4 | 1 |
-| operator | 12 | 10 | 0 | 0 | 2 |
+| operator | 12 | 10 | 12 | 10 | 0 |
 | performance | 7 | 6 | 2 | 1 | 0 |
 | platform-alteration | 14 | 13 | 0 | 0 | 1 |
 | preflight | 17 | 0 | 0 | 0 | 17 |
-| **Total** | **124** | **94** | **61** | **55** | **24** |
+| **Total** | **124** | **94** | **73** | **65** | **22** |
 
 ## Scenarios
 
-The 36 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
+The 40 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Scenario | Manifest | Tests | What it deploys |
 |---|---|---|---|
@@ -70,6 +70,10 @@ The 36 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | Processes batch: one violation per workload (non-compliant) | `batches/processes/manifests/violations.yaml` | 2 | A Deployment whose container runs multiple processes and an sshd Deployment listening in the foreground. Each test must fail only on its own workload. |
 | CRDs batch: golden objects (compliant) | `batches/crds/manifests/golden.yaml` | 2 | A namespaced CRD with a status subresource and a Role granting read access to it. Together they satisfy every CRD check in the batch. |
 | CRDs batch: one violation per object (non-compliant) | `batches/crds/manifests/violations.yaml` | 2 | A CRD without a status subresource and a Role that grants an extra pods rule next to its CRD access. Each test must fail only on its own object. |
+| Operators batch: golden OLM install (compliant) | `batches/operators/golden/manifests/olm-golden.yaml` | 12 | A real OLM install from an in-cluster File-Based Catalog: an opm registry serves the catalog from a ConfigMap, the CatalogSource points at it by address, and OLM installs the bundle inline (CSV, CRD and a pause-image deployment) with no published bundle image. The operator carries a skipRange, a subscription, no clusterPermissions, one owned CRD with a structural schema, and its OperatorGroup targets a tenant namespace. Together these satisfy every check in the batch. operator-crd-openapi-schema has no failing scenario: apiextensions v1 requires structural schemas, so a served CRD without one cannot exist on any cluster. |
+| Operators batch: one violation per object (non-compliant) | `batches/operators/bad-csvs/manifests/bad-csvs.yaml` | 8 | Hand-written CSVs in a namespace with no OperatorGroup, so OLM marks them Failed without running any install strategy and their specs stay as written: one with an SCC clusterPermission, two sharing a base name and an owned CRD, and all without a subscription, skipRange or target namespaces. A CRD with a served version named v0 (valid for the apiserver, invalid for certsuite) covers crd-versioning. Each test must fail only on its own object. operator-semantic-versioning has no failing scenario here: OLM normalizes CSV spec.version through semver, so an invalid version cannot survive on the cluster. |
+| Operators batch: unschedulable hugepages pod (non-compliant) | `batches/operators/hugepages/manifests/hugepages.yaml` | `operator-pods-no-hugepages` | A real OLM install whose operator pod requests hugepages-2Mi. The Kind workers expose no hugepages, so the pod stays Pending while remaining attached to its CSV through the owner chain, and the hugepages check fails on it. The pod is deliberately left broken, so deploy waits for it to be unschedulable rather than running. |
+| Operators batch: oversized catalog (non-compliant) | `batches/operators/bundle-count/manifests/big-catalog.yaml` | `operator-catalogsource-bundle-count` | A real OLM install from a File-Based Catalog with 1002 bundles: one installable operator bundle plus 1001 filler bundles that exist only to push the catalog past the 1000-bundle limit. certsuite counts the bundles through the probe (grpcurl against the opm Service), so the needle distinguishes a real count from a probe failure. |
 
 ## access-control
 
@@ -179,18 +183,18 @@ The 36 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `operator-catalogsource-bundle-count` | Yes | — | No dedicated scenario |
-| `operator-crd-openapi-schema` | Yes | — | No dedicated scenario |
-| `operator-crd-versioning` | Yes | — | No dedicated scenario |
-| `operator-install-source` | Yes | — | No dedicated scenario |
-| `operator-install-status-no-privileges` | Yes | — | No dedicated scenario |
-| `operator-install-status-succeeded` | Yes | — | No dedicated scenario |
-| `operator-multiple-same-operators` | Yes | — | No dedicated scenario |
-| `operator-olm-skip-range` | No | — | No dedicated scenario |
-| `operator-pods-no-hugepages` | No | — | No dedicated scenario |
-| `operator-semantic-versioning` | Yes | — | No dedicated scenario |
-| `operator-single-crd-owner` | Yes | — | No dedicated scenario |
-| `operator-single-or-multi-namespaced-allowed-in-tenant-namespaces` | Yes | — | No dedicated scenario |
+| `operator-catalogsource-bundle-count` | Yes | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: oversized catalog (non-compliant) (`failed`) | Covered |
+| `operator-crd-openapi-schema` | Yes | Operators batch: golden OLM install (compliant) (`passed`) | Covered |
+| `operator-crd-versioning` | Yes | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: one violation per object (non-compliant) (`failed`) | Covered |
+| `operator-install-source` | Yes | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: one violation per object (non-compliant) (`failed`) | Covered |
+| `operator-install-status-no-privileges` | Yes | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: one violation per object (non-compliant) (`failed`) | Covered |
+| `operator-install-status-succeeded` | Yes | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: one violation per object (non-compliant) (`failed`) | Covered |
+| `operator-multiple-same-operators` | Yes | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: one violation per object (non-compliant) (`failed`) | Covered |
+| `operator-olm-skip-range` | No | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: one violation per object (non-compliant) (`failed`) | Covered |
+| `operator-pods-no-hugepages` | No | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: unschedulable hugepages pod (non-compliant) (`failed`) | Covered |
+| `operator-semantic-versioning` | Yes | Operators batch: golden OLM install (compliant) (`passed`) | Covered |
+| `operator-single-crd-owner` | Yes | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: one violation per object (non-compliant) (`failed`) | Covered |
+| `operator-single-or-multi-namespaced-allowed-in-tenant-namespaces` | Yes | Operators batch: golden OLM install (compliant) (`passed`)<br>Operators batch: one violation per object (non-compliant) (`failed`) | Covered |
 
 ## performance
 
