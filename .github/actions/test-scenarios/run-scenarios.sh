@@ -65,6 +65,12 @@ if ! [[ "$JOBS" =~ ^[0-9]+$ ]] || [[ "$JOBS" -lt 1 ]]; then
   exit 2
 fi
 
+SUITE_START=$SECONDS
+# A lane points these at its own files and the run merges them, the same way it
+# merges the per-scenario timings.
+TEST_TIMINGS_FILE="${TIMINGS_FILE}.tests"
+LANE_TOTALS_FILE="${TIMINGS_FILE}.lanes"
+
 # Fold each phase into a collapsible group in the GitHub Actions log.
 group_start() {
   if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
@@ -258,6 +264,8 @@ fi
 scenario_count=$(wc -w <<<"$SCENARIO_INDICES" | tr -d '[:space:]')
 echo "=== Running ${scenario_count} test scenario(s) with ${JOBS} lane(s) ==="
 printf 'scenario\tdeploy\trun\tvalidate\tcleanup\ttotal\n' >"$TIMINGS_FILE"
+: >"$TEST_TIMINGS_FILE"
+: >"$LANE_TOTALS_FILE"
 
 # The lane an entry belongs to decides what it may run beside. Entries without
 # a lane are namespace-scoped and can run beside anything; see CONTRIBUTING.md.
@@ -382,6 +390,23 @@ run_scenario() {
     fi
   fi
 
+  # Record how long each test took. The claim's own "duration" field is whole
+  # seconds, so every sub-second check rounds to 0 and is useless here. The
+  # start and end timestamps are Go time.Time values that carry the monotonic
+  # clock offset ("... m=+4.385740751"); the difference of those offsets has
+  # sub-millisecond resolution. Skipped checks keep zero-value timestamps with
+  # no offset, so the null test drops them.
+  if [[ -s "${OUTPUT_DIR}/claim.json" ]]; then
+    jq -r --arg scenario "$NAME" '
+      def mono: try (capture("m=\\+(?<v>[0-9.]+)").v | tonumber) catch null;
+      (.claim.results // {}) | to_entries[]
+      | (.value.startTime | mono) as $start
+      | (.value.endTime | mono) as $end
+      | select($start != null and $end != null)
+      | "\($scenario)\t\(.key)\t\(($end - $start) * 1000 | round / 1000)"' \
+      "${OUTPUT_DIR}/claim.json" >>"$TEST_TIMINGS_FILE" || true
+  fi
+
   # Cleanup (always runs)
   group_start "Cleanup: ${NAME}"
   echo "--- Cleanup ---"
@@ -470,10 +495,14 @@ stop_lanes() {
 run_lane() {
   local lane=$1 indices=$2 i rc=0
   TIMINGS_FILE="${LANE_TIMINGS_DIR}/${lane}.tsv"
+  TEST_TIMINGS_FILE="${LANE_TIMINGS_DIR}/${lane}.tests.tsv"
   printf 'scenario\tdeploy\trun\tvalidate\tcleanup\ttotal\n' >"$TIMINGS_FILE"
+  : >"$TEST_TIMINGS_FILE"
+  echo "$SECONDS" >"${LANE_RC_DIR}/${lane}.start"
   for i in $indices; do
     run_scenario "$i" || rc=1
   done
+  echo "$SECONDS" >"${LANE_RC_DIR}/${lane}.end"
   echo "$rc" >"${LANE_RC_DIR}/${lane}"
 }
 
@@ -606,6 +635,14 @@ if [[ "$JOBS" -gt 1 ]]; then
   # Merge the per-unit timing files under the header written above.
   for lane in "${UNIT_NAMES[@]}"; do
     tail -n +2 "${LANE_TIMINGS_DIR}/${lane}.tsv" >>"$TIMINGS_FILE"
+    if [[ -s "${LANE_TIMINGS_DIR}/${lane}.tests.tsv" ]]; then
+      cat "${LANE_TIMINGS_DIR}/${lane}.tests.tsv" >>"$TEST_TIMINGS_FILE"
+    fi
+    if [[ -s "${LANE_RC_DIR}/${lane}.start" && -s "${LANE_RC_DIR}/${lane}.end" ]]; then
+      lane_start=$(cat "${LANE_RC_DIR}/${lane}.start")
+      lane_end=$(cat "${LANE_RC_DIR}/${lane}.end")
+      printf '%s\t%s\n' "$lane" "$((lane_end - lane_start))" >>"$LANE_TOTALS_FILE"
+    fi
     lane_rc=$(cat "${LANE_RC_DIR}/${lane}" 2>/dev/null || echo 1)
     if [[ "$lane_rc" != "0" ]]; then
       OVERALL_RC=1
@@ -614,27 +651,75 @@ if [[ "$JOBS" -gt 1 ]]; then
   rm -rf "$LANE_LOG_DIR"
 fi
 
+# Render a TSV file as aligned columns when the column tool is available.
+format_tsv() {
+  if command -v column >/dev/null 2>&1; then
+    column -t -s "$(printf '\t')" "$1"
+  else
+    cat "$1"
+  fi
+}
+
+# Print a header and the rows of a headerless file sorted by one numeric column,
+# largest first. A fourth argument keeps only the first N rows.
+print_sorted_table() {
+  local header=$1 file=$2 column=$3 limit=${4:-}
+  local sorted
+  sorted=$(mktemp)
+  {
+    printf '%s\n' "$header"
+    sort -t "$(printf '\t')" -k"${column},${column}" -rn "$file"
+  } >"$sorted"
+  # Truncate from the file rather than piping sort into head: sort outrunning
+  # head takes SIGPIPE, which pipefail escalates to a script abort.
+  if [[ -n "$limit" ]]; then
+    head -n "$((limit + 1))" "$sorted" >"${sorted}.head"
+    mv "${sorted}.head" "$sorted"
+  fi
+  format_tsv "$sorted"
+  rm -f "$sorted"
+}
+
 print_timings() {
   [[ -s "$TIMINGS_FILE" ]] || return 0
   echo ""
   echo "=== Scenario timings (seconds) ==="
-  # Sort by total (last column), descending, keeping the header first.
+  local sorted
+  sorted=$(mktemp)
   {
     head -n 1 "$TIMINGS_FILE"
     tail -n +2 "$TIMINGS_FILE" | sort -t "$(printf '\t')" -k6,6 -rn
-  } >"${TIMINGS_FILE}.sorted"
-  if command -v column >/dev/null 2>&1; then
-    column -t -s "$(printf '\t')" "${TIMINGS_FILE}.sorted"
-  else
-    cat "${TIMINGS_FILE}.sorted"
-  fi
-  rm -f "${TIMINGS_FILE}.sorted"
+  } >"$sorted"
+  format_tsv "$sorted"
+  rm -f "$sorted"
   echo "(written to ${TIMINGS_FILE})"
 }
 
+print_slowest_tests() {
+  [[ -s "$TEST_TIMINGS_FILE" ]] || return 0
+  echo ""
+  echo "=== Slowest tests (seconds) ==="
+  print_sorted_table "$(printf 'scenario\ttest\tduration')" "$TEST_TIMINGS_FILE" 3 15
+  echo "(written to ${TEST_TIMINGS_FILE})"
+}
+
+print_lane_totals() {
+  [[ -s "$LANE_TOTALS_FILE" ]] || return 0
+  echo ""
+  echo "=== Lane totals (seconds) ==="
+  print_sorted_table "$(printf 'lane\ttotal')" "$LANE_TOTALS_FILE" 2
+}
+
+REAP_START=$SECONDS
 reap_namespaces
+REAP_SECONDS=$((SECONDS - REAP_START))
 
 print_timings
+print_slowest_tests
+print_lane_totals
+
+echo ""
+echo "=== Suite total: $((SECONDS - SUITE_START))s (reap ${REAP_SECONDS}s) ==="
 
 echo ""
 if [[ $OVERALL_RC -ne 0 ]]; then

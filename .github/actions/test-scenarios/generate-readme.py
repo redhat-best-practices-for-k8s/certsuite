@@ -18,11 +18,66 @@ SUITE_KEYS_FILE = ROOT / "tests" / "common" / "constant.go"
 QE_FLAG_FILES = sorted((ROOT / "tests" / "identifiers").glob("*.go")) + [ROOT / "tests" / "preflight" / "catalog.go"]
 QE_FLAG_ARG = 6
 
-# Catalog IDs that cannot get a scenario on the Kind smoke cluster, and why.
-# Anything not listed here and not in scenarios.json is an open gap, not a
-# deliberate one.
+# Catalog IDs that cannot be exercised on the Kind smoke cluster, and why. Each
+# reason is a verified skip condition or missing cluster capability, not a
+# guess: the check either skips before it can report an object, or the resource
+# it inspects does not exist here. Anything not listed here and without a
+# scenario is an open gap.
+NOT_OPENSHIFT = "certsuite skips this check when the cluster is not OpenShift"
+NOT_BARE_METAL = "needs bare-metal nodes; the Kind workers are virtual machines"
+NO_SRIOV = "needs SR-IOV network devices, which the Kind cluster does not have"
+NO_MULTUS = "needs Multus network attachment definitions, which the Kind cluster does not have"
+NEEDS_PREFLIGHT = "needs a preflight Docker config to reach the registry, which the smoke run does not provide"
+NEEDS_CERT_DB = "looks the artifact up in the offline Red Hat certification database"
+
 UNCOVERABLE_IDS = {
     "access-control-sys-nice-realtime-capability": "needs a node running a realtime kernel",
+    # platform-alteration: every node-level check here is gated on OpenShift or
+    # on hardware the Kind cluster does not have.
+    "platform-alteration-base-image": NOT_OPENSHIFT,
+    "platform-alteration-boot-params": NOT_OPENSHIFT,
+    "platform-alteration-cluster-operator-health": NOT_OPENSHIFT,
+    "platform-alteration-hugepages-1g-only": NOT_OPENSHIFT,
+    "platform-alteration-hugepages-2m-only": NOT_OPENSHIFT,
+    "platform-alteration-hugepages-config": NOT_OPENSHIFT,
+    "platform-alteration-is-selinux-enforcing": NOT_OPENSHIFT,
+    "platform-alteration-ocp-lifecycle": NOT_OPENSHIFT,
+    "platform-alteration-ocp-node-os-lifecycle": NOT_OPENSHIFT,
+    "platform-alteration-sysctl-config": NOT_OPENSHIFT,
+    "platform-alteration-hyperthread-enable": NOT_BARE_METAL,
+    # networking: SR-IOV and Multus provide the resources these checks inspect.
+    "networking-network-attachment-definition-sriov-mtu": NO_SRIOV,
+    "networking-restart-on-reboot-sriov-pod": NO_SRIOV,
+    "networking-icmpv4-connectivity-multus": NO_MULTUS,
+    "networking-icmpv6-connectivity-multus": NO_MULTUS,
+    # observability: the check compares the cluster against the next OpenShift
+    # release; a Kind cluster has no OpenShift release data to compare.
+    "observability-compatibility-with-next-ocp-release": NOT_OPENSHIFT,
+    # affiliated-certification: all four resolve the artifact's certification
+    # state from the offline database, which the smoke image does not carry.
+    "affiliated-certification-container-is-certified-digest": NEEDS_CERT_DB,
+    "affiliated-certification-helm-version": NEEDS_CERT_DB,
+    "affiliated-certification-helmchart-is-certified": NEEDS_CERT_DB,
+    "affiliated-certification-operator-is-certified": NEEDS_CERT_DB,
+    # preflight: the suite skips itself unless a preflight Docker config is
+    # provided, and the smoke run has no registry credentials to provide.
+    "preflight-AllImageRefsInRelatedImages": NEEDS_PREFLIGHT,
+    "preflight-BasedOnUbi": NEEDS_PREFLIGHT,
+    "preflight-BundleImageRefsAreCertified": NEEDS_PREFLIGHT,
+    "preflight-DeployableByOLM": NEEDS_PREFLIGHT,
+    "preflight-FollowsRestrictedNetworkEnablementGuidelines": NEEDS_PREFLIGHT,
+    "preflight-HasLicense": NEEDS_PREFLIGHT,
+    "preflight-HasModifiedFiles": NEEDS_PREFLIGHT,
+    "preflight-HasNoProhibitedLabels": NEEDS_PREFLIGHT,
+    "preflight-HasNoProhibitedPackages": NEEDS_PREFLIGHT,
+    "preflight-HasProhibitedContainerName": NEEDS_PREFLIGHT,
+    "preflight-HasRequiredLabel": NEEDS_PREFLIGHT,
+    "preflight-HasUniqueTag": NEEDS_PREFLIGHT,
+    "preflight-LayerCountAcceptable": NEEDS_PREFLIGHT,
+    "preflight-RequiredAnnotations": NEEDS_PREFLIGHT,
+    "preflight-RunAsNonRoot": NEEDS_PREFLIGHT,
+    "preflight-SecurityContextConstraintsInCSV": NEEDS_PREFLIGHT,
+    "preflight-ValidateOperatorBundle": NEEDS_PREFLIGHT,
 }
 
 NAMESPACE_RE = re.compile(r"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$")

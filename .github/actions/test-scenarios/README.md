@@ -18,19 +18,19 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 |---|---|---|---|---|---|
 | access-control | 31 | 28 | 30 | 27 | 0 |
 | affiliated-certification | 4 | 4 | 0 | 0 | 0 |
-| lifecycle | 19 | 18 | 15 | 14 | 0 |
+| lifecycle | 19 | 18 | 17 | 16 | 0 |
 | manageability | 2 | 2 | 2 | 2 | 0 |
 | networking | 13 | 9 | 8 | 7 | 3 |
 | observability | 5 | 4 | 4 | 4 | 1 |
 | operator | 12 | 10 | 12 | 10 | 0 |
-| performance | 7 | 6 | 2 | 1 | 0 |
-| platform-alteration | 14 | 13 | 0 | 0 | 1 |
+| performance | 7 | 6 | 7 | 6 | 0 |
+| platform-alteration | 14 | 13 | 2 | 2 | 1 |
 | preflight | 17 | 0 | 0 | 0 | 17 |
-| **Total** | **124** | **94** | **73** | **65** | **22** |
+| **Total** | **124** | **94** | **82** | **74** | **22** |
 
 ## Scenarios
 
-The 30 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
+The 32 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
 
 | Scenario | Lane | Manifest | Tests | What it deploys |
 |---|---|---|---|---|
@@ -50,16 +50,18 @@ The 30 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | Namespace without a ResourceQuota (non-compliant) | namespaced | `access-control/namespace-resource-quota/manifests/no-resource-quota.yaml` | `access-control-namespace-resource-quota` | Deploys a workload into a namespace with no ResourceQuota. The check flags the pod for running in that namespace. |
 | ICMPv4 connectivity between pods (compliant) | namespaced | `networking/icmpv4-connectivity/manifests/icmp-connectivity.yaml` | `networking-icmpv4-connectivity` | Deploys two plain nginx workloads. The check pings the second pod from the first over the default network and must succeed. |
 | ICMPv4 connectivity ignored by the target pod (non-compliant) | namespaced | `networking/icmpv4-connectivity/manifests/icmp-droppers.yaml` | `networking-icmpv4-connectivity` | Deploys two identical workloads that ignore ICMP echo requests: a privileged init container sets net.ipv4.icmp_echo_ignore_all=1 in the shared pod network namespace. The check reports the failed pair and the failed default network. |
-| Pod spec batch: golden workloads (compliant) | cluster-scoped | `batches/pod-spec/manifests/golden.yaml` | 41 | A golden Deployment mounting a statically bound volume, a Guaranteed whole-CPU variant with a RuntimeClass and CPU/IRQ load-balancing annotations, a ClusterIP Service, a ResourceQuota and the storage objects backing the volume. Together they satisfy every pod spec check in the batch. |
+| Pod spec batch: golden workloads (compliant) | cluster-scoped | `batches/pod-spec/manifests/golden.yaml` | 46 | A golden Deployment mounting a statically bound volume, a Guaranteed whole-CPU variant with a RuntimeClass and CPU/IRQ load-balancing annotations, a ClusterIP Service, a ResourceQuota and the storage objects backing the volume. Together they satisfy every pod spec check in the batch. |
 | Pod spec batch: one violation per workload (non-compliant) | cluster-scoped | `batches/pod-spec/manifests/violations.yaml` | 39 | Workloads generated from the golden template with exactly one field changed, plus a NodePort Service, an IPv4-only Service, a ClusterRoleBinding and the storage objects backing two of the workloads. Each test must fail only on its own workload. |
 | Pod spec batch: security context without fsGroup (non-compliant) | cluster-scoped | `batches/pod-spec/manifests/bad-security-context.yaml` | `access-control-security-context` | The golden workload without a pod-level fsGroup falls out of security context category 1. Kept separate because most other violations also fail this check. |
 | Pod spec batch: shared process namespace with SYS_PTRACE (compliant) | cluster-scoped | `batches/pod-spec/manifests/ptrace.yaml` | `access-control-sys-ptrace-capability` | The golden workload with shareProcessNamespace and the SYS_PTRACE capability. Kept separate because the added capability fails the security context check. |
-| Workload controllers batch: golden workloads (compliant) | node | `batches/workload-controllers/manifests/golden.yaml` | 4 | Two-replica Deployments with PodDisruptionBudgets: one with pod anti-affinity, one with hostname and zone topology spread constraints, and one labelled AffinityRequired with node affinity. |
+| Workload controllers batch: golden workloads (compliant) | node | `batches/workload-controllers/manifests/golden.yaml` | 6 | Two-replica Deployments and a two-replica StatefulSet with PodDisruptionBudgets: one Deployment with pod anti-affinity, one with hostname and zone topology spread constraints, one labelled AffinityRequired with node affinity. The scaling checks scale a controller down and back up to its original count. |
 | Workload controllers batch: one violation per workload (non-compliant) | node | `batches/workload-controllers/manifests/violations.yaml` | 4 | One replica, a missing PodDisruptionBudget, a hostname-only topology spread constraint, and an AffinityRequired workload that keeps pod anti-affinity. |
 | Processes batch: golden workloads (compliant) | namespaced | `batches/processes/manifests/golden.yaml` | 2 | A plain nginx Deployment with a single process per container and no sshd listening. Together they satisfy every process check in the batch. |
 | Processes batch: one violation per workload (non-compliant) | namespaced | `batches/processes/manifests/violations.yaml` | 2 | A Deployment whose container runs multiple processes and an sshd Deployment listening in the foreground. Each test must fail only on its own workload. |
 | CRDs batch: golden objects (compliant) | cluster-scoped | `batches/crds/manifests/golden.yaml` | 2 | A namespaced CRD with a status subresource and a Role granting read access to it. Together they satisfy every CRD check in the batch. |
 | CRDs batch: one violation per object (non-compliant) | cluster-scoped | `batches/crds/manifests/violations.yaml` | 2 | A CRD without a status subresource and a Role that grants an extra pods rule next to its CRD access. Each test must fail only on its own object. |
+| Platform batch: Red Hat base image (compliant) | namespaced | `batches/platform/manifests/golden.yaml` | 2 | A UBI pod whose /etc/redhat-release satisfies the release check, plus the node kernel check, which needs only a running workload to have nodes to judge. |
+| Platform batch: base image that is not Red Hat (non-compliant) | namespaced | `batches/platform/manifests/violations.yaml` | `platform-alteration-isredhat-release` | A Debian-based nginx pod that ships no /etc/redhat-release. The release check must fail it and nothing else. |
 | Operators batch: golden OLM install (compliant) | operator | `batches/operators/golden/manifests/olm-golden.yaml` | 12 | A real OLM install from an in-cluster File-Based Catalog: an opm registry serves the catalog from a ConfigMap, the CatalogSource points at it by address, and OLM installs the bundle inline (CSV, CRD and a pause-image deployment) with no published bundle image. The operator carries a skipRange, a subscription, no clusterPermissions, one owned CRD with a structural schema, and its OperatorGroup targets a tenant namespace. Together these satisfy every check in the batch. operator-crd-openapi-schema has no failing scenario: apiextensions v1 requires structural schemas, so a served CRD without one cannot exist on any cluster. |
 | Operators batch: one violation per object (non-compliant) | operator | `batches/operators/bad-csvs/manifests/bad-csvs.yaml` | 8 | Hand-written CSVs in a namespace with no OperatorGroup, so OLM marks them Failed without running any install strategy and their specs stay as written: one with an SCC clusterPermission, two sharing a base name and an owned CRD, and all without a subscription, skipRange or target namespaces. A CRD with a served version named v0 (valid for the apiserver, invalid for certsuite) covers crd-versioning. Each test must fail only on its own object. operator-semantic-versioning has no failing scenario here: OLM normalizes CSV spec.version through semver, so an invalid version cannot survive on the cluster. |
 | Operators batch: unschedulable hugepages pod (non-compliant) | operator | `batches/operators/hugepages/manifests/hugepages.yaml` | `operator-pods-no-hugepages` | A real OLM install whose operator pod requests hugepages-2Mi. The Kind workers expose no hugepages, so the pod stays Pending while remaining attached to its CSV through the owner chain, and the hugepages check fails on it. The pod is deliberately left broken, so deploy waits for it to be unschedulable rather than running. |
@@ -105,10 +107,10 @@ The 30 entries in `scenarios.json`, in run order. Each entry's lane says what it
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `affiliated-certification-container-is-certified-digest` | Yes | — | No dedicated scenario |
-| `affiliated-certification-helm-version` | Yes | — | No dedicated scenario |
-| `affiliated-certification-helmchart-is-certified` | Yes | — | No dedicated scenario |
-| `affiliated-certification-operator-is-certified` | Yes | — | No dedicated scenario |
+| `affiliated-certification-container-is-certified-digest` | Yes | — | Not reproducible on the smoke cluster: looks the artifact up in the offline Red Hat certification database |
+| `affiliated-certification-helm-version` | Yes | — | Not reproducible on the smoke cluster: looks the artifact up in the offline Red Hat certification database |
+| `affiliated-certification-helmchart-is-certified` | Yes | — | Not reproducible on the smoke cluster: looks the artifact up in the offline Red Hat certification database |
+| `affiliated-certification-operator-is-certified` | Yes | — | Not reproducible on the smoke cluster: looks the artifact up in the offline Red Hat certification database |
 
 ## lifecycle
 
@@ -119,7 +121,7 @@ The 30 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | `lifecycle-container-prestop` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-cpu-isolation` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-crd-scaling` | Yes | — | No dedicated scenario |
-| `lifecycle-deployment-scaling` | Yes | — | No dedicated scenario |
+| `lifecycle-deployment-scaling` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`) | Covered |
 | `lifecycle-image-pull-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-liveness-probe` | Yes | Probes defined (compliant) (`passed`)<br>Probes missing (non-compliant) (`failed`) | Covered |
 | `lifecycle-persistent-volume-reclaim-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
@@ -130,7 +132,7 @@ The 30 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | `lifecycle-pod-toleration-bypass` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-readiness-probe` | Yes | Probes defined (compliant) (`passed`)<br>Probes missing (non-compliant) (`failed`) | Covered |
 | `lifecycle-startup-probe` | Yes | Probes defined (compliant) (`passed`)<br>Probes missing (non-compliant) (`failed`) | Covered |
-| `lifecycle-statefulset-scaling` | Yes | — | No dedicated scenario |
+| `lifecycle-statefulset-scaling` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`) | Covered |
 | `lifecycle-storage-provisioner` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-topology-spread-constraint` | No | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
 
@@ -147,14 +149,14 @@ The 30 entries in `scenarios.json`, in run order. Each entry's lane says what it
 |---|---|---|---|
 | `networking-dual-stack-service` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `networking-icmpv4-connectivity` | Yes | ICMPv4 connectivity between pods (compliant) (`passed`)<br>ICMPv4 connectivity ignored by the target pod (non-compliant) (`failed`) | Covered |
-| `networking-icmpv4-connectivity-multus` | Yes | — | No dedicated scenario |
+| `networking-icmpv4-connectivity-multus` | Yes | — | Not reproducible on the smoke cluster: needs Multus network attachment definitions, which the Kind cluster does not have |
 | `networking-icmpv6-connectivity` | Yes | — | No dedicated scenario |
-| `networking-icmpv6-connectivity-multus` | No | — | No dedicated scenario |
-| `networking-network-attachment-definition-sriov-mtu` | No | — | No dedicated scenario |
+| `networking-icmpv6-connectivity-multus` | No | — | Not reproducible on the smoke cluster: needs Multus network attachment definitions, which the Kind cluster does not have |
+| `networking-network-attachment-definition-sriov-mtu` | No | — | Not reproducible on the smoke cluster: needs SR-IOV network devices, which the Kind cluster does not have |
 | `networking-network-policy-deny-all` | Yes | Default ingress and egress deny policy (compliant) (`passed`)<br>NetworkPolicy missing egress deny (non-compliant) (`failed`) | Covered |
 | `networking-ocp-reserved-ports-usage` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `networking-reserved-partner-ports` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `networking-restart-on-reboot-sriov-pod` | No | — | No dedicated scenario |
+| `networking-restart-on-reboot-sriov-pod` | No | — | Not reproducible on the smoke cluster: needs SR-IOV network devices, which the Kind cluster does not have |
 | `networking-tls-minimum-version` | No | TLS version range (non-compliant with Intermediate) (`failed`)<br>TLS version range (compliant with Intermediate profile) (`passed`) | Covered |
 | `networking-undeclared-container-ports-usage` | Yes | Unsecured container ports across nodes (plaintext + undeclared) (`failed`) | Covered |
 | `networking-unsecured-container-ports` | Yes | Unsecured container ports across nodes (plaintext + undeclared) (`failed`)<br>Secured container ports across nodes (compliant) (`passed`) | Covered |
@@ -163,7 +165,7 @@ The 30 entries in `scenarios.json`, in run order. Each entry's lane says what it
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `observability-compatibility-with-next-ocp-release` | No | — | No dedicated scenario |
+| `observability-compatibility-with-next-ocp-release` | No | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
 | `observability-container-logging` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `observability-crd-status` | Yes | CRDs batch: golden objects (compliant) (`passed`)<br>CRDs batch: one violation per object (non-compliant) (`failed`) | Covered |
 | `observability-pod-disruption-budget` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
@@ -191,50 +193,50 @@ The 30 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
 | `performance-cpu-pinning-no-exec-probes` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `performance-exclusive-cpu-pool` | Yes | — | No dedicated scenario |
-| `performance-exclusive-cpu-pool-rt-scheduling-policy` | Yes | — | No dedicated scenario |
-| `performance-isolated-cpu-pool-rt-scheduling-policy` | Yes | — | No dedicated scenario |
+| `performance-exclusive-cpu-pool` | Yes | Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
+| `performance-exclusive-cpu-pool-rt-scheduling-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
+| `performance-isolated-cpu-pool-rt-scheduling-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
 | `performance-max-resources-exec-probes` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `performance-rt-apps-no-exec-probes` | Yes | — | No dedicated scenario |
-| `performance-shared-cpu-pool-non-rt-scheduling-policy` | Yes | — | No dedicated scenario |
+| `performance-rt-apps-no-exec-probes` | Yes | Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
+| `performance-shared-cpu-pool-non-rt-scheduling-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
 
 ## platform-alteration
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `platform-alteration-base-image` | Yes | — | No dedicated scenario |
-| `platform-alteration-boot-params` | Yes | — | No dedicated scenario |
-| `platform-alteration-cluster-operator-health` | Yes | — | No dedicated scenario |
-| `platform-alteration-hugepages-1g-only` | Yes | — | No dedicated scenario |
-| `platform-alteration-hugepages-2m-only` | Yes | — | No dedicated scenario |
-| `platform-alteration-hugepages-config` | Yes | — | No dedicated scenario |
-| `platform-alteration-hyperthread-enable` | No | — | No dedicated scenario |
-| `platform-alteration-is-selinux-enforcing` | Yes | — | No dedicated scenario |
-| `platform-alteration-isredhat-release` | Yes | — | No dedicated scenario |
-| `platform-alteration-ocp-lifecycle` | Yes | — | No dedicated scenario |
-| `platform-alteration-ocp-node-os-lifecycle` | Yes | — | No dedicated scenario |
+| `platform-alteration-base-image` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
+| `platform-alteration-boot-params` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
+| `platform-alteration-cluster-operator-health` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
+| `platform-alteration-hugepages-1g-only` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
+| `platform-alteration-hugepages-2m-only` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
+| `platform-alteration-hugepages-config` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
+| `platform-alteration-hyperthread-enable` | No | — | Not reproducible on the smoke cluster: needs bare-metal nodes; the Kind workers are virtual machines |
+| `platform-alteration-is-selinux-enforcing` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
+| `platform-alteration-isredhat-release` | Yes | Platform batch: Red Hat base image (compliant) (`passed`)<br>Platform batch: base image that is not Red Hat (non-compliant) (`failed`) | Covered |
+| `platform-alteration-ocp-lifecycle` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
+| `platform-alteration-ocp-node-os-lifecycle` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
 | `platform-alteration-service-mesh-usage` | Yes | — | No dedicated scenario |
-| `platform-alteration-sysctl-config` | Yes | — | No dedicated scenario |
-| `platform-alteration-tainted-node-kernel` | Yes | — | No dedicated scenario |
+| `platform-alteration-sysctl-config` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
+| `platform-alteration-tainted-node-kernel` | Yes | Platform batch: Red Hat base image (compliant) (`passed`) | Covered |
 
 ## preflight
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `preflight-AllImageRefsInRelatedImages` | No | — | No dedicated scenario |
-| `preflight-BasedOnUbi` | No | — | No dedicated scenario |
-| `preflight-BundleImageRefsAreCertified` | No | — | No dedicated scenario |
-| `preflight-DeployableByOLM` | No | — | No dedicated scenario |
-| `preflight-FollowsRestrictedNetworkEnablementGuidelines` | No | — | No dedicated scenario |
-| `preflight-HasLicense` | No | — | No dedicated scenario |
-| `preflight-HasModifiedFiles` | No | — | No dedicated scenario |
-| `preflight-HasNoProhibitedLabels` | No | — | No dedicated scenario |
-| `preflight-HasNoProhibitedPackages` | No | — | No dedicated scenario |
-| `preflight-HasProhibitedContainerName` | No | — | No dedicated scenario |
-| `preflight-HasRequiredLabel` | No | — | No dedicated scenario |
-| `preflight-HasUniqueTag` | No | — | No dedicated scenario |
-| `preflight-LayerCountAcceptable` | No | — | No dedicated scenario |
-| `preflight-RequiredAnnotations` | No | — | No dedicated scenario |
-| `preflight-RunAsNonRoot` | No | — | No dedicated scenario |
-| `preflight-SecurityContextConstraintsInCSV` | No | — | No dedicated scenario |
-| `preflight-ValidateOperatorBundle` | No | — | No dedicated scenario |
+| `preflight-AllImageRefsInRelatedImages` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-BasedOnUbi` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-BundleImageRefsAreCertified` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-DeployableByOLM` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-FollowsRestrictedNetworkEnablementGuidelines` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-HasLicense` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-HasModifiedFiles` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-HasNoProhibitedLabels` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-HasNoProhibitedPackages` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-HasProhibitedContainerName` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-HasRequiredLabel` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-HasUniqueTag` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-LayerCountAcceptable` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-RequiredAnnotations` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-RunAsNonRoot` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-SecurityContextConstraintsInCSV` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
+| `preflight-ValidateOperatorBundle` | No | — | Not reproducible on the smoke cluster: needs a preflight Docker config to reach the registry, which the smoke run does not provide |
