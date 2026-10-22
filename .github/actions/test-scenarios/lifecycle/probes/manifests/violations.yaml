@@ -1,0 +1,93 @@
+---
+# Each workload is the golden template with exactly one probe removed, so a
+# probe check that flags anything other than its own workload is flagging a
+# workload it should not.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-readiness
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-readiness
+      scenario-probe: target
+  template:
+    metadata:
+      labels:
+        app: bad-readiness
+        scenario-probe: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 5
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-liveness
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-liveness
+      scenario-probe: target
+  template:
+    metadata:
+      labels:
+        app: bad-liveness
+        scenario-probe: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 5
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-startup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-startup
+      scenario-probe: target
+  template:
+    metadata:
+      labels:
+        app: bad-startup
+        scenario-probe: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 5

@@ -5,7 +5,7 @@ set -euo pipefail
 # the CRD must be Established before certsuite can discover it.
 # Usage: deploy.sh <manifest-file>
 
-NAMESPACE="crds-smoke-ns"
+NAMESPACE="${SCENARIO_NAMESPACE:-crds-smoke-ns}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFEST_PATH="${SCRIPT_DIR}/manifests/${1:?Usage: deploy.sh <manifest-file>}"
 

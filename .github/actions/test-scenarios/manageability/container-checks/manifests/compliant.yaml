@@ -1,0 +1,46 @@
+---
+# port-name-http declares an allowed port name and a tagged image;
+# image-tagged declares no ports, so the port-name check has nothing to judge
+# on it and both workloads are compliant with both checks.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: port-name-http
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: port-name-http
+      scenario-container: target
+  template:
+    metadata:
+      labels:
+        app: port-name-http
+        scenario-container: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          ports:
+            - name: http
+              containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-tagged
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: image-tagged
+      scenario-container: target
+  template:
+    metadata:
+      labels:
+        app: image-tagged
+        scenario-container: target
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27

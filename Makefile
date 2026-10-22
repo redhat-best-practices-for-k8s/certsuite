@@ -32,6 +32,7 @@ IMAGE_TAG?=localtest
 	generate \
 	lint \
 	markdownlint \
+	run-scenario \
 	update-rhcos-versions \
 	vet \
 	yamllint
@@ -124,6 +125,12 @@ check-scenario-readme:
 	python3 .github/actions/test-scenarios/generate-readme.py --check
 	python3 .github/actions/test-scenarios/batches/generate-manifests.py --check
 	python3 .github/actions/test-scenarios/batches/operators/generate-manifests.py --check
+
+# Runs the smoke scenarios whose name or path contains NAME, e.g.
+# make run-scenario NAME=networking/tls-minimum-version
+run-scenario:
+	@test -n "$(NAME)" || { echo "Usage: make run-scenario NAME=<name or path substring>"; exit 2; }
+	.github/actions/test-scenarios/run-scenarios.sh --only "$(NAME)"
 
 # Builds the Certsuite binary with debug flags
 build-certsuite-tool-debug: results-html

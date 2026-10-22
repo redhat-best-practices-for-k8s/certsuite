@@ -11,5 +11,14 @@ RESULTS_DIR="${1:?Usage: cleanup.sh <results-dir>}"
 # cluster-scoped CRD first lets the next run apply a fresh version.
 kubectl delete crd goldencrds.scenario-smoke.example.com --ignore-not-found --timeout=120s
 
+# Delete without waiting for finalization: every entry owns its namespaces, so
+# the runner reaps them in parallel at the end of the suite.
+delete_namespaces() {
+  kubectl delete namespace "$@" --ignore-not-found --wait=false
+  if [[ -n "${SCENARIO_REAP_FILE:-}" ]]; then
+    printf '%s\n' "$@" >>"${SCENARIO_REAP_FILE}"
+  fi
+}
+
 rm -rf "$RESULTS_DIR"
-kubectl delete namespace "$CATALOG_NAMESPACE" "$OPERATOR_NAMESPACE" "$TENANT_NAMESPACE" --ignore-not-found --timeout=120s
+delete_namespaces "$CATALOG_NAMESPACE" "$OPERATOR_NAMESPACE" "$TENANT_NAMESPACE"

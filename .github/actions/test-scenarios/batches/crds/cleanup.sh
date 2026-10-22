@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-NAMESPACE="crds-smoke-ns"
+NAMESPACE="${SCENARIO_NAMESPACE:-crds-smoke-ns}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Both manifests define the same CRD; deleting it here lets the next run apply

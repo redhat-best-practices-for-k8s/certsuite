@@ -1,49 +1,51 @@
 [
   {
-    "name": "TLS 1.3 Only (non-compliant with Intermediate)",
-    "description": "Deploys an nginx server configured to accept only TLS 1.3 connections. Under the Intermediate profile (the default on non-OCP clusters), the server must accept all versions from TLS 1.2 upward. A TLS 1.3-only server rejects TLS 1.2 and is therefore non-compliant. This scenario verifies that overly restrictive servers are correctly flagged.",
-    "label_filter": "networking-tls-minimum-version",
+    "name": "TLS version range (non-compliant with Intermediate)",
+    "description": "Deploys two nginx servers that each reject part of the Intermediate profile's required version range: one accepts only TLS 1.3 (rejecting TLS 1.2) and one accepts only TLS 1.2 (rejecting TLS 1.3). The Intermediate profile requires every version from TLS 1.2 through TLS 1.3, so both are non-compliant. One run covers both the below-minimum and the above-minimum version checks.",
     "path": "networking/tls-minimum-version",
-    "manifest": "tls13-only.yaml",
-    "expected_result": "failed",
-    "output_dir": "tls13-only-results"
+    "manifest": "tls-noncompliant.yaml",
+    "tests": {
+      "networking-tls-minimum-version": {
+        "expected_result": "failed",
+        "min_noncompliant": 2,
+        "noncompliant_contains": "-only"
+      }
+    },
+    "output_dir": "tls-noncompliant-results"
   },
   {
-    "name": "TLS 1.2 Only (non-compliant with Intermediate)",
-    "description": "Deploys an nginx server configured to accept only TLS 1.2 connections with Intermediate-profile ciphers. Under the Intermediate profile, the server must accept all versions from TLS 1.2 through TLS 1.3. A TLS 1.2-only server rejects TLS 1.3 and is therefore non-compliant. This scenario exercises the above-minimum version check (Step 3).",
-    "label_filter": "networking-tls-minimum-version",
+    "name": "TLS version range (compliant with Intermediate profile)",
+    "description": "Deploys one nginx server accepting both TLS 1.2 and TLS 1.3 with only Intermediate-profile ciphers, and one plain HTTP server with no TLS configured. On non-OpenShift clusters the test defaults to the Intermediate profile (min TLS 1.2): the TLS server meets the version and cipher requirements, and the plain HTTP service is reported as informational rather than as a failure.",
     "path": "networking/tls-minimum-version",
-    "manifest": "tls12-only.yaml",
-    "expected_result": "failed",
-    "output_dir": "tls12-only-results"
+    "manifest": "tls-compliant.yaml",
+    "tests": {
+      "networking-tls-minimum-version": {
+        "expected_result": "passed",
+        "min_compliant": 1,
+        "compliant_contains": "tls12-allowed"
+      }
+    },
+    "output_dir": "tls-compliant-results"
   },
   {
-    "name": "TLS 1.2 Allowed (compliant with Intermediate profile)",
-    "description": "Deploys an nginx server configured to accept both TLS 1.2 and TLS 1.3 connections, restricted to only the cipher suites allowed by the Intermediate TLS security profile. On non-OpenShift clusters (including CI), the test defaults to the Intermediate profile (min TLS 1.2). Since this server meets both the minimum version and cipher requirements, it is compliant. Note: this same server would be non-compliant under a Modern profile (which requires TLS 1.3), but that is covered by unit tests rather than CI scenarios.",
-    "label_filter": "networking-tls-minimum-version",
-    "path": "networking/tls-minimum-version",
-    "manifest": "tls12-allowed.yaml",
-    "expected_result": "passed",
-    "output_dir": "tls12-allowed-results"
-  },
-  {
-    "name": "Plain HTTP (compliant)",
-    "description": "Deploys a plain HTTP server with no TLS configured. Non-TLS services are reported as informational only and are not considered a compliance failure. The test verifies that the certsuite does not penalize services that do not use TLS at all, since they are outside the scope of TLS version enforcement.",
-    "label_filter": "networking-tls-minimum-version",
-    "path": "networking/tls-minimum-version",
-    "manifest": "plain-http.yaml",
-    "expected_result": "passed",
-    "output_dir": "plain-http-results"
-  },
-  {
-    "name": "Unsecured container ports across nodes (non-compliant)",
-    "description": "Deploys two plaintext HTTP pods with required hostname anti-affinity so they land on different nodes. networking-unsecured-container-ports must fail both pods as plaintext. A single plaintext failure with the other pod marked unreachable is the cross-node openssl flake this scenario guards against.",
-    "label_filter": "networking-unsecured-container-ports",
+    "name": "Unsecured container ports across nodes (plaintext + undeclared)",
+    "description": "Deploys two plaintext HTTP workloads, two replicas each, with required hostname anti-affinity so every pair lands on different nodes. One declares its listening port, the other listens on 8080 without declaring it. One run covers both expectations: networking-unsecured-container-ports must fail every replica as plaintext (a single failure with the other pod unreachable is the cross-node openssl flake this guards against), and networking-undeclared-container-ports-usage must pass the declaring workload while failing the undeclared one.",
     "path": "networking/unsecured-container-ports",
-    "manifest": "plain-http-spread.yaml",
-    "expected_result": "failed",
-    "min_noncompliant": 2,
-    "output_dir": "plain-http-spread-results"
+    "manifest": "plaintext-spread.yaml",
+    "tests": {
+      "networking-unsecured-container-ports": {
+        "expected_result": "failed",
+        "min_noncompliant": 4,
+        "noncompliant_contains": "spread"
+      },
+      "networking-undeclared-container-ports-usage": {
+        "expected_result": "failed",
+        "min_compliant": 1,
+        "compliant_contains": "plain-http-spread",
+        "noncompliant_contains": "undeclared-http-spread"
+      }
+    },
+    "output_dir": "plaintext-spread-results"
   },
   {
     "name": "Secured container ports across nodes (compliant)",
@@ -57,84 +59,81 @@
     "output_dir": "tls-spread-results"
   },
   {
-    "name": "Container port name http (compliant)",
-    "description": "Deploys a container port named http, which follows the allowed port-name format.",
-    "label_filter": "manageability-container-port-name-format",
+    "name": "Container checks (compliant)",
+    "description": "Deploys two workloads that satisfy both container checks: one names its port http (an allowed port-name format) and one uses a tagged image. One run covers both checks, and the port-named workload keeps each check's compliant set non-empty so a silently skipped check cannot pass.",
     "path": "manageability/container-checks",
-    "manifest": "port-name-http.yaml",
-    "expected_result": "passed",
-    "min_compliant": 1,
-    "output_dir": "port-name-http-results"
+    "manifest": "compliant.yaml",
+    "tests": {
+      "manageability-container-port-name-format": {
+        "expected_result": "passed",
+        "min_compliant": 1,
+        "compliant_contains": "port-name-http"
+      },
+      "manageability-containers-image-tag": {
+        "expected_result": "passed",
+        "min_compliant": 2
+      }
+    },
+    "output_dir": "container-checks-compliant-results"
   },
   {
-    "name": "Container port name sftp (non-compliant)",
-    "description": "Deploys a container port named sftp, which is outside the allowed port-name formats.",
-    "label_filter": "manageability-container-port-name-format",
+    "name": "Container checks (non-compliant)",
+    "description": "Deploys two workloads that each violate one container check: one names its port sftp (outside the allowed port-name formats) and one uses an untagged image. One run covers both checks, with the violating workload named in each expectation so a foreign object appearing in the results cannot satisfy it.",
     "path": "manageability/container-checks",
-    "manifest": "port-name-sftp.yaml",
-    "expected_result": "failed",
-    "min_noncompliant": 1,
-    "output_dir": "port-name-sftp-results"
+    "manifest": "violations.yaml",
+    "tests": {
+      "manageability-container-port-name-format": {
+        "expected_result": "failed",
+        "noncompliant_contains": "port-name-sftp"
+      },
+      "manageability-containers-image-tag": {
+        "expected_result": "failed",
+        "noncompliant_contains": "image-untagged"
+      }
+    },
+    "output_dir": "container-checks-violations-results"
   },
   {
-    "name": "Readiness probe defined (compliant)",
-    "description": "Deploys a workload with a TCP readiness probe on nginx's listening port.",
-    "label_filter": "lifecycle-readiness-probe",
+    "name": "Probes defined (compliant)",
+    "description": "Deploys a workload with TCP readiness, liveness and startup probes on nginx's listening port. One run covers all three probe checks.",
     "path": "lifecycle/probes",
-    "manifest": "readiness-probe.yaml",
-    "expected_result": "passed",
-    "min_compliant": 1,
-    "output_dir": "readiness-probe-results"
+    "manifest": "golden.yaml",
+    "tests": {
+      "lifecycle-readiness-probe": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-liveness-probe": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-startup-probe": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      }
+    },
+    "output_dir": "probe-golden-results"
   },
   {
-    "name": "Readiness probe missing (non-compliant)",
-    "description": "Deploys a workload without a readiness probe.",
-    "label_filter": "lifecycle-readiness-probe",
+    "name": "Probes missing (non-compliant)",
+    "description": "Deploys three workloads, each identical to the compliant one except that it omits exactly one probe. One run covers all three probe checks, with each violating workload named in its own expectation so a missing check cannot be satisfied by another workload's result.",
     "path": "lifecycle/probes",
-    "manifest": "readiness-no-probe.yaml",
-    "expected_result": "failed",
-    "min_noncompliant": 1,
-    "output_dir": "readiness-no-probe-results"
-  },
-  {
-    "name": "Liveness probe defined (compliant)",
-    "description": "Deploys a workload with a TCP liveness probe on nginx's listening port.",
-    "label_filter": "lifecycle-liveness-probe",
-    "path": "lifecycle/probes",
-    "manifest": "liveness-probe.yaml",
-    "expected_result": "passed",
-    "min_compliant": 1,
-    "output_dir": "liveness-probe-results"
-  },
-  {
-    "name": "Liveness probe missing (non-compliant)",
-    "description": "Deploys a workload without a liveness probe.",
-    "label_filter": "lifecycle-liveness-probe",
-    "path": "lifecycle/probes",
-    "manifest": "liveness-no-probe.yaml",
-    "expected_result": "failed",
-    "min_noncompliant": 1,
-    "output_dir": "liveness-no-probe-results"
-  },
-  {
-    "name": "Startup probe defined (compliant)",
-    "description": "Deploys a workload with a TCP startup probe on nginx's listening port.",
-    "label_filter": "lifecycle-startup-probe",
-    "path": "lifecycle/probes",
-    "manifest": "startup-probe.yaml",
-    "expected_result": "passed",
-    "min_compliant": 1,
-    "output_dir": "startup-probe-results"
-  },
-  {
-    "name": "Startup probe missing (non-compliant)",
-    "description": "Deploys a workload without a startup probe.",
-    "label_filter": "lifecycle-startup-probe",
-    "path": "lifecycle/probes",
-    "manifest": "startup-no-probe.yaml",
-    "expected_result": "failed",
-    "min_noncompliant": 1,
-    "output_dir": "startup-no-probe-results"
+    "manifest": "violations.yaml",
+    "tests": {
+      "lifecycle-readiness-probe": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-readiness"
+      },
+      "lifecycle-liveness-probe": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-liveness"
+      },
+      "lifecycle-startup-probe": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-startup"
+      }
+    },
+    "output_dir": "probe-violations-results"
   },
   {
     "name": "Default ingress and egress deny policy (compliant)",
@@ -157,26 +156,6 @@
     "output_dir": "ingress-only-policy-results"
   },
   {
-    "name": "Image with explicit tag (compliant)",
-    "description": "Deploys the multi-architecture nginx unprivileged image with an explicit 1.27 tag.",
-    "label_filter": "manageability-containers-image-tag",
-    "path": "manageability/container-checks",
-    "manifest": "image-tagged.yaml",
-    "expected_result": "passed",
-    "min_compliant": 1,
-    "output_dir": "image-tagged-results"
-  },
-  {
-    "name": "Image without explicit tag (non-compliant)",
-    "description": "Deploys the same multi-architecture image without a tag, so the image reference resolves to latest but is reported as untagged.",
-    "label_filter": "manageability-containers-image-tag",
-    "path": "manageability/container-checks",
-    "manifest": "image-untagged.yaml",
-    "expected_result": "failed",
-    "min_noncompliant": 1,
-    "output_dir": "image-untagged-results"
-  },
-  {
     "name": "Service account token automount disabled (compliant)",
     "description": "Deploys a pod with a dedicated service account whose service account token automount is disabled.",
     "label_filter": "access-control-pod-automount-service-account-token",
@@ -195,26 +174,6 @@
     "expected_result": "failed",
     "min_noncompliant": 1,
     "output_dir": "automount-enabled-results"
-  },
-  {
-    "name": "Declared listening port (compliant)",
-    "description": "Two nginx pods on separate nodes declare the TCP port they listen on.",
-    "label_filter": "networking-undeclared-container-ports-usage",
-    "path": "networking/unsecured-container-ports",
-    "manifest": "plain-http-spread.yaml",
-    "expected_result": "passed",
-    "min_compliant": 1,
-    "output_dir": "declared-listening-port-results"
-  },
-  {
-    "name": "Undeclared listening port (non-compliant)",
-    "description": "Two nginx pods on separate nodes listen on TCP 8080 without declaring the container port.",
-    "label_filter": "networking-undeclared-container-ports-usage",
-    "path": "networking/unsecured-container-ports",
-    "manifest": "undeclared-http-spread.yaml",
-    "expected_result": "failed",
-    "min_noncompliant": 1,
-    "output_dir": "undeclared-listening-port-results"
   },
   {
     "name": "Namespace with istio prefix (non-compliant)",
@@ -748,6 +707,7 @@
     "path": "batches/operators/golden",
     "manifest": "olm-golden.yaml",
     "output_dir": "operators-golden-results",
+    "fixed_namespace": true,
     "tests": {
       "operator-catalogsource-bundle-count": {
         "expected_result": "passed",
@@ -817,6 +777,7 @@
     "path": "batches/operators/bad-csvs",
     "manifest": "bad-csvs.yaml",
     "output_dir": "operators-bad-csvs-results",
+    "fixed_namespace": true,
     "tests": {
       "operator-crd-versioning": {
         "expected_result": "failed",
@@ -862,6 +823,7 @@
     "path": "batches/operators/hugepages",
     "manifest": "hugepages.yaml",
     "output_dir": "operators-hugepages-results",
+    "fixed_namespace": true,
     "tests": {
       "operator-pods-no-hugepages": {
         "expected_result": "failed",
@@ -875,6 +837,7 @@
     "path": "batches/operators/bundle-count",
     "manifest": "big-catalog.yaml",
     "output_dir": "operators-bundle-count-results",
+    "fixed_namespace": true,
     "tests": {
       "operator-catalogsource-bundle-count": {
         "expected_result": "failed",

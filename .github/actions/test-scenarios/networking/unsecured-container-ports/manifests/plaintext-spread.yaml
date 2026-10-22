@@ -1,0 +1,81 @@
+---
+# plain-http-spread declares the port it listens on and is therefore compliant
+# with the declared-port check but still plaintext; undeclared-http-spread
+# listens on 8080 without declaring it. One run covers both the plaintext and
+# the undeclared-port expectations.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plain-http-spread
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: plain-http-spread
+      unsecured-ports: target
+  template:
+    metadata:
+      labels:
+        app: plain-http-spread
+        unsecured-ports: target
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: plain-http-spread
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plain-http-spread-svc
+spec:
+  selector:
+    app: plain-http-spread
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: undeclared-http-spread
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: undeclared-http-spread
+      unsecured-ports: target
+  template:
+    metadata:
+      labels:
+        app: undeclared-http-spread
+        unsecured-ports: target
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: undeclared-http-spread
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 2

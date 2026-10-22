@@ -1,25 +1,37 @@
 ---
+# Golden workload: declares all three probes, so every lifecycle probe check
+# passes on it.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: liveness-probe
+  name: probe-golden
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: liveness-probe
+      app: probe-golden
       scenario-probe: target
   template:
     metadata:
       labels:
-        app: liveness-probe
+        app: probe-golden
         scenario-probe: target
     spec:
       containers:
         - name: nginx
           image: nginxinc/nginx-unprivileged:1.27
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 5
           livenessProbe:
             tcpSocket:
               port: 8080
             initialDelaySeconds: 1
             periodSeconds: 5
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 2

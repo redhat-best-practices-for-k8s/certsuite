@@ -12,6 +12,23 @@ controller, process, CRD and operator catalog.
 See [../CONTRIBUTING.md](../CONTRIBUTING.md) for the scenario framework and the
 full `scenarios.json` field reference.
 
+## What a new test costs
+
+Covering one more catalog test does not have to cost another deploy/run/cleanup
+cycle. Pick the cheapest row that covers it:
+
+| Change | Suite cost | When to use it |
+|---|---|---|
+| Add the test ID to an existing golden workload | ~0s | The test already passes for a workload that is deployed. |
+| Add the test ID to an existing violating workload | ~0s | The workload already violates it, and `noncompliant_contains` can point at the object that fails it. |
+| Add a new workload to an existing group | its image pull and Ready time inside the group's existing cycle | A test needs its own object: a CRD, a second container, a controller shape. |
+| Add a new group with a golden and a violating entry | two deploy/run/cleanup cycles | Nothing existing exercises the test. |
+| Convert several single-test entries into a batch | removes cycles | The entries share a namespace and label. |
+
+A batch entry asserts its own object for each test, so a new object is usually
+the only cost. The per-scenario timings printed by `run-scenarios.sh` show which
+groups are expensive.
+
 ## Groups
 
 | Group | Namespace | Pod label | Covers |

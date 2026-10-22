@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Deploy a single TLS test workload into tls-test-ns.
+# Deploy the TLS test workloads into tls-test-ns.
 # Usage: deploy.sh <manifest-file>
 #
-# The manifest file is looked up under manifests/ and must define a Deployment
-# whose name matches the filename without the .yaml extension.
+# The manifest is looked up under manifests/ and may hold several Deployments
+# and Services; every nginx config a manifest references is created below.
 
 MANIFEST_FILE="${1:?Usage: deploy.sh <manifest-file>}"
-DEPLOY_NAME="${MANIFEST_FILE%.yaml}"
 
-NAMESPACE="tls-test-ns"
+NAMESPACE="${SCENARIO_NAMESPACE:-tls-test-ns}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFESTS_DIR="${SCRIPT_DIR}/manifests"
 
@@ -59,8 +58,7 @@ server {
     location / { return 200 "tls12-allowed"; }
 }'
 
-# Deploy the single workload
 kubectl apply -n "$NAMESPACE" -f "${MANIFESTS_DIR}/${MANIFEST_FILE}"
-kubectl wait deployment -n "$NAMESPACE" "$DEPLOY_NAME" --for=condition=Available --timeout=120s
+kubectl wait deployment -n "$NAMESPACE" --all --for=condition=Available --timeout=120s
 
-echo "Workload '${DEPLOY_NAME}' deployed successfully."
+echo "Workloads from '${MANIFEST_FILE}' deployed successfully."

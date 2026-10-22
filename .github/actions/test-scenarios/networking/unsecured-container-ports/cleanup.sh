@@ -2,11 +2,11 @@
 set -euo pipefail
 
 # Clean up unsecured-container-ports scenario resources.
+# Usage: cleanup.sh <results-dir>
 
-NAMESPACE="unsecured-ports-ns"
-RESULTS_DIR="${1:-unsecured-ports-results}"
+NAMESPACE="${SCENARIO_NAMESPACE:-unsecured-ports-ns}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-kubectl delete namespace "$NAMESPACE" --ignore-not-found
-rm -rf "$RESULTS_DIR"
+"${SCRIPT_DIR}/../../cleanup-workload.sh" "$NAMESPACE" "${1:?Usage: cleanup.sh <results-dir>}"
 
 echo "Unsecured ports test resources cleaned up."
