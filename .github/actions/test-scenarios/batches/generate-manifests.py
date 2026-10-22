@@ -155,6 +155,36 @@ def pdb(name, min_available=1):
     }
 
 
+def headless_service(name, selector_app):
+    # A StatefulSet needs a governing Service. It is headless so it carries no
+    # virtual IP and does not take part in the dual-stack Service checks.
+    return {
+        "apiVersion": "v1",
+        "kind": "Service",
+        "metadata": {"name": name},
+        "spec": {
+            "clusterIP": "None",
+            "selector": {"app": selector_app},
+            "ports": [{"port": 8080, "targetPort": 8080, "protocol": "TCP"}],
+        },
+    }
+
+
+def statefulset(name, label, spec, replicas=2):
+    labels = {"app": name, label: "target"}
+    return {
+        "apiVersion": "apps/v1",
+        "kind": "StatefulSet",
+        "metadata": {"name": name},
+        "spec": {
+            "serviceName": name,
+            "replicas": replicas,
+            "selector": {"matchLabels": labels},
+            "template": {"metadata": {"labels": labels}, "spec": spec},
+        },
+    }
+
+
 def runtime_class():
     return {
         "apiVersion": "node.k8s.io/v1",
@@ -516,7 +546,7 @@ def spread(name, keys):
     ]
 
 
-def controller(name, replicas=2, with_pdb=True, affinity="anti", tsc=None, affinity_required=False):
+def controller_spec(name, affinity="anti", tsc=None):
     spec = golden_pod_spec()
     if affinity == "anti":
         spec["affinity"] = anti_affinity(name)
@@ -535,6 +565,11 @@ def controller(name, replicas=2, with_pdb=True, affinity="anti", tsc=None, affin
         }
     if tsc:
         spec["topologySpreadConstraints"] = spread(name, tsc)
+    return spec
+
+
+def controller(name, replicas=2, with_pdb=True, affinity="anti", tsc=None, affinity_required=False):
+    spec = controller_spec(name, affinity=affinity, tsc=tsc)
     extra = {"AffinityRequired": "true"} if affinity_required else None
     objects = [deployment(name, CONTROLLERS_LABEL, spec, replicas=replicas, extra_labels=extra)]
     if with_pdb:
@@ -555,6 +590,14 @@ def controller_manifests():
     golden += controller("golden-ha")
     golden += controller("good-tsc", tsc=("kubernetes.io/hostname", "topology.kubernetes.io/zone"))
     golden += controller("good-affinity-required", affinity="node", affinity_required=True)
+    # A StatefulSet alongside the Deployments so the two scaling checks that
+    # work on each controller type have a workload to scale. It carries the same
+    # HA shape as golden-ha: two replicas, anti-affinity and a PDB.
+    golden += [
+        headless_service("good-sts", "good-sts"),
+        statefulset("good-sts", CONTROLLERS_LABEL, controller_spec("good-sts"), replicas=2),
+        pdb("good-sts"),
+    ]
 
     violations = [service_account()]
     violations += controller("bad-ha", replicas=1)
@@ -634,6 +677,35 @@ def crds_manifests():
 
 
 # ---------------------------------------------------------------------------
+# platform batch: the container's distribution release
+
+
+PLATFORM_LABEL = "scenario-platform"
+# UBI ships /etc/redhat-release, which is exactly what the check reads.
+RHEL_IMAGE = "registry.access.redhat.com/ubi9/ubi-minimal:9.5"
+
+
+def platform_pod(name, image, command=None):
+    container = {"image": image, "imagePullPolicy": "IfNotPresent"}
+    if command:
+        container["command"] = command
+    return bare_pod(name, PLATFORM_LABEL, {"containers": [dict(container, name="app")]})
+
+
+def platform_manifests():
+    # isredhat-release runs `cat /etc/redhat-release` inside every container under
+    # test: a UBI image passes and an image built on another distribution fails.
+    # tainted-node-kernel needs only a running workload to have nodes to judge,
+    # so it rides along on the golden entry.
+    golden = [platform_pod("good-rhel-release", RHEL_IMAGE, ["/bin/sh", "-c", "sleep infinity"])]
+    violations = [platform_pod("bad-rhel-release", IMAGE)]
+    return {
+        "platform/manifests/golden.yaml": golden,
+        "platform/manifests/violations.yaml": violations,
+    }
+
+
+# ---------------------------------------------------------------------------
 # Minimal YAML emitter (stdlib only)
 
 PLAIN = re.compile(r"^[A-Za-z_/][A-Za-z0-9_./-]*$")
@@ -693,6 +765,7 @@ def all_manifests():
     manifests.update(controller_manifests())
     manifests.update(processes_manifests())
     manifests.update(crds_manifests())
+    manifests.update(platform_manifests())
     return {path: render(objects) for path, objects in manifests.items()}
 
 

@@ -4,10 +4,10 @@ A batch scenario checks many catalog tests in a single certsuite run. One
 `--label-filter` carries every test ID in the entry, and the runner validates
 each test separately against the same claim.
 
-Batching exists because the per-run overhead dominates: 41 tests as 41
-single-test entries cost 41 deploy/run/cleanup cycles, and as one batch they
+Batching exists because the per-run overhead dominates: 46 tests as 46
+single-test entries cost 46 deploy/run/cleanup cycles, and as one batch they
 cost one. The scenarios in here cover most of the pod-spec, workload
-controller, process, CRD and operator catalog.
+controller, process, CRD, platform and operator catalog.
 
 See [../CONTRIBUTING.md](../CONTRIBUTING.md) for the scenario framework and the
 full `scenarios.json` field reference.
@@ -34,8 +34,9 @@ groups are expensive.
 | Group | Namespace | Pod label | Covers |
 |---|---|---|---|
 | `pod-spec` | `pod-spec-smoke-ns` | `scenario-pod-spec: target` | Pod and container spec checks: capabilities, host namespaces, security context, resources, lifecycle hooks, reserved ports, CPU pinning and isolation, service accounts, RBAC bindings, storage |
-| `workload-controllers` | `controllers-smoke-ns` | `scenario-controllers: target` | Checks that judge the controller rather than the pod: high availability, PodDisruptionBudget, topology spread, AffinityRequired |
+| `workload-controllers` | `controllers-smoke-ns` | `scenario-controllers: target` | Checks that judge the controller rather than the pod: high availability, PodDisruptionBudget, topology spread, AffinityRequired, scaling |
 | `processes` | `processes-smoke-ns` | `scenario-processes: target` | Checks that inspect processes inside the container: process count per container, sshd daemons |
+| `platform` | `platform-smoke-ns` | `scenario-platform: target` | Checks that read the node or the container's distribution: the Red Hat release file, and the running kernel against node taints |
 | `crds` | `crds-smoke-ns` | `scenario-crds: target` | Checks that inspect the CRDs matched by `targetCrdFilters` and the Roles that reference them |
 | `operators` | `operators-golden-smoke-ns` and per-entry namespaces | per-entry `scenario-operators-*: target` | Operator and OLM checks: subscriptions, CSV status, privileges, skipRange, CRD ownership, semantic versioning, hugepages, bundle counts, tenant namespaces |
 
@@ -46,7 +47,7 @@ to the other's runs.
 
 | Entry | Manifest | Expectation |
 |---|---|---|
-| Golden workloads | `golden.yaml` | 41 tests `passed`. A golden Deployment mounting a statically bound volume, a Guaranteed whole-CPU variant with the `certsuite-smoke` RuntimeClass and the CPU/IRQ load-balancing annotations, a ClusterIP Service, a ResourceQuota and the storage objects backing the volume. |
+| Golden workloads | `golden.yaml` | 46 tests `passed`. A golden Deployment mounting a statically bound volume, a Guaranteed whole-CPU variant with the `certsuite-smoke` RuntimeClass and the CPU/IRQ load-balancing annotations and the five performance CPU-pool checks it satisfies, a ClusterIP Service, a ResourceQuota and the storage objects backing the volume. |
 | One violation per workload | `violations.yaml` | 39 tests `failed`, each on its own workload. |
 | Security context without fsGroup | `bad-security-context.yaml` | `access-control-security-context` `failed`. |
 | Shared process namespace with SYS_PTRACE | `ptrace.yaml` | `access-control-sys-ptrace-capability` `passed`. |
@@ -55,7 +56,7 @@ to the other's runs.
 
 | Entry | Manifest | Expectation |
 |---|---|---|
-| Golden workloads | `golden.yaml` | 4 tests `passed`. Two-replica Deployments with PodDisruptionBudgets: one with pod anti-affinity, one with hostname and zone topology spread constraints, one labelled `AffinityRequired` with node affinity. |
+| Golden workloads | `golden.yaml` | 6 tests `passed`. Two-replica Deployments with PodDisruptionBudgets: one with pod anti-affinity, one with hostname and zone topology spread constraints, one labelled `AffinityRequired` with node affinity, and a two-replica StatefulSet for the Deployment and StatefulSet scaling checks, which restore the original replica count when they finish. |
 | One violation per workload | `violations.yaml` | 4 tests `failed`: one replica, a missing PodDisruptionBudget, a hostname-only spread constraint, and an `AffinityRequired` workload that keeps pod anti-affinity. |
 
 ### processes entries
@@ -64,6 +65,18 @@ to the other's runs.
 |---|---|---|
 | Golden workloads | `golden.yaml` | 2 tests `passed`. A plain nginx Deployment: one process per container, no sshd listening. |
 | One violation per workload | `violations.yaml` | 2 tests `failed`: a Deployment whose container runs multiple processes, and an sshd Deployment listening in the foreground. |
+
+### platform entries
+
+| Entry | Manifest | Expectation |
+|---|---|---|
+| Golden workload | `golden.yaml` | 2 tests `passed`. A UBI pod, whose `/etc/redhat-release` the release check reads, and the node kernel check, which needs only a running workload to have nodes to judge. |
+| One violation | `violations.yaml` | `platform-alteration-isredhat-release` `failed` on a Debian-based pod that ships no Red Hat release file. |
+
+Only the checks a non-OpenShift Kind cluster can reach live here: the rest of the
+platform-alteration suite skips on a non-OpenShift cluster, needs bare metal, or
+needs a runtime kernel — see the reasons in
+[../README.md](../README.md#platform-alteration).
 
 ### crds entries
 
@@ -174,8 +187,8 @@ batch:
 
 1. Add the test ID, workload name and mutation to `POD_SPEC_VIOLATIONS` or
    `CONTROLLER_VIOLATIONS`, or build the workloads directly in
-   `processes_manifests()` / `crds_manifests()` when they are not a mutation of
-   the shared pod spec template.
+   `processes_manifests()` / `crds_manifests()` / `platform_manifests()` when
+   they are not a mutation of the shared pod spec template.
 2. Confirm the golden template already satisfies the new check. If it does not,
    change the template and re-verify the other entries, because every workload
    inherits it.

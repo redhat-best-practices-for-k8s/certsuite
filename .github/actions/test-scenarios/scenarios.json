@@ -390,6 +390,26 @@
       "access-control-security-context": {
         "expected_result": "passed",
         "min_compliant": 1
+      },
+      "performance-exclusive-cpu-pool": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "performance-exclusive-cpu-pool-rt-scheduling-policy": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "performance-isolated-cpu-pool-rt-scheduling-policy": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "performance-rt-apps-no-exec-probes": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "performance-shared-cpu-pool-non-rt-scheduling-policy": {
+        "expected_result": "passed",
+        "min_compliant": 1
       }
     }
   },
@@ -589,7 +609,7 @@
   },
   {
     "name": "Workload controllers batch: golden workloads (compliant)",
-    "description": "Two-replica Deployments with PodDisruptionBudgets: one with pod anti-affinity, one with hostname and zone topology spread constraints, and one labelled AffinityRequired with node affinity.",
+    "description": "Two-replica Deployments and a two-replica StatefulSet with PodDisruptionBudgets: one Deployment with pod anti-affinity, one with hostname and zone topology spread constraints, one labelled AffinityRequired with node affinity. The scaling checks scale a controller down and back up to its original count.",
     "path": "batches/workload-controllers",
     "manifest": "golden.yaml",
     "output_dir": "controllers-golden-results",
@@ -608,6 +628,14 @@
         "min_compliant": 1
       },
       "lifecycle-affinity-required-pods": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-deployment-scaling": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-statefulset-scaling": {
         "expected_result": "passed",
         "min_compliant": 1
       }
@@ -706,6 +734,36 @@
       "observability-crd-status": {
         "expected_result": "failed",
         "noncompliant_contains": "scenariocrds.scenario-smoke.example.com"
+      }
+    }
+  },
+  {
+    "name": "Platform batch: Red Hat base image (compliant)",
+    "description": "A UBI pod whose /etc/redhat-release satisfies the release check, plus the node kernel check, which needs only a running workload to have nodes to judge.",
+    "path": "batches/platform",
+    "manifest": "golden.yaml",
+    "output_dir": "platform-golden-results",
+    "tests": {
+      "platform-alteration-isredhat-release": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "platform-alteration-tainted-node-kernel": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      }
+    }
+  },
+  {
+    "name": "Platform batch: base image that is not Red Hat (non-compliant)",
+    "description": "A Debian-based nginx pod that ships no /etc/redhat-release. The release check must fail it and nothing else.",
+    "path": "batches/platform",
+    "manifest": "violations.yaml",
+    "output_dir": "platform-violations-results",
+    "tests": {
+      "platform-alteration-isredhat-release": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-rhel-release"
       }
     }
   },

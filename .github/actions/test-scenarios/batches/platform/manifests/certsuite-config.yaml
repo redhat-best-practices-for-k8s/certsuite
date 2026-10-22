@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: platform-smoke-ns
+podsUnderTestLabels:
+  - "scenario-platform: target"
+operatorsUnderTestLabels: []
