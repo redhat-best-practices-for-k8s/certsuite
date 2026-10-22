@@ -38,6 +38,7 @@ groups are expensive.
 | `processes` | `processes-smoke-ns` | `scenario-processes: target` | Checks that inspect processes inside the container: process count per container, sshd daemons |
 | `platform` | `platform-smoke-ns` | `scenario-platform: target` | Checks that read the node or the container's distribution: the Red Hat release file, and the running kernel against node taints |
 | `crds` | `crds-smoke-ns` | `scenario-crds: target` | Checks that inspect the CRDs matched by `targetCrdFilters` and the Roles that reference them |
+| `lifecycle` | `lifecycle-smoke-ns` | `scenario-lifecycle: target` | Intrusive checks: pod recreation, which cordons and drains the nodes hosting the workloads, and CRD scaling through the scale subresource |
 | `operators` | `operators-golden-smoke-ns` and per-entry namespaces | per-entry `scenario-operators-*: target` | Operator and OLM checks: subscriptions, CSV status, privileges, skipRange, CRD ownership, semantic versioning, hugepages, bundle counts, tenant namespaces |
 
 Each group has its own namespace and label so one group's workloads are invisible
@@ -90,6 +91,47 @@ the CRD and Role objects directly. The golden and violations runs share the CRD
 name, so `crds/cleanup.sh` deletes the CRD before deleting the namespace —
 otherwise the second run applies over the first one's CRD instead of replacing
 it.
+
+### lifecycle entries
+
+Both checks are intrusive, which is why they live in their own group in the
+`node` lane. `--intrusive` already defaults to `true`, so the runner needs no
+extra flag.
+
+| Entry | Manifest | Expectation |
+|---|---|---|
+| Golden workloads | `golden.yaml` | `lifecycle-crd-scaling` and `lifecycle-pod-recreation` `passed`. A two-replica Deployment, so draining one node leaves the other replica schedulable, and a `scaling-cr` custom resource whose status a helper pod keeps equal to its spec. |
+| Pod with node assignment | `violations.yaml` | `lifecycle-pod-recreation` `failed` on `bad-node-selector`. |
+
+Pod recreation walks the nodes hosting the Deployments and StatefulSets under
+test, cordoning and draining one at a time and uncordoning it before moving to
+the next, so two replicas are enough to come back on a schedulable node. Before
+any node is touched the check returns early for every target pod that carries a
+`nodeSelector`, unless that pod also sets a `runtimeClassName`; the violations
+entry uses a selector that matches every Kind node, so its pods schedule
+normally. The helper pod is a bare Pod with no target label, so it is neither
+counted nor recreated.
+
+The scalable CR is a CRD with a `scale` subresource and **no** status
+subresource, so the helper can patch `status` through the main resource with the
+projected ServiceAccount token. It writes only when `spec` and `status` differ,
+and the CR ships with both already at 1, so the check never races the first
+update.
+
+`lifecycle-crd-scaling` is covered on the passing side only, for three reasons:
+
+- a CRD without a `scale` subresource never reaches `ScaleCrUnderTest` (discovery
+  logs it at Info and moves on), so the check has no object to report on and
+  ends up `skipped` rather than `failed`;
+- any error fetching a CR's scale object — including a malformed `scale` field —
+  is `log.Fatal` in discovery, which aborts the whole certsuite run instead of
+  failing one test;
+- the only assertable failure — a CR that converges once and then stops
+  answering — costs the 300 s `timeout` package constant in
+  `tests/lifecycle/suite.go`, which would roughly double the `node` lane.
+
+The `lifecycle` group applies its CRD for both entries and deletes it in
+`cleanup.sh` before the namespace, matching `crds/cleanup.sh`.
 
 ### operators entries
 
@@ -212,6 +254,9 @@ group's `cleanup.sh` deletes them explicitly:
 - `crds` applies the `scenariocrds.scenario-smoke.example.com` CRD, which both
   of its runs overwrite; the cleanup deletes it so the next run starts from a
   clean schema.
+- `lifecycle` applies the `scenarioscalingcrs.scaling-smoke.example.com` CRD,
+  which both of its runs share; the cleanup deletes it, and the CRs it holds,
+  before the namespace.
 - `operators` applies the `goldencrds.scenario-smoke.example.com` CRD (inline
   in the golden operator's bundle) and the
   `badcrds.scenario-smoke.example.com` CRD (by hand in `bad-csvs`); each
