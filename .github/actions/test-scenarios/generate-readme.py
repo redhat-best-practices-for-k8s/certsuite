@@ -27,6 +27,11 @@ UNCOVERABLE_IDS = {
 
 NAMESPACE_RE = re.compile(r"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$")
 
+# What an entry may run beside. "namespaced" entries touch nothing outside
+# their own namespace and can run with anything; the others are kept apart
+# because their effects are visible cluster-wide. See CONTRIBUTING.md.
+KNOWN_LANES = {"namespaced", "node", "cluster-scoped", "operator"}
+
 # Non-batch tests that must assert an object, not only the claim state. Batch
 # tests are always required to; these are the single-test scenarios where a
 # matching state alone would also be produced by an unrelated failure.
@@ -195,6 +200,11 @@ def load_scenarios(catalog_ids):
             if not scenario.get(key):
                 raise ValueError(f"{prefix} is missing required field {key!r}")
 
+        lane = scenario.get("lane", "namespaced")
+        if lane not in KNOWN_LANES:
+            raise ValueError(f"{prefix} has unknown lane {lane!r}; expected one of {', '.join(sorted(KNOWN_LANES))}")
+        scenario["lane"] = lane
+
         # Batch scenarios check several tests in one run; the others check
         # label_filter against the expectations on the scenario itself.
         is_batch = "tests" in scenario
@@ -305,10 +315,10 @@ def generate_readme():
         [
             "## Scenarios",
             "",
-            f"The {len(scenarios)} entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.",
+            f"The {len(scenarios)} entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.",
             "",
-            "| Scenario | Manifest | Tests | What it deploys |",
-            "|---|---|---|---|",
+            "| Scenario | Lane | Manifest | Tests | What it deploys |",
+            "|---|---|---|---|---|",
         ]
     )
     for scenario in scenarios:
@@ -316,7 +326,7 @@ def generate_readme():
         test_ids = scenario["test_ids"]
         count = str(len(test_ids)) if len(test_ids) > 1 else f"`{test_ids[0]}`"
         lines.append(
-            f"| {markdown_cell(scenario['name'])} | {manifest} | {count} | {markdown_cell(scenario['description'])} |"
+            f"| {markdown_cell(scenario['name'])} | {scenario['lane']} | {manifest} | {count} | {markdown_cell(scenario['description'])} |"
         )
     lines.append("")
 

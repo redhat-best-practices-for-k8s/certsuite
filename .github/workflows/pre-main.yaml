@@ -289,7 +289,9 @@ jobs:
         run: cat certsuite-out/certsuite.log
 
       - name: Run test scenarios
-        run: .github/actions/test-scenarios/run-scenarios.sh
+        # Lanes: entries grouped in scenarios.json by what they may run beside.
+        # Four workers keeps the cluster busy without starving the probes.
+        run: .github/actions/test-scenarios/run-scenarios.sh --jobs 4
 
       - name: 'Test: Run preflight specific test suite'
         run: ./certsuite run --label-filter=preflight --log-level="${SMOKE_TESTS_LOG_LEVEL}"

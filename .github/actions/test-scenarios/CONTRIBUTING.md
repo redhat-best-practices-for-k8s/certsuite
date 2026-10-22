@@ -83,11 +83,46 @@ test-scenarios/
 | `compliant_contains` | no | Only count compliant objects whose `ObjectFieldsValues` contain this string. |
 | `noncompliant_contains` | no | Only count non-compliant objects containing this string, **and** fail if any non-compliant object does not. Implies `min_noncompliant: 1`. |
 | `fixed_namespace` | no | `true` means the entry manages its own namespaces: the runner uses `certsuite-config.yaml` unchanged and does not export `SCENARIO_NAMESPACE`. Only the operator batches need this. |
+| `lane` | no | What the entry may run beside; defaults to `namespaced`. See [Lanes](#lanes). |
 
 A matching state alone is weak evidence: a test can report `failed` for a
 reason that has nothing to do with the workload. Assert an object whenever the
 check produces one. `generate-readme.py` enforces this for every batch test and
 for the IDs in its `OBJECT_ASSERTION_IDS` set.
+
+## Lanes
+
+`run-scenarios.sh --jobs N` runs up to N lanes at once. Entries in the same lane
+always run serially; entries in different lanes overlap. `--jobs 1` (the
+default, and what you get without the flag) is the old strictly serial loop.
+
+The constrained lanes are handed out whole. The `namespaced` lane is the one
+that is safe to overlap freely, so its entries are spread round-robin over as
+many workers as are left, which stops one long lane from leaving the others
+idle. That is why `--jobs 4` runs seven units: `cluster-scoped`, `node`,
+`operator` and `namespaced-1` … `namespaced-4`.
+
+| Lane | Used by | Why it is kept apart |
+|---|---|---|
+| `namespaced` | everything that does not name a lane | Touches only its own namespace, so it is safe beside any other lane. |
+| `cluster-scoped` | `batches/pod-spec` (RuntimeClass, ClusterRoleBinding, StorageClasses, PVs) and `batches/crds` (one CRD) | Creates objects that outlive the namespace and are visible to every other run. |
+| `node` | `batches/workload-controllers` | Judges cluster-wide node and zone counts, which is also what the other lanes load. |
+| `operator` | `batches/operators/*` | Certsuite's operator checks read every CSV, Subscription and CatalogSource in the cluster; and OLM installs are slow and CPU-hungry. |
+
+Adding an entry without a `lane` puts it in `namespaced`, which is the right
+answer for a scenario that only creates objects in its own namespace. If a new
+scenario creates a CRD, a ClusterRoleBinding, a StorageClass, a PV, a
+RuntimeClass or a Namespace, give it its own lane (or an existing one that owns
+that kind of object) and say why in the table above.
+
+The probe DaemonSet is created by whichever certsuite run gets there first, so
+the runner gives the first lane a head start and starts the rest once
+`cnf-suite/certsuite-probe` exists. That keeps a concurrent first run from
+racing on the DaemonSet creation.
+
+Lane output is written to a per-lane log and printed under
+`=== Lane '<name>' output ===` when that lane finishes, and each lane's timings
+are merged into the single table.
 
 ## What the runner does per scenario
 
@@ -164,6 +199,10 @@ Running the suite against your own cluster means reproducing all three.
 # Run everything, as CI does. Requires jq, kubectl and a ./certsuite built from
 # the current checkout.
 make build-certsuite-tool
+.github/actions/test-scenarios/run-scenarios.sh --jobs 4
+
+# Serial, which is the same thing with --jobs 1. Use it to tell a real failure
+# apart from one caused by lanes overlapping.
 .github/actions/test-scenarios/run-scenarios.sh
 
 # Raise the log level.

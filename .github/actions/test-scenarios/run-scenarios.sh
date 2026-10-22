@@ -5,14 +5,19 @@ set -euo pipefail
 # Each scenario deploys its workloads, runs certsuite over the test IDs it
 # covers, validates the claim against the expected state, and cleans up.
 #
-# Usage: run-scenarios.sh [--only <substring>] [--timings-file <path>]
+# Usage: run-scenarios.sh [--only <substring>] [--timings-file <path>] [--jobs <n>]
 #
 #   --only           Run only the scenarios whose name or path contains the
 #                    substring. Handy while iterating on one scenario.
 #   --timings-file   Where to write the per-scenario timing table
 #                    (default: ${TMPDIR:-/tmp}/scenario-timings.tsv).
+#   --jobs           How many lanes to run at once (default: 1). Entries in a
+#                    lane always run serially; the lane field in scenarios.json
+#                    decides which entries can share the cluster. See
+#                    CONTRIBUTING.md for the lane rules.
 #
 # Env:   SMOKE_TESTS_LOG_LEVEL (default: info)
+#        SMOKE_TESTS_JOBS      (default: 1, overridden by --jobs)
 #
 # Requires: jq, kubectl, and a ./certsuite binary built from this checkout.
 # See CONTRIBUTING.md for the scenario format and for debugging a failure.
@@ -25,9 +30,12 @@ OVERALL_RC=0
 CURRENT_SCENARIO_DIR=""
 CURRENT_OUTPUT_DIR=""
 ONLY_FILTER=""
+JOBS="${SMOKE_TESTS_JOBS:-1}"
 TIMINGS_FILE="${TMPDIR:-/tmp}/scenario-timings.tsv"
 CONFIG_DIR="${TMPDIR:-/tmp}/certsuite-smoke-configs"
 SCENARIO_REAP_FILE="${TMPDIR:-/tmp}/certsuite-smoke-reap-$$.txt"
+LANE_PIDS=()
+LANE_NAMES=()
 export SCENARIO_REAP_FILE
 : >"$SCENARIO_REAP_FILE"
 
@@ -41,12 +49,21 @@ while [[ $# -gt 0 ]]; do
       TIMINGS_FILE="${2:?--timings-file needs a value}"
       shift 2
       ;;
+    --jobs)
+      JOBS="${2:?--jobs needs a value}"
+      shift 2
+      ;;
     *)
       echo "Unknown argument: $1" >&2
       exit 2
       ;;
   esac
 done
+
+if ! [[ "$JOBS" =~ ^[0-9]+$ ]] || [[ "$JOBS" -lt 1 ]]; then
+  echo "--jobs must be a positive integer, got '${JOBS}'" >&2
+  exit 2
+fi
 
 # Fold each phase into a collapsible group in the GitHub Actions log.
 group_start() {
@@ -107,6 +124,7 @@ reap_namespaces() {
 }
 
 on_exit() {
+  stop_lanes
   cleanup_current_scenario
   reap_namespaces
 }
@@ -238,17 +256,33 @@ if [[ -z "$SCENARIO_INDICES" ]]; then
 fi
 
 scenario_count=$(wc -w <<<"$SCENARIO_INDICES" | tr -d '[:space:]')
-echo "=== Running ${scenario_count} test scenario(s) ==="
+echo "=== Running ${scenario_count} test scenario(s) with ${JOBS} lane(s) ==="
 printf 'scenario\tdeploy\trun\tvalidate\tcleanup\ttotal\n' >"$TIMINGS_FILE"
 
-for i in $SCENARIO_INDICES; do
+# The lane an entry belongs to decides what it may run beside. Entries without
+# a lane are namespace-scoped and can run beside anything; see CONTRIBUTING.md.
+lane_for() {
+  jq -r ".[$1].lane // \"namespaced\"" "$SCENARIOS_FILE"
+}
+
+# Deploy, run, validate and clean up one entry. Called directly in the serial
+# path and from a per-lane subshell otherwise, so it must not depend on state
+# another scenario leaves behind. Writes its timings to $TIMINGS_FILE, which a
+# lane points at its own file.
+run_scenario() {
+  local i=$1
+  local NAME SCENARIO_PATH MANIFEST OUTPUT_DIR TESTS LABEL_FILTER
+  local SCENARIO_DIR CONFIG_FILE RENDERED_CONFIG CLAIM_FILE TEST_ID
+  local RC=0 SCENARIO_START PHASE_START
+  local DEPLOY_SECONDS=0 RUN_SECONDS=0 VALIDATE_SECONDS=0 CLEANUP_SECONDS=0
+
   NAME=$(jq -r ".[$i].name" "$SCENARIOS_FILE")
   SCENARIO_PATH=$(jq -r ".[$i].path" "$SCENARIOS_FILE")
   MANIFEST=$(jq -r ".[$i].manifest" "$SCENARIOS_FILE")
   OUTPUT_DIR=$(jq -r ".[$i].output_dir" "$SCENARIOS_FILE")
   # A scenario either checks one test (label_filter + expected_result) or a
   # batch of tests in one certsuite run (tests: {id: expectations}).
-  TESTS=$(jq -c ".[$i] | .tests // {(.label_filter): del(.name, .description, .label_filter, .path, .manifest, .output_dir)}" "$SCENARIOS_FILE")
+  TESTS=$(jq -c ".[$i] | .tests // {(.label_filter): del(.name, .description, .label_filter, .path, .manifest, .output_dir, .lane)}" "$SCENARIOS_FILE")
   LABEL_FILTER=$(jq -r 'keys_unsorted | join(",")' <<<"$TESTS")
 
   SCENARIO_DIR="${SCRIPT_DIR}/${SCENARIO_PATH}"
@@ -285,12 +319,7 @@ for i in $SCENARIO_INDICES; do
   jq -r 'to_entries[] | "  Expect:   \(.key) -> \(.value.expected_result)"' <<<"$TESTS"
   echo "========================================"
 
-  RC=0
   SCENARIO_START=$SECONDS
-  DEPLOY_SECONDS=0
-  RUN_SECONDS=0
-  VALIDATE_SECONDS=0
-  CLEANUP_SECONDS=0
 
   # Deploy
   group_start "Deploy: ${NAME}"
@@ -332,8 +361,8 @@ for i in $SCENARIO_INDICES; do
       echo "FAIL: claim.json not found at ${CLAIM_FILE}"
       RC=1
     else
-      while IFS= read -r test_id; do
-        validate_test "$CLAIM_FILE" "$test_id" "$(jq -c --arg id "$test_id" '.[$id]' <<<"$TESTS")" || RC=1
+      while IFS= read -r TEST_ID; do
+        validate_test "$CLAIM_FILE" "$TEST_ID" "$(jq -c --arg id "$TEST_ID" '.[$id]' <<<"$TESTS")" || RC=1
       done < <(jq -r 'keys_unsorted[]' <<<"$TESTS")
       validate_error_fields "$CLAIM_FILE" "${OUTPUT_DIR}/${JUNIT_FILE_NAME}" || RC=1
     fi
@@ -341,7 +370,8 @@ for i in $SCENARIO_INDICES; do
     group_end
   fi
 
-  # Print debug log on failure
+  # Print debug log on failure. A lane writes its own certsuite.log, so point
+  # at that instead of whatever the previous entry left in the repo root.
   if [[ $RC -ne 0 ]]; then
     echo "--- Scenario certsuite.log (debug) ---"
     if [[ -f "certsuite.log" ]]; then
@@ -364,11 +394,224 @@ for i in $SCENARIO_INDICES; do
     "$((SECONDS - SCENARIO_START))" >>"$TIMINGS_FILE"
 
   if [[ $RC -ne 0 ]]; then
-    OVERALL_RC=1
-  else
-    echo "Scenario '${NAME}' passed."
+    echo "Scenario '${NAME}' FAILED."
+    return 1
   fi
-done
+  echo "Scenario '${NAME}' passed."
+  return 0
+}
+
+# --- Serial run -------------------------------------------------------------
+
+if [[ "$JOBS" -eq 1 ]]; then
+  for i in $SCENARIO_INDICES; do
+    run_scenario "$i" || OVERALL_RC=1
+  done
+fi
+
+# --- Parallel run -----------------------------------------------------------
+#
+# Every lane runs in a subshell so its SCENARIO_NAMESPACE, rendered config and
+# timings stay its own. Entries inside a lane stay serial. Lanes are started
+# longest first, which is what keeps the suite from ending with one lane still
+# working.
+
+lane_output() {
+  local lane=$1
+  local log="${LANE_LOG_DIR}/${lane}.log"
+  echo ""
+  echo "=== Lane '${lane}' output ==="
+  if [[ -f "$log" ]]; then
+    cat "$log"
+  fi
+}
+
+lane_finished() {
+  local pid=$1
+  ! kill -0 "$pid" 2>/dev/null
+}
+
+# Print the output of every lane that has finished and forget its pid. Polling
+# instead of `wait -n` keeps this working on the bash 3.2 that ships with macOS.
+collect_finished_lanes() {
+  local idx new_pids=() new_names=()
+  for idx in "${!LANE_PIDS[@]}"; do
+    if lane_finished "${LANE_PIDS[$idx]}"; then
+      wait "${LANE_PIDS[$idx]}" || true
+      lane_output "${LANE_NAMES[$idx]}"
+    else
+      new_pids+=("${LANE_PIDS[$idx]}")
+      new_names+=("${LANE_NAMES[$idx]}")
+    fi
+  done
+  if [[ ${#new_pids[@]} -gt 0 ]]; then
+    LANE_PIDS=("${new_pids[@]}")
+    LANE_NAMES=("${new_names[@]}")
+  else
+    LANE_PIDS=()
+    LANE_NAMES=()
+  fi
+}
+
+stop_lanes() {
+  local pid
+  if [[ ${#LANE_PIDS[@]} -eq 0 ]]; then
+    return 0
+  fi
+  for pid in "${LANE_PIDS[@]}"; do
+    kill "$pid" 2>/dev/null || true
+    wait "$pid" 2>/dev/null || true
+  done
+  LANE_PIDS=()
+  LANE_NAMES=()
+}
+
+run_lane() {
+  local lane=$1 indices=$2 i rc=0
+  TIMINGS_FILE="${LANE_TIMINGS_DIR}/${lane}.tsv"
+  printf 'scenario\tdeploy\trun\tvalidate\tcleanup\ttotal\n' >"$TIMINGS_FILE"
+  for i in $indices; do
+    run_scenario "$i" || rc=1
+  done
+  echo "$rc" >"${LANE_RC_DIR}/${lane}"
+}
+
+# The probe DaemonSet is created by whichever certsuite run gets there first.
+# Two lanes starting at the same time can therefore race on it, so the first
+# lane is given a head start and the others wait for the DaemonSet to exist.
+probe_present() {
+  kubectl get daemonset -n cnf-suite certsuite-probe >/dev/null 2>&1
+}
+
+wait_for_probe() {
+  local waited=0
+  while ! probe_present; do
+    if [[ "$waited" -ge 90 ]]; then
+      echo "WARNING: cnf-suite/certsuite-probe did not appear after 90s; starting the other lanes anyway." >&2
+      return 0
+    fi
+    sleep 1
+    waited=$((waited + 1))
+  done
+}
+
+if [[ "$JOBS" -gt 1 ]]; then
+  LANE_LOG_DIR="${TMPDIR:-/tmp}/certsuite-smoke-lanes-$$"
+  LANE_TIMINGS_DIR="${LANE_LOG_DIR}/timings"
+  LANE_RC_DIR="${LANE_LOG_DIR}/rc"
+  mkdir -p "$LANE_TIMINGS_DIR" "$LANE_RC_DIR"
+
+  # Distinct lanes, longest first, so the longest lane is never the one that
+  # starts last.
+  LANE_ORDER=$(
+    for lane in $(for i in $SCENARIO_INDICES; do lane_for "$i"; done | sort -u); do
+      count=0
+      for i in $SCENARIO_INDICES; do
+        [[ "$(lane_for "$i")" == "$lane" ]] && count=$((count + 1))
+      done
+      printf '%s %s\n' "$count" "$lane"
+    done | sort -rn | awk '{print $2}'
+  )
+
+  # Work is handed out in units. A constrained lane is a single unit: its
+  # entries must not overlap anything, including each other. The namespaced
+  # lane is the one that is safe to overlap freely, so it is spread round-robin
+  # over as many shards as there are workers, which keeps a long lane from
+  # leaving the other workers idle.
+  UNIT_NAMES=()
+  UNIT_INDICES=()
+  NAMESPACED_ENTRIES=""
+
+  for lane in $LANE_ORDER; do
+    if [[ "$lane" == "namespaced" ]]; then
+      continue
+    fi
+    indices=""
+    for i in $SCENARIO_INDICES; do
+      if [[ "$(lane_for "$i")" == "$lane" ]]; then
+        indices="${indices} $i"
+      fi
+    done
+    UNIT_NAMES+=("$lane")
+    UNIT_INDICES+=("$indices")
+  done
+
+  for i in $SCENARIO_INDICES; do
+    if [[ "$(lane_for "$i")" == "namespaced" ]]; then
+      NAMESPACED_ENTRIES="${NAMESPACED_ENTRIES} $i"
+    fi
+  done
+  namespaced_count=$(wc -w <<<"$NAMESPACED_ENTRIES" | tr -d '[:space:]')
+  if [[ "$namespaced_count" -gt 0 ]]; then
+    shards=$JOBS
+    if [[ "$shards" -gt "$namespaced_count" ]]; then
+      shards=$namespaced_count
+    fi
+    shard_index=0
+    while [[ "$shard_index" -lt "$shards" ]]; do
+      shard_entries[shard_index]=""
+      shard_index=$((shard_index + 1))
+    done
+    position=0
+    for i in $NAMESPACED_ENTRIES; do
+      shard=$((position % shards))
+      shard_entries[shard]="${shard_entries[shard]} $i"
+      position=$((position + 1))
+    done
+    shard_number=1
+    while [[ "$shard_number" -le "$shards" ]]; do
+      UNIT_NAMES+=("namespaced-${shard_number}")
+      UNIT_INDICES+=("${shard_entries[shard_number - 1]}")
+      shard_number=$((shard_number + 1))
+    done
+  fi
+
+  echo "Units: ${UNIT_NAMES[*]}"
+  first_unit=true
+  unit=0
+  while [[ "$unit" -lt "${#UNIT_NAMES[@]}" ]]; do
+    lane="${UNIT_NAMES[$unit]}"
+    LANE_INDICES="${UNIT_INDICES[$unit]}"
+
+    while [[ ${#LANE_PIDS[@]} -ge $JOBS ]]; do
+      collect_finished_lanes
+      if [[ ${#LANE_PIDS[@]} -ge $JOBS ]]; then
+        sleep 2
+      fi
+    done
+
+    (
+      trap 'cleanup_current_scenario' EXIT
+      run_lane "$lane" "$LANE_INDICES"
+    ) >"${LANE_LOG_DIR}/${lane}.log" 2>&1 &
+    LANE_PIDS+=($!)
+    LANE_NAMES+=("$lane")
+
+    if [[ "$first_unit" == "true" ]] && ! probe_present; then
+      echo "Waiting for the first unit to create the probe DaemonSet..."
+      wait_for_probe
+    fi
+    first_unit=false
+    unit=$((unit + 1))
+  done
+
+  while [[ ${#LANE_PIDS[@]} -gt 0 ]]; do
+    collect_finished_lanes
+    if [[ ${#LANE_PIDS[@]} -gt 0 ]]; then
+      sleep 2
+    fi
+  done
+
+  # Merge the per-unit timing files under the header written above.
+  for lane in "${UNIT_NAMES[@]}"; do
+    tail -n +2 "${LANE_TIMINGS_DIR}/${lane}.tsv" >>"$TIMINGS_FILE"
+    lane_rc=$(cat "${LANE_RC_DIR}/${lane}" 2>/dev/null || echo 1)
+    if [[ "$lane_rc" != "0" ]]; then
+      OVERALL_RC=1
+    fi
+  done
+  rm -rf "$LANE_LOG_DIR"
+fi
 
 print_timings() {
   [[ -s "$TIMINGS_FILE" ]] || return 0

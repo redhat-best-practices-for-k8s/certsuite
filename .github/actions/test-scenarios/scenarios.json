@@ -225,6 +225,7 @@
     "path": "batches/pod-spec",
     "manifest": "golden.yaml",
     "output_dir": "pod-spec-golden-results",
+    "lane": "cluster-scoped",
     "tests": {
       "access-control-pod-host-network": {
         "expected_result": "passed",
@@ -398,6 +399,7 @@
     "path": "batches/pod-spec",
     "manifest": "violations.yaml",
     "output_dir": "pod-spec-violations-results",
+    "lane": "cluster-scoped",
     "tests": {
       "access-control-pod-host-network": {
         "expected_result": "failed",
@@ -563,6 +565,7 @@
     "path": "batches/pod-spec",
     "manifest": "bad-security-context.yaml",
     "output_dir": "pod-spec-security-context-results",
+    "lane": "cluster-scoped",
     "tests": {
       "access-control-security-context": {
         "expected_result": "failed",
@@ -576,6 +579,7 @@
     "path": "batches/pod-spec",
     "manifest": "ptrace.yaml",
     "output_dir": "pod-spec-ptrace-results",
+    "lane": "cluster-scoped",
     "tests": {
       "access-control-sys-ptrace-capability": {
         "expected_result": "passed",
@@ -589,6 +593,7 @@
     "path": "batches/workload-controllers",
     "manifest": "golden.yaml",
     "output_dir": "controllers-golden-results",
+    "lane": "node",
     "tests": {
       "lifecycle-pod-high-availability": {
         "expected_result": "passed",
@@ -614,6 +619,7 @@
     "path": "batches/workload-controllers",
     "manifest": "violations.yaml",
     "output_dir": "controllers-violations-results",
+    "lane": "node",
     "tests": {
       "lifecycle-pod-high-availability": {
         "expected_result": "failed",
@@ -673,6 +679,7 @@
     "path": "batches/crds",
     "manifest": "golden.yaml",
     "output_dir": "crds-golden-results",
+    "lane": "cluster-scoped",
     "tests": {
       "access-control-crd-roles": {
         "expected_result": "passed",
@@ -690,6 +697,7 @@
     "path": "batches/crds",
     "manifest": "violations.yaml",
     "output_dir": "crds-violations-results",
+    "lane": "cluster-scoped",
     "tests": {
       "access-control-crd-roles": {
         "expected_result": "failed",
@@ -707,6 +715,7 @@
     "path": "batches/operators/golden",
     "manifest": "olm-golden.yaml",
     "output_dir": "operators-golden-results",
+    "lane": "operator",
     "fixed_namespace": true,
     "tests": {
       "operator-catalogsource-bundle-count": {
@@ -777,6 +786,7 @@
     "path": "batches/operators/bad-csvs",
     "manifest": "bad-csvs.yaml",
     "output_dir": "operators-bad-csvs-results",
+    "lane": "operator",
     "fixed_namespace": true,
     "tests": {
       "operator-crd-versioning": {
@@ -823,6 +833,7 @@
     "path": "batches/operators/hugepages",
     "manifest": "hugepages.yaml",
     "output_dir": "operators-hugepages-results",
+    "lane": "operator",
     "fixed_namespace": true,
     "tests": {
       "operator-pods-no-hugepages": {
@@ -837,6 +848,7 @@
     "path": "batches/operators/bundle-count",
     "manifest": "big-catalog.yaml",
     "output_dir": "operators-bundle-count-results",
+    "lane": "operator",
     "fixed_namespace": true,
     "tests": {
       "operator-catalogsource-bundle-count": {
