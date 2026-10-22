@@ -344,6 +344,7 @@ run_scenario() {
       --config-file="${RENDERED_CONFIG}" \
       --output-dir="${OUTPUT_DIR}" \
       --create-xml-junit-file \
+      --omit-artifacts-zip-file \
       --log-level="${LOG_LEVEL}" \
       --cleanup-probe=false \
       --quiet || true

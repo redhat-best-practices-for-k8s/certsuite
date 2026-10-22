@@ -127,7 +127,7 @@ are merged into the single table.
 ## What the runner does per scenario
 
 1. `deploy.sh <manifest>`.
-2. `./certsuite run --label-filter=<joined test IDs> --config-file=<path>/manifests/certsuite-config.yaml --output-dir=<output_dir> --create-xml-junit-file --log-level=<SMOKE_TESTS_LOG_LEVEL> --cleanup-probe=false --quiet`. The `--quiet` flag keeps certsuite's own
+2. `./certsuite run --label-filter=<joined test IDs> --config-file=<path>/manifests/certsuite-config.yaml --output-dir=<output_dir> --create-xml-junit-file --omit-artifacts-zip-file --log-level=<SMOKE_TESTS_LOG_LEVEL> --cleanup-probe=false --quiet`. The `--quiet` flag keeps certsuite's own
    console output out of the job log; everything it suppresses is still written
    to `<output_dir>/certsuite.log`.
 3. Validate each test ID in the entry against the claim.
