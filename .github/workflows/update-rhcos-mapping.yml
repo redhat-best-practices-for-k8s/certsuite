@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Check Red Hat Status
-        uses: palmsoftware/redhat-status@v0
+        uses: palmsoftware/redhat-status@7e6c95c355d6955fd7e392989329b120214312a0 # v0.0.3
         with:
           components: |
             api.openshift.com
