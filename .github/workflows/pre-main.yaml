@@ -9,7 +9,6 @@ on:
 
 permissions:
   contents: read
-  actions: write
 
 env:
   REGISTRY: quay.io
@@ -42,7 +41,7 @@ jobs:
     steps:
       - name: Check Red Hat Status (Quay.io)
         id: status
-        uses: palmsoftware/redhat-status@v0
+        uses: palmsoftware/redhat-status@7e6c95c355d6955fd7e392989329b120214312a0 # v0.0.3
         with:
           components: |
             Quay.io
@@ -109,9 +108,6 @@ jobs:
       - name: ShellCheck
         uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # master
         background: true
-
-      # - name: Typos
-      #   uses: crate-ci/typos@master
 
       - name: Yamllint
         uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c # v3.1.1
@@ -551,6 +547,11 @@ jobs:
       && github.repository_owner == 'redhat-best-practices-for-k8s'
       && needs.check-quay-status.outputs.quay-available == 'false'
     runs-on: ubuntu-24.04
+    # Scoped to this job: the retrigger step below calls `gh workflow run`,
+    # which needs workflow-dispatch scope. No other job here needs it.
+    permissions:
+      actions: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Send Slack alert

@@ -20,7 +20,7 @@ runs:
         path: certsuite-sample-workload
 
     - name: Setup quick-k8s cluster
-      uses: palmsoftware/quick-k8s@v1.0.7
+      uses: palmsoftware/quick-k8s@b82dc74dd7591043cec51412521cda7490f04c02 # v1.0.7
       with:
         disableDefaultCni: true
         numControlPlaneNodes: 1
