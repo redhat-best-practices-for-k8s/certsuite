@@ -15,7 +15,7 @@ test-scenarios/
   scenarios.json          every scenario, in run order
   run-scenarios.sh        the runner
   deploy-workload.sh      shared deploy: create namespace, apply, wait
-  cleanup-workload.sh     shared cleanup: delete results dir and namespace
+  cleanup-workload.sh     shared cleanup: delete results dir, delete namespace
   generate-readme.py      regenerates README.md from CATALOG.md + scenarios.json
   <suite>/<test-name>/    one directory per scenario group
     deploy.sh             takes a manifest filename
@@ -31,12 +31,16 @@ test-scenarios/
 1. Create a directory under the suite the test belongs to, e.g.
    `networking/<test-name>/`.
 2. Add `deploy.sh` taking the manifest filename as `$1`. With no extra setup
-   it can be one line: `exec ../../deploy-workload.sh <namespace> <manifest-path>`.
+   it can be one line:
+   `exec ../../deploy-workload.sh "${SCENARIO_NAMESPACE:-<base>}" <manifest-path>`.
+   The runner exports `SCENARIO_NAMESPACE` (see
+   [Namespaces](#namespaces-are-per-entry)); the fallback is the base namespace
+   from `certsuite-config.yaml`, which keeps the script runnable by hand.
 3. Add `cleanup.sh` taking the results directory as `$1`, usually
-   `exec ../../cleanup-workload.sh <namespace> "$1"`.
-4. Put the manifests and a `certsuite-config.yaml` in `manifests/`. Each
-   manifest defines a single Deployment named after the file, because
-   `deploy-workload.sh` waits on `deployment/<manifest basename>`.
+   `exec ../../cleanup-workload.sh "${SCENARIO_NAMESPACE:-<base>}" "$1"`.
+4. Put the manifests and a `certsuite-config.yaml` in `manifests/`.
+   `deploy-workload.sh` waits for every Deployment in the namespace to become
+   Available, so a manifest may hold more than one workload.
 5. Add one entry per workload to `scenarios.json`:
 
    ```json
@@ -78,6 +82,7 @@ test-scenarios/
 | `min_compliant` | no | Minimum `CompliantObjectsOut` entries. |
 | `compliant_contains` | no | Only count compliant objects whose `ObjectFieldsValues` contain this string. |
 | `noncompliant_contains` | no | Only count non-compliant objects containing this string, **and** fail if any non-compliant object does not. Implies `min_noncompliant: 1`. |
+| `fixed_namespace` | no | `true` means the entry manages its own namespaces: the runner uses `certsuite-config.yaml` unchanged and does not export `SCENARIO_NAMESPACE`. Only the operator batches need this. |
 
 A matching state alone is weak evidence: a test can report `failed` for a
 reason that has nothing to do with the workload. Assert an object whenever the
@@ -93,6 +98,36 @@ for the IDs in its `OBJECT_ASSERTION_IDS` set.
 3. Validate each test ID in the entry against the claim.
 4. On failure, grep `certsuite.log` for the test IDs and probe-related lines.
 5. `cleanup.sh <output_dir>`, which also runs if the script exits early.
+
+Per-phase timings are written to `--timings-file` (default
+`${TMPDIR:-/tmp}/scenario-timings.tsv`) and printed as a table at the end.
+
+### Namespaces are per entry
+
+Several entries share one scenario directory, and therefore one base namespace
+in `certsuite-config.yaml`. The runner derives a namespace per entry from that
+base plus the entry's `output_dir` (for example
+`lifecycle-probe-smoke-ns-probe-violations`) and renders a copy of the config
+with the new name. The base is kept as a prefix because some checks match on it
+— `access-control-namespace` treats `istio-` as a reserved prefix.
+
+That gives each entry a clean namespace even when the previous entry's namespace
+is still terminating. `generate-readme.py` fails if two entries derive the same
+namespace. Scripts must read `SCENARIO_NAMESPACE` rather than hardcoding the
+namespace; entries with `fixed_namespace` are the exception.
+
+### Cleanup does not wait for finalization
+
+`cleanup-workload.sh` deletes the namespace with `--wait=false` and appends it
+to `$SCENARIO_REAP_FILE`. The runner waits for every registered namespace in
+parallel once the suite is done, so a namespace that takes 10s to finalize costs
+the suite 10s in total rather than 10s per scenario.
+
+Pass `--wait` as the third argument when cluster-scoped objects cannot be
+deleted until the namespace is gone. `batches/pod-spec` does this for the
+entries whose statically bound PVs stay wedged on the `pvc-protection`
+finalizer; it checks for PVCs first so its volume-free entries keep the fast
+path.
 
 ### The probe DaemonSet is shared between scenarios
 
@@ -133,6 +168,9 @@ make build-certsuite-tool
 
 # Raise the log level.
 SMOKE_TESTS_LOG_LEVEL=debug .github/actions/test-scenarios/run-scenarios.sh
+
+# Run one scenario group: matches against the entry's name or path.
+.github/actions/test-scenarios/run-scenarios.sh --only networking/tls-minimum-version
 ```
 
 If a scenario fails in a way you cannot reproduce, check that the binary

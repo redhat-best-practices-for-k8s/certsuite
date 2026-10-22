@@ -25,6 +25,8 @@ UNCOVERABLE_IDS = {
     "access-control-sys-nice-realtime-capability": "needs a node running a realtime kernel",
 }
 
+NAMESPACE_RE = re.compile(r"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$")
+
 # Non-batch tests that must assert an object, not only the claim state. Batch
 # tests are always required to; these are the single-test scenarios where a
 # matching state alone would also be produced by an unrelated failure.
@@ -156,12 +158,36 @@ def parse_qe_flags(catalog_ids):
     return flags
 
 
+def scenario_namespace(scenario, config_file):
+    """The namespace run-scenarios.sh derives for an entry.
+
+    Every entry keeps the base namespace from its certsuite-config.yaml and
+    appends a slug of its output directory, so two entries of the same path
+    never share a namespace and cleanup never has to wait for the previous
+    entry's namespace to finish terminating. Entries that manage several
+    namespaces of their own (the operator batches) opt out with
+    "fixed_namespace": true.
+
+    Keep this in sync with namespace_for() in run-scenarios.sh.
+    """
+    match = re.search(r"^  - name: (\S+)$", config_file.read_text(encoding="utf-8"), re.MULTILINE)
+    if not match:
+        raise ValueError(f"{config_file} has no targetNameSpaces entry")
+    suffix = scenario["output_dir"]
+    if suffix.endswith("-results"):
+        suffix = suffix[: -len("-results")]
+    suffix = re.sub(r"[^a-z0-9-]+", "-", suffix.lower()).strip("-")[:30].strip("-")
+    namespace = f"{match.group(1)}-{suffix}" if suffix else match.group(1)
+    return namespace[:63].rstrip("-")
+
+
 def load_scenarios(catalog_ids):
     scenarios = json.loads(SCENARIOS_FILE.read_text(encoding="utf-8"))
     if not isinstance(scenarios, list):
         raise ValueError("scenarios.json must contain a JSON array")
 
     output_dirs = set()
+    namespaces = {}
     scenarios_by_id = defaultdict(list)
     for index, scenario in enumerate(scenarios):
         prefix = f"scenario {index + 1}"
@@ -212,6 +238,17 @@ def load_scenarios(catalog_ids):
         ):
             if not required_file.is_file():
                 raise ValueError(f"{prefix} references missing file {required_file.relative_to(ROOT)}")
+
+        # Two entries must never share a namespace: the runner deletes
+        # namespaces in the background, so a reused name would collide with the
+        # previous entry's terminating namespace.
+        if not scenario.get("fixed_namespace"):
+            namespace = scenario_namespace(scenario, scenario_dir / "manifests" / "certsuite-config.yaml")
+            if not NAMESPACE_RE.match(namespace):
+                raise ValueError(f"{prefix} derives invalid namespace {namespace!r}")
+            if namespace in namespaces:
+                raise ValueError(f"{prefix} derives namespace {namespace!r}, already used by {namespaces[namespace]!r}")
+            namespaces[namespace] = scenario["name"]
 
     return scenarios, scenarios_by_id
 

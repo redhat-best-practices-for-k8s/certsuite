@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Deploy an unsecured-container-ports workload spread across nodes.
+# Deploy unsecured-container-ports workloads spread across nodes.
 # Usage: deploy.sh <manifest-file>
+#
+# The manifest may hold several Deployments; every one of them is required to
+# span at least two nodes.
 
 MANIFEST_FILE="${1:?Usage: deploy.sh <manifest-file>}"
-DEPLOY_NAME="${MANIFEST_FILE%.yaml}"
 
-NAMESPACE="unsecured-ports-ns"
+NAMESPACE="${SCENARIO_NAMESPACE:-unsecured-ports-ns}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFESTS_DIR="${SCRIPT_DIR}/manifests"
 
@@ -33,15 +35,21 @@ server {
 fi
 
 kubectl apply -n "$NAMESPACE" -f "${MANIFESTS_DIR}/${MANIFEST_FILE}"
-kubectl wait deployment -n "$NAMESPACE" "$DEPLOY_NAME" --for=condition=Available --timeout=120s
+kubectl wait deployment -n "$NAMESPACE" --all --for=condition=Available --timeout=120s
 
-NODE_COUNT=$(kubectl get pods -n "$NAMESPACE" -l "app=${DEPLOY_NAME}" \
-  -o jsonpath='{range .items[*]}{.spec.nodeName}{"\n"}{end}' | sort -u | grep -c . || true)
+# Each workload's replicas must land on separate nodes: the checks under test
+# probe every pod, so a single-node placement would make the cross-node case
+# trivially pass.
+for deploy in $(kubectl get deployment -n "$NAMESPACE" \
+  -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'); do
+  node_count=$(kubectl get pods -n "$NAMESPACE" -l "app=${deploy}" \
+    -o jsonpath='{range .items[*]}{.spec.nodeName}{"\n"}{end}' | sort -u | grep -c . || true)
 
-if [[ "${NODE_COUNT}" -lt 2 ]]; then
-  echo "FAIL: expected pods on at least 2 nodes, got ${NODE_COUNT}"
-  kubectl get pods -n "$NAMESPACE" -o wide
-  exit 1
-fi
+  if [[ "${node_count}" -lt 2 ]]; then
+    echo "FAIL: expected ${deploy} pods on at least 2 nodes, got ${node_count}"
+    kubectl get pods -n "$NAMESPACE" -o wide
+    exit 1
+  fi
 
-echo "Workload '${DEPLOY_NAME}' deployed on ${NODE_COUNT} nodes."
+  echo "Workload '${deploy}' deployed on ${node_count} nodes."
+done

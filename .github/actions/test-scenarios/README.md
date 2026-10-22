@@ -30,32 +30,22 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 
 ## Scenarios
 
-The 40 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
+The 30 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Scenario | Manifest | Tests | What it deploys |
 |---|---|---|---|
-| TLS 1.3 Only (non-compliant with Intermediate) | `networking/tls-minimum-version/manifests/tls13-only.yaml` | `networking-tls-minimum-version` | Deploys an nginx server configured to accept only TLS 1.3 connections. Under the Intermediate profile (the default on non-OCP clusters), the server must accept all versions from TLS 1.2 upward. A TLS 1.3-only server rejects TLS 1.2 and is therefore non-compliant. This scenario verifies that overly restrictive servers are correctly flagged. |
-| TLS 1.2 Only (non-compliant with Intermediate) | `networking/tls-minimum-version/manifests/tls12-only.yaml` | `networking-tls-minimum-version` | Deploys an nginx server configured to accept only TLS 1.2 connections with Intermediate-profile ciphers. Under the Intermediate profile, the server must accept all versions from TLS 1.2 through TLS 1.3. A TLS 1.2-only server rejects TLS 1.3 and is therefore non-compliant. This scenario exercises the above-minimum version check (Step 3). |
-| TLS 1.2 Allowed (compliant with Intermediate profile) | `networking/tls-minimum-version/manifests/tls12-allowed.yaml` | `networking-tls-minimum-version` | Deploys an nginx server configured to accept both TLS 1.2 and TLS 1.3 connections, restricted to only the cipher suites allowed by the Intermediate TLS security profile. On non-OpenShift clusters (including CI), the test defaults to the Intermediate profile (min TLS 1.2). Since this server meets both the minimum version and cipher requirements, it is compliant. Note: this same server would be non-compliant under a Modern profile (which requires TLS 1.3), but that is covered by unit tests rather than CI scenarios. |
-| Plain HTTP (compliant) | `networking/tls-minimum-version/manifests/plain-http.yaml` | `networking-tls-minimum-version` | Deploys a plain HTTP server with no TLS configured. Non-TLS services are reported as informational only and are not considered a compliance failure. The test verifies that the certsuite does not penalize services that do not use TLS at all, since they are outside the scope of TLS version enforcement. |
-| Unsecured container ports across nodes (non-compliant) | `networking/unsecured-container-ports/manifests/plain-http-spread.yaml` | `networking-unsecured-container-ports` | Deploys two plaintext HTTP pods with required hostname anti-affinity so they land on different nodes. networking-unsecured-container-ports must fail both pods as plaintext. A single plaintext failure with the other pod marked unreachable is the cross-node openssl flake this scenario guards against. |
+| TLS version range (non-compliant with Intermediate) | `networking/tls-minimum-version/manifests/tls-noncompliant.yaml` | `networking-tls-minimum-version` | Deploys two nginx servers that each reject part of the Intermediate profile's required version range: one accepts only TLS 1.3 (rejecting TLS 1.2) and one accepts only TLS 1.2 (rejecting TLS 1.3). The Intermediate profile requires every version from TLS 1.2 through TLS 1.3, so both are non-compliant. One run covers both the below-minimum and the above-minimum version checks. |
+| TLS version range (compliant with Intermediate profile) | `networking/tls-minimum-version/manifests/tls-compliant.yaml` | `networking-tls-minimum-version` | Deploys one nginx server accepting both TLS 1.2 and TLS 1.3 with only Intermediate-profile ciphers, and one plain HTTP server with no TLS configured. On non-OpenShift clusters the test defaults to the Intermediate profile (min TLS 1.2): the TLS server meets the version and cipher requirements, and the plain HTTP service is reported as informational rather than as a failure. |
+| Unsecured container ports across nodes (plaintext + undeclared) | `networking/unsecured-container-ports/manifests/plaintext-spread.yaml` | 2 | Deploys two plaintext HTTP workloads, two replicas each, with required hostname anti-affinity so every pair lands on different nodes. One declares its listening port, the other listens on 8080 without declaring it. One run covers both expectations: networking-unsecured-container-ports must fail every replica as plaintext (a single failure with the other pod unreachable is the cross-node openssl flake this guards against), and networking-undeclared-container-ports-usage must pass the declaring workload while failing the undeclared one. |
 | Secured container ports across nodes (compliant) | `networking/unsecured-container-ports/manifests/tls-spread.yaml` | `networking-unsecured-container-ports` | Deploys two TLS HTTP pods with required hostname anti-affinity so they land on different nodes. networking-unsecured-container-ports must pass, and both pods must be classified as using TLS. A pass with one pod marked unreachable is the cross-node openssl flake this scenario guards against. |
-| Container port name http (compliant) | `manageability/container-checks/manifests/port-name-http.yaml` | `manageability-container-port-name-format` | Deploys a container port named http, which follows the allowed port-name format. |
-| Container port name sftp (non-compliant) | `manageability/container-checks/manifests/port-name-sftp.yaml` | `manageability-container-port-name-format` | Deploys a container port named sftp, which is outside the allowed port-name formats. |
-| Readiness probe defined (compliant) | `lifecycle/probes/manifests/readiness-probe.yaml` | `lifecycle-readiness-probe` | Deploys a workload with a TCP readiness probe on nginx's listening port. |
-| Readiness probe missing (non-compliant) | `lifecycle/probes/manifests/readiness-no-probe.yaml` | `lifecycle-readiness-probe` | Deploys a workload without a readiness probe. |
-| Liveness probe defined (compliant) | `lifecycle/probes/manifests/liveness-probe.yaml` | `lifecycle-liveness-probe` | Deploys a workload with a TCP liveness probe on nginx's listening port. |
-| Liveness probe missing (non-compliant) | `lifecycle/probes/manifests/liveness-no-probe.yaml` | `lifecycle-liveness-probe` | Deploys a workload without a liveness probe. |
-| Startup probe defined (compliant) | `lifecycle/probes/manifests/startup-probe.yaml` | `lifecycle-startup-probe` | Deploys a workload with a TCP startup probe on nginx's listening port. |
-| Startup probe missing (non-compliant) | `lifecycle/probes/manifests/startup-no-probe.yaml` | `lifecycle-startup-probe` | Deploys a workload without a startup probe. |
+| Container checks (compliant) | `manageability/container-checks/manifests/compliant.yaml` | 2 | Deploys two workloads that satisfy both container checks: one names its port http (an allowed port-name format) and one uses a tagged image. One run covers both checks, and the port-named workload keeps each check's compliant set non-empty so a silently skipped check cannot pass. |
+| Container checks (non-compliant) | `manageability/container-checks/manifests/violations.yaml` | 2 | Deploys two workloads that each violate one container check: one names its port sftp (outside the allowed port-name formats) and one uses an untagged image. One run covers both checks, with the violating workload named in each expectation so a foreign object appearing in the results cannot satisfy it. |
+| Probes defined (compliant) | `lifecycle/probes/manifests/golden.yaml` | 3 | Deploys a workload with TCP readiness, liveness and startup probes on nginx's listening port. One run covers all three probe checks. |
+| Probes missing (non-compliant) | `lifecycle/probes/manifests/violations.yaml` | 3 | Deploys three workloads, each identical to the compliant one except that it omits exactly one probe. One run covers all three probe checks, with each violating workload named in its own expectation so a missing check cannot be satisfied by another workload's result. |
 | Default ingress and egress deny policy (compliant) | `networking/network-policy-deny-all/manifests/deny-all.yaml` | `networking-network-policy-deny-all` | Deploys a NetworkPolicy with empty ingress and egress rules for the target pod. This checks API objects and rules only; it does not depend on packet enforcement. |
 | NetworkPolicy missing egress deny (non-compliant) | `networking/network-policy-deny-all/manifests/ingress-only.yaml` | `networking-network-policy-deny-all` | Deploys a NetworkPolicy that selects the target pod and denies ingress but does not declare egress policy. This checks API objects and rules only; it does not depend on packet enforcement. |
-| Image with explicit tag (compliant) | `manageability/container-checks/manifests/image-tagged.yaml` | `manageability-containers-image-tag` | Deploys the multi-architecture nginx unprivileged image with an explicit 1.27 tag. |
-| Image without explicit tag (non-compliant) | `manageability/container-checks/manifests/image-untagged.yaml` | `manageability-containers-image-tag` | Deploys the same multi-architecture image without a tag, so the image reference resolves to latest but is reported as untagged. |
 | Service account token automount disabled (compliant) | `access-control/pod-automount-service-account-token/manifests/automount-disabled.yaml` | `access-control-pod-automount-service-account-token` | Deploys a pod with a dedicated service account whose service account token automount is disabled. |
 | Service account token automount enabled (non-compliant) | `access-control/pod-automount-service-account-token/manifests/automount-enabled.yaml` | `access-control-pod-automount-service-account-token` | Deploys a pod with a dedicated service account whose service account token automount is enabled. |
-| Declared listening port (compliant) | `networking/unsecured-container-ports/manifests/plain-http-spread.yaml` | `networking-undeclared-container-ports-usage` | Two nginx pods on separate nodes declare the TCP port they listen on. |
-| Undeclared listening port (non-compliant) | `networking/unsecured-container-ports/manifests/undeclared-http-spread.yaml` | `networking-undeclared-container-ports-usage` | Two nginx pods on separate nodes listen on TCP 8080 without declaring the container port. |
 | Namespace with istio prefix (non-compliant) | `access-control/namespace/manifests/istio-prefix.yaml` | `access-control-namespace` | Deploys a workload into a namespace whose name starts with the reserved istio- prefix. The check flags the namespace itself, not the workload. |
 | Namespace without a ResourceQuota (non-compliant) | `access-control/namespace-resource-quota/manifests/no-resource-quota.yaml` | `access-control-namespace-resource-quota` | Deploys a workload into a namespace with no ResourceQuota. The check flags the pod for running in that namespace. |
 | ICMPv4 connectivity between pods (compliant) | `networking/icmpv4-connectivity/manifests/icmp-connectivity.yaml` | `networking-icmpv4-connectivity` | Deploys two plain nginx workloads. The check pings the second pod from the first over the default network and must succeed. |
@@ -131,15 +121,15 @@ The 40 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `lifecycle-crd-scaling` | Yes | — | No dedicated scenario |
 | `lifecycle-deployment-scaling` | Yes | — | No dedicated scenario |
 | `lifecycle-image-pull-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `lifecycle-liveness-probe` | Yes | Liveness probe defined (compliant) (`passed`)<br>Liveness probe missing (non-compliant) (`failed`) | Covered |
+| `lifecycle-liveness-probe` | Yes | Probes defined (compliant) (`passed`)<br>Probes missing (non-compliant) (`failed`) | Covered |
 | `lifecycle-persistent-volume-reclaim-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-high-availability` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-owner-type` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-recreation` | Yes | — | No dedicated scenario |
 | `lifecycle-pod-scheduling` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-toleration-bypass` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `lifecycle-readiness-probe` | Yes | Readiness probe defined (compliant) (`passed`)<br>Readiness probe missing (non-compliant) (`failed`) | Covered |
-| `lifecycle-startup-probe` | Yes | Startup probe defined (compliant) (`passed`)<br>Startup probe missing (non-compliant) (`failed`) | Covered |
+| `lifecycle-readiness-probe` | Yes | Probes defined (compliant) (`passed`)<br>Probes missing (non-compliant) (`failed`) | Covered |
+| `lifecycle-startup-probe` | Yes | Probes defined (compliant) (`passed`)<br>Probes missing (non-compliant) (`failed`) | Covered |
 | `lifecycle-statefulset-scaling` | Yes | — | No dedicated scenario |
 | `lifecycle-storage-provisioner` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-topology-spread-constraint` | No | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
@@ -148,8 +138,8 @@ The 40 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 
 | Catalog ID | Covered in certsuite-qe | Smoke scenarios and expected results | Covered in smoke scenarios |
 |---|---|---|---|
-| `manageability-container-port-name-format` | Yes | Container port name http (compliant) (`passed`)<br>Container port name sftp (non-compliant) (`failed`) | Covered |
-| `manageability-containers-image-tag` | Yes | Image with explicit tag (compliant) (`passed`)<br>Image without explicit tag (non-compliant) (`failed`) | Covered |
+| `manageability-container-port-name-format` | Yes | Container checks (compliant) (`passed`)<br>Container checks (non-compliant) (`failed`) | Covered |
+| `manageability-containers-image-tag` | Yes | Container checks (compliant) (`passed`)<br>Container checks (non-compliant) (`failed`) | Covered |
 
 ## networking
 
@@ -165,9 +155,9 @@ The 40 entries in `scenarios.json`, in the order `run-scenarios.sh` runs them.
 | `networking-ocp-reserved-ports-usage` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `networking-reserved-partner-ports` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `networking-restart-on-reboot-sriov-pod` | No | — | No dedicated scenario |
-| `networking-tls-minimum-version` | No | TLS 1.3 Only (non-compliant with Intermediate) (`failed`)<br>TLS 1.2 Only (non-compliant with Intermediate) (`failed`)<br>TLS 1.2 Allowed (compliant with Intermediate profile) (`passed`)<br>Plain HTTP (compliant) (`passed`) | Covered |
-| `networking-undeclared-container-ports-usage` | Yes | Declared listening port (compliant) (`passed`)<br>Undeclared listening port (non-compliant) (`failed`) | Covered |
-| `networking-unsecured-container-ports` | Yes | Unsecured container ports across nodes (non-compliant) (`failed`)<br>Secured container ports across nodes (compliant) (`passed`) | Covered |
+| `networking-tls-minimum-version` | No | TLS version range (non-compliant with Intermediate) (`failed`)<br>TLS version range (compliant with Intermediate profile) (`passed`) | Covered |
+| `networking-undeclared-container-ports-usage` | Yes | Unsecured container ports across nodes (plaintext + undeclared) (`failed`) | Covered |
+| `networking-unsecured-container-ports` | Yes | Unsecured container ports across nodes (plaintext + undeclared) (`failed`)<br>Secured container ports across nodes (compliant) (`passed`) | Covered |
 
 ## observability
 

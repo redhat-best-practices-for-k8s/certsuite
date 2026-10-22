@@ -3,8 +3,9 @@ set -euo pipefail
 
 NAMESPACE="${1:?Usage: deploy-workload.sh <namespace> <manifest-path>}"
 MANIFEST_PATH="${2:?Usage: deploy-workload.sh <namespace> <manifest-path>}"
-DEPLOY_NAME="$(basename "${MANIFEST_PATH%.yaml}")"
 
 kubectl create namespace "$NAMESPACE"
 kubectl apply -n "$NAMESPACE" -f "$MANIFEST_PATH"
-kubectl wait deployment -n "$NAMESPACE" "$DEPLOY_NAME" --for=condition=Available --timeout=120s
+# A manifest may hold several Deployments (batch scenarios do), and the
+# namespace holds only this scenario's workloads, so wait on all of them.
+kubectl wait deployment -n "$NAMESPACE" --all --for=condition=Available --timeout=120s

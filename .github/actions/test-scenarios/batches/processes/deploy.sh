@@ -6,7 +6,7 @@ set -euo pipefail
 # would turn an expected failure into a pass.
 # Usage: deploy.sh <manifest-file>
 
-NAMESPACE="processes-smoke-ns"
+NAMESPACE="${SCENARIO_NAMESPACE:-processes-smoke-ns}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFEST_PATH="${SCRIPT_DIR}/manifests/${1:?Usage: deploy.sh <manifest-file>}"
 

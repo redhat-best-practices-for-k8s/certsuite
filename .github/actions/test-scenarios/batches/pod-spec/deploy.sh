@@ -6,13 +6,17 @@ set -euo pipefail
 # would turn an expected failure into a pass.
 # Usage: deploy.sh <manifest-file>
 
-NAMESPACE="pod-spec-smoke-ns"
+NAMESPACE="${SCENARIO_NAMESPACE:-pod-spec-smoke-ns}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFEST_PATH="${SCRIPT_DIR}/manifests/${1:?Usage: deploy.sh <manifest-file>}"
 
 # Cluster-scoped RuntimeClass for the Guaranteed CPU-pinned workloads.
 kubectl apply -f "${SCRIPT_DIR}/manifests/runtimeclass.yaml"
 kubectl create namespace "$NAMESPACE"
-kubectl apply -n "$NAMESPACE" -f "$MANIFEST_PATH"
+# The bad-crb-binding ClusterRoleBinding names its ServiceAccount subject's
+# namespace in the manifest, and the check compares that against the pod's, so
+# the subject has to follow the per-entry namespace.
+sed "s|namespace: pod-spec-smoke-ns|namespace: ${NAMESPACE}|" "$MANIFEST_PATH" |
+  kubectl apply -n "$NAMESPACE" -f -
 kubectl wait deployment -n "$NAMESPACE" --all --for=condition=Available --timeout=180s
 kubectl wait pod -n "$NAMESPACE" -l scenario-pod-spec=target --for=condition=Ready --timeout=180s

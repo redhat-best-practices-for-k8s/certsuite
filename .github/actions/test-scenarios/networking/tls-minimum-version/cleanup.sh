@@ -2,11 +2,11 @@
 set -euo pipefail
 
 # Clean up TLS scenario test resources.
+# Usage: cleanup.sh <results-dir>
 
-NAMESPACE="tls-test-ns"
-RESULTS_DIR="${1:-tls-test-results}"
+NAMESPACE="${SCENARIO_NAMESPACE:-tls-test-ns}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-kubectl delete namespace "$NAMESPACE" --ignore-not-found
-rm -rf "$RESULTS_DIR"
+"${SCRIPT_DIR}/../../cleanup-workload.sh" "$NAMESPACE" "${1:?Usage: cleanup.sh <results-dir>}"
 
 echo "TLS test resources cleaned up."

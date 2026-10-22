@@ -5,7 +5,13 @@ set -euo pipefail
 # Each scenario deploys its workloads, runs certsuite over the test IDs it
 # covers, validates the claim against the expected state, and cleans up.
 #
-# Usage: run-scenarios.sh
+# Usage: run-scenarios.sh [--only <substring>] [--timings-file <path>]
+#
+#   --only           Run only the scenarios whose name or path contains the
+#                    substring. Handy while iterating on one scenario.
+#   --timings-file   Where to write the per-scenario timing table
+#                    (default: ${TMPDIR:-/tmp}/scenario-timings.tsv).
+#
 # Env:   SMOKE_TESTS_LOG_LEVEL (default: info)
 #
 # Requires: jq, kubectl, and a ./certsuite binary built from this checkout.
@@ -18,6 +24,42 @@ LOG_LEVEL="${SMOKE_TESTS_LOG_LEVEL:-info}"
 OVERALL_RC=0
 CURRENT_SCENARIO_DIR=""
 CURRENT_OUTPUT_DIR=""
+ONLY_FILTER=""
+TIMINGS_FILE="${TMPDIR:-/tmp}/scenario-timings.tsv"
+CONFIG_DIR="${TMPDIR:-/tmp}/certsuite-smoke-configs"
+SCENARIO_REAP_FILE="${TMPDIR:-/tmp}/certsuite-smoke-reap-$$.txt"
+export SCENARIO_REAP_FILE
+: >"$SCENARIO_REAP_FILE"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --only)
+      ONLY_FILTER="${2:?--only needs a value}"
+      shift 2
+      ;;
+    --timings-file)
+      TIMINGS_FILE="${2:?--timings-file needs a value}"
+      shift 2
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      exit 2
+      ;;
+  esac
+done
+
+# Fold each phase into a collapsible group in the GitHub Actions log.
+group_start() {
+  if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
+    echo "::group::$1"
+  fi
+}
+
+group_end() {
+  if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
+    echo "::endgroup::"
+  fi
+}
 
 cleanup_current_scenario() {
   local scenario_dir="$CURRENT_SCENARIO_DIR"
@@ -30,7 +72,46 @@ cleanup_current_scenario() {
   fi
 }
 
-trap cleanup_current_scenario EXIT
+# The base namespace a scenario group declares in its certsuite-config.yaml.
+base_namespace() {
+  awk '/^targetNameSpaces:/{found=1; next} found && /^  - name: /{print $3; exit}' "$1"
+}
+
+# Every entry gets its own namespace. Entries that share a path share the base
+# namespace name, so a per-entry suffix keeps them apart; without it the next
+# entry would try to create a namespace that is still terminating. The base is
+# preserved as a prefix because some checks match on it (the reserved istio-
+# prefix, for example).
+# Keep this in sync with scenario_namespace() in generate-readme.py.
+namespace_for() {
+  local base=$1 output_dir=$2 suffix
+  suffix=$(LC_ALL=C printf '%s' "${output_dir%-results}" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9-' '-' | sed -e 's/^-//' -e 's/-$//' | cut -c1-30)
+  suffix=${suffix%-}
+  printf '%.63s' "${base}-${suffix}" | sed -e 's/-$//'
+}
+
+# Namespaces are deleted without waiting, so the suite reaps every one of them
+# in parallel at the end instead of blocking for up to 120s per scenario.
+reap_namespaces() {
+  local namespace count
+  [[ -s "$SCENARIO_REAP_FILE" ]] || return 0
+  count=$(wc -l <"$SCENARIO_REAP_FILE" | tr -d '[:space:]')
+  echo ""
+  echo "--- Reaping ${count} namespace(s) ---"
+  while IFS= read -r namespace; do
+    kubectl wait --for=delete "namespace/${namespace}" --timeout=180s >/dev/null 2>&1 &
+  done <"$SCENARIO_REAP_FILE"
+  wait || true
+  rm -f "$SCENARIO_REAP_FILE"
+  echo "--- Namespaces reaped ---"
+}
+
+on_exit() {
+  cleanup_current_scenario
+  reap_namespaces
+}
+
+trap on_exit EXIT
 
 claim_object_count() {
   local claim_file=$1 test_id=$2 list_name=$3 needle=$4 invert=${5:-false}
@@ -146,10 +227,21 @@ validate_error_fields() {
   echo "PASS: error fields consistent across claim and JUnit (${claim_errors} errored result(s))"
 }
 
-scenario_count=$(jq 'length' "$SCENARIOS_FILE")
-echo "=== Running ${scenario_count} test scenario(s) ==="
+SCENARIO_INDICES=$(jq -r --arg only "$ONLY_FILTER" '
+  to_entries[]
+  | select($only == "" or (.value.name | contains($only)) or (.value.path | contains($only)))
+  | .key' "$SCENARIOS_FILE")
 
-for i in $(seq 0 $((scenario_count - 1))); do
+if [[ -z "$SCENARIO_INDICES" ]]; then
+  echo "No scenario matches '${ONLY_FILTER}'" >&2
+  exit 1
+fi
+
+scenario_count=$(wc -w <<<"$SCENARIO_INDICES" | tr -d '[:space:]')
+echo "=== Running ${scenario_count} test scenario(s) ==="
+printf 'scenario\tdeploy\trun\tvalidate\tcleanup\ttotal\n' >"$TIMINGS_FILE"
+
+for i in $SCENARIO_INDICES; do
   NAME=$(jq -r ".[$i].name" "$SCENARIOS_FILE")
   SCENARIO_PATH=$(jq -r ".[$i].path" "$SCENARIOS_FILE")
   MANIFEST=$(jq -r ".[$i].manifest" "$SCENARIOS_FILE")
@@ -164,40 +256,77 @@ for i in $(seq 0 $((scenario_count - 1))); do
   CURRENT_SCENARIO_DIR="$SCENARIO_DIR"
   CURRENT_OUTPUT_DIR="$OUTPUT_DIR"
 
+  # Give the entry its own namespace and point the config at it. Scenarios that
+  # manage several namespaces of their own (the operator batches) declare
+  # fixed_namespace and keep their config and scripts as written.
+  if [[ "$(jq -r ".[$i].fixed_namespace // false" "$SCENARIOS_FILE")" == "true" ]]; then
+    RENDERED_CONFIG="$CONFIG_FILE"
+    unset SCENARIO_NAMESPACE
+  else
+    SCENARIO_NAMESPACE=$(namespace_for "$(base_namespace "$CONFIG_FILE")" "$OUTPUT_DIR")
+    export SCENARIO_NAMESPACE
+    mkdir -p "$CONFIG_DIR"
+    RENDERED_CONFIG="${CONFIG_DIR}/${OUTPUT_DIR}.yaml"
+    # Replace the whole line: sed's 0-address range only matches the prefix, and
+    # BSD sed does not support the 0 address anyway.
+    awk -v ns="$SCENARIO_NAMESPACE" '
+      !done && /^  - name: / { print "  - name: " ns; done = 1; next }
+      { print }
+    ' "$CONFIG_FILE" >"$RENDERED_CONFIG"
+  fi
+
   echo ""
   echo "========================================"
   echo "Scenario: ${NAME}"
   echo "  Manifest: ${MANIFEST}"
+  if [[ -n "${SCENARIO_NAMESPACE:-}" ]]; then
+    echo "  Namespace: ${SCENARIO_NAMESPACE}"
+  fi
   jq -r 'to_entries[] | "  Expect:   \(.key) -> \(.value.expected_result)"' <<<"$TESTS"
   echo "========================================"
 
   RC=0
+  SCENARIO_START=$SECONDS
+  DEPLOY_SECONDS=0
+  RUN_SECONDS=0
+  VALIDATE_SECONDS=0
+  CLEANUP_SECONDS=0
 
   # Deploy
+  group_start "Deploy: ${NAME}"
   echo "--- Deploy ---"
+  PHASE_START=$SECONDS
   if ! "${SCENARIO_DIR}/deploy.sh" "${MANIFEST}"; then
     echo "FAIL: deploy failed for scenario '${NAME}'"
     RC=1
   fi
+  DEPLOY_SECONDS=$((SECONDS - PHASE_START))
+  group_end
 
   # Run certsuite (allow failure since some scenarios expect it).
   # Keep the probe daemonset between scenarios: deleting it waits for the
   # probe pods to terminate, which costs ~40s per scenario.
   if [[ $RC -eq 0 ]]; then
+    group_start "certsuite: ${NAME}"
     echo "--- Run certsuite ---"
+    PHASE_START=$SECONDS
     ./certsuite run \
       --label-filter="${LABEL_FILTER}" \
-      --config-file="${CONFIG_FILE}" \
+      --config-file="${RENDERED_CONFIG}" \
       --output-dir="${OUTPUT_DIR}" \
       --create-xml-junit-file \
       --log-level="${LOG_LEVEL}" \
       --cleanup-probe=false \
       --quiet || true
+    RUN_SECONDS=$((SECONDS - PHASE_START))
+    group_end
   fi
 
   # Validate
   if [[ $RC -eq 0 ]]; then
+    group_start "Validate: ${NAME}"
     echo "--- Validate ---"
+    PHASE_START=$SECONDS
     CLAIM_FILE="${OUTPUT_DIR}/claim.json"
     if [[ ! -f "$CLAIM_FILE" ]]; then
       echo "FAIL: claim.json not found at ${CLAIM_FILE}"
@@ -208,6 +337,8 @@ for i in $(seq 0 $((scenario_count - 1))); do
       done < <(jq -r 'keys_unsorted[]' <<<"$TESTS")
       validate_error_fields "$CLAIM_FILE" "${OUTPUT_DIR}/${JUNIT_FILE_NAME}" || RC=1
     fi
+    VALIDATE_SECONDS=$((SECONDS - PHASE_START))
+    group_end
   fi
 
   # Print debug log on failure
@@ -221,8 +352,16 @@ for i in $(seq 0 $((scenario_count - 1))); do
   fi
 
   # Cleanup (always runs)
+  group_start "Cleanup: ${NAME}"
   echo "--- Cleanup ---"
+  PHASE_START=$SECONDS
   cleanup_current_scenario
+  CLEANUP_SECONDS=$((SECONDS - PHASE_START))
+  group_end
+
+  printf '%s\t%s\t%s\t%s\t%s\t%s\n' \
+    "$NAME" "$DEPLOY_SECONDS" "$RUN_SECONDS" "$VALIDATE_SECONDS" "$CLEANUP_SECONDS" \
+    "$((SECONDS - SCENARIO_START))" >>"$TIMINGS_FILE"
 
   if [[ $RC -ne 0 ]]; then
     OVERALL_RC=1
@@ -230,6 +369,28 @@ for i in $(seq 0 $((scenario_count - 1))); do
     echo "Scenario '${NAME}' passed."
   fi
 done
+
+print_timings() {
+  [[ -s "$TIMINGS_FILE" ]] || return 0
+  echo ""
+  echo "=== Scenario timings (seconds) ==="
+  # Sort by total (last column), descending, keeping the header first.
+  {
+    head -n 1 "$TIMINGS_FILE"
+    tail -n +2 "$TIMINGS_FILE" | sort -t "$(printf '\t')" -k6,6 -rn
+  } >"${TIMINGS_FILE}.sorted"
+  if command -v column >/dev/null 2>&1; then
+    column -t -s "$(printf '\t')" "${TIMINGS_FILE}.sorted"
+  else
+    cat "${TIMINGS_FILE}.sorted"
+  fi
+  rm -f "${TIMINGS_FILE}.sorted"
+  echo "(written to ${TIMINGS_FILE})"
+}
+
+reap_namespaces
+
+print_timings
 
 echo ""
 if [[ $OVERALL_RC -ne 0 ]]; then
