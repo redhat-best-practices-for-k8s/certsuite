@@ -18,7 +18,7 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 |---|---|---|---|---|---|
 | access-control | 31 | 28 | 30 | 27 | 0 |
 | affiliated-certification | 4 | 4 | 0 | 0 | 0 |
-| lifecycle | 19 | 18 | 17 | 16 | 0 |
+| lifecycle | 19 | 18 | 19 | 18 | 0 |
 | manageability | 2 | 2 | 2 | 2 | 0 |
 | networking | 13 | 9 | 8 | 7 | 3 |
 | observability | 5 | 4 | 4 | 4 | 1 |
@@ -26,11 +26,11 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 | performance | 7 | 6 | 7 | 6 | 0 |
 | platform-alteration | 14 | 13 | 2 | 2 | 1 |
 | preflight | 17 | 0 | 0 | 0 | 17 |
-| **Total** | **124** | **94** | **82** | **74** | **22** |
+| **Total** | **124** | **94** | **84** | **76** | **22** |
 
 ## Scenarios
 
-The 32 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
+The 34 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
 
 | Scenario | Lane | Manifest | Tests | What it deploys |
 |---|---|---|---|---|
@@ -66,6 +66,8 @@ The 32 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | Operators batch: one violation per object (non-compliant) | operator | `batches/operators/bad-csvs/manifests/bad-csvs.yaml` | 8 | Hand-written CSVs in a namespace with no OperatorGroup, so OLM marks them Failed without running any install strategy and their specs stay as written: one with an SCC clusterPermission, two sharing a base name and an owned CRD, and all without a subscription, skipRange or target namespaces. A CRD with a served version named v0 (valid for the apiserver, invalid for certsuite) covers crd-versioning. Each test must fail only on its own object. operator-semantic-versioning has no failing scenario here: OLM normalizes CSV spec.version through semver, so an invalid version cannot survive on the cluster. |
 | Operators batch: unschedulable hugepages pod (non-compliant) | operator | `batches/operators/hugepages/manifests/hugepages.yaml` | `operator-pods-no-hugepages` | A real OLM install whose operator pod requests hugepages-2Mi. The Kind workers expose no hugepages, so the pod stays Pending while remaining attached to its CSV through the owner chain, and the hugepages check fails on it. The pod is deliberately left broken, so deploy waits for it to be unschedulable rather than running. |
 | Operators batch: oversized catalog (non-compliant) | operator | `batches/operators/bundle-count/manifests/big-catalog.yaml` | `operator-catalogsource-bundle-count` | A real OLM install from a File-Based Catalog with 1002 bundles: one installable operator bundle plus 1001 filler bundles that exist only to push the catalog past the 1000-bundle limit. certsuite counts the bundles through the probe (grpcurl against the opm Service), so the needle distinguishes a real count from a probe failure. |
+| Lifecycle batch: golden workloads (compliant) | node | `batches/lifecycle/manifests/golden.yaml` | 2 | A two-replica Deployment, so draining one node leaves the other replica schedulable, and a scalable CR (a CRD with a scale subresource but no status subresource) whose status a helper pod keeps equal to its spec. Pod recreation cordons and drains each node and the CR passes the scale check. |
+| Lifecycle batch: pod with node assignment (non-compliant) | node | `batches/lifecycle/manifests/violations.yaml` | `lifecycle-pod-recreation` | The same two-replica Deployment with a nodeSelector that matches every Kind node, so the pods schedule normally. Pod recreation reports the node assignment instead of cordoning and draining, which is the check's failing branch. |
 
 ## access-control
 
@@ -120,14 +122,14 @@ The 32 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | `lifecycle-container-poststart` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-container-prestop` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-cpu-isolation` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `lifecycle-crd-scaling` | Yes | — | No dedicated scenario |
+| `lifecycle-crd-scaling` | Yes | Lifecycle batch: golden workloads (compliant) (`passed`) | Covered |
 | `lifecycle-deployment-scaling` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`) | Covered |
 | `lifecycle-image-pull-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-liveness-probe` | Yes | Probes defined (compliant) (`passed`)<br>Probes missing (non-compliant) (`failed`) | Covered |
 | `lifecycle-persistent-volume-reclaim-policy` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-high-availability` | Yes | Workload controllers batch: golden workloads (compliant) (`passed`)<br>Workload controllers batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-owner-type` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `lifecycle-pod-recreation` | Yes | — | No dedicated scenario |
+| `lifecycle-pod-recreation` | Yes | Lifecycle batch: golden workloads (compliant) (`passed`)<br>Lifecycle batch: pod with node assignment (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-scheduling` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-pod-toleration-bypass` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `lifecycle-readiness-probe` | Yes | Probes defined (compliant) (`passed`)<br>Probes missing (non-compliant) (`failed`) | Covered |

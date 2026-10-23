@@ -914,5 +914,37 @@
         "noncompliant_contains": "more than 1000"
       }
     }
+  },
+  {
+    "name": "Lifecycle batch: golden workloads (compliant)",
+    "description": "A two-replica Deployment, so draining one node leaves the other replica schedulable, and a scalable CR (a CRD with a scale subresource but no status subresource) whose status a helper pod keeps equal to its spec. Pod recreation cordons and drains each node and the CR passes the scale check.",
+    "path": "batches/lifecycle",
+    "manifest": "golden.yaml",
+    "output_dir": "lifecycle-golden-results",
+    "lane": "node",
+    "tests": {
+      "lifecycle-crd-scaling": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      },
+      "lifecycle-pod-recreation": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      }
+    }
+  },
+  {
+    "name": "Lifecycle batch: pod with node assignment (non-compliant)",
+    "description": "The same two-replica Deployment with a nodeSelector that matches every Kind node, so the pods schedule normally. Pod recreation reports the node assignment instead of cordoning and draining, which is the check's failing branch.",
+    "path": "batches/lifecycle",
+    "manifest": "violations.yaml",
+    "output_dir": "lifecycle-violations-results",
+    "lane": "node",
+    "tests": {
+      "lifecycle-pod-recreation": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-node-selector"
+      }
+    }
   }
 ]

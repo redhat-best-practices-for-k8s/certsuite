@@ -27,6 +27,10 @@ ROOT = SCRIPT_DIR.parents[3]
 IMAGE = "nginxinc/nginx-unprivileged:1.27"
 SERVICE_ACCOUNT = "scenario-sa"
 RUNTIME_CLASS = "certsuite-smoke"
+# UBI ships /etc/redhat-release, which the platform check reads, and its
+# curl-minimal lets the lifecycle helper drive the scale subresource.
+RHEL_IMAGE = "registry.access.redhat.com/ubi9/ubi-minimal:9.5"
+CRD_VERSION = "v1"
 # The sample-workload image ships an sshd usable without privileges; -D keeps it
 # in the foreground as a single process and -d logs to stdout.
 SSHD_IMAGE = "quay.io/redhat-best-practices-for-k8s/certsuite-sample-workload"
@@ -264,18 +268,44 @@ def cluster_role_binding(name, subject_name, subject_namespace):
     }
 
 
-def custom_resource_definition(plural, group, with_status):
+def role_binding(name, role_name, service_account_name):
+    return {
+        "apiVersion": "rbac.authorization.k8s.io/v1",
+        "kind": "RoleBinding",
+        "metadata": {"name": name},
+        "subjects": [{"kind": "ServiceAccount", "name": service_account_name}],
+        "roleRef": {"kind": "Role", "name": role_name, "apiGroup": "rbac.authorization.k8s.io"},
+    }
+
+
+def custom_resource_definition(plural, group, with_status, kind="ScenarioCrd", scale=False):
+    if with_status and scale:
+        # A status subresource would make the CR's status a separate endpoint,
+        # so the scale subresource's statusReplicasPath would be unreachable
+        # through the main resource.
+        raise ValueError("a scale subresource needs status writes through the main resource")
     properties = {"spec": {"type": "object"}}
-    if with_status:
+    if with_status or scale:
         properties["status"] = {"type": "object"}
+    if scale:
+        # The scale subresource reads and writes these paths. Its status must
+        # stay writable through the main resource, so a CRD with a scale
+        # subresource gets no status subresource.
+        properties["spec"]["properties"] = {"replicas": {"type": "integer"}}
+        properties["status"]["properties"] = {"replicas": {"type": "integer"}}
     version = {
-        "name": "v1",
+        "name": CRD_VERSION,
         "served": True,
         "storage": True,
         "schema": {"openAPIV3Schema": {"type": "object", "properties": properties}},
     }
     if with_status:
         version["subresources"] = {"status": {}}
+    if scale:
+        version.setdefault("subresources", {})["scale"] = {
+            "specReplicasPath": ".spec.replicas",
+            "statusReplicasPath": ".status.replicas",
+        }
     return {
         "apiVersion": "apiextensions.k8s.io/v1",
         "kind": "CustomResourceDefinition",
@@ -285,8 +315,8 @@ def custom_resource_definition(plural, group, with_status):
             "names": {
                 "plural": plural,
                 "singular": plural[:-1],
-                "kind": "ScenarioCrd",
-                "listKind": "ScenarioCrdList",
+                "kind": kind,
+                "listKind": f"{kind}List",
             },
             "scope": "Namespaced",
             "versions": [version],
@@ -681,8 +711,6 @@ def crds_manifests():
 
 
 PLATFORM_LABEL = "scenario-platform"
-# UBI ships /etc/redhat-release, which is exactly what the check reads.
-RHEL_IMAGE = "registry.access.redhat.com/ubi9/ubi-minimal:9.5"
 
 
 def platform_pod(name, image, command=None):
@@ -702,6 +730,126 @@ def platform_manifests():
     return {
         "platform/manifests/golden.yaml": golden,
         "platform/manifests/violations.yaml": violations,
+    }
+
+
+# ---------------------------------------------------------------------------
+# lifecycle batch: pod recreation and CRD scaling
+
+LIFECYCLE_LABEL = "scenario-lifecycle"
+# Labels the helper that keeps a CR's status in step with its spec. It is
+# deliberately not LIFECYCLE_LABEL: it is infrastructure, not a pod under test.
+LIFECYCLE_HELPER_LABEL = "scenario-lifecycle-helper"
+SCALING_GROUP = "scaling-smoke.example.com"
+SCALING_PLURAL = "scenarioscalingcrs"
+SCALING_KIND = "ScenarioScalingCrd"
+SCALING_CR = "scaling-cr"
+SCALE_SYNC_NAME = "crd-scale-sync"
+
+# certsuite treats a scale object as ready when status.replicas equals
+# spec.replicas, and the CR in this scenario has no controller, so this sidecar
+# loop is the controller: read the scale subresource, mirror spec into status.
+# curl-minimal ships in the UBI image the platform batch already pulls. The
+# scale payload is split at "status" because the apiserver emits spec before
+# status, so each half then holds exactly one replicas field.
+CRD_SCALE_SYNC = """\
+set -eu
+SA=/var/run/secrets/kubernetes.io/serviceaccount
+TOKEN="$(cat "$SA/token")"
+NS="$(cat "$SA/namespace")"
+URL="https://kubernetes.default.svc/apis/{group}/{version}/namespaces/$NS/{plural}/{cr}"
+while :; do
+  payload="$(curl -skf -H "Authorization: Bearer $TOKEN" "$URL/scale")" || true
+  if [ -n "${{payload}}" ]; then
+    spec="$(printf '%s' "${{payload%%\\"status\\"*}}" | sed -n 's/.*"replicas":[[:space:]]*\\([0-9]\\{{1,\\}}\\).*/\\1/p')"
+    status="$(printf '%s' "${{payload#*\\"status\\"}}" | sed -n 's/.*"replicas":[[:space:]]*\\([0-9]\\{{1,\\}}\\).*/\\1/p')"
+    if [ -n "$spec" ] && [ "$spec" != "${{status:-0}}" ]; then
+      curl -skf -X PATCH -H "Authorization: Bearer $TOKEN" \\
+        -H "Content-Type: application/merge-patch+json" \\
+        -d "{{\\"status\\":{{\\"replicas\\":$spec}}}}" "$URL" >/dev/null || true
+    fi
+  fi
+  sleep 1
+done
+""".format(
+    group=SCALING_GROUP, version=CRD_VERSION, plural=SCALING_PLURAL, cr=SCALING_CR
+)
+
+SCALING_CRD = custom_resource_definition(
+    SCALING_PLURAL, SCALING_GROUP, with_status=False, kind=SCALING_KIND, scale=True
+)
+
+
+def crd_scale_sync_pod():
+    return bare_pod(
+        SCALE_SYNC_NAME,
+        LIFECYCLE_HELPER_LABEL,
+        {
+            "serviceAccountName": SCALE_SYNC_NAME,
+            "containers": [
+                {
+                    "name": "sync",
+                    "image": RHEL_IMAGE,
+                    "imagePullPolicy": "IfNotPresent",
+                    "command": ["/bin/sh", "-c", CRD_SCALE_SYNC],
+                    "securityContext": {
+                        "runAsNonRoot": True,
+                        "runAsUser": 1001,
+                        "allowPrivilegeEscalation": False,
+                    },
+                }
+            ],
+        },
+    )
+
+
+def lifecycle_workload(name, node_selector=None):
+    spec = golden_pod_spec()
+    if node_selector:
+        spec["nodeSelector"] = node_selector
+    # Two replicas: pod recreation cordons and drains a node, and the other
+    # replica has to come back on a node that is still schedulable.
+    return deployment(name, LIFECYCLE_LABEL, spec, replicas=2)
+
+
+def lifecycle_manifests():
+    cr = {
+        "apiVersion": f"{SCALING_GROUP}/{CRD_VERSION}",
+        "kind": SCALING_KIND,
+        "metadata": {"name": SCALING_CR},
+        "spec": {"replicas": 1},
+        "status": {"replicas": 1},
+    }
+    # RBAC first: kubectl apply creates objects in file order, and each pod
+    # cannot be admitted until its ServiceAccount exists.
+    golden = [
+        service_account(SCALE_SYNC_NAME),
+        role(
+            SCALE_SYNC_NAME,
+            [
+                {
+                    "apiGroups": [SCALING_GROUP],
+                    "resources": [SCALING_PLURAL, f"{SCALING_PLURAL}/scale"],
+                    "verbs": ["get", "patch"],
+                }
+            ],
+        ),
+        role_binding(SCALE_SYNC_NAME, SCALE_SYNC_NAME, SCALE_SYNC_NAME),
+        crd_scale_sync_pod(),
+        cr,
+        service_account(),
+        lifecycle_workload("lifecycle-golden"),
+    ]
+    # Every Kind node matches, so the pods schedule and the deployment is
+    # discovered; the nodeSelector alone is what fails the check.
+    violations = [
+        service_account(),
+        lifecycle_workload("bad-node-selector", {"kubernetes.io/os": "linux"}),
+    ]
+    return {
+        "lifecycle/manifests/scaling-crd.yaml": [SCALING_CRD],
+        "lifecycle/manifests/golden.yaml": golden,
+        "lifecycle/manifests/violations.yaml": violations,
     }
 
 
@@ -766,6 +914,7 @@ def all_manifests():
     manifests.update(processes_manifests())
     manifests.update(crds_manifests())
     manifests.update(platform_manifests())
+    manifests.update(lifecycle_manifests())
     return {path: render(objects) for path, objects in manifests.items()}
 
 

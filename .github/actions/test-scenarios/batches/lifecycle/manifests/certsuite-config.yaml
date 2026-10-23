@@ -1,0 +1,9 @@
+---
+targetNameSpaces:
+  - name: lifecycle-smoke-ns
+podsUnderTestLabels:
+  - "scenario-lifecycle: target"
+operatorsUnderTestLabels: []
+targetCrdFilters:
+  - nameSuffix: "scenarioscalingcrs.scaling-smoke.example.com"
+    scalable: true
