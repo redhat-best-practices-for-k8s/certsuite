@@ -734,6 +734,60 @@ def platform_manifests():
 
 
 # ---------------------------------------------------------------------------
+# service-mesh batch: the service mesh sidecar
+
+SERVICE_MESH_LABEL = "scenario-service-mesh"
+ISTIO_NAMESPACE = "istio-system"
+ISTIO_DEPLOYMENT = "istiod"
+# Marks the stand-in control plane as the scenario's own, so deploy and cleanup
+# leave a real Istio installation alone.
+STAND_IN_MESH_LABEL = {"scenario-smoke": "service-mesh"}
+
+
+def service_mesh_pod(name, with_mesh):
+    containers = [{"image": IMAGE, "imagePullPolicy": "IfNotPresent", "name": "app"}]
+    if with_mesh:
+        # The check matches on the container name alone and never contacts a
+        # control plane, so any image serves as the sidecar.
+        containers.append({"image": IMAGE, "imagePullPolicy": "IfNotPresent", "name": "istio-proxy"})
+    return bare_pod(name, SERVICE_MESH_LABEL, {"containers": containers})
+
+
+def service_mesh_manifests():
+    # Autodiscovery treats the mesh as installed only when both the istio-system
+    # namespace and its istiod Deployment exist, and the check skips otherwise.
+    # These two objects are what the scenario creates to stop that skip; they
+    # share nothing with the workload under test, and the namespace outlives it.
+    istio = [
+        {"apiVersion": "v1", "kind": "Namespace", "metadata": {"name": ISTIO_NAMESPACE}},
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "name": ISTIO_DEPLOYMENT,
+                "namespace": ISTIO_NAMESPACE,
+                "labels": STAND_IN_MESH_LABEL,
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {"matchLabels": {"app": ISTIO_DEPLOYMENT}},
+                "template": {
+                    "metadata": {"labels": {"app": ISTIO_DEPLOYMENT, **STAND_IN_MESH_LABEL}},
+                    "spec": {"containers": [{"image": IMAGE, "imagePullPolicy": "IfNotPresent", "name": "discovery"}]},
+                },
+            },
+        },
+    ]
+    golden = [service_mesh_pod("good-service-mesh", with_mesh=True)]
+    violations = [service_mesh_pod("bad-service-mesh", with_mesh=False)]
+    return {
+        "service-mesh/manifests/istio.yaml": istio,
+        "service-mesh/manifests/golden.yaml": golden,
+        "service-mesh/manifests/violations.yaml": violations,
+    }
+
+
+# ---------------------------------------------------------------------------
 # lifecycle batch: pod recreation and CRD scaling
 
 LIFECYCLE_LABEL = "scenario-lifecycle"
@@ -914,6 +968,7 @@ def all_manifests():
     manifests.update(processes_manifests())
     manifests.update(crds_manifests())
     manifests.update(platform_manifests())
+    manifests.update(service_mesh_manifests())
     manifests.update(lifecycle_manifests())
     return {path: render(objects) for path, objects in manifests.items()}
 

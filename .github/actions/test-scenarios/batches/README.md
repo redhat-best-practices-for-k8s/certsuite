@@ -7,7 +7,7 @@ each test separately against the same claim.
 Batching exists because the per-run overhead dominates: 46 tests as 46
 single-test entries cost 46 deploy/run/cleanup cycles, and as one batch they
 cost one. The scenarios in here cover most of the pod-spec, workload
-controller, process, CRD, platform and operator catalog.
+controller, process, CRD, platform, service mesh and operator catalog.
 
 See [../CONTRIBUTING.md](../CONTRIBUTING.md) for the scenario framework and the
 full `scenarios.json` field reference.
@@ -37,6 +37,7 @@ groups are expensive.
 | `workload-controllers` | `controllers-smoke-ns` | `scenario-controllers: target` | Checks that judge the controller rather than the pod: high availability, PodDisruptionBudget, topology spread, AffinityRequired, scaling |
 | `processes` | `processes-smoke-ns` | `scenario-processes: target` | Checks that inspect processes inside the container: process count per container, sshd daemons |
 | `platform` | `platform-smoke-ns` | `scenario-platform: target` | Checks that read the node or the container's distribution: the Red Hat release file, and the running kernel against node taints |
+| `service-mesh` | `service-mesh-smoke-ns` | `scenario-service-mesh: target` | The service mesh check, which inspects each target container for an `istio-proxy` sidecar after autodiscovery has found a mesh |
 | `crds` | `crds-smoke-ns` | `scenario-crds: target` | Checks that inspect the CRDs matched by `targetCrdFilters` and the Roles that reference them |
 | `lifecycle` | `lifecycle-smoke-ns` | `scenario-lifecycle: target` | Intrusive checks: pod recreation, which cordons and drains the nodes hosting the workloads, and CRD scaling through the scale subresource |
 | `operators` | `operators-golden-smoke-ns` and per-entry namespaces | per-entry `scenario-operators-*: target` | Operator and OLM checks: subscriptions, CSV status, privileges, skipRange, CRD ownership, semantic versioning, hugepages, bundle counts, tenant namespaces |
@@ -78,6 +79,34 @@ Only the checks a non-OpenShift Kind cluster can reach live here: the rest of th
 platform-alteration suite skips on a non-OpenShift cluster, needs bare metal, or
 needs a runtime kernel — see the reasons in
 [../README.md](../README.md#platform-alteration).
+
+### service-mesh entries
+
+| Entry | Manifest | Expectation |
+|---|---|---|
+| Meshed workload | `golden.yaml` | `platform-alteration-service-mesh-usage` `passed`. A bare Pod carrying an `app` and an `istio-proxy` container. |
+| Workload without a sidecar | `violations.yaml` | `platform-alteration-service-mesh-usage` `failed` on `bad-service-mesh`, a Pod with the `app` container alone. |
+
+The check only runs when autodiscovery has found a mesh: it sets
+`IstioServiceMeshFound` when the `istio-system` namespace exists and an `istiod`
+Deployment runs in it, and `testServiceMesh` skips otherwise. `istio.yaml`
+supplies exactly those two objects — a namespace and a one-replica Deployment —
+so the check reaches its real logic without installing Istio. The check never
+contacts a control plane: it only looks for a container named `istio-proxy` in
+each target pod, so any image serves as the sidecar.
+
+The stand-in carries a `scenario-smoke: service-mesh` label. `deploy.sh` applies
+it only when `istio-system` is absent or holds that labelled Deployment, and
+`cleanup.sh` deletes the namespace only then, so the scenarios can run on a
+cluster that already has Istio without replacing or removing the real control
+plane.
+
+The namespace is cluster-scoped even though the Deployment is not, and both
+entries share it, which is why they sit in the `cluster-scoped` lane.
+`cleanup.sh` deletes the `istio-system` namespace with a wait, because the
+second entry recreates it immediately and a namespace still terminating would
+reject the create. Other lanes are unaffected: their label filters never select
+this check, and no other test reads the discovered mesh flag.
 
 ### crds entries
 
@@ -229,8 +258,9 @@ batch:
 
 1. Add the test ID, workload name and mutation to `POD_SPEC_VIOLATIONS` or
    `CONTROLLER_VIOLATIONS`, or build the workloads directly in
-   `processes_manifests()` / `crds_manifests()` / `platform_manifests()` when
-   they are not a mutation of the shared pod spec template.
+   `processes_manifests()` / `crds_manifests()` / `platform_manifests()` /
+   `service_mesh_manifests()` when they are not a mutation of the shared pod spec
+   template.
 2. Confirm the golden template already satisfies the new check. If it does not,
    change the template and re-verify the other entries, because every workload
    inherits it.
@@ -257,6 +287,10 @@ group's `cleanup.sh` deletes them explicitly:
 - `lifecycle` applies the `scenarioscalingcrs.scaling-smoke.example.com` CRD,
   which both of its runs share; the cleanup deletes it, and the CRs it holds,
   before the namespace.
+- `service-mesh` creates the `istio-system` namespace and an `istiod` Deployment,
+  the pair autodiscovery looks for when deciding whether a mesh is installed.
+  Both entries share them, so the cleanup deletes the namespace with a wait; the
+  next entry's `deploy.sh` recreates them.
 - `operators` applies the `goldencrds.scenario-smoke.example.com` CRD (inline
   in the golden operator's bundle) and the
   `badcrds.scenario-smoke.example.com` CRD (by hand in `bad-csvs`); each

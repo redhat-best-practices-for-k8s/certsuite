@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: service-mesh-smoke-ns
+podsUnderTestLabels:
+  - "scenario-service-mesh: target"
+operatorsUnderTestLabels: []

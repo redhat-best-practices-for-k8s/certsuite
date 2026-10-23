@@ -768,6 +768,34 @@
     }
   },
   {
+    "name": "Service mesh batch: meshed workload (compliant)",
+    "description": "An istio-system namespace and istiod Deployment make autodiscovery treat the mesh as installed, so the check runs instead of skipping, and a target pod carrying an istio-proxy sidecar passes it.",
+    "path": "batches/service-mesh",
+    "manifest": "golden.yaml",
+    "output_dir": "service-mesh-golden-results",
+    "lane": "cluster-scoped",
+    "tests": {
+      "platform-alteration-service-mesh-usage": {
+        "expected_result": "passed",
+        "min_compliant": 1
+      }
+    }
+  },
+  {
+    "name": "Service mesh batch: workload without a sidecar (non-compliant)",
+    "description": "The same installed mesh, but the target pod has no istio-proxy container. The check must fail that pod and name it.",
+    "path": "batches/service-mesh",
+    "manifest": "violations.yaml",
+    "output_dir": "service-mesh-violations-results",
+    "lane": "cluster-scoped",
+    "tests": {
+      "platform-alteration-service-mesh-usage": {
+        "expected_result": "failed",
+        "noncompliant_contains": "bad-service-mesh"
+      }
+    }
+  },
+  {
     "name": "Operators batch: golden OLM install (compliant)",
     "description": "A real OLM install from an in-cluster File-Based Catalog: an opm registry serves the catalog from a ConfigMap, the CatalogSource points at it by address, and OLM installs the bundle inline (CSV, CRD and a pause-image deployment) with no published bundle image. The operator carries a skipRange, a subscription, no clusterPermissions, one owned CRD with a structural schema, and its OperatorGroup targets a tenant namespace. Together these satisfy every check in the batch. operator-crd-openapi-schema has no failing scenario: apiextensions v1 requires structural schemas, so a served CRD without one cannot exist on any cluster.",
     "path": "batches/operators/golden",

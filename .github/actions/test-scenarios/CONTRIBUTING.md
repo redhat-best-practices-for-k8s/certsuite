@@ -105,7 +105,7 @@ idle. That is why `--jobs 4` runs seven units: `cluster-scoped`, `node`,
 | Lane | Used by | Why it is kept apart |
 |---|---|---|
 | `namespaced` | everything that does not name a lane | Touches only its own namespace, so it is safe beside any other lane. |
-| `cluster-scoped` | `batches/pod-spec` (RuntimeClass, ClusterRoleBinding, StorageClasses, PVs) and `batches/crds` (one CRD) | Creates objects that outlive the namespace and are visible to every other run. |
+| `cluster-scoped` | `batches/pod-spec` (RuntimeClass, ClusterRoleBinding, StorageClasses, PVs), `batches/crds` (one CRD) and `batches/service-mesh` (an `istio-system` namespace and `istiod` Deployment) | Creates objects that outlive the namespace and are visible to every other run. `batches/service-mesh` creates the two objects autodiscovery looks for when deciding a mesh is installed, which flips a discovered flag for the whole run. |
 | `node` | `batches/workload-controllers` and `batches/lifecycle` | Judges cluster-wide node and zone counts, and pod recreation cordons and drains the nodes hosting the workloads under test, which also disrupts what the other lanes run there. `batches/lifecycle` also creates a CRD, which its cleanup deletes before the namespace. |
 | `operator` | `batches/operators/*` | Certsuite's operator checks read every CSV, Subscription and CatalogSource in the cluster; and OLM installs are slow and CPU-hungry. |
 
