@@ -1,0 +1,62 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: scenario-account
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icmpv6-dropper-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: icmpv6-dropper-1
+      scenario-icmpv6: target
+  template:
+    metadata:
+      labels:
+        app: icmpv6-dropper-1
+        scenario-icmpv6: target
+    spec:
+      serviceAccountName: scenario-account
+      # The pod network namespace is shared by all containers of the pod, so a
+      # privileged init container can silence ICMPv6 echo requests for the whole
+      # pod before nginx starts.
+      initContainers:
+        - name: disable-icmp
+          image: alpine:3.20
+          command: ["/bin/sh", "-c", "sysctl -w net.ipv6.icmp.echo_ignore_all=1"]
+          securityContext:
+            privileged: true
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icmpv6-dropper-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: icmpv6-dropper-2
+      scenario-icmpv6: target
+  template:
+    metadata:
+      labels:
+        app: icmpv6-dropper-2
+        scenario-icmpv6: target
+    spec:
+      serviceAccountName: scenario-account
+      initContainers:
+        - name: disable-icmp
+          image: alpine:3.20
+          command: ["/bin/sh", "-c", "sysctl -w net.ipv6.icmp.echo_ignore_all=1"]
+          securityContext:
+            privileged: true
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27

@@ -49,6 +49,7 @@ testCases:
     - networking-dual-stack-service
     - networking-icmpv4-connectivity
     - networking-icmpv4-connectivity-multus
+    - networking-icmpv6-connectivity
     - networking-icmpv6-connectivity-multus
     - networking-network-policy-deny-all
     - networking-ocp-reserved-ports-usage
@@ -85,7 +86,6 @@ testCases:
     - lifecycle-cpu-isolation
     - lifecycle-statefulset-scaling
     - lifecycle-storage-provisioner
-    - networking-icmpv6-connectivity
     - networking-restart-on-reboot-sriov-pod
     - networking-network-attachment-definition-sriov-mtu
     - operator-install-source

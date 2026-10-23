@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: scenario-account
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icmpv6-source
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: icmpv6-source
+      scenario-icmpv6: target
+  template:
+    metadata:
+      labels:
+        app: icmpv6-source
+        scenario-icmpv6: target
+    spec:
+      serviceAccountName: scenario-account
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icmpv6-target
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: icmpv6-target
+      scenario-icmpv6: target
+  template:
+    metadata:
+      labels:
+        app: icmpv6-target
+        scenario-icmpv6: target
+    spec:
+      serviceAccountName: scenario-account
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27

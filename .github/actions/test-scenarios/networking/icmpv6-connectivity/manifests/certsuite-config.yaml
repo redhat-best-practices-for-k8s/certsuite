@@ -1,0 +1,6 @@
+---
+targetNameSpaces:
+  - name: icmpv6-smoke-ns
+podsUnderTestLabels:
+  - "scenario-icmpv6: target"
+operatorsUnderTestLabels: []

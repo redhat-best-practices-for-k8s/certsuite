@@ -220,6 +220,28 @@
     "output_dir": "icmp-droppers-results"
   },
   {
+    "name": "ICMPv6 connectivity between pods (compliant)",
+    "description": "Deploys two plain nginx workloads onto the dual-stack default network. The check pings the second pod's IPv6 address from the first and must succeed.",
+    "label_filter": "networking-icmpv6-connectivity",
+    "path": "networking/icmpv6-connectivity",
+    "manifest": "icmp-connectivity.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "compliant_contains": "icmpv6-smoke-ns",
+    "output_dir": "icmpv6-connectivity-results"
+  },
+  {
+    "name": "ICMPv6 connectivity ignored by the target pod (non-compliant)",
+    "description": "Deploys two identical workloads that ignore ICMPv6 echo requests: a privileged init container sets net.ipv6.icmp.echo_ignore_all=1 in the shared pod network namespace. The check reports the failed pair and the failed default network.",
+    "label_filter": "networking-icmpv6-connectivity",
+    "path": "networking/icmpv6-connectivity",
+    "manifest": "icmp-droppers.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 2,
+    "noncompliant_contains": "default",
+    "output_dir": "icmpv6-droppers-results"
+  },
+  {
     "name": "Pod spec batch: golden workloads (compliant)",
     "description": "A golden Deployment mounting a statically bound volume, a Guaranteed whole-CPU variant with a RuntimeClass and CPU/IRQ load-balancing annotations, a ClusterIP Service, a ResourceQuota and the storage objects backing the volume. Together they satisfy every pod spec check in the batch.",
     "path": "batches/pod-spec",

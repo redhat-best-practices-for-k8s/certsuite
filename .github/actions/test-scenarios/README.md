@@ -20,17 +20,17 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 | affiliated-certification | 4 | 4 | 0 | 0 | 0 |
 | lifecycle | 19 | 18 | 19 | 18 | 0 |
 | manageability | 2 | 2 | 2 | 2 | 0 |
-| networking | 13 | 9 | 8 | 7 | 3 |
+| networking | 13 | 9 | 9 | 8 | 3 |
 | observability | 5 | 4 | 4 | 4 | 1 |
 | operator | 12 | 10 | 12 | 10 | 0 |
 | performance | 7 | 6 | 7 | 6 | 0 |
 | platform-alteration | 14 | 13 | 3 | 3 | 1 |
 | preflight | 17 | 0 | 0 | 0 | 17 |
-| **Total** | **124** | **94** | **85** | **77** | **22** |
+| **Total** | **124** | **94** | **86** | **78** | **22** |
 
 ## Scenarios
 
-The 36 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
+The 38 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
 
 | Scenario | Lane | Manifest | Tests | What it deploys |
 |---|---|---|---|---|
@@ -50,6 +50,8 @@ The 36 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | Namespace without a ResourceQuota (non-compliant) | namespaced | `access-control/namespace-resource-quota/manifests/no-resource-quota.yaml` | `access-control-namespace-resource-quota` | Deploys a workload into a namespace with no ResourceQuota. The check flags the pod for running in that namespace. |
 | ICMPv4 connectivity between pods (compliant) | namespaced | `networking/icmpv4-connectivity/manifests/icmp-connectivity.yaml` | `networking-icmpv4-connectivity` | Deploys two plain nginx workloads. The check pings the second pod from the first over the default network and must succeed. |
 | ICMPv4 connectivity ignored by the target pod (non-compliant) | namespaced | `networking/icmpv4-connectivity/manifests/icmp-droppers.yaml` | `networking-icmpv4-connectivity` | Deploys two identical workloads that ignore ICMP echo requests: a privileged init container sets net.ipv4.icmp_echo_ignore_all=1 in the shared pod network namespace. The check reports the failed pair and the failed default network. |
+| ICMPv6 connectivity between pods (compliant) | namespaced | `networking/icmpv6-connectivity/manifests/icmp-connectivity.yaml` | `networking-icmpv6-connectivity` | Deploys two plain nginx workloads onto the dual-stack default network. The check pings the second pod's IPv6 address from the first and must succeed. |
+| ICMPv6 connectivity ignored by the target pod (non-compliant) | namespaced | `networking/icmpv6-connectivity/manifests/icmp-droppers.yaml` | `networking-icmpv6-connectivity` | Deploys two identical workloads that ignore ICMPv6 echo requests: a privileged init container sets net.ipv6.icmp.echo_ignore_all=1 in the shared pod network namespace. The check reports the failed pair and the failed default network. |
 | Pod spec batch: golden workloads (compliant) | cluster-scoped | `batches/pod-spec/manifests/golden.yaml` | 46 | A golden Deployment mounting a statically bound volume, a Guaranteed whole-CPU variant with a RuntimeClass and CPU/IRQ load-balancing annotations, a ClusterIP Service, a ResourceQuota and the storage objects backing the volume. Together they satisfy every pod spec check in the batch. |
 | Pod spec batch: one violation per workload (non-compliant) | cluster-scoped | `batches/pod-spec/manifests/violations.yaml` | 39 | Workloads generated from the golden template with exactly one field changed, plus a NodePort Service, an IPv4-only Service, a ClusterRoleBinding and the storage objects backing two of the workloads. Each test must fail only on its own workload. |
 | Pod spec batch: security context without fsGroup (non-compliant) | cluster-scoped | `batches/pod-spec/manifests/bad-security-context.yaml` | `access-control-security-context` | The golden workload without a pod-level fsGroup falls out of security context category 1. Kept separate because most other violations also fail this check. |
@@ -154,7 +156,7 @@ The 36 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | `networking-dual-stack-service` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `networking-icmpv4-connectivity` | Yes | ICMPv4 connectivity between pods (compliant) (`passed`)<br>ICMPv4 connectivity ignored by the target pod (non-compliant) (`failed`) | Covered |
 | `networking-icmpv4-connectivity-multus` | Yes | — | Not reproducible on the smoke cluster: needs Multus network attachment definitions, which the Kind cluster does not have |
-| `networking-icmpv6-connectivity` | Yes | — | Not reproducible on the smoke cluster: the Calico CNI hands pods IPv4-only addresses, so no target pod has an IPv6 address on the default network and the check skips before it can report |
+| `networking-icmpv6-connectivity` | Yes | ICMPv6 connectivity between pods (compliant) (`passed`)<br>ICMPv6 connectivity ignored by the target pod (non-compliant) (`failed`) | Covered |
 | `networking-icmpv6-connectivity-multus` | No | — | Not reproducible on the smoke cluster: needs Multus network attachment definitions, which the Kind cluster does not have |
 | `networking-network-attachment-definition-sriov-mtu` | No | — | Not reproducible on the smoke cluster: needs SR-IOV network devices, which the Kind cluster does not have |
 | `networking-network-policy-deny-all` | Yes | Default ingress and egress deny policy (compliant) (`passed`)<br>NetworkPolicy missing egress deny (non-compliant) (`failed`) | Covered |
