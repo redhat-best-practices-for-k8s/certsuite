@@ -24,13 +24,13 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 | observability | 5 | 4 | 4 | 4 | 1 |
 | operator | 12 | 10 | 12 | 10 | 0 |
 | performance | 7 | 6 | 7 | 6 | 0 |
-| platform-alteration | 14 | 13 | 2 | 2 | 1 |
+| platform-alteration | 14 | 13 | 3 | 3 | 1 |
 | preflight | 17 | 0 | 0 | 0 | 17 |
-| **Total** | **124** | **94** | **84** | **76** | **22** |
+| **Total** | **124** | **94** | **85** | **77** | **22** |
 
 ## Scenarios
 
-The 34 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
+The 36 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
 
 | Scenario | Lane | Manifest | Tests | What it deploys |
 |---|---|---|---|---|
@@ -62,6 +62,8 @@ The 34 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | CRDs batch: one violation per object (non-compliant) | cluster-scoped | `batches/crds/manifests/violations.yaml` | 2 | A CRD without a status subresource and a Role that grants an extra pods rule next to its CRD access. Each test must fail only on its own object. |
 | Platform batch: Red Hat base image (compliant) | namespaced | `batches/platform/manifests/golden.yaml` | 2 | A UBI pod whose /etc/redhat-release satisfies the release check, plus the node kernel check, which needs only a running workload to have nodes to judge. |
 | Platform batch: base image that is not Red Hat (non-compliant) | namespaced | `batches/platform/manifests/violations.yaml` | `platform-alteration-isredhat-release` | A Debian-based nginx pod that ships no /etc/redhat-release. The release check must fail it and nothing else. |
+| Service mesh batch: meshed workload (compliant) | cluster-scoped | `batches/service-mesh/manifests/golden.yaml` | `platform-alteration-service-mesh-usage` | An istio-system namespace and istiod Deployment make autodiscovery treat the mesh as installed, so the check runs instead of skipping, and a target pod carrying an istio-proxy sidecar passes it. |
+| Service mesh batch: workload without a sidecar (non-compliant) | cluster-scoped | `batches/service-mesh/manifests/violations.yaml` | `platform-alteration-service-mesh-usage` | The same installed mesh, but the target pod has no istio-proxy container. The check must fail that pod and name it. |
 | Operators batch: golden OLM install (compliant) | operator | `batches/operators/golden/manifests/olm-golden.yaml` | 12 | A real OLM install from an in-cluster File-Based Catalog: an opm registry serves the catalog from a ConfigMap, the CatalogSource points at it by address, and OLM installs the bundle inline (CSV, CRD and a pause-image deployment) with no published bundle image. The operator carries a skipRange, a subscription, no clusterPermissions, one owned CRD with a structural schema, and its OperatorGroup targets a tenant namespace. Together these satisfy every check in the batch. operator-crd-openapi-schema has no failing scenario: apiextensions v1 requires structural schemas, so a served CRD without one cannot exist on any cluster. |
 | Operators batch: one violation per object (non-compliant) | operator | `batches/operators/bad-csvs/manifests/bad-csvs.yaml` | 8 | Hand-written CSVs in a namespace with no OperatorGroup, so OLM marks them Failed without running any install strategy and their specs stay as written: one with an SCC clusterPermission, two sharing a base name and an owned CRD, and all without a subscription, skipRange or target namespaces. A CRD with a served version named v0 (valid for the apiserver, invalid for certsuite) covers crd-versioning. Each test must fail only on its own object. operator-semantic-versioning has no failing scenario here: OLM normalizes CSV spec.version through semver, so an invalid version cannot survive on the cluster. |
 | Operators batch: unschedulable hugepages pod (non-compliant) | operator | `batches/operators/hugepages/manifests/hugepages.yaml` | `operator-pods-no-hugepages` | A real OLM install whose operator pod requests hugepages-2Mi. The Kind workers expose no hugepages, so the pod stays Pending while remaining attached to its CSV through the owner chain, and the hugepages check fails on it. The pod is deliberately left broken, so deploy waits for it to be unschedulable rather than running. |
@@ -152,7 +154,7 @@ The 34 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | `networking-dual-stack-service` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `networking-icmpv4-connectivity` | Yes | ICMPv4 connectivity between pods (compliant) (`passed`)<br>ICMPv4 connectivity ignored by the target pod (non-compliant) (`failed`) | Covered |
 | `networking-icmpv4-connectivity-multus` | Yes | — | Not reproducible on the smoke cluster: needs Multus network attachment definitions, which the Kind cluster does not have |
-| `networking-icmpv6-connectivity` | Yes | — | No dedicated scenario |
+| `networking-icmpv6-connectivity` | Yes | — | Not reproducible on the smoke cluster: the Calico CNI hands pods IPv4-only addresses, so no target pod has an IPv6 address on the default network and the check skips before it can report |
 | `networking-icmpv6-connectivity-multus` | No | — | Not reproducible on the smoke cluster: needs Multus network attachment definitions, which the Kind cluster does not have |
 | `networking-network-attachment-definition-sriov-mtu` | No | — | Not reproducible on the smoke cluster: needs SR-IOV network devices, which the Kind cluster does not have |
 | `networking-network-policy-deny-all` | Yes | Default ingress and egress deny policy (compliant) (`passed`)<br>NetworkPolicy missing egress deny (non-compliant) (`failed`) | Covered |
@@ -217,7 +219,7 @@ The 34 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | `platform-alteration-isredhat-release` | Yes | Platform batch: Red Hat base image (compliant) (`passed`)<br>Platform batch: base image that is not Red Hat (non-compliant) (`failed`) | Covered |
 | `platform-alteration-ocp-lifecycle` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
 | `platform-alteration-ocp-node-os-lifecycle` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
-| `platform-alteration-service-mesh-usage` | Yes | — | No dedicated scenario |
+| `platform-alteration-service-mesh-usage` | Yes | Service mesh batch: meshed workload (compliant) (`passed`)<br>Service mesh batch: workload without a sidecar (non-compliant) (`failed`) | Covered |
 | `platform-alteration-sysctl-config` | Yes | — | Not reproducible on the smoke cluster: certsuite skips this check when the cluster is not OpenShift |
 | `platform-alteration-tainted-node-kernel` | Yes | Platform batch: Red Hat base image (compliant) (`passed`) | Covered |
 

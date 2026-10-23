@@ -27,6 +27,10 @@ NOT_OPENSHIFT = "certsuite skips this check when the cluster is not OpenShift"
 NOT_BARE_METAL = "needs bare-metal nodes; the Kind workers are virtual machines"
 NO_SRIOV = "needs SR-IOV network devices, which the Kind cluster does not have"
 NO_MULTUS = "needs Multus network attachment definitions, which the Kind cluster does not have"
+NO_IPV6_DEFAULT_NETWORK = (
+    "the Calico CNI hands pods IPv4-only addresses, so no target pod has an IPv6 "
+    "address on the default network and the check skips before it can report"
+)
 NEEDS_PREFLIGHT = "needs a preflight Docker config to reach the registry, which the smoke run does not provide"
 NEEDS_CERT_DB = "looks the artifact up in the offline Red Hat certification database"
 
@@ -49,6 +53,7 @@ UNCOVERABLE_IDS = {
     "networking-network-attachment-definition-sriov-mtu": NO_SRIOV,
     "networking-restart-on-reboot-sriov-pod": NO_SRIOV,
     "networking-icmpv4-connectivity-multus": NO_MULTUS,
+    "networking-icmpv6-connectivity": NO_IPV6_DEFAULT_NETWORK,
     "networking-icmpv6-connectivity-multus": NO_MULTUS,
     # observability: the check compares the cluster against the next OpenShift
     # release; a Kind cluster has no OpenShift release data to compare.
