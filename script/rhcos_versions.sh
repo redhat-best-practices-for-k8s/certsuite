@@ -2,7 +2,7 @@
 
 set -o errexit -o pipefail
 
-CHANNELS=(4.22 4.21 4.20 4.19 4.18 4.16 4.15 4.14 4.13 4.12 4.11 4.10 4.9 4.8 4.7 4.6 4.5)
+CHANNELS=(5.0 4.22 4.21 4.20 4.19 4.18 4.16 4.15 4.14 4.13 4.12 4.11 4.10 4.9 4.8 4.7 4.6 4.5)
 CHANNEL_TYPES=(stable candidate)
 
 # Keep track of the number of failures we see from the 'oc adm' calls.
@@ -22,7 +22,8 @@ for i in "${CHANNELS[@]}"; do
 	echo "Processing Channel ${i}"
 	echo "----"
 	for j in "${CHANNEL_TYPES[@]}"; do
-		VERSIONS=$(curl -sH 'Accept: application/json' "https://api.openshift.com/api/upgrades_info/v1/graph?channel=${j}-${i}" | jq '.nodes[].version' -r)
+		GRAPH=$(curl -sH 'Accept: application/json' "https://api.openshift.com/api/upgrades_info/v1/graph?channel=${j}-${i}")
+		VERSIONS=$(echo "${GRAPH}" | jq '.nodes[].version' -r)
 
 		echo "Processing channel ${i} ${j} with number of versions: $(echo "${VERSIONS}" | wc -l)"
 		for VERSION in ${VERSIONS}; do
@@ -62,8 +63,12 @@ for i in "${CHANNELS[@]}"; do
 
 			RHCOSVERSION=""
 
+			# Resolve via the release payload pullspec, since older 'oc' clients cannot resolve
+			# version names for newer major releases (e.g. 5.0.0-rc.6).
+			PAYLOAD=$(echo "${GRAPH}" | jq -r --arg v "${VERSION}" '[.nodes[] | select(.version == $v) | .payload][0] // empty')
+
 			while [[ ${NUM_RETRIES} -lt ${RETRY_LIMIT} ]]; do
-				RHCOSVERSION=$(oc adm release info "${VERSION}" -o 'jsonpath={.displayVersions.machine-os.Version}')
+				RHCOSVERSION=$(oc adm release info "${PAYLOAD:-${VERSION}}" -o 'jsonpath={.displayVersions.machine-os.Version}')
 				#shellcheck disable=SC2181
 				if [[ $? -eq 0 ]] && [[ -n ${RHCOSVERSION} ]]; then
 					SUCCESSFUL_API_ATTEMPTS=$((SUCCESSFUL_API_ATTEMPTS + 1))
