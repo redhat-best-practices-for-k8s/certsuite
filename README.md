@@ -3,7 +3,6 @@
 ![build](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/merge.yaml/badge.svg)
 [![QE OCP 4.14 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-414.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-414.yaml)
 [![QE OCP 4.16 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-416.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-416.yaml)
-[![QE OCP 4.18 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-418.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-418.yaml)
 [![QE OCP 4.20 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-420.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-420.yaml)
 [![QE OCP 4.21 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-421.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-421.yaml)
 [![QE OCP 4.22 Testing](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-422.yaml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-422.yaml)
