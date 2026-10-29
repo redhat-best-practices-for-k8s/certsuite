@@ -30,7 +30,7 @@ To add a scenario, see [CONTRIBUTING.md](CONTRIBUTING.md). For the multi-test ba
 
 ## Scenarios
 
-The 38 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
+The 39 entries in `scenarios.json`, in run order. Each entry's lane says what it may run beside: entries in the same lane always run serially, and `--jobs` runs up to that many lanes at once. Only `namespaced` entries are safe to overlap freely; the other lanes touch cluster-wide state.
 
 | Scenario | Lane | Manifest | Tests | What it deploys |
 |---|---|---|---|---|
@@ -47,6 +47,7 @@ The 38 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | Service account token automount disabled (compliant) | namespaced | `access-control/pod-automount-service-account-token/manifests/automount-disabled.yaml` | `access-control-pod-automount-service-account-token` | Deploys a pod with a dedicated service account whose service account token automount is disabled. |
 | Service account token automount enabled (non-compliant) | namespaced | `access-control/pod-automount-service-account-token/manifests/automount-enabled.yaml` | `access-control-pod-automount-service-account-token` | Deploys a pod with a dedicated service account whose service account token automount is enabled. |
 | Namespace with istio prefix (non-compliant) | namespaced | `access-control/namespace/manifests/istio-prefix.yaml` | `access-control-namespace` | Deploys a workload into a namespace whose name starts with the reserved istio- prefix. The check flags the namespace itself, not the workload. |
+| Namespace with a CRD that retires an API version (compliant) | cluster-scoped | `access-control/namespace-crd-versions/manifests/versioned-crd.yaml` | `access-control-namespace` | Deploys a CRD that serves v1 and retires v1beta1 (served: false), plus a CR in the target namespace. access-control-namespace must enumerate the CR without erroring on the unserved version. |
 | Namespace without a ResourceQuota (non-compliant) | namespaced | `access-control/namespace-resource-quota/manifests/no-resource-quota.yaml` | `access-control-namespace-resource-quota` | Deploys a workload into a namespace with no ResourceQuota. The check flags the pod for running in that namespace. |
 | ICMPv4 connectivity between pods (compliant) | namespaced | `networking/icmpv4-connectivity/manifests/icmp-connectivity.yaml` | `networking-icmpv4-connectivity` | Deploys two plain nginx workloads. The check pings the second pod from the first over the default network and must succeed. |
 | ICMPv4 connectivity ignored by the target pod (non-compliant) | namespaced | `networking/icmpv4-connectivity/manifests/icmp-droppers.yaml` | `networking-icmpv4-connectivity` | Deploys two identical workloads that ignore ICMP echo requests: a privileged init container sets net.ipv4.icmp_echo_ignore_all=1 in the shared pod network namespace. The check reports the failed pair and the failed default network. |
@@ -84,7 +85,7 @@ The 38 entries in `scenarios.json`, in run order. Each entry's lane says what it
 | `access-control-dac-override-capability-check` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-dac-read-search-capability-check` | No | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-ipc-lock-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
-| `access-control-namespace` | Yes | Namespace with istio prefix (non-compliant) (`failed`)<br>Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
+| `access-control-namespace` | Yes | Namespace with istio prefix (non-compliant) (`failed`)<br>Namespace with a CRD that retires an API version (compliant) (`passed`)<br>Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
 | `access-control-namespace-resource-quota` | Yes | Namespace without a ResourceQuota (non-compliant) (`failed`)<br>Pod spec batch: golden workloads (compliant) (`passed`) | Covered |
 | `access-control-net-admin-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
 | `access-control-net-raw-capability-check` | Yes | Pod spec batch: golden workloads (compliant) (`passed`)<br>Pod spec batch: one violation per workload (non-compliant) (`failed`) | Covered |
