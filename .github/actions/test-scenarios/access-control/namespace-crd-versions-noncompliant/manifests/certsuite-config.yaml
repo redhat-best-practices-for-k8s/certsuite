@@ -1,0 +1,9 @@
+---
+targetNameSpaces:
+  - name: namespace-crd-noncompliant-ns
+podsUnderTestLabels:
+  - "scenario-namespace-crd-noncompliant: target"
+operatorsUnderTestLabels: []
+targetCrdFilters:
+  - nameSuffix: "scenarioversionedforeigncrds.scenario-smoke.example.com"
+    scalable: false
