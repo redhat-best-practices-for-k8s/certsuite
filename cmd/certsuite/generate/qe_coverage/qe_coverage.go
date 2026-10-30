@@ -6,7 +6,9 @@ import (
 	"strings"
 
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksadapter"
+	"github.com/redhat-best-practices-for-k8s/checks"
+	checksall "github.com/redhat-best-practices-for-k8s/checks/all"
 	"github.com/spf13/cobra"
 )
 
@@ -28,6 +30,18 @@ type TestSuiteQeCoverage struct {
 	NotImplementedTestCases []string
 }
 
+func buildCatalogFromChecks() map[claim.Identifier]claim.TestCaseDescription {
+	checksall.Register()
+
+	catalog := make(map[claim.Identifier]claim.TestCaseDescription)
+	allInfo := checks.All()
+	for i := range allInfo {
+		desc := checksadapter.CheckInfoToTestCaseDescription(&allInfo[i])
+		catalog[desc.Identifier] = desc
+	}
+	return catalog
+}
+
 func NewCommand() *cobra.Command {
 	qeCoverageReportCmd.PersistentFlags().String("suitename", "", "Displays the remaining tests not covered by QE for the specified suite name.")
 
@@ -42,7 +56,7 @@ var (
 		Run: func(cmd *cobra.Command, args []string) {
 			testSuiteName, _ := cmd.Flags().GetString("suitename")
 
-			qeCoverage := GetQeCoverage(identifiers.Catalog)
+			qeCoverage := GetQeCoverage(buildCatalogFromChecks())
 
 			if testSuiteName != "" {
 				_, exists := qeCoverage.CoverageByTestSuite[testSuiteName]
@@ -121,7 +135,7 @@ func GetQeCoverage(catalog map[claim.Identifier]claim.TestCaseDescription) TestC
 }
 
 func showQeCoverageSummaryReport() {
-	qeCoverage := GetQeCoverage(identifiers.Catalog)
+	qeCoverage := GetQeCoverage(buildCatalogFromChecks())
 
 	// Order test suite names so the report is in ascending test suite name order.
 	testSuites := []string{}

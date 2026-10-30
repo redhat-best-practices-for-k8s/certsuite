@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/spf13/cobra"
 
@@ -26,13 +27,13 @@ func newRootCmd() *cobra.Command {
 		Short: rootCmdShort,
 	}
 
-	rootCmd.AddCommand(claim.NewCommand())
-	rootCmd.AddCommand(generate.NewCommand())
-	rootCmd.AddCommand(check.NewCommand())
-	rootCmd.AddCommand(run.NewCommand())
-	rootCmd.AddCommand(info.NewCommand())
-	rootCmd.AddCommand(version.NewCommand())
-	rootCmd.AddCommand(upload.NewCommand())
+	cli.AddCommand(&rootCmd, claim.NewCommand())
+	cli.AddCommand(&rootCmd, generate.NewCommand())
+	cli.AddCommand(&rootCmd, check.NewCommand())
+	cli.AddCommand(&rootCmd, run.NewCommand())
+	cli.AddCommand(&rootCmd, info.NewCommand())
+	cli.AddCommand(&rootCmd, version.NewCommand())
+	cli.AddCommand(&rootCmd, upload.NewCommand())
 
 	return &rootCmd
 }

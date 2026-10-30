@@ -8,8 +8,9 @@ import (
 	"github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/certsuite"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksadapter"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/checks"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
 )
@@ -137,11 +138,8 @@ func getMatchingTestIDs(labelExpr string) ([]string, error) {
 func getTestDescriptionsFromTestIDs(testIDs []string) []claim.TestCaseDescription {
 	var testCases []claim.TestCaseDescription
 	for _, test := range testIDs {
-		for id := range identifiers.Catalog {
-			if id.Id == test {
-				testCases = append(testCases, identifiers.Catalog[id])
-				break
-			}
+		if info, ok := checks.ByName(test); ok {
+			testCases = append(testCases, checksadapter.CheckInfoToTestCaseDescription(&info))
 		}
 	}
 	return testCases
