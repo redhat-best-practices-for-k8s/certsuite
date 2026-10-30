@@ -579,6 +579,7 @@ func testNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
 	invalidCrs, err := namespace.TestCrsNamespaces(env.Crds, env.Namespaces, check.GetLogger())
 	if err != nil {
 		check.LogError("Error while testing CRs namespaces, err=%v", err)
+		check.SetResultError(checksdb.ErrorTypeCheckError, fmt.Sprintf("could not list custom resources: %v", err))
 		return
 	}
 

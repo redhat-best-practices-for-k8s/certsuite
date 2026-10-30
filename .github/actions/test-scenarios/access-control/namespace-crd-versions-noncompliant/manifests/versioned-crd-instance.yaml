@@ -1,0 +1,7 @@
+---
+apiVersion: scenario-smoke.example.com/v1
+kind: ScenarioVersionedForeignCrd
+metadata:
+  name: foreign-versioned-crd
+  namespace: default
+spec: {}

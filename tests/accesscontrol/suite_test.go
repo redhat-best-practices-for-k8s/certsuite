@@ -17,18 +17,57 @@
 package accesscontrol
 
 import (
+	"errors"
 	"io"
 	"testing"
 
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-best-practices-for-k8s/certsuite/internal/clientsholder"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksdb"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/provider"
 	"github.com/stretchr/testify/assert"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	dynamicfake "k8s.io/client-go/dynamic/fake"
+	k8stesting "k8s.io/client-go/testing"
 )
+
+const (
+	testCRDGroup   = "example.com"
+	testCRDPlural  = "widgets"
+	testCRDVersion = "v1"
+)
+
+func newWidgetCRD() (*apiextv1.CustomResourceDefinition, schema.GroupVersionResource) {
+	gvr := schema.GroupVersionResource{Group: testCRDGroup, Version: testCRDVersion, Resource: testCRDPlural}
+	crd := &apiextv1.CustomResourceDefinition{
+		ObjectMeta: metav1.ObjectMeta{Name: testCRDPlural + "." + testCRDGroup},
+		Spec: apiextv1.CustomResourceDefinitionSpec{
+			Group: testCRDGroup,
+			Names: apiextv1.CustomResourceDefinitionNames{Plural: testCRDPlural, Kind: "Widget", ListKind: "WidgetList"},
+			Versions: []apiextv1.CustomResourceDefinitionVersion{
+				{Name: testCRDVersion, Served: true, Storage: true},
+			},
+		},
+	}
+	return crd, gvr
+}
+
+func useFakeDynamicClient(t *testing.T, client *dynamicfake.FakeDynamicClient) {
+	t.Helper()
+	clientsholder.SetTestK8sDynamicClientsHolder(client)
+	t.Cleanup(func() {
+		clientsholder.SetTestK8sDynamicClientsHolder(nil)
+		clientsholder.ClearTestClientsHolder()
+	})
+}
 
 func Test_isContainerCapabilitySet(t *testing.T) {
 	type args struct {
@@ -735,6 +774,81 @@ func Test_checkCrossNamespaceRoleBindingViolation(t *testing.T) {
 			} else {
 				assert.Nil(t, result)
 			}
+		})
+	}
+}
+
+// TestTestNamespaceCRListErrorIsNotPass verifies that a failed CR enumeration is
+// reported as an error. NewCheck defaults Result to passed, so an early return
+// without SetResultError used to record this mandatory check as compliant.
+func TestTestNamespaceCRListErrorIsNotPass(t *testing.T) {
+	log.SetupLogger(io.Discard, "INFO")
+
+	crd, gvr := newWidgetCRD()
+	client := dynamicfake.NewSimpleDynamicClientWithCustomListKinds(runtime.NewScheme(),
+		map[schema.GroupVersionResource]string{gvr: "WidgetList"})
+	client.PrependReactor("list", gvr.Resource, func(k8stesting.Action) (bool, runtime.Object, error) {
+		return true, nil, apierrors.NewForbidden(gvr.GroupResource(), "", errors.New("rbac denied"))
+	})
+	useFakeDynamicClient(t, client)
+
+	check := checksdb.NewCheck("test-check", nil)
+	env := &provider.TestEnvironment{
+		Namespaces: []string{"ns1"},
+		Crds:       []*apiextv1.CustomResourceDefinition{crd},
+	}
+
+	testNamespace(check, env)
+
+	assert.Equal(t, checksdb.CheckResultError, check.Result.String())
+	assert.Contains(t, check.GetLogs(), "rbac denied")
+}
+
+// TestTestNamespaceCRsOutsideConfiguredNamespaces covers the normal completion
+// path: a CR in a configured namespace passes, and one outside it fails.
+func TestTestNamespaceCRsOutsideConfiguredNamespaces(t *testing.T) {
+	log.SetupLogger(io.Discard, "INFO")
+
+	crd, gvr := newWidgetCRD()
+
+	tests := []struct {
+		name       string
+		crNS       string
+		wantResult string
+	}{
+		{name: "CR in configured namespace", crNS: "ns1", wantResult: checksdb.CheckResultPassed},
+		{name: "CR outside configured namespaces", crNS: "foreign-ns", wantResult: checksdb.CheckResultFailed},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			client := dynamicfake.NewSimpleDynamicClientWithCustomListKinds(runtime.NewScheme(),
+				map[schema.GroupVersionResource]string{gvr: "WidgetList"})
+			client.PrependReactor("list", gvr.Resource, func(k8stesting.Action) (bool, runtime.Object, error) {
+				return true, &unstructured.UnstructuredList{
+					Object: map[string]interface{}{"apiVersion": testCRDGroup + "/" + testCRDVersion, "kind": "WidgetList"},
+					Items: []unstructured.Unstructured{{
+						Object: map[string]interface{}{
+							"apiVersion": testCRDGroup + "/" + testCRDVersion,
+							"kind":       "Widget",
+							"metadata": map[string]interface{}{
+								"name":      "widget-1",
+								"namespace": tt.crNS,
+							},
+						},
+					}},
+				}, nil
+			})
+			useFakeDynamicClient(t, client)
+
+			check := checksdb.NewCheck("test-check", nil)
+			env := &provider.TestEnvironment{
+				Namespaces: []string{"ns1"},
+				Crds:       []*apiextv1.CustomResourceDefinition{crd},
+			}
+
+			testNamespace(check, env)
+
+			assert.Equal(t, tt.wantResult, check.Result.String())
 		})
 	}
 }

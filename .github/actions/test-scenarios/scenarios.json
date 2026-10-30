@@ -187,6 +187,29 @@
     "output_dir": "istio-prefix-results"
   },
   {
+    "name": "Namespace with a CRD that retires an API version (compliant)",
+    "description": "Deploys a CRD that serves v1 and retires v1beta1 (served: false), plus a CR in the target namespace. access-control-namespace must enumerate the CR without erroring on the unserved version.",
+    "label_filter": "access-control-namespace",
+    "path": "access-control/namespace-crd-versions",
+    "manifest": "versioned-crd.yaml",
+    "expected_result": "passed",
+    "min_compliant": 1,
+    "lane": "cluster-scoped",
+    "output_dir": "namespace-crd-versions-results"
+  },
+  {
+    "name": "Namespace with a CRD that retires a version and a CR outside the namespace (non-compliant)",
+    "description": "Deploys a CRD that serves v1 and retires v1beta1, plus a CR in the default namespace. access-control-namespace must still report the CR outside the configured namespaces while ignoring the unserved version.",
+    "label_filter": "access-control-namespace",
+    "path": "access-control/namespace-crd-versions-noncompliant",
+    "manifest": "versioned-crd.yaml",
+    "expected_result": "failed",
+    "min_noncompliant": 1,
+    "noncompliant_contains": "CRs are not in the configured namespaces",
+    "lane": "cluster-scoped",
+    "output_dir": "namespace-crd-versions-noncompliant-results"
+  },
+  {
     "name": "Namespace without a ResourceQuota (non-compliant)",
     "description": "Deploys a workload into a namespace with no ResourceQuota. The check flags the pod for running in that namespace.",
     "label_filter": "access-control-namespace-resource-quota",

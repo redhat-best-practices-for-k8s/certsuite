@@ -62,6 +62,12 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces map[string][]string, err error) {
 	oc := clientsholder.GetClientsHolder()
 	for _, version := range aCrd.Spec.Versions {
+		// A version with Served=false has no API endpoint, so listing it returns
+		// NotFound and would abort the enumeration for every CRD.
+		if !version.Served {
+			log.Debug("Skipping unserved version %q of CRD %q", version.Name, aCrd.Name)
+			continue
+		}
 		gvr := schema.GroupVersionResource{
 			Group:    aCrd.Spec.Group,
 			Version:  version.Name,

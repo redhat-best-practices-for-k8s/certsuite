@@ -1,0 +1,6 @@
+---
+apiVersion: scenario-smoke.example.com/v1
+kind: ScenarioVersionedCrd
+metadata:
+  name: versioned-crd-instance
+spec: {}
