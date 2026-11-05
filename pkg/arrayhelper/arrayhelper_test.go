@@ -112,3 +112,11 @@ func TestUnique(t *testing.T) {
 		assert.Equal(t, tc.expectedSlice, results)
 	}
 }
+
+func TestDerefSlice(t *testing.T) {
+	t.Parallel()
+
+	a, b := 1, 2
+	result := DerefSlice([]*int{&a, nil, &b})
+	assert.Equal(t, []int{1, 2}, result)
+}

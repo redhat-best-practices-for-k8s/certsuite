@@ -12,7 +12,9 @@ import (
 
 	claimschema "github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
-	"github.com/redhat-best-practices-for-k8s/certsuite/tests/identifiers"
+	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/checksadapter"
+	"github.com/redhat-best-practices-for-k8s/checks"
+	checksall "github.com/redhat-best-practices-for-k8s/checks/all"
 	"github.com/spf13/cobra"
 )
 
@@ -53,7 +55,7 @@ func NewCommand() *cobra.Command {
 
 	err := CSVDumpCommand.MarkFlagRequired("claim-file")
 	if err != nil {
-		log.Fatalf("Failed to mark claim file path as required parameter: %v", err)
+		fmt.Fprintf(os.Stderr, "Failed to mark claim file path as required parameter: %v", err)
 		return nil
 	}
 
@@ -63,7 +65,7 @@ func NewCommand() *cobra.Command {
 
 	err = CSVDumpCommand.MarkFlagRequired("cnf-name")
 	if err != nil {
-		log.Fatalf("Failed to mark CNF name as required parameter: %v", err)
+		fmt.Fprintf(os.Stderr, "Failed to mark CNF name as required parameter: %v", err)
 		return nil
 	}
 
@@ -73,7 +75,7 @@ func NewCommand() *cobra.Command {
 
 	err = CSVDumpCommand.MarkFlagRequired("cnf-type")
 	if err != nil {
-		log.Fatalf("Failed to mark CNF type JSON path as required parameter: %v", err)
+		fmt.Fprintf(os.Stderr, "Failed to mark CNF type JSON path as required parameter: %v", err)
 		return nil
 	}
 
@@ -132,7 +134,7 @@ func dumpCsv(_ *cobra.Command, _ []string) error {
 // adds remediation, mandatory/optional, CNFType to the claim data
 func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]claimschema.TestCaseDescription) (resultsCSVRecords [][]string) {
 	if cnfType == "" {
-		cnfType = identifiers.NonTelco
+		cnfType = checks.NonTelco
 	}
 
 	// add header if flag is present (defaults to no header)
@@ -214,10 +216,12 @@ func loadCNFTypeMap(path string) (CNFTypeMap map[string]string, err error) { //n
 
 // builds a catalog map indexed by test case ID
 func buildCatalogByID() (catalogMap map[string]claimschema.TestCaseDescription) {
-	catalogMap = make(map[string]claimschema.TestCaseDescription)
+	checksall.Register()
 
-	for index := range identifiers.Catalog {
-		catalogMap[index.Id] = identifiers.Catalog[index]
+	catalogMap = make(map[string]claimschema.TestCaseDescription)
+	allInfo := checks.All()
+	for i := range allInfo {
+		catalogMap[allInfo[i].Name] = checksadapter.CheckInfoToTestCaseDescription(&allInfo[i])
 	}
 	return catalogMap
 }

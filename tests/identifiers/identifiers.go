@@ -27,41 +27,51 @@ const (
 	TagExtended  = "extended"
 	TagTelco     = "telco"
 	TagFarEdge   = "faredge"
-	FarEdge      = "FarEdge"
-	Telco        = "Telco"
-	NonTelco     = "NonTelco"
-	Extended     = "Extended"
-	Optional     = "Optional"
-	Mandatory    = "Mandatory"
 	TagPreflight = "preflight"
+
+	FarEdge  = "FarEdge"
+	Telco    = "Telco"
+	NonTelco = "NonTelco"
+	Extended = "Extended"
+
+	Optional  = "Optional"
+	Mandatory = "Mandatory"
+
+	NoDocumentedProcess = `There is no documented exception process for this.`
+	NoDocLink           = "No Doc Link"
 )
 
-const (
-	NotApplicableSNO = ` Not applicable to SNO applications.`
-)
+type CatalogEntry struct {
+	ID                     string
+	Suite                  string
+	Description            string
+	Remediation            string
+	Exception              string
+	Reference              string
+	QE                     bool
+	CategoryClassification map[string]string
+	Tags                   []string
+}
 
-func AddCatalogEntry(testID, suiteName, description, remediation, exception, reference string, qe bool, categoryclassification map[string]string, tags ...string) (aID claim.Identifier) {
-	if strings.TrimSpace(exception) == "" {
-		exception = NoDocumentedProcess
+func AddCatalogEntry(entry *CatalogEntry) (aID claim.Identifier) {
+	if strings.TrimSpace(entry.Exception) == "" {
+		entry.Exception = NoDocumentedProcess
 	}
-	if strings.TrimSpace(reference) == "" {
-		reference = "No Reference Document Specified"
+	if strings.TrimSpace(entry.Reference) == "" {
+		entry.Reference = "No Reference Document Specified"
 	}
-	if len(tags) == 0 {
-		tags = append(tags, TagCommon)
+	if len(entry.Tags) == 0 {
+		entry.Tags = append(entry.Tags, TagCommon)
 	}
 
-	tcDescription, aID := claim.BuildTestCaseDescription(testID, suiteName, description, remediation, exception, reference, qe, categoryclassification, tags...)
+	tcDescription, aID := claim.BuildTestCaseDescription(entry.ID, entry.Suite, entry.Description, entry.Remediation, entry.Exception, entry.Reference, entry.QE, entry.CategoryClassification, entry.Tags...)
 	Catalog[aID] = tcDescription
-	Classification[aID.Id] = categoryclassification
 
 	return aID
 }
 
-var (
-	TestIDToClaimID = map[string]claim.Identifier{}
-)
-
+// GetTestIDAndLabels transforms a claim.Identifier into a test ID and label set.
+// Used by preflight tests which register dynamically at runtime.
 func GetTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
 	tags = strings.Split(identifier.Tags, ",")
 	tags = append(tags, identifier.Id, identifier.Suite)
@@ -69,5 +79,7 @@ func GetTestIDAndLabels(identifier claim.Identifier) (testID string, tags []stri
 	return identifier.Id, tags
 }
 
-var Catalog = map[claim.Identifier]claim.TestCaseDescription{}
-var Classification = map[string]map[string]string{}
+var (
+	TestIDToClaimID = map[string]claim.Identifier{}
+	Catalog         = map[claim.Identifier]claim.TestCaseDescription{}
+)

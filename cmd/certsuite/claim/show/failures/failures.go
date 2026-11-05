@@ -110,7 +110,7 @@ func NewCommand() *cobra.Command {
 
 	err := showFailuresCommand.MarkFlagRequired("claim")
 	if err != nil {
-		log.Fatalf("Failed to mark claim file path as required parameter: %v", err)
+		fmt.Fprintf(os.Stderr, "Failed to mark claim file path as required parameter: %v", err)
 		return nil
 	}
 

@@ -45,13 +45,13 @@ func NewCommand() *cobra.Command {
 
 	err := uploadResultSpreadSheetCmd.MarkFlagRequired("results-file")
 	if err != nil {
-		log.Fatalf("Failed to mark results file path as required parameter: %v", err)
+		fmt.Fprintf(os.Stderr, "Failed to mark results file path as required parameter: %v", err)
 		return nil
 	}
 
 	err = uploadResultSpreadSheetCmd.MarkFlagRequired("dest-url")
 	if err != nil {
-		log.Fatalf("Failed to mark dest url path as required parameter: %v", err)
+		fmt.Fprintf(os.Stderr, "Failed to mark dest url path as required parameter: %v", err)
 		return nil
 	}
 

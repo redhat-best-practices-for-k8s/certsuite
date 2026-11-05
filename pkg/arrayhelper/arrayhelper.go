@@ -61,3 +61,14 @@ func Unique(slice []string) []string {
 	}
 	return uniqSlice
 }
+
+// DerefSlice converts a slice of pointers to a slice of values, skipping nil entries.
+func DerefSlice[T any](ptrs []*T) []T {
+	result := make([]T, 0, len(ptrs))
+	for _, p := range ptrs {
+		if p != nil {
+			result = append(result, *p)
+		}
+	}
+	return result
+}

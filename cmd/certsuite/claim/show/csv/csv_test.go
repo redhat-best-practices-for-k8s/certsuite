@@ -1,13 +1,20 @@
 package csv
 
 import (
+	"os"
 	"testing"
 
 	claimschema "github.com/redhat-best-practices-for-k8s/certsuite-claim/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
+	checksall "github.com/redhat-best-practices-for-k8s/checks/all"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestMain(m *testing.M) {
+	checksall.Register()
+	os.Exit(m.Run())
+}
 
 func TestBuildCatalogByID(t *testing.T) {
 	catalogMap := buildCatalogByID()

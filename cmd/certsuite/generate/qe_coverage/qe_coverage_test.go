@@ -167,3 +167,15 @@ func TestQeCoverage(t *testing.T) {
 		}
 	}
 }
+
+func TestBuildCatalogFromChecks(t *testing.T) {
+	t.Parallel()
+
+	catalog := buildCatalogFromChecks()
+	assert.NotEmpty(t, catalog)
+
+	for id, desc := range catalog {
+		assert.Equal(t, id.Id, desc.Identifier.Id)
+		assert.NotEmpty(t, desc.Identifier.Suite)
+	}
+}

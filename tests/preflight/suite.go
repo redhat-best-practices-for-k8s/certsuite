@@ -133,12 +133,20 @@ func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, te
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
-	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, remediation, "", "", false, map[string]string{
-		identifiers.FarEdge:  identifiers.Optional,
-		identifiers.Telco:    identifiers.Optional,
-		identifiers.NonTelco: identifiers.Optional,
-		identifiers.Extended: identifiers.Optional,
-	}, identifiers.TagPreflight)
+	aID := identifiers.AddCatalogEntry(&identifiers.CatalogEntry{
+		ID:          testName,
+		Suite:       common.PreflightTestKey,
+		Description: description,
+		Remediation: remediation,
+		QE:          false,
+		CategoryClassification: map[string]string{
+			identifiers.FarEdge:  identifiers.Optional,
+			identifiers.Telco:    identifiers.Optional,
+			identifiers.NonTelco: identifiers.Optional,
+			identifiers.Extended: identifiers.Optional,
+		},
+		Tags: []string{identifiers.TagPreflight},
+	})
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(aID)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
@@ -176,12 +184,20 @@ func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, tes
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
-	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, remediation, "", "", false, map[string]string{
-		identifiers.FarEdge:  identifiers.Optional,
-		identifiers.Telco:    identifiers.Optional,
-		identifiers.NonTelco: identifiers.Optional,
-		identifiers.Extended: identifiers.Optional,
-	}, identifiers.TagPreflight)
+	aID := identifiers.AddCatalogEntry(&identifiers.CatalogEntry{
+		ID:          testName,
+		Suite:       common.PreflightTestKey,
+		Description: description,
+		Remediation: remediation,
+		QE:          false,
+		CategoryClassification: map[string]string{
+			identifiers.FarEdge:  identifiers.Optional,
+			identifiers.Telco:    identifiers.Optional,
+			identifiers.NonTelco: identifiers.Optional,
+			identifiers.Extended: identifiers.Optional,
+		},
+		Tags: []string{identifiers.TagPreflight},
+	})
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(aID)).
 		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
