@@ -13,12 +13,26 @@ const (
 	supportedClaimFormatVersion = "v0.5.0"
 )
 
+// Test case outcomes. These are the single definition of the values stored in
+// a claim's result State and rendered into JUnit reports; every producer
+// (checksdb) and consumer (claim show/compare, claimhelper) must reference
+// these constants instead of repeating the literals.
 const (
 	TestCaseResultPassed  = "passed"
 	TestCaseResultSkipped = "skipped"
 	TestCaseResultFailed  = "failed"
 	TestCaseResultError   = "error"
+	TestCaseResultAborted = "aborted"
 )
+
+// IsFailureState reports whether a test case outcome counts as a failure for
+// exit codes, failure listings and result filters.
+//
+// Aborted is deliberately not a failure: the check was interrupted before it
+// could prove non-compliance.
+func IsFailureState(state string) bool {
+	return state == TestCaseResultFailed || state == TestCaseResultError
+}
 
 type TestCaseRawResult struct {
 	Name   string `json:"-name"`
