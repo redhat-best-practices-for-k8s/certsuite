@@ -88,6 +88,67 @@ func TestParseOutputFormatFlag(t *testing.T) {
 	}
 }
 
+func TestGetFailedTestCasesByTestSuiteByState(t *testing.T) {
+	newResult := func(id, state string) *claim.TestCaseResult {
+		result := &claim.TestCaseResult{State: state}
+		result.TestID.ID = id
+		result.TestID.Suite = "suite1"
+
+		return result
+	}
+
+	testCases := []struct {
+		name           string
+		results        map[string][]*claim.TestCaseResult
+		targetSuites   map[string]bool
+		expectedSuites []FailedTestSuite
+	}{
+		{
+			name: "keeps failed and error, drops passed, skipped and aborted",
+			results: map[string][]*claim.TestCaseResult{
+				"suite1": {
+					newResult("fail-1", claim.TestCaseResultFailed),
+					newResult("error-1", claim.TestCaseResultError),
+					newResult("pass-1", claim.TestCaseResultPassed),
+					newResult("skip-1", claim.TestCaseResultSkipped),
+					newResult("abort-1", claim.TestCaseResultAborted),
+				},
+			},
+			expectedSuites: []FailedTestSuite{
+				{
+					TestSuiteName: "suite1",
+					FailingTestCases: []FailedTestCase{
+						{TestCaseName: "fail-1"},
+						{TestCaseName: "error-1"},
+					},
+				},
+			},
+		},
+		{
+			name: "drops suites with no failing test cases",
+			results: map[string][]*claim.TestCaseResult{
+				"suite1": {newResult("pass-1", claim.TestCaseResultPassed)},
+			},
+			expectedSuites: []FailedTestSuite{},
+		},
+		{
+			name: "honors the target test suites filter",
+			results: map[string][]*claim.TestCaseResult{
+				"suite1": {newResult("fail-1", claim.TestCaseResultFailed)},
+			},
+			targetSuites:   map[string]bool{"other-suite": true},
+			expectedSuites: []FailedTestSuite{},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			testSuites := getFailedTestCasesByTestSuite(tc.results, tc.targetSuites)
+			assert.Equal(t, tc.expectedSuites, testSuites)
+		})
+	}
+}
+
 func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 	testCases := []struct {
 		checkDetails                string

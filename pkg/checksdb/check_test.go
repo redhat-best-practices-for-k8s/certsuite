@@ -15,6 +15,27 @@ func TestString(t *testing.T) {
 	assert.Equal(t, "passed", cr.String())
 }
 
+func TestIsFailure(t *testing.T) {
+	testCases := []struct {
+		result   CheckResult
+		expected bool
+	}{
+		{result: CheckResultPassed, expected: false},
+		{result: CheckResultSkipped, expected: false},
+		{result: CheckResultFailed, expected: true},
+		{result: CheckResultError, expected: true},
+		// Aborted is not a failure: the check never proved non-compliance.
+		{result: CheckResultAborted, expected: false},
+		{result: CheckResult(""), expected: false},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.result.String(), func(t *testing.T) {
+			assert.Equal(t, tc.expected, tc.result.IsFailure())
+		})
+	}
+}
+
 func TestNewCheck(t *testing.T) {
 	check := NewCheck("myID", []string{"label1", "label2"})
 
