@@ -35,12 +35,13 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 	oc := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
-		if isOperatorPhaseSucceeded(csv) {
-			log.Debug("%s is ready", provider.CsvToString(csv))
-			return true
-		} else if isOperatorPhaseFailedOrUnknown(csv) {
-			log.Debug("%s failed to be ready, status=%s", provider.CsvToString(csv), csv.Status.Phase)
-			return false
+		if done, ready := csvTerminal(csv); done {
+			if ready {
+				log.Debug("%s is ready", provider.CsvToString(csv))
+			} else {
+				log.Debug("%s failed to be ready, status=%s", provider.CsvToString(csv), csv.Status.Phase)
+			}
+			return ready
 		}
 
 		// Operator is not ready, but we need to take into account that its pods
@@ -51,18 +52,30 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 
 		freshCsv, err := oc.OlmClient.OperatorsV1alpha1().ClusterServiceVersions(csv.Namespace).Get(context.TODO(), csv.Name, metav1.GetOptions{})
 		if err != nil {
-			log.Error("could not get csv %s, err: %v", provider.CsvToString(freshCsv), err)
+			log.Error("could not get csv %s, err: %v", provider.CsvToString(csv), err)
 			return false
 		}
 
 		// update old csv and check status again
 		*csv = *freshCsv
 	}
-	if time.Since(start) > timeout {
-		log.Error("timeout waiting for csv %s to be ready", provider.CsvToString(csv))
+
+	log.Error("timeout waiting for csv %s to be ready", provider.CsvToString(csv))
+	return false
+}
+
+// csvTerminal reports whether the CSV reached a final phase and, if so, whether
+// it succeeded. Succeeded is the success state; Failed and Unknown are terminal
+// failures. Every other phase is still in progress.
+func csvTerminal(csv *v1alpha1.ClusterServiceVersion) (done, ready bool) {
+	switch {
+	case isOperatorPhaseSucceeded(csv):
+		return true, true
+	case isOperatorPhaseFailedOrUnknown(csv):
+		return true, false
 	}
 
-	return false
+	return false, false
 }
 
 func isOperatorPhaseSucceeded(csv *v1alpha1.ClusterServiceVersion) bool {
