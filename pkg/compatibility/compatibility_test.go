@@ -83,6 +83,11 @@ func TestDetermineOCPStatus(t *testing.T) {
 			testVersion:    "4.10.12",
 			expectedOutput: OCPStatusGA, // 4.8 enters maintenance on 1/27/2022
 		},
+		{ // Test Case #12 - 5.0 major version is recognized and GA
+			testDate:       time.Date(2026, 11, 11, 0, 0, 0, 0, time.UTC),
+			testVersion:    "5.0.1",
+			expectedOutput: OCPStatusGA,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -243,6 +248,21 @@ func TestIsRHCOSCompatible(t *testing.T) {
 			testOCPVersion:     "4.21.0",
 			testMachineVersion: "4.21.2",
 			expectedOutput:     true,
+		},
+		{ // Test Case #14 - OCP 5.0.1 accepts RHCOS version 5.0.1, pass
+			testOCPVersion:     "5.0.1",
+			testMachineVersion: "5.0.1",
+			expectedOutput:     true,
+		},
+		{ // Test Case #15 - OCP 5.0.0 accepts RHCOS version 5.0.1, pass
+			testOCPVersion:     "5.0.0",
+			testMachineVersion: "5.0.1",
+			expectedOutput:     true,
+		},
+		{ // Test Case #16 - OCP 5.0.1 does not accept RHCOS version 4.22.22, fail
+			testOCPVersion:     "5.0.1",
+			testMachineVersion: "4.22.22",
+			expectedOutput:     false,
 		},
 	}
 
