@@ -2,7 +2,8 @@
 
 A scenario deploys a known-good or known-bad workload into an isolated
 namespace, runs the certsuite against it, and asserts what the claim says. This
-is how a catalog test earns a "Covered" row in [README.md](README.md).
+is how a catalog test earns a row in its suite's Covered table in
+[README.md](README.md).
 
 `run-scenarios.sh` drives everything from `scenarios.json`. The pre-main
 workflow runs it once per architecture after the partner cluster is up
@@ -65,6 +66,11 @@ test-scenarios/
    ```
 
    `make check-scenario-readme`, part of `make lint`, fails if it is stale.
+
+   The generator assigns each entry a positional `S#` ID in `scenarios.json`
+   order (in the Scenarios table) and links each suite's Covered table to it
+   with `S17`. Inserting or reordering an entry renumbers every later ID, so do
+   not hard-code `S#` numbers in prose.
 
 ### Entry fields
 
