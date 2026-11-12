@@ -47,10 +47,11 @@ const (
 
 	unitTestEnvTrue = "true"
 
-	// States for test cases
-	TestStateFailed  = "failed"
-	TestStateSkipped = "skipped"
-	TestStateError   = "error"
+	// States for test cases. They come from checksdb, which in turn takes them
+	// from the claim package, so producer and consumers share one definition.
+	TestStateFailed  = checksdb.CheckResultFailed
+	TestStateSkipped = checksdb.CheckResultSkipped
+	TestStateError   = checksdb.CheckResultError
 )
 
 type SkippedMessage struct {
@@ -185,29 +186,14 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 	// <testsuites>
 	xmlOutput.Tests = strconv.Itoa(len(c.Results))
 
-	// Count all of the failed tests in the suite
-	failedTests := 0
+	// Count the test cases by outcome in a single pass.
+	countsByState := map[string]int{}
 	for testID := range c.Results {
-		if c.Results[testID].State == TestStateFailed {
-			failedTests++
-		}
+		countsByState[c.Results[testID].State]++
 	}
-
-	// Count all of the skipped tests in the suite
-	skippedTests := 0
-	for testID := range c.Results {
-		if c.Results[testID].State == TestStateSkipped {
-			skippedTests++
-		}
-	}
-
-	// Count all of the errored tests in the suite
-	erroredTests := 0
-	for testID := range c.Results {
-		if c.Results[testID].State == TestStateError {
-			erroredTests++
-		}
-	}
+	failedTests := countsByState[TestStateFailed]
+	skippedTests := countsByState[TestStateSkipped]
+	erroredTests := countsByState[TestStateError]
 
 	xmlOutput.Failures = strconv.Itoa(failedTests)
 	xmlOutput.Disabled = strconv.Itoa(skippedTests)

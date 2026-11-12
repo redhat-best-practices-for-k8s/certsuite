@@ -194,7 +194,7 @@ func printFailedChecksLog() {
 	}
 	for _, group := range dbByGroup {
 		for _, check := range group.checks {
-			if check.Result != CheckResultFailed && check.Result != CheckResultError {
+			if !check.Result.IsFailure() {
 				continue
 			}
 			logHeader := fmt.Sprintf("| "+cli.Cyan+"LOG (%s)"+cli.Reset+" |", check.ID)
@@ -260,10 +260,10 @@ func GetTotalTests() int {
 	return len(resultsDB)
 }
 
-func GetTestsCountByState(state string) int {
+func GetTestsCountByState(state CheckResult) int {
 	count := 0
 	for r := range resultsDB {
-		if resultsDB[r].State == state {
+		if CheckResult(resultsDB[r].State) == state {
 			count++
 		}
 	}

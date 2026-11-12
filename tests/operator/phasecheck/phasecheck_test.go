@@ -234,3 +234,41 @@ func Test_isOperatorFailedOrUnknown(t *testing.T) {
 		})
 	}
 }
+
+func Test_csvTerminal(t *testing.T) {
+	tests := []struct {
+		name      string
+		phase     v1alpha1.ClusterServiceVersionPhase
+		wantDone  bool
+		wantReady bool
+	}{
+		{name: "succeeded is terminal and ready", phase: v1alpha1.CSVPhaseSucceeded, wantDone: true, wantReady: true},
+		{name: "failed is terminal and not ready", phase: v1alpha1.CSVPhaseFailed, wantDone: true, wantReady: false},
+		{name: "unknown is terminal and not ready", phase: v1alpha1.CSVPhaseUnknown, wantDone: true, wantReady: false},
+		{name: "install ready is not terminal", phase: v1alpha1.CSVPhaseInstallReady, wantDone: false, wantReady: false},
+		{name: "deleting is not terminal", phase: v1alpha1.CSVPhaseDeleting, wantDone: false, wantReady: false},
+		{name: "none is not terminal", phase: v1alpha1.CSVPhaseNone, wantDone: false, wantReady: false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			csv := &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: tt.phase,
+				},
+			}
+
+			gotDone, gotReady := csvTerminal(csv)
+			if gotDone != tt.wantDone {
+				t.Errorf("csvTerminal() done = %v, want %v", gotDone, tt.wantDone)
+			}
+			if gotReady != tt.wantReady {
+				t.Errorf("csvTerminal() ready = %v, want %v", gotReady, tt.wantReady)
+			}
+		})
+	}
+}

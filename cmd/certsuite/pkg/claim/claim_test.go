@@ -120,3 +120,25 @@ func TestIsClaimFormatVersionSupported(t *testing.T) {
 		}
 	}
 }
+
+func TestIsFailureState(t *testing.T) {
+	testCases := []struct {
+		state    string
+		expected bool
+	}{
+		{state: TestCaseResultPassed, expected: false},
+		{state: TestCaseResultSkipped, expected: false},
+		{state: TestCaseResultFailed, expected: true},
+		{state: TestCaseResultError, expected: true},
+		// Aborted is not a failure: the check never proved non-compliance.
+		{state: TestCaseResultAborted, expected: false},
+		{state: "", expected: false},
+		{state: "not-a-state", expected: false},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.state, func(t *testing.T) {
+			assert.Equal(t, tc.expected, IsFailureState(tc.state))
+		})
+	}
+}

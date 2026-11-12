@@ -7,17 +7,22 @@ import (
 	"sync"
 	"time"
 
+	// Aliased: this package also uses the certsuite-claim schema package, whose
+	// name is "claim" too (see checksdb.go).
+	certclaim "github.com/redhat-best-practices-for-k8s/certsuite/cmd/certsuite/pkg/claim"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/cli"
 	"github.com/redhat-best-practices-for-k8s/certsuite/internal/log"
 	"github.com/redhat-best-practices-for-k8s/certsuite/pkg/testhelper"
 )
 
+// Check results. The values are owned by the claim package so that the
+// producer and every consumer share one definition.
 const (
-	CheckResultPassed  = "passed"
-	CheckResultSkipped = "skipped"
-	CheckResultFailed  = "failed"
-	CheckResultError   = "error"
-	CheckResultAborted = "aborted"
+	CheckResultPassed  = certclaim.TestCaseResultPassed
+	CheckResultSkipped = certclaim.TestCaseResultSkipped
+	CheckResultFailed  = certclaim.TestCaseResultFailed
+	CheckResultError   = certclaim.TestCaseResultError
+	CheckResultAborted = certclaim.TestCaseResultAborted
 )
 
 // ErrorType identifies the source of a check error in claims and JUnit output.
@@ -43,6 +48,12 @@ type CheckResult string
 
 func (cr CheckResult) String() string {
 	return string(cr)
+}
+
+// IsFailure reports whether the result counts as a failure for exit codes,
+// failure logs and result filters.
+func (cr CheckResult) IsFailure() bool {
+	return certclaim.IsFailureState(cr.String())
 }
 
 type Check struct {
