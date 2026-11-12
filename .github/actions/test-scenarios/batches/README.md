@@ -77,8 +77,8 @@ to the other's runs.
 
 Only the checks a non-OpenShift Kind cluster can reach live here: the rest of the
 platform-alteration suite skips on a non-OpenShift cluster, needs bare metal, or
-needs a runtime kernel — see the reasons in
-[../README.md](../README.md#platform-alteration).
+needs a runtime kernel — expand the Not covered table under
+[../README.md](../README.md#platform-alteration) for the reasons.
 
 ### service-mesh entries
 
