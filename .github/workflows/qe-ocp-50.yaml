@@ -1,4 +1,4 @@
-name: QE OCP 4.16 Testing
+name: QE OCP 5.0 Testing
 
 on:
   # pull_request:
@@ -12,14 +12,13 @@ permissions:
   contents: read
 
 jobs:
-  qe-ocp-416:
-    uses: ./.github/workflows/_qe-ocp-selfhosted.yaml
+  qe-ocp-50:
+    uses: ./.github/workflows/_qe-ocp-crc.yaml
     with:
-      ocp-version: '4.16'
-      ocp-version-slug: '416'
-      runner-label: 'qe-ocp-416'
-      lab-user: 'labuser3'
+      ocp-version: '5.0'
+      ocp-version-slug: '50'
       intrusive: false
       suites: '["affiliatedcertification-ocp", "performance-ocp", "platformalteration1-ocp", "platformalteration2-ocp", "platformalteration3-ocp", "platformalteration4-ocp"]'
     secrets:
+      CRC_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
       QE_NIGHTLY_WEBHOOK: ${{ secrets.QE_NIGHTLY_WEBHOOK }}

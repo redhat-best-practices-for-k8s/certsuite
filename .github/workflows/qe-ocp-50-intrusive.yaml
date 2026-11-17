@@ -1,27 +1,26 @@
-name: QE OCP 4.16 Intrusive Testing
+name: QE OCP 5.0 Intrusive Testing
 
 on:
   # pull_request:
   #   branches: [ main ]
   workflow_dispatch:
-  # Schedule a daily cron at 5 UTC
+  # Schedule a daily cron at midnight UTC
   schedule:
-    - cron: '0 5 * * *'
+    - cron: '0 0 * * *'
 
 permissions:
   contents: read
 
 jobs:
-  qe-ocp-416-intrusive:
-    uses: ./.github/workflows/_qe-ocp-selfhosted.yaml
+  qe-ocp-50-intrusive:
+    uses: ./.github/workflows/_qe-ocp-crc.yaml
     with:
-      ocp-version: '4.16'
-      ocp-version-slug: '416'
-      runner-label: 'qe-ocp-416'
-      lab-user: 'labuser3'
+      ocp-version: '5.0'
+      ocp-version-slug: '50'
       intrusive: true
       suites: '["lifecycle"]'
       job-timeout: 300
       test-timeout: 180
     secrets:
+      CRC_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
       QE_NIGHTLY_WEBHOOK: ${{ secrets.QE_NIGHTLY_WEBHOOK }}
