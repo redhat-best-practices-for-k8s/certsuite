@@ -896,34 +896,6 @@
         <!-- Non-Intrusive Tab Content -->
         <div id="non-intrusive" class="tab-content active">
             <div class="dashboard">
-                <!-- OCP 4.14 Regular -->
-                <div class="ocp-card">
-                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-414.yaml" 
-                       target="_blank" 
-                       class="ocp-version-link"
-                       title="View QE OCP 4.14 Testing workflow runs on GitHub">
-                        OpenShift 4.14
-                    </a>
-                    <div id="ocp-414-regular-content" class="loading">
-                        <div class="spinner"></div>
-                        Loading...
-                    </div>
-                </div>
-
-                <!-- OCP 4.16 Regular -->
-                <div class="ocp-card">
-                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-416.yaml" 
-                       target="_blank" 
-                       class="ocp-version-link"
-                       title="View QE OCP 4.16 Testing workflow runs on GitHub">
-                        OpenShift 4.16
-                    </a>
-                    <div id="ocp-416-regular-content" class="loading">
-                        <div class="spinner"></div>
-                        Loading...
-                    </div>
-                </div>
-
                 <!-- OCP 4.17 Regular -->
                 <div class="ocp-card">
                     <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-417.yaml" 
@@ -1016,34 +988,6 @@
         <!-- Intrusive Tab Content -->
         <div id="intrusive" class="tab-content">
             <div class="dashboard">
-                <!-- OCP 4.14 Intrusive -->
-                <div class="ocp-card">
-                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-414-intrusive.yaml" 
-                       target="_blank" 
-                       class="ocp-version-link"
-                       title="View QE OCP 4.14 Intrusive Testing workflow runs on GitHub">
-                        OpenShift 4.14
-                    </a>
-                    <div id="ocp-414-intrusive-content" class="loading">
-                        <div class="spinner"></div>
-                        Loading...
-                    </div>
-                </div>
-
-                <!-- OCP 4.16 Intrusive -->
-                <div class="ocp-card">
-                    <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-416-intrusive.yaml" 
-                       target="_blank" 
-                       class="ocp-version-link"
-                       title="View QE OCP 4.16 Intrusive Testing workflow runs on GitHub">
-                        OpenShift 4.16
-                    </a>
-                    <div id="ocp-416-intrusive-content" class="loading">
-                        <div class="spinner"></div>
-                        Loading...
-                    </div>
-                </div>
-
                 <!-- OCP 4.17 Intrusive -->
                 <div class="ocp-card">
                     <a href="https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/qe-ocp-417-intrusive.yaml" 
@@ -1470,14 +1414,6 @@
 
         // OCP Versions and their workflows
         const OCP_VERSIONS = {
-            '4.14': {
-                regular: 'QE OCP 4.14 Testing',
-                intrusive: 'QE OCP 4.14 Intrusive Testing'
-            },
-            '4.16': {
-                regular: 'QE OCP 4.16 Testing',
-                intrusive: 'QE OCP 4.16 Intrusive Testing'
-            },
             '4.17': {
                 regular: 'QE OCP 4.17 Testing',
                 intrusive: 'QE OCP 4.17 Intrusive Testing'
@@ -1604,10 +1540,6 @@
 
         // Map workflow names to their file names
         const WORKFLOW_FILE_MAP = {
-            'QE OCP 4.14 Testing': 'qe-ocp-414.yaml',
-            'QE OCP 4.14 Intrusive Testing': 'qe-ocp-414-intrusive.yaml',
-            'QE OCP 4.16 Testing': 'qe-ocp-416.yaml',
-            'QE OCP 4.16 Intrusive Testing': 'qe-ocp-416-intrusive.yaml',
             'QE OCP 4.17 Testing': 'qe-ocp-417.yaml',
             'QE OCP 4.17 Intrusive Testing': 'qe-ocp-417-intrusive.yaml',
             'QE OCP 4.18 Testing': 'qe-ocp-418.yaml',
@@ -3161,12 +3093,12 @@
                 console.log('✅ Latest workflow runs:', runs.workflow_runs.length);
                 
                 // Test specific regular workflow
-                const testRegularWorkflow = 'QE OCP 4.16 Testing';
+                const testRegularWorkflow = 'QE OCP 4.20 Testing';
                 const testRegularRuns = await getLastNRuns(testRegularWorkflow);
                 console.log(`✅ Test regular workflow "${testRegularWorkflow}" runs (${jobCount} requested):`, testRegularRuns.length);
                 
                 // Test specific intrusive workflow
-                const testIntrusiveWorkflow = 'QE OCP 4.16 Intrusive Testing';
+                const testIntrusiveWorkflow = 'QE OCP 4.20 Intrusive Testing';
                 const testIntrusiveRuns = await getLastNRuns(testIntrusiveWorkflow);
                 console.log(`✅ Test intrusive workflow "${testIntrusiveWorkflow}" runs (${jobCount} requested):`, testIntrusiveRuns.length);
                 
