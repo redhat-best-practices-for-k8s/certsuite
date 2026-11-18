@@ -29,7 +29,7 @@ require (
 	github.com/stretchr/testify v1.12.1
 	golang.org/x/sync v0.25.0
 	golang.org/x/term v0.48.0
-	google.golang.org/api v0.314.0
+	google.golang.org/api v0.315.0
 	gopkg.in/yaml.v3 v3.0.1
 	helm.sh/helm/v4 v4.3.2
 	k8s.io/api v0.37.2
