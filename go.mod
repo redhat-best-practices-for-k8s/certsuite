@@ -17,7 +17,7 @@ require (
 	github.com/mittwald/go-helm-client v0.13.3
 	github.com/openshift/api v0.0.0-20260204104751-e09e5a4ebcd0
 	github.com/openshift/client-go v0.0.0-20260108185524-48f4ccfc4e13
-	github.com/operator-framework/api v0.46.0
+	github.com/operator-framework/api v0.47.1
 	github.com/operator-framework/operator-lifecycle-manager v0.42.0
 	github.com/redhat-best-practices-for-k8s/certsuite-claim v1.0.68
 	github.com/redhat-best-practices-for-k8s/oct v0.0.69
@@ -29,7 +29,7 @@ require (
 	github.com/stretchr/testify v1.12.1
 	golang.org/x/sync v0.25.0
 	golang.org/x/term v0.48.0
-	google.golang.org/api v0.315.0
+	google.golang.org/api v0.316.0
 	gopkg.in/yaml.v3 v3.0.1
 	helm.sh/helm/v4 v4.3.2
 	k8s.io/api v0.37.2
@@ -190,6 +190,7 @@ require (
 	golang.org/x/sys v0.50.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
 	golang.org/x/time v0.16.0 // indirect
+	golang.org/x/tools v0.52.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20261012220534-4341edf3f941 // indirect
